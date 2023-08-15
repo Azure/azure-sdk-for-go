@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -38,19 +38,24 @@ type VirtualHubBgpConnectionsServer struct {
 }
 
 // NewVirtualHubBgpConnectionsServerTransport creates a new instance of VirtualHubBgpConnectionsServerTransport with the provided implementation.
-// The returned VirtualHubBgpConnectionsServerTransport instance is connected to an instance of armnetwork.VirtualHubBgpConnectionsClient by way of the
-// undefined.Transporter field.
+// The returned VirtualHubBgpConnectionsServerTransport instance is connected to an instance of armnetwork.VirtualHubBgpConnectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualHubBgpConnectionsServerTransport(srv *VirtualHubBgpConnectionsServer) *VirtualHubBgpConnectionsServerTransport {
-	return &VirtualHubBgpConnectionsServerTransport{srv: srv}
+	return &VirtualHubBgpConnectionsServerTransport{
+		srv:                       srv,
+		newListPager:              newTracker[azfake.PagerResponder[armnetwork.VirtualHubBgpConnectionsClientListResponse]](),
+		beginListAdvertisedRoutes: newTracker[azfake.PollerResponder[armnetwork.VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse]](),
+		beginListLearnedRoutes:    newTracker[azfake.PollerResponder[armnetwork.VirtualHubBgpConnectionsClientListLearnedRoutesResponse]](),
+	}
 }
 
 // VirtualHubBgpConnectionsServerTransport connects instances of armnetwork.VirtualHubBgpConnectionsClient to instances of VirtualHubBgpConnectionsServer.
 // Don't use this type directly, use NewVirtualHubBgpConnectionsServerTransport instead.
 type VirtualHubBgpConnectionsServerTransport struct {
 	srv                       *VirtualHubBgpConnectionsServer
-	newListPager              *azfake.PagerResponder[armnetwork.VirtualHubBgpConnectionsClientListResponse]
-	beginListAdvertisedRoutes *azfake.PollerResponder[armnetwork.VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse]
-	beginListLearnedRoutes    *azfake.PollerResponder[armnetwork.VirtualHubBgpConnectionsClientListLearnedRoutesResponse]
+	newListPager              *tracker[azfake.PagerResponder[armnetwork.VirtualHubBgpConnectionsClientListResponse]]
+	beginListAdvertisedRoutes *tracker[azfake.PollerResponder[armnetwork.VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse]]
+	beginListLearnedRoutes    *tracker[azfake.PollerResponder[armnetwork.VirtualHubBgpConnectionsClientListLearnedRoutesResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualHubBgpConnectionsServerTransport.
@@ -86,7 +91,8 @@ func (v *VirtualHubBgpConnectionsServerTransport) dispatchNewListPager(req *http
 	if v.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if v.newListPager == nil {
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bgpConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -102,20 +108,22 @@ func (v *VirtualHubBgpConnectionsServerTransport) dispatchNewListPager(req *http
 			return nil, err
 		}
 		resp := v.srv.NewListPager(resourceGroupNameUnescaped, virtualHubNameUnescaped, nil)
-		v.newListPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListPager, req, func(page *armnetwork.VirtualHubBgpConnectionsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualHubBgpConnectionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListPager) {
-		v.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -124,7 +132,8 @@ func (v *VirtualHubBgpConnectionsServerTransport) dispatchBeginListAdvertisedRou
 	if v.srv.BeginListAdvertisedRoutes == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListAdvertisedRoutes not implemented")}
 	}
-	if v.beginListAdvertisedRoutes == nil {
+	beginListAdvertisedRoutes := v.beginListAdvertisedRoutes.get(req)
+	if beginListAdvertisedRoutes == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<hubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bgpConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/advertisedRoutes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -147,19 +156,21 @@ func (v *VirtualHubBgpConnectionsServerTransport) dispatchBeginListAdvertisedRou
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginListAdvertisedRoutes = &respr
+		beginListAdvertisedRoutes = &respr
+		v.beginListAdvertisedRoutes.add(req, beginListAdvertisedRoutes)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginListAdvertisedRoutes, req)
+	resp, err := server.PollerResponderNext(beginListAdvertisedRoutes, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginListAdvertisedRoutes.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginListAdvertisedRoutes) {
-		v.beginListAdvertisedRoutes = nil
+	if !server.PollerResponderMore(beginListAdvertisedRoutes) {
+		v.beginListAdvertisedRoutes.remove(req)
 	}
 
 	return resp, nil
@@ -169,7 +180,8 @@ func (v *VirtualHubBgpConnectionsServerTransport) dispatchBeginListLearnedRoutes
 	if v.srv.BeginListLearnedRoutes == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListLearnedRoutes not implemented")}
 	}
-	if v.beginListLearnedRoutes == nil {
+	beginListLearnedRoutes := v.beginListLearnedRoutes.get(req)
+	if beginListLearnedRoutes == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<hubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bgpConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/learnedRoutes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -192,19 +204,21 @@ func (v *VirtualHubBgpConnectionsServerTransport) dispatchBeginListLearnedRoutes
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginListLearnedRoutes = &respr
+		beginListLearnedRoutes = &respr
+		v.beginListLearnedRoutes.add(req, beginListLearnedRoutes)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginListLearnedRoutes, req)
+	resp, err := server.PollerResponderNext(beginListLearnedRoutes, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginListLearnedRoutes.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginListLearnedRoutes) {
-		v.beginListLearnedRoutes = nil
+	if !server.PollerResponderMore(beginListLearnedRoutes) {
+		v.beginListLearnedRoutes.remove(req)
 	}
 
 	return resp, nil

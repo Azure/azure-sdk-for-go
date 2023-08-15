@@ -23,7 +23,7 @@ func TestProviderZeroValues(t *testing.T) {
 	require.Equal(t, context.Background(), ctx)
 	require.Zero(t, sp)
 	sp.AddEvent("event")
-	sp.End(nil)
+	sp.End()
 	sp.SetAttributes(Attribute{})
 	sp.SetStatus(SpanStatusError, "boom")
 	spCtx := tr.SpanFromContext(ctx)
@@ -67,7 +67,7 @@ func TestProvider(t *testing.T) {
 	require.NotZero(t, sp)
 
 	sp.AddEvent("event")
-	sp.End(nil)
+	sp.End()
 	sp.SetAttributes()
 	sp.SetStatus(SpanStatusError, "desc")
 	require.True(t, addEventCalled)

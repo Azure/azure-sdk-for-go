@@ -50,19 +50,24 @@ type RestorePointCollectionsServer struct {
 }
 
 // NewRestorePointCollectionsServerTransport creates a new instance of RestorePointCollectionsServerTransport with the provided implementation.
-// The returned RestorePointCollectionsServerTransport instance is connected to an instance of armcompute.RestorePointCollectionsClient by way of the
-// undefined.Transporter field.
+// The returned RestorePointCollectionsServerTransport instance is connected to an instance of armcompute.RestorePointCollectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRestorePointCollectionsServerTransport(srv *RestorePointCollectionsServer) *RestorePointCollectionsServerTransport {
-	return &RestorePointCollectionsServerTransport{srv: srv}
+	return &RestorePointCollectionsServerTransport{
+		srv:             srv,
+		beginDelete:     newTracker[azfake.PollerResponder[armcompute.RestorePointCollectionsClientDeleteResponse]](),
+		newListPager:    newTracker[azfake.PagerResponder[armcompute.RestorePointCollectionsClientListResponse]](),
+		newListAllPager: newTracker[azfake.PagerResponder[armcompute.RestorePointCollectionsClientListAllResponse]](),
+	}
 }
 
 // RestorePointCollectionsServerTransport connects instances of armcompute.RestorePointCollectionsClient to instances of RestorePointCollectionsServer.
 // Don't use this type directly, use NewRestorePointCollectionsServerTransport instead.
 type RestorePointCollectionsServerTransport struct {
 	srv             *RestorePointCollectionsServer
-	beginDelete     *azfake.PollerResponder[armcompute.RestorePointCollectionsClientDeleteResponse]
-	newListPager    *azfake.PagerResponder[armcompute.RestorePointCollectionsClientListResponse]
-	newListAllPager *azfake.PagerResponder[armcompute.RestorePointCollectionsClientListAllResponse]
+	beginDelete     *tracker[azfake.PollerResponder[armcompute.RestorePointCollectionsClientDeleteResponse]]
+	newListPager    *tracker[azfake.PagerResponder[armcompute.RestorePointCollectionsClientListResponse]]
+	newListAllPager *tracker[azfake.PagerResponder[armcompute.RestorePointCollectionsClientListAllResponse]]
 }
 
 // Do implements the policy.Transporter interface for RestorePointCollectionsServerTransport.
@@ -141,7 +146,8 @@ func (r *RestorePointCollectionsServerTransport) dispatchBeginDelete(req *http.R
 	if r.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if r.beginDelete == nil {
+	beginDelete := r.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -160,19 +166,21 @@ func (r *RestorePointCollectionsServerTransport) dispatchBeginDelete(req *http.R
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		r.beginDelete = &respr
+		beginDelete = &respr
+		r.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(r.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		r.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(r.beginDelete) {
-		r.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		r.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -227,7 +235,8 @@ func (r *RestorePointCollectionsServerTransport) dispatchNewListPager(req *http.
 	if r.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if r.newListPager == nil {
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/restorePointCollections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +248,22 @@ func (r *RestorePointCollectionsServerTransport) dispatchNewListPager(req *http.
 			return nil, err
 		}
 		resp := r.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		r.newListPager = &resp
-		server.PagerResponderInjectNextLinks(r.newListPager, req, func(page *armcompute.RestorePointCollectionsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.RestorePointCollectionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(r.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(r.newListPager) {
-		r.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -261,7 +272,8 @@ func (r *RestorePointCollectionsServerTransport) dispatchNewListAllPager(req *ht
 	if r.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if r.newListAllPager == nil {
+	newListAllPager := r.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/restorePointCollections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -269,20 +281,22 @@ func (r *RestorePointCollectionsServerTransport) dispatchNewListAllPager(req *ht
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := r.srv.NewListAllPager(nil)
-		r.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(r.newListAllPager, req, func(page *armcompute.RestorePointCollectionsClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		r.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armcompute.RestorePointCollectionsClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(r.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(r.newListAllPager) {
-		r.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		r.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

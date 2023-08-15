@@ -57,12 +57,14 @@ var liveUser = struct {
 }
 
 const (
-	fakeClientID      = "fake-client-id"
-	fakeResourceID    = "/fake/resource/ID"
-	fakeTenantID      = "fake-tenant"
-	fakeUsername      = "fake@user"
-	fakeAdfsAuthority = "fake.adfs.local"
-	fakeAdfsScope     = "fake.adfs.local/fake-scope/.default"
+	azidentityRunManualTests = "AZIDENTITY_RUN_MANUAL_TESTS"
+	fakeClientID             = "fake-client-id"
+	fakeResourceID           = "/fake/resource/ID"
+	fakeTenantID             = "fake-tenant"
+	fakeUsername             = "fake@user"
+	fakeAdfsAuthority        = "fake.adfs.local"
+	fakeAdfsScope            = "fake.adfs.local/fake-scope/.default"
+	liveTestScope            = "https://management.core.windows.net//.default"
 )
 
 var adfsLiveSP = struct {
@@ -90,8 +92,7 @@ var adfsLiveUser = struct {
 var (
 	adfsAuthority     = os.Getenv("ADFS_AUTHORITY_HOST")
 	adfsScope         = os.Getenv("ADFS_SCOPE")
-	liveTestScope     = "https://management.core.windows.net//.default"
-	_, runManualTests = os.LookupEnv("AZIDENTITY_RUN_MANUAL_TESTS")
+	_, runManualTests = os.LookupEnv(azidentityRunManualTests)
 )
 
 func setFakeValues() {

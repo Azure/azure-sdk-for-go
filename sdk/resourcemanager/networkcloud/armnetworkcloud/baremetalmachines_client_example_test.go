@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_ListBySubscription.json
 func ExampleBareMetalMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleBareMetalMachinesClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("bareMetalMachineName"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/bareMetalMachines"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -60,36 +60,36 @@ func ExampleBareMetalMachinesClient_NewListBySubscriptionPager() {
 		// 				"key2": to.Ptr("myvalue2"),
 		// 			},
 		// 			ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.BareMetalMachineProperties{
-		// 				BmcConnectionString: to.Ptr("bmcconnectionstring"),
-		// 				BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 					Username: to.Ptr("bmcuser"),
-		// 				},
-		// 				BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
-		// 				BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
-		// 				ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-		// 				CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
-		// 				DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
-		// 				DetailedStatusMessage: to.Ptr("DetailedStatusMessage"),
-		// 				HardwareInventory: &armnetworkcloud.HardwareInventory{
-		// 					AdditionalHostInformation: to.Ptr("Machine specific information..."),
-		// 					Interfaces: []*armnetworkcloud.HardwareInventoryNetworkInterface{
-		// 						{
-		// 							Name: to.Ptr("networkInterfaceName"),
-		// 							LinkStatus: to.Ptr("Up"),
-		// 							MacAddress: to.Ptr("2C:54:91:88:C9:E3"),
-		// 							NetworkInterfaceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName/networkInterfaces/networkInterfaceName"),
-		// 					}},
-		// 				},
-		// 				HardwareValidationStatus: &armnetworkcloud.HardwareValidationStatus{
-		// 					LastValidationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T13:27:03.008Z"); return t}()),
-		// 					Result: to.Ptr(armnetworkcloud.BareMetalMachineHardwareValidationResultPass),
-		// 				},
-		// 				HybridAksClustersAssociatedIDs: []*string{
-		// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
+		// 				AssociatedResourceIDs: []*string{
+		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+		// 					BmcConnectionString: to.Ptr("bmcconnectionstring"),
+		// 					BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 						Username: to.Ptr("bmcuser"),
+		// 					},
+		// 					BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
+		// 					BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
+		// 					ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 					CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
+		// 					DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
+		// 					DetailedStatusMessage: to.Ptr("DetailedStatusMessage"),
+		// 					HardwareInventory: &armnetworkcloud.HardwareInventory{
+		// 						AdditionalHostInformation: to.Ptr("Machine specific information..."),
+		// 						Interfaces: []*armnetworkcloud.HardwareInventoryNetworkInterface{
+		// 							{
+		// 								Name: to.Ptr("networkInterfaceName"),
+		// 								LinkStatus: to.Ptr("Up"),
+		// 								MacAddress: to.Ptr("2C:54:91:88:C9:E3"),
+		// 								NetworkInterfaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName/networkInterfaces/networkInterfaceName"),
+		// 						}},
+		// 					},
+		// 					HardwareValidationStatus: &armnetworkcloud.HardwareValidationStatus{
+		// 						LastValidationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T13:27:03.008Z"); return t}()),
+		// 						Result: to.Ptr(armnetworkcloud.BareMetalMachineHardwareValidationResultPass),
+		// 					},
 		// 					KubernetesNodeName: to.Ptr("node01"),
 		// 					KubernetesVersion: to.Ptr("1.21"),
 		// 					MachineDetails: to.Ptr("User-provided machine details."),
@@ -100,20 +100,18 @@ func ExampleBareMetalMachinesClient_NewListBySubscriptionPager() {
 		// 					OSImage: to.Ptr("v20220805e"),
 		// 					PowerState: to.Ptr(armnetworkcloud.BareMetalMachinePowerStateOn),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.BareMetalMachineProvisioningStateSucceeded),
-		// 					RackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
+		// 					RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 		// 					RackSlot: to.Ptr[int64](1),
 		// 					ReadyState: to.Ptr(armnetworkcloud.BareMetalMachineReadyStateTrue),
 		// 					SerialNumber: to.Ptr("BM1219XXX"),
 		// 					ServiceTag: to.Ptr("ST1219XXX"),
-		// 					VirtualMachinesAssociatedIDs: []*string{
-		// 						to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-		// 					},
-		// 			}},
-		// 		}
+		// 				},
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_ListByResourceGroup.json
 func ExampleBareMetalMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +138,7 @@ func ExampleBareMetalMachinesClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("bareMetalMachineName"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/bareMetalMachines"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -155,36 +153,36 @@ func ExampleBareMetalMachinesClient_NewListByResourceGroupPager() {
 		// 				"key2": to.Ptr("myvalue2"),
 		// 			},
 		// 			ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.BareMetalMachineProperties{
-		// 				BmcConnectionString: to.Ptr("bmcconnectionstring"),
-		// 				BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-		// 					Username: to.Ptr("bmcuser"),
-		// 				},
-		// 				BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
-		// 				BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
-		// 				ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-		// 				CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
-		// 				DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
-		// 				DetailedStatusMessage: to.Ptr("DetailedStatusMessage"),
-		// 				HardwareInventory: &armnetworkcloud.HardwareInventory{
-		// 					AdditionalHostInformation: to.Ptr("Machine specific information..."),
-		// 					Interfaces: []*armnetworkcloud.HardwareInventoryNetworkInterface{
-		// 						{
-		// 							Name: to.Ptr("networkInterfaceName"),
-		// 							LinkStatus: to.Ptr("Up"),
-		// 							MacAddress: to.Ptr("2C:54:91:88:C9:E3"),
-		// 							NetworkInterfaceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName/networkInterfaces/networkInterfaceName"),
-		// 					}},
-		// 				},
-		// 				HardwareValidationStatus: &armnetworkcloud.HardwareValidationStatus{
-		// 					LastValidationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T13:27:03.008Z"); return t}()),
-		// 					Result: to.Ptr(armnetworkcloud.BareMetalMachineHardwareValidationResultPass),
-		// 				},
-		// 				HybridAksClustersAssociatedIDs: []*string{
-		// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
+		// 				AssociatedResourceIDs: []*string{
+		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+		// 					BmcConnectionString: to.Ptr("bmcconnectionstring"),
+		// 					BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+		// 						Username: to.Ptr("bmcuser"),
+		// 					},
+		// 					BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
+		// 					BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
+		// 					ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 					CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
+		// 					DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
+		// 					DetailedStatusMessage: to.Ptr("DetailedStatusMessage"),
+		// 					HardwareInventory: &armnetworkcloud.HardwareInventory{
+		// 						AdditionalHostInformation: to.Ptr("Machine specific information..."),
+		// 						Interfaces: []*armnetworkcloud.HardwareInventoryNetworkInterface{
+		// 							{
+		// 								Name: to.Ptr("networkInterfaceName"),
+		// 								LinkStatus: to.Ptr("Up"),
+		// 								MacAddress: to.Ptr("2C:54:91:88:C9:E3"),
+		// 								NetworkInterfaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName/networkInterfaces/networkInterfaceName"),
+		// 						}},
+		// 					},
+		// 					HardwareValidationStatus: &armnetworkcloud.HardwareValidationStatus{
+		// 						LastValidationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T13:27:03.008Z"); return t}()),
+		// 						Result: to.Ptr(armnetworkcloud.BareMetalMachineHardwareValidationResultPass),
+		// 					},
 		// 					KubernetesNodeName: to.Ptr("node01"),
 		// 					KubernetesVersion: to.Ptr("1.21"),
 		// 					MachineDetails: to.Ptr("User-provided machine details."),
@@ -195,20 +193,18 @@ func ExampleBareMetalMachinesClient_NewListByResourceGroupPager() {
 		// 					OSImage: to.Ptr("v20220805e"),
 		// 					PowerState: to.Ptr(armnetworkcloud.BareMetalMachinePowerStateOn),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.BareMetalMachineProvisioningStateSucceeded),
-		// 					RackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
+		// 					RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 		// 					RackSlot: to.Ptr[int64](1),
 		// 					ReadyState: to.Ptr(armnetworkcloud.BareMetalMachineReadyStateTrue),
 		// 					SerialNumber: to.Ptr("BM1219XXX"),
 		// 					ServiceTag: to.Ptr("ST1219XXX"),
-		// 					VirtualMachinesAssociatedIDs: []*string{
-		// 						to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-		// 					},
-		// 			}},
-		// 		}
+		// 				},
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_Get.json
 func ExampleBareMetalMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +225,7 @@ func ExampleBareMetalMachinesClient_Get() {
 	// res.BareMetalMachine = armnetworkcloud.BareMetalMachine{
 	// 	Name: to.Ptr("bareMetalMachineName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/bareMetalMachines"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -244,36 +240,36 @@ func ExampleBareMetalMachinesClient_Get() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.BareMetalMachineProperties{
-	// 		BmcConnectionString: to.Ptr("bmcconnectionstring"),
-	// 		BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-	// 			Username: to.Ptr("bmcuser"),
-	// 		},
-	// 		BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
-	// 		BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
-	// 		ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
-	// 		DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
-	// 		DetailedStatusMessage: to.Ptr("DetailedStatusMessage"),
-	// 		HardwareInventory: &armnetworkcloud.HardwareInventory{
-	// 			AdditionalHostInformation: to.Ptr("Machine specific information..."),
-	// 			Interfaces: []*armnetworkcloud.HardwareInventoryNetworkInterface{
-	// 				{
-	// 					Name: to.Ptr("networkInterfaceName"),
-	// 					LinkStatus: to.Ptr("Up"),
-	// 					MacAddress: to.Ptr("2C:54:91:88:C9:E3"),
-	// 					NetworkInterfaceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName/networkInterfaces/networkInterfaceName"),
-	// 			}},
-	// 		},
-	// 		HardwareValidationStatus: &armnetworkcloud.HardwareValidationStatus{
-	// 			LastValidationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T13:27:03.008Z"); return t}()),
-	// 			Result: to.Ptr(armnetworkcloud.BareMetalMachineHardwareValidationResultPass),
-	// 		},
-	// 		HybridAksClustersAssociatedIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
+	// 		AssociatedResourceIDs: []*string{
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+	// 			BmcConnectionString: to.Ptr("bmcconnectionstring"),
+	// 			BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+	// 				Username: to.Ptr("bmcuser"),
+	// 			},
+	// 			BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
+	// 			BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("DetailedStatusMessage"),
+	// 			HardwareInventory: &armnetworkcloud.HardwareInventory{
+	// 				AdditionalHostInformation: to.Ptr("Machine specific information..."),
+	// 				Interfaces: []*armnetworkcloud.HardwareInventoryNetworkInterface{
+	// 					{
+	// 						Name: to.Ptr("networkInterfaceName"),
+	// 						LinkStatus: to.Ptr("Up"),
+	// 						MacAddress: to.Ptr("2C:54:91:88:C9:E3"),
+	// 						NetworkInterfaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName/networkInterfaces/networkInterfaceName"),
+	// 				}},
+	// 			},
+	// 			HardwareValidationStatus: &armnetworkcloud.HardwareValidationStatus{
+	// 				LastValidationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T13:27:03.008Z"); return t}()),
+	// 				Result: to.Ptr(armnetworkcloud.BareMetalMachineHardwareValidationResultPass),
+	// 			},
 	// 			KubernetesNodeName: to.Ptr("node01"),
 	// 			KubernetesVersion: to.Ptr("1.21"),
 	// 			MachineDetails: to.Ptr("User-provided machine details."),
@@ -284,18 +280,16 @@ func ExampleBareMetalMachinesClient_Get() {
 	// 			OSImage: to.Ptr("v20220805e"),
 	// 			PowerState: to.Ptr(armnetworkcloud.BareMetalMachinePowerStateOn),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.BareMetalMachineProvisioningStateSucceeded),
-	// 			RackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
+	// 			RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 	// 			RackSlot: to.Ptr[int64](1),
 	// 			ReadyState: to.Ptr(armnetworkcloud.BareMetalMachineReadyStateTrue),
 	// 			SerialNumber: to.Ptr("BM1219XXX"),
 	// 			ServiceTag: to.Ptr("ST1219XXX"),
-	// 			VirtualMachinesAssociatedIDs: []*string{
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-	// 			},
-	// 		}
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_Create.json
 func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,7 +307,7 @@ func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 			"key2": to.Ptr("myvalue2"),
 		},
 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 			Type: to.Ptr("CustomLocation"),
 		},
 		Properties: &armnetworkcloud.BareMetalMachineProperties{
@@ -327,7 +321,7 @@ func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 			MachineDetails: to.Ptr("User-provided machine details."),
 			MachineName:    to.Ptr("r01c001"),
 			MachineSKUID:   to.Ptr("684E-3B16-399E"),
-			RackID:         to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
+			RackID:         to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 			RackSlot:       to.Ptr[int64](1),
 			SerialNumber:   to.Ptr("BM1219XXX"),
 		},
@@ -345,7 +339,7 @@ func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 	// res.BareMetalMachine = armnetworkcloud.BareMetalMachine{
 	// 	Name: to.Ptr("bareMetalMachineName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/bareMetalMachines"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -360,36 +354,36 @@ func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.BareMetalMachineProperties{
-	// 		BmcConnectionString: to.Ptr("bmcconnectionstring"),
-	// 		BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-	// 			Username: to.Ptr("bmcuser"),
-	// 		},
-	// 		BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
-	// 		BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
-	// 		ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
-	// 		DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
-	// 		DetailedStatusMessage: to.Ptr("DetailedStatusMessage"),
-	// 		HardwareInventory: &armnetworkcloud.HardwareInventory{
-	// 			AdditionalHostInformation: to.Ptr("Machine specific information..."),
-	// 			Interfaces: []*armnetworkcloud.HardwareInventoryNetworkInterface{
-	// 				{
-	// 					Name: to.Ptr("networkInterfaceName"),
-	// 					LinkStatus: to.Ptr("Up"),
-	// 					MacAddress: to.Ptr("2C:54:91:88:C9:E3"),
-	// 					NetworkInterfaceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName/networkInterfaces/networkInterfaceName"),
-	// 			}},
-	// 		},
-	// 		HardwareValidationStatus: &armnetworkcloud.HardwareValidationStatus{
-	// 			LastValidationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T13:27:03.008Z"); return t}()),
-	// 			Result: to.Ptr(armnetworkcloud.BareMetalMachineHardwareValidationResultPass),
-	// 		},
-	// 		HybridAksClustersAssociatedIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
+	// 		AssociatedResourceIDs: []*string{
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+	// 			BmcConnectionString: to.Ptr("bmcconnectionstring"),
+	// 			BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+	// 				Username: to.Ptr("bmcuser"),
+	// 			},
+	// 			BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
+	// 			BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("DetailedStatusMessage"),
+	// 			HardwareInventory: &armnetworkcloud.HardwareInventory{
+	// 				AdditionalHostInformation: to.Ptr("Machine specific information..."),
+	// 				Interfaces: []*armnetworkcloud.HardwareInventoryNetworkInterface{
+	// 					{
+	// 						Name: to.Ptr("networkInterfaceName"),
+	// 						LinkStatus: to.Ptr("Up"),
+	// 						MacAddress: to.Ptr("2C:54:91:88:C9:E3"),
+	// 						NetworkInterfaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName/networkInterfaces/networkInterfaceName"),
+	// 				}},
+	// 			},
+	// 			HardwareValidationStatus: &armnetworkcloud.HardwareValidationStatus{
+	// 				LastValidationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T13:27:03.008Z"); return t}()),
+	// 				Result: to.Ptr(armnetworkcloud.BareMetalMachineHardwareValidationResultPass),
+	// 			},
 	// 			KubernetesNodeName: to.Ptr("node01"),
 	// 			KubernetesVersion: to.Ptr("1.21"),
 	// 			MachineDetails: to.Ptr("User-provided machine details."),
@@ -400,18 +394,16 @@ func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 	// 			OSImage: to.Ptr("v20220805e"),
 	// 			PowerState: to.Ptr(armnetworkcloud.BareMetalMachinePowerStateOn),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.BareMetalMachineProvisioningStateSucceeded),
-	// 			RackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
+	// 			RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 	// 			RackSlot: to.Ptr[int64](1),
 	// 			ReadyState: to.Ptr(armnetworkcloud.BareMetalMachineReadyStateTrue),
 	// 			SerialNumber: to.Ptr("BM1219XXX"),
 	// 			ServiceTag: to.Ptr("ST1219XXX"),
-	// 			VirtualMachinesAssociatedIDs: []*string{
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-	// 			},
-	// 		}
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_Delete.json
 func ExampleBareMetalMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -432,7 +424,7 @@ func ExampleBareMetalMachinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_Patch.json
 func ExampleBareMetalMachinesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -465,7 +457,7 @@ func ExampleBareMetalMachinesClient_BeginUpdate() {
 	// res.BareMetalMachine = armnetworkcloud.BareMetalMachine{
 	// 	Name: to.Ptr("bareMetalMachineName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/bareMetalMachines"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -480,36 +472,36 @@ func ExampleBareMetalMachinesClient_BeginUpdate() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.BareMetalMachineProperties{
-	// 		BmcConnectionString: to.Ptr("bmcconnectionstring"),
-	// 		BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
-	// 			Username: to.Ptr("bmcuser"),
-	// 		},
-	// 		BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
-	// 		BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
-	// 		ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
-	// 		DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
-	// 		DetailedStatusMessage: to.Ptr("DetailedStatusMessage"),
-	// 		HardwareInventory: &armnetworkcloud.HardwareInventory{
-	// 			AdditionalHostInformation: to.Ptr("Machine specific information..."),
-	// 			Interfaces: []*armnetworkcloud.HardwareInventoryNetworkInterface{
-	// 				{
-	// 					Name: to.Ptr("networkInterfaceName"),
-	// 					LinkStatus: to.Ptr("Up"),
-	// 					MacAddress: to.Ptr("2C:54:91:88:C9:E3"),
-	// 					NetworkInterfaceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName/networkInterfaces/networkInterfaceName"),
-	// 			}},
-	// 		},
-	// 		HardwareValidationStatus: &armnetworkcloud.HardwareValidationStatus{
-	// 			LastValidationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T13:27:03.008Z"); return t}()),
-	// 			Result: to.Ptr(armnetworkcloud.BareMetalMachineHardwareValidationResultPass),
-	// 		},
-	// 		HybridAksClustersAssociatedIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
+	// 		AssociatedResourceIDs: []*string{
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+	// 			BmcConnectionString: to.Ptr("bmcconnectionstring"),
+	// 			BmcCredentials: &armnetworkcloud.AdministrativeCredentials{
+	// 				Username: to.Ptr("bmcuser"),
+	// 			},
+	// 			BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
+	// 			BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("DetailedStatusMessage"),
+	// 			HardwareInventory: &armnetworkcloud.HardwareInventory{
+	// 				AdditionalHostInformation: to.Ptr("Machine specific information..."),
+	// 				Interfaces: []*armnetworkcloud.HardwareInventoryNetworkInterface{
+	// 					{
+	// 						Name: to.Ptr("networkInterfaceName"),
+	// 						LinkStatus: to.Ptr("Up"),
+	// 						MacAddress: to.Ptr("2C:54:91:88:C9:E3"),
+	// 						NetworkInterfaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName/networkInterfaces/networkInterfaceName"),
+	// 				}},
+	// 			},
+	// 			HardwareValidationStatus: &armnetworkcloud.HardwareValidationStatus{
+	// 				LastValidationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T13:27:03.008Z"); return t}()),
+	// 				Result: to.Ptr(armnetworkcloud.BareMetalMachineHardwareValidationResultPass),
+	// 			},
 	// 			KubernetesNodeName: to.Ptr("node01"),
 	// 			KubernetesVersion: to.Ptr("1.21"),
 	// 			MachineDetails: to.Ptr("User-provided machine details."),
@@ -520,18 +512,16 @@ func ExampleBareMetalMachinesClient_BeginUpdate() {
 	// 			OSImage: to.Ptr("v20220805e"),
 	// 			PowerState: to.Ptr(armnetworkcloud.BareMetalMachinePowerStateOn),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.BareMetalMachineProvisioningStateSucceeded),
-	// 			RackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
+	// 			RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 	// 			RackSlot: to.Ptr[int64](1),
 	// 			ReadyState: to.Ptr(armnetworkcloud.BareMetalMachineReadyStateTrue),
 	// 			SerialNumber: to.Ptr("BM1219XXX"),
 	// 			ServiceTag: to.Ptr("ST1219XXX"),
-	// 			VirtualMachinesAssociatedIDs: []*string{
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-	// 			},
-	// 		}
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_Cordon.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_Cordon.json
 func ExampleBareMetalMachinesClient_BeginCordon() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -555,7 +545,7 @@ func ExampleBareMetalMachinesClient_BeginCordon() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_PowerOff.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_PowerOff.json
 func ExampleBareMetalMachinesClient_BeginPowerOff() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -579,7 +569,7 @@ func ExampleBareMetalMachinesClient_BeginPowerOff() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_Reimage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_Reimage.json
 func ExampleBareMetalMachinesClient_BeginReimage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -600,7 +590,7 @@ func ExampleBareMetalMachinesClient_BeginReimage() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_Replace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_Replace.json
 func ExampleBareMetalMachinesClient_BeginReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -631,7 +621,7 @@ func ExampleBareMetalMachinesClient_BeginReplace() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_Restart.json
 func ExampleBareMetalMachinesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -652,7 +642,7 @@ func ExampleBareMetalMachinesClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_RunCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_RunCommand.json
 func ExampleBareMetalMachinesClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -679,7 +669,7 @@ func ExampleBareMetalMachinesClient_BeginRunCommand() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_RunDataExtracts.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_RunDataExtracts.json
 func ExampleBareMetalMachinesClient_BeginRunDataExtracts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -694,7 +684,10 @@ func ExampleBareMetalMachinesClient_BeginRunDataExtracts() {
 		LimitTimeSeconds: to.Ptr[int64](60),
 		Commands: []*armnetworkcloud.BareMetalMachineCommandSpecification{
 			{
-				Command: to.Ptr("networkInfo"),
+				Arguments: []*string{
+					to.Ptr("SysInfo"),
+					to.Ptr("TTYLog")},
+				Command: to.Ptr("hardware-support-data-collection"),
 			}},
 	}, nil)
 	if err != nil {
@@ -706,7 +699,7 @@ func ExampleBareMetalMachinesClient_BeginRunDataExtracts() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_RunReadCommands.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_RunReadCommands.json
 func ExampleBareMetalMachinesClient_BeginRunReadCommands() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -743,7 +736,7 @@ func ExampleBareMetalMachinesClient_BeginRunReadCommands() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_Start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_Start.json
 func ExampleBareMetalMachinesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -764,7 +757,7 @@ func ExampleBareMetalMachinesClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_Uncordon.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_Uncordon.json
 func ExampleBareMetalMachinesClient_BeginUncordon() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -785,7 +778,7 @@ func ExampleBareMetalMachinesClient_BeginUncordon() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_ValidateHardware.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_ValidateHardware.json
 func ExampleBareMetalMachinesClient_BeginValidateHardware() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

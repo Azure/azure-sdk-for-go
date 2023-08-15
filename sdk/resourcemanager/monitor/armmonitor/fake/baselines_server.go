@@ -28,17 +28,20 @@ type BaselinesServer struct {
 }
 
 // NewBaselinesServerTransport creates a new instance of BaselinesServerTransport with the provided implementation.
-// The returned BaselinesServerTransport instance is connected to an instance of armmonitor.BaselinesClient by way of the
-// undefined.Transporter field.
+// The returned BaselinesServerTransport instance is connected to an instance of armmonitor.BaselinesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewBaselinesServerTransport(srv *BaselinesServer) *BaselinesServerTransport {
-	return &BaselinesServerTransport{srv: srv}
+	return &BaselinesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armmonitor.BaselinesClientListResponse]](),
+	}
 }
 
 // BaselinesServerTransport connects instances of armmonitor.BaselinesClient to instances of BaselinesServer.
 // Don't use this type directly, use NewBaselinesServerTransport instead.
 type BaselinesServerTransport struct {
 	srv          *BaselinesServer
-	newListPager *azfake.PagerResponder[armmonitor.BaselinesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armmonitor.BaselinesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for BaselinesServerTransport.
@@ -70,7 +73,8 @@ func (b *BaselinesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	if b.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if b.newListPager == nil {
+	newListPager := b.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricBaselines`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -136,17 +140,19 @@ func (b *BaselinesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 			}
 		}
 		resp := b.srv.NewListPager(resourceURIUnescaped, options)
-		b.newListPager = &resp
+		newListPager = &resp
+		b.newListPager.add(req, newListPager)
 	}
-	resp, err := server.PagerResponderNext(b.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(b.newListPager) {
-		b.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		b.newListPager.remove(req)
 	}
 	return resp, nil
 }

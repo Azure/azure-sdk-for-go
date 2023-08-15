@@ -1414,7 +1414,7 @@ func (c ContainerConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "containerImageNames", c.ContainerImageNames)
 	populate(objectMap, "containerRegistries", c.ContainerRegistries)
-	objectMap["type"] = "DockerCompatible"
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -2477,6 +2477,7 @@ func (n *NFSMountConfiguration) UnmarshalJSON(data []byte) error {
 func (n NetworkConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "dynamicVnetAssignmentScope", n.DynamicVNetAssignmentScope)
+	populate(objectMap, "enableAcceleratedNetworking", n.EnableAcceleratedNetworking)
 	populate(objectMap, "endpointConfiguration", n.EndpointConfiguration)
 	populate(objectMap, "publicIPAddressConfiguration", n.PublicIPAddressConfiguration)
 	populate(objectMap, "subnetId", n.SubnetID)
@@ -2494,6 +2495,9 @@ func (n *NetworkConfiguration) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "dynamicVnetAssignmentScope":
 			err = unpopulate(val, "DynamicVNetAssignmentScope", &n.DynamicVNetAssignmentScope)
+			delete(rawMsg, key)
+		case "enableAcceleratedNetworking":
+			err = unpopulate(val, "EnableAcceleratedNetworking", &n.EnableAcceleratedNetworking)
 			delete(rawMsg, key)
 		case "endpointConfiguration":
 			err = unpopulate(val, "EndpointConfiguration", &n.EndpointConfiguration)
@@ -3869,6 +3873,7 @@ func (u *UserIdentity) UnmarshalJSON(data []byte) error {
 func (v VMExtension) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "autoUpgradeMinorVersion", v.AutoUpgradeMinorVersion)
+	populate(objectMap, "enableAutomaticUpgrade", v.EnableAutomaticUpgrade)
 	populate(objectMap, "name", v.Name)
 	populateAny(objectMap, "protectedSettings", v.ProtectedSettings)
 	populate(objectMap, "provisionAfterExtensions", v.ProvisionAfterExtensions)
@@ -3890,6 +3895,9 @@ func (v *VMExtension) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "autoUpgradeMinorVersion":
 			err = unpopulate(val, "AutoUpgradeMinorVersion", &v.AutoUpgradeMinorVersion)
+			delete(rawMsg, key)
+		case "enableAutomaticUpgrade":
+			err = unpopulate(val, "EnableAutomaticUpgrade", &v.EnableAutomaticUpgrade)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &v.Name)

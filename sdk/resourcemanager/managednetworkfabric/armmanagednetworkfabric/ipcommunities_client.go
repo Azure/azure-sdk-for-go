@@ -29,7 +29,7 @@ type IPCommunitiesClient struct {
 }
 
 // NewIPCommunitiesClient creates a new instance of IPCommunitiesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewIPCommunitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IPCommunitiesClient, error) {
@@ -47,9 +47,9 @@ func NewIPCommunitiesClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreate - Implements an IP Community PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ipCommunityName - Name of the IP Community
+//   - ipCommunityName - Name of the IP Community.
 //   - body - Request payload.
 //   - options - IPCommunitiesClientBeginCreateOptions contains the optional parameters for the IPCommunitiesClient.BeginCreate
 //     method.
@@ -70,7 +70,7 @@ func (client *IPCommunitiesClient) BeginCreate(ctx context.Context, resourceGrou
 // Create - Implements an IP Community PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *IPCommunitiesClient) create(ctx context.Context, resourceGroupName string, ipCommunityName string, body IPCommunity, options *IPCommunitiesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, ipCommunityName, body, options)
 	if err != nil {
@@ -89,9 +89,6 @@ func (client *IPCommunitiesClient) create(ctx context.Context, resourceGroupName
 // createCreateRequest creates the Create request.
 func (client *IPCommunitiesClient) createCreateRequest(ctx context.Context, resourceGroupName string, ipCommunityName string, body IPCommunity, options *IPCommunitiesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipCommunities/{ipCommunityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -106,7 +103,7 @@ func (client *IPCommunitiesClient) createCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -115,7 +112,7 @@ func (client *IPCommunitiesClient) createCreateRequest(ctx context.Context, reso
 // BeginDelete - Implements IP Community DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipCommunityName - Name of the IP Community.
 //   - options - IPCommunitiesClientBeginDeleteOptions contains the optional parameters for the IPCommunitiesClient.BeginDelete
@@ -137,7 +134,7 @@ func (client *IPCommunitiesClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Implements IP Community DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *IPCommunitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, ipCommunityName string, options *IPCommunitiesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ipCommunityName, options)
 	if err != nil {
@@ -147,7 +144,7 @@ func (client *IPCommunitiesClient) deleteOperation(ctx context.Context, resource
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -156,9 +153,6 @@ func (client *IPCommunitiesClient) deleteOperation(ctx context.Context, resource
 // deleteCreateRequest creates the Delete request.
 func (client *IPCommunitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ipCommunityName string, options *IPCommunitiesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipCommunities/{ipCommunityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -173,7 +167,7 @@ func (client *IPCommunitiesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -182,7 +176,7 @@ func (client *IPCommunitiesClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Implements an IP Community GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipCommunityName - Name of the IP Community.
 //   - options - IPCommunitiesClientGetOptions contains the optional parameters for the IPCommunitiesClient.Get method.
@@ -204,9 +198,6 @@ func (client *IPCommunitiesClient) Get(ctx context.Context, resourceGroupName st
 // getCreateRequest creates the Get request.
 func (client *IPCommunitiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, ipCommunityName string, options *IPCommunitiesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipCommunities/{ipCommunityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -221,7 +212,7 @@ func (client *IPCommunitiesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -236,9 +227,9 @@ func (client *IPCommunitiesClient) getHandleResponse(resp *http.Response) (IPCom
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Implements IpCommunities list by resource group GET method.
+// NewListByResourceGroupPager - Implements IP Communities list by resource group GET method.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - IPCommunitiesClientListByResourceGroupOptions contains the optional parameters for the IPCommunitiesClient.NewListByResourceGroupPager
 //     method.
@@ -273,9 +264,6 @@ func (client *IPCommunitiesClient) NewListByResourceGroupPager(resourceGroupName
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *IPCommunitiesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *IPCommunitiesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipCommunities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -286,7 +274,7 @@ func (client *IPCommunitiesClient) listByResourceGroupCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,9 +289,9 @@ func (client *IPCommunitiesClient) listByResourceGroupHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListBySubscriptionPager - Implements IpCommunities list by subscription GET method.
+// NewListBySubscriptionPager - Implements IP Communities list by subscription GET method.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - options - IPCommunitiesClientListBySubscriptionOptions contains the optional parameters for the IPCommunitiesClient.NewListBySubscriptionPager
 //     method.
 func (client *IPCommunitiesClient) NewListBySubscriptionPager(options *IPCommunitiesClientListBySubscriptionOptions) *runtime.Pager[IPCommunitiesClientListBySubscriptionResponse] {
@@ -337,16 +325,13 @@ func (client *IPCommunitiesClient) NewListBySubscriptionPager(options *IPCommuni
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *IPCommunitiesClient) listBySubscriptionCreateRequest(ctx context.Context, options *IPCommunitiesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/ipCommunities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -364,9 +349,9 @@ func (client *IPCommunitiesClient) listBySubscriptionHandleResponse(resp *http.R
 // BeginUpdate - API to update certain properties of the IP Community resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ipCommunityName - Name of the IP Community
+//   - ipCommunityName - Name of the IP Community.
 //   - body - IP Community properties to update.
 //   - options - IPCommunitiesClientBeginUpdateOptions contains the optional parameters for the IPCommunitiesClient.BeginUpdate
 //     method.
@@ -387,7 +372,7 @@ func (client *IPCommunitiesClient) BeginUpdate(ctx context.Context, resourceGrou
 // Update - API to update certain properties of the IP Community resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *IPCommunitiesClient) update(ctx context.Context, resourceGroupName string, ipCommunityName string, body IPCommunityPatch, options *IPCommunitiesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, ipCommunityName, body, options)
 	if err != nil {
@@ -406,9 +391,6 @@ func (client *IPCommunitiesClient) update(ctx context.Context, resourceGroupName
 // updateCreateRequest creates the Update request.
 func (client *IPCommunitiesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, ipCommunityName string, body IPCommunityPatch, options *IPCommunitiesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipCommunities/{ipCommunityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -423,7 +405,7 @@ func (client *IPCommunitiesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

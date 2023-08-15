@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetRoleManagementPolicyByName.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/GetRoleManagementPolicyByName.json
 func ExampleRoleManagementPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleRoleManagementPoliciesClient_Get() {
 	// res.RoleManagementPolicy = armauthorization.RoleManagementPolicy{
 	// 	Name: to.Ptr("570c3619-7688-4b34-b290-2b8bb3ccab2a"),
 	// 	Type: to.Ptr("Microsoft.Authorization/RoleManagementPolicies"),
-	// 	ID: to.Ptr("/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/570c3619-7688-4b34-b290-2b8bb3ccab2a"),
+	// 	ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/570c3619-7688-4b34-b290-2b8bb3ccab2a"),
 	// 	Properties: &armauthorization.RoleManagementPolicyProperties{
 	// 		EffectiveRules: []armauthorization.RoleManagementPolicyRuleClassification{
 	// 			&armauthorization.RoleManagementPolicyEnablementRule{
@@ -590,7 +590,7 @@ func ExampleRoleManagementPoliciesClient_Get() {
 	// 																																																						}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/PatchPartialRoleManagementPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/PatchPartialRoleManagementPolicy.json
 func ExampleRoleManagementPoliciesClient_Update_patchPartialRoleManagementPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -643,7 +643,7 @@ func ExampleRoleManagementPoliciesClient_Update_patchPartialRoleManagementPolicy
 	// res.RoleManagementPolicy = armauthorization.RoleManagementPolicy{
 	// 	Name: to.Ptr("570c3619-7688-4b34-b290-2b8bb3ccab2a"),
 	// 	Type: to.Ptr("Microsoft.Authorization/RoleManagementPolicies"),
-	// 	ID: to.Ptr("/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/570c3619-7688-4b34-b290-2b8bb3ccab2a"),
+	// 	ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/570c3619-7688-4b34-b290-2b8bb3ccab2a"),
 	// 	Properties: &armauthorization.RoleManagementPolicyProperties{
 	// 		EffectiveRules: []armauthorization.RoleManagementPolicyRuleClassification{
 	// 			&armauthorization.RoleManagementPolicyExpirationRule{
@@ -1194,7 +1194,7 @@ func ExampleRoleManagementPoliciesClient_Update_patchPartialRoleManagementPolicy
 	// 																																																						}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/PatchRoleManagementPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/PatchRoleManagementPolicy.json
 func ExampleRoleManagementPoliciesClient_Update_patchRoleManagementPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1483,7 +1483,7 @@ func ExampleRoleManagementPoliciesClient_Update_patchRoleManagementPolicy() {
 	// res.RoleManagementPolicy = armauthorization.RoleManagementPolicy{
 	// 	Name: to.Ptr("570c3619-7688-4b34-b290-2b8bb3ccab2a"),
 	// 	Type: to.Ptr("Microsoft.Authorization/RoleManagementPolicies"),
-	// 	ID: to.Ptr("/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/570c3619-7688-4b34-b290-2b8bb3ccab2a"),
+	// 	ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/570c3619-7688-4b34-b290-2b8bb3ccab2a"),
 	// 	Properties: &armauthorization.RoleManagementPolicyProperties{
 	// 		EffectiveRules: []armauthorization.RoleManagementPolicyRuleClassification{
 	// 			&armauthorization.RoleManagementPolicyExpirationRule{
@@ -2034,7 +2034,7 @@ func ExampleRoleManagementPoliciesClient_Update_patchRoleManagementPolicy() {
 	// 																																																						}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/DeleteRoleManagementPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/DeleteRoleManagementPolicy.json
 func ExampleRoleManagementPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2051,7 +2051,7 @@ func ExampleRoleManagementPoliciesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetRoleManagementPolicyByScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/GetRoleManagementPolicyByScope.json
 func ExampleRoleManagementPoliciesClient_NewListForScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2078,7 +2078,7 @@ func ExampleRoleManagementPoliciesClient_NewListForScopePager() {
 		// 		{
 		// 			Name: to.Ptr("570c3619-7688-4b34-b290-2b8bb3ccab2a"),
 		// 			Type: to.Ptr("Microsoft.Authorization/RoleManagementPolicies"),
-		// 			ID: to.Ptr("/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/570c3619-7688-4b34-b290-2b8bb3ccab2a"),
+		// 			ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/570c3619-7688-4b34-b290-2b8bb3ccab2a"),
 		// 			Properties: &armauthorization.RoleManagementPolicyProperties{
 		// 				EffectiveRules: []armauthorization.RoleManagementPolicyRuleClassification{
 		// 					&armauthorization.RoleManagementPolicyEnablementRule{

@@ -42,19 +42,24 @@ type DiskRestorePointServer struct {
 }
 
 // NewDiskRestorePointServerTransport creates a new instance of DiskRestorePointServerTransport with the provided implementation.
-// The returned DiskRestorePointServerTransport instance is connected to an instance of armcompute.DiskRestorePointClient by way of the
-// undefined.Transporter field.
+// The returned DiskRestorePointServerTransport instance is connected to an instance of armcompute.DiskRestorePointClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDiskRestorePointServerTransport(srv *DiskRestorePointServer) *DiskRestorePointServerTransport {
-	return &DiskRestorePointServerTransport{srv: srv}
+	return &DiskRestorePointServerTransport{
+		srv:                        srv,
+		beginGrantAccess:           newTracker[azfake.PollerResponder[armcompute.DiskRestorePointClientGrantAccessResponse]](),
+		newListByRestorePointPager: newTracker[azfake.PagerResponder[armcompute.DiskRestorePointClientListByRestorePointResponse]](),
+		beginRevokeAccess:          newTracker[azfake.PollerResponder[armcompute.DiskRestorePointClientRevokeAccessResponse]](),
+	}
 }
 
 // DiskRestorePointServerTransport connects instances of armcompute.DiskRestorePointClient to instances of DiskRestorePointServer.
 // Don't use this type directly, use NewDiskRestorePointServerTransport instead.
 type DiskRestorePointServerTransport struct {
 	srv                        *DiskRestorePointServer
-	beginGrantAccess           *azfake.PollerResponder[armcompute.DiskRestorePointClientGrantAccessResponse]
-	newListByRestorePointPager *azfake.PagerResponder[armcompute.DiskRestorePointClientListByRestorePointResponse]
-	beginRevokeAccess          *azfake.PollerResponder[armcompute.DiskRestorePointClientRevokeAccessResponse]
+	beginGrantAccess           *tracker[azfake.PollerResponder[armcompute.DiskRestorePointClientGrantAccessResponse]]
+	newListByRestorePointPager *tracker[azfake.PagerResponder[armcompute.DiskRestorePointClientListByRestorePointResponse]]
+	beginRevokeAccess          *tracker[azfake.PollerResponder[armcompute.DiskRestorePointClientRevokeAccessResponse]]
 }
 
 // Do implements the policy.Transporter interface for DiskRestorePointServerTransport.
@@ -133,7 +138,8 @@ func (d *DiskRestorePointServerTransport) dispatchBeginGrantAccess(req *http.Req
 	if d.srv.BeginGrantAccess == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGrantAccess not implemented")}
 	}
-	if d.beginGrantAccess == nil {
+	beginGrantAccess := d.beginGrantAccess.get(req)
+	if beginGrantAccess == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorePoints/(?P<vmRestorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diskRestorePoints/(?P<diskRestorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/beginGetAccess`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +170,21 @@ func (d *DiskRestorePointServerTransport) dispatchBeginGrantAccess(req *http.Req
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginGrantAccess = &respr
+		beginGrantAccess = &respr
+		d.beginGrantAccess.add(req, beginGrantAccess)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginGrantAccess, req)
+	resp, err := server.PollerResponderNext(beginGrantAccess, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginGrantAccess.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginGrantAccess) {
-		d.beginGrantAccess = nil
+	if !server.PollerResponderMore(beginGrantAccess) {
+		d.beginGrantAccess.remove(req)
 	}
 
 	return resp, nil
@@ -186,7 +194,8 @@ func (d *DiskRestorePointServerTransport) dispatchNewListByRestorePointPager(req
 	if d.srv.NewListByRestorePointPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByRestorePointPager not implemented")}
 	}
-	if d.newListByRestorePointPager == nil {
+	newListByRestorePointPager := d.newListByRestorePointPager.get(req)
+	if newListByRestorePointPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorePoints/(?P<vmRestorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diskRestorePoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -206,20 +215,22 @@ func (d *DiskRestorePointServerTransport) dispatchNewListByRestorePointPager(req
 			return nil, err
 		}
 		resp := d.srv.NewListByRestorePointPager(resourceGroupNameUnescaped, restorePointCollectionNameUnescaped, vmRestorePointNameUnescaped, nil)
-		d.newListByRestorePointPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListByRestorePointPager, req, func(page *armcompute.DiskRestorePointClientListByRestorePointResponse, createLink func() string) {
+		newListByRestorePointPager = &resp
+		d.newListByRestorePointPager.add(req, newListByRestorePointPager)
+		server.PagerResponderInjectNextLinks(newListByRestorePointPager, req, func(page *armcompute.DiskRestorePointClientListByRestorePointResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListByRestorePointPager, req)
+	resp, err := server.PagerResponderNext(newListByRestorePointPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByRestorePointPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListByRestorePointPager) {
-		d.newListByRestorePointPager = nil
+	if !server.PagerResponderMore(newListByRestorePointPager) {
+		d.newListByRestorePointPager.remove(req)
 	}
 	return resp, nil
 }
@@ -228,7 +239,8 @@ func (d *DiskRestorePointServerTransport) dispatchBeginRevokeAccess(req *http.Re
 	if d.srv.BeginRevokeAccess == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRevokeAccess not implemented")}
 	}
-	if d.beginRevokeAccess == nil {
+	beginRevokeAccess := d.beginRevokeAccess.get(req)
+	if beginRevokeAccess == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorePoints/(?P<vmRestorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diskRestorePoints/(?P<diskRestorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endGetAccess`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -255,19 +267,21 @@ func (d *DiskRestorePointServerTransport) dispatchBeginRevokeAccess(req *http.Re
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginRevokeAccess = &respr
+		beginRevokeAccess = &respr
+		d.beginRevokeAccess.add(req, beginRevokeAccess)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginRevokeAccess, req)
+	resp, err := server.PollerResponderNext(beginRevokeAccess, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginRevokeAccess.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginRevokeAccess) {
-		d.beginRevokeAccess = nil
+	if !server.PollerResponderMore(beginRevokeAccess) {
+		d.beginRevokeAccess.remove(req)
 	}
 
 	return resp, nil

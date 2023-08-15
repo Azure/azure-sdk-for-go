@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -94,25 +94,36 @@ type ApplicationGatewaysServer struct {
 }
 
 // NewApplicationGatewaysServerTransport creates a new instance of ApplicationGatewaysServerTransport with the provided implementation.
-// The returned ApplicationGatewaysServerTransport instance is connected to an instance of armnetwork.ApplicationGatewaysClient by way of the
-// undefined.Transporter field.
+// The returned ApplicationGatewaysServerTransport instance is connected to an instance of armnetwork.ApplicationGatewaysClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewApplicationGatewaysServerTransport(srv *ApplicationGatewaysServer) *ApplicationGatewaysServerTransport {
-	return &ApplicationGatewaysServerTransport{srv: srv}
+	return &ApplicationGatewaysServerTransport{
+		srv:                        srv,
+		beginBackendHealth:         newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientBackendHealthResponse]](),
+		beginBackendHealthOnDemand: newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientBackendHealthOnDemandResponse]](),
+		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientCreateOrUpdateResponse]](),
+		beginDelete:                newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientDeleteResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListResponse]](),
+		newListAllPager:            newTracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAllResponse]](),
+		newListAvailableSSLPredefinedPoliciesPager: newTracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse]](),
+		beginStart: newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStartResponse]](),
+		beginStop:  newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStopResponse]](),
+	}
 }
 
 // ApplicationGatewaysServerTransport connects instances of armnetwork.ApplicationGatewaysClient to instances of ApplicationGatewaysServer.
 // Don't use this type directly, use NewApplicationGatewaysServerTransport instead.
 type ApplicationGatewaysServerTransport struct {
 	srv                                        *ApplicationGatewaysServer
-	beginBackendHealth                         *azfake.PollerResponder[armnetwork.ApplicationGatewaysClientBackendHealthResponse]
-	beginBackendHealthOnDemand                 *azfake.PollerResponder[armnetwork.ApplicationGatewaysClientBackendHealthOnDemandResponse]
-	beginCreateOrUpdate                        *azfake.PollerResponder[armnetwork.ApplicationGatewaysClientCreateOrUpdateResponse]
-	beginDelete                                *azfake.PollerResponder[armnetwork.ApplicationGatewaysClientDeleteResponse]
-	newListPager                               *azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListResponse]
-	newListAllPager                            *azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAllResponse]
-	newListAvailableSSLPredefinedPoliciesPager *azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse]
-	beginStart                                 *azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStartResponse]
-	beginStop                                  *azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStopResponse]
+	beginBackendHealth                         *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientBackendHealthResponse]]
+	beginBackendHealthOnDemand                 *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientBackendHealthOnDemandResponse]]
+	beginCreateOrUpdate                        *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientCreateOrUpdateResponse]]
+	beginDelete                                *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientDeleteResponse]]
+	newListPager                               *tracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListResponse]]
+	newListAllPager                            *tracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAllResponse]]
+	newListAvailableSSLPredefinedPoliciesPager *tracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse]]
+	beginStart                                 *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStartResponse]]
+	beginStop                                  *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStopResponse]]
 }
 
 // Do implements the policy.Transporter interface for ApplicationGatewaysServerTransport.
@@ -176,7 +187,8 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginBackendHealth(req *htt
 	if a.srv.BeginBackendHealth == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginBackendHealth not implemented")}
 	}
-	if a.beginBackendHealth == nil {
+	beginBackendHealth := a.beginBackendHealth.get(req)
+	if beginBackendHealth == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGateways/(?P<applicationGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backendhealth`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -207,19 +219,21 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginBackendHealth(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginBackendHealth = &respr
+		beginBackendHealth = &respr
+		a.beginBackendHealth.add(req, beginBackendHealth)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginBackendHealth, req)
+	resp, err := server.PollerResponderNext(beginBackendHealth, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginBackendHealth.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginBackendHealth) {
-		a.beginBackendHealth = nil
+	if !server.PollerResponderMore(beginBackendHealth) {
+		a.beginBackendHealth.remove(req)
 	}
 
 	return resp, nil
@@ -229,7 +243,8 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginBackendHealthOnDemand(
 	if a.srv.BeginBackendHealthOnDemand == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginBackendHealthOnDemand not implemented")}
 	}
-	if a.beginBackendHealthOnDemand == nil {
+	beginBackendHealthOnDemand := a.beginBackendHealthOnDemand.get(req)
+	if beginBackendHealthOnDemand == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGateways/(?P<applicationGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getBackendHealthOnDemand`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -264,19 +279,21 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginBackendHealthOnDemand(
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginBackendHealthOnDemand = &respr
+		beginBackendHealthOnDemand = &respr
+		a.beginBackendHealthOnDemand.add(req, beginBackendHealthOnDemand)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginBackendHealthOnDemand, req)
+	resp, err := server.PollerResponderNext(beginBackendHealthOnDemand, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginBackendHealthOnDemand.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginBackendHealthOnDemand) {
-		a.beginBackendHealthOnDemand = nil
+	if !server.PollerResponderMore(beginBackendHealthOnDemand) {
+		a.beginBackendHealthOnDemand.remove(req)
 	}
 
 	return resp, nil
@@ -286,7 +303,8 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *ht
 	if a.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if a.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := a.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGateways/(?P<applicationGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -309,19 +327,21 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *ht
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		a.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		a.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginCreateOrUpdate) {
-		a.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		a.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -331,7 +351,8 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginDelete(req *http.Reque
 	if a.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if a.beginDelete == nil {
+	beginDelete := a.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGateways/(?P<applicationGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -350,19 +371,21 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginDelete(req *http.Reque
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginDelete = &respr
+		beginDelete = &respr
+		a.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		a.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginDelete) {
-		a.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		a.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -434,7 +457,8 @@ func (a *ApplicationGatewaysServerTransport) dispatchNewListPager(req *http.Requ
 	if a.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if a.newListPager == nil {
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGateways`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -446,20 +470,22 @@ func (a *ApplicationGatewaysServerTransport) dispatchNewListPager(req *http.Requ
 			return nil, err
 		}
 		resp := a.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		a.newListPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListPager, req, func(page *armnetwork.ApplicationGatewaysClientListResponse, createLink func() string) {
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ApplicationGatewaysClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListPager) {
-		a.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -468,7 +494,8 @@ func (a *ApplicationGatewaysServerTransport) dispatchNewListAllPager(req *http.R
 	if a.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if a.newListAllPager == nil {
+	newListAllPager := a.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGateways`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -476,20 +503,22 @@ func (a *ApplicationGatewaysServerTransport) dispatchNewListAllPager(req *http.R
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListAllPager(nil)
-		a.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListAllPager, req, func(page *armnetwork.ApplicationGatewaysClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		a.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.ApplicationGatewaysClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListAllPager) {
-		a.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		a.newListAllPager.remove(req)
 	}
 	return resp, nil
 }
@@ -573,7 +602,8 @@ func (a *ApplicationGatewaysServerTransport) dispatchNewListAvailableSSLPredefin
 	if a.srv.NewListAvailableSSLPredefinedPoliciesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAvailableSSLPredefinedPoliciesPager not implemented")}
 	}
-	if a.newListAvailableSSLPredefinedPoliciesPager == nil {
+	newListAvailableSSLPredefinedPoliciesPager := a.newListAvailableSSLPredefinedPoliciesPager.get(req)
+	if newListAvailableSSLPredefinedPoliciesPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGatewayAvailableSslOptions/default/predefinedPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -581,20 +611,22 @@ func (a *ApplicationGatewaysServerTransport) dispatchNewListAvailableSSLPredefin
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListAvailableSSLPredefinedPoliciesPager(nil)
-		a.newListAvailableSSLPredefinedPoliciesPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListAvailableSSLPredefinedPoliciesPager, req, func(page *armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse, createLink func() string) {
+		newListAvailableSSLPredefinedPoliciesPager = &resp
+		a.newListAvailableSSLPredefinedPoliciesPager.add(req, newListAvailableSSLPredefinedPoliciesPager)
+		server.PagerResponderInjectNextLinks(newListAvailableSSLPredefinedPoliciesPager, req, func(page *armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListAvailableSSLPredefinedPoliciesPager, req)
+	resp, err := server.PagerResponderNext(newListAvailableSSLPredefinedPoliciesPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListAvailableSSLPredefinedPoliciesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListAvailableSSLPredefinedPoliciesPager) {
-		a.newListAvailableSSLPredefinedPoliciesPager = nil
+	if !server.PagerResponderMore(newListAvailableSSLPredefinedPoliciesPager) {
+		a.newListAvailableSSLPredefinedPoliciesPager.remove(req)
 	}
 	return resp, nil
 }
@@ -653,7 +685,8 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginStart(req *http.Reques
 	if a.srv.BeginStart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
 	}
-	if a.beginStart == nil {
+	beginStart := a.beginStart.get(req)
+	if beginStart == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGateways/(?P<applicationGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -672,19 +705,21 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginStart(req *http.Reques
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginStart = &respr
+		beginStart = &respr
+		a.beginStart.add(req, beginStart)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginStart, req)
+	resp, err := server.PollerResponderNext(beginStart, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginStart.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginStart) {
-		a.beginStart = nil
+	if !server.PollerResponderMore(beginStart) {
+		a.beginStart.remove(req)
 	}
 
 	return resp, nil
@@ -694,7 +729,8 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginStop(req *http.Request
 	if a.srv.BeginStop == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
 	}
-	if a.beginStop == nil {
+	beginStop := a.beginStop.get(req)
+	if beginStop == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGateways/(?P<applicationGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -713,19 +749,21 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginStop(req *http.Request
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginStop = &respr
+		beginStop = &respr
+		a.beginStop.add(req, beginStop)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginStop, req)
+	resp, err := server.PollerResponderNext(beginStop, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginStop.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginStop) {
-		a.beginStop = nil
+	if !server.PollerResponderMore(beginStop) {
+		a.beginStop.remove(req)
 	}
 
 	return resp, nil

@@ -58,21 +58,28 @@ type WebhooksServer struct {
 }
 
 // NewWebhooksServerTransport creates a new instance of WebhooksServerTransport with the provided implementation.
-// The returned WebhooksServerTransport instance is connected to an instance of armcontainerregistry.WebhooksClient by way of the
-// undefined.Transporter field.
+// The returned WebhooksServerTransport instance is connected to an instance of armcontainerregistry.WebhooksClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWebhooksServerTransport(srv *WebhooksServer) *WebhooksServerTransport {
-	return &WebhooksServerTransport{srv: srv}
+	return &WebhooksServerTransport{
+		srv:                srv,
+		beginCreate:        newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]](),
+		beginDelete:        newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]](),
+		newListPager:       newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]](),
+		newListEventsPager: newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]](),
+		beginUpdate:        newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]](),
+	}
 }
 
 // WebhooksServerTransport connects instances of armcontainerregistry.WebhooksClient to instances of WebhooksServer.
 // Don't use this type directly, use NewWebhooksServerTransport instead.
 type WebhooksServerTransport struct {
 	srv                *WebhooksServer
-	beginCreate        *azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]
-	beginDelete        *azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]
-	newListPager       *azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]
-	newListEventsPager *azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]
-	beginUpdate        *azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]
+	beginCreate        *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]]
+	beginDelete        *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]]
+	newListPager       *tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]]
+	newListEventsPager *tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]]
+	beginUpdate        *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for WebhooksServerTransport.
@@ -118,7 +125,8 @@ func (w *WebhooksServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 	if w.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	if w.beginCreate == nil {
+	beginCreate := w.beginCreate.get(req)
+	if beginCreate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks/(?P<webhookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -145,19 +153,21 @@ func (w *WebhooksServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginCreate = &respr
+		beginCreate = &respr
+		w.beginCreate.add(req, beginCreate)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginCreate, req)
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		w.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginCreate) {
-		w.beginCreate = nil
+	if !server.PollerResponderMore(beginCreate) {
+		w.beginCreate.remove(req)
 	}
 
 	return resp, nil
@@ -167,7 +177,8 @@ func (w *WebhooksServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	if w.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if w.beginDelete == nil {
+	beginDelete := w.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks/(?P<webhookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -190,19 +201,21 @@ func (w *WebhooksServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginDelete = &respr
+		beginDelete = &respr
+		w.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginDelete) {
-		w.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		w.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -286,7 +299,8 @@ func (w *WebhooksServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if w.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if w.newListPager == nil {
+	newListPager := w.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -302,20 +316,22 @@ func (w *WebhooksServerTransport) dispatchNewListPager(req *http.Request) (*http
 			return nil, err
 		}
 		resp := w.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
-		w.newListPager = &resp
-		server.PagerResponderInjectNextLinks(w.newListPager, req, func(page *armcontainerregistry.WebhooksClientListResponse, createLink func() string) {
+		newListPager = &resp
+		w.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.WebhooksClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(w.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(w.newListPager) {
-		w.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		w.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -324,7 +340,8 @@ func (w *WebhooksServerTransport) dispatchNewListEventsPager(req *http.Request) 
 	if w.srv.NewListEventsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListEventsPager not implemented")}
 	}
-	if w.newListEventsPager == nil {
+	newListEventsPager := w.newListEventsPager.get(req)
+	if newListEventsPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks/(?P<webhookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listEvents`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -344,20 +361,22 @@ func (w *WebhooksServerTransport) dispatchNewListEventsPager(req *http.Request) 
 			return nil, err
 		}
 		resp := w.srv.NewListEventsPager(resourceGroupNameUnescaped, registryNameUnescaped, webhookNameUnescaped, nil)
-		w.newListEventsPager = &resp
-		server.PagerResponderInjectNextLinks(w.newListEventsPager, req, func(page *armcontainerregistry.WebhooksClientListEventsResponse, createLink func() string) {
+		newListEventsPager = &resp
+		w.newListEventsPager.add(req, newListEventsPager)
+		server.PagerResponderInjectNextLinks(newListEventsPager, req, func(page *armcontainerregistry.WebhooksClientListEventsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(w.newListEventsPager, req)
+	resp, err := server.PagerResponderNext(newListEventsPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListEventsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(w.newListEventsPager) {
-		w.newListEventsPager = nil
+	if !server.PagerResponderMore(newListEventsPager) {
+		w.newListEventsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -403,7 +422,8 @@ func (w *WebhooksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 	if w.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if w.beginUpdate == nil {
+	beginUpdate := w.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks/(?P<webhookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -430,19 +450,21 @@ func (w *WebhooksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginUpdate = &respr
+		beginUpdate = &respr
+		w.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		w.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginUpdate) {
-		w.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		w.beginUpdate.remove(req)
 	}
 
 	return resp, nil

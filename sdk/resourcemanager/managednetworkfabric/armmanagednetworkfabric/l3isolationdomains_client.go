@@ -29,7 +29,7 @@ type L3IsolationDomainsClient struct {
 }
 
 // NewL3IsolationDomainsClient creates a new instance of L3IsolationDomainsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewL3IsolationDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*L3IsolationDomainsClient, error) {
@@ -44,35 +44,34 @@ func NewL3IsolationDomainsClient(subscriptionID string, credential azcore.TokenC
 	return client, nil
 }
 
-// BeginClearArpTable - Clears ARP tables for this Isolation Domain.
+// BeginCommitConfiguration - Commits the configuration of the given resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - body - Request payload.
-//   - options - L3IsolationDomainsClientBeginClearArpTableOptions contains the optional parameters for the L3IsolationDomainsClient.BeginClearArpTable
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - options - L3IsolationDomainsClientBeginCommitConfigurationOptions contains the optional parameters for the L3IsolationDomainsClient.BeginCommitConfiguration
 //     method.
-func (client *L3IsolationDomainsClient) BeginClearArpTable(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body EnableDisableOnResources, options *L3IsolationDomainsClientBeginClearArpTableOptions) (*runtime.Poller[L3IsolationDomainsClientClearArpTableResponse], error) {
+func (client *L3IsolationDomainsClient) BeginCommitConfiguration(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *L3IsolationDomainsClientBeginCommitConfigurationOptions) (*runtime.Poller[L3IsolationDomainsClientCommitConfigurationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.clearArpTable(ctx, resourceGroupName, l3IsolationDomainName, body, options)
+		resp, err := client.commitConfiguration(ctx, resourceGroupName, l3IsolationDomainName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[L3IsolationDomainsClientClearArpTableResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[L3IsolationDomainsClientCommitConfigurationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[L3IsolationDomainsClientClearArpTableResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[L3IsolationDomainsClientCommitConfigurationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// ClearArpTable - Clears ARP tables for this Isolation Domain.
+// CommitConfiguration - Commits the configuration of the given resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-func (client *L3IsolationDomainsClient) clearArpTable(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body EnableDisableOnResources, options *L3IsolationDomainsClientBeginClearArpTableOptions) (*http.Response, error) {
-	req, err := client.clearArpTableCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, body, options)
+// Generated from API version 2023-06-15
+func (client *L3IsolationDomainsClient) commitConfiguration(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *L3IsolationDomainsClientBeginCommitConfigurationOptions) (*http.Response, error) {
+	req, err := client.commitConfigurationCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -80,18 +79,15 @@ func (client *L3IsolationDomainsClient) clearArpTable(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
-// clearArpTableCreateRequest creates the ClearArpTable request.
-func (client *L3IsolationDomainsClient) clearArpTableCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body EnableDisableOnResources, options *L3IsolationDomainsClientBeginClearArpTableOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/clearArpTable"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
+// commitConfigurationCreateRequest creates the CommitConfiguration request.
+func (client *L3IsolationDomainsClient) commitConfigurationCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *L3IsolationDomainsClientBeginCommitConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/commitConfiguration"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -106,78 +102,10 @@ func (client *L3IsolationDomainsClient) clearArpTableCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, body)
-}
-
-// BeginClearNeighborTable - Clears IPv6 neighbor tables for this Isolation Domain.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - body - Request payload.
-//   - options - L3IsolationDomainsClientBeginClearNeighborTableOptions contains the optional parameters for the L3IsolationDomainsClient.BeginClearNeighborTable
-//     method.
-func (client *L3IsolationDomainsClient) BeginClearNeighborTable(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body EnableDisableOnResources, options *L3IsolationDomainsClientBeginClearNeighborTableOptions) (*runtime.Poller[L3IsolationDomainsClientClearNeighborTableResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.clearNeighborTable(ctx, resourceGroupName, l3IsolationDomainName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[L3IsolationDomainsClientClearNeighborTableResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[L3IsolationDomainsClientClearNeighborTableResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// ClearNeighborTable - Clears IPv6 neighbor tables for this Isolation Domain.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *L3IsolationDomainsClient) clearNeighborTable(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body EnableDisableOnResources, options *L3IsolationDomainsClientBeginClearNeighborTableOptions) (*http.Response, error) {
-	req, err := client.clearNeighborTableCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// clearNeighborTableCreateRequest creates the ClearNeighborTable request.
-func (client *L3IsolationDomainsClient) clearNeighborTableCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body EnableDisableOnResources, options *L3IsolationDomainsClientBeginClearNeighborTableOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/clearNeighborTable"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if l3IsolationDomainName == "" {
-		return nil, errors.New("parameter l3IsolationDomainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{l3IsolationDomainName}", url.PathEscape(l3IsolationDomainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, body)
+	return req, nil
 }
 
 // BeginCreate - Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
@@ -185,9 +113,9 @@ func (client *L3IsolationDomainsClient) clearNeighborTableCreateRequest(ctx cont
 // networks is completed and isolation domain is enabled.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3 Isolation Domain
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - body - Request payload.
 //   - options - L3IsolationDomainsClientBeginCreateOptions contains the optional parameters for the L3IsolationDomainsClient.BeginCreate
 //     method.
@@ -210,7 +138,7 @@ func (client *L3IsolationDomainsClient) BeginCreate(ctx context.Context, resourc
 // networks is completed and isolation domain is enabled.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *L3IsolationDomainsClient) create(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body L3IsolationDomain, options *L3IsolationDomainsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, body, options)
 	if err != nil {
@@ -229,9 +157,6 @@ func (client *L3IsolationDomainsClient) create(ctx context.Context, resourceGrou
 // createCreateRequest creates the Create request.
 func (client *L3IsolationDomainsClient) createCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body L3IsolationDomain, options *L3IsolationDomainsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -246,7 +171,7 @@ func (client *L3IsolationDomainsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -255,9 +180,9 @@ func (client *L3IsolationDomainsClient) createCreateRequest(ctx context.Context,
 // BeginDelete - Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3 Isolation Domain
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - options - L3IsolationDomainsClientBeginDeleteOptions contains the optional parameters for the L3IsolationDomainsClient.BeginDelete
 //     method.
 func (client *L3IsolationDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *L3IsolationDomainsClientBeginDeleteOptions) (*runtime.Poller[L3IsolationDomainsClientDeleteResponse], error) {
@@ -277,7 +202,7 @@ func (client *L3IsolationDomainsClient) BeginDelete(ctx context.Context, resourc
 // Delete - Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *L3IsolationDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *L3IsolationDomainsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, options)
 	if err != nil {
@@ -287,7 +212,7 @@ func (client *L3IsolationDomainsClient) deleteOperation(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -296,9 +221,6 @@ func (client *L3IsolationDomainsClient) deleteOperation(ctx context.Context, res
 // deleteCreateRequest creates the Delete request.
 func (client *L3IsolationDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *L3IsolationDomainsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -313,7 +235,7 @@ func (client *L3IsolationDomainsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,9 +244,9 @@ func (client *L3IsolationDomainsClient) deleteCreateRequest(ctx context.Context,
 // Get - Retrieves details of this L3 Isolation Domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3 Isolation Domain
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - options - L3IsolationDomainsClientGetOptions contains the optional parameters for the L3IsolationDomainsClient.Get method.
 func (client *L3IsolationDomainsClient) Get(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *L3IsolationDomainsClientGetOptions) (L3IsolationDomainsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, options)
@@ -344,9 +266,6 @@ func (client *L3IsolationDomainsClient) Get(ctx context.Context, resourceGroupNa
 // getCreateRequest creates the Get request.
 func (client *L3IsolationDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *L3IsolationDomainsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -361,7 +280,7 @@ func (client *L3IsolationDomainsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -378,7 +297,7 @@ func (client *L3IsolationDomainsClient) getHandleResponse(resp *http.Response) (
 
 // NewListByResourceGroupPager - Displays L3IsolationDomains list by resource group GET method.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - L3IsolationDomainsClientListByResourceGroupOptions contains the optional parameters for the L3IsolationDomainsClient.NewListByResourceGroupPager
 //     method.
@@ -413,9 +332,6 @@ func (client *L3IsolationDomainsClient) NewListByResourceGroupPager(resourceGrou
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *L3IsolationDomainsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *L3IsolationDomainsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -426,7 +342,7 @@ func (client *L3IsolationDomainsClient) listByResourceGroupCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -443,7 +359,7 @@ func (client *L3IsolationDomainsClient) listByResourceGroupHandleResponse(resp *
 
 // NewListBySubscriptionPager - Displays L3IsolationDomains list by subscription GET method.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - options - L3IsolationDomainsClientListBySubscriptionOptions contains the optional parameters for the L3IsolationDomainsClient.NewListBySubscriptionPager
 //     method.
 func (client *L3IsolationDomainsClient) NewListBySubscriptionPager(options *L3IsolationDomainsClientListBySubscriptionOptions) *runtime.Pager[L3IsolationDomainsClientListBySubscriptionResponse] {
@@ -477,16 +393,13 @@ func (client *L3IsolationDomainsClient) NewListBySubscriptionPager(options *L3Is
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *L3IsolationDomainsClient) listBySubscriptionCreateRequest(ctx context.Context, options *L3IsolationDomainsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -504,9 +417,9 @@ func (client *L3IsolationDomainsClient) listBySubscriptionHandleResponse(resp *h
 // BeginUpdate - API to update certain properties of the L3 Isolation Domain resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3 Isolation Domain
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - body - API to update certain properties of the L3 Isolation Domain resource.
 //   - options - L3IsolationDomainsClientBeginUpdateOptions contains the optional parameters for the L3IsolationDomainsClient.BeginUpdate
 //     method.
@@ -527,7 +440,7 @@ func (client *L3IsolationDomainsClient) BeginUpdate(ctx context.Context, resourc
 // Update - API to update certain properties of the L3 Isolation Domain resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *L3IsolationDomainsClient) update(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body L3IsolationDomainPatch, options *L3IsolationDomainsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, body, options)
 	if err != nil {
@@ -546,9 +459,6 @@ func (client *L3IsolationDomainsClient) update(ctx context.Context, resourceGrou
 // updateCreateRequest creates the Update request.
 func (client *L3IsolationDomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body L3IsolationDomainPatch, options *L3IsolationDomainsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -563,7 +473,7 @@ func (client *L3IsolationDomainsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -572,9 +482,9 @@ func (client *L3IsolationDomainsClient) updateCreateRequest(ctx context.Context,
 // BeginUpdateAdministrativeState - Enables racks for this Isolation Domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - body - Request payload.
 //   - options - L3IsolationDomainsClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the L3IsolationDomainsClient.BeginUpdateAdministrativeState
 //     method.
@@ -595,7 +505,7 @@ func (client *L3IsolationDomainsClient) BeginUpdateAdministrativeState(ctx conte
 // UpdateAdministrativeState - Enables racks for this Isolation Domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *L3IsolationDomainsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body UpdateAdministrativeState, options *L3IsolationDomainsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, body, options)
 	if err != nil {
@@ -605,7 +515,7 @@ func (client *L3IsolationDomainsClient) updateAdministrativeState(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -614,9 +524,6 @@ func (client *L3IsolationDomainsClient) updateAdministrativeState(ctx context.Co
 // updateAdministrativeStateCreateRequest creates the UpdateAdministrativeState request.
 func (client *L3IsolationDomainsClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body UpdateAdministrativeState, options *L3IsolationDomainsClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/updateAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -631,41 +538,40 @@ func (client *L3IsolationDomainsClient) updateAdministrativeStateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// BeginUpdateOptionBAdministrativeState - Update administrative state of option B on CE devices
+// BeginValidateConfiguration - Validates the configuration of the resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - body - Request payload.
-//   - options - L3IsolationDomainsClientBeginUpdateOptionBAdministrativeStateOptions contains the optional parameters for the
-//     L3IsolationDomainsClient.BeginUpdateOptionBAdministrativeState method.
-func (client *L3IsolationDomainsClient) BeginUpdateOptionBAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body UpdateAdministrativeState, options *L3IsolationDomainsClientBeginUpdateOptionBAdministrativeStateOptions) (*runtime.Poller[L3IsolationDomainsClientUpdateOptionBAdministrativeStateResponse], error) {
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - options - L3IsolationDomainsClientBeginValidateConfigurationOptions contains the optional parameters for the L3IsolationDomainsClient.BeginValidateConfiguration
+//     method.
+func (client *L3IsolationDomainsClient) BeginValidateConfiguration(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *L3IsolationDomainsClientBeginValidateConfigurationOptions) (*runtime.Poller[L3IsolationDomainsClientValidateConfigurationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateOptionBAdministrativeState(ctx, resourceGroupName, l3IsolationDomainName, body, options)
+		resp, err := client.validateConfiguration(ctx, resourceGroupName, l3IsolationDomainName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[L3IsolationDomainsClientUpdateOptionBAdministrativeStateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[L3IsolationDomainsClientValidateConfigurationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[L3IsolationDomainsClientUpdateOptionBAdministrativeStateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[L3IsolationDomainsClientValidateConfigurationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// UpdateOptionBAdministrativeState - Update administrative state of option B on CE devices
+// ValidateConfiguration - Validates the configuration of the resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-func (client *L3IsolationDomainsClient) updateOptionBAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body UpdateAdministrativeState, options *L3IsolationDomainsClientBeginUpdateOptionBAdministrativeStateOptions) (*http.Response, error) {
-	req, err := client.updateOptionBAdministrativeStateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, body, options)
+// Generated from API version 2023-06-15
+func (client *L3IsolationDomainsClient) validateConfiguration(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *L3IsolationDomainsClientBeginValidateConfigurationOptions) (*http.Response, error) {
+	req, err := client.validateConfigurationCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -673,18 +579,15 @@ func (client *L3IsolationDomainsClient) updateOptionBAdministrativeState(ctx con
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
-// updateOptionBAdministrativeStateCreateRequest creates the UpdateOptionBAdministrativeState request.
-func (client *L3IsolationDomainsClient) updateOptionBAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, body UpdateAdministrativeState, options *L3IsolationDomainsClientBeginUpdateOptionBAdministrativeStateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/updateOptionBAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
+// validateConfigurationCreateRequest creates the ValidateConfiguration request.
+func (client *L3IsolationDomainsClient) validateConfigurationCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *L3IsolationDomainsClientBeginValidateConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/validateConfiguration"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -699,8 +602,8 @@ func (client *L3IsolationDomainsClient) updateOptionBAdministrativeStateCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, body)
+	return req, nil
 }

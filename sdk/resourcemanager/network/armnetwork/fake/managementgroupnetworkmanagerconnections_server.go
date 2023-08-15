@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -43,17 +43,20 @@ type ManagementGroupNetworkManagerConnectionsServer struct {
 }
 
 // NewManagementGroupNetworkManagerConnectionsServerTransport creates a new instance of ManagementGroupNetworkManagerConnectionsServerTransport with the provided implementation.
-// The returned ManagementGroupNetworkManagerConnectionsServerTransport instance is connected to an instance of armnetwork.ManagementGroupNetworkManagerConnectionsClient by way of the
-// undefined.Transporter field.
+// The returned ManagementGroupNetworkManagerConnectionsServerTransport instance is connected to an instance of armnetwork.ManagementGroupNetworkManagerConnectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewManagementGroupNetworkManagerConnectionsServerTransport(srv *ManagementGroupNetworkManagerConnectionsServer) *ManagementGroupNetworkManagerConnectionsServerTransport {
-	return &ManagementGroupNetworkManagerConnectionsServerTransport{srv: srv}
+	return &ManagementGroupNetworkManagerConnectionsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.ManagementGroupNetworkManagerConnectionsClientListResponse]](),
+	}
 }
 
 // ManagementGroupNetworkManagerConnectionsServerTransport connects instances of armnetwork.ManagementGroupNetworkManagerConnectionsClient to instances of ManagementGroupNetworkManagerConnectionsServer.
 // Don't use this type directly, use NewManagementGroupNetworkManagerConnectionsServerTransport instead.
 type ManagementGroupNetworkManagerConnectionsServerTransport struct {
 	srv          *ManagementGroupNetworkManagerConnectionsServer
-	newListPager *azfake.PagerResponder[armnetwork.ManagementGroupNetworkManagerConnectionsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.ManagementGroupNetworkManagerConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagementGroupNetworkManagerConnectionsServerTransport.
@@ -194,7 +197,8 @@ func (m *ManagementGroupNetworkManagerConnectionsServerTransport) dispatchNewLis
 	if m.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if m.newListPager == nil {
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagerConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -233,20 +237,22 @@ func (m *ManagementGroupNetworkManagerConnectionsServerTransport) dispatchNewLis
 			}
 		}
 		resp := m.srv.NewListPager(managementGroupIDUnescaped, options)
-		m.newListPager = &resp
-		server.PagerResponderInjectNextLinks(m.newListPager, req, func(page *armnetwork.ManagementGroupNetworkManagerConnectionsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ManagementGroupNetworkManagerConnectionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(m.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(m.newListPager) {
-		m.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
 	}
 	return resp, nil
 }

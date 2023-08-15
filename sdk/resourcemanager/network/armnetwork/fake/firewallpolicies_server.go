@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -50,20 +50,26 @@ type FirewallPoliciesServer struct {
 }
 
 // NewFirewallPoliciesServerTransport creates a new instance of FirewallPoliciesServerTransport with the provided implementation.
-// The returned FirewallPoliciesServerTransport instance is connected to an instance of armnetwork.FirewallPoliciesClient by way of the
-// undefined.Transporter field.
+// The returned FirewallPoliciesServerTransport instance is connected to an instance of armnetwork.FirewallPoliciesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewFirewallPoliciesServerTransport(srv *FirewallPoliciesServer) *FirewallPoliciesServerTransport {
-	return &FirewallPoliciesServerTransport{srv: srv}
+	return &FirewallPoliciesServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.FirewallPoliciesClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.FirewallPoliciesClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.FirewallPoliciesClientListResponse]](),
+		newListAllPager:     newTracker[azfake.PagerResponder[armnetwork.FirewallPoliciesClientListAllResponse]](),
+	}
 }
 
 // FirewallPoliciesServerTransport connects instances of armnetwork.FirewallPoliciesClient to instances of FirewallPoliciesServer.
 // Don't use this type directly, use NewFirewallPoliciesServerTransport instead.
 type FirewallPoliciesServerTransport struct {
 	srv                 *FirewallPoliciesServer
-	beginCreateOrUpdate *azfake.PollerResponder[armnetwork.FirewallPoliciesClientCreateOrUpdateResponse]
-	beginDelete         *azfake.PollerResponder[armnetwork.FirewallPoliciesClientDeleteResponse]
-	newListPager        *azfake.PagerResponder[armnetwork.FirewallPoliciesClientListResponse]
-	newListAllPager     *azfake.PagerResponder[armnetwork.FirewallPoliciesClientListAllResponse]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.FirewallPoliciesClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armnetwork.FirewallPoliciesClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.FirewallPoliciesClientListResponse]]
+	newListAllPager     *tracker[azfake.PagerResponder[armnetwork.FirewallPoliciesClientListAllResponse]]
 }
 
 // Do implements the policy.Transporter interface for FirewallPoliciesServerTransport.
@@ -105,7 +111,8 @@ func (f *FirewallPoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.
 	if f.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if f.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := f.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -128,19 +135,21 @@ func (f *FirewallPoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		f.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		f.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(f.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		f.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(f.beginCreateOrUpdate) {
-		f.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		f.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -150,7 +159,8 @@ func (f *FirewallPoliciesServerTransport) dispatchBeginDelete(req *http.Request)
 	if f.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if f.beginDelete == nil {
+	beginDelete := f.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -169,19 +179,21 @@ func (f *FirewallPoliciesServerTransport) dispatchBeginDelete(req *http.Request)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		f.beginDelete = &respr
+		beginDelete = &respr
+		f.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(f.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		f.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(f.beginDelete) {
-		f.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		f.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -236,7 +248,8 @@ func (f *FirewallPoliciesServerTransport) dispatchNewListPager(req *http.Request
 	if f.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if f.newListPager == nil {
+	newListPager := f.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -248,20 +261,22 @@ func (f *FirewallPoliciesServerTransport) dispatchNewListPager(req *http.Request
 			return nil, err
 		}
 		resp := f.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		f.newListPager = &resp
-		server.PagerResponderInjectNextLinks(f.newListPager, req, func(page *armnetwork.FirewallPoliciesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		f.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.FirewallPoliciesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(f.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		f.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(f.newListPager) {
-		f.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		f.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -270,7 +285,8 @@ func (f *FirewallPoliciesServerTransport) dispatchNewListAllPager(req *http.Requ
 	if f.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if f.newListAllPager == nil {
+	newListAllPager := f.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -278,20 +294,22 @@ func (f *FirewallPoliciesServerTransport) dispatchNewListAllPager(req *http.Requ
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := f.srv.NewListAllPager(nil)
-		f.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(f.newListAllPager, req, func(page *armnetwork.FirewallPoliciesClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		f.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.FirewallPoliciesClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(f.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		f.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(f.newListAllPager) {
-		f.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		f.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

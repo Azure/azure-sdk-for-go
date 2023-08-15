@@ -22,75 +22,101 @@ import (
 )
 
 var (
-	endpoint                       string // env: AOAI_ENDPOINT
-	apiKey                         string // env: AOAI_API_KEY
-	completionsModelDeployment     string // env: AOAI_COMPLETIONS_MODEL_DEPLOYMENT
-	chatCompletionsModelDeployment string // env: AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT
-
-	canaryEndpoint                       string // env: AOAI_ENDPOINT_CANARY
-	canaryAPIKey                         string // env: AOAI_API_KEY_CANARY
-	canaryCompletionsModelDeployment     string // env: AOAI_COMPLETIONS_MODEL_DEPLOYMENT_CANARY
-	canaryChatCompletionsModelDeployment string // env: AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT_CANARY
-
-	openAIKey                  string // env: OPENAI_API_KEY
-	openAIEndpoint             string // env: OPENAI_ENDPOINT
-	openAICompletionsModel     string // env: OPENAI_CHAT_COMPLETIONS_MODEL
-	openAIChatCompletionsModel string // env: OPENAI_COMPLETIONS_MODEL
+	azureOpenAI       testVars
+	azureOpenAICanary testVars
+	openAI            testVars
 )
 
-func getVars(suffix string) (endpoint, apiKey, completionsModelDeployment, chatCompletionsModelDeployment string) {
-	endpoint = os.Getenv("AOAI_ENDPOINT" + suffix)
+type testVars struct {
+	Endpoint        string // env: AOAI_ENDPOINT, OPENAI_ENDPOINT
+	APIKey          string // env: AOAI_API_KEY, OPENAI_API_KEY
+	Completions     string // env: AOAI_COMPLETIONS_MODEL_DEPLOYMENT, OPENAI_COMPLETIONS_MODEL
+	ChatCompletions string // env: AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT, OPENAI_CHAT_COMPLETIONS_MODEL
+	Embeddings      string // env: AOAI_EMBEDDINGS_MODEL_DEPLOYMENT, OPENAI_EMBEDDINGS_MODEL
+	Azure           bool
+}
 
-	if endpoint != "" && !strings.HasSuffix(endpoint, "/") {
-		// (this just makes recording replacement easier)
-		endpoint += "/"
+func newTestVars(prefix string, isCanary bool) testVars {
+	getRequired := func(name string) string {
+		v := os.Getenv(name)
+
+		if v == "" {
+			panic(fmt.Sprintf("Env variable %s is missing", name))
+		}
+
+		return v
 	}
 
-	apiKey = os.Getenv("AOAI_API_KEY" + suffix)
-	completionsModelDeployment = os.Getenv("AOAI_COMPLETIONS_MODEL_DEPLOYMENT" + suffix)
-	chatCompletionsModelDeployment = os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT" + suffix)
+	azure := prefix == "AOAI"
 
-	return
+	canarySuffix := ""
+	deplSuffix := ""
+
+	if azure {
+		deplSuffix += "_DEPLOYMENT"
+	}
+
+	if isCanary {
+		canarySuffix += "_CANARY"
+	}
+
+	tv := testVars{
+		Endpoint: getRequired(prefix + "_ENDPOINT" + canarySuffix),
+		APIKey:   getRequired(prefix + "_API_KEY" + canarySuffix),
+
+		Completions: getRequired(prefix + "_COMPLETIONS_MODEL" + deplSuffix + canarySuffix),
+
+		// ex: gpt-4-0613
+		ChatCompletions: getRequired(prefix + "_CHAT_COMPLETIONS_MODEL" + deplSuffix + canarySuffix),
+
+		// ex: embedding
+		Embeddings: getRequired(prefix + "_EMBEDDINGS_MODEL" + deplSuffix + canarySuffix),
+
+		Azure: azure,
+	}
+
+	if tv.Endpoint != "" && !strings.HasSuffix(tv.Endpoint, "/") {
+		// (this just makes recording replacement easier)
+		tv.Endpoint += "/"
+	}
+
+	return tv
 }
 
 const fakeEndpoint = "https://recordedhost/"
 const fakeAPIKey = "redacted"
 
-func init() {
+func initEnvVars() {
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		endpoint = fakeEndpoint
-		apiKey = fakeAPIKey
-		openAIKey = fakeAPIKey
-		openAIEndpoint = fakeEndpoint
+		azureOpenAI.Azure = true
+		azureOpenAI.Endpoint = fakeEndpoint
+		azureOpenAI.APIKey = fakeAPIKey
+		openAI.APIKey = fakeAPIKey
+		openAI.Endpoint = fakeEndpoint
 
-		canaryEndpoint = fakeEndpoint
-		canaryAPIKey = fakeAPIKey
-		canaryCompletionsModelDeployment = ""
-		canaryChatCompletionsModelDeployment = "gpt-4"
+		azureOpenAICanary.Azure = true
+		azureOpenAICanary.Endpoint = fakeEndpoint
+		azureOpenAICanary.APIKey = fakeAPIKey
+		azureOpenAICanary.Completions = ""
+		azureOpenAICanary.ChatCompletions = "gpt-4"
 
-		completionsModelDeployment = "text-davinci-003"
-		openAICompletionsModel = "text-davinci-003"
+		azureOpenAI.Completions = "text-davinci-003"
+		openAI.Completions = "text-davinci-003"
 
-		chatCompletionsModelDeployment = "gpt-4"
-		openAIChatCompletionsModel = "gpt-4"
+		azureOpenAI.ChatCompletions = "gpt-4-0613"
+		openAI.ChatCompletions = "gpt-4-0613"
+
+		openAI.Embeddings = "text-similarity-curie-001"
+		azureOpenAI.Embeddings = "embedding"
 	} else {
 		if err := godotenv.Load(); err != nil {
 			fmt.Printf("Failed to load .env file: %s\n", err)
 			os.Exit(1)
 		}
 
-		endpoint, apiKey, completionsModelDeployment, chatCompletionsModelDeployment = getVars("")
-		canaryEndpoint, canaryAPIKey, canaryCompletionsModelDeployment, canaryChatCompletionsModelDeployment = getVars("_CANARY")
-
-		openAIKey = os.Getenv("OPENAI_API_KEY")
-		openAIEndpoint = os.Getenv("OPENAI_ENDPOINT")
-		openAICompletionsModel = os.Getenv("OPENAI_COMPLETIONS_MODEL")
-		openAIChatCompletionsModel = os.Getenv("OPENAI_CHAT_COMPLETIONS_MODEL")
-
-		if openAIEndpoint != "" && !strings.HasSuffix(openAIEndpoint, "/") {
-			// (this just makes recording replacement easier)
-			openAIEndpoint += "/"
-		}
+		azureOpenAI = newTestVars("AOAI", false)
+		azureOpenAICanary = newTestVars("AOAI", true)
+		openAI = newTestVars("OPENAI", false)
 	}
 }
 
@@ -109,17 +135,17 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		require.NoError(t, err)
 
 		// "RequestUri": "https://openai-shared.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2023-03-15-preview",
-		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(endpoint), nil)
+		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(azureOpenAI.Endpoint), nil)
 		require.NoError(t, err)
 
-		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(canaryEndpoint), nil)
+		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(azureOpenAICanary.Endpoint), nil)
 		require.NoError(t, err)
 
 		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", nil)
 		require.NoError(t, err)
 
-		if openAIEndpoint != "" {
-			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(openAIEndpoint), nil)
+		if openAI.Endpoint != "" {
+			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(openAI.Endpoint), nil)
 			require.NoError(t, err)
 		}
 	}
@@ -164,30 +190,22 @@ func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 
 // newAzureOpenAIClientForTest can create a client pointing to the "canary" endpoint (basically - leading fixes or features)
 // or the current deployed endpoint.
-func newAzureOpenAIClientForTest(t *testing.T, modelDeploymentID string, useCanary bool) *azopenai.Client {
-	var apiKey = apiKey
-	var endpoint = endpoint
-
-	if useCanary {
-		apiKey = canaryAPIKey
-		endpoint = canaryEndpoint
-	}
-
-	cred, err := azopenai.NewKeyCredential(apiKey)
+func newAzureOpenAIClientForTest(t *testing.T, tv testVars) *azopenai.Client {
+	cred, err := azopenai.NewKeyCredential(tv.APIKey)
 	require.NoError(t, err)
 
-	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, modelDeploymentID, newClientOptionsForTest(t))
+	client, err := azopenai.NewClientWithKeyCredential(tv.Endpoint, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
 	return client
 }
 
 func newOpenAIClientForTest(t *testing.T) *azopenai.Client {
-	if openAIKey == "" {
+	if openAI.APIKey == "" {
 		t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
 	}
 
-	cred, err := azopenai.NewKeyCredential(openAIKey)
+	cred, err := azopenai.NewKeyCredential(openAI.APIKey)
 	require.NoError(t, err)
 
 	// we get rate limited quite a bit.
@@ -203,7 +221,7 @@ func newOpenAIClientForTest(t *testing.T) *azopenai.Client {
 		MaxRetryDelay: time.Second,
 	}
 
-	chatClient, err := azopenai.NewClientForOpenAI(openAIEndpoint, cred, options)
+	chatClient, err := azopenai.NewClientForOpenAI(openAI.Endpoint, cred, options)
 	require.NoError(t, err)
 
 	return chatClient
@@ -211,11 +229,11 @@ func newOpenAIClientForTest(t *testing.T) *azopenai.Client {
 
 // newBogusAzureOpenAIClient creates a client that uses an invalid key, which will cause Azure OpenAI to return
 // a failure.
-func newBogusAzureOpenAIClient(t *testing.T, modelDeploymentID string) *azopenai.Client {
+func newBogusAzureOpenAIClient(t *testing.T) *azopenai.Client {
 	cred, err := azopenai.NewKeyCredential("bogus-api-key")
 	require.NoError(t, err)
 
-	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, modelDeploymentID, newClientOptionsForTest(t))
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 	return client
 }
@@ -226,7 +244,7 @@ func newBogusOpenAIClient(t *testing.T) *azopenai.Client {
 	cred, err := azopenai.NewKeyCredential("bogus-api-key")
 	require.NoError(t, err)
 
-	client, err := azopenai.NewClientForOpenAI(openAIEndpoint, cred, newClientOptionsForTest(t))
+	client, err := azopenai.NewClientForOpenAI(openAI.Endpoint, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 	return client
 }

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -42,19 +42,24 @@ type ServiceEndpointPolicyDefinitionsServer struct {
 }
 
 // NewServiceEndpointPolicyDefinitionsServerTransport creates a new instance of ServiceEndpointPolicyDefinitionsServerTransport with the provided implementation.
-// The returned ServiceEndpointPolicyDefinitionsServerTransport instance is connected to an instance of armnetwork.ServiceEndpointPolicyDefinitionsClient by way of the
-// undefined.Transporter field.
+// The returned ServiceEndpointPolicyDefinitionsServerTransport instance is connected to an instance of armnetwork.ServiceEndpointPolicyDefinitionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServiceEndpointPolicyDefinitionsServerTransport(srv *ServiceEndpointPolicyDefinitionsServer) *ServiceEndpointPolicyDefinitionsServerTransport {
-	return &ServiceEndpointPolicyDefinitionsServerTransport{srv: srv}
+	return &ServiceEndpointPolicyDefinitionsServerTransport{
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.ServiceEndpointPolicyDefinitionsClientDeleteResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse]](),
+	}
 }
 
 // ServiceEndpointPolicyDefinitionsServerTransport connects instances of armnetwork.ServiceEndpointPolicyDefinitionsClient to instances of ServiceEndpointPolicyDefinitionsServer.
 // Don't use this type directly, use NewServiceEndpointPolicyDefinitionsServerTransport instead.
 type ServiceEndpointPolicyDefinitionsServerTransport struct {
 	srv                         *ServiceEndpointPolicyDefinitionsServer
-	beginCreateOrUpdate         *azfake.PollerResponder[armnetwork.ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResponse]
-	beginDelete                 *azfake.PollerResponder[armnetwork.ServiceEndpointPolicyDefinitionsClientDeleteResponse]
-	newListByResourceGroupPager *azfake.PagerResponder[armnetwork.ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse]
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.ServiceEndpointPolicyDefinitionsClientDeleteResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServiceEndpointPolicyDefinitionsServerTransport.
@@ -92,7 +97,8 @@ func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchBeginCreateOrU
 	if s.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if s.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := s.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/serviceEndpointPolicies/(?P<serviceEndpointPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceEndpointPolicyDefinitions/(?P<serviceEndpointPolicyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchBeginCreateOrU
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		s.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		s.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginCreateOrUpdate) {
-		s.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		s.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchBeginDelete(re
 	if s.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if s.beginDelete == nil {
+	beginDelete := s.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/serviceEndpointPolicies/(?P<serviceEndpointPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceEndpointPolicyDefinitions/(?P<serviceEndpointPolicyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchBeginDelete(re
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginDelete = &respr
+		beginDelete = &respr
+		s.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginDelete) {
-		s.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		s.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchNewListByResou
 	if s.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if s.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/serviceEndpointPolicies/(?P<serviceEndpointPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceEndpointPolicyDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchNewListByResou
 			return nil, err
 		}
 		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, serviceEndpointPolicyNameUnescaped, nil)
-		s.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListByResourceGroupPager, req, func(page *armnetwork.ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListByResourceGroupPager) {
-		s.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		s.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }

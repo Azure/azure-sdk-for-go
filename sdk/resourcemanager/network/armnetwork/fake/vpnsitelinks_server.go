@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -34,17 +34,20 @@ type VPNSiteLinksServer struct {
 }
 
 // NewVPNSiteLinksServerTransport creates a new instance of VPNSiteLinksServerTransport with the provided implementation.
-// The returned VPNSiteLinksServerTransport instance is connected to an instance of armnetwork.VPNSiteLinksClient by way of the
-// undefined.Transporter field.
+// The returned VPNSiteLinksServerTransport instance is connected to an instance of armnetwork.VPNSiteLinksClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVPNSiteLinksServerTransport(srv *VPNSiteLinksServer) *VPNSiteLinksServerTransport {
-	return &VPNSiteLinksServerTransport{srv: srv}
+	return &VPNSiteLinksServerTransport{
+		srv:                   srv,
+		newListByVPNSitePager: newTracker[azfake.PagerResponder[armnetwork.VPNSiteLinksClientListByVPNSiteResponse]](),
+	}
 }
 
 // VPNSiteLinksServerTransport connects instances of armnetwork.VPNSiteLinksClient to instances of VPNSiteLinksServer.
 // Don't use this type directly, use NewVPNSiteLinksServerTransport instead.
 type VPNSiteLinksServerTransport struct {
 	srv                   *VPNSiteLinksServer
-	newListByVPNSitePager *azfake.PagerResponder[armnetwork.VPNSiteLinksClientListByVPNSiteResponse]
+	newListByVPNSitePager *tracker[azfake.PagerResponder[armnetwork.VPNSiteLinksClientListByVPNSiteResponse]]
 }
 
 // Do implements the policy.Transporter interface for VPNSiteLinksServerTransport.
@@ -115,7 +118,8 @@ func (v *VPNSiteLinksServerTransport) dispatchNewListByVPNSitePager(req *http.Re
 	if v.srv.NewListByVPNSitePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByVPNSitePager not implemented")}
 	}
-	if v.newListByVPNSitePager == nil {
+	newListByVPNSitePager := v.newListByVPNSitePager.get(req)
+	if newListByVPNSitePager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnSites/(?P<vpnSiteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnSiteLinks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -131,20 +135,22 @@ func (v *VPNSiteLinksServerTransport) dispatchNewListByVPNSitePager(req *http.Re
 			return nil, err
 		}
 		resp := v.srv.NewListByVPNSitePager(resourceGroupNameUnescaped, vpnSiteNameUnescaped, nil)
-		v.newListByVPNSitePager = &resp
-		server.PagerResponderInjectNextLinks(v.newListByVPNSitePager, req, func(page *armnetwork.VPNSiteLinksClientListByVPNSiteResponse, createLink func() string) {
+		newListByVPNSitePager = &resp
+		v.newListByVPNSitePager.add(req, newListByVPNSitePager)
+		server.PagerResponderInjectNextLinks(newListByVPNSitePager, req, func(page *armnetwork.VPNSiteLinksClientListByVPNSiteResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListByVPNSitePager, req)
+	resp, err := server.PagerResponderNext(newListByVPNSitePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByVPNSitePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListByVPNSitePager) {
-		v.newListByVPNSitePager = nil
+	if !server.PagerResponderMore(newListByVPNSitePager) {
+		v.newListByVPNSitePager.remove(req)
 	}
 	return resp, nil
 }

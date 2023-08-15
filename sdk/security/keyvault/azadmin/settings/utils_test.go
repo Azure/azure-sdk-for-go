@@ -31,16 +31,6 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		hsmURL = os.Getenv("AZURE_MANAGEDHSM_URL")
-	}
-	if hsmURL == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			panic("no value for AZURE_MANAGEDHSM_URL")
-		}
-		hsmURL = fakeHsmURL
-	}
-
 	err := recording.ResetProxy(nil)
 	if err != nil {
 		panic(err)
@@ -56,18 +46,9 @@ func TestMain(m *testing.M) {
 			panic(err)
 		}
 	}
-	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddGeneralRegexSanitizer(fakeHsmURL, hsmURL, nil)
-		if err != nil {
-			panic(err)
-		}
-		defer func() {
-			err := recording.ResetProxy(nil)
-			if err != nil {
-				panic(err)
-			}
-		}()
-	}
+
+	hsmURL = getEnvVar("AZURE_MANAGEDHSM_URL", fakeHsmURL)
+
 	code := m.Run()
 	os.Exit(code)
 }
@@ -91,12 +72,26 @@ func startSettingsTest(t *testing.T) *settings.Client {
 	return client
 }
 
+func getEnvVar(lookupValue string, fakeValue string) string {
+	envVar := fakeValue
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		envVar = lookupEnvVar(lookupValue)
+	}
+	if recording.GetRecordMode() == recording.RecordingMode {
+		err := recording.AddGeneralRegexSanitizer(fakeValue, envVar, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+	return envVar
+}
+
 func lookupEnvVar(s string) string {
-	ret, ok := os.LookupEnv(s)
-	if !ok {
+	v := os.Getenv(s)
+	if v == "" {
 		panic(fmt.Sprintf("Could not find env var: '%s'", s))
 	}
-	return ret
+	return v
 }
 
 type FakeCredential struct{}

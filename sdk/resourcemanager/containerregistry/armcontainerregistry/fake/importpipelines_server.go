@@ -42,19 +42,24 @@ type ImportPipelinesServer struct {
 }
 
 // NewImportPipelinesServerTransport creates a new instance of ImportPipelinesServerTransport with the provided implementation.
-// The returned ImportPipelinesServerTransport instance is connected to an instance of armcontainerregistry.ImportPipelinesClient by way of the
-// undefined.Transporter field.
+// The returned ImportPipelinesServerTransport instance is connected to an instance of armcontainerregistry.ImportPipelinesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewImportPipelinesServerTransport(srv *ImportPipelinesServer) *ImportPipelinesServerTransport {
-	return &ImportPipelinesServerTransport{srv: srv}
+	return &ImportPipelinesServerTransport{
+		srv:          srv,
+		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.ImportPipelinesClientListResponse]](),
+	}
 }
 
 // ImportPipelinesServerTransport connects instances of armcontainerregistry.ImportPipelinesClient to instances of ImportPipelinesServer.
 // Don't use this type directly, use NewImportPipelinesServerTransport instead.
 type ImportPipelinesServerTransport struct {
 	srv          *ImportPipelinesServer
-	beginCreate  *azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientCreateResponse]
-	beginDelete  *azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientDeleteResponse]
-	newListPager *azfake.PagerResponder[armcontainerregistry.ImportPipelinesClientListResponse]
+	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.ImportPipelinesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ImportPipelinesServerTransport.
@@ -92,7 +97,8 @@ func (i *ImportPipelinesServerTransport) dispatchBeginCreate(req *http.Request) 
 	if i.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	if i.beginCreate == nil {
+	beginCreate := i.beginCreate.get(req)
+	if beginCreate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/importPipelines/(?P<importPipelineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (i *ImportPipelinesServerTransport) dispatchBeginCreate(req *http.Request) 
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		i.beginCreate = &respr
+		beginCreate = &respr
+		i.beginCreate.add(req, beginCreate)
 	}
 
-	resp, err := server.PollerResponderNext(i.beginCreate, req)
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		i.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(i.beginCreate) {
-		i.beginCreate = nil
+	if !server.PollerResponderMore(beginCreate) {
+		i.beginCreate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (i *ImportPipelinesServerTransport) dispatchBeginDelete(req *http.Request) 
 	if i.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if i.beginDelete == nil {
+	beginDelete := i.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/importPipelines/(?P<importPipelineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (i *ImportPipelinesServerTransport) dispatchBeginDelete(req *http.Request) 
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		i.beginDelete = &respr
+		beginDelete = &respr
+		i.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(i.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		i.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(i.beginDelete) {
-		i.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		i.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (i *ImportPipelinesServerTransport) dispatchNewListPager(req *http.Request)
 	if i.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if i.newListPager == nil {
+	newListPager := i.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/importPipelines`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (i *ImportPipelinesServerTransport) dispatchNewListPager(req *http.Request)
 			return nil, err
 		}
 		resp := i.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
-		i.newListPager = &resp
-		server.PagerResponderInjectNextLinks(i.newListPager, req, func(page *armcontainerregistry.ImportPipelinesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		i.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.ImportPipelinesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(i.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(i.newListPager) {
-		i.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		i.newListPager.remove(req)
 	}
 	return resp, nil
 }

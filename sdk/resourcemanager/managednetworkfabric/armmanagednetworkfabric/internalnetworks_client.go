@@ -29,7 +29,7 @@ type InternalNetworksClient struct {
 }
 
 // NewInternalNetworksClient creates a new instance of InternalNetworksClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewInternalNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InternalNetworksClient, error) {
@@ -44,159 +44,13 @@ func NewInternalNetworksClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// BeginClearArpEntries - clearArpEntries for internalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - internalNetworkName - Name of the InternalNetwork.
-//   - body - Request payload.
-//   - options - InternalNetworksClientBeginClearArpEntriesOptions contains the optional parameters for the InternalNetworksClient.BeginClearArpEntries
-//     method.
-func (client *InternalNetworksClient) BeginClearArpEntries(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body EnableDisableOnResources, options *InternalNetworksClientBeginClearArpEntriesOptions) (*runtime.Poller[InternalNetworksClientClearArpEntriesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.clearArpEntries(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InternalNetworksClientClearArpEntriesResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[InternalNetworksClientClearArpEntriesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// ClearArpEntries - clearArpEntries for internalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *InternalNetworksClient) clearArpEntries(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body EnableDisableOnResources, options *InternalNetworksClientBeginClearArpEntriesOptions) (*http.Response, error) {
-	req, err := client.clearArpEntriesCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// clearArpEntriesCreateRequest creates the ClearArpEntries request.
-func (client *InternalNetworksClient) clearArpEntriesCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body EnableDisableOnResources, options *InternalNetworksClientBeginClearArpEntriesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/clearArpEntries"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if l3IsolationDomainName == "" {
-		return nil, errors.New("parameter l3IsolationDomainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{l3IsolationDomainName}", url.PathEscape(l3IsolationDomainName))
-	if internalNetworkName == "" {
-		return nil, errors.New("parameter internalNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{internalNetworkName}", url.PathEscape(internalNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, body)
-}
-
-// BeginClearIPv6Neighbors - clearIpv6Neighbors for internalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - internalNetworkName - Name of the InternalNetwork.
-//   - body - Request payload.
-//   - options - InternalNetworksClientBeginClearIPv6NeighborsOptions contains the optional parameters for the InternalNetworksClient.BeginClearIPv6Neighbors
-//     method.
-func (client *InternalNetworksClient) BeginClearIPv6Neighbors(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body EnableDisableOnResources, options *InternalNetworksClientBeginClearIPv6NeighborsOptions) (*runtime.Poller[InternalNetworksClientClearIPv6NeighborsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.clearIPv6Neighbors(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InternalNetworksClientClearIPv6NeighborsResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[InternalNetworksClientClearIPv6NeighborsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// ClearIPv6Neighbors - clearIpv6Neighbors for internalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *InternalNetworksClient) clearIPv6Neighbors(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body EnableDisableOnResources, options *InternalNetworksClientBeginClearIPv6NeighborsOptions) (*http.Response, error) {
-	req, err := client.clearIPv6NeighborsCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// clearIPv6NeighborsCreateRequest creates the ClearIPv6Neighbors request.
-func (client *InternalNetworksClient) clearIPv6NeighborsCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body EnableDisableOnResources, options *InternalNetworksClientBeginClearIPv6NeighborsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/clearIpv6Neighbors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if l3IsolationDomainName == "" {
-		return nil, errors.New("parameter l3IsolationDomainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{l3IsolationDomainName}", url.PathEscape(l3IsolationDomainName))
-	if internalNetworkName == "" {
-		return nil, errors.New("parameter internalNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{internalNetworkName}", url.PathEscape(internalNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, body)
-}
-
 // BeginCreate - Creates InternalNetwork PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain
-//   - internalNetworkName - Name of the InternalNetwork
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - internalNetworkName - Name of the Internal Network.
 //   - body - Request payload.
 //   - options - InternalNetworksClientBeginCreateOptions contains the optional parameters for the InternalNetworksClient.BeginCreate
 //     method.
@@ -217,7 +71,7 @@ func (client *InternalNetworksClient) BeginCreate(ctx context.Context, resourceG
 // Create - Creates InternalNetwork PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *InternalNetworksClient) create(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body InternalNetwork, options *InternalNetworksClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
 	if err != nil {
@@ -236,9 +90,6 @@ func (client *InternalNetworksClient) create(ctx context.Context, resourceGroupN
 // createCreateRequest creates the Create request.
 func (client *InternalNetworksClient) createCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body InternalNetwork, options *InternalNetworksClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -257,7 +108,7 @@ func (client *InternalNetworksClient) createCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -266,10 +117,10 @@ func (client *InternalNetworksClient) createCreateRequest(ctx context.Context, r
 // BeginDelete - Implements InternalNetworks DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain
-//   - internalNetworkName - Name of the InternalNetwork
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - internalNetworkName - Name of the Internal Network.
 //   - options - InternalNetworksClientBeginDeleteOptions contains the optional parameters for the InternalNetworksClient.BeginDelete
 //     method.
 func (client *InternalNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, options *InternalNetworksClientBeginDeleteOptions) (*runtime.Poller[InternalNetworksClientDeleteResponse], error) {
@@ -289,7 +140,7 @@ func (client *InternalNetworksClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Implements InternalNetworks DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *InternalNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, options *InternalNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, options)
 	if err != nil {
@@ -299,7 +150,7 @@ func (client *InternalNetworksClient) deleteOperation(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -308,9 +159,6 @@ func (client *InternalNetworksClient) deleteOperation(ctx context.Context, resou
 // deleteCreateRequest creates the Delete request.
 func (client *InternalNetworksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, options *InternalNetworksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -329,7 +177,7 @@ func (client *InternalNetworksClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -338,10 +186,10 @@ func (client *InternalNetworksClient) deleteCreateRequest(ctx context.Context, r
 // Get - Gets a InternalNetworks.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain
-//   - internalNetworkName - Name of the InternalNetwork
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - internalNetworkName - Name of the Internal Network.
 //   - options - InternalNetworksClientGetOptions contains the optional parameters for the InternalNetworksClient.Get method.
 func (client *InternalNetworksClient) Get(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, options *InternalNetworksClientGetOptions) (InternalNetworksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, options)
@@ -361,9 +209,6 @@ func (client *InternalNetworksClient) Get(ctx context.Context, resourceGroupName
 // getCreateRequest creates the Get request.
 func (client *InternalNetworksClient) getCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, options *InternalNetworksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -382,7 +227,7 @@ func (client *InternalNetworksClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -397,47 +242,44 @@ func (client *InternalNetworksClient) getHandleResponse(resp *http.Response) (In
 	return result, nil
 }
 
-// NewListPager - Displays InternalNetworks list by resource group GET method.
+// NewListByL3IsolationDomainPager - Displays InternalNetworks list by resource group GET method.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain
-//   - options - InternalNetworksClientListOptions contains the optional parameters for the InternalNetworksClient.NewListPager
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - options - InternalNetworksClientListByL3IsolationDomainOptions contains the optional parameters for the InternalNetworksClient.NewListByL3IsolationDomainPager
 //     method.
-func (client *InternalNetworksClient) NewListPager(resourceGroupName string, l3IsolationDomainName string, options *InternalNetworksClientListOptions) *runtime.Pager[InternalNetworksClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[InternalNetworksClientListResponse]{
-		More: func(page InternalNetworksClientListResponse) bool {
+func (client *InternalNetworksClient) NewListByL3IsolationDomainPager(resourceGroupName string, l3IsolationDomainName string, options *InternalNetworksClientListByL3IsolationDomainOptions) *runtime.Pager[InternalNetworksClientListByL3IsolationDomainResponse] {
+	return runtime.NewPager(runtime.PagingHandler[InternalNetworksClientListByL3IsolationDomainResponse]{
+		More: func(page InternalNetworksClientListByL3IsolationDomainResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *InternalNetworksClientListResponse) (InternalNetworksClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *InternalNetworksClientListByL3IsolationDomainResponse) (InternalNetworksClientListByL3IsolationDomainResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, options)
+				req, err = client.listByL3IsolationDomainCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return InternalNetworksClientListResponse{}, err
+				return InternalNetworksClientListByL3IsolationDomainResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return InternalNetworksClientListResponse{}, err
+				return InternalNetworksClientListByL3IsolationDomainResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return InternalNetworksClientListResponse{}, runtime.NewResponseError(resp)
+				return InternalNetworksClientListByL3IsolationDomainResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.listHandleResponse(resp)
+			return client.listByL3IsolationDomainHandleResponse(resp)
 		},
 	})
 }
 
-// listCreateRequest creates the List request.
-func (client *InternalNetworksClient) listCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *InternalNetworksClientListOptions) (*policy.Request, error) {
+// listByL3IsolationDomainCreateRequest creates the ListByL3IsolationDomain request.
+func (client *InternalNetworksClient) listByL3IsolationDomainCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *InternalNetworksClientListByL3IsolationDomainOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -452,17 +294,17 @@ func (client *InternalNetworksClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *InternalNetworksClient) listHandleResponse(resp *http.Response) (InternalNetworksClientListResponse, error) {
-	result := InternalNetworksClientListResponse{}
+// listByL3IsolationDomainHandleResponse handles the ListByL3IsolationDomain response.
+func (client *InternalNetworksClient) listByL3IsolationDomainHandleResponse(resp *http.Response) (InternalNetworksClientListByL3IsolationDomainResponse, error) {
+	result := InternalNetworksClientListByL3IsolationDomainResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InternalNetworksList); err != nil {
-		return InternalNetworksClientListResponse{}, err
+		return InternalNetworksClientListByL3IsolationDomainResponse{}, err
 	}
 	return result, nil
 }
@@ -470,10 +312,10 @@ func (client *InternalNetworksClient) listHandleResponse(resp *http.Response) (I
 // BeginUpdate - Updates a InternalNetworks.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain
-//   - internalNetworkName - Name of the InternalNetwork
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - internalNetworkName - Name of the Internal Network.
 //   - body - InternalNetwork properties to update. Only annotations are supported.
 //   - options - InternalNetworksClientBeginUpdateOptions contains the optional parameters for the InternalNetworksClient.BeginUpdate
 //     method.
@@ -484,7 +326,7 @@ func (client *InternalNetworksClient) BeginUpdate(ctx context.Context, resourceG
 			return nil, err
 		}
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InternalNetworksClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
 		return runtime.NewPollerFromResumeToken[InternalNetworksClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
@@ -494,7 +336,7 @@ func (client *InternalNetworksClient) BeginUpdate(ctx context.Context, resourceG
 // Update - Updates a InternalNetworks.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *InternalNetworksClient) update(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body InternalNetworkPatch, options *InternalNetworksClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
 	if err != nil {
@@ -513,9 +355,6 @@ func (client *InternalNetworksClient) update(ctx context.Context, resourceGroupN
 // updateCreateRequest creates the Update request.
 func (client *InternalNetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body InternalNetworkPatch, options *InternalNetworksClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -534,7 +373,7 @@ func (client *InternalNetworksClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -544,10 +383,10 @@ func (client *InternalNetworksClient) updateCreateRequest(ctx context.Context, r
 // ids.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - internalNetworkName - Name of the InternalNetwork.
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - internalNetworkName - Name of the Internal Network.
 //   - body - Request payload.
 //   - options - InternalNetworksClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the InternalNetworksClient.BeginUpdateAdministrativeState
 //     method.
@@ -568,7 +407,7 @@ func (client *InternalNetworksClient) BeginUpdateAdministrativeState(ctx context
 // UpdateAdministrativeState - Update Administrative state of InternalNetworks on resources referred by their resource ids.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *InternalNetworksClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
 	if err != nil {
@@ -578,7 +417,7 @@ func (client *InternalNetworksClient) updateAdministrativeState(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -587,9 +426,6 @@ func (client *InternalNetworksClient) updateAdministrativeState(ctx context.Cont
 // updateAdministrativeStateCreateRequest creates the UpdateAdministrativeState request.
 func (client *InternalNetworksClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/updateAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -608,153 +444,7 @@ func (client *InternalNetworksClient) updateAdministrativeStateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, body)
-}
-
-// BeginUpdateBfdForBgpAdministrativeState - Update BfdForBgp for internalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - internalNetworkName - Name of the InternalNetwork.
-//   - body - Request payload.
-//   - options - InternalNetworksClientBeginUpdateBfdForBgpAdministrativeStateOptions contains the optional parameters for the
-//     InternalNetworksClient.BeginUpdateBfdForBgpAdministrativeState method.
-func (client *InternalNetworksClient) BeginUpdateBfdForBgpAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateBfdForBgpAdministrativeStateOptions) (*runtime.Poller[InternalNetworksClientUpdateBfdForBgpAdministrativeStateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateBfdForBgpAdministrativeState(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InternalNetworksClientUpdateBfdForBgpAdministrativeStateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[InternalNetworksClientUpdateBfdForBgpAdministrativeStateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// UpdateBfdForBgpAdministrativeState - Update BfdForBgp for internalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *InternalNetworksClient) updateBfdForBgpAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateBfdForBgpAdministrativeStateOptions) (*http.Response, error) {
-	req, err := client.updateBfdForBgpAdministrativeStateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// updateBfdForBgpAdministrativeStateCreateRequest creates the UpdateBfdForBgpAdministrativeState request.
-func (client *InternalNetworksClient) updateBfdForBgpAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateBfdForBgpAdministrativeStateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/updateBfdForBgpAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if l3IsolationDomainName == "" {
-		return nil, errors.New("parameter l3IsolationDomainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{l3IsolationDomainName}", url.PathEscape(l3IsolationDomainName))
-	if internalNetworkName == "" {
-		return nil, errors.New("parameter internalNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{internalNetworkName}", url.PathEscape(internalNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, body)
-}
-
-// BeginUpdateBfdForStaticRouteAdministrativeState - Update BfdForStaticRoutes for internalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - internalNetworkName - Name of the InternalNetwork.
-//   - body - Request payload.
-//   - options - InternalNetworksClientBeginUpdateBfdForStaticRouteAdministrativeStateOptions contains the optional parameters
-//     for the InternalNetworksClient.BeginUpdateBfdForStaticRouteAdministrativeState method.
-func (client *InternalNetworksClient) BeginUpdateBfdForStaticRouteAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateBfdForStaticRouteAdministrativeStateOptions) (*runtime.Poller[InternalNetworksClientUpdateBfdForStaticRouteAdministrativeStateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateBfdForStaticRouteAdministrativeState(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InternalNetworksClientUpdateBfdForStaticRouteAdministrativeStateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[InternalNetworksClientUpdateBfdForStaticRouteAdministrativeStateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// UpdateBfdForStaticRouteAdministrativeState - Update BfdForStaticRoutes for internalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *InternalNetworksClient) updateBfdForStaticRouteAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateBfdForStaticRouteAdministrativeStateOptions) (*http.Response, error) {
-	req, err := client.updateBfdForStaticRouteAdministrativeStateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// updateBfdForStaticRouteAdministrativeStateCreateRequest creates the UpdateBfdForStaticRouteAdministrativeState request.
-func (client *InternalNetworksClient) updateBfdForStaticRouteAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateBfdForStaticRouteAdministrativeStateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/updateBfdForStaticRouteAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if l3IsolationDomainName == "" {
-		return nil, errors.New("parameter l3IsolationDomainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{l3IsolationDomainName}", url.PathEscape(l3IsolationDomainName))
-	if internalNetworkName == "" {
-		return nil, errors.New("parameter internalNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{internalNetworkName}", url.PathEscape(internalNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -763,10 +453,10 @@ func (client *InternalNetworksClient) updateBfdForStaticRouteAdministrativeState
 // BeginUpdateBgpAdministrativeState - Update BGP state for internalNetwork. Allowed only on edge devices.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - internalNetworkName - Name of the InternalNetwork.
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - internalNetworkName - Name of the Internal Network.
 //   - body - Request payload.
 //   - options - InternalNetworksClientBeginUpdateBgpAdministrativeStateOptions contains the optional parameters for the InternalNetworksClient.BeginUpdateBgpAdministrativeState
 //     method.
@@ -787,7 +477,7 @@ func (client *InternalNetworksClient) BeginUpdateBgpAdministrativeState(ctx cont
 // UpdateBgpAdministrativeState - Update BGP state for internalNetwork. Allowed only on edge devices.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *InternalNetworksClient) updateBgpAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateBgpAdministrativeStateOptions) (*http.Response, error) {
 	req, err := client.updateBgpAdministrativeStateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
 	if err != nil {
@@ -797,7 +487,7 @@ func (client *InternalNetworksClient) updateBgpAdministrativeState(ctx context.C
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -806,9 +496,6 @@ func (client *InternalNetworksClient) updateBgpAdministrativeState(ctx context.C
 // updateBgpAdministrativeStateCreateRequest creates the UpdateBgpAdministrativeState request.
 func (client *InternalNetworksClient) updateBgpAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateBgpAdministrativeStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/updateBgpAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -827,7 +514,77 @@ func (client *InternalNetworksClient) updateBgpAdministrativeStateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, body)
+}
+
+// BeginUpdateStaticRouteBfdAdministrativeState - Update Static Route BFD administrative state for internalNetwork.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - internalNetworkName - Name of the Internal Network.
+//   - body - Request payload.
+//   - options - InternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions contains the optional parameters for
+//     the InternalNetworksClient.BeginUpdateStaticRouteBfdAdministrativeState method.
+func (client *InternalNetworksClient) BeginUpdateStaticRouteBfdAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions) (*runtime.Poller[InternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateStaticRouteBfdAdministrativeState(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[InternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// UpdateStaticRouteBfdAdministrativeState - Update Static Route BFD administrative state for internalNetwork.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+func (client *InternalNetworksClient) updateStaticRouteBfdAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions) (*http.Response, error) {
+	req, err := client.updateStaticRouteBfdAdministrativeStateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, internalNetworkName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// updateStaticRouteBfdAdministrativeStateCreateRequest creates the UpdateStaticRouteBfdAdministrativeState request.
+func (client *InternalNetworksClient) updateStaticRouteBfdAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/internalNetworks/{internalNetworkName}/updateStaticRouteBfdAdministrativeState"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if l3IsolationDomainName == "" {
+		return nil, errors.New("parameter l3IsolationDomainName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{l3IsolationDomainName}", url.PathEscape(l3IsolationDomainName))
+	if internalNetworkName == "" {
+		return nil, errors.New("parameter internalNetworkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{internalNetworkName}", url.PathEscape(internalNetworkName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

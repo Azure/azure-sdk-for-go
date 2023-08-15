@@ -78,7 +78,7 @@ func (h *httpTracePolicy) Do(req *policy.Request) (resp *http.Response, err erro
 				// so instead of attempting to sanitize the output, we simply output the error type.
 				span.SetStatus(tracing.SpanStatusError, fmt.Sprintf("%T", err))
 			}
-			span.End(nil)
+			span.End()
 		}()
 
 		req = req.WithContext(ctx)
@@ -112,6 +112,6 @@ func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options 
 			errType := strings.Replace(fmt.Sprintf("%T", err), "*exported.", "*azcore.", 1)
 			span.SetStatus(tracing.SpanStatusError, fmt.Sprintf("%s:\n%s", errType, err.Error()))
 		}
-		span.End(nil)
+		span.End()
 	}
 }

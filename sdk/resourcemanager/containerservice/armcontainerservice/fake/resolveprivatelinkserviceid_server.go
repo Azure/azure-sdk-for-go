@@ -29,8 +29,8 @@ type ResolvePrivateLinkServiceIDServer struct {
 }
 
 // NewResolvePrivateLinkServiceIDServerTransport creates a new instance of ResolvePrivateLinkServiceIDServerTransport with the provided implementation.
-// The returned ResolvePrivateLinkServiceIDServerTransport instance is connected to an instance of armcontainerservice.ResolvePrivateLinkServiceIDClient by way of the
-// undefined.Transporter field.
+// The returned ResolvePrivateLinkServiceIDServerTransport instance is connected to an instance of armcontainerservice.ResolvePrivateLinkServiceIDClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewResolvePrivateLinkServiceIDServerTransport(srv *ResolvePrivateLinkServiceIDServer) *ResolvePrivateLinkServiceIDServerTransport {
 	return &ResolvePrivateLinkServiceIDServerTransport{srv: srv}
 }

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -42,19 +42,24 @@ type VirtualRouterPeeringsServer struct {
 }
 
 // NewVirtualRouterPeeringsServerTransport creates a new instance of VirtualRouterPeeringsServerTransport with the provided implementation.
-// The returned VirtualRouterPeeringsServerTransport instance is connected to an instance of armnetwork.VirtualRouterPeeringsClient by way of the
-// undefined.Transporter field.
+// The returned VirtualRouterPeeringsServerTransport instance is connected to an instance of armnetwork.VirtualRouterPeeringsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualRouterPeeringsServerTransport(srv *VirtualRouterPeeringsServer) *VirtualRouterPeeringsServerTransport {
-	return &VirtualRouterPeeringsServerTransport{srv: srv}
+	return &VirtualRouterPeeringsServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.VirtualRouterPeeringsClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.VirtualRouterPeeringsClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.VirtualRouterPeeringsClientListResponse]](),
+	}
 }
 
 // VirtualRouterPeeringsServerTransport connects instances of armnetwork.VirtualRouterPeeringsClient to instances of VirtualRouterPeeringsServer.
 // Don't use this type directly, use NewVirtualRouterPeeringsServerTransport instead.
 type VirtualRouterPeeringsServerTransport struct {
 	srv                 *VirtualRouterPeeringsServer
-	beginCreateOrUpdate *azfake.PollerResponder[armnetwork.VirtualRouterPeeringsClientCreateOrUpdateResponse]
-	beginDelete         *azfake.PollerResponder[armnetwork.VirtualRouterPeeringsClientDeleteResponse]
-	newListPager        *azfake.PagerResponder[armnetwork.VirtualRouterPeeringsClientListResponse]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.VirtualRouterPeeringsClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armnetwork.VirtualRouterPeeringsClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.VirtualRouterPeeringsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualRouterPeeringsServerTransport.
@@ -92,7 +97,8 @@ func (v *VirtualRouterPeeringsServerTransport) dispatchBeginCreateOrUpdate(req *
 	if v.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if v.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualRouters/(?P<virtualRouterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (v *VirtualRouterPeeringsServerTransport) dispatchBeginCreateOrUpdate(req *
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		v.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginCreateOrUpdate) {
-		v.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		v.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (v *VirtualRouterPeeringsServerTransport) dispatchBeginDelete(req *http.Req
 	if v.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if v.beginDelete == nil {
+	beginDelete := v.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualRouters/(?P<virtualRouterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (v *VirtualRouterPeeringsServerTransport) dispatchBeginDelete(req *http.Req
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDelete = &respr
+		beginDelete = &respr
+		v.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDelete) {
-		v.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		v.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (v *VirtualRouterPeeringsServerTransport) dispatchNewListPager(req *http.Re
 	if v.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if v.newListPager == nil {
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualRouters/(?P<virtualRouterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (v *VirtualRouterPeeringsServerTransport) dispatchNewListPager(req *http.Re
 			return nil, err
 		}
 		resp := v.srv.NewListPager(resourceGroupNameUnescaped, virtualRouterNameUnescaped, nil)
-		v.newListPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListPager, req, func(page *armnetwork.VirtualRouterPeeringsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualRouterPeeringsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListPager) {
-		v.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -34,17 +34,20 @@ type ExpressRouteLinksServer struct {
 }
 
 // NewExpressRouteLinksServerTransport creates a new instance of ExpressRouteLinksServerTransport with the provided implementation.
-// The returned ExpressRouteLinksServerTransport instance is connected to an instance of armnetwork.ExpressRouteLinksClient by way of the
-// undefined.Transporter field.
+// The returned ExpressRouteLinksServerTransport instance is connected to an instance of armnetwork.ExpressRouteLinksClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewExpressRouteLinksServerTransport(srv *ExpressRouteLinksServer) *ExpressRouteLinksServerTransport {
-	return &ExpressRouteLinksServerTransport{srv: srv}
+	return &ExpressRouteLinksServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.ExpressRouteLinksClientListResponse]](),
+	}
 }
 
 // ExpressRouteLinksServerTransport connects instances of armnetwork.ExpressRouteLinksClient to instances of ExpressRouteLinksServer.
 // Don't use this type directly, use NewExpressRouteLinksServerTransport instead.
 type ExpressRouteLinksServerTransport struct {
 	srv          *ExpressRouteLinksServer
-	newListPager *azfake.PagerResponder[armnetwork.ExpressRouteLinksClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.ExpressRouteLinksClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExpressRouteLinksServerTransport.
@@ -115,7 +118,8 @@ func (e *ExpressRouteLinksServerTransport) dispatchNewListPager(req *http.Reques
 	if e.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if e.newListPager == nil {
+	newListPager := e.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ExpressRoutePorts/(?P<expressRoutePortName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/links`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -131,20 +135,22 @@ func (e *ExpressRouteLinksServerTransport) dispatchNewListPager(req *http.Reques
 			return nil, err
 		}
 		resp := e.srv.NewListPager(resourceGroupNameUnescaped, expressRoutePortNameUnescaped, nil)
-		e.newListPager = &resp
-		server.PagerResponderInjectNextLinks(e.newListPager, req, func(page *armnetwork.ExpressRouteLinksClientListResponse, createLink func() string) {
+		newListPager = &resp
+		e.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRouteLinksClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(e.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(e.newListPager) {
-		e.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		e.newListPager.remove(req)
 	}
 	return resp, nil
 }

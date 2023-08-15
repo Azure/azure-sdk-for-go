@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -90,27 +90,40 @@ type InterfacesServer struct {
 }
 
 // NewInterfacesServerTransport creates a new instance of InterfacesServerTransport with the provided implementation.
-// The returned InterfacesServerTransport instance is connected to an instance of armnetwork.InterfacesClient by way of the
-// undefined.Transporter field.
+// The returned InterfacesServerTransport instance is connected to an instance of armnetwork.InterfacesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewInterfacesServerTransport(srv *InterfacesServer) *InterfacesServerTransport {
-	return &InterfacesServerTransport{srv: srv}
+	return &InterfacesServerTransport{
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.InterfacesClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.InterfacesClientDeleteResponse]](),
+		beginGetEffectiveRouteTable: newTracker[azfake.PollerResponder[armnetwork.InterfacesClientGetEffectiveRouteTableResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListResponse]](),
+		newListAllPager:             newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListAllResponse]](),
+		newListCloudServiceNetworkInterfacesPager:             newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListCloudServiceNetworkInterfacesResponse]](),
+		newListCloudServiceRoleInstanceNetworkInterfacesPager: newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse]](),
+		beginListEffectiveNetworkSecurityGroups:               newTracker[azfake.PollerResponder[armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse]](),
+		newListVirtualMachineScaleSetIPConfigurationsPager:    newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse]](),
+		newListVirtualMachineScaleSetNetworkInterfacesPager:   newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse]](),
+		newListVirtualMachineScaleSetVMNetworkInterfacesPager: newTracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse]](),
+	}
 }
 
 // InterfacesServerTransport connects instances of armnetwork.InterfacesClient to instances of InterfacesServer.
 // Don't use this type directly, use NewInterfacesServerTransport instead.
 type InterfacesServerTransport struct {
 	srv                                                   *InterfacesServer
-	beginCreateOrUpdate                                   *azfake.PollerResponder[armnetwork.InterfacesClientCreateOrUpdateResponse]
-	beginDelete                                           *azfake.PollerResponder[armnetwork.InterfacesClientDeleteResponse]
-	beginGetEffectiveRouteTable                           *azfake.PollerResponder[armnetwork.InterfacesClientGetEffectiveRouteTableResponse]
-	newListPager                                          *azfake.PagerResponder[armnetwork.InterfacesClientListResponse]
-	newListAllPager                                       *azfake.PagerResponder[armnetwork.InterfacesClientListAllResponse]
-	newListCloudServiceNetworkInterfacesPager             *azfake.PagerResponder[armnetwork.InterfacesClientListCloudServiceNetworkInterfacesResponse]
-	newListCloudServiceRoleInstanceNetworkInterfacesPager *azfake.PagerResponder[armnetwork.InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse]
-	beginListEffectiveNetworkSecurityGroups               *azfake.PollerResponder[armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse]
-	newListVirtualMachineScaleSetIPConfigurationsPager    *azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse]
-	newListVirtualMachineScaleSetNetworkInterfacesPager   *azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse]
-	newListVirtualMachineScaleSetVMNetworkInterfacesPager *azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse]
+	beginCreateOrUpdate                                   *tracker[azfake.PollerResponder[armnetwork.InterfacesClientCreateOrUpdateResponse]]
+	beginDelete                                           *tracker[azfake.PollerResponder[armnetwork.InterfacesClientDeleteResponse]]
+	beginGetEffectiveRouteTable                           *tracker[azfake.PollerResponder[armnetwork.InterfacesClientGetEffectiveRouteTableResponse]]
+	newListPager                                          *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListResponse]]
+	newListAllPager                                       *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListAllResponse]]
+	newListCloudServiceNetworkInterfacesPager             *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListCloudServiceNetworkInterfacesResponse]]
+	newListCloudServiceRoleInstanceNetworkInterfacesPager *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse]]
+	beginListEffectiveNetworkSecurityGroups               *tracker[azfake.PollerResponder[armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse]]
+	newListVirtualMachineScaleSetIPConfigurationsPager    *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse]]
+	newListVirtualMachineScaleSetNetworkInterfacesPager   *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse]]
+	newListVirtualMachineScaleSetVMNetworkInterfacesPager *tracker[azfake.PagerResponder[armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse]]
 }
 
 // Do implements the policy.Transporter interface for InterfacesServerTransport.
@@ -172,7 +185,8 @@ func (i *InterfacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 	if i.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if i.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := i.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -195,19 +209,21 @@ func (i *InterfacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		i.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		i.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(i.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		i.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(i.beginCreateOrUpdate) {
-		i.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		i.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -217,7 +233,8 @@ func (i *InterfacesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	if i.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if i.beginDelete == nil {
+	beginDelete := i.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -236,19 +253,21 @@ func (i *InterfacesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		i.beginDelete = &respr
+		beginDelete = &respr
+		i.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(i.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		i.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(i.beginDelete) {
-		i.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		i.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -356,7 +375,8 @@ func (i *InterfacesServerTransport) dispatchBeginGetEffectiveRouteTable(req *htt
 	if i.srv.BeginGetEffectiveRouteTable == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetEffectiveRouteTable not implemented")}
 	}
-	if i.beginGetEffectiveRouteTable == nil {
+	beginGetEffectiveRouteTable := i.beginGetEffectiveRouteTable.get(req)
+	if beginGetEffectiveRouteTable == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/effectiveRouteTable`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -375,19 +395,21 @@ func (i *InterfacesServerTransport) dispatchBeginGetEffectiveRouteTable(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		i.beginGetEffectiveRouteTable = &respr
+		beginGetEffectiveRouteTable = &respr
+		i.beginGetEffectiveRouteTable.add(req, beginGetEffectiveRouteTable)
 	}
 
-	resp, err := server.PollerResponderNext(i.beginGetEffectiveRouteTable, req)
+	resp, err := server.PollerResponderNext(beginGetEffectiveRouteTable, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginGetEffectiveRouteTable.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(i.beginGetEffectiveRouteTable) {
-		i.beginGetEffectiveRouteTable = nil
+	if !server.PollerResponderMore(beginGetEffectiveRouteTable) {
+		i.beginGetEffectiveRouteTable.remove(req)
 	}
 
 	return resp, nil
@@ -507,7 +529,8 @@ func (i *InterfacesServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	if i.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if i.newListPager == nil {
+	newListPager := i.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -519,20 +542,22 @@ func (i *InterfacesServerTransport) dispatchNewListPager(req *http.Request) (*ht
 			return nil, err
 		}
 		resp := i.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		i.newListPager = &resp
-		server.PagerResponderInjectNextLinks(i.newListPager, req, func(page *armnetwork.InterfacesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		i.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.InterfacesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(i.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(i.newListPager) {
-		i.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		i.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -541,7 +566,8 @@ func (i *InterfacesServerTransport) dispatchNewListAllPager(req *http.Request) (
 	if i.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if i.newListAllPager == nil {
+	newListAllPager := i.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -549,20 +575,22 @@ func (i *InterfacesServerTransport) dispatchNewListAllPager(req *http.Request) (
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := i.srv.NewListAllPager(nil)
-		i.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(i.newListAllPager, req, func(page *armnetwork.InterfacesClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		i.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.InterfacesClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(i.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(i.newListAllPager) {
-		i.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		i.newListAllPager.remove(req)
 	}
 	return resp, nil
 }
@@ -571,7 +599,8 @@ func (i *InterfacesServerTransport) dispatchNewListCloudServiceNetworkInterfaces
 	if i.srv.NewListCloudServiceNetworkInterfacesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListCloudServiceNetworkInterfacesPager not implemented")}
 	}
-	if i.newListCloudServiceNetworkInterfacesPager == nil {
+	newListCloudServiceNetworkInterfacesPager := i.newListCloudServiceNetworkInterfacesPager.get(req)
+	if newListCloudServiceNetworkInterfacesPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -587,20 +616,22 @@ func (i *InterfacesServerTransport) dispatchNewListCloudServiceNetworkInterfaces
 			return nil, err
 		}
 		resp := i.srv.NewListCloudServiceNetworkInterfacesPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
-		i.newListCloudServiceNetworkInterfacesPager = &resp
-		server.PagerResponderInjectNextLinks(i.newListCloudServiceNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListCloudServiceNetworkInterfacesResponse, createLink func() string) {
+		newListCloudServiceNetworkInterfacesPager = &resp
+		i.newListCloudServiceNetworkInterfacesPager.add(req, newListCloudServiceNetworkInterfacesPager)
+		server.PagerResponderInjectNextLinks(newListCloudServiceNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListCloudServiceNetworkInterfacesResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(i.newListCloudServiceNetworkInterfacesPager, req)
+	resp, err := server.PagerResponderNext(newListCloudServiceNetworkInterfacesPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListCloudServiceNetworkInterfacesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(i.newListCloudServiceNetworkInterfacesPager) {
-		i.newListCloudServiceNetworkInterfacesPager = nil
+	if !server.PagerResponderMore(newListCloudServiceNetworkInterfacesPager) {
+		i.newListCloudServiceNetworkInterfacesPager.remove(req)
 	}
 	return resp, nil
 }
@@ -609,7 +640,8 @@ func (i *InterfacesServerTransport) dispatchNewListCloudServiceRoleInstanceNetwo
 	if i.srv.NewListCloudServiceRoleInstanceNetworkInterfacesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListCloudServiceRoleInstanceNetworkInterfacesPager not implemented")}
 	}
-	if i.newListCloudServiceRoleInstanceNetworkInterfacesPager == nil {
+	newListCloudServiceRoleInstanceNetworkInterfacesPager := i.newListCloudServiceRoleInstanceNetworkInterfacesPager.get(req)
+	if newListCloudServiceRoleInstanceNetworkInterfacesPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -629,20 +661,22 @@ func (i *InterfacesServerTransport) dispatchNewListCloudServiceRoleInstanceNetwo
 			return nil, err
 		}
 		resp := i.srv.NewListCloudServiceRoleInstanceNetworkInterfacesPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, roleInstanceNameUnescaped, nil)
-		i.newListCloudServiceRoleInstanceNetworkInterfacesPager = &resp
-		server.PagerResponderInjectNextLinks(i.newListCloudServiceRoleInstanceNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse, createLink func() string) {
+		newListCloudServiceRoleInstanceNetworkInterfacesPager = &resp
+		i.newListCloudServiceRoleInstanceNetworkInterfacesPager.add(req, newListCloudServiceRoleInstanceNetworkInterfacesPager)
+		server.PagerResponderInjectNextLinks(newListCloudServiceRoleInstanceNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(i.newListCloudServiceRoleInstanceNetworkInterfacesPager, req)
+	resp, err := server.PagerResponderNext(newListCloudServiceRoleInstanceNetworkInterfacesPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListCloudServiceRoleInstanceNetworkInterfacesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(i.newListCloudServiceRoleInstanceNetworkInterfacesPager) {
-		i.newListCloudServiceRoleInstanceNetworkInterfacesPager = nil
+	if !server.PagerResponderMore(newListCloudServiceRoleInstanceNetworkInterfacesPager) {
+		i.newListCloudServiceRoleInstanceNetworkInterfacesPager.remove(req)
 	}
 	return resp, nil
 }
@@ -651,7 +685,8 @@ func (i *InterfacesServerTransport) dispatchBeginListEffectiveNetworkSecurityGro
 	if i.srv.BeginListEffectiveNetworkSecurityGroups == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListEffectiveNetworkSecurityGroups not implemented")}
 	}
-	if i.beginListEffectiveNetworkSecurityGroups == nil {
+	beginListEffectiveNetworkSecurityGroups := i.beginListEffectiveNetworkSecurityGroups.get(req)
+	if beginListEffectiveNetworkSecurityGroups == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/effectiveNetworkSecurityGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -670,19 +705,21 @@ func (i *InterfacesServerTransport) dispatchBeginListEffectiveNetworkSecurityGro
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		i.beginListEffectiveNetworkSecurityGroups = &respr
+		beginListEffectiveNetworkSecurityGroups = &respr
+		i.beginListEffectiveNetworkSecurityGroups.add(req, beginListEffectiveNetworkSecurityGroups)
 	}
 
-	resp, err := server.PollerResponderNext(i.beginListEffectiveNetworkSecurityGroups, req)
+	resp, err := server.PollerResponderNext(beginListEffectiveNetworkSecurityGroups, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginListEffectiveNetworkSecurityGroups.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(i.beginListEffectiveNetworkSecurityGroups) {
-		i.beginListEffectiveNetworkSecurityGroups = nil
+	if !server.PollerResponderMore(beginListEffectiveNetworkSecurityGroups) {
+		i.beginListEffectiveNetworkSecurityGroups.remove(req)
 	}
 
 	return resp, nil
@@ -692,7 +729,8 @@ func (i *InterfacesServerTransport) dispatchNewListVirtualMachineScaleSetIPConfi
 	if i.srv.NewListVirtualMachineScaleSetIPConfigurationsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListVirtualMachineScaleSetIPConfigurationsPager not implemented")}
 	}
-	if i.newListVirtualMachineScaleSetIPConfigurationsPager == nil {
+	newListVirtualMachineScaleSetIPConfigurationsPager := i.newListVirtualMachineScaleSetIPConfigurationsPager.get(req)
+	if newListVirtualMachineScaleSetIPConfigurationsPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<virtualmachineIndex>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -728,20 +766,22 @@ func (i *InterfacesServerTransport) dispatchNewListVirtualMachineScaleSetIPConfi
 			}
 		}
 		resp := i.srv.NewListVirtualMachineScaleSetIPConfigurationsPager(resourceGroupNameUnescaped, virtualMachineScaleSetNameUnescaped, virtualmachineIndexUnescaped, networkInterfaceNameUnescaped, options)
-		i.newListVirtualMachineScaleSetIPConfigurationsPager = &resp
-		server.PagerResponderInjectNextLinks(i.newListVirtualMachineScaleSetIPConfigurationsPager, req, func(page *armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse, createLink func() string) {
+		newListVirtualMachineScaleSetIPConfigurationsPager = &resp
+		i.newListVirtualMachineScaleSetIPConfigurationsPager.add(req, newListVirtualMachineScaleSetIPConfigurationsPager)
+		server.PagerResponderInjectNextLinks(newListVirtualMachineScaleSetIPConfigurationsPager, req, func(page *armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(i.newListVirtualMachineScaleSetIPConfigurationsPager, req)
+	resp, err := server.PagerResponderNext(newListVirtualMachineScaleSetIPConfigurationsPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListVirtualMachineScaleSetIPConfigurationsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(i.newListVirtualMachineScaleSetIPConfigurationsPager) {
-		i.newListVirtualMachineScaleSetIPConfigurationsPager = nil
+	if !server.PagerResponderMore(newListVirtualMachineScaleSetIPConfigurationsPager) {
+		i.newListVirtualMachineScaleSetIPConfigurationsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -750,7 +790,8 @@ func (i *InterfacesServerTransport) dispatchNewListVirtualMachineScaleSetNetwork
 	if i.srv.NewListVirtualMachineScaleSetNetworkInterfacesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListVirtualMachineScaleSetNetworkInterfacesPager not implemented")}
 	}
-	if i.newListVirtualMachineScaleSetNetworkInterfacesPager == nil {
+	newListVirtualMachineScaleSetNetworkInterfacesPager := i.newListVirtualMachineScaleSetNetworkInterfacesPager.get(req)
+	if newListVirtualMachineScaleSetNetworkInterfacesPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -766,20 +807,22 @@ func (i *InterfacesServerTransport) dispatchNewListVirtualMachineScaleSetNetwork
 			return nil, err
 		}
 		resp := i.srv.NewListVirtualMachineScaleSetNetworkInterfacesPager(resourceGroupNameUnescaped, virtualMachineScaleSetNameUnescaped, nil)
-		i.newListVirtualMachineScaleSetNetworkInterfacesPager = &resp
-		server.PagerResponderInjectNextLinks(i.newListVirtualMachineScaleSetNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse, createLink func() string) {
+		newListVirtualMachineScaleSetNetworkInterfacesPager = &resp
+		i.newListVirtualMachineScaleSetNetworkInterfacesPager.add(req, newListVirtualMachineScaleSetNetworkInterfacesPager)
+		server.PagerResponderInjectNextLinks(newListVirtualMachineScaleSetNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(i.newListVirtualMachineScaleSetNetworkInterfacesPager, req)
+	resp, err := server.PagerResponderNext(newListVirtualMachineScaleSetNetworkInterfacesPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListVirtualMachineScaleSetNetworkInterfacesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(i.newListVirtualMachineScaleSetNetworkInterfacesPager) {
-		i.newListVirtualMachineScaleSetNetworkInterfacesPager = nil
+	if !server.PagerResponderMore(newListVirtualMachineScaleSetNetworkInterfacesPager) {
+		i.newListVirtualMachineScaleSetNetworkInterfacesPager.remove(req)
 	}
 	return resp, nil
 }
@@ -788,7 +831,8 @@ func (i *InterfacesServerTransport) dispatchNewListVirtualMachineScaleSetVMNetwo
 	if i.srv.NewListVirtualMachineScaleSetVMNetworkInterfacesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListVirtualMachineScaleSetVMNetworkInterfacesPager not implemented")}
 	}
-	if i.newListVirtualMachineScaleSetVMNetworkInterfacesPager == nil {
+	newListVirtualMachineScaleSetVMNetworkInterfacesPager := i.newListVirtualMachineScaleSetVMNetworkInterfacesPager.get(req)
+	if newListVirtualMachineScaleSetVMNetworkInterfacesPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<virtualmachineIndex>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -808,20 +852,22 @@ func (i *InterfacesServerTransport) dispatchNewListVirtualMachineScaleSetVMNetwo
 			return nil, err
 		}
 		resp := i.srv.NewListVirtualMachineScaleSetVMNetworkInterfacesPager(resourceGroupNameUnescaped, virtualMachineScaleSetNameUnescaped, virtualmachineIndexUnescaped, nil)
-		i.newListVirtualMachineScaleSetVMNetworkInterfacesPager = &resp
-		server.PagerResponderInjectNextLinks(i.newListVirtualMachineScaleSetVMNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse, createLink func() string) {
+		newListVirtualMachineScaleSetVMNetworkInterfacesPager = &resp
+		i.newListVirtualMachineScaleSetVMNetworkInterfacesPager.add(req, newListVirtualMachineScaleSetVMNetworkInterfacesPager)
+		server.PagerResponderInjectNextLinks(newListVirtualMachineScaleSetVMNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(i.newListVirtualMachineScaleSetVMNetworkInterfacesPager, req)
+	resp, err := server.PagerResponderNext(newListVirtualMachineScaleSetVMNetworkInterfacesPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListVirtualMachineScaleSetVMNetworkInterfacesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(i.newListVirtualMachineScaleSetVMNetworkInterfacesPager) {
-		i.newListVirtualMachineScaleSetVMNetworkInterfacesPager = nil
+	if !server.PagerResponderMore(newListVirtualMachineScaleSetVMNetworkInterfacesPager) {
+		i.newListVirtualMachineScaleSetVMNetworkInterfacesPager.remove(req)
 	}
 	return resp, nil
 }

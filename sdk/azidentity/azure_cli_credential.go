@@ -65,7 +65,13 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 	}
 	cp.init()
 	c := AzureCLICredential{tokenProvider: cp.tokenProvider}
-	c.s = newSyncer(credNameAzureCLI, cp.TenantID, cp.AdditionallyAllowedTenants, c.requestToken, c.requestToken)
+	c.s = newSyncer(
+		credNameAzureCLI,
+		cp.TenantID,
+		c.requestToken,
+		nil, // this credential doesn't have a silent auth method because the CLI handles caching
+		syncerOptions{AdditionallyAllowedTenants: cp.AdditionallyAllowedTenants},
+	)
 	return &c, nil
 }
 

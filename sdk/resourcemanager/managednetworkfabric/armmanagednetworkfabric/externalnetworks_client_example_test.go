@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/ExternalNetworks_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/ExternalNetworks_Create_MaximumSet_Gen.json
 func ExampleExternalNetworksClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,25 +29,49 @@ func ExampleExternalNetworksClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExternalNetworksClient().BeginCreate(ctx, "resourceGroupName", "example-l3domain", "example-externalnetwork", armmanagednetworkfabric.ExternalNetwork{
+	poller, err := clientFactory.NewExternalNetworksClient().BeginCreate(ctx, "example-rg", "example-l3domain", "example-externalnetwork", armmanagednetworkfabric.ExternalNetwork{
 		Properties: &armmanagednetworkfabric.ExternalNetworkProperties{
-			ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-			ImportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+			Annotation: to.Ptr("annotation"),
+			ExportRoutePolicy: &armmanagednetworkfabric.ExportRoutePolicy{
+				ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+				ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+			},
+			ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+			ImportRoutePolicy: &armmanagednetworkfabric.ImportRoutePolicy{
+				ImportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+				ImportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+			},
+			ImportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
 			OptionAProperties: &armmanagednetworkfabric.ExternalNetworkPropertiesOptionAProperties{
+				BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
+					IntervalInMilliSeconds: to.Ptr[int32](300),
+					Multiplier:             to.Ptr[int32](15),
+				},
+				EgressACLID:         to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+				IngressACLID:        to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+				Mtu:                 to.Ptr[int32](1500),
+				PeerASN:             to.Ptr[int64](65047),
+				VlanID:              to.Ptr[int32](1001),
 				PrimaryIPv4Prefix:   to.Ptr("10.1.1.0/30"),
 				PrimaryIPv6Prefix:   to.Ptr("3FFE:FFFF:0:CD30::a0/126"),
 				SecondaryIPv4Prefix: to.Ptr("10.1.1.4/30"),
 				SecondaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a4/126"),
-				BfdConfiguration:    &armmanagednetworkfabric.BfdConfiguration{},
-				Mtu:                 to.Ptr[int32](1500),
-				PeerASN:             to.Ptr[int32](65047),
-				VlanID:              to.Ptr[int32](1001),
 			},
-			OptionBProperties: &armmanagednetworkfabric.OptionBProperties{
+			OptionBProperties: &armmanagednetworkfabric.L3OptionBProperties{
 				ExportRouteTargets: []*string{
 					to.Ptr("65046:10039")},
 				ImportRouteTargets: []*string{
 					to.Ptr("65046:10039")},
+				RouteTargets: &armmanagednetworkfabric.RouteTargetInformation{
+					ExportIPv4RouteTargets: []*string{
+						to.Ptr("65046:10039")},
+					ExportIPv6RouteTargets: []*string{
+						to.Ptr("65046:10039")},
+					ImportIPv4RouteTargets: []*string{
+						to.Ptr("65046:10039")},
+					ImportIPv6RouteTargets: []*string{
+						to.Ptr("65046:10039")},
+				},
 			},
 			PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
 		},
@@ -64,52 +88,71 @@ func ExampleExternalNetworksClient_BeginCreate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ExternalNetwork = armmanagednetworkfabric.ExternalNetwork{
 	// 	Name: to.Ptr("example-externalnetwork"),
-	// 	Type: to.Ptr("microsoft.managednetworkfabric/example-externalnetwork"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/example-l3domain/externalNetworks/example-externalnetwork"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/l3IsolationDomains/externalnetworks"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain/externalNetworks/example-externalnetwork"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
 	// 		CreatedBy: to.Ptr("email@address.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("UserId"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.ExternalNetworkProperties{
-	// 		Annotation: to.Ptr("lab1"),
-	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 		DisabledOnResources: []*string{
-	// 			to.Ptr("")},
-	// 			ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-	// 			ImportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-	// 			NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName/networkToNetworkInterconnects/DefaultNNI"),
-	// 			OptionAProperties: &armmanagednetworkfabric.ExternalNetworkPropertiesOptionAProperties{
-	// 				PrimaryIPv4Prefix: to.Ptr("10.1.1.0/30"),
-	// 				PrimaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/126"),
-	// 				SecondaryIPv4Prefix: to.Ptr("10.1.1.4/30"),
-	// 				SecondaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a4/126"),
-	// 				BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
-	// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 					Interval: to.Ptr[int32](4),
-	// 					Multiplier: to.Ptr[int32](13),
-	// 				},
-	// 				FabricASN: to.Ptr[int32](65048),
-	// 				Mtu: to.Ptr[int32](1500),
-	// 				PeerASN: to.Ptr[int32](65047),
-	// 				VlanID: to.Ptr[int32](1001),
+	// 		Annotation: to.Ptr("annotation"),
+	// 		ExportRoutePolicy: &armmanagednetworkfabric.ExportRoutePolicy{
+	// 			ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 			ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		},
+	// 		ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		ImportRoutePolicy: &armmanagednetworkfabric.ImportRoutePolicy{
+	// 			ImportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 			ImportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		},
+	// 		ImportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
+	// 		OptionAProperties: &armmanagednetworkfabric.ExternalNetworkPropertiesOptionAProperties{
+	// 			BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
+	// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.BfdAdministrativeStateEnabled),
+	// 				IntervalInMilliSeconds: to.Ptr[int32](300),
+	// 				Multiplier: to.Ptr[int32](15),
 	// 			},
-	// 			OptionBProperties: &armmanagednetworkfabric.OptionBProperties{
-	// 				ExportRouteTargets: []*string{
+	// 			EgressACLID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 			FabricASN: to.Ptr[int64](1234),
+	// 			IngressACLID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 			Mtu: to.Ptr[int32](1500),
+	// 			PeerASN: to.Ptr[int64](65047),
+	// 			VlanID: to.Ptr[int32](1001),
+	// 			PrimaryIPv4Prefix: to.Ptr("10.1.1.0/30"),
+	// 			PrimaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/126"),
+	// 			SecondaryIPv4Prefix: to.Ptr("10.1.1.4/30"),
+	// 			SecondaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a4/126"),
+	// 		},
+	// 		OptionBProperties: &armmanagednetworkfabric.L3OptionBProperties{
+	// 			ExportRouteTargets: []*string{
+	// 				to.Ptr("65046:10039")},
+	// 				ImportRouteTargets: []*string{
 	// 					to.Ptr("65046:10039")},
-	// 					ImportRouteTargets: []*string{
-	// 						to.Ptr("65046:10039")},
-	// 					},
-	// 					PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
-	// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-	// 				},
-	// 			}
+	// 					RouteTargets: &armmanagednetworkfabric.RouteTargetInformation{
+	// 						ExportIPv4RouteTargets: []*string{
+	// 							to.Ptr("65046:10039")},
+	// 							ExportIPv6RouteTargets: []*string{
+	// 								to.Ptr("65046:10039")},
+	// 								ImportIPv4RouteTargets: []*string{
+	// 									to.Ptr("65046:10039")},
+	// 									ImportIPv6RouteTargets: []*string{
+	// 										to.Ptr("65046:10039")},
+	// 									},
+	// 								},
+	// 								PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
+	// 								ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
+	// 							},
+	// 						}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/ExternalNetworks_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/ExternalNetworks_Get_MaximumSet_Gen.json
 func ExampleExternalNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +163,7 @@ func ExampleExternalNetworksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExternalNetworksClient().Get(ctx, "resourceGroupName", "example-l3domain", "example-externalnetwork", nil)
+	res, err := clientFactory.NewExternalNetworksClient().Get(ctx, "rgL3IsolationDomains", "yhtr", "fltpszzikbalrzaqq", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -129,52 +172,71 @@ func ExampleExternalNetworksClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ExternalNetwork = armmanagednetworkfabric.ExternalNetwork{
 	// 	Name: to.Ptr("example-externalnetwork"),
-	// 	Type: to.Ptr("microsoft.managednetworkfabric/example-externalnetwork"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/example-l3domain/externalNetworks/example-externalnetwork"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/l3IsolationDomains/externalnetworks"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain/externalNetworks/example-externalnetwork"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
 	// 		CreatedBy: to.Ptr("email@address.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("UserId"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.ExternalNetworkProperties{
-	// 		Annotation: to.Ptr("lab1"),
-	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 		DisabledOnResources: []*string{
-	// 			to.Ptr("")},
-	// 			ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-	// 			ImportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-	// 			NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName/networkToNetworkInterconnects/DefaultNNI"),
-	// 			OptionAProperties: &armmanagednetworkfabric.ExternalNetworkPropertiesOptionAProperties{
-	// 				PrimaryIPv4Prefix: to.Ptr("10.1.1.0/30"),
-	// 				PrimaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/126"),
-	// 				SecondaryIPv4Prefix: to.Ptr("10.1.1.4/30"),
-	// 				SecondaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a4/126"),
-	// 				BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
-	// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 					Interval: to.Ptr[int32](4),
-	// 					Multiplier: to.Ptr[int32](13),
-	// 				},
-	// 				FabricASN: to.Ptr[int32](65048),
-	// 				Mtu: to.Ptr[int32](1500),
-	// 				PeerASN: to.Ptr[int32](65047),
-	// 				VlanID: to.Ptr[int32](1001),
+	// 		Annotation: to.Ptr("annotation"),
+	// 		ExportRoutePolicy: &armmanagednetworkfabric.ExportRoutePolicy{
+	// 			ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 			ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		},
+	// 		ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		ImportRoutePolicy: &armmanagednetworkfabric.ImportRoutePolicy{
+	// 			ImportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 			ImportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		},
+	// 		ImportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
+	// 		OptionAProperties: &armmanagednetworkfabric.ExternalNetworkPropertiesOptionAProperties{
+	// 			BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
+	// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.BfdAdministrativeStateEnabled),
+	// 				IntervalInMilliSeconds: to.Ptr[int32](300),
+	// 				Multiplier: to.Ptr[int32](15),
 	// 			},
-	// 			OptionBProperties: &armmanagednetworkfabric.OptionBProperties{
-	// 				ExportRouteTargets: []*string{
+	// 			EgressACLID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 			FabricASN: to.Ptr[int64](1234),
+	// 			IngressACLID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 			Mtu: to.Ptr[int32](1500),
+	// 			PeerASN: to.Ptr[int64](65047),
+	// 			VlanID: to.Ptr[int32](1001),
+	// 			PrimaryIPv4Prefix: to.Ptr("10.1.1.0/30"),
+	// 			PrimaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/126"),
+	// 			SecondaryIPv4Prefix: to.Ptr("10.1.1.4/30"),
+	// 			SecondaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a4/126"),
+	// 		},
+	// 		OptionBProperties: &armmanagednetworkfabric.L3OptionBProperties{
+	// 			ExportRouteTargets: []*string{
+	// 				to.Ptr("65046:10039")},
+	// 				ImportRouteTargets: []*string{
 	// 					to.Ptr("65046:10039")},
-	// 					ImportRouteTargets: []*string{
-	// 						to.Ptr("65046:10039")},
-	// 					},
-	// 					PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
-	// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-	// 				},
-	// 			}
+	// 					RouteTargets: &armmanagednetworkfabric.RouteTargetInformation{
+	// 						ExportIPv4RouteTargets: []*string{
+	// 							to.Ptr("65046:10039")},
+	// 							ExportIPv6RouteTargets: []*string{
+	// 								to.Ptr("65046:10039")},
+	// 								ImportIPv4RouteTargets: []*string{
+	// 									to.Ptr("65046:10039")},
+	// 									ImportIPv6RouteTargets: []*string{
+	// 										to.Ptr("65046:10039")},
+	// 									},
+	// 								},
+	// 								PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
+	// 								ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
+	// 							},
+	// 						}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/ExternalNetworks_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/ExternalNetworks_Update_MaximumSet_Gen.json
 func ExampleExternalNetworksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,26 +247,49 @@ func ExampleExternalNetworksClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExternalNetworksClient().BeginUpdate(ctx, "resourceGroupName", "example-l3domain", "example-externalnetwork", armmanagednetworkfabric.ExternalNetworkPatch{
+	poller, err := clientFactory.NewExternalNetworksClient().BeginUpdate(ctx, "example-rg", "example-l3domain", "example-externalnetwork", armmanagednetworkfabric.ExternalNetworkPatch{
 		Properties: &armmanagednetworkfabric.ExternalNetworkPatchProperties{
-			Annotation:          to.Ptr("Lab 1"),
-			ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-			ImportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-			OptionAProperties: &armmanagednetworkfabric.Layer3OptionAProperties{
+			Annotation: to.Ptr("annotation1"),
+			ExportRoutePolicy: &armmanagednetworkfabric.ExportRoutePolicy{
+				ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+				ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+			},
+			ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+			ImportRoutePolicy: &armmanagednetworkfabric.ImportRoutePolicy{
+				ImportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+				ImportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+			},
+			ImportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+			OptionAProperties: &armmanagednetworkfabric.ExternalNetworkPatchPropertiesOptionAProperties{
+				BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
+					IntervalInMilliSeconds: to.Ptr[int32](300),
+					Multiplier:             to.Ptr[int32](15),
+				},
+				EgressACLID:         to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+				IngressACLID:        to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+				Mtu:                 to.Ptr[int32](1500),
+				PeerASN:             to.Ptr[int64](65047),
+				VlanID:              to.Ptr[int32](1001),
 				PrimaryIPv4Prefix:   to.Ptr("10.1.1.0/30"),
 				PrimaryIPv6Prefix:   to.Ptr("3FFE:FFFF:0:CD30::a0/126"),
 				SecondaryIPv4Prefix: to.Ptr("10.1.1.4/30"),
 				SecondaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a4/126"),
-				BfdConfiguration:    &armmanagednetworkfabric.BfdConfiguration{},
-				Mtu:                 to.Ptr[int32](1500),
-				PeerASN:             to.Ptr[int32](65047),
-				VlanID:              to.Ptr[int32](1001),
 			},
-			OptionBProperties: &armmanagednetworkfabric.OptionBProperties{
+			OptionBProperties: &armmanagednetworkfabric.L3OptionBProperties{
 				ExportRouteTargets: []*string{
 					to.Ptr("65046:10039")},
 				ImportRouteTargets: []*string{
 					to.Ptr("65046:10039")},
+				RouteTargets: &armmanagednetworkfabric.RouteTargetInformation{
+					ExportIPv4RouteTargets: []*string{
+						to.Ptr("65046:10039")},
+					ExportIPv6RouteTargets: []*string{
+						to.Ptr("65046:10039")},
+					ImportIPv4RouteTargets: []*string{
+						to.Ptr("65046:10039")},
+					ImportIPv6RouteTargets: []*string{
+						to.Ptr("65046:10039")},
+				},
 			},
 			PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
 		},
@@ -221,52 +306,71 @@ func ExampleExternalNetworksClient_BeginUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ExternalNetwork = armmanagednetworkfabric.ExternalNetwork{
 	// 	Name: to.Ptr("example-externalnetwork"),
-	// 	Type: to.Ptr("microsoft.managednetworkfabric/example-externalnetwork"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/example-l3domain/externalNetworks/example-externalnetwork"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/l3IsolationDomains/externalnetworks"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain/externalNetworks/example-externalnetwork"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
 	// 		CreatedBy: to.Ptr("email@address.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("UserId"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.ExternalNetworkProperties{
-	// 		Annotation: to.Ptr("lab1"),
-	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 		DisabledOnResources: []*string{
-	// 			to.Ptr("")},
-	// 			ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-	// 			ImportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-	// 			NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName/networkToNetworkInterconnects/DefaultNNI"),
-	// 			OptionAProperties: &armmanagednetworkfabric.ExternalNetworkPropertiesOptionAProperties{
-	// 				PrimaryIPv4Prefix: to.Ptr("10.1.1.0/30"),
-	// 				PrimaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/126"),
-	// 				SecondaryIPv4Prefix: to.Ptr("10.1.1.4/30"),
-	// 				SecondaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a4/126"),
-	// 				BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
-	// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 					Interval: to.Ptr[int32](4),
-	// 					Multiplier: to.Ptr[int32](13),
-	// 				},
-	// 				FabricASN: to.Ptr[int32](65048),
-	// 				Mtu: to.Ptr[int32](1500),
-	// 				PeerASN: to.Ptr[int32](65047),
-	// 				VlanID: to.Ptr[int32](1001),
+	// 		Annotation: to.Ptr("annotation"),
+	// 		ExportRoutePolicy: &armmanagednetworkfabric.ExportRoutePolicy{
+	// 			ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 			ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		},
+	// 		ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		ImportRoutePolicy: &armmanagednetworkfabric.ImportRoutePolicy{
+	// 			ImportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 			ImportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		},
+	// 		ImportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
+	// 		OptionAProperties: &armmanagednetworkfabric.ExternalNetworkPropertiesOptionAProperties{
+	// 			BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
+	// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.BfdAdministrativeStateEnabled),
+	// 				IntervalInMilliSeconds: to.Ptr[int32](300),
+	// 				Multiplier: to.Ptr[int32](15),
 	// 			},
-	// 			OptionBProperties: &armmanagednetworkfabric.OptionBProperties{
-	// 				ExportRouteTargets: []*string{
+	// 			EgressACLID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 			FabricASN: to.Ptr[int64](1234),
+	// 			IngressACLID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 			Mtu: to.Ptr[int32](1500),
+	// 			PeerASN: to.Ptr[int64](65047),
+	// 			VlanID: to.Ptr[int32](1001),
+	// 			PrimaryIPv4Prefix: to.Ptr("10.1.1.0/30"),
+	// 			PrimaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/126"),
+	// 			SecondaryIPv4Prefix: to.Ptr("10.1.1.4/30"),
+	// 			SecondaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a4/126"),
+	// 		},
+	// 		OptionBProperties: &armmanagednetworkfabric.L3OptionBProperties{
+	// 			ExportRouteTargets: []*string{
+	// 				to.Ptr("65046:10039")},
+	// 				ImportRouteTargets: []*string{
 	// 					to.Ptr("65046:10039")},
-	// 					ImportRouteTargets: []*string{
-	// 						to.Ptr("65046:10039")},
-	// 					},
-	// 					PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
-	// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-	// 				},
-	// 			}
+	// 					RouteTargets: &armmanagednetworkfabric.RouteTargetInformation{
+	// 						ExportIPv4RouteTargets: []*string{
+	// 							to.Ptr("65046:10039")},
+	// 							ExportIPv6RouteTargets: []*string{
+	// 								to.Ptr("65046:10039")},
+	// 								ImportIPv4RouteTargets: []*string{
+	// 									to.Ptr("65046:10039")},
+	// 									ImportIPv6RouteTargets: []*string{
+	// 										to.Ptr("65046:10039")},
+	// 									},
+	// 								},
+	// 								PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
+	// 								ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
+	// 							},
+	// 						}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/ExternalNetworks_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/ExternalNetworks_Delete_MaximumSet_Gen.json
 func ExampleExternalNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,7 +381,7 @@ func ExampleExternalNetworksClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExternalNetworksClient().BeginDelete(ctx, "resourceGroupName", "example-l3domain", "example-externalnetwork", nil)
+	poller, err := clientFactory.NewExternalNetworksClient().BeginDelete(ctx, "example-rg", "example-l3domain", "example-externalnetwork", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -287,8 +391,8 @@ func ExampleExternalNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/ExternalNetworks_List_MaximumSet_Gen.json
-func ExampleExternalNetworksClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/ExternalNetworks_ListByL3IsolationDomain_MaximumSet_Gen.json
+func ExampleExternalNetworksClient_NewListByL3IsolationDomainPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -298,7 +402,7 @@ func ExampleExternalNetworksClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewExternalNetworksClient().NewListPager("resourceGroupName", "example-l3domain", nil)
+	pager := clientFactory.NewExternalNetworksClient().NewListByL3IsolationDomainPager("example-rg", "example-l3domain", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -313,54 +417,73 @@ func ExampleExternalNetworksClient_NewListPager() {
 		// 	Value: []*armmanagednetworkfabric.ExternalNetwork{
 		// 		{
 		// 			Name: to.Ptr("example-externalnetwork"),
-		// 			Type: to.Ptr("microsoft.managednetworkfabric/example-externalnetwork"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/example-l3domain/externalNetworks/example-externalnetwork"),
+		// 			Type: to.Ptr("microsoft.managednetworkfabric/l3IsolationDomains/externalnetworks"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain/externalNetworks/example-externalnetwork"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
 		// 				CreatedBy: to.Ptr("email@address.com"),
 		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("User"),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("UserId"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
 		// 			Properties: &armmanagednetworkfabric.ExternalNetworkProperties{
-		// 				Annotation: to.Ptr("lab1"),
-		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-		// 				DisabledOnResources: []*string{
-		// 					to.Ptr("")},
-		// 					ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-		// 					ImportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-		// 					NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName/networkToNetworkInterconnects/DefaultNNI"),
-		// 					OptionAProperties: &armmanagednetworkfabric.ExternalNetworkPropertiesOptionAProperties{
-		// 						PrimaryIPv4Prefix: to.Ptr("10.1.1.0/30"),
-		// 						PrimaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/126"),
-		// 						SecondaryIPv4Prefix: to.Ptr("10.1.1.4/30"),
-		// 						SecondaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a4/126"),
-		// 						BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
-		// 							AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-		// 							Interval: to.Ptr[int32](4),
-		// 							Multiplier: to.Ptr[int32](13),
-		// 						},
-		// 						FabricASN: to.Ptr[int32](65048),
-		// 						Mtu: to.Ptr[int32](1500),
-		// 						PeerASN: to.Ptr[int32](65047),
-		// 						VlanID: to.Ptr[int32](1001),
+		// 				Annotation: to.Ptr("annotation"),
+		// 				ExportRoutePolicy: &armmanagednetworkfabric.ExportRoutePolicy{
+		// 					ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+		// 					ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+		// 				},
+		// 				ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+		// 				ImportRoutePolicy: &armmanagednetworkfabric.ImportRoutePolicy{
+		// 					ImportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+		// 					ImportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+		// 				},
+		// 				ImportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 				ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 				NetworkToNetworkInterconnectID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni"),
+		// 				OptionAProperties: &armmanagednetworkfabric.ExternalNetworkPropertiesOptionAProperties{
+		// 					BfdConfiguration: &armmanagednetworkfabric.BfdConfiguration{
+		// 						AdministrativeState: to.Ptr(armmanagednetworkfabric.BfdAdministrativeStateEnabled),
+		// 						IntervalInMilliSeconds: to.Ptr[int32](300),
+		// 						Multiplier: to.Ptr[int32](15),
 		// 					},
-		// 					OptionBProperties: &armmanagednetworkfabric.OptionBProperties{
-		// 						ExportRouteTargets: []*string{
+		// 					EgressACLID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+		// 					FabricASN: to.Ptr[int64](1234),
+		// 					IngressACLID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+		// 					Mtu: to.Ptr[int32](1500),
+		// 					PeerASN: to.Ptr[int64](65047),
+		// 					VlanID: to.Ptr[int32](1001),
+		// 					PrimaryIPv4Prefix: to.Ptr("10.1.1.0/30"),
+		// 					PrimaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/126"),
+		// 					SecondaryIPv4Prefix: to.Ptr("10.1.1.4/30"),
+		// 					SecondaryIPv6Prefix: to.Ptr("3FFE:FFFF:0:CD30::a4/126"),
+		// 				},
+		// 				OptionBProperties: &armmanagednetworkfabric.L3OptionBProperties{
+		// 					ExportRouteTargets: []*string{
+		// 						to.Ptr("65046:10039")},
+		// 						ImportRouteTargets: []*string{
 		// 							to.Ptr("65046:10039")},
-		// 							ImportRouteTargets: []*string{
-		// 								to.Ptr("65046:10039")},
-		// 							},
-		// 							PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
-		// 							ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-		// 						},
-		// 				}},
-		// 			}
+		// 							RouteTargets: &armmanagednetworkfabric.RouteTargetInformation{
+		// 								ExportIPv4RouteTargets: []*string{
+		// 									to.Ptr("65046:10039")},
+		// 									ExportIPv6RouteTargets: []*string{
+		// 										to.Ptr("65046:10039")},
+		// 										ImportIPv4RouteTargets: []*string{
+		// 											to.Ptr("65046:10039")},
+		// 											ImportIPv6RouteTargets: []*string{
+		// 												to.Ptr("65046:10039")},
+		// 											},
+		// 										},
+		// 										PeeringOption: to.Ptr(armmanagednetworkfabric.PeeringOptionOptionA),
+		// 										ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
+		// 									},
+		// 							}},
+		// 						}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/ExternalNetworks_updateAdministrativeState_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/ExternalNetworks_UpdateAdministrativeState_MaximumSet_Gen.json
 func ExampleExternalNetworksClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -371,22 +494,41 @@ func ExampleExternalNetworksClient_BeginUpdateAdministrativeState() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExternalNetworksClient().BeginUpdateAdministrativeState(ctx, "resourceGroupName", "example-l3domain", "example-externalnetwork", armmanagednetworkfabric.UpdateAdministrativeState{
+	poller, err := clientFactory.NewExternalNetworksClient().BeginUpdateAdministrativeState(ctx, "example-rg", "example-l3domain", "example-externalnetwork", armmanagednetworkfabric.UpdateAdministrativeState{
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain")},
-		State: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnable),
+			to.Ptr("")},
+		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CommonPostActionResponseForStateUpdate = armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	Error: &armmanagednetworkfabric.ErrorDetail{
+	// 		AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 			{
+	// 				Info: map[string]any{
+	// 				},
+	// 				Type: to.Ptr(""),
+	// 		}},
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 		Target: to.Ptr(""),
+	// 		Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 		},
+	// 	},
+	// 	ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/ExternalNetworks_updateBgpAdministrativeState_MaximumSet_Gen.json
-func ExampleExternalNetworksClient_BeginUpdateBgpAdministrativeState() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/ExternalNetworks_UpdateStaticRouteBfdAdministrativeState_MaximumSet_Gen.json
+func ExampleExternalNetworksClient_BeginUpdateStaticRouteBfdAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -396,89 +538,35 @@ func ExampleExternalNetworksClient_BeginUpdateBgpAdministrativeState() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExternalNetworksClient().BeginUpdateBgpAdministrativeState(ctx, "resourceGroupName", "example-l3domain", "example-externalnetwork", armmanagednetworkfabric.UpdateAdministrativeState{
+	poller, err := clientFactory.NewExternalNetworksClient().BeginUpdateStaticRouteBfdAdministrativeState(ctx, "example-rg", "example-l3domain", "example-externalnetwork", armmanagednetworkfabric.UpdateAdministrativeState{
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain")},
-		State: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnable),
+			to.Ptr("")},
+		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/ExternalNetworks_updateBfdForBgpAdministrativeState_MaximumSet_Gen.json
-func ExampleExternalNetworksClient_BeginUpdateBfdForBgpAdministrativeState() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewExternalNetworksClient().BeginUpdateBfdForBgpAdministrativeState(ctx, "resourceGroupName", "example-l3domain", "example-externalnetwork", armmanagednetworkfabric.UpdateAdministrativeState{
-		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain")},
-		State: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnable),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/ExternalNetworks_clearIpv6Neighbors_MaximumSet_Gen.json
-func ExampleExternalNetworksClient_BeginClearIPv6Neighbors() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewExternalNetworksClient().BeginClearIPv6Neighbors(ctx, "resourceGroupName", "example-l3domain", "example-externalnetwork", armmanagednetworkfabric.EnableDisableOnResources{
-		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain")},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/ExternalNetworks_clearArpEntries_MaximumSet_Gen.json
-func ExampleExternalNetworksClient_BeginClearArpEntries() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewExternalNetworksClient().BeginClearArpEntries(ctx, "resourceGroupName", "example-l3domain", "example-externalnetwork", armmanagednetworkfabric.EnableDisableOnResources{
-		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain")},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CommonPostActionResponseForStateUpdate = armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	Error: &armmanagednetworkfabric.ErrorDetail{
+	// 		AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 			{
+	// 				Info: map[string]any{
+	// 				},
+	// 				Type: to.Ptr(""),
+	// 		}},
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 		Target: to.Ptr(""),
+	// 		Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 		},
+	// 	},
+	// 	ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// }
 }

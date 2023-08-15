@@ -58,23 +58,32 @@ type SnapshotsServer struct {
 }
 
 // NewSnapshotsServerTransport creates a new instance of SnapshotsServerTransport with the provided implementation.
-// The returned SnapshotsServerTransport instance is connected to an instance of armcompute.SnapshotsClient by way of the
-// undefined.Transporter field.
+// The returned SnapshotsServerTransport instance is connected to an instance of armcompute.SnapshotsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSnapshotsServerTransport(srv *SnapshotsServer) *SnapshotsServerTransport {
-	return &SnapshotsServerTransport{srv: srv}
+	return &SnapshotsServerTransport{
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]](),
+		beginGrantAccess:            newTracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]](),
+		beginRevokeAccess:           newTracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]](),
+	}
 }
 
 // SnapshotsServerTransport connects instances of armcompute.SnapshotsClient to instances of SnapshotsServer.
 // Don't use this type directly, use NewSnapshotsServerTransport instead.
 type SnapshotsServerTransport struct {
 	srv                         *SnapshotsServer
-	beginCreateOrUpdate         *azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]
-	beginDelete                 *azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]
-	beginGrantAccess            *azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]
-	newListPager                *azfake.PagerResponder[armcompute.SnapshotsClientListResponse]
-	newListByResourceGroupPager *azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]
-	beginRevokeAccess           *azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]
-	beginUpdate                 *azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]]
+	beginGrantAccess            *tracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]]
+	beginRevokeAccess           *tracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for SnapshotsServerTransport.
@@ -120,7 +129,8 @@ func (s *SnapshotsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request
 	if s.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if s.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := s.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -143,19 +153,21 @@ func (s *SnapshotsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		s.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginCreateOrUpdate) {
-		s.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		s.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -165,7 +177,8 @@ func (s *SnapshotsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	if s.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if s.beginDelete == nil {
+	beginDelete := s.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -184,19 +197,21 @@ func (s *SnapshotsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginDelete = &respr
+		beginDelete = &respr
+		s.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginDelete) {
-		s.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		s.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -239,7 +254,8 @@ func (s *SnapshotsServerTransport) dispatchBeginGrantAccess(req *http.Request) (
 	if s.srv.BeginGrantAccess == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGrantAccess not implemented")}
 	}
-	if s.beginGrantAccess == nil {
+	beginGrantAccess := s.beginGrantAccess.get(req)
+	if beginGrantAccess == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/beginGetAccess`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -262,19 +278,21 @@ func (s *SnapshotsServerTransport) dispatchBeginGrantAccess(req *http.Request) (
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginGrantAccess = &respr
+		beginGrantAccess = &respr
+		s.beginGrantAccess.add(req, beginGrantAccess)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginGrantAccess, req)
+	resp, err := server.PollerResponderNext(beginGrantAccess, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginGrantAccess.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginGrantAccess) {
-		s.beginGrantAccess = nil
+	if !server.PollerResponderMore(beginGrantAccess) {
+		s.beginGrantAccess.remove(req)
 	}
 
 	return resp, nil
@@ -284,7 +302,8 @@ func (s *SnapshotsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if s.newListPager == nil {
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -292,20 +311,22 @@ func (s *SnapshotsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := s.srv.NewListPager(nil)
-		s.newListPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListPager, req, func(page *armcompute.SnapshotsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.SnapshotsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListPager) {
-		s.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -314,7 +335,8 @@ func (s *SnapshotsServerTransport) dispatchNewListByResourceGroupPager(req *http
 	if s.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if s.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -326,20 +348,22 @@ func (s *SnapshotsServerTransport) dispatchNewListByResourceGroupPager(req *http
 			return nil, err
 		}
 		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		s.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListByResourceGroupPager, req, func(page *armcompute.SnapshotsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.SnapshotsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListByResourceGroupPager) {
-		s.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		s.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -348,7 +372,8 @@ func (s *SnapshotsServerTransport) dispatchBeginRevokeAccess(req *http.Request) 
 	if s.srv.BeginRevokeAccess == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRevokeAccess not implemented")}
 	}
-	if s.beginRevokeAccess == nil {
+	beginRevokeAccess := s.beginRevokeAccess.get(req)
+	if beginRevokeAccess == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endGetAccess`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -367,19 +392,21 @@ func (s *SnapshotsServerTransport) dispatchBeginRevokeAccess(req *http.Request) 
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginRevokeAccess = &respr
+		beginRevokeAccess = &respr
+		s.beginRevokeAccess.add(req, beginRevokeAccess)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginRevokeAccess, req)
+	resp, err := server.PollerResponderNext(beginRevokeAccess, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginRevokeAccess.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginRevokeAccess) {
-		s.beginRevokeAccess = nil
+	if !server.PollerResponderMore(beginRevokeAccess) {
+		s.beginRevokeAccess.remove(req)
 	}
 
 	return resp, nil
@@ -389,7 +416,8 @@ func (s *SnapshotsServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 	if s.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if s.beginUpdate == nil {
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -412,19 +440,21 @@ func (s *SnapshotsServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginUpdate = &respr
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginUpdate) {
-		s.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
 	}
 
 	return resp, nil

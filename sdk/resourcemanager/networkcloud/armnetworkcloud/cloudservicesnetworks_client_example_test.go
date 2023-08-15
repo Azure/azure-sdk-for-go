@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/CloudServicesNetworks_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/CloudServicesNetworks_ListBySubscription.json
 func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("cloudServicesNetworkName"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/cloudServicesNetworks"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -60,7 +60,7 @@ func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 		// 				"key2": to.Ptr("myvalue2"),
 		// 			},
 		// 			ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.CloudServicesNetworkProperties{
@@ -73,32 +73,30 @@ func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 		// 								Port: to.Ptr[int64](443),
 		// 						}},
 		// 				}},
-		// 				ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-		// 				DetailedStatus: to.Ptr(armnetworkcloud.CloudServicesNetworkDetailedStatusAvailable),
-		// 				DetailedStatusMessage: to.Ptr("Cloud services network is up"),
-		// 				EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
-		// 				EnabledEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
-		// 					{
-		// 						Category: to.Ptr("azure-resource-management"),
-		// 						Endpoints: []*armnetworkcloud.EndpointDependency{
-		// 							{
-		// 								DomainName: to.Ptr("https://storageaccountex.blob.core.windows.net"),
-		// 								Port: to.Ptr[int64](443),
-		// 						}},
-		// 				}},
-		// 				HybridAksClustersAssociatedIDs: []*string{
-		// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
+		// 				AssociatedResourceIDs: []*string{
+		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+		// 					ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 					DetailedStatus: to.Ptr(armnetworkcloud.CloudServicesNetworkDetailedStatusAvailable),
+		// 					DetailedStatusMessage: to.Ptr("Cloud services network is up"),
+		// 					EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
+		// 					EnabledEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
+		// 						{
+		// 							Category: to.Ptr("azure-resource-management"),
+		// 							Endpoints: []*armnetworkcloud.EndpointDependency{
+		// 								{
+		// 									DomainName: to.Ptr("https://storageaccountex.blob.core.windows.net"),
+		// 									Port: to.Ptr[int64](443),
+		// 							}},
+		// 					}},
 		// 					InterfaceName: to.Ptr("eth0"),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.CloudServicesNetworkProvisioningStateSucceeded),
-		// 					VirtualMachinesAssociatedIDs: []*string{
-		// 						to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-		// 					},
-		// 			}},
-		// 		}
+		// 				},
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/CloudServicesNetworks_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/CloudServicesNetworks_ListByResourceGroup.json
 func ExampleCloudServicesNetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +123,7 @@ func ExampleCloudServicesNetworksClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("cloudServicesNetworkName"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/cloudServicesNetworks"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -140,7 +138,7 @@ func ExampleCloudServicesNetworksClient_NewListByResourceGroupPager() {
 		// 				"key2": to.Ptr("myvalue2"),
 		// 			},
 		// 			ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.CloudServicesNetworkProperties{
@@ -153,32 +151,30 @@ func ExampleCloudServicesNetworksClient_NewListByResourceGroupPager() {
 		// 								Port: to.Ptr[int64](443),
 		// 						}},
 		// 				}},
-		// 				ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-		// 				DetailedStatus: to.Ptr(armnetworkcloud.CloudServicesNetworkDetailedStatusAvailable),
-		// 				DetailedStatusMessage: to.Ptr("Cloud services network is up"),
-		// 				EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
-		// 				EnabledEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
-		// 					{
-		// 						Category: to.Ptr("azure-resource-management"),
-		// 						Endpoints: []*armnetworkcloud.EndpointDependency{
-		// 							{
-		// 								DomainName: to.Ptr("https://storageaccountex.blob.core.windows.net"),
-		// 								Port: to.Ptr[int64](443),
-		// 						}},
-		// 				}},
-		// 				HybridAksClustersAssociatedIDs: []*string{
-		// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
+		// 				AssociatedResourceIDs: []*string{
+		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+		// 					ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 					DetailedStatus: to.Ptr(armnetworkcloud.CloudServicesNetworkDetailedStatusAvailable),
+		// 					DetailedStatusMessage: to.Ptr("Cloud services network is up"),
+		// 					EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
+		// 					EnabledEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
+		// 						{
+		// 							Category: to.Ptr("azure-resource-management"),
+		// 							Endpoints: []*armnetworkcloud.EndpointDependency{
+		// 								{
+		// 									DomainName: to.Ptr("https://storageaccountex.blob.core.windows.net"),
+		// 									Port: to.Ptr[int64](443),
+		// 							}},
+		// 					}},
 		// 					InterfaceName: to.Ptr("eth0"),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.CloudServicesNetworkProvisioningStateSucceeded),
-		// 					VirtualMachinesAssociatedIDs: []*string{
-		// 						to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-		// 					},
-		// 			}},
-		// 		}
+		// 				},
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/CloudServicesNetworks_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/CloudServicesNetworks_Get.json
 func ExampleCloudServicesNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +195,7 @@ func ExampleCloudServicesNetworksClient_Get() {
 	// res.CloudServicesNetwork = armnetworkcloud.CloudServicesNetwork{
 	// 	Name: to.Ptr("cloudServicesNetworkName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/cloudServicesNetworks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -214,7 +210,7 @@ func ExampleCloudServicesNetworksClient_Get() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.CloudServicesNetworkProperties{
@@ -227,30 +223,28 @@ func ExampleCloudServicesNetworksClient_Get() {
 	// 						Port: to.Ptr[int64](443),
 	// 				}},
 	// 		}},
-	// 		ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		DetailedStatus: to.Ptr(armnetworkcloud.CloudServicesNetworkDetailedStatusAvailable),
-	// 		DetailedStatusMessage: to.Ptr("Cloud services network is up"),
-	// 		EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
-	// 		EnabledEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
-	// 			{
-	// 				Category: to.Ptr("azure-resource-management"),
-	// 				Endpoints: []*armnetworkcloud.EndpointDependency{
-	// 					{
-	// 						DomainName: to.Ptr("https://storageaccountex.blob.core.windows.net"),
-	// 						Port: to.Ptr[int64](443),
-	// 				}},
-	// 		}},
-	// 		HybridAksClustersAssociatedIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
+	// 		AssociatedResourceIDs: []*string{
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.CloudServicesNetworkDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("Cloud services network is up"),
+	// 			EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
+	// 			EnabledEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
+	// 				{
+	// 					Category: to.Ptr("azure-resource-management"),
+	// 					Endpoints: []*armnetworkcloud.EndpointDependency{
+	// 						{
+	// 							DomainName: to.Ptr("https://storageaccountex.blob.core.windows.net"),
+	// 							Port: to.Ptr[int64](443),
+	// 					}},
+	// 			}},
 	// 			InterfaceName: to.Ptr("eth0"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.CloudServicesNetworkProvisioningStateSucceeded),
-	// 			VirtualMachinesAssociatedIDs: []*string{
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-	// 			},
-	// 		}
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/CloudServicesNetworks_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/CloudServicesNetworks_Create.json
 func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +262,7 @@ func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 			"key2": to.Ptr("myvalue2"),
 		},
 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 			Type: to.Ptr("CustomLocation"),
 		},
 		Properties: &armnetworkcloud.CloudServicesNetworkProperties{
@@ -297,7 +291,7 @@ func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 	// res.CloudServicesNetwork = armnetworkcloud.CloudServicesNetwork{
 	// 	Name: to.Ptr("cloudServicesNetworkName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/cloudServicesNetworks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -312,7 +306,7 @@ func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.CloudServicesNetworkProperties{
@@ -325,30 +319,28 @@ func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 	// 						Port: to.Ptr[int64](443),
 	// 				}},
 	// 		}},
-	// 		ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		DetailedStatus: to.Ptr(armnetworkcloud.CloudServicesNetworkDetailedStatusAvailable),
-	// 		DetailedStatusMessage: to.Ptr("Cloud services network is up"),
-	// 		EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
-	// 		EnabledEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
-	// 			{
-	// 				Category: to.Ptr("azure-resource-management"),
-	// 				Endpoints: []*armnetworkcloud.EndpointDependency{
-	// 					{
-	// 						DomainName: to.Ptr("https://storageaccountex.blob.core.windows.net"),
-	// 						Port: to.Ptr[int64](443),
-	// 				}},
-	// 		}},
-	// 		HybridAksClustersAssociatedIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
+	// 		AssociatedResourceIDs: []*string{
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.CloudServicesNetworkDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("Cloud services network is up"),
+	// 			EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
+	// 			EnabledEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
+	// 				{
+	// 					Category: to.Ptr("azure-resource-management"),
+	// 					Endpoints: []*armnetworkcloud.EndpointDependency{
+	// 						{
+	// 							DomainName: to.Ptr("https://storageaccountex.blob.core.windows.net"),
+	// 							Port: to.Ptr[int64](443),
+	// 					}},
+	// 			}},
 	// 			InterfaceName: to.Ptr("eth0"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.CloudServicesNetworkProvisioningStateSucceeded),
-	// 			VirtualMachinesAssociatedIDs: []*string{
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-	// 			},
-	// 		}
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/CloudServicesNetworks_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/CloudServicesNetworks_Delete.json
 func ExampleCloudServicesNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,7 +361,7 @@ func ExampleCloudServicesNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/CloudServicesNetworks_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/CloudServicesNetworks_Patch.json
 func ExampleCloudServicesNetworksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -411,7 +403,7 @@ func ExampleCloudServicesNetworksClient_BeginUpdate() {
 	// res.CloudServicesNetwork = armnetworkcloud.CloudServicesNetwork{
 	// 	Name: to.Ptr("cloudServicesNetworkName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/cloudServicesNetworks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -426,7 +418,7 @@ func ExampleCloudServicesNetworksClient_BeginUpdate() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.CloudServicesNetworkProperties{
@@ -439,25 +431,23 @@ func ExampleCloudServicesNetworksClient_BeginUpdate() {
 	// 						Port: to.Ptr[int64](443),
 	// 				}},
 	// 		}},
-	// 		ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		DetailedStatus: to.Ptr(armnetworkcloud.CloudServicesNetworkDetailedStatusAvailable),
-	// 		DetailedStatusMessage: to.Ptr("Cloud services network is up"),
-	// 		EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
-	// 		EnabledEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
-	// 			{
-	// 				Category: to.Ptr("azure-resource-management"),
-	// 				Endpoints: []*armnetworkcloud.EndpointDependency{
-	// 					{
-	// 						DomainName: to.Ptr("https://storageaccountex.blob.core.windows.net"),
-	// 						Port: to.Ptr[int64](443),
-	// 				}},
-	// 		}},
-	// 		HybridAksClustersAssociatedIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
+	// 		AssociatedResourceIDs: []*string{
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.CloudServicesNetworkDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("Cloud services network is up"),
+	// 			EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
+	// 			EnabledEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
+	// 				{
+	// 					Category: to.Ptr("azure-resource-management"),
+	// 					Endpoints: []*armnetworkcloud.EndpointDependency{
+	// 						{
+	// 							DomainName: to.Ptr("https://storageaccountex.blob.core.windows.net"),
+	// 							Port: to.Ptr[int64](443),
+	// 					}},
+	// 			}},
 	// 			InterfaceName: to.Ptr("eth0"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.CloudServicesNetworkProvisioningStateSucceeded),
-	// 			VirtualMachinesAssociatedIDs: []*string{
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-	// 			},
-	// 		}
+	// 		},
+	// 	}
 }

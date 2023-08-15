@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,17 +29,20 @@ type UsagesServer struct {
 }
 
 // NewUsagesServerTransport creates a new instance of UsagesServerTransport with the provided implementation.
-// The returned UsagesServerTransport instance is connected to an instance of armnetwork.UsagesClient by way of the
-// undefined.Transporter field.
+// The returned UsagesServerTransport instance is connected to an instance of armnetwork.UsagesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewUsagesServerTransport(srv *UsagesServer) *UsagesServerTransport {
-	return &UsagesServerTransport{srv: srv}
+	return &UsagesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.UsagesClientListResponse]](),
+	}
 }
 
 // UsagesServerTransport connects instances of armnetwork.UsagesClient to instances of UsagesServer.
 // Don't use this type directly, use NewUsagesServerTransport instead.
 type UsagesServerTransport struct {
 	srv          *UsagesServer
-	newListPager *azfake.PagerResponder[armnetwork.UsagesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.UsagesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for UsagesServerTransport.
@@ -71,7 +74,8 @@ func (u *UsagesServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 	if u.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if u.newListPager == nil {
+	newListPager := u.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -83,20 +87,22 @@ func (u *UsagesServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 			return nil, err
 		}
 		resp := u.srv.NewListPager(locationUnescaped, nil)
-		u.newListPager = &resp
-		server.PagerResponderInjectNextLinks(u.newListPager, req, func(page *armnetwork.UsagesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		u.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.UsagesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(u.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		u.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(u.newListPager) {
-		u.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		u.newListPager.remove(req)
 	}
 	return resp, nil
 }

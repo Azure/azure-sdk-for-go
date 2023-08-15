@@ -50,18 +50,22 @@ type ActivityLogAlertsServer struct {
 }
 
 // NewActivityLogAlertsServerTransport creates a new instance of ActivityLogAlertsServerTransport with the provided implementation.
-// The returned ActivityLogAlertsServerTransport instance is connected to an instance of armmonitor.ActivityLogAlertsClient by way of the
-// undefined.Transporter field.
+// The returned ActivityLogAlertsServerTransport instance is connected to an instance of armmonitor.ActivityLogAlertsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewActivityLogAlertsServerTransport(srv *ActivityLogAlertsServer) *ActivityLogAlertsServerTransport {
-	return &ActivityLogAlertsServerTransport{srv: srv}
+	return &ActivityLogAlertsServerTransport{
+		srv:                          srv,
+		newListByResourceGroupPager:  newTracker[azfake.PagerResponder[armmonitor.ActivityLogAlertsClientListByResourceGroupResponse]](),
+		newListBySubscriptionIDPager: newTracker[azfake.PagerResponder[armmonitor.ActivityLogAlertsClientListBySubscriptionIDResponse]](),
+	}
 }
 
 // ActivityLogAlertsServerTransport connects instances of armmonitor.ActivityLogAlertsClient to instances of ActivityLogAlertsServer.
 // Don't use this type directly, use NewActivityLogAlertsServerTransport instead.
 type ActivityLogAlertsServerTransport struct {
 	srv                          *ActivityLogAlertsServer
-	newListByResourceGroupPager  *azfake.PagerResponder[armmonitor.ActivityLogAlertsClientListByResourceGroupResponse]
-	newListBySubscriptionIDPager *azfake.PagerResponder[armmonitor.ActivityLogAlertsClientListBySubscriptionIDResponse]
+	newListByResourceGroupPager  *tracker[azfake.PagerResponder[armmonitor.ActivityLogAlertsClientListByResourceGroupResponse]]
+	newListBySubscriptionIDPager *tracker[azfake.PagerResponder[armmonitor.ActivityLogAlertsClientListBySubscriptionIDResponse]]
 }
 
 // Do implements the policy.Transporter interface for ActivityLogAlertsServerTransport.
@@ -206,7 +210,8 @@ func (a *ActivityLogAlertsServerTransport) dispatchNewListByResourceGroupPager(r
 	if a.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if a.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/activityLogAlerts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -218,20 +223,22 @@ func (a *ActivityLogAlertsServerTransport) dispatchNewListByResourceGroupPager(r
 			return nil, err
 		}
 		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		a.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListByResourceGroupPager, req, func(page *armmonitor.ActivityLogAlertsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmonitor.ActivityLogAlertsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListByResourceGroupPager) {
-		a.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		a.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -240,7 +247,8 @@ func (a *ActivityLogAlertsServerTransport) dispatchNewListBySubscriptionIDPager(
 	if a.srv.NewListBySubscriptionIDPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionIDPager not implemented")}
 	}
-	if a.newListBySubscriptionIDPager == nil {
+	newListBySubscriptionIDPager := a.newListBySubscriptionIDPager.get(req)
+	if newListBySubscriptionIDPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/activityLogAlerts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -248,20 +256,22 @@ func (a *ActivityLogAlertsServerTransport) dispatchNewListBySubscriptionIDPager(
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListBySubscriptionIDPager(nil)
-		a.newListBySubscriptionIDPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListBySubscriptionIDPager, req, func(page *armmonitor.ActivityLogAlertsClientListBySubscriptionIDResponse, createLink func() string) {
+		newListBySubscriptionIDPager = &resp
+		a.newListBySubscriptionIDPager.add(req, newListBySubscriptionIDPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionIDPager, req, func(page *armmonitor.ActivityLogAlertsClientListBySubscriptionIDResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListBySubscriptionIDPager, req)
+	resp, err := server.PagerResponderNext(newListBySubscriptionIDPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListBySubscriptionIDPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListBySubscriptionIDPager) {
-		a.newListBySubscriptionIDPager = nil
+	if !server.PagerResponderMore(newListBySubscriptionIDPager) {
+		a.newListBySubscriptionIDPager.remove(req)
 	}
 	return resp, nil
 }

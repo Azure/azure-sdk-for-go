@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -43,18 +43,22 @@ type ConnectivityConfigurationsServer struct {
 }
 
 // NewConnectivityConfigurationsServerTransport creates a new instance of ConnectivityConfigurationsServerTransport with the provided implementation.
-// The returned ConnectivityConfigurationsServerTransport instance is connected to an instance of armnetwork.ConnectivityConfigurationsClient by way of the
-// undefined.Transporter field.
+// The returned ConnectivityConfigurationsServerTransport instance is connected to an instance of armnetwork.ConnectivityConfigurationsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewConnectivityConfigurationsServerTransport(srv *ConnectivityConfigurationsServer) *ConnectivityConfigurationsServerTransport {
-	return &ConnectivityConfigurationsServerTransport{srv: srv}
+	return &ConnectivityConfigurationsServerTransport{
+		srv:          srv,
+		beginDelete:  newTracker[azfake.PollerResponder[armnetwork.ConnectivityConfigurationsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.ConnectivityConfigurationsClientListResponse]](),
+	}
 }
 
 // ConnectivityConfigurationsServerTransport connects instances of armnetwork.ConnectivityConfigurationsClient to instances of ConnectivityConfigurationsServer.
 // Don't use this type directly, use NewConnectivityConfigurationsServerTransport instead.
 type ConnectivityConfigurationsServerTransport struct {
 	srv          *ConnectivityConfigurationsServer
-	beginDelete  *azfake.PollerResponder[armnetwork.ConnectivityConfigurationsClientDeleteResponse]
-	newListPager *azfake.PagerResponder[armnetwork.ConnectivityConfigurationsClientListResponse]
+	beginDelete  *tracker[azfake.PollerResponder[armnetwork.ConnectivityConfigurationsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.ConnectivityConfigurationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConnectivityConfigurationsServerTransport.
@@ -133,7 +137,8 @@ func (c *ConnectivityConfigurationsServerTransport) dispatchBeginDelete(req *htt
 	if c.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if c.beginDelete == nil {
+	beginDelete := c.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectivityConfigurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -171,19 +176,21 @@ func (c *ConnectivityConfigurationsServerTransport) dispatchBeginDelete(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginDelete = &respr
+		beginDelete = &respr
+		c.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginDelete) {
-		c.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		c.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -230,7 +237,8 @@ func (c *ConnectivityConfigurationsServerTransport) dispatchNewListPager(req *ht
 	if c.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if c.newListPager == nil {
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectivityConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -273,20 +281,22 @@ func (c *ConnectivityConfigurationsServerTransport) dispatchNewListPager(req *ht
 			}
 		}
 		resp := c.srv.NewListPager(resourceGroupNameUnescaped, networkManagerNameUnescaped, options)
-		c.newListPager = &resp
-		server.PagerResponderInjectNextLinks(c.newListPager, req, func(page *armnetwork.ConnectivityConfigurationsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ConnectivityConfigurationsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(c.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(c.newListPager) {
-		c.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
 	}
 	return resp, nil
 }

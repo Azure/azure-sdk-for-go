@@ -53,3 +53,6 @@ vendor/
 
 # Default Test Proxy Assets restore directory
 .assets
+
+# Default Test Proxy tools install directory
+.proxy

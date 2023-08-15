@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/L3Networks_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/L3Networks_ListBySubscription.json
 func ExampleL3NetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleL3NetworksClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("l3NetworkName"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/l3Networks"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -60,33 +60,29 @@ func ExampleL3NetworksClient_NewListBySubscriptionPager() {
 		// 				"key2": to.Ptr("myvalue2"),
 		// 			},
 		// 			ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.L3NetworkProperties{
-		// 				ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-		// 				DetailedStatus: to.Ptr(armnetworkcloud.L3NetworkDetailedStatusAvailable),
-		// 				DetailedStatusMessage: to.Ptr("L3 network is up"),
-		// 				HybridAksClustersAssociatedIDs: []*string{
-		// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
-		// 					HybridAksIpamEnabled: to.Ptr(armnetworkcloud.HybridAksIpamEnabledTrue),
-		// 					HybridAksPluginType: to.Ptr(armnetworkcloud.HybridAksPluginTypeDPDK),
+		// 				AssociatedResourceIDs: []*string{
+		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+		// 					ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 					DetailedStatus: to.Ptr(armnetworkcloud.L3NetworkDetailedStatusAvailable),
+		// 					DetailedStatusMessage: to.Ptr("L3 network is up"),
 		// 					InterfaceName: to.Ptr("eth0"),
 		// 					IPAllocationType: to.Ptr(armnetworkcloud.IPAllocationTypeDualStack),
 		// 					IPv4ConnectedPrefix: to.Ptr("198.51.100.0/24"),
 		// 					IPv6ConnectedPrefix: to.Ptr("2001:db8::/64"),
-		// 					L3IsolationDomainID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"),
+		// 					L3IsolationDomainID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.L3NetworkProvisioningStateSucceeded),
-		// 					VirtualMachinesAssociatedIDs: []*string{
-		// 						to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-		// 						Vlan: to.Ptr[int64](12),
-		// 					},
-		// 			}},
-		// 		}
+		// 					Vlan: to.Ptr[int64](12),
+		// 				},
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/L3Networks_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/L3Networks_ListByResourceGroup.json
 func ExampleL3NetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +109,7 @@ func ExampleL3NetworksClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("l3NetworkName"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/l3Networks"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -128,33 +124,29 @@ func ExampleL3NetworksClient_NewListByResourceGroupPager() {
 		// 				"key2": to.Ptr("myvalue2"),
 		// 			},
 		// 			ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.L3NetworkProperties{
-		// 				ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-		// 				DetailedStatus: to.Ptr(armnetworkcloud.L3NetworkDetailedStatusAvailable),
-		// 				DetailedStatusMessage: to.Ptr("L3 network is up"),
-		// 				HybridAksClustersAssociatedIDs: []*string{
-		// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
-		// 					HybridAksIpamEnabled: to.Ptr(armnetworkcloud.HybridAksIpamEnabledTrue),
-		// 					HybridAksPluginType: to.Ptr(armnetworkcloud.HybridAksPluginTypeDPDK),
+		// 				AssociatedResourceIDs: []*string{
+		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+		// 					ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 					DetailedStatus: to.Ptr(armnetworkcloud.L3NetworkDetailedStatusAvailable),
+		// 					DetailedStatusMessage: to.Ptr("L3 network is up"),
 		// 					InterfaceName: to.Ptr("eth0"),
 		// 					IPAllocationType: to.Ptr(armnetworkcloud.IPAllocationTypeDualStack),
 		// 					IPv4ConnectedPrefix: to.Ptr("198.51.100.0/24"),
 		// 					IPv6ConnectedPrefix: to.Ptr("2001:db8::/64"),
-		// 					L3IsolationDomainID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"),
+		// 					L3IsolationDomainID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.L3NetworkProvisioningStateSucceeded),
-		// 					VirtualMachinesAssociatedIDs: []*string{
-		// 						to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-		// 						Vlan: to.Ptr[int64](12),
-		// 					},
-		// 			}},
-		// 		}
+		// 					Vlan: to.Ptr[int64](12),
+		// 				},
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/L3Networks_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/L3Networks_Get.json
 func ExampleL3NetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +167,7 @@ func ExampleL3NetworksClient_Get() {
 	// res.L3Network = armnetworkcloud.L3Network{
 	// 	Name: to.Ptr("l3NetworkName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/l3Networks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -190,31 +182,27 @@ func ExampleL3NetworksClient_Get() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.L3NetworkProperties{
-	// 		ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		DetailedStatus: to.Ptr(armnetworkcloud.L3NetworkDetailedStatusAvailable),
-	// 		DetailedStatusMessage: to.Ptr("L3 network is up"),
-	// 		HybridAksClustersAssociatedIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
-	// 			HybridAksIpamEnabled: to.Ptr(armnetworkcloud.HybridAksIpamEnabledTrue),
-	// 			HybridAksPluginType: to.Ptr(armnetworkcloud.HybridAksPluginTypeDPDK),
+	// 		AssociatedResourceIDs: []*string{
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.L3NetworkDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("L3 network is up"),
 	// 			InterfaceName: to.Ptr("eth0"),
 	// 			IPAllocationType: to.Ptr(armnetworkcloud.IPAllocationTypeDualStack),
 	// 			IPv4ConnectedPrefix: to.Ptr("198.51.100.0/24"),
 	// 			IPv6ConnectedPrefix: to.Ptr("2001:db8::/64"),
-	// 			L3IsolationDomainID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"),
+	// 			L3IsolationDomainID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.L3NetworkProvisioningStateSucceeded),
-	// 			VirtualMachinesAssociatedIDs: []*string{
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-	// 				Vlan: to.Ptr[int64](12),
-	// 			},
-	// 		}
+	// 			Vlan: to.Ptr[int64](12),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/L3Networks_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/L3Networks_Create.json
 func ExampleL3NetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,18 +220,16 @@ func ExampleL3NetworksClient_BeginCreateOrUpdate() {
 			"key2": to.Ptr("myvalue2"),
 		},
 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 			Type: to.Ptr("CustomLocation"),
 		},
 		Properties: &armnetworkcloud.L3NetworkProperties{
-			HybridAksIpamEnabled: to.Ptr(armnetworkcloud.HybridAksIpamEnabledTrue),
-			HybridAksPluginType:  to.Ptr(armnetworkcloud.HybridAksPluginTypeDPDK),
-			InterfaceName:        to.Ptr("eth0"),
-			IPAllocationType:     to.Ptr(armnetworkcloud.IPAllocationTypeDualStack),
-			IPv4ConnectedPrefix:  to.Ptr("198.51.100.0/24"),
-			IPv6ConnectedPrefix:  to.Ptr("2001:db8::/64"),
-			L3IsolationDomainID:  to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"),
-			Vlan:                 to.Ptr[int64](12),
+			InterfaceName:       to.Ptr("eth0"),
+			IPAllocationType:    to.Ptr(armnetworkcloud.IPAllocationTypeDualStack),
+			IPv4ConnectedPrefix: to.Ptr("198.51.100.0/24"),
+			IPv6ConnectedPrefix: to.Ptr("2001:db8::/64"),
+			L3IsolationDomainID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"),
+			Vlan:                to.Ptr[int64](12),
 		},
 	}, nil)
 	if err != nil {
@@ -259,7 +245,7 @@ func ExampleL3NetworksClient_BeginCreateOrUpdate() {
 	// res.L3Network = armnetworkcloud.L3Network{
 	// 	Name: to.Ptr("l3NetworkName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/l3Networks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -274,31 +260,27 @@ func ExampleL3NetworksClient_BeginCreateOrUpdate() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.L3NetworkProperties{
-	// 		ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		DetailedStatus: to.Ptr(armnetworkcloud.L3NetworkDetailedStatusAvailable),
-	// 		DetailedStatusMessage: to.Ptr("L3 network is up"),
-	// 		HybridAksClustersAssociatedIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
-	// 			HybridAksIpamEnabled: to.Ptr(armnetworkcloud.HybridAksIpamEnabledTrue),
-	// 			HybridAksPluginType: to.Ptr(armnetworkcloud.HybridAksPluginTypeDPDK),
+	// 		AssociatedResourceIDs: []*string{
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.L3NetworkDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("L3 network is up"),
 	// 			InterfaceName: to.Ptr("eth0"),
 	// 			IPAllocationType: to.Ptr(armnetworkcloud.IPAllocationTypeDualStack),
 	// 			IPv4ConnectedPrefix: to.Ptr("198.51.100.0/24"),
 	// 			IPv6ConnectedPrefix: to.Ptr("2001:db8::/64"),
-	// 			L3IsolationDomainID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"),
+	// 			L3IsolationDomainID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.L3NetworkProvisioningStateSucceeded),
-	// 			VirtualMachinesAssociatedIDs: []*string{
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-	// 				Vlan: to.Ptr[int64](12),
-	// 			},
-	// 		}
+	// 			Vlan: to.Ptr[int64](12),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/L3Networks_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/L3Networks_Delete.json
 func ExampleL3NetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +301,7 @@ func ExampleL3NetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/L3Networks_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/L3Networks_Patch.json
 func ExampleL3NetworksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +327,7 @@ func ExampleL3NetworksClient_Update() {
 	// res.L3Network = armnetworkcloud.L3Network{
 	// 	Name: to.Ptr("l3NetworkName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/l3Networks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -360,26 +342,22 @@ func ExampleL3NetworksClient_Update() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.L3NetworkProperties{
-	// 		ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		DetailedStatus: to.Ptr(armnetworkcloud.L3NetworkDetailedStatusAvailable),
-	// 		DetailedStatusMessage: to.Ptr("L3 network is up"),
-	// 		HybridAksClustersAssociatedIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
-	// 			HybridAksIpamEnabled: to.Ptr(armnetworkcloud.HybridAksIpamEnabledTrue),
-	// 			HybridAksPluginType: to.Ptr(armnetworkcloud.HybridAksPluginTypeDPDK),
+	// 		AssociatedResourceIDs: []*string{
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.L3NetworkDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("L3 network is up"),
 	// 			InterfaceName: to.Ptr("eth0"),
 	// 			IPAllocationType: to.Ptr(armnetworkcloud.IPAllocationTypeDualStack),
 	// 			IPv4ConnectedPrefix: to.Ptr("198.51.100.0/24"),
 	// 			IPv6ConnectedPrefix: to.Ptr("2001:db8::/64"),
-	// 			L3IsolationDomainID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"),
+	// 			L3IsolationDomainID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.L3NetworkProvisioningStateSucceeded),
-	// 			VirtualMachinesAssociatedIDs: []*string{
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-	// 				Vlan: to.Ptr[int64](12),
-	// 			},
-	// 		}
+	// 			Vlan: to.Ptr[int64](12),
+	// 		},
+	// 	}
 }

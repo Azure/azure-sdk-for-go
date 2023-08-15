@@ -16,13 +16,13 @@ import (
 )
 
 func TestClient_GetCompletions_AzureOpenAI(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(apiKey)
+	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
 	require.NoError(t, err)
 
-	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, completionsModelDeployment, newClientOptionsForTest(t))
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
-	testGetCompletions(t, client)
+	testGetCompletions(t, client, true)
 }
 
 func TestClient_GetCompletions_OpenAI(t *testing.T) {
@@ -31,15 +31,21 @@ func TestClient_GetCompletions_OpenAI(t *testing.T) {
 	}
 
 	client := newOpenAIClientForTest(t)
-	testGetCompletions(t, client)
+	testGetCompletions(t, client, false)
 }
 
-func testGetCompletions(t *testing.T, client *azopenai.Client) {
+func testGetCompletions(t *testing.T, client *azopenai.Client, isAzure bool) {
+	deploymentID := openAI.Completions
+
+	if isAzure {
+		deploymentID = azureOpenAI.Completions
+	}
+
 	resp, err := client.GetCompletions(context.Background(), azopenai.CompletionsOptions{
-		Prompt:      []string{"What is Azure OpenAI?"},
-		MaxTokens:   to.Ptr(int32(2048 - 127)),
-		Temperature: to.Ptr(float32(0.0)),
-		Model:       &openAICompletionsModel,
+		Prompt:       []string{"What is Azure OpenAI?"},
+		MaxTokens:    to.Ptr(int32(2048 - 127)),
+		Temperature:  to.Ptr(float32(0.0)),
+		DeploymentID: deploymentID,
 	}, nil)
 	require.NoError(t, err)
 

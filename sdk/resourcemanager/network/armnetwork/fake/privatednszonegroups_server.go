@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -42,19 +42,24 @@ type PrivateDNSZoneGroupsServer struct {
 }
 
 // NewPrivateDNSZoneGroupsServerTransport creates a new instance of PrivateDNSZoneGroupsServerTransport with the provided implementation.
-// The returned PrivateDNSZoneGroupsServerTransport instance is connected to an instance of armnetwork.PrivateDNSZoneGroupsClient by way of the
-// undefined.Transporter field.
+// The returned PrivateDNSZoneGroupsServerTransport instance is connected to an instance of armnetwork.PrivateDNSZoneGroupsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateDNSZoneGroupsServerTransport(srv *PrivateDNSZoneGroupsServer) *PrivateDNSZoneGroupsServerTransport {
-	return &PrivateDNSZoneGroupsServerTransport{srv: srv}
+	return &PrivateDNSZoneGroupsServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.PrivateDNSZoneGroupsClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.PrivateDNSZoneGroupsClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.PrivateDNSZoneGroupsClientListResponse]](),
+	}
 }
 
 // PrivateDNSZoneGroupsServerTransport connects instances of armnetwork.PrivateDNSZoneGroupsClient to instances of PrivateDNSZoneGroupsServer.
 // Don't use this type directly, use NewPrivateDNSZoneGroupsServerTransport instead.
 type PrivateDNSZoneGroupsServerTransport struct {
 	srv                 *PrivateDNSZoneGroupsServer
-	beginCreateOrUpdate *azfake.PollerResponder[armnetwork.PrivateDNSZoneGroupsClientCreateOrUpdateResponse]
-	beginDelete         *azfake.PollerResponder[armnetwork.PrivateDNSZoneGroupsClientDeleteResponse]
-	newListPager        *azfake.PagerResponder[armnetwork.PrivateDNSZoneGroupsClientListResponse]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.PrivateDNSZoneGroupsClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armnetwork.PrivateDNSZoneGroupsClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.PrivateDNSZoneGroupsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateDNSZoneGroupsServerTransport.
@@ -92,7 +97,8 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchBeginCreateOrUpdate(req *h
 	if p.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if p.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateEndpoints/(?P<privateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchBeginCreateOrUpdate(req *h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		p.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginCreateOrUpdate) {
-		p.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		p.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchBeginDelete(req *http.Requ
 	if p.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if p.beginDelete == nil {
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateEndpoints/(?P<privateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchBeginDelete(req *http.Requ
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginDelete = &respr
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginDelete) {
-		p.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchNewListPager(req *http.Req
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if p.newListPager == nil {
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateEndpoints/(?P<privateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateDnsZoneGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchNewListPager(req *http.Req
 			return nil, err
 		}
 		resp := p.srv.NewListPager(privateEndpointNameUnescaped, resourceGroupNameUnescaped, nil)
-		p.newListPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListPager, req, func(page *armnetwork.PrivateDNSZoneGroupsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.PrivateDNSZoneGroupsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListPager) {
-		p.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }

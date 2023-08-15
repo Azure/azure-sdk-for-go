@@ -129,6 +129,11 @@ type ClustersClientListSKUsResponse struct {
 	SKUDescriptionList
 }
 
+// ClustersClientMigrateResponse contains the response from method ClustersClient.BeginMigrate.
+type ClustersClientMigrateResponse struct {
+	// placeholder for future response values
+}
+
 // ClustersClientRemoveLanguageExtensionsResponse contains the response from method ClustersClient.BeginRemoveLanguageExtensions.
 type ClustersClientRemoveLanguageExtensionsResponse struct {
 	// placeholder for future response values
@@ -212,6 +217,11 @@ func (d *DataConnectionsClientUpdateResponse) UnmarshalJSON(data []byte) error {
 	}
 	d.DataConnectionClassification = res
 	return nil
+}
+
+// DatabaseClientInviteFollowerResponse contains the response from method DatabaseClient.InviteFollower.
+type DatabaseClientInviteFollowerResponse struct {
+	DatabaseInviteFollowerResult
 }
 
 // DatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse contains the response from method DatabasePrincipalAssignmentsClient.CheckNameAvailability.
@@ -356,7 +366,8 @@ type OperationsResultsClientGetResponse struct {
 
 // OperationsResultsLocationClientGetResponse contains the response from method OperationsResultsLocationClient.Get.
 type OperationsResultsLocationClientGetResponse struct {
-	// placeholder for future response values
+	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
+	AzureAsyncOperation *string
 }
 
 // PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreateOrUpdate.

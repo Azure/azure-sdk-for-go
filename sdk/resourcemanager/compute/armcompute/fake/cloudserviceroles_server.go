@@ -34,17 +34,20 @@ type CloudServiceRolesServer struct {
 }
 
 // NewCloudServiceRolesServerTransport creates a new instance of CloudServiceRolesServerTransport with the provided implementation.
-// The returned CloudServiceRolesServerTransport instance is connected to an instance of armcompute.CloudServiceRolesClient by way of the
-// undefined.Transporter field.
+// The returned CloudServiceRolesServerTransport instance is connected to an instance of armcompute.CloudServiceRolesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServiceRolesServerTransport(srv *CloudServiceRolesServer) *CloudServiceRolesServerTransport {
-	return &CloudServiceRolesServerTransport{srv: srv}
+	return &CloudServiceRolesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armcompute.CloudServiceRolesClientListResponse]](),
+	}
 }
 
 // CloudServiceRolesServerTransport connects instances of armcompute.CloudServiceRolesClient to instances of CloudServiceRolesServer.
 // Don't use this type directly, use NewCloudServiceRolesServerTransport instead.
 type CloudServiceRolesServerTransport struct {
 	srv          *CloudServiceRolesServer
-	newListPager *azfake.PagerResponder[armcompute.CloudServiceRolesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armcompute.CloudServiceRolesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudServiceRolesServerTransport.
@@ -115,7 +118,8 @@ func (c *CloudServiceRolesServerTransport) dispatchNewListPager(req *http.Reques
 	if c.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if c.newListPager == nil {
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roles`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -131,20 +135,22 @@ func (c *CloudServiceRolesServerTransport) dispatchNewListPager(req *http.Reques
 			return nil, err
 		}
 		resp := c.srv.NewListPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
-		c.newListPager = &resp
-		server.PagerResponderInjectNextLinks(c.newListPager, req, func(page *armcompute.CloudServiceRolesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.CloudServiceRolesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(c.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(c.newListPager) {
-		c.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
 	}
 	return resp, nil
 }

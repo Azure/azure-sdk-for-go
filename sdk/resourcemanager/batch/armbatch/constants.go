@@ -11,7 +11,7 @@ package armbatch
 
 const (
 	moduleName    = "armbatch"
-	moduleVersion = "v1.2.1"
+	moduleVersion = "v2.0.0"
 )
 
 // AccountKeyType - The type of account key to regenerate.
@@ -274,6 +274,24 @@ func PossibleComputeNodeFillTypeValues() []ComputeNodeFillType {
 	return []ComputeNodeFillType{
 		ComputeNodeFillTypeSpread,
 		ComputeNodeFillTypePack,
+	}
+}
+
+// ContainerType - The container technology to be used.
+type ContainerType string
+
+const (
+	// ContainerTypeCriCompatible - A CRI based technology will be used to launch the containers.
+	ContainerTypeCriCompatible ContainerType = "CriCompatible"
+	// ContainerTypeDockerCompatible - A Docker compatible container technology will be used to launch the containers.
+	ContainerTypeDockerCompatible ContainerType = "DockerCompatible"
+)
+
+// PossibleContainerTypeValues returns the possible values for the ContainerType const type.
+func PossibleContainerTypeValues() []ContainerType {
+	return []ContainerType{
+		ContainerTypeCriCompatible,
+		ContainerTypeDockerCompatible,
 	}
 }
 

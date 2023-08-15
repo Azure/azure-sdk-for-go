@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -42,19 +42,24 @@ type VirtualHubRouteTableV2SServer struct {
 }
 
 // NewVirtualHubRouteTableV2SServerTransport creates a new instance of VirtualHubRouteTableV2SServerTransport with the provided implementation.
-// The returned VirtualHubRouteTableV2SServerTransport instance is connected to an instance of armnetwork.VirtualHubRouteTableV2SClient by way of the
-// undefined.Transporter field.
+// The returned VirtualHubRouteTableV2SServerTransport instance is connected to an instance of armnetwork.VirtualHubRouteTableV2SClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualHubRouteTableV2SServerTransport(srv *VirtualHubRouteTableV2SServer) *VirtualHubRouteTableV2SServerTransport {
-	return &VirtualHubRouteTableV2SServerTransport{srv: srv}
+	return &VirtualHubRouteTableV2SServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.VirtualHubRouteTableV2SClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.VirtualHubRouteTableV2SClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.VirtualHubRouteTableV2SClientListResponse]](),
+	}
 }
 
 // VirtualHubRouteTableV2SServerTransport connects instances of armnetwork.VirtualHubRouteTableV2SClient to instances of VirtualHubRouteTableV2SServer.
 // Don't use this type directly, use NewVirtualHubRouteTableV2SServerTransport instead.
 type VirtualHubRouteTableV2SServerTransport struct {
 	srv                 *VirtualHubRouteTableV2SServer
-	beginCreateOrUpdate *azfake.PollerResponder[armnetwork.VirtualHubRouteTableV2SClientCreateOrUpdateResponse]
-	beginDelete         *azfake.PollerResponder[armnetwork.VirtualHubRouteTableV2SClientDeleteResponse]
-	newListPager        *azfake.PagerResponder[armnetwork.VirtualHubRouteTableV2SClientListResponse]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.VirtualHubRouteTableV2SClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armnetwork.VirtualHubRouteTableV2SClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.VirtualHubRouteTableV2SClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualHubRouteTableV2SServerTransport.
@@ -92,7 +97,8 @@ func (v *VirtualHubRouteTableV2SServerTransport) dispatchBeginCreateOrUpdate(req
 	if v.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if v.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeTables/(?P<routeTableName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (v *VirtualHubRouteTableV2SServerTransport) dispatchBeginCreateOrUpdate(req
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		v.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginCreateOrUpdate) {
-		v.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		v.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (v *VirtualHubRouteTableV2SServerTransport) dispatchBeginDelete(req *http.R
 	if v.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if v.beginDelete == nil {
+	beginDelete := v.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeTables/(?P<routeTableName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (v *VirtualHubRouteTableV2SServerTransport) dispatchBeginDelete(req *http.R
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDelete = &respr
+		beginDelete = &respr
+		v.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDelete) {
-		v.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		v.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (v *VirtualHubRouteTableV2SServerTransport) dispatchNewListPager(req *http.
 	if v.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if v.newListPager == nil {
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeTables`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (v *VirtualHubRouteTableV2SServerTransport) dispatchNewListPager(req *http.
 			return nil, err
 		}
 		resp := v.srv.NewListPager(resourceGroupNameUnescaped, virtualHubNameUnescaped, nil)
-		v.newListPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListPager, req, func(page *armnetwork.VirtualHubRouteTableV2SClientListResponse, createLink func() string) {
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualHubRouteTableV2SClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListPager) {
-		v.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }

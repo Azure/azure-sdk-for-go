@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagemover/armstoragemover"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagemover/armstoragemover/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/241e964afe675a7be98aa6a2e171a3c5f830816c/specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobRuns_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/JobRuns_List.json
 func ExampleJobRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,17 +44,17 @@ func ExampleJobRunsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("examples-jobRunName1"),
 		// 			Type: to.Ptr("Microsoft.StorageMover/storageMovers/projects/jobDefinitions/jobRuns"),
-		// 			ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projectName/examples-projectName/jobDefinitions/examples-jobDefinitionName1/jobRuns/examples-jobRunName1"),
+		// 			ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projectName/examples-projectName/jobDefinitions/examples-jobDefinitionName1/jobRuns/examples-jobRunName1"),
 		// 			Properties: &armstoragemover.JobRunProperties{
 		// 				AgentName: to.Ptr("migration-agent"),
-		// 				AgentResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/migration-agent"),
+		// 				AgentResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/migration-agent"),
 		// 				BytesExcluded: to.Ptr[int64](995116277760),
 		// 				BytesFailed: to.Ptr[int64](5116277760),
 		// 				BytesNoTransferNeeded: to.Ptr[int64](2995116277760),
 		// 				BytesScanned: to.Ptr[int64](49951162777600),
 		// 				BytesTransferred: to.Ptr[int64](1995116277760),
 		// 				BytesUnsupported: to.Ptr[int64](495116277760),
-		// 				ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 				ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
 		// 				ItemsExcluded: to.Ptr[int64](50),
 		// 				ItemsFailed: to.Ptr[int64](3),
 		// 				ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -63,33 +63,33 @@ func ExampleJobRunsClient_NewListPager() {
 		// 				ItemsUnsupported: to.Ptr[int64](27),
 		// 				JobDefinitionProperties: map[string]any{
 		// 				},
-		// 				LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:31:01.1075056Z"); return t}()),
+		// 				LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
 		// 				ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 		// 				SourceName: to.Ptr("sourceEndpoint"),
 		// 				SourceProperties: map[string]any{
 		// 				},
-		// 				SourceResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/sourceEndpoint"),
+		// 				SourceResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/sourceEndpoint"),
 		// 				Status: to.Ptr(armstoragemover.JobRunStatusRunning),
 		// 				TargetName: to.Ptr("targetEndpoint"),
 		// 				TargetProperties: map[string]any{
 		// 				},
-		// 				TargetResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/targetEndpoint"),
+		// 				TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/targetEndpoint"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("examples-jobRunName2"),
 		// 			Type: to.Ptr("Microsoft.StorageMover/storageMovers/projects/jobDefinitions/jobRuns"),
-		// 			ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projectName/examples-projectName/jobDefinitions/examples-jobDefinitionName1/jobRuns/examples-jobRunName2"),
+		// 			ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projectName/examples-projectName/jobDefinitions/examples-jobDefinitionName1/jobRuns/examples-jobRunName2"),
 		// 			Properties: &armstoragemover.JobRunProperties{
 		// 				AgentName: to.Ptr("migration-agent"),
-		// 				AgentResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/migration-agent"),
+		// 				AgentResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/migration-agent"),
 		// 				BytesExcluded: to.Ptr[int64](995116277760),
 		// 				BytesFailed: to.Ptr[int64](5116277760),
 		// 				BytesNoTransferNeeded: to.Ptr[int64](2995116277760),
 		// 				BytesScanned: to.Ptr[int64](49951162777600),
 		// 				BytesTransferred: to.Ptr[int64](1995116277760),
 		// 				BytesUnsupported: to.Ptr[int64](495116277760),
-		// 				ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 				ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
 		// 				ItemsExcluded: to.Ptr[int64](50),
 		// 				ItemsFailed: to.Ptr[int64](3),
 		// 				ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -98,33 +98,33 @@ func ExampleJobRunsClient_NewListPager() {
 		// 				ItemsUnsupported: to.Ptr[int64](27),
 		// 				JobDefinitionProperties: map[string]any{
 		// 				},
-		// 				LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:31:01.1075056Z"); return t}()),
+		// 				LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
 		// 				ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 		// 				SourceName: to.Ptr("sourceEndpoint"),
 		// 				SourceProperties: map[string]any{
 		// 				},
-		// 				SourceResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/sourceEndpoint"),
+		// 				SourceResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/sourceEndpoint"),
 		// 				Status: to.Ptr(armstoragemover.JobRunStatusFailed),
 		// 				TargetName: to.Ptr("targetEndpoint"),
 		// 				TargetProperties: map[string]any{
 		// 				},
-		// 				TargetResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/targetEndpoint"),
+		// 				TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/targetEndpoint"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("examples-jobRunName3"),
 		// 			Type: to.Ptr("Microsoft.StorageMover/storageMovers/projects/jobDefinitions/jobRuns"),
-		// 			ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projectName/examples-projectName/jobDefinitions/examples-jobDefinitionName1/jobRuns/examples-jobRunName3"),
+		// 			ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projectName/examples-projectName/jobDefinitions/examples-jobDefinitionName1/jobRuns/examples-jobRunName3"),
 		// 			Properties: &armstoragemover.JobRunProperties{
 		// 				AgentName: to.Ptr("migration-agent"),
-		// 				AgentResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/migration-agent"),
+		// 				AgentResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/migration-agent"),
 		// 				BytesExcluded: to.Ptr[int64](995116277760),
 		// 				BytesFailed: to.Ptr[int64](5116277760),
 		// 				BytesNoTransferNeeded: to.Ptr[int64](2995116277760),
 		// 				BytesScanned: to.Ptr[int64](49951162777600),
 		// 				BytesTransferred: to.Ptr[int64](1995116277760),
 		// 				BytesUnsupported: to.Ptr[int64](495116277760),
-		// 				ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 				ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
 		// 				ItemsExcluded: to.Ptr[int64](50),
 		// 				ItemsFailed: to.Ptr[int64](3),
 		// 				ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -133,24 +133,24 @@ func ExampleJobRunsClient_NewListPager() {
 		// 				ItemsUnsupported: to.Ptr[int64](27),
 		// 				JobDefinitionProperties: map[string]any{
 		// 				},
-		// 				LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:31:01.1075056Z"); return t}()),
+		// 				LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
 		// 				ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 		// 				SourceName: to.Ptr("sourceEndpoint"),
 		// 				SourceProperties: map[string]any{
 		// 				},
-		// 				SourceResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/sourceEndpoint"),
+		// 				SourceResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/sourceEndpoint"),
 		// 				Status: to.Ptr(armstoragemover.JobRunStatusFailed),
 		// 				TargetName: to.Ptr("targetEndpoint"),
 		// 				TargetProperties: map[string]any{
 		// 				},
-		// 				TargetResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/targetEndpoint"),
+		// 				TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/targetEndpoint"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/241e964afe675a7be98aa6a2e171a3c5f830816c/specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobRuns_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/JobRuns_Get.json
 func ExampleJobRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,17 +171,17 @@ func ExampleJobRunsClient_Get() {
 	// res.JobRun = armstoragemover.JobRun{
 	// 	Name: to.Ptr("examples-jobRunName"),
 	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/projects/jobDefinitions/jobRuns"),
-	// 	ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projects/examples-projectName/jobDefinitions/examples-jobDefinitionName/jobRuns/examples-jobRunName"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projects/examples-projectName/jobDefinitions/examples-jobDefinitionName/jobRuns/examples-jobRunName"),
 	// 	Properties: &armstoragemover.JobRunProperties{
 	// 		AgentName: to.Ptr("migration-agent"),
-	// 		AgentResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/migration-agent"),
+	// 		AgentResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/migration-agent"),
 	// 		BytesExcluded: to.Ptr[int64](995116277760),
 	// 		BytesFailed: to.Ptr[int64](5116277760),
 	// 		BytesNoTransferNeeded: to.Ptr[int64](2995116277760),
 	// 		BytesScanned: to.Ptr[int64](49951162777600),
 	// 		BytesTransferred: to.Ptr[int64](1995116277760),
 	// 		BytesUnsupported: to.Ptr[int64](495116277760),
-	// 		ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 		ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
 	// 		ItemsExcluded: to.Ptr[int64](50),
 	// 		ItemsFailed: to.Ptr[int64](3),
 	// 		ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -190,17 +190,17 @@ func ExampleJobRunsClient_Get() {
 	// 		ItemsUnsupported: to.Ptr[int64](27),
 	// 		JobDefinitionProperties: map[string]any{
 	// 		},
-	// 		LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:31:01.1075056Z"); return t}()),
+	// 		LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
 	// 		ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 	// 		SourceName: to.Ptr("sourceEndpoint"),
 	// 		SourceProperties: map[string]any{
 	// 		},
-	// 		SourceResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/sourceEndpoint"),
+	// 		SourceResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/sourceEndpoint"),
 	// 		Status: to.Ptr(armstoragemover.JobRunStatusRunning),
 	// 		TargetName: to.Ptr("targetEndpoint"),
 	// 		TargetProperties: map[string]any{
 	// 		},
-	// 		TargetResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/targetEndpoint"),
+	// 		TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/targetEndpoint"),
 	// 	},
 	// }
 }

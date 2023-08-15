@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -51,21 +51,28 @@ type VPNConnectionsServer struct {
 }
 
 // NewVPNConnectionsServerTransport creates a new instance of VPNConnectionsServerTransport with the provided implementation.
-// The returned VPNConnectionsServerTransport instance is connected to an instance of armnetwork.VPNConnectionsClient by way of the
-// undefined.Transporter field.
+// The returned VPNConnectionsServerTransport instance is connected to an instance of armnetwork.VPNConnectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVPNConnectionsServerTransport(srv *VPNConnectionsServer) *VPNConnectionsServerTransport {
-	return &VPNConnectionsServerTransport{srv: srv}
+	return &VPNConnectionsServerTransport{
+		srv:                      srv,
+		beginCreateOrUpdate:      newTracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientCreateOrUpdateResponse]](),
+		beginDelete:              newTracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientDeleteResponse]](),
+		newListByVPNGatewayPager: newTracker[azfake.PagerResponder[armnetwork.VPNConnectionsClientListByVPNGatewayResponse]](),
+		beginStartPacketCapture:  newTracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientStartPacketCaptureResponse]](),
+		beginStopPacketCapture:   newTracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientStopPacketCaptureResponse]](),
+	}
 }
 
 // VPNConnectionsServerTransport connects instances of armnetwork.VPNConnectionsClient to instances of VPNConnectionsServer.
 // Don't use this type directly, use NewVPNConnectionsServerTransport instead.
 type VPNConnectionsServerTransport struct {
 	srv                      *VPNConnectionsServer
-	beginCreateOrUpdate      *azfake.PollerResponder[armnetwork.VPNConnectionsClientCreateOrUpdateResponse]
-	beginDelete              *azfake.PollerResponder[armnetwork.VPNConnectionsClientDeleteResponse]
-	newListByVPNGatewayPager *azfake.PagerResponder[armnetwork.VPNConnectionsClientListByVPNGatewayResponse]
-	beginStartPacketCapture  *azfake.PollerResponder[armnetwork.VPNConnectionsClientStartPacketCaptureResponse]
-	beginStopPacketCapture   *azfake.PollerResponder[armnetwork.VPNConnectionsClientStopPacketCaptureResponse]
+	beginCreateOrUpdate      *tracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientCreateOrUpdateResponse]]
+	beginDelete              *tracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientDeleteResponse]]
+	newListByVPNGatewayPager *tracker[azfake.PagerResponder[armnetwork.VPNConnectionsClientListByVPNGatewayResponse]]
+	beginStartPacketCapture  *tracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientStartPacketCaptureResponse]]
+	beginStopPacketCapture   *tracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientStopPacketCaptureResponse]]
 }
 
 // Do implements the policy.Transporter interface for VPNConnectionsServerTransport.
@@ -107,7 +114,8 @@ func (v *VPNConnectionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 	if v.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if v.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -134,19 +142,21 @@ func (v *VPNConnectionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		v.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginCreateOrUpdate) {
-		v.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		v.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -156,7 +166,8 @@ func (v *VPNConnectionsServerTransport) dispatchBeginDelete(req *http.Request) (
 	if v.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if v.beginDelete == nil {
+	beginDelete := v.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -179,19 +190,21 @@ func (v *VPNConnectionsServerTransport) dispatchBeginDelete(req *http.Request) (
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDelete = &respr
+		beginDelete = &respr
+		v.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDelete) {
-		v.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		v.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -238,7 +251,8 @@ func (v *VPNConnectionsServerTransport) dispatchNewListByVPNGatewayPager(req *ht
 	if v.srv.NewListByVPNGatewayPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByVPNGatewayPager not implemented")}
 	}
-	if v.newListByVPNGatewayPager == nil {
+	newListByVPNGatewayPager := v.newListByVPNGatewayPager.get(req)
+	if newListByVPNGatewayPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -254,20 +268,22 @@ func (v *VPNConnectionsServerTransport) dispatchNewListByVPNGatewayPager(req *ht
 			return nil, err
 		}
 		resp := v.srv.NewListByVPNGatewayPager(resourceGroupNameUnescaped, gatewayNameUnescaped, nil)
-		v.newListByVPNGatewayPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListByVPNGatewayPager, req, func(page *armnetwork.VPNConnectionsClientListByVPNGatewayResponse, createLink func() string) {
+		newListByVPNGatewayPager = &resp
+		v.newListByVPNGatewayPager.add(req, newListByVPNGatewayPager)
+		server.PagerResponderInjectNextLinks(newListByVPNGatewayPager, req, func(page *armnetwork.VPNConnectionsClientListByVPNGatewayResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListByVPNGatewayPager, req)
+	resp, err := server.PagerResponderNext(newListByVPNGatewayPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByVPNGatewayPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListByVPNGatewayPager) {
-		v.newListByVPNGatewayPager = nil
+	if !server.PagerResponderMore(newListByVPNGatewayPager) {
+		v.newListByVPNGatewayPager.remove(req)
 	}
 	return resp, nil
 }
@@ -276,7 +292,8 @@ func (v *VPNConnectionsServerTransport) dispatchBeginStartPacketCapture(req *htt
 	if v.srv.BeginStartPacketCapture == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStartPacketCapture not implemented")}
 	}
-	if v.beginStartPacketCapture == nil {
+	beginStartPacketCapture := v.beginStartPacketCapture.get(req)
+	if beginStartPacketCapture == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<vpnConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startpacketcapture`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -309,19 +326,21 @@ func (v *VPNConnectionsServerTransport) dispatchBeginStartPacketCapture(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginStartPacketCapture = &respr
+		beginStartPacketCapture = &respr
+		v.beginStartPacketCapture.add(req, beginStartPacketCapture)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginStartPacketCapture, req)
+	resp, err := server.PollerResponderNext(beginStartPacketCapture, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginStartPacketCapture.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginStartPacketCapture) {
-		v.beginStartPacketCapture = nil
+	if !server.PollerResponderMore(beginStartPacketCapture) {
+		v.beginStartPacketCapture.remove(req)
 	}
 
 	return resp, nil
@@ -331,7 +350,8 @@ func (v *VPNConnectionsServerTransport) dispatchBeginStopPacketCapture(req *http
 	if v.srv.BeginStopPacketCapture == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStopPacketCapture not implemented")}
 	}
-	if v.beginStopPacketCapture == nil {
+	beginStopPacketCapture := v.beginStopPacketCapture.get(req)
+	if beginStopPacketCapture == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<vpnConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stoppacketcapture`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -364,19 +384,21 @@ func (v *VPNConnectionsServerTransport) dispatchBeginStopPacketCapture(req *http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginStopPacketCapture = &respr
+		beginStopPacketCapture = &respr
+		v.beginStopPacketCapture.add(req, beginStopPacketCapture)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginStopPacketCapture, req)
+	resp, err := server.PollerResponderNext(beginStopPacketCapture, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginStopPacketCapture.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginStopPacketCapture) {
-		v.beginStopPacketCapture = nil
+	if !server.PollerResponderMore(beginStopPacketCapture) {
+		v.beginStopPacketCapture.remove(req)
 	}
 
 	return resp, nil

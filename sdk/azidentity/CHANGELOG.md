@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.3 (Unreleased)
+## 1.4.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0-beta.3 (2023-08-08)
+
+### Bugs Fixed
+* One invocation of `AzureCLICredential.GetToken()` and `OnBehalfOfCredential.GetToken()`
+  can no longer make two authentication attempts
 
 ## 1.4.0-beta.2 (2023-07-14)
 

@@ -68,7 +68,13 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 		return nil, err
 	}
 	cc := ClientCertificateCredential{client: c}
-	cc.s = newSyncer(credNameCert, tenantID, options.AdditionallyAllowedTenants, cc.requestToken, cc.silentAuth)
+	cc.s = newSyncer(
+		credNameCert,
+		tenantID,
+		cc.requestToken,
+		cc.silentAuth,
+		syncerOptions{AdditionallyAllowedTenants: options.AdditionallyAllowedTenants},
+	)
 	return &cc, nil
 }
 

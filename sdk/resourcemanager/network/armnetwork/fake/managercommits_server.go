@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,17 +29,20 @@ type ManagerCommitsServer struct {
 }
 
 // NewManagerCommitsServerTransport creates a new instance of ManagerCommitsServerTransport with the provided implementation.
-// The returned ManagerCommitsServerTransport instance is connected to an instance of armnetwork.ManagerCommitsClient by way of the
-// undefined.Transporter field.
+// The returned ManagerCommitsServerTransport instance is connected to an instance of armnetwork.ManagerCommitsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewManagerCommitsServerTransport(srv *ManagerCommitsServer) *ManagerCommitsServerTransport {
-	return &ManagerCommitsServerTransport{srv: srv}
+	return &ManagerCommitsServerTransport{
+		srv:       srv,
+		beginPost: newTracker[azfake.PollerResponder[armnetwork.ManagerCommitsClientPostResponse]](),
+	}
 }
 
 // ManagerCommitsServerTransport connects instances of armnetwork.ManagerCommitsClient to instances of ManagerCommitsServer.
 // Don't use this type directly, use NewManagerCommitsServerTransport instead.
 type ManagerCommitsServerTransport struct {
 	srv       *ManagerCommitsServer
-	beginPost *azfake.PollerResponder[armnetwork.ManagerCommitsClientPostResponse]
+	beginPost *tracker[azfake.PollerResponder[armnetwork.ManagerCommitsClientPostResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagerCommitsServerTransport.
@@ -71,7 +74,8 @@ func (m *ManagerCommitsServerTransport) dispatchBeginPost(req *http.Request) (*h
 	if m.srv.BeginPost == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginPost not implemented")}
 	}
-	if m.beginPost == nil {
+	beginPost := m.beginPost.get(req)
+	if beginPost == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commit`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -94,19 +98,21 @@ func (m *ManagerCommitsServerTransport) dispatchBeginPost(req *http.Request) (*h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginPost = &respr
+		beginPost = &respr
+		m.beginPost.add(req, beginPost)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginPost, req)
+	resp, err := server.PollerResponderNext(beginPost, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginPost.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginPost) {
-		m.beginPost = nil
+	if !server.PollerResponderMore(beginPost) {
+		m.beginPost.remove(req)
 	}
 
 	return resp, nil

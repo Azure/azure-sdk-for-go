@@ -29,7 +29,7 @@ type IPExtendedCommunitiesClient struct {
 }
 
 // NewIPExtendedCommunitiesClient creates a new instance of IPExtendedCommunitiesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewIPExtendedCommunitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IPExtendedCommunitiesClient, error) {
@@ -47,9 +47,9 @@ func NewIPExtendedCommunitiesClient(subscriptionID string, credential azcore.Tok
 // BeginCreate - Implements IP Extended Community PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ipExtendedCommunityName - Name of the IP Extended Community
+//   - ipExtendedCommunityName - Name of the IP Extended Community.
 //   - body - Request payload.
 //   - options - IPExtendedCommunitiesClientBeginCreateOptions contains the optional parameters for the IPExtendedCommunitiesClient.BeginCreate
 //     method.
@@ -70,7 +70,7 @@ func (client *IPExtendedCommunitiesClient) BeginCreate(ctx context.Context, reso
 // Create - Implements IP Extended Community PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *IPExtendedCommunitiesClient) create(ctx context.Context, resourceGroupName string, ipExtendedCommunityName string, body IPExtendedCommunity, options *IPExtendedCommunitiesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, ipExtendedCommunityName, body, options)
 	if err != nil {
@@ -89,9 +89,6 @@ func (client *IPExtendedCommunitiesClient) create(ctx context.Context, resourceG
 // createCreateRequest creates the Create request.
 func (client *IPExtendedCommunitiesClient) createCreateRequest(ctx context.Context, resourceGroupName string, ipExtendedCommunityName string, body IPExtendedCommunity, options *IPExtendedCommunitiesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -106,7 +103,7 @@ func (client *IPExtendedCommunitiesClient) createCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -115,9 +112,9 @@ func (client *IPExtendedCommunitiesClient) createCreateRequest(ctx context.Conte
 // BeginDelete - Implements IP Extended Community DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ipExtendedCommunityName - Name of the IP Extended Community
+//   - ipExtendedCommunityName - Name of the IP Extended Community.
 //   - options - IPExtendedCommunitiesClientBeginDeleteOptions contains the optional parameters for the IPExtendedCommunitiesClient.BeginDelete
 //     method.
 func (client *IPExtendedCommunitiesClient) BeginDelete(ctx context.Context, resourceGroupName string, ipExtendedCommunityName string, options *IPExtendedCommunitiesClientBeginDeleteOptions) (*runtime.Poller[IPExtendedCommunitiesClientDeleteResponse], error) {
@@ -137,7 +134,7 @@ func (client *IPExtendedCommunitiesClient) BeginDelete(ctx context.Context, reso
 // Delete - Implements IP Extended Community DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *IPExtendedCommunitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, ipExtendedCommunityName string, options *IPExtendedCommunitiesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ipExtendedCommunityName, options)
 	if err != nil {
@@ -147,7 +144,7 @@ func (client *IPExtendedCommunitiesClient) deleteOperation(ctx context.Context, 
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -156,9 +153,6 @@ func (client *IPExtendedCommunitiesClient) deleteOperation(ctx context.Context, 
 // deleteCreateRequest creates the Delete request.
 func (client *IPExtendedCommunitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ipExtendedCommunityName string, options *IPExtendedCommunitiesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -173,7 +167,7 @@ func (client *IPExtendedCommunitiesClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -182,9 +176,9 @@ func (client *IPExtendedCommunitiesClient) deleteCreateRequest(ctx context.Conte
 // Get - Implements IP Extended Community GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ipExtendedCommunityName - Name of the IP Extended Community
+//   - ipExtendedCommunityName - Name of the IP Extended Community.
 //   - options - IPExtendedCommunitiesClientGetOptions contains the optional parameters for the IPExtendedCommunitiesClient.Get
 //     method.
 func (client *IPExtendedCommunitiesClient) Get(ctx context.Context, resourceGroupName string, ipExtendedCommunityName string, options *IPExtendedCommunitiesClientGetOptions) (IPExtendedCommunitiesClientGetResponse, error) {
@@ -205,9 +199,6 @@ func (client *IPExtendedCommunitiesClient) Get(ctx context.Context, resourceGrou
 // getCreateRequest creates the Get request.
 func (client *IPExtendedCommunitiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, ipExtendedCommunityName string, options *IPExtendedCommunitiesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -222,7 +213,7 @@ func (client *IPExtendedCommunitiesClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -239,7 +230,7 @@ func (client *IPExtendedCommunitiesClient) getHandleResponse(resp *http.Response
 
 // NewListByResourceGroupPager - Implements IpExtendedCommunities list by resource group GET method.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - IPExtendedCommunitiesClientListByResourceGroupOptions contains the optional parameters for the IPExtendedCommunitiesClient.NewListByResourceGroupPager
 //     method.
@@ -274,9 +265,6 @@ func (client *IPExtendedCommunitiesClient) NewListByResourceGroupPager(resourceG
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *IPExtendedCommunitiesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *IPExtendedCommunitiesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -287,7 +275,7 @@ func (client *IPExtendedCommunitiesClient) listByResourceGroupCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -304,7 +292,7 @@ func (client *IPExtendedCommunitiesClient) listByResourceGroupHandleResponse(res
 
 // NewListBySubscriptionPager - Implements IpExtendedCommunities list by subscription GET method.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - options - IPExtendedCommunitiesClientListBySubscriptionOptions contains the optional parameters for the IPExtendedCommunitiesClient.NewListBySubscriptionPager
 //     method.
 func (client *IPExtendedCommunitiesClient) NewListBySubscriptionPager(options *IPExtendedCommunitiesClientListBySubscriptionOptions) *runtime.Pager[IPExtendedCommunitiesClientListBySubscriptionResponse] {
@@ -338,16 +326,13 @@ func (client *IPExtendedCommunitiesClient) NewListBySubscriptionPager(options *I
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *IPExtendedCommunitiesClient) listBySubscriptionCreateRequest(ctx context.Context, options *IPExtendedCommunitiesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -365,9 +350,9 @@ func (client *IPExtendedCommunitiesClient) listBySubscriptionHandleResponse(resp
 // BeginUpdate - API to update certain properties of the IP Extended Community resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ipExtendedCommunityName - Name of the IP Extended Community
+//   - ipExtendedCommunityName - Name of the IP Extended Community.
 //   - body - IP Extended Community properties to update.
 //   - options - IPExtendedCommunitiesClientBeginUpdateOptions contains the optional parameters for the IPExtendedCommunitiesClient.BeginUpdate
 //     method.
@@ -388,7 +373,7 @@ func (client *IPExtendedCommunitiesClient) BeginUpdate(ctx context.Context, reso
 // Update - API to update certain properties of the IP Extended Community resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *IPExtendedCommunitiesClient) update(ctx context.Context, resourceGroupName string, ipExtendedCommunityName string, body IPExtendedCommunityPatch, options *IPExtendedCommunitiesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, ipExtendedCommunityName, body, options)
 	if err != nil {
@@ -407,9 +392,6 @@ func (client *IPExtendedCommunitiesClient) update(ctx context.Context, resourceG
 // updateCreateRequest creates the Update request.
 func (client *IPExtendedCommunitiesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, ipExtendedCommunityName string, body IPExtendedCommunityPatch, options *IPExtendedCommunitiesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -424,7 +406,7 @@ func (client *IPExtendedCommunitiesClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

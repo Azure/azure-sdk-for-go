@@ -10,16 +10,6 @@ package armresourcegraph
 
 import "time"
 
-// ClientResourcesHistoryOptions contains the optional parameters for the Client.ResourcesHistory method.
-type ClientResourcesHistoryOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientResourcesOptions contains the optional parameters for the Client.Resources method.
-type ClientResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
 // Column - Query result column descriptor.
 type Column struct {
 	// REQUIRED; Column name.
@@ -69,15 +59,6 @@ type ErrorDetails struct {
 type ErrorResponse struct {
 	// REQUIRED; Error information.
 	Error *Error
-}
-
-// FacetClassification provides polymorphic access to related types.
-// Call the interface's GetFacet() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *Facet, *FacetError, *FacetResult
-type FacetClassification interface {
-	// GetFacet returns the Facet content of the underlying type.
-	GetFacet() *Facet
 }
 
 // Facet - A facet containing additional statistics on the response of a query. Can be either FacetResult or FacetError.
@@ -195,11 +176,6 @@ type OperationDisplay struct {
 type OperationListResult struct {
 	// List of Resource Graph operations supported by the Resource Graph resource provider.
 	Value []*Operation
-}
-
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
-type OperationsClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // QueryRequest - Describes a query to be executed.

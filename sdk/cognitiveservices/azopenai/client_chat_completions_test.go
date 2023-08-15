@@ -22,34 +22,36 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var chatCompletionsRequest = azopenai.ChatCompletionsOptions{
-	Messages: []azopenai.ChatMessage{
-		{
-			Role:    to.Ptr(azopenai.ChatRole("user")),
-			Content: to.Ptr("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
+func newTestChatCompletionOptions(tv testVars) azopenai.ChatCompletionsOptions {
+	return azopenai.ChatCompletionsOptions{
+		Messages: []azopenai.ChatMessage{
+			{
+				Role:    to.Ptr(azopenai.ChatRole("user")),
+				Content: to.Ptr("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
+			},
 		},
-	},
-	MaxTokens:   to.Ptr(int32(1024)),
-	Temperature: to.Ptr(float32(0.0)),
-	Model:       &openAIChatCompletionsModel,
+		MaxTokens:    to.Ptr(int32(1024)),
+		Temperature:  to.Ptr(float32(0.0)),
+		DeploymentID: tv.ChatCompletions,
+	}
 }
 
 var expectedContent = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10."
 var expectedRole = azopenai.ChatRoleAssistant
 
 func TestClient_GetChatCompletions(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(apiKey)
+	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
 	require.NoError(t, err)
 
-	chatClient, err := azopenai.NewClientWithKeyCredential(endpoint, cred, chatCompletionsModelDeployment, newClientOptionsForTest(t))
+	chatClient, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
-	testGetChatCompletions(t, chatClient, true)
+	testGetChatCompletions(t, chatClient, azureOpenAI)
 }
 
 func TestClient_GetChatCompletionsStream(t *testing.T) {
-	chatClient := newAzureOpenAIClientForTest(t, canaryChatCompletionsModelDeployment, true)
-	testGetChatCompletionsStream(t, chatClient)
+	chatClient := newAzureOpenAIClientForTest(t, azureOpenAICanary)
+	testGetChatCompletionsStream(t, chatClient, azureOpenAICanary)
 }
 
 func TestClient_OpenAI_GetChatCompletions(t *testing.T) {
@@ -58,7 +60,7 @@ func TestClient_OpenAI_GetChatCompletions(t *testing.T) {
 	}
 
 	chatClient := newOpenAIClientForTest(t)
-	testGetChatCompletions(t, chatClient, false)
+	testGetChatCompletions(t, chatClient, openAI)
 }
 
 func TestClient_OpenAI_GetChatCompletionsStream(t *testing.T) {
@@ -67,10 +69,10 @@ func TestClient_OpenAI_GetChatCompletionsStream(t *testing.T) {
 	}
 
 	chatClient := newOpenAIClientForTest(t)
-	testGetChatCompletionsStream(t, chatClient)
+	testGetChatCompletionsStream(t, chatClient, openAI)
 }
 
-func testGetChatCompletions(t *testing.T, client *azopenai.Client, isAzure bool) {
+func testGetChatCompletions(t *testing.T, client *azopenai.Client, tv testVars) {
 	expected := azopenai.ChatCompletions{
 		Choices: []azopenai.ChatChoice{
 			{
@@ -91,10 +93,10 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client, isAzure bool)
 		},
 	}
 
-	resp, err := client.GetChatCompletions(context.Background(), chatCompletionsRequest, nil)
+	resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(tv), nil)
 	require.NoError(t, err)
 
-	if isAzure {
+	if tv.Azure {
 		// Azure also provides content-filtering. This particular prompt and responses
 		// will be considered safe.
 		expected.PromptAnnotations = []azopenai.PromptFilterResult{
@@ -112,8 +114,8 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client, isAzure bool)
 	require.Equal(t, expected, resp.ChatCompletions)
 }
 
-func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client) {
-	streamResp, err := client.GetChatCompletionsStream(context.Background(), chatCompletionsRequest, nil)
+func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, tv testVars) {
+	streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(tv), nil)
 	require.NoError(t, err)
 
 	// the data comes back differently for streaming
@@ -178,19 +180,19 @@ func TestClient_GetChatCompletions_DefaultAzureCredential(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	chatClient, err := azopenai.NewClient(endpoint, dac, chatCompletionsModelDeployment, &azopenai.ClientOptions{
+	chatClient, err := azopenai.NewClient(azureOpenAI.Endpoint, dac, &azopenai.ClientOptions{
 		ClientOptions: policy.ClientOptions{Transport: recordingTransporter},
 	})
 	require.NoError(t, err)
 
-	testGetChatCompletions(t, chatClient, true)
+	testGetChatCompletions(t, chatClient, azureOpenAI)
 }
 
 func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(apiKey)
+	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
 	require.NoError(t, err)
 
-	chatClient, err := azopenai.NewClientWithKeyCredential(endpoint, cred, "thisdoesntexist", newClientOptionsForTest(t))
+	chatClient, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
 	_, err = chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
@@ -200,8 +202,9 @@ func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
 				Content: to.Ptr("Count to 100, with a comma between each number and no newlines. E.g., 1, 2, 3, ..."),
 			},
 		},
-		MaxTokens:   to.Ptr(int32(1024)),
-		Temperature: to.Ptr(float32(0.0)),
+		MaxTokens:    to.Ptr(int32(1024)),
+		Temperature:  to.Ptr(float32(0.0)),
+		DeploymentID: "invalid model name",
 	}, nil)
 
 	var respErr *azcore.ResponseError
@@ -214,20 +217,17 @@ func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
 		t.Skip()
 	}
 
-	doTest := func(t *testing.T, client *azopenai.Client) {
-		t.Helper()
-		streamResp, err := client.GetChatCompletionsStream(context.Background(), chatCompletionsRequest, nil)
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		client := newBogusAzureOpenAIClient(t)
+		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(azureOpenAI), nil)
 		require.Empty(t, streamResp)
 		assertResponseIsError(t, err)
-	}
-
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		client := newBogusAzureOpenAIClient(t, chatCompletionsModelDeployment)
-		doTest(t, client)
 	})
 
 	t.Run("OpenAI", func(t *testing.T) {
 		client := newBogusOpenAIClient(t)
-		doTest(t, client)
+		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(openAI), nil)
+		require.Empty(t, streamResp)
+		assertResponseIsError(t, err)
 	})
 }

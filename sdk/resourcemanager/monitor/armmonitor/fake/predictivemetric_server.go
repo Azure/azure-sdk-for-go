@@ -29,8 +29,8 @@ type PredictiveMetricServer struct {
 }
 
 // NewPredictiveMetricServerTransport creates a new instance of PredictiveMetricServerTransport with the provided implementation.
-// The returned PredictiveMetricServerTransport instance is connected to an instance of armmonitor.PredictiveMetricClient by way of the
-// undefined.Transporter field.
+// The returned PredictiveMetricServerTransport instance is connected to an instance of armmonitor.PredictiveMetricClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPredictiveMetricServerTransport(srv *PredictiveMetricServer) *PredictiveMetricServerTransport {
 	return &PredictiveMetricServerTransport{srv: srv}
 }

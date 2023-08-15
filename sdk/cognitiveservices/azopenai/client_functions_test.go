@@ -25,32 +25,23 @@ type ParamProperty struct {
 	Enum        []string `json:"enum,omitempty"`
 }
 
-func getClientForFunctionsTest(t *testing.T, azure bool) *azopenai.Client {
-	if azure {
-		cred, err := azopenai.NewKeyCredential(apiKey)
-		require.NoError(t, err)
+func TestGetChatCompletions_usingFunctions(t *testing.T) {
+	// https://platform.openai.com/docs/guides/gpt/function-calling
 
-		chatClient, err := azopenai.NewClientWithKeyCredential(endpoint, cred, chatCompletionsModelDeployment, newClientOptionsForTest(t))
-		require.NoError(t, err)
+	t.Run("OpenAI", func(t *testing.T) {
+		chatClient := newOpenAIClientForTest(t)
+		testChatCompletionsFunctions(t, chatClient, openAI)
+	})
 
-		return chatClient
-	} else {
-		cred, err := azopenai.NewKeyCredential(openAIKey)
-		require.NoError(t, err)
-
-		chatClient, err := azopenai.NewClientForOpenAI(openAIEndpoint, cred, newClientOptionsForTest(t))
-		require.NoError(t, err)
-
-		return chatClient
-	}
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		chatClient := newAzureOpenAIClientForTest(t, azureOpenAI)
+		testChatCompletionsFunctions(t, chatClient, azureOpenAI)
+	})
 }
 
-func TestFunctions(t *testing.T) {
-	// https://platform.openai.com/docs/guides/gpt/function-calling#:~:text=For%20example%2C%20you%20can%3A%201%20Create%20chatbots%20that,...%203%20Extract%20structured%20data%20from%20text%20
-	chatClient := getClientForFunctionsTest(t, false)
-
-	resp, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Model: to.Ptr("gpt-3.5-turbo-0613"),
+func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client, tv testVars) {
+	body := azopenai.ChatCompletionsOptions{
+		DeploymentID: tv.ChatCompletions,
 		Messages: []azopenai.ChatMessage{
 			{
 				Role:    to.Ptr(azopenai.ChatRoleUser),
@@ -81,7 +72,9 @@ func TestFunctions(t *testing.T) {
 			},
 		},
 		Temperature: to.Ptr[float32](0.0),
-	}, nil)
+	}
+
+	resp, err := chatClient.GetChatCompletions(context.Background(), body, nil)
 	require.NoError(t, err)
 
 	funcCall := resp.ChatCompletions.Choices[0].Message.FunctionCall

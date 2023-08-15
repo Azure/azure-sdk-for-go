@@ -47,7 +47,7 @@ func NewAvailablePrivateEndpointTypesClient(subscriptionID string, credential az
 // NewListPager - Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this
 // region.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - location - The location of the domain name.
 //   - options - AvailablePrivateEndpointTypesClientListOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.NewListPager
 //     method.
@@ -97,7 +97,7 @@ func (client *AvailablePrivateEndpointTypesClient) listCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +115,7 @@ func (client *AvailablePrivateEndpointTypesClient) listHandleResponse(resp *http
 // NewListByResourceGroupPager - Returns all of the resource types that can be linked to a Private Endpoint in this subscription
 // in this region.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - location - The location of the domain name.
 //   - resourceGroupName - The name of the resource group.
 //   - options - AvailablePrivateEndpointTypesClientListByResourceGroupOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.NewListByResourceGroupPager
@@ -170,7 +170,7 @@ func (client *AvailablePrivateEndpointTypesClient) listByResourceGroupCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

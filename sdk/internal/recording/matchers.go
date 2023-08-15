@@ -9,6 +9,7 @@ package recording
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -76,7 +77,8 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 		return nil
 	}
 	options.fillOptions()
-	req, err := http.NewRequest("POST", "http://localhost:5000/Admin/SetMatcher", http.NoBody)
+	url := fmt.Sprintf("%s/Admin/SetMatcher", defaultOptions().baseURL())
+	req, err := http.NewRequest("POST", url, http.NoBody)
 	if err != nil {
 		panic(err)
 	}

@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,17 +29,20 @@ type VPNSitesConfigurationServer struct {
 }
 
 // NewVPNSitesConfigurationServerTransport creates a new instance of VPNSitesConfigurationServerTransport with the provided implementation.
-// The returned VPNSitesConfigurationServerTransport instance is connected to an instance of armnetwork.VPNSitesConfigurationClient by way of the
-// undefined.Transporter field.
+// The returned VPNSitesConfigurationServerTransport instance is connected to an instance of armnetwork.VPNSitesConfigurationClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVPNSitesConfigurationServerTransport(srv *VPNSitesConfigurationServer) *VPNSitesConfigurationServerTransport {
-	return &VPNSitesConfigurationServerTransport{srv: srv}
+	return &VPNSitesConfigurationServerTransport{
+		srv:           srv,
+		beginDownload: newTracker[azfake.PollerResponder[armnetwork.VPNSitesConfigurationClientDownloadResponse]](),
+	}
 }
 
 // VPNSitesConfigurationServerTransport connects instances of armnetwork.VPNSitesConfigurationClient to instances of VPNSitesConfigurationServer.
 // Don't use this type directly, use NewVPNSitesConfigurationServerTransport instead.
 type VPNSitesConfigurationServerTransport struct {
 	srv           *VPNSitesConfigurationServer
-	beginDownload *azfake.PollerResponder[armnetwork.VPNSitesConfigurationClientDownloadResponse]
+	beginDownload *tracker[azfake.PollerResponder[armnetwork.VPNSitesConfigurationClientDownloadResponse]]
 }
 
 // Do implements the policy.Transporter interface for VPNSitesConfigurationServerTransport.
@@ -71,7 +74,8 @@ func (v *VPNSitesConfigurationServerTransport) dispatchBeginDownload(req *http.R
 	if v.srv.BeginDownload == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDownload not implemented")}
 	}
-	if v.beginDownload == nil {
+	beginDownload := v.beginDownload.get(req)
+	if beginDownload == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualWans/(?P<virtualWANName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConfiguration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -94,19 +98,21 @@ func (v *VPNSitesConfigurationServerTransport) dispatchBeginDownload(req *http.R
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDownload = &respr
+		beginDownload = &respr
+		v.beginDownload.add(req, beginDownload)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDownload, req)
+	resp, err := server.PollerResponderNext(beginDownload, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginDownload.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDownload) {
-		v.beginDownload = nil
+	if !server.PollerResponderMore(beginDownload) {
+		v.beginDownload.remove(req)
 	}
 
 	return resp, nil

@@ -26,17 +26,20 @@ type EventCategoriesServer struct {
 }
 
 // NewEventCategoriesServerTransport creates a new instance of EventCategoriesServerTransport with the provided implementation.
-// The returned EventCategoriesServerTransport instance is connected to an instance of armmonitor.EventCategoriesClient by way of the
-// undefined.Transporter field.
+// The returned EventCategoriesServerTransport instance is connected to an instance of armmonitor.EventCategoriesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewEventCategoriesServerTransport(srv *EventCategoriesServer) *EventCategoriesServerTransport {
-	return &EventCategoriesServerTransport{srv: srv}
+	return &EventCategoriesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armmonitor.EventCategoriesClientListResponse]](),
+	}
 }
 
 // EventCategoriesServerTransport connects instances of armmonitor.EventCategoriesClient to instances of EventCategoriesServer.
 // Don't use this type directly, use NewEventCategoriesServerTransport instead.
 type EventCategoriesServerTransport struct {
 	srv          *EventCategoriesServer
-	newListPager *azfake.PagerResponder[armmonitor.EventCategoriesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armmonitor.EventCategoriesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for EventCategoriesServerTransport.
@@ -68,19 +71,22 @@ func (e *EventCategoriesServerTransport) dispatchNewListPager(req *http.Request)
 	if e.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if e.newListPager == nil {
+	newListPager := e.newListPager.get(req)
+	if newListPager == nil {
 		resp := e.srv.NewListPager(nil)
-		e.newListPager = &resp
+		newListPager = &resp
+		e.newListPager.add(req, newListPager)
 	}
-	resp, err := server.PagerResponderNext(e.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(e.newListPager) {
-		e.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		e.newListPager.remove(req)
 	}
 	return resp, nil
 }

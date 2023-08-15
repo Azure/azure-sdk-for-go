@@ -22,10 +22,9 @@ import (
 
 func TestNewClient(t *testing.T) {
 	type args struct {
-		endpoint     string
-		credential   azcore.TokenCredential
-		deploymentID string
-		options      *azopenai.ClientOptions
+		endpoint   string
+		credential azcore.TokenCredential
+		options    *azopenai.ClientOptions
 	}
 	tests := []struct {
 		name    string
@@ -37,7 +36,7 @@ func TestNewClient(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := azopenai.NewClient(tt.args.endpoint, tt.args.credential, tt.args.deploymentID, tt.args.options)
+			got, err := azopenai.NewClient(tt.args.endpoint, tt.args.credential, tt.args.options)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewClient() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -51,10 +50,9 @@ func TestNewClient(t *testing.T) {
 
 func TestNewClientWithKeyCredential(t *testing.T) {
 	type args struct {
-		endpoint     string
-		credential   azopenai.KeyCredential
-		deploymentID string
-		options      *azopenai.ClientOptions
+		endpoint   string
+		credential azopenai.KeyCredential
+		options    *azopenai.ClientOptions
 	}
 	tests := []struct {
 		name    string
@@ -66,7 +64,7 @@ func TestNewClientWithKeyCredential(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := azopenai.NewClientWithKeyCredential(tt.args.endpoint, tt.args.credential, tt.args.deploymentID, tt.args.options)
+			got, err := azopenai.NewClientWithKeyCredential(tt.args.endpoint, tt.args.credential, tt.args.options)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewClientWithKeyCredential() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -79,13 +77,13 @@ func TestNewClientWithKeyCredential(t *testing.T) {
 }
 
 func TestGetCompletionsStream_AzureOpenAI(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(apiKey)
+	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
 	require.NoError(t, err)
 
-	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, completionsModelDeployment, newClientOptionsForTest(t))
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
-	testGetCompletionsStream(t, client)
+	testGetCompletionsStream(t, client, azureOpenAI)
 }
 
 func TestGetCompletionsStream_OpenAI(t *testing.T) {
@@ -94,15 +92,15 @@ func TestGetCompletionsStream_OpenAI(t *testing.T) {
 	}
 
 	client := newOpenAIClientForTest(t)
-	testGetCompletionsStream(t, client)
+	testGetCompletionsStream(t, client, openAI)
 }
 
-func testGetCompletionsStream(t *testing.T, client *azopenai.Client) {
+func testGetCompletionsStream(t *testing.T, client *azopenai.Client, tv testVars) {
 	body := azopenai.CompletionsOptions{
-		Prompt:      []string{"What is Azure OpenAI?"},
-		MaxTokens:   to.Ptr(int32(2048)),
-		Temperature: to.Ptr(float32(0.0)),
-		Model:       to.Ptr(openAICompletionsModel),
+		Prompt:       []string{"What is Azure OpenAI?"},
+		MaxTokens:    to.Ptr(int32(2048)),
+		Temperature:  to.Ptr(float32(0.0)),
+		DeploymentID: tv.Completions,
 	}
 
 	response, err := client.GetCompletionsStream(context.TODO(), body, nil)
@@ -154,24 +152,24 @@ func TestClient_GetCompletions_Error(t *testing.T) {
 		t.Skip()
 	}
 
-	doTest := func(t *testing.T, client *azopenai.Client) {
+	doTest := func(t *testing.T, client *azopenai.Client, model string) {
 		streamResp, err := client.GetCompletionsStream(context.Background(), azopenai.CompletionsOptions{
-			Prompt:      []string{"What is Azure OpenAI?"},
-			MaxTokens:   to.Ptr(int32(2048 - 127)),
-			Temperature: to.Ptr(float32(0.0)),
-			Model:       &openAICompletionsModel,
+			Prompt:       []string{"What is Azure OpenAI?"},
+			MaxTokens:    to.Ptr(int32(2048 - 127)),
+			Temperature:  to.Ptr(float32(0.0)),
+			DeploymentID: model,
 		}, nil)
 		require.Empty(t, streamResp)
 		assertResponseIsError(t, err)
 	}
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
-		client := newBogusAzureOpenAIClient(t, completionsModelDeployment)
-		doTest(t, client)
+		client := newBogusAzureOpenAIClient(t)
+		doTest(t, client, azureOpenAI.Completions)
 	})
 
 	t.Run("OpenAI", func(t *testing.T) {
 		client := newBogusOpenAIClient(t)
-		doTest(t, client)
+		doTest(t, client, openAI.Completions)
 	})
 }

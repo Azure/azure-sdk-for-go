@@ -20,7 +20,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"strconv"
 )
 
 // ManagedClustersServer is a fake server for instances of the armcontainerservice.ManagedClustersClient type.
@@ -119,30 +118,46 @@ type ManagedClustersServer struct {
 }
 
 // NewManagedClustersServerTransport creates a new instance of ManagedClustersServerTransport with the provided implementation.
-// The returned ManagedClustersServerTransport instance is connected to an instance of armcontainerservice.ManagedClustersClient by way of the
-// undefined.Transporter field.
+// The returned ManagedClustersServerTransport instance is connected to an instance of armcontainerservice.ManagedClustersClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewManagedClustersServerTransport(srv *ManagedClustersServer) *ManagedClustersServerTransport {
-	return &ManagedClustersServerTransport{srv: srv}
+	return &ManagedClustersServerTransport{
+		srv:                         srv,
+		beginAbortLatestOperation:   newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientAbortLatestOperationResponse]](),
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientDeleteResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListByResourceGroupResponse]](),
+		newListOutboundNetworkDependenciesEndpointsPager: newTracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]](),
+		beginResetAADProfile:                             newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetAADProfileResponse]](),
+		beginResetServicePrincipalProfile:                newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetServicePrincipalProfileResponse]](),
+		beginRotateClusterCertificates:                   newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateClusterCertificatesResponse]](),
+		beginRotateServiceAccountSigningKeys:             newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateServiceAccountSigningKeysResponse]](),
+		beginRunCommand:                                  newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRunCommandResponse]](),
+		beginStart:                                       newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientStartResponse]](),
+		beginStop:                                        newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientStopResponse]](),
+		beginUpdateTags:                                  newTracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientUpdateTagsResponse]](),
+	}
 }
 
 // ManagedClustersServerTransport connects instances of armcontainerservice.ManagedClustersClient to instances of ManagedClustersServer.
 // Don't use this type directly, use NewManagedClustersServerTransport instead.
 type ManagedClustersServerTransport struct {
 	srv                                              *ManagedClustersServer
-	beginAbortLatestOperation                        *azfake.PollerResponder[armcontainerservice.ManagedClustersClientAbortLatestOperationResponse]
-	beginCreateOrUpdate                              *azfake.PollerResponder[armcontainerservice.ManagedClustersClientCreateOrUpdateResponse]
-	beginDelete                                      *azfake.PollerResponder[armcontainerservice.ManagedClustersClientDeleteResponse]
-	newListPager                                     *azfake.PagerResponder[armcontainerservice.ManagedClustersClientListResponse]
-	newListByResourceGroupPager                      *azfake.PagerResponder[armcontainerservice.ManagedClustersClientListByResourceGroupResponse]
-	newListOutboundNetworkDependenciesEndpointsPager *azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]
-	beginResetAADProfile                             *azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetAADProfileResponse]
-	beginResetServicePrincipalProfile                *azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetServicePrincipalProfileResponse]
-	beginRotateClusterCertificates                   *azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateClusterCertificatesResponse]
-	beginRotateServiceAccountSigningKeys             *azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateServiceAccountSigningKeysResponse]
-	beginRunCommand                                  *azfake.PollerResponder[armcontainerservice.ManagedClustersClientRunCommandResponse]
-	beginStart                                       *azfake.PollerResponder[armcontainerservice.ManagedClustersClientStartResponse]
-	beginStop                                        *azfake.PollerResponder[armcontainerservice.ManagedClustersClientStopResponse]
-	beginUpdateTags                                  *azfake.PollerResponder[armcontainerservice.ManagedClustersClientUpdateTagsResponse]
+	beginAbortLatestOperation                        *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientAbortLatestOperationResponse]]
+	beginCreateOrUpdate                              *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientCreateOrUpdateResponse]]
+	beginDelete                                      *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientDeleteResponse]]
+	newListPager                                     *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListResponse]]
+	newListByResourceGroupPager                      *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListByResourceGroupResponse]]
+	newListOutboundNetworkDependenciesEndpointsPager *tracker[azfake.PagerResponder[armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]]
+	beginResetAADProfile                             *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetAADProfileResponse]]
+	beginResetServicePrincipalProfile                *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientResetServicePrincipalProfileResponse]]
+	beginRotateClusterCertificates                   *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateClusterCertificatesResponse]]
+	beginRotateServiceAccountSigningKeys             *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRotateServiceAccountSigningKeysResponse]]
+	beginRunCommand                                  *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientRunCommandResponse]]
+	beginStart                                       *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientStartResponse]]
+	beginStop                                        *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientStopResponse]]
+	beginUpdateTags                                  *tracker[azfake.PollerResponder[armcontainerservice.ManagedClustersClientUpdateTagsResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedClustersServerTransport.
@@ -218,7 +233,8 @@ func (m *ManagedClustersServerTransport) dispatchBeginAbortLatestOperation(req *
 	if m.srv.BeginAbortLatestOperation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginAbortLatestOperation not implemented")}
 	}
-	if m.beginAbortLatestOperation == nil {
+	beginAbortLatestOperation := m.beginAbortLatestOperation.get(req)
+	if beginAbortLatestOperation == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedclusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/abort`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -237,19 +253,21 @@ func (m *ManagedClustersServerTransport) dispatchBeginAbortLatestOperation(req *
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginAbortLatestOperation = &respr
+		beginAbortLatestOperation = &respr
+		m.beginAbortLatestOperation.add(req, beginAbortLatestOperation)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginAbortLatestOperation, req)
+	resp, err := server.PollerResponderNext(beginAbortLatestOperation, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		m.beginAbortLatestOperation.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginAbortLatestOperation) {
-		m.beginAbortLatestOperation = nil
+	if !server.PollerResponderMore(beginAbortLatestOperation) {
+		m.beginAbortLatestOperation.remove(req)
 	}
 
 	return resp, nil
@@ -259,7 +277,8 @@ func (m *ManagedClustersServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 	if m.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if m.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := m.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -282,19 +301,21 @@ func (m *ManagedClustersServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		m.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		m.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginCreateOrUpdate) {
-		m.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		m.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -304,14 +325,14 @@ func (m *ManagedClustersServerTransport) dispatchBeginDelete(req *http.Request) 
 	if m.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if m.beginDelete == nil {
+	beginDelete := m.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		qp := req.URL.Query()
 		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -320,37 +341,25 @@ func (m *ManagedClustersServerTransport) dispatchBeginDelete(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		ignorePodDisruptionBudgetUnescaped, err := url.QueryUnescape(qp.Get("ignore-pod-disruption-budget"))
-		if err != nil {
-			return nil, err
-		}
-		ignorePodDisruptionBudgetParam, err := parseOptional(ignorePodDisruptionBudgetUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armcontainerservice.ManagedClustersClientBeginDeleteOptions
-		if ignorePodDisruptionBudgetParam != nil {
-			options = &armcontainerservice.ManagedClustersClientBeginDeleteOptions{
-				IgnorePodDisruptionBudget: ignorePodDisruptionBudgetParam,
-			}
-		}
-		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, resourceNameUnescaped, options)
+		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, resourceNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginDelete = &respr
+		beginDelete = &respr
+		m.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		m.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginDelete) {
-		m.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		m.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -544,7 +553,8 @@ func (m *ManagedClustersServerTransport) dispatchNewListPager(req *http.Request)
 	if m.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if m.newListPager == nil {
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -552,20 +562,22 @@ func (m *ManagedClustersServerTransport) dispatchNewListPager(req *http.Request)
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := m.srv.NewListPager(nil)
-		m.newListPager = &resp
-		server.PagerResponderInjectNextLinks(m.newListPager, req, func(page *armcontainerservice.ManagedClustersClientListResponse, createLink func() string) {
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerservice.ManagedClustersClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(m.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(m.newListPager) {
-		m.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -574,7 +586,8 @@ func (m *ManagedClustersServerTransport) dispatchNewListByResourceGroupPager(req
 	if m.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if m.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -586,20 +599,22 @@ func (m *ManagedClustersServerTransport) dispatchNewListByResourceGroupPager(req
 			return nil, err
 		}
 		resp := m.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		m.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(m.newListByResourceGroupPager, req, func(page *armcontainerservice.ManagedClustersClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		m.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcontainerservice.ManagedClustersClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(m.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(m.newListByResourceGroupPager) {
-		m.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		m.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -778,7 +793,8 @@ func (m *ManagedClustersServerTransport) dispatchNewListOutboundNetworkDependenc
 	if m.srv.NewListOutboundNetworkDependenciesEndpointsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListOutboundNetworkDependenciesEndpointsPager not implemented")}
 	}
-	if m.newListOutboundNetworkDependenciesEndpointsPager == nil {
+	newListOutboundNetworkDependenciesEndpointsPager := m.newListOutboundNetworkDependenciesEndpointsPager.get(req)
+	if newListOutboundNetworkDependenciesEndpointsPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/outboundNetworkDependenciesEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -794,20 +810,22 @@ func (m *ManagedClustersServerTransport) dispatchNewListOutboundNetworkDependenc
 			return nil, err
 		}
 		resp := m.srv.NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupNameUnescaped, resourceNameUnescaped, nil)
-		m.newListOutboundNetworkDependenciesEndpointsPager = &resp
-		server.PagerResponderInjectNextLinks(m.newListOutboundNetworkDependenciesEndpointsPager, req, func(page *armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse, createLink func() string) {
+		newListOutboundNetworkDependenciesEndpointsPager = &resp
+		m.newListOutboundNetworkDependenciesEndpointsPager.add(req, newListOutboundNetworkDependenciesEndpointsPager)
+		server.PagerResponderInjectNextLinks(newListOutboundNetworkDependenciesEndpointsPager, req, func(page *armcontainerservice.ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(m.newListOutboundNetworkDependenciesEndpointsPager, req)
+	resp, err := server.PagerResponderNext(newListOutboundNetworkDependenciesEndpointsPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(m.newListOutboundNetworkDependenciesEndpointsPager) {
-		m.newListOutboundNetworkDependenciesEndpointsPager = nil
+	if !server.PagerResponderMore(newListOutboundNetworkDependenciesEndpointsPager) {
+		m.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -816,7 +834,8 @@ func (m *ManagedClustersServerTransport) dispatchBeginResetAADProfile(req *http.
 	if m.srv.BeginResetAADProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginResetAADProfile not implemented")}
 	}
-	if m.beginResetAADProfile == nil {
+	beginResetAADProfile := m.beginResetAADProfile.get(req)
+	if beginResetAADProfile == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetAADProfile`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -839,19 +858,21 @@ func (m *ManagedClustersServerTransport) dispatchBeginResetAADProfile(req *http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginResetAADProfile = &respr
+		beginResetAADProfile = &respr
+		m.beginResetAADProfile.add(req, beginResetAADProfile)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginResetAADProfile, req)
+	resp, err := server.PollerResponderNext(beginResetAADProfile, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginResetAADProfile.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginResetAADProfile) {
-		m.beginResetAADProfile = nil
+	if !server.PollerResponderMore(beginResetAADProfile) {
+		m.beginResetAADProfile.remove(req)
 	}
 
 	return resp, nil
@@ -861,7 +882,8 @@ func (m *ManagedClustersServerTransport) dispatchBeginResetServicePrincipalProfi
 	if m.srv.BeginResetServicePrincipalProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginResetServicePrincipalProfile not implemented")}
 	}
-	if m.beginResetServicePrincipalProfile == nil {
+	beginResetServicePrincipalProfile := m.beginResetServicePrincipalProfile.get(req)
+	if beginResetServicePrincipalProfile == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetServicePrincipalProfile`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -884,19 +906,21 @@ func (m *ManagedClustersServerTransport) dispatchBeginResetServicePrincipalProfi
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginResetServicePrincipalProfile = &respr
+		beginResetServicePrincipalProfile = &respr
+		m.beginResetServicePrincipalProfile.add(req, beginResetServicePrincipalProfile)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginResetServicePrincipalProfile, req)
+	resp, err := server.PollerResponderNext(beginResetServicePrincipalProfile, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginResetServicePrincipalProfile.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginResetServicePrincipalProfile) {
-		m.beginResetServicePrincipalProfile = nil
+	if !server.PollerResponderMore(beginResetServicePrincipalProfile) {
+		m.beginResetServicePrincipalProfile.remove(req)
 	}
 
 	return resp, nil
@@ -906,7 +930,8 @@ func (m *ManagedClustersServerTransport) dispatchBeginRotateClusterCertificates(
 	if m.srv.BeginRotateClusterCertificates == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRotateClusterCertificates not implemented")}
 	}
-	if m.beginRotateClusterCertificates == nil {
+	beginRotateClusterCertificates := m.beginRotateClusterCertificates.get(req)
+	if beginRotateClusterCertificates == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rotateClusterCertificates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -925,19 +950,21 @@ func (m *ManagedClustersServerTransport) dispatchBeginRotateClusterCertificates(
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginRotateClusterCertificates = &respr
+		beginRotateClusterCertificates = &respr
+		m.beginRotateClusterCertificates.add(req, beginRotateClusterCertificates)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginRotateClusterCertificates, req)
+	resp, err := server.PollerResponderNext(beginRotateClusterCertificates, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		m.beginRotateClusterCertificates.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginRotateClusterCertificates) {
-		m.beginRotateClusterCertificates = nil
+	if !server.PollerResponderMore(beginRotateClusterCertificates) {
+		m.beginRotateClusterCertificates.remove(req)
 	}
 
 	return resp, nil
@@ -947,7 +974,8 @@ func (m *ManagedClustersServerTransport) dispatchBeginRotateServiceAccountSignin
 	if m.srv.BeginRotateServiceAccountSigningKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRotateServiceAccountSigningKeys not implemented")}
 	}
-	if m.beginRotateServiceAccountSigningKeys == nil {
+	beginRotateServiceAccountSigningKeys := m.beginRotateServiceAccountSigningKeys.get(req)
+	if beginRotateServiceAccountSigningKeys == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rotateServiceAccountSigningKeys`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -966,19 +994,21 @@ func (m *ManagedClustersServerTransport) dispatchBeginRotateServiceAccountSignin
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginRotateServiceAccountSigningKeys = &respr
+		beginRotateServiceAccountSigningKeys = &respr
+		m.beginRotateServiceAccountSigningKeys.add(req, beginRotateServiceAccountSigningKeys)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginRotateServiceAccountSigningKeys, req)
+	resp, err := server.PollerResponderNext(beginRotateServiceAccountSigningKeys, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		m.beginRotateServiceAccountSigningKeys.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginRotateServiceAccountSigningKeys) {
-		m.beginRotateServiceAccountSigningKeys = nil
+	if !server.PollerResponderMore(beginRotateServiceAccountSigningKeys) {
+		m.beginRotateServiceAccountSigningKeys.remove(req)
 	}
 
 	return resp, nil
@@ -988,7 +1018,8 @@ func (m *ManagedClustersServerTransport) dispatchBeginRunCommand(req *http.Reque
 	if m.srv.BeginRunCommand == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRunCommand not implemented")}
 	}
-	if m.beginRunCommand == nil {
+	beginRunCommand := m.beginRunCommand.get(req)
+	if beginRunCommand == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommand`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1011,19 +1042,21 @@ func (m *ManagedClustersServerTransport) dispatchBeginRunCommand(req *http.Reque
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginRunCommand = &respr
+		beginRunCommand = &respr
+		m.beginRunCommand.add(req, beginRunCommand)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginRunCommand, req)
+	resp, err := server.PollerResponderNext(beginRunCommand, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginRunCommand.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginRunCommand) {
-		m.beginRunCommand = nil
+	if !server.PollerResponderMore(beginRunCommand) {
+		m.beginRunCommand.remove(req)
 	}
 
 	return resp, nil
@@ -1033,7 +1066,8 @@ func (m *ManagedClustersServerTransport) dispatchBeginStart(req *http.Request) (
 	if m.srv.BeginStart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
 	}
-	if m.beginStart == nil {
+	beginStart := m.beginStart.get(req)
+	if beginStart == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1052,19 +1086,21 @@ func (m *ManagedClustersServerTransport) dispatchBeginStart(req *http.Request) (
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginStart = &respr
+		beginStart = &respr
+		m.beginStart.add(req, beginStart)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginStart, req)
+	resp, err := server.PollerResponderNext(beginStart, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		m.beginStart.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginStart) {
-		m.beginStart = nil
+	if !server.PollerResponderMore(beginStart) {
+		m.beginStart.remove(req)
 	}
 
 	return resp, nil
@@ -1074,7 +1110,8 @@ func (m *ManagedClustersServerTransport) dispatchBeginStop(req *http.Request) (*
 	if m.srv.BeginStop == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
 	}
-	if m.beginStop == nil {
+	beginStop := m.beginStop.get(req)
+	if beginStop == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1093,19 +1130,21 @@ func (m *ManagedClustersServerTransport) dispatchBeginStop(req *http.Request) (*
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginStop = &respr
+		beginStop = &respr
+		m.beginStop.add(req, beginStop)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginStop, req)
+	resp, err := server.PollerResponderNext(beginStop, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		m.beginStop.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginStop) {
-		m.beginStop = nil
+	if !server.PollerResponderMore(beginStop) {
+		m.beginStop.remove(req)
 	}
 
 	return resp, nil
@@ -1115,7 +1154,8 @@ func (m *ManagedClustersServerTransport) dispatchBeginUpdateTags(req *http.Reque
 	if m.srv.BeginUpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTags not implemented")}
 	}
-	if m.beginUpdateTags == nil {
+	beginUpdateTags := m.beginUpdateTags.get(req)
+	if beginUpdateTags == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1138,19 +1178,21 @@ func (m *ManagedClustersServerTransport) dispatchBeginUpdateTags(req *http.Reque
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginUpdateTags = &respr
+		beginUpdateTags = &respr
+		m.beginUpdateTags.add(req, beginUpdateTags)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginUpdateTags, req)
+	resp, err := server.PollerResponderNext(beginUpdateTags, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.beginUpdateTags.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginUpdateTags) {
-		m.beginUpdateTags = nil
+	if !server.PollerResponderMore(beginUpdateTags) {
+		m.beginUpdateTags.remove(req)
 	}
 
 	return resp, nil

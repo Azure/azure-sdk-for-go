@@ -10,21 +10,25 @@ package armmarketplaceordering
 
 // MarketplaceAgreementsClientCancelResponse contains the response from method MarketplaceAgreementsClient.Cancel.
 type MarketplaceAgreementsClientCancelResponse struct {
+	// Terms properties for provided Publisher/Offer/Plan tuple
 	AgreementTerms
 }
 
 // MarketplaceAgreementsClientCreateResponse contains the response from method MarketplaceAgreementsClient.Create.
 type MarketplaceAgreementsClientCreateResponse struct {
+	// Terms properties for provided Publisher/Offer/Plan tuple
 	AgreementTerms
 }
 
 // MarketplaceAgreementsClientGetAgreementResponse contains the response from method MarketplaceAgreementsClient.GetAgreement.
 type MarketplaceAgreementsClientGetAgreementResponse struct {
+	// Terms properties for provided Publisher/Offer/Plan tuple
 	AgreementTerms
 }
 
 // MarketplaceAgreementsClientGetResponse contains the response from method MarketplaceAgreementsClient.Get.
 type MarketplaceAgreementsClientGetResponse struct {
+	// Terms properties for provided Publisher/Offer/Plan tuple
 	AgreementTerms
 }
 
@@ -36,10 +40,13 @@ type MarketplaceAgreementsClientListResponse struct {
 
 // MarketplaceAgreementsClientSignResponse contains the response from method MarketplaceAgreementsClient.Sign.
 type MarketplaceAgreementsClientSignResponse struct {
+	// Terms properties for provided Publisher/Offer/Plan tuple
 	AgreementTerms
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
+	// Result of the request to list MarketplaceOrdering operations. It contains a list of operations and a URL link to get the
+	// next set of results.
 	OperationListResult
 }

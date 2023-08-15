@@ -83,11 +83,11 @@ func (o *SetPropertiesOptions) format() *service.SetPropertiesOptions {
 // ListFileSystemsInclude indicates what additional information the service should return with each filesystem.
 type ListFileSystemsInclude struct {
 	// Metadata tells the service whether to return metadata for each filesystem.
-	Metadata bool
+	Metadata *bool
 	// Deleted tells the service whether to return soft-deleted filesystems.
-	Deleted bool
+	Deleted *bool
 	// System tells the service whether to return system filesystems.
-	System bool
+	System *bool
 }
 
 // ListFileSystemsOptions contains the optional parameters for the ListFileSystems method.

@@ -147,8 +147,8 @@ func Example_service_Client_ListFileSystems() {
 
 	listFSOptions := service.ListFileSystemsOptions{
 		Include: service.ListFileSystemsInclude{
-			Metadata: true, // Include Metadata
-			Deleted:  true, // Include deleted containers in the result as well
+			Metadata: to.Ptr(true), // Include Metadata
+			Deleted:  to.Ptr(true), // Include deleted containers in the result as well
 		},
 	}
 	pager := serviceClient.NewListFileSystemsPager(&listFSOptions)

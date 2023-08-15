@@ -585,7 +585,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
 	}(fsClient, context.Background(), nil)
 	_require.Nil(err)
 	prefix := testcommon.FileSystemPrefix
-	listOptions := service.ListFileSystemsOptions{Prefix: &prefix, Include: service.ListFileSystemsInclude{Metadata: true}}
+	listOptions := service.ListFileSystemsOptions{Prefix: &prefix, Include: service.ListFileSystemsInclude{Metadata: to.Ptr(true)}}
 	pager := svcClient.NewListFileSystemsPager(&listOptions)
 
 	count := 0
@@ -645,7 +645,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 	}(fsClient, context.Background(), nil)
 	_require.Nil(err)
 	prefix := testcommon.FileSystemPrefix
-	listOptions := service.ListFileSystemsOptions{Prefix: &prefix, Include: service.ListFileSystemsInclude{Metadata: true}}
+	listOptions := service.ListFileSystemsOptions{Prefix: &prefix, Include: service.ListFileSystemsInclude{Metadata: to.Ptr(true)}}
 	pager := svcClient.NewListFileSystemsPager(&listOptions)
 
 	count := 0
@@ -710,7 +710,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsPaged() {
 	}()
 
 	prefix := pagedFileSystemsPrefix + testcommon.FileSystemPrefix
-	listOptions := service.ListFileSystemsOptions{MaxResults: &maxResults, Prefix: &prefix, Include: service.ListFileSystemsInclude{Metadata: true}}
+	listOptions := service.ListFileSystemsOptions{MaxResults: &maxResults, Prefix: &prefix, Include: service.ListFileSystemsInclude{Metadata: to.Ptr(true)}}
 	count := 0
 	results := make([]service.FileSystemItem, 0)
 	pager := svcClient.NewListFileSystemsPager(&listOptions)

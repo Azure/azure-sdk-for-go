@@ -229,6 +229,11 @@
         "apiVersion": "[variables('mgmtApiVersion')]",
         "name": "[concat(variables('dataLakeAccountName'), '/default')]",
         "properties": {
+          "deleteRetentionPolicy": {
+            "allowPermanentDelete": false,
+            "enabled": true,
+            "days": 7
+          },
           "containerDeleteRetentionPolicy": {
             "enabled": true,
             "days": 1

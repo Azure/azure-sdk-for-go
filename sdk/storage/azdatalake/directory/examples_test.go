@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/directory"
 	"log"
 	"os"
+	"time"
 )
 
 func handleError(err error) {
@@ -22,6 +23,7 @@ func handleError(err error) {
 	}
 }
 
+// make sure you create the filesystem before running this example
 func Example_directory_CreateAndDelete() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
@@ -39,11 +41,12 @@ func Example_directory_CreateAndDelete() {
 	handleError(err)
 }
 
-// This examples shows how to create a directory with HTTP Headers, how to read, and how to update the directory's HTTP headers.
+// This examples shows how to set a directory HTTP Headers, how to read, and how to update the directory's HTTP headers.
 func Example_directory_HTTPHeaders() {
+	// make sure you create the filesystem and directory before running this example
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
-	// Create a blob client
+	// Create a dir client
 	u := fmt.Sprintf("https://%s.dfs.core.windows.net/fs/dir1", accountName)
 	credential, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
@@ -64,11 +67,11 @@ func Example_directory_HTTPHeaders() {
 	fmt.Println(get.ContentDisposition)
 }
 
+// make sure you create the filesystem and directory before running this example
 func Example_dir_Client_SetMetadata() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
-
 	// Create a dir client
-	u := fmt.Sprintf("https://%s.dfs.core.windows.net/fs/ReadMe.txt", accountName)
+	u := fmt.Sprintf("https://%s.dfs.core.windows.net/fs/dir1", accountName)
 	credential, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
 
@@ -92,6 +95,7 @@ func Example_dir_Client_SetMetadata() {
 	}
 }
 
+// make sure you create the filesystem before running this example
 func Example_directory_Rename() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
@@ -123,5 +127,40 @@ func Example_directory_SetACLRecursive() {
 
 	_, err = dirClient.SetAccessControlRecursive(context.Background(), acl, &directory.SetAccessControlRecursiveOptions{
 		BatchSize: to.Ptr(int32(2)), MaxBatches: to.Ptr(int32(1)), ContinueOnFailure: to.Ptr(true), Marker: nil})
+	handleError(err)
+}
+
+func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time.Time {
+	return anchorTime.Add(amount * time.Second)
+}
+
+// make sure you create the filesystem before running this example
+func Example_directory_SetAccessControlIfUnmodifiedSinceTrue() {
+	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+
+	// Create a directory client
+	owner := "4cf4e284-f6a8-4540-b53e-c3469af032dc"
+	group := owner
+	acl := "user::rwx,group::r-x,other::rwx"
+	u := fmt.Sprintf("https://%s.dfs.core.windows.net/fs/dir1", accountName)
+	credential, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+	dirClient, err := directory.NewClientWithSharedKeyCredential(u, credential, nil)
+	handleError(err)
+	resp, err := dirClient.Create(context.Background(), nil)
+	handleError(err)
+
+	currentTime := getRelativeTimeFromAnchor(resp.Date, 10)
+	opts := &directory.SetAccessControlOptions{
+		Owner: &owner,
+		Group: &group,
+		ACL:   &acl,
+		AccessConditions: &directory.AccessConditions{
+			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		}}
+
+	_, err = dirClient.SetAccessControl(context.Background(), opts)
 	handleError(err)
 }

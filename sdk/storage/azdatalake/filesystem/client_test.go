@@ -1346,6 +1346,43 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 	}
 }
 
+func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursiveNoPrefix() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	client := fsClient.NewFileClient("file1")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	client = fsClient.NewFileClient("file2")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient := fsClient.NewDirectoryClient("dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient = fsClient.NewDirectoryClient("dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	pager := fsClient.NewListPathsPager(true, nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		_require.Equal(4, len(resp.Paths))
+		_require.NotNil(resp.PathList.Paths[0].IsDirectory)
+		if err != nil {
+			break
+		}
+	}
+}
+
 func (s *RecordedTestSuite) TestFilesystemListPathsWithoutRecursive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

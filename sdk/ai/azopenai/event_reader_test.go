@@ -16,7 +16,7 @@ import (
 
 func TestEventReader_InvalidType(t *testing.T) {
 	data := []string{
-		"invaliddata: {\u0022name\u0022:\u0022chatcmpl-7Z4kUpXX6HN85cWY28IXM4EwemLU3\u0022,\u0022object\u0022:\u0022chat.completion.chunk\u0022,\u0022created\u0022:1688594090,\u0022model\u0022:\u0022gpt-4-0613\u0022,\u0022choices\u0022:[{\u0022index\u0022:0,\u0022delta\u0022:{\u0022role\u0022:\u0022assistant\u0022,\u0022content\u0022:\u0022\u0022},\u0022finish_reason\u0022:null}]}\n\n",
+		"invaliddata: {\"name\":\"chatcmpl-7Z4kUpXX6HN85cWY28IXM4EwemLU3\",\"object\":\"chat.completion.chunk\",\"created\":1688594090,\"model\":\"gpt-4-0613\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"\"},\"finish_reason\":null}]}\n\n",
 	}
 
 	text := strings.NewReader(strings.Join(data, "\n"))
@@ -54,4 +54,24 @@ func TestEventReader_StreamIsClosedBeforeDone(t *testing.T) {
 	evt, err = eventReader.Read()
 	require.Empty(t, evt)
 	require.EqualError(t, err, "incomplete stream")
+}
+
+func TestEventReader_SpacesAroundAreas(t *testing.T) {
+	buff := strings.NewReader(
+		// spaces between data
+		"data: {\"name\":\"chatcmpl-7Z4kUpXX6HN85cWY28IXM4EwemLU3\",\"object\":\"chat.completion.chunk\",\"created\":1688594090,\"model\":\"gpt-4-0613\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"with-spaces\"},\"finish_reason\":null}]}\n" +
+			// no spaces
+			"data:{\"name\":\"chatcmpl-7Z4kUpXX6HN85cWY28IXM4EwemLU3\",\"object\":\"chat.completion.chunk\",\"created\":1688594090,\"model\":\"gpt-4-0613\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"without-spaces\"},\"finish_reason\":null}]}\n",
+	)
+
+	eventReader := newEventReader[ChatCompletions](io.NopCloser(buff))
+
+	evt, err := eventReader.Read()
+	require.NoError(t, err)
+	require.Equal(t, "with-spaces", *evt.Choices[0].Delta.Content)
+
+	evt, err = eventReader.Read()
+	require.NoError(t, err)
+	require.NotEmpty(t, evt)
+	require.Equal(t, "without-spaces", *evt.Choices[0].Delta.Content)
 }

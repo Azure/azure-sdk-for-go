@@ -19,7 +19,7 @@
 /sdk/azidentity/              @chlowell @jhendrixMSFT @rickwinter @Azure/azure-sdk-write-identity
 
 # PRLable: %OpenAI
-/sdk/ai                       @jhendrixMSFT @richardpark-msft
+/sdk/ai                       @richardpark-msft @jhendrixMSFT 
 
 # PRLabel: %Internal
 /sdk/internal/                @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
@@ -38,6 +38,9 @@
 
 # PRLabel: %Service Bus
 /sdk/messaging/azservicebus/  @richardpark-msft @jhendrixMSFT
+
+# PRLabel: %Event Grid
+/sdk/messaging/azeventgrid/   @richardpark-msft @jhendrixMSFT
 
 # PRLabel: %Event Hubs
 /sdk/messaging/azeventhubs/   @richardpark-msft @jhendrixMSFT

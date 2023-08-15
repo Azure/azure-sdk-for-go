@@ -243,13 +243,13 @@ func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 func (s *Client) NewListFileSystemsPager(o *ListFileSystemsOptions) *runtime.Pager[ListFileSystemsResponse] {
 	listOptions := generated_blob.ServiceClientListContainersSegmentOptions{}
 	if o != nil {
-		if o.Include.Deleted {
+		if *o.Include.Deleted {
 			listOptions.Include = append(listOptions.Include, generated_blob.ListContainersIncludeTypeDeleted)
 		}
-		if o.Include.Metadata {
+		if *o.Include.Metadata {
 			listOptions.Include = append(listOptions.Include, generated_blob.ListContainersIncludeTypeMetadata)
 		}
-		if o.Include.System {
+		if *o.Include.System {
 			listOptions.Include = append(listOptions.Include, generated_blob.ListContainersIncludeTypeSystem)
 		}
 		listOptions.Marker = o.Marker

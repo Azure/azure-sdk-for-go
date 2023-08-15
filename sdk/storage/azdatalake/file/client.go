@@ -516,4 +516,4 @@ func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	return val, exported.ConvertToDFSError(err)
 }
 
-// TODO: add Undelete()
+// TODO: Undelete()

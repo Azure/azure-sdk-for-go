@@ -2,10 +2,11 @@
 
 > Service Version: 2020-10-02
 
-ADLS Gen2 storage is Microsoft's hierarchical object storage solution for the cloud. Datalake
-storage is optimized for storing massive amounts of unstructured data.
-Unstructured data is data that does not adhere to a particular data model or
-definition, such as text or binary data.
+Azure Data Lake Storage Gen2 (ADLS Gen2) is Microsoft's hierarchical object storage solution for the cloud with converged capabilities with Azure Blob Storage. 
+For example, Data Lake Storage Gen2 provides file system semantics, file-level security, and scale. 
+Because these capabilities are built on Blob storage, you also get low-cost, tiered storage, with high availability/disaster recovery capabilities.
+ADLS Gen2 makes Azure Storage the foundation for building enterprise data lakes on Azure. 
+Designed from the start to service multiple petabytes of information while sustaining hundreds of gigabits of throughput, ADLS Gen2 allows you to easily manage massive amounts of data.
 
 [Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs]
 
@@ -51,11 +52,19 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 // create a service.Client for the specified storage account that uses the above credential
 client, err := service.NewClient("https://MYSTORAGEACCOUNT.dfs.core.windows.net/", cred, nil)
 // TODO: handle err
+// you can also create filesystem, file and directory clients
 ```
 
 Learn more about enabling Azure Active Directory for authentication with Azure Storage in [our documentation][storage_ad] and [our samples](#next-steps).
 
 ## Key concepts
+
+ADLS Gen2 provides:
+- Hadoop-compatible access
+- Hierarchical directory structure
+- Optimized cost and performance
+- Finer grain security model
+- Massive scalability
 
 ADLS Gen2 storage is designed for:
 
@@ -73,7 +82,7 @@ ADLS Gen2 storage offers three types of resources:
 - One or more _files_ or _directories_ in a filesystem
 
 Instances of the `Client` type provide methods for manipulating filesystems and paths within a storage account.
-The storage account is specified when the `Client` is constructed.
+The storage account is specified when the `Client` is constructed. The clients available are referenced below.
 Use the appropriate client constructor function for the authentication mechanism you wish to use.
 
 ### Goroutine safety
@@ -92,7 +101,7 @@ ADLS Gen2 metadata name/value pairs are valid HTTP headers and should adhere to 
 
 ## Examples
 
-### Uploading a file
+### Creating and uploading a file (assuming filesystem exists)
 
 ```go
 const (
@@ -107,13 +116,16 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 client, err := file.NewClient(path, cred, nil)
 // TODO: handle error
 
-// open the file for reading
-file, err := os.OpenFile(sampleFile, os.O_RDONLY, 0)
+_, err = client.Create(context.TODO(), nil)
 // TODO: handle error
-defer file.Close()
+
+// open the file for reading
+fh, err := os.OpenFile(sampleFile, os.O_RDONLY, 0)
+// TODO: handle error
+defer fh.Close()
 
 // upload the file to the specified filesystem with the specified file name
-_, err = client.UploadFile(context.TODO(), file, nil)
+_, err = client.UploadFile(context.TODO(), fh, nil)
 // TODO: handle error
 ```
 
@@ -142,11 +154,33 @@ _, err = client.DownloadFile(context.TODO(), file, nil)
 // TODO: handle error
 ```
 
-### Enumerating paths
+### Creating and deleting a filesystem
 
 ```go
 const (
-	fs       = "https://MYSTORAGEACCOUNT.dfs.core.windows.net/sample-fs"
+	fs = "https://MYSTORAGEACCOUNT.dfs.core.windows.net/sample-fs"
+)
+
+// authenticate with Azure Active Directory
+cred, err := azidentity.NewDefaultAzureCredential(nil)
+// TODO: handle error
+
+// create a client for the specified storage account
+client, err := filesystem.NewClient(fs, cred, nil)
+// TODO: handle error
+
+_, err = client.Create(context.TODO(), nil)
+// TODO: handle error
+
+_, err = client.Delete(context.TODO(), nil)
+// TODO: handle error
+```
+
+### Enumerating paths (assuming filesystem exists)
+
+```go
+const (
+	fs = "https://MYSTORAGEACCOUNT.dfs.core.windows.net/sample-fs"
 )
 
 // authenticate with Azure Active Directory
@@ -191,7 +225,7 @@ The [file][file] package contains APIs related to file path types.
 
 The [directory][directory] package contains APIs related to directory path types.
 
-The [lease][lease] package contains clients for managing leases on paths and filesystems.  Please see the [reference docs](https://docs.microsoft.com/rest/api/storageservices/lease-blob#remarks) for general information on leases.
+The [lease][lease] package contains clients for managing leases on paths (paths represent both directory and file paths) and filesystems.  Please see the [reference docs](https://docs.microsoft.com/rest/api/storageservices/lease-blob#remarks) for general information on leases.
 
 The [filesystem][filesystem] package contains APIs specific to filesystems.  This includes APIs setting access policies or properties, and more.
 
@@ -201,7 +235,7 @@ The [sas][sas] package contains utilities to aid in the creation and manipulatio
 See the package's documentation for more information.
 
 
-You can find additional context in our samples for each subpackage.
+You can find additional context and examples in our samples for each subpackage (named examples_test.go).
 
 ## Contributing
 

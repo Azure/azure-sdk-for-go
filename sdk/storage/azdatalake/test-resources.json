@@ -262,9 +262,9 @@
         "properties": {
           "isVersioningEnabled": true,
           "deleteRetentionPolicy": {
-            "allowPermanentDelete": true,
+            "allowPermanentDelete": false,
             "enabled": true,
-            "days": 1
+            "days": 2
           },
           "containerDeleteRetentionPolicy": {
             "enabled": true,

@@ -242,14 +242,15 @@ func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (s *Client) NewListFileSystemsPager(o *ListFileSystemsOptions) *runtime.Pager[ListFileSystemsResponse] {
 	listOptions := generated_blob.ServiceClientListContainersSegmentOptions{}
+	defaultInclude := ListFileSystemsInclude{}
 	if o != nil {
-		if *o.Include.Deleted {
+		if o.Include != defaultInclude && o.Include.Deleted != nil && *o.Include.Deleted {
 			listOptions.Include = append(listOptions.Include, generated_blob.ListContainersIncludeTypeDeleted)
 		}
-		if *o.Include.Metadata {
+		if o.Include != defaultInclude && o.Include.Metadata != nil && *o.Include.Metadata {
 			listOptions.Include = append(listOptions.Include, generated_blob.ListContainersIncludeTypeMetadata)
 		}
-		if *o.Include.System {
+		if o.Include != defaultInclude && o.Include.System != nil && *o.Include.System {
 			listOptions.Include = append(listOptions.Include, generated_blob.ListContainersIncludeTypeSystem)
 		}
 		listOptions.Marker = o.Marker

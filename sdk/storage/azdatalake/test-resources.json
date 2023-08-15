@@ -264,7 +264,7 @@
           "deleteRetentionPolicy": {
             "allowPermanentDelete": false,
             "enabled": true,
-            "days": 2
+            "days": 7
           },
           "containerDeleteRetentionPolicy": {
             "enabled": true,

@@ -8,6 +8,11 @@ package filesystem_test
 
 import (
 	"context"
+	"strconv"
+	"strings"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
@@ -17,10 +22,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"strconv"
-	"strings"
-	"testing"
-	"time"
 )
 
 var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
@@ -102,7 +103,7 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	_require.Nil(err)
 
 	props, err := fsClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(props.Metadata)
 	_require.Equal(*props.PublicAccess, filesystem.FileSystem)
 }
@@ -126,7 +127,7 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithFileAccess() {
 	_, err = fsClient.Create(context.Background(), &opts)
 	_require.Nil(err)
 	props, err := fsClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(props.Metadata)
 	_require.Equal(*props.PublicAccess, filesystem.File)
 }
@@ -150,7 +151,7 @@ func (s *RecordedTestSuite) TestCreateFilesystemEmptyMetadata() {
 	_require.Nil(err)
 
 	props, err := fsClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(props.Metadata)
 	_require.Equal(*props.PublicAccess, filesystem.FileSystem)
 

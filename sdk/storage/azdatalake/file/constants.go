@@ -9,6 +9,8 @@ package file
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
@@ -51,6 +53,40 @@ type TransferValidationTypeCRC64 = exported.TransferValidationTypeCRC64
 func TransferValidationTypeComputeCRC64() TransferValidationType {
 	return exported.TransferValidationTypeComputeCRC64()
 }
+
+// SetExpiryType defines the values for modes of file expiration.
+type SetExpiryType = generated_blob.ExpiryOptions
+
+const (
+	// SetExpiryTypeAbsolute sets the expiration date as an absolute value expressed in RFC1123 format.
+	SetExpiryTypeAbsolute SetExpiryType = generated_blob.ExpiryOptionsAbsolute
+
+	// SetExpiryTypeNeverExpire sets the file to never expire or removes the current expiration date.
+	SetExpiryTypeNeverExpire SetExpiryType = generated_blob.ExpiryOptionsNeverExpire
+
+	// SetExpiryTypeRelativeToCreation sets the expiration date relative to the time of file creation.
+	// The value is expressed as the number of miliseconds to elapse from the time of creation.
+	SetExpiryTypeRelativeToCreation SetExpiryType = generated_blob.ExpiryOptionsRelativeToCreation
+
+	// SetExpiryTypeRelativeToNow sets the expiration date relative to the current time.
+	// The value is expressed as the number of milliseconds to elapse from the present time.
+	SetExpiryTypeRelativeToNow SetExpiryType = generated_blob.ExpiryOptionsRelativeToNow
+)
+
+// CreateExpiryType defines the values for modes of file expiration specified during creation.
+type CreateExpiryType = generated.PathExpiryOptions
+
+const (
+	// CreateExpiryTypeAbsolute sets the expiration date as an absolute value expressed in RFC1123 format.
+	CreateExpiryTypeAbsolute CreateExpiryType = generated.PathExpiryOptionsAbsolute
+
+	// CreateExpiryTypeNeverExpire sets the file to never expire or removes the current expiration date.
+	CreateExpiryTypeNeverExpire CreateExpiryType = generated.PathExpiryOptionsNeverExpire
+
+	// CreateExpiryTypeRelativeToNow sets the expiration date relative to the current time.
+	// The value is expressed as the number of milliseconds to elapse from the present time.
+	CreateExpiryTypeRelativeToNow CreateExpiryType = generated.PathExpiryOptionsRelativeToNow
+)
 
 // StatusType defines values for StatusType
 type StatusType = azdatalake.StatusType

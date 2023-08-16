@@ -22,6 +22,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -74,6 +75,63 @@ func Example_file_HTTPHeaders() {
 
 	fmt.Println(get.ContentType)
 	fmt.Println(get.ContentDisposition)
+}
+
+// make sure you create the filesystem before running this example
+func Example_file_CreateFileWithExpiryRelativeToNow() {
+	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+
+	// Create a file client
+	u := fmt.Sprintf("https://%s.dfs.core.windows.net/fs/file.txt", accountName)
+	credential, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+	fClient, err := file.NewClientWithSharedKeyCredential(u, credential, nil)
+	handleError(err)
+
+	createFileOpts := &file.CreateOptions{
+		Expiry: file.CreateExpiryValues{
+			ExpiryType: file.CreateExpiryTypeRelativeToNow,
+			ExpiresOn:  strconv.FormatInt((8 * time.Second).Milliseconds(), 10),
+		},
+	}
+
+	_, err = fClient.Create(context.Background(), createFileOpts)
+	handleError(err)
+
+	resp, err := fClient.GetProperties(context.Background(), nil)
+	handleError(err)
+	fmt.Println(*resp.ExpiresOn)
+
+	time.Sleep(time.Second * 10)
+	_, err = fClient.GetProperties(context.Background(), nil)
+	// we expect datalakeerror.PathNotFound
+	handleError(err)
+}
+
+// make sure you create the filesystem before running this example
+func Example_file_CreateFileWithNeverExpire() {
+	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+
+	// Create a file client
+	u := fmt.Sprintf("https://%s.dfs.core.windows.net/fs/file.txt", accountName)
+	credential, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+	fClient, err := file.NewClientWithSharedKeyCredential(u, credential, nil)
+	handleError(err)
+
+	createFileOpts := &file.CreateOptions{
+		Expiry: file.CreateExpiryValues{
+			ExpiryType: file.CreateExpiryTypeNeverExpire,
+		},
+	}
+
+	_, err = fClient.Create(context.Background(), createFileOpts)
+	handleError(err)
+
+	resp, err := fClient.GetProperties(context.Background(), nil)
+	handleError(err)
+	// should be empty since we never expire
+	fmt.Println(*resp.ExpiresOn)
 }
 
 // make sure you create the filesystem and file before running this example

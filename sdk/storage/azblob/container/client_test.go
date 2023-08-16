@@ -1344,6 +1344,60 @@ func (s *ContainerRecordedTestsSuite) TestBlobListWrapper() {
 	_require.EqualValues(files, found)
 }
 
+func (s *ContainerRecordedTestsSuite) TestBlobListColdTier() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	for _, tier := range []blob.AccessTier{blob.AccessTierCool, blob.AccessTierHot, blob.AccessTierCold, blob.AccessTierArchive} {
+		files := []string{"a123", "b234", "c345"}
+		testcommon.CreateNewBlobsListTier(context.Background(), _require, files, containerClient, &tier)
+
+		// List blobs flat
+		found := make([]string, 0)
+		pager := containerClient.NewListBlobsFlatPager(nil)
+		for pager.More() {
+			resp, err := pager.NextPage(context.Background())
+			_require.NoError(err)
+
+			for _, blob := range resp.Segment.BlobItems {
+				_require.Equal(blob.Properties.AccessTier, &tier)
+				found = append(found, *blob.Name)
+			}
+		}
+
+		sort.Strings(files)
+		sort.Strings(found)
+		_require.EqualValues(files, found)
+
+		// Try listing blobs with hierarchical listing
+		found = make([]string, 0)
+		pg := containerClient.NewListBlobsHierarchyPager("/", nil)
+		for pg.More() {
+			resp, err := pg.NextPage(context.Background())
+			_require.NoError(err)
+
+			for _, blob := range resp.Segment.BlobItems {
+				_require.Equal(blob.Properties.AccessTier, &tier)
+				found = append(found, *blob.Name)
+			}
+		}
+
+		sort.Strings(files)
+		sort.Strings(found)
+		_require.EqualValues(files, found)
+
+	}
+}
+
 func (s *ContainerRecordedTestsSuite) TestBlobListWrapperListingError() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

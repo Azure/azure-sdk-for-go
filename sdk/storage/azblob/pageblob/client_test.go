@@ -154,6 +154,33 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 	}
 }
 
+func (s *PageBlobRecordedTestsSuite) TestBlobTierInferred() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	pbClient := createNewPageBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	resp, err := pbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(*resp.AccessTierInferred, true)
+	_require.NotEqual(*resp.AccessTier, "")
+
+	_, err = pbClient.SetTier(context.Background(), blob.AccessTierP4, nil)
+	_require.Nil(err)
+
+	resp, err = pbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.AccessTierInferred)
+	_require.NotEqual(*resp.AccessTier, "")
+}
+
 // func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURL() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()

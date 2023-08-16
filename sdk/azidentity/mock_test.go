@@ -71,7 +71,7 @@ func (m *mockSTS) Do(req *http.Request) (*http.Response, error) {
 				strings.NewReader(`{"account_type":"Managed","cloud_audience_urn":"urn","cloud_instance_name":"...","domain_name":"..."}`),
 			)
 		} else {
-			panic("unexpected request " + req.URL.String())
+			return nil, fmt.Errorf("mockSTS received an unexpected request for %s", req.URL.String())
 		}
 	}
 	return res, nil

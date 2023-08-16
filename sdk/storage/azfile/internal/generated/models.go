@@ -7,9 +7,9 @@
 package generated
 
 import (
-	"encoding/base64"
 	"encoding/xml"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"net/url"
 	"time"
 )
 
@@ -66,7 +66,7 @@ func (h *Handle) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	h.OpenTime = (*time.Time)(aux.OpenTime)
 	if aux.Path != nil {
 		if aux.Path.Encoded != nil && *aux.Path.Encoded {
-			name, err := base64.StdEncoding.DecodeString(*aux.Path.Content)
+			name, err := url.QueryUnescape(*aux.Path.Content)
 			if err != nil {
 				return err
 			}
@@ -92,7 +92,7 @@ func (d *Directory) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error
 	}
 	if aux.Name != nil {
 		if aux.Name.Encoded != nil && *aux.Name.Encoded {
-			name, err := base64.StdEncoding.DecodeString(*aux.Name.Content)
+			name, err := url.QueryUnescape(*aux.Name.Content)
 			if err != nil {
 				return err
 			}
@@ -104,7 +104,7 @@ func (d *Directory) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error
 	return nil
 }
 
-// UnmarshalXML implements the xml.Unmarshaller interface for type Directory.
+// UnmarshalXML implements the xml.Unmarshaller interface for type File.
 func (f *File) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	type alias File
 	aux := &struct {
@@ -118,7 +118,7 @@ func (f *File) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	}
 	if aux.Name != nil {
 		if aux.Name.Encoded != nil && *aux.Name.Encoded {
-			name, err := base64.StdEncoding.DecodeString(*aux.Name.Content)
+			name, err := url.QueryUnescape(*aux.Name.Content)
 			if err != nil {
 				return err
 			}
@@ -130,7 +130,7 @@ func (f *File) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	return nil
 }
 
-// UnmarshalXML implements the xml.Unmarshaller interface for type Directory.
+// UnmarshalXML implements the xml.Unmarshaller interface for type ListFilesAndDirectoriesSegmentResponse.
 func (l *ListFilesAndDirectoriesSegmentResponse) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	type alias ListFilesAndDirectoriesSegmentResponse
 	aux := &struct {
@@ -144,7 +144,7 @@ func (l *ListFilesAndDirectoriesSegmentResponse) UnmarshalXML(dec *xml.Decoder, 
 	}
 	if aux.Prefix != nil {
 		if aux.Prefix.Encoded != nil && *aux.Prefix.Encoded {
-			name, err := base64.StdEncoding.DecodeString(*aux.Prefix.Content)
+			name, err := url.QueryUnescape(*aux.Prefix.Content)
 			if err != nil {
 				return err
 			}

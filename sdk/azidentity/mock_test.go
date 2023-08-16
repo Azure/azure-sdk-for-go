@@ -47,7 +47,9 @@ func (m *mockSTS) Do(req *http.Request) (*http.Response, error) {
 	case "devicecode":
 		res.Body = io.NopCloser(strings.NewReader(`{"device_code":"...","expires_in":600,"interval":60}`))
 	case "token":
-		_ = req.ParseForm()
+		if err := req.ParseForm(); err != nil {
+			return nil, fmt.Errorf("mockSTS failed to parse a request body: %w", err)
+		}
 		if grant := req.FormValue("grant_type"); grant == "device_code" || grant == "password" {
 			// include account info because we're authenticating a user
 			res.Body = io.NopCloser(bytes.NewReader(

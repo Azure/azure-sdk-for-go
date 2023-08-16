@@ -24,6 +24,8 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
+var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
+
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running datalake Tests in %s mode\n", recordMode)
@@ -61,21 +63,21 @@ type UnrecordedTestSuite struct {
 	suite.Suite
 }
 
-func validateFilesystemDeleted(_require *require.Assertions, filesystemClient *filesystem.Client) {
+func validateFileSystemDeleted(_require *require.Assertions, filesystemClient *filesystem.Client) {
 	_, err := filesystemClient.GetAccessPolicy(context.Background(), nil)
 	_require.NotNil(err)
 
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.FilesystemNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.FileSystemNotFound)
 }
 
 func (s *RecordedTestSuite) TestCreateFilesystem() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
@@ -85,17 +87,17 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
 	testStr := "hello"
 	metadata := map[string]*string{"foo": &testStr, "bar": &testStr}
-	access := filesystem.Filesystem
+	access := filesystem.FileSystem
 	opts := filesystem.CreateOptions{
 		Metadata: metadata,
 		Access:   &access,
 	}
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), &opts)
 	_require.Nil(err)
@@ -103,14 +105,14 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	props, err := fsClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(props.Metadata)
-	_require.Equal(*props.PublicAccess, filesystem.Filesystem)
+	_require.Equal(*props.PublicAccess, filesystem.FileSystem)
 }
 
 func (s *RecordedTestSuite) TestCreateFilesystemWithFileAccess() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
 	testStr := "hello"
 	metadata := map[string]*string{"foo": &testStr, "bar": &testStr}
 	access := filesystem.File
@@ -118,9 +120,9 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithFileAccess() {
 		Metadata: metadata,
 		Access:   &access,
 	}
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), &opts)
 	_require.Nil(err)
@@ -134,16 +136,16 @@ func (s *RecordedTestSuite) TestCreateFilesystemEmptyMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
 	metadata := map[string]*string{"foo": nil, "bar": nil}
-	access := filesystem.Filesystem
+	access := filesystem.FileSystem
 	opts := filesystem.CreateOptions{
 		Metadata: metadata,
 		Access:   &access,
 	}
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), &opts)
 	_require.Nil(err)
@@ -151,14 +153,14 @@ func (s *RecordedTestSuite) TestCreateFilesystemEmptyMetadata() {
 	props, err := fsClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Nil(props.Metadata)
-	_require.Equal(*props.PublicAccess, filesystem.Filesystem)
+	_require.Equal(*props.PublicAccess, filesystem.FileSystem)
 
 }
 
 func (s *RecordedTestSuite) TestFilesystemCreateInvalidName() {
 	_require := require.New(s.T())
 
-	fsClient, err := testcommon.GetFilesystemClient("foo bar", s.T(), testcommon.TestAccountDatalake, nil)
+	fsClient, err := testcommon.GetFileSystemClient("foo bar", s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
@@ -170,27 +172,27 @@ func (s *RecordedTestSuite) TestFilesystemCreateNameCollision() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NotNil(err)
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.FilesystemAlreadyExists)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.FileSystemAlreadyExists)
 }
 
 func (s *RecordedTestSuite) TestFilesystemGetProperties() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
@@ -201,12 +203,61 @@ func (s *RecordedTestSuite) TestFilesystemGetProperties() {
 	_require.Nil(resp.Metadata)
 }
 
+func (s *RecordedTestSuite) TestFilesystemGetPropertiesWithEmptyOpts() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := &filesystem.GetPropertiesOptions{}
+	resp, err := fsClient.GetProperties(context.Background(), opts)
+	_require.Nil(err)
+	_require.NotNil(resp.ETag)
+	_require.Nil(resp.Metadata)
+}
+
+func (s *RecordedTestSuite) TestFilesystemGetPropertiesWithLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fsLeaseClient, err := lease.NewFileSystemClient(fsClient, &lease.FileSystemClientOptions{LeaseID: proposedLeaseIDs[0]})
+	_require.Nil(err)
+	_, err = fsLeaseClient.AcquireLease(context.Background(), int32(60), nil)
+	_require.Nil(err)
+
+	opts := &filesystem.GetPropertiesOptions{LeaseAccessConditions: &filesystem.LeaseAccessConditions{
+		LeaseID: fsLeaseClient.LeaseID(),
+	}}
+
+	resp, err := fsClient.GetProperties(context.Background(), opts)
+	_require.Nil(err)
+	_require.NotNil(resp.ETag)
+	_require.Nil(resp.Metadata)
+
+	_, err = fsLeaseClient.ReleaseLease(context.Background(), nil)
+	_require.Nil(err)
+}
+
 func (s *RecordedTestSuite) TestFilesystemDelete() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
@@ -215,29 +266,29 @@ func (s *RecordedTestSuite) TestFilesystemDelete() {
 	_, err = fsClient.Delete(context.Background(), nil)
 	_require.Nil(err)
 
-	validateFilesystemDeleted(_require, fsClient)
+	validateFileSystemDeleted(_require, fsClient)
 }
 
 func (s *RecordedTestSuite) TestFilesystemDeleteNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Delete(context.Background(), nil)
 	_require.NotNil(err)
 
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.FilesystemNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.FileSystemNotFound)
 }
 
 func (s *RecordedTestSuite) TestFilesystemDeleteIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fsClient.Create(context.Background(), nil)
@@ -245,40 +296,40 @@ func (s *RecordedTestSuite) TestFilesystemDeleteIfModifiedSinceTrue() {
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
 
-	deleteFilesystemOptions := filesystem.DeleteOptions{
+	deleteFileSystemOptions := filesystem.DeleteOptions{
 		AccessConditions: &filesystem.AccessConditions{
 			ModifiedAccessConditions: &filesystem.ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err = fsClient.Delete(context.Background(), &deleteFilesystemOptions)
+	_, err = fsClient.Delete(context.Background(), &deleteFileSystemOptions)
 	_require.Nil(err)
-	validateFilesystemDeleted(_require, fsClient)
+	validateFileSystemDeleted(_require, fsClient)
 }
 
 func (s *RecordedTestSuite) TestFilesystemDeleteIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
 
-	deleteFilesystemOptions := filesystem.DeleteOptions{
+	deleteFileSystemOptions := filesystem.DeleteOptions{
 		AccessConditions: &filesystem.AccessConditions{
 			ModifiedAccessConditions: &filesystem.ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err = fsClient.Delete(context.Background(), &deleteFilesystemOptions)
+	_, err = fsClient.Delete(context.Background(), &deleteFileSystemOptions)
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -287,8 +338,8 @@ func (s *RecordedTestSuite) TestFilesystemDeleteIfUnModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fsClient.Create(context.Background(), nil)
@@ -296,41 +347,41 @@ func (s *RecordedTestSuite) TestFilesystemDeleteIfUnModifiedSinceTrue() {
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
 
-	deleteFilesystemOptions := filesystem.DeleteOptions{
+	deleteFileSystemOptions := filesystem.DeleteOptions{
 		AccessConditions: &filesystem.AccessConditions{
 			ModifiedAccessConditions: &filesystem.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err = fsClient.Delete(context.Background(), &deleteFilesystemOptions)
+	_, err = fsClient.Delete(context.Background(), &deleteFileSystemOptions)
 	_require.Nil(err)
 
-	validateFilesystemDeleted(_require, fsClient)
+	validateFileSystemDeleted(_require, fsClient)
 }
 
 func (s *RecordedTestSuite) TestFilesystemDeleteIfUnModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
 
-	deleteFilesystemOptions := filesystem.DeleteOptions{
+	deleteFileSystemOptions := filesystem.DeleteOptions{
 		AccessConditions: &filesystem.AccessConditions{
 			ModifiedAccessConditions: &filesystem.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err = fsClient.Delete(context.Background(), &deleteFilesystemOptions)
+	_, err = fsClient.Delete(context.Background(), &deleteFileSystemOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
@@ -340,13 +391,13 @@ func (s *RecordedTestSuite) TestFilesystemSetMetadataNonEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	opts := filesystem.SetMetadataOptions{
 		Metadata: testcommon.BasicMetadata,
@@ -366,13 +417,13 @@ func (s *RecordedTestSuite) TestFilesystemSetMetadataEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	opts := filesystem.SetMetadataOptions{
 		Metadata: map[string]*string{},
@@ -390,13 +441,13 @@ func (s *RecordedTestSuite) TestFilesystemSetMetadataNil() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.SetMetadata(context.Background(), nil)
 	_require.Nil(err)
@@ -410,13 +461,13 @@ func (s *RecordedTestSuite) TestFilesystemSetMetadataInvalidField() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	opts := filesystem.SetMetadataOptions{
 		Metadata: map[string]*string{"!nval!d Field!@#%": to.Ptr("value")},
@@ -430,27 +481,27 @@ func (s *RecordedTestSuite) TestFilesystemSetMetadataNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.SetMetadata(context.Background(), nil)
 	_require.NotNil(err)
 
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.FilesystemNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.FileSystemNotFound)
 }
 
 func (s *RecordedTestSuite) TestFilesystemSetEmptyAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.SetAccessPolicy(context.Background(), &filesystem.SetAccessPolicyOptions{})
 	_require.Nil(err)
@@ -460,13 +511,13 @@ func (s *RecordedTestSuite) TestFilesystemSetNilAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.SetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
@@ -476,13 +527,13 @@ func (s *RecordedTestSuite) TestFilesystemSetAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
 	expiration := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -499,7 +550,7 @@ func (s *RecordedTestSuite) TestFilesystemSetAccessPolicy() {
 		},
 		ID: &id,
 	})
-	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	options := filesystem.SetAccessPolicyOptions{FileSystemACL: signedIdentifiers}
 	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 }
@@ -508,13 +559,13 @@ func (s *RecordedTestSuite) TestFilesystemSetMultipleAccessPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	id := "empty"
 
@@ -546,7 +597,7 @@ func (s *RecordedTestSuite) TestFilesystemSetMultipleAccessPolicies() {
 			Permission: &permission3,
 		},
 	})
-	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	options := filesystem.SetAccessPolicyOptions{FileSystemACL: signedIdentifiers}
 	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 
@@ -560,13 +611,13 @@ func (s *RecordedTestSuite) TestFilesystemSetNullAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	id := "null"
 
@@ -574,7 +625,7 @@ func (s *RecordedTestSuite) TestFilesystemSetNullAccessPolicy() {
 	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
 		ID: &id,
 	})
-	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	options := filesystem.SetAccessPolicyOptions{FileSystemACL: signedIdentifiers}
 	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 
@@ -587,13 +638,13 @@ func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyWithEmptyOpts() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	id := "null"
 
@@ -601,7 +652,7 @@ func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyWithEmptyOpts() {
 	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
 		ID: &id,
 	})
-	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	options := filesystem.SetAccessPolicyOptions{FileSystemACL: signedIdentifiers}
 	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 
@@ -616,8 +667,8 @@ func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyOnLeasedFilesystem() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
@@ -625,7 +676,7 @@ func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyOnLeasedFilesystem() {
 
 	var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
-	fsLeaseClient, err := lease.NewFilesystemClient(fsClient, &lease.FilesystemClientOptions{
+	fsLeaseClient, err := lease.NewFileSystemClient(fsClient, &lease.FileSystemClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 	_require.Nil(err)
@@ -636,7 +687,7 @@ func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyOnLeasedFilesystem() {
 	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
 		ID: &id,
 	})
-	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	options := filesystem.SetAccessPolicyOptions{FileSystemACL: signedIdentifiers}
 	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 
@@ -668,13 +719,13 @@ func (s *RecordedTestSuite) TestFilesystemGetSetPermissionsMultiplePolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	// Define the policies
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
@@ -700,7 +751,7 @@ func (s *RecordedTestSuite) TestFilesystemGetSetPermissionsMultiplePolicies() {
 			},
 		},
 	}
-	options := filesystem.SetAccessPolicyOptions{FilesystemACL: permissions}
+	options := filesystem.SetAccessPolicyOptions{FileSystemACL: permissions}
 	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
 
 	_require.Nil(err)
@@ -714,8 +765,8 @@ func (s *RecordedTestSuite) TestFilesystemGetPermissionsPublicAccessNotNone() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	access := filesystem.File
@@ -724,7 +775,7 @@ func (s *RecordedTestSuite) TestFilesystemGetPermissionsPublicAccessNotNone() {
 	}
 	_, err = fsClient.Create(context.Background(), &createContainerOptions) // We create the container explicitly so we can be sure the access policy is not empty
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	resp, err := fsClient.GetAccessPolicy(context.Background(), nil)
 
@@ -738,13 +789,13 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessTypeFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
 		Access: to.Ptr(filesystem.File),
 	}
@@ -760,36 +811,36 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessFilesystem()
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
-		Access: to.Ptr(filesystem.Filesystem),
+		Access: to.Ptr(filesystem.FileSystem),
 	}
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := fsClient.GetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(*resp.PublicAccess, filesystem.Filesystem)
+	_require.Equal(*resp.PublicAccess, filesystem.FileSystem)
 }
 
 func (s *RecordedTestSuite) TestFilesystemSetPermissionsACLMoreThanFive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	_require.Nil(err)
@@ -813,7 +864,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsACLMoreThanFive() {
 	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
 		Access: &access,
 	}
-	setAccessPolicyOptions.FilesystemACL = permissions
+	setAccessPolicyOptions.FileSystemACL = permissions
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
@@ -824,13 +875,13 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAndModifyACL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	_require.Nil(err)
@@ -854,7 +905,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAndModifyACL() {
 	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
 		Access: &access,
 	}
-	setAccessPolicyOptions.FilesystemACL = permissions
+	setAccessPolicyOptions.FileSystemACL = permissions
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
@@ -868,7 +919,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAndModifyACL() {
 	setAccessPolicyOptions1 := filesystem.SetAccessPolicyOptions{
 		Access: &access,
 	}
-	setAccessPolicyOptions1.FilesystemACL = permissions
+	setAccessPolicyOptions1.FileSystemACL = permissions
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions1)
 	_require.Nil(err)
 
@@ -882,13 +933,13 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAllPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	_require.Nil(err)
@@ -911,7 +962,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAllPolicies() {
 	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
 		Access: to.Ptr(filesystem.File),
 	}
-	setAccessPolicyOptions.FilesystemACL = permissions
+	setAccessPolicyOptions.FileSystemACL = permissions
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
@@ -923,7 +974,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAllPolicies() {
 	setAccessPolicyOptions = filesystem.SetAccessPolicyOptions{
 		Access: to.Ptr(filesystem.File),
 	}
-	setAccessPolicyOptions.FilesystemACL = []*filesystem.SignedIdentifier{}
+	setAccessPolicyOptions.FileSystemACL = []*filesystem.SignedIdentifier{}
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
@@ -936,13 +987,13 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsInvalidPolicyTimes() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	// Swap start and expiry
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
@@ -966,7 +1017,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsInvalidPolicyTimes() {
 	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
 		Access: to.Ptr(filesystem.File),
 	}
-	setAccessPolicyOptions.FilesystemACL = permissions
+	setAccessPolicyOptions.FileSystemACL = permissions
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 }
@@ -975,13 +1026,13 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsNilPolicySlice() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.SetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
@@ -991,13 +1042,13 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsSignedIdentifierTooLong(
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	id := ""
 	for i := 0; i < 65; i++ {
@@ -1022,7 +1073,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsSignedIdentifierTooLong(
 	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
 		Access: to.Ptr(filesystem.File),
 	}
-	setAccessPolicyOptions.FilesystemACL = permissions
+	setAccessPolicyOptions.FileSystemACL = permissions
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
@@ -1033,13 +1084,13 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
 
@@ -1060,13 +1111,13 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
 
@@ -1085,13 +1136,13 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfUnModifiedSinceTrue() 
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
 
@@ -1112,13 +1163,13 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfUnModifiedSinceFalse()
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
 
@@ -1137,13 +1188,13 @@ func (s *UnrecordedTestSuite) TestFilesystemSetAccessPoliciesInDifferentTimeForm
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	id := "timeInEST"
 	permission := "rw"
@@ -1187,7 +1238,7 @@ func (s *UnrecordedTestSuite) TestFilesystemSetAccessPoliciesInDifferentTimeForm
 			Permission: &permission3,
 		},
 	})
-	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	options := filesystem.SetAccessPolicyOptions{FileSystemACL: signedIdentifiers}
 	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 
@@ -1202,13 +1253,13 @@ func (s *RecordedTestSuite) TestFilesystemSetAccessPolicyWithNullId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	signedIdentifiers := make([]*filesystem.SignedIdentifier, 0)
 	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
@@ -1217,7 +1268,7 @@ func (s *RecordedTestSuite) TestFilesystemSetAccessPolicyWithNullId() {
 		},
 	})
 
-	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	options := filesystem.SetAccessPolicyOptions{FileSystemACL: signedIdentifiers}
 	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
@@ -1227,20 +1278,20 @@ func (s *RecordedTestSuite) TestFilesystemSetAccessPolicyWithNullId() {
 	_require.Len(resp1.SignedIdentifiers, 0)
 }
 
-func (s *UnrecordedTestSuite) TestSASFilesystemClient() {
+func (s *UnrecordedTestSuite) TestSASFileSystemClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	// Adding SAS and options
-	permissions := sas.FilesystemPermissions{
+	permissions := sas.FileSystemPermissions{
 		Read:   true,
 		Add:    true,
 		Write:  true,
@@ -1262,10 +1313,10 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
@@ -1288,6 +1339,45 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
 		_require.Equal(5, len(resp.Paths))
+		_require.NotNil(resp.PathList.Paths[0].IsDirectory)
+
+		if err != nil {
+			break
+		}
+	}
+}
+
+func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursiveNoPrefix() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	client := fsClient.NewFileClient("file1")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	client = fsClient.NewFileClient("file2")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient := fsClient.NewDirectoryClient("dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient = fsClient.NewDirectoryClient("dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	pager := fsClient.NewListPathsPager(true, nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		_require.Equal(4, len(resp.Paths))
+		_require.NotNil(resp.PathList.Paths[0].IsDirectory)
 		if err != nil {
 			break
 		}
@@ -1298,10 +1388,10 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithoutRecursive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
@@ -1334,10 +1424,10 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithMaxResults() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
@@ -1376,10 +1466,10 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithPrefix() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
@@ -1415,10 +1505,10 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithContinuation() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
@@ -1460,10 +1550,10 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPaths() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
@@ -1498,10 +1588,10 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithMaxResults() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
@@ -1548,10 +1638,10 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithPrefix() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
@@ -1595,10 +1685,10 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithContinuation() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
@@ -1644,20 +1734,20 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithContinuation() {
 	_require.Equal("", *resp.NextMarker)
 }
 
-func (s *UnrecordedTestSuite) TestSASFilesystemCreateAndDeleteFile() {
+func (s *UnrecordedTestSuite) TestSASFileSystemCreateAndDeleteFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	// Adding SAS and options
-	permissions := sas.FilesystemPermissions{
+	permissions := sas.FileSystemPermissions{
 		Read:   true,
 		Add:    true,
 		Write:  true,
@@ -1682,20 +1772,20 @@ func (s *UnrecordedTestSuite) TestSASFilesystemCreateAndDeleteFile() {
 	_require.Nil(err)
 }
 
-func (s *UnrecordedTestSuite) TestSASFilesystemCreateAndDeleteDirectory() {
+func (s *UnrecordedTestSuite) TestSASFileSystemCreateAndDeleteDirectory() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	// Adding SAS and options
-	permissions := sas.FilesystemPermissions{
+	permissions := sas.FileSystemPermissions{
 		Read:   true,
 		Add:    true,
 		Write:  true,

@@ -113,7 +113,7 @@ func GetServiceClient(t *testing.T, accountType TestAccountType, options *servic
 	return serviceClient, err
 }
 
-func GetFilesystemClient(fsName string, t *testing.T, accountType TestAccountType, options *filesystem.ClientOptions) (*filesystem.Client, error) {
+func GetFileSystemClient(fsName string, t *testing.T, accountType TestAccountType, options *filesystem.ClientOptions) (*filesystem.Client, error) {
 	if options == nil {
 		options = &filesystem.ClientOptions{}
 	}
@@ -178,11 +178,11 @@ func GetDirClient(fsName, dirName string, t *testing.T, accountType TestAccountT
 	return dirClient, err
 }
 
-func ServiceGetFilesystemClient(filesystemName string, s *service.Client) *filesystem.Client {
-	return s.NewFilesystemClient(filesystemName)
+func ServiceGetFileSystemClient(filesystemName string, s *service.Client) *filesystem.Client {
+	return s.NewFileSystemClient(filesystemName)
 }
 
-func DeleteFilesystem(ctx context.Context, _require *require.Assertions, filesystemClient *filesystem.Client) {
+func DeleteFileSystem(ctx context.Context, _require *require.Assertions, filesystemClient *filesystem.Client) {
 	_, err := filesystemClient.Delete(ctx, nil)
 	_require.Nil(err)
 }
@@ -207,8 +207,8 @@ func GetGenericConnectionString(accountType TestAccountType) (*string, error) {
 	return &connectionString, nil
 }
 
-func CreateNewFilesystem(ctx context.Context, _require *require.Assertions, filesystemName string, serviceClient *service.Client) *filesystem.Client {
-	fsClient := ServiceGetFilesystemClient(filesystemName, serviceClient)
+func CreateNewFileSystem(ctx context.Context, _require *require.Assertions, filesystemName string, serviceClient *service.Client) *filesystem.Client {
+	fsClient := ServiceGetFileSystemClient(filesystemName, serviceClient)
 
 	_, err := fsClient.Create(ctx, nil)
 	_require.Nil(err)

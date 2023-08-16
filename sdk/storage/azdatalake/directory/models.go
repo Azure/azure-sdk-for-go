@@ -13,12 +13,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
-// CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint.
+// CreateOptions contains the optional parameters when calling the Create operation.
 type CreateOptions struct {
 	// AccessConditions contains parameters for accessing the file.
 	AccessConditions *AccessConditions
-	// Metadata is a map of name-value pairs to associate with the file storage object.
-	Metadata map[string]*string
 	// CPKInfo contains a group of parameters for client provided encryption key.
 	CPKInfo *CPKInfo
 	// HTTPHeaders contains the HTTP headers for path operations.
@@ -80,7 +78,7 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 type accessControlRecursiveOptions struct {
 	// Max batch size is 2000 paths
 	BatchSize *int32
-	// Number of recursive calls to be made to set access control
+	// Number of recursive calls to be made to set access control.
 	MaxBatches *int32
 	// ContinueOnFailure indicates whether to continue on failure when the operation encounters an error.
 	ContinueOnFailure *bool
@@ -119,43 +117,43 @@ type RemoveAccessControlRecursiveOptions = accessControlRecursiveOptions
 
 // ================================= path imports ==================================
 
-// DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
+// DeleteOptions contains the optional parameters when calling the Delete operation.
 type DeleteOptions = path.DeleteOptions
 
 // RenameOptions contains the optional parameters when calling the Rename operation.
 type RenameOptions = path.RenameOptions
 
-// GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
+// GetPropertiesOptions contains the optional parameters for the GetProperties method.
 type GetPropertiesOptions = path.GetPropertiesOptions
 
-// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation. dfs endpoint
+// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation.
 type SetAccessControlOptions = path.SetAccessControlOptions
 
 // GetAccessControlOptions contains the optional parameters when calling the GetAccessControl operation.
 type GetAccessControlOptions = path.GetAccessControlOptions
 
-// CPKInfo contains a group of parameters for the PathClient.Download method.
+// CPKInfo contains a group of parameters for client provided encryption key.
 type CPKInfo = path.CPKInfo
 
-// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
+// GetSASURLOptions contains the optional parameters for the GetSASURL method.
 type GetSASURLOptions = path.GetSASURLOptions
 
-// SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
+// SetHTTPHeadersOptions contains the optional parameters for the SetHTTPHeaders method.
 type SetHTTPHeadersOptions = path.SetHTTPHeadersOptions
 
 // HTTPHeaders contains the HTTP headers for path operations.
 type HTTPHeaders = path.HTTPHeaders
 
-// SetMetadataOptions provides set of configurations for Set Metadata on path operation
+// SetMetadataOptions provides set of configurations for SetMetadata.
 type SetMetadataOptions = path.SetMetadataOptions
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = path.SharedKeyCredential
 
-// AccessConditions identifies blob-specific access conditions which you optionally set.
+// AccessConditions identifies path-specific access conditions which you optionally set.
 type AccessConditions = path.AccessConditions
 
-// SourceAccessConditions identifies blob-specific access conditions which you optionally set.
+// SourceAccessConditions identifies source path-specific access conditions which you optionally set.
 type SourceAccessConditions = path.SourceAccessConditions
 
 // LeaseAccessConditions contains optional parameters to access leased entity.
@@ -164,10 +162,10 @@ type LeaseAccessConditions = path.LeaseAccessConditions
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = path.ModifiedAccessConditions
 
-// SourceModifiedAccessConditions contains a group of parameters for specifying access conditions.
+// SourceModifiedAccessConditions contains a group of parameters for specifying source access conditions.
 type SourceModifiedAccessConditions = path.SourceModifiedAccessConditions
 
-// CPKScopeInfo contains a group of parameters for the PathClient.SetMetadata method.
+// CPKScopeInfo contains a group of parameters for client provided encryption scope.
 type CPKScopeInfo path.CPKScopeInfo
 
 // ACLFailedEntry contains the failed ACL entry (response model).

@@ -15,11 +15,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 )
 
-// CreateFilesystemResponse contains the response fields for the CreateFilesystem operation.
-type CreateFilesystemResponse = filesystem.CreateResponse
+// CreateFileSystemResponse contains the response fields for the CreateFileSystem operation.
+type CreateFileSystemResponse = filesystem.CreateResponse
 
-// DeleteFilesystemResponse contains the response fields for the DeleteFilesystem operation.
-type DeleteFilesystemResponse = filesystem.DeleteResponse
+// DeleteFileSystemResponse contains the response fields for the DeleteFileSystem operation.
+type DeleteFileSystemResponse = filesystem.DeleteResponse
 
 // SetPropertiesResponse contains the response fields for the SetProperties operation.
 type SetPropertiesResponse = service.SetPropertiesResponse
@@ -27,5 +27,5 @@ type SetPropertiesResponse = service.SetPropertiesResponse
 // GetPropertiesResponse contains the response fields for the GetProperties operation.
 type GetPropertiesResponse = service.GetPropertiesResponse
 
-// ListFilesystemsResponse contains the response fields for the ListFilesystems operation.
-type ListFilesystemsResponse = generated_blob.ServiceClientListFileSystemsSegmentResponse
+// ListFileSystemsResponse contains the response fields for the ListFileSystems operation.
+type ListFileSystemsResponse = generated_blob.ServiceClientListFileSystemsSegmentResponse

@@ -14,9 +14,9 @@ import (
 	"time"
 )
 
-// timeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
+// TimeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
 const (
-	timeFormat = "2006-01-02T15:04:05Z" // "2017-07-27T00:00:00Z" // ISO 8601
+	TimeFormat = "2006-01-02T15:04:05Z" // "2017-07-27T00:00:00Z" // ISO 8601
 )
 
 var (
@@ -26,7 +26,7 @@ var (
 
 // TimeFormats ISO 8601 format.
 // Please refer to https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas for more details.
-var timeFormats = []string{"2006-01-02T15:04:05.0000000Z", timeFormat, "2006-01-02T15:04Z", "2006-01-02"}
+var timeFormats = []string{"2006-01-02T15:04:05.0000000Z", TimeFormat, "2006-01-02T15:04Z", "2006-01-02"}
 
 // Protocol indicates the http/https.
 type Protocol string
@@ -55,7 +55,7 @@ func formatTimesForSigning(startTime, expiryTime time.Time) (string, string) {
 
 // formatTimeWithDefaultFormat format time with ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ".
 func formatTimeWithDefaultFormat(t *time.Time) string {
-	return formatTime(t, timeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
+	return formatTime(t, TimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
 }
 
 // formatTime format time with given format, use ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ" by default.
@@ -63,7 +63,7 @@ func formatTime(t *time.Time, format string) string {
 	if format != "" {
 		return t.Format(format)
 	}
-	return t.Format(timeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
+	return t.Format(TimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
 }
 
 // ParseTime try to parse a SAS time string.
@@ -314,8 +314,8 @@ func (p *QueryParameters) Encode() string {
 	if p.signedOID != "" {
 		v.Add("skoid", p.signedOID)
 		v.Add("sktid", p.signedTID)
-		v.Add("skt", p.signedStart.Format(timeFormat))
-		v.Add("ske", p.signedExpiry.Format(timeFormat))
+		v.Add("skt", p.signedStart.Format(TimeFormat))
+		v.Add("ske", p.signedExpiry.Format(TimeFormat))
 		v.Add("sks", p.signedService)
 		v.Add("skv", p.signedVersion)
 	}
@@ -403,9 +403,9 @@ func NewQueryParameters(values url.Values) QueryParameters {
 		case "sktid":
 			p.signedTID = val
 		case "skt":
-			p.signedStart, _ = time.Parse(timeFormat, val)
+			p.signedStart, _ = time.Parse(TimeFormat, val)
 		case "ske":
-			p.signedExpiry, _ = time.Parse(timeFormat, val)
+			p.signedExpiry, _ = time.Parse(TimeFormat, val)
 		case "sks":
 			p.signedService = val
 		case "skv":
@@ -480,9 +480,9 @@ func newQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 		case "sktid":
 			p.signedTID = val
 		case "skt":
-			p.signedStart, _ = time.Parse(timeFormat, val)
+			p.signedStart, _ = time.Parse(TimeFormat, val)
 		case "ske":
-			p.signedExpiry, _ = time.Parse(timeFormat, val)
+			p.signedExpiry, _ = time.Parse(TimeFormat, val)
 		case "sks":
 			p.signedService = val
 		case "skv":

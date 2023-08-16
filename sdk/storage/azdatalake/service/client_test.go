@@ -78,8 +78,8 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 
 	svcClient, err := service.NewClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
 	_require.Nil(err)
-	fsClient := testcommon.CreateNewFilesystem(context.Background(), _require, testcommon.GenerateFilesystemName(testName), svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, testcommon.GenerateFileSystemName(testName), svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 }
 
 func (s *ServiceRecordedTestsSuite) TestSetPropertiesLogging() {
@@ -182,6 +182,7 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCORSMultiple() {
 
 	_require.Nil(err)
 	resp, err := svcClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 	for i := 0; i < len(resp.CORS); i++ {
 		if resp.CORS[i].AllowedOrigins == &allowedOrigins1 {
 			_require.Equal(resp.CORS[i].AllowedMethods, &allowedMethods1)
@@ -196,7 +197,6 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCORSMultiple() {
 			_require.Equal(resp.CORS[i].AllowedHeaders, &allowedHeaders2)
 		}
 	}
-	_require.Nil(err)
 }
 
 func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
@@ -331,7 +331,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.dfs.core.windows.net/", cred.AccountName()), cred, nil)
 	_require.Nil(err)
 
-	fsName := testcommon.GenerateFilesystemName(testName)
+	fsName := testcommon.GenerateFileSystemName(testName)
 
 	// Note: Always set all permissions, services, types to true to ensure order of string formed is correct.
 	resources := sas.AccountResourceTypes{
@@ -361,10 +361,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	_require.Nil(err)
 
 	// create fs using SAS
-	_, err = svcClient.CreateFilesystem(context.Background(), fsName, nil)
+	_, err = svcClient.CreateFileSystem(context.Background(), fsName, nil)
 	_require.Nil(err)
 
-	_, err = svcClient.DeleteFilesystem(context.Background(), fsName, nil)
+	_, err = svcClient.DeleteFileSystem(context.Background(), fsName, nil)
 	_require.Nil(err)
 }
 
@@ -464,7 +464,7 @@ func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
 
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestGetFilesystemClient() {
+func (s *ServiceUnrecordedTestsSuite) TestGetFileSystemClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -475,10 +475,10 @@ func (s *ServiceUnrecordedTestsSuite) TestGetFilesystemClient() {
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 	_require.Nil(err)
 
-	fsName := testcommon.GenerateFilesystemName(testName + "1")
-	fsClient := serviceClient.NewFilesystemClient(fsName)
+	fsName := testcommon.GenerateFileSystemName(testName + "1")
+	fsClient := serviceClient.NewFileSystemClient(fsName)
 
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
 
@@ -486,7 +486,7 @@ func (s *ServiceUnrecordedTestsSuite) TestGetFilesystemClient() {
 	_require.Nil(err)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASFilesystemClient() {
+func (s *ServiceUnrecordedTestsSuite) TestSASFileSystemClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -497,10 +497,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASFilesystemClient() {
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 	_require.Nil(err)
 
-	fsName := testcommon.GenerateFilesystemName(testName)
-	fsClient := serviceClient.NewFilesystemClient(fsName)
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := serviceClient.NewFileSystemClient(fsName)
 
-	permissions := sas.FilesystemPermissions{
+	permissions := sas.FileSystemPermissions{
 		Read: true,
 		Add:  true,
 	}
@@ -519,7 +519,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASFilesystemClient() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthorizationFailure)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASFilesystem2() {
+func (s *ServiceUnrecordedTestsSuite) TestSASFileSystem2() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -530,16 +530,16 @@ func (s *ServiceUnrecordedTestsSuite) TestSASFilesystem2() {
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 	_require.Nil(err)
 
-	fsName := testcommon.GenerateFilesystemName(testName)
-	fsClient := serviceClient.NewFilesystemClient(fsName)
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := serviceClient.NewFileSystemClient(fsName)
 	start := time.Now().Add(-5 * time.Minute).UTC()
 	opts := filesystem.GetSASURLOptions{StartTime: &start}
 
-	sasUrlReadAdd, err := fsClient.GetSASURL(sas.FilesystemPermissions{Read: true, Add: true}, time.Now().Add(time.Hour), &opts)
+	sasUrlReadAdd, err := fsClient.GetSASURL(sas.FileSystemPermissions{Read: true, Add: true}, time.Now().Add(time.Hour), &opts)
 	_require.Nil(err)
 	_, err = fsClient.Create(context.Background(), &filesystem.CreateOptions{Metadata: testcommon.BasicMetadata})
 	_require.Nil(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	fsClient1, err := filesystem.NewClientWithNoCredential(sasUrlReadAdd, nil)
 	_require.Nil(err)
@@ -552,7 +552,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASFilesystem2() {
 	start = time.Now().Add(-5 * time.Minute).UTC()
 	opts = filesystem.GetSASURLOptions{StartTime: &start}
 
-	sasUrlRCWL, err := fsClient.GetSASURL(sas.FilesystemPermissions{Add: true, Create: true, Delete: true, List: true}, time.Now().Add(time.Hour), &opts)
+	sasUrlRCWL, err := fsClient.GetSASURL(sas.FileSystemPermissions{Add: true, Create: true, Delete: true, List: true}, time.Now().Add(time.Hour), &opts)
 	_require.Nil(err)
 
 	fsClient2, err := filesystem.NewClientWithNoCredential(sasUrlRCWL, nil)
@@ -574,8 +574,8 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
 		"bar": to.Ptr("barvalue"),
 	}
 
-	fsName := testcommon.GenerateFilesystemName(testName)
-	fsClient := svcClient.NewFilesystemClient(fsName)
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := svcClient.NewFileSystemClient(fsName)
 	_, err = fsClient.Create(context.Background(), &filesystem.CreateOptions{Metadata: md})
 	defer func(fsClient *filesystem.Client, ctx context.Context, options *filesystem.DeleteOptions) {
 		_, err := fsClient.Delete(ctx, options)
@@ -584,9 +584,9 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
 		}
 	}(fsClient, context.Background(), nil)
 	_require.Nil(err)
-	prefix := testcommon.FilesystemPrefix
-	listOptions := service.ListFilesystemsOptions{Prefix: &prefix, Include: service.ListFilesystemsInclude{Metadata: true}}
-	pager := svcClient.NewListFilesystemsPager(&listOptions)
+	prefix := testcommon.FileSystemPrefix
+	listOptions := service.ListFileSystemsOptions{Prefix: &prefix, Include: service.ListFileSystemsInclude{Metadata: to.Ptr(true)}}
+	pager := svcClient.NewListFileSystemsPager(&listOptions)
 
 	count := 0
 	for pager.More() {
@@ -634,8 +634,8 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 		"bar": to.Ptr("barvalue"),
 	}
 
-	fsName := testcommon.GenerateFilesystemName(testName)
-	fsClient := testcommon.ServiceGetFilesystemClient(fsName, svcClient)
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.ServiceGetFileSystemClient(fsName, svcClient)
 	_, err = fsClient.Create(context.Background(), &filesystem.CreateOptions{Metadata: md})
 	defer func(fsClient *filesystem.Client, ctx context.Context, options *filesystem.DeleteOptions) {
 		_, err := fsClient.Delete(ctx, options)
@@ -644,9 +644,9 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 		}
 	}(fsClient, context.Background(), nil)
 	_require.Nil(err)
-	prefix := testcommon.FilesystemPrefix
-	listOptions := service.ListFilesystemsOptions{Prefix: &prefix, Include: service.ListFilesystemsInclude{Metadata: true}}
-	pager := svcClient.NewListFilesystemsPager(&listOptions)
+	prefix := testcommon.FileSystemPrefix
+	listOptions := service.ListFileSystemsOptions{Prefix: &prefix, Include: service.ListFileSystemsInclude{Metadata: to.Ptr(true)}}
+	pager := svcClient.NewListFileSystemsPager(&listOptions)
 
 	count := 0
 	for pager.More() {
@@ -690,30 +690,30 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsPaged() {
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
-	const numFilesystems = 6
+	const numFileSystems = 6
 	maxResults := int32(2)
-	const pagedFilesystemsPrefix = "azfilesystempaged"
+	const pagedFileSystemsPrefix = "azfilesystempaged"
 
-	filesystems := make([]*filesystem.Client, numFilesystems)
+	filesystems := make([]*filesystem.Client, numFileSystems)
 	expectedResults := make(map[string]bool)
-	for i := 0; i < numFilesystems; i++ {
-		fsName := pagedFilesystemsPrefix + testcommon.GenerateFilesystemName(testName) + fmt.Sprintf("%d", i)
-		fsClient := testcommon.CreateNewFilesystem(context.Background(), _require, fsName, svcClient)
+	for i := 0; i < numFileSystems; i++ {
+		fsName := pagedFileSystemsPrefix + testcommon.GenerateFileSystemName(testName) + fmt.Sprintf("%d", i)
+		fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
 		filesystems[i] = fsClient
 		expectedResults[fsName] = false
 	}
 
 	defer func() {
 		for i := range filesystems {
-			testcommon.DeleteFilesystem(context.Background(), _require, filesystems[i])
+			testcommon.DeleteFileSystem(context.Background(), _require, filesystems[i])
 		}
 	}()
 
-	prefix := pagedFilesystemsPrefix + testcommon.FilesystemPrefix
-	listOptions := service.ListFilesystemsOptions{MaxResults: &maxResults, Prefix: &prefix, Include: service.ListFilesystemsInclude{Metadata: true}}
+	prefix := pagedFileSystemsPrefix + testcommon.FileSystemPrefix
+	listOptions := service.ListFileSystemsOptions{MaxResults: &maxResults, Prefix: &prefix, Include: service.ListFileSystemsInclude{Metadata: to.Ptr(true)}}
 	count := 0
-	results := make([]service.FilesystemItem, 0)
-	pager := svcClient.NewListFilesystemsPager(&listOptions)
+	results := make([]service.FileSystemItem, 0)
+	pager := svcClient.NewListFileSystemsPager(&listOptions)
 
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
@@ -725,8 +725,8 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsPaged() {
 		}
 	}
 
-	_require.Equal(count, numFilesystems)
-	_require.Equal(len(results), numFilesystems)
+	_require.Equal(count, numFileSystems)
+	_require.Equal(len(results), numFileSystems)
 
 	// make sure each fs we see is expected
 	for _, ctnr := range results {
@@ -748,13 +748,13 @@ func (s *ServiceRecordedTestsSuite) TestAccountListFilesystemsEmptyPrefix() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	fsClient1 := testcommon.CreateNewFilesystem(context.Background(), _require, testcommon.GenerateFilesystemName(testName)+"1", svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient1)
-	fsClient2 := testcommon.CreateNewFilesystem(context.Background(), _require, testcommon.GenerateFilesystemName(testName)+"2", svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient2)
+	fsClient1 := testcommon.CreateNewFileSystem(context.Background(), _require, testcommon.GenerateFileSystemName(testName)+"1", svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient1)
+	fsClient2 := testcommon.CreateNewFileSystem(context.Background(), _require, testcommon.GenerateFileSystemName(testName)+"2", svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient2)
 
 	count := 0
-	pager := svcClient.NewListFilesystemsPager(nil)
+	pager := svcClient.NewListFileSystemsPager(nil)
 
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())

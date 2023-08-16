@@ -16,7 +16,7 @@ type PublicAccessType = azblob.PublicAccessType
 
 const (
 	File       PublicAccessType = azblob.PublicAccessTypeBlob
-	Filesystem PublicAccessType = azblob.PublicAccessTypeContainer
+	FileSystem PublicAccessType = azblob.PublicAccessTypeContainer
 )
 
 // StatusType defines values for StatusType

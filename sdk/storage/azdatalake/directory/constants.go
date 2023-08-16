@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
+// EncryptionAlgorithmType defines values for EncryptionAlgorithmType.
 type EncryptionAlgorithmType = path.EncryptionAlgorithmType
 
 const (

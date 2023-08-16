@@ -10,11 +10,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
-// RenameResponse contains the response fields for the Create operation.
-type RenameResponse struct {
-	Response           CreateResponse
-	NewDirectoryClient *Client
-}
+// RenameResponse contains the response fields for the Rename operation.
+type RenameResponse = path.RenameResponse
 
 type setAccessControlRecursiveResponse struct {
 	DirectoriesSuccessful *int32

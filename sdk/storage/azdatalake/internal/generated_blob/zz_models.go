@@ -974,7 +974,7 @@ type ContainerClientRenewLeaseOptions struct {
 // ContainerClientRestoreOptions contains the optional parameters for the ContainerClient.Restore method.
 type ContainerClientRestoreOptions struct {
 	// Optional. Version 2019-12-12 and later. Specifies the name of the deleted container to restore.
-	DeletedFilesystemName *string
+	DeletedFileSystemName *string
 	// Optional. Version 2019-12-12 and later. Specifies the version of the deleted container to restore.
 	DeletedContainerVersion *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
@@ -1137,7 +1137,7 @@ type DelimitedTextConfiguration struct {
 // FilterPathItem - Blob info from a Filter Blobs API call
 type FilterPathItem struct {
 	// REQUIRED
-	FilesystemName *string `xml:"ContainerName"`
+	FileSystemName *string `xml:"ContainerName"`
 
 	// REQUIRED
 	Name *string `xml:"Name"`
@@ -1194,7 +1194,7 @@ type LeaseAccessConditions struct {
 // ListBlobsFlatSegmentResponse - An enumeration of blobs
 type ListBlobsFlatSegmentResponse struct {
 	// REQUIRED
-	FilesystemName *string `xml:"ContainerName,attr"`
+	FileSystemName *string `xml:"ContainerName,attr"`
 
 	// REQUIRED
 	Segment *BlobFlatListSegment `xml:"Blobs"`
@@ -1210,7 +1210,7 @@ type ListBlobsFlatSegmentResponse struct {
 // ListPathsHierarchySegmentResponse - An enumeration of blobs
 type ListPathsHierarchySegmentResponse struct {
 	// REQUIRED
-	FilesystemName *string `xml:"ContainerName,attr"`
+	FileSystemName *string `xml:"ContainerName,attr"`
 
 	// REQUIRED
 	Segment *PathHierarchyListSegment `xml:"Blobs"`

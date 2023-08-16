@@ -16,13 +16,13 @@ import (
 )
 import blobSAS "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 
-// CreateFilesystemOptions contains the optional parameters for the Filesystem Create method.
-type CreateFilesystemOptions = filesystem.CreateOptions
+// CreateFileSystemOptions contains the optional parameters for the FileSystem Create method.
+type CreateFileSystemOptions = filesystem.CreateOptions
 
-// DeleteFilesystemOptions contains the optional parameters for the Filesystem Delete method.
-type DeleteFilesystemOptions = filesystem.DeleteOptions
+// DeleteFileSystemOptions contains the optional parameters for the FileSystem Delete method.
+type DeleteFileSystemOptions = filesystem.DeleteOptions
 
-// GetUserDelegationCredentialOptions contains optional parameters for Service.GetUserDelegationKey method.
+// GetUserDelegationCredentialOptions contains optional parameters for GetUserDelegationKey method.
 type GetUserDelegationCredentialOptions struct {
 	// placeholder for future options
 }
@@ -45,29 +45,23 @@ func (o *GetPropertiesOptions) format() *service.GetPropertiesOptions {
 
 // SetPropertiesOptions provides set of options for Client.SetProperties
 type SetPropertiesOptions struct {
-	// The set of CORS rules.
+	// CORS The set of CORS rules.
 	CORS []*CORSRule
-
-	// The default version to use for requests to the Datalake service if an incoming request's version is not specified. Possible
+	// DefaultServiceVersion The default version to use for requests to the Datalake service if an incoming request's version is not specified. Possible
 	// values include version 2008-10-27 and all more recent versions.
 	DefaultServiceVersion *string
-
-	// the retention policy which determines how long the associated data should persist.
+	// DeleteRetentionPolicy the retention policy which determines how long the associated data should persist.
 	DeleteRetentionPolicy *RetentionPolicy
-
-	// a summary of request statistics grouped by API in hour or minute aggregates
+	// HourMetrics a summary of request statistics grouped by API in hour or minute aggregates
 	// If version is not set - we default to "1.0"
 	HourMetrics *Metrics
-
-	// Azure Analytics Logging settings.
+	// Logging Azure Analytics Logging settings.
 	// If version is not set - we default to "1.0"
 	Logging *Logging
-
-	// a summary of request statistics grouped by API in hour or minute aggregates
+	// MinuteMetrics a summary of request statistics grouped by API in hour or minute aggregates
 	// If version is not set - we default to "1.0"
 	MinuteMetrics *Metrics
-
-	// The properties that enable an account to host a static website.
+	// StaticWebsite The properties that enable an account to host a static website.
 	StaticWebsite *StaticWebsite
 }
 
@@ -86,27 +80,31 @@ func (o *SetPropertiesOptions) format() *service.SetPropertiesOptions {
 	}
 }
 
-// ListFilesystemsInclude indicates what additional information the service should return with each filesystem.
-type ListFilesystemsInclude struct {
-	// Tells the service whether to return metadata for each filesystem.
-	Metadata bool
-
-	// Tells the service whether to return soft-deleted filesystems.
-	Deleted bool
-
-	System bool
+// ListFileSystemsInclude indicates what additional information the service should return with each filesystem.
+type ListFileSystemsInclude struct {
+	// Metadata tells the service whether to return metadata for each filesystem.
+	Metadata *bool
+	// Deleted tells the service whether to return soft-deleted filesystems.
+	Deleted *bool
+	// System tells the service whether to return system filesystems.
+	System *bool
 }
 
-// ListFilesystemsOptions contains the optional parameters for the Client.List method.
-type ListFilesystemsOptions struct {
-	Include    ListFilesystemsInclude
-	Marker     *string
+// ListFileSystemsOptions contains the optional parameters for the ListFileSystems method.
+type ListFileSystemsOptions struct {
+	// Include tells the service whether to return filesystem metadata.
+	Include ListFileSystemsInclude
+	// Marker is the continuation token to use when continuing the operation.
+	Marker *string
+	// MaxResults sets the maximum number of paths that will be returned per page.
 	MaxResults *int32
-	Prefix     *string
+	// Prefix filters the results to return only filesystems whose names begin with the specified prefix.
+	Prefix *string
 }
 
 // GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
 type GetSASURLOptions struct {
+	// StartTime is the time after which the SAS will become valid.
 	StartTime *time.Time
 }
 
@@ -174,17 +172,17 @@ type LeaseAccessConditions = exported.LeaseAccessConditions
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
-// CPKScopeInfo contains a group of parameters for the FilesystemClient.Create method.
+// CPKScopeInfo contains a group of parameters for the FileSystemClient.Create method.
 type CPKScopeInfo = filesystem.CPKScopeInfo
 
 // StorageServiceProperties - Storage Service Properties. Returned in GetServiceProperties call.
 type StorageServiceProperties = service.StorageServiceProperties
 
-// ListFilesystemsSegmentResponse contains fields from the ListFilesystems operation
-type ListFilesystemsSegmentResponse = generated_blob.ListFileSystemsSegmentResponse
+// ListFileSystemsSegmentResponse contains fields from the ListFileSystems operation
+type ListFileSystemsSegmentResponse = generated_blob.ListFileSystemsSegmentResponse
 
-// FilesystemItem contains fields from the ListFilesystems operation
-type FilesystemItem = generated_blob.FileSystemItem
+// FileSystemItem contains fields from the ListFileSystems operation
+type FileSystemItem = generated_blob.FileSystemItem
 
-// FilesystemProperties contains fields from the ListFilesystems operation
-type FilesystemProperties = generated_blob.FileSystemProperties
+// FileSystemProperties contains fields from the ListFileSystems operation
+type FileSystemProperties = generated_blob.FileSystemProperties

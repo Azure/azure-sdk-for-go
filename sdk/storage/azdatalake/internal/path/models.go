@@ -15,9 +15,9 @@ import (
 	"time"
 )
 
-// DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
+// DeleteOptions contains the optional parameters when calling the Delete operation.
 type DeleteOptions struct {
-	// AccessConditions contains parameters for accessing the file.
+	// AccessConditions contains parameters for accessing the path.
 	AccessConditions *AccessConditions
 }
 
@@ -36,7 +36,7 @@ func FormatDeleteOptions(o *DeleteOptions, recursive bool) (*generated.LeaseAcce
 type RenameOptions struct {
 	// SourceAccessConditions identifies the source path access conditions.
 	SourceAccessConditions *SourceAccessConditions
-	// AccessConditions contains parameters for accessing the file.
+	// AccessConditions contains parameters for accessing the path.
 	AccessConditions *AccessConditions
 }
 
@@ -68,7 +68,7 @@ func FormatRenameOptions(o *RenameOptions, path string) (*generated.LeaseAccessC
 	return leaseAccessConditions, modifiedAccessConditions, nil, createOpts
 }
 
-// GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
+// GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
 type GetPropertiesOptions struct {
 	AccessConditions *AccessConditions
 	CPKInfo          *CPKInfo
@@ -94,7 +94,7 @@ func FormatGetPropertiesOptions(o *GetPropertiesOptions) *blob.GetPropertiesOpti
 
 // ===================================== PATH IMPORTS ===========================================
 
-// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation. dfs endpoint
+// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation.
 type SetAccessControlOptions struct {
 	// Owner is the owner of the path.
 	Owner *string
@@ -148,15 +148,19 @@ func FormatGetAccessControlOptions(o *GetAccessControlOptions) (*generated.PathC
 	}, leaseAccessConditions, modifiedAccessConditions
 }
 
-// CPKInfo contains a group of parameters for the PathClient.Download method.
+// CPKInfo contains CPK related information.
 type CPKInfo struct {
+	// EncryptionAlgorithm is the algorithm used to encrypt the data.
 	EncryptionAlgorithm *EncryptionAlgorithmType
-	EncryptionKey       *string
+	// EncryptionKey is the base64 encoded encryption key.
+	EncryptionKey *string
+	// EncryptionKeySHA256 is the base64 encoded SHA256 of the encryption key.
 	EncryptionKeySHA256 *string
 }
 
 // GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
 type GetSASURLOptions struct {
+	// StartTime is the start time for this SAS token.
 	StartTime *time.Time
 }
 
@@ -176,6 +180,7 @@ func FormatGetSASURLOptions(o *GetSASURLOptions) time.Time {
 
 // SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
 type SetHTTPHeadersOptions struct {
+	// AccessConditions contains parameters for accessing the path.
 	AccessConditions *AccessConditions
 }
 
@@ -199,19 +204,19 @@ func FormatSetHTTPHeadersOptions(o *SetHTTPHeadersOptions, httpHeaders HTTPHeade
 
 // HTTPHeaders contains the HTTP headers for path operations.
 type HTTPHeaders struct {
-	// Sets the path's cache control. If specified, this property is stored with the path and returned with a read request.
+	// CacheControl Sets the path's cache control. If specified, this property is stored with the path and returned with a read request.
 	CacheControl *string
-	// Sets the path's Content-Disposition header.
+	// ContentDisposition Sets the path's Content-Disposition header.
 	ContentDisposition *string
-	// Sets the path's content encoding. If specified, this property is stored with the blobpath and returned with a read
+	// ContentEncoding Sets the path's content encoding. If specified, this property is stored with the path and returned with a read
 	// request.
 	ContentEncoding *string
-	// Set the path's content language. If specified, this property is stored with the path and returned with a read
+	// ContentLanguage Set the path's content language. If specified, this property is stored with the path and returned with a read
 	// request.
 	ContentLanguage *string
-	// Specify the transactional md5 for the body, to be validated by the service.
+	// ContentMD5 Specify the transactional md5 for the body, to be validated by the service.
 	ContentMD5 []byte
-	// Sets the path's content type. If specified, this property is stored with the path and returned with a read request.
+	// ContentType Sets the path's content type. If specified, this property is stored with the path and returned with a read request.
 	ContentType *string
 }
 
@@ -246,15 +251,17 @@ func FormatPathHTTPHeaders(o *HTTPHeaders) *generated.PathHTTPHeaders {
 
 // SetMetadataOptions provides set of configurations for Set Metadata on path operation
 type SetMetadataOptions struct {
-	Metadata         map[string]*string
+	// AccessConditions contains parameters for accessing the path.
 	AccessConditions *AccessConditions
-	CPKInfo          *CPKInfo
-	CPKScopeInfo     *CPKScopeInfo
+	// CPKInfo contains CPK related information.
+	CPKInfo *CPKInfo
+	// CPKScopeInfo specifies the encryption scope settings.
+	CPKScopeInfo *CPKScopeInfo
 }
 
-func FormatSetMetadataOptions(o *SetMetadataOptions) (*blob.SetMetadataOptions, map[string]*string) {
+func FormatSetMetadataOptions(o *SetMetadataOptions) *blob.SetMetadataOptions {
 	if o == nil {
-		return nil, nil
+		return nil
 	}
 	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	opts := &blob.SetMetadataOptions{
@@ -270,7 +277,7 @@ func FormatSetMetadataOptions(o *SetMetadataOptions) (*blob.SetMetadataOptions, 
 	if o.CPKScopeInfo != nil {
 		opts.CPKScopeInfo = o.CPKScopeInfo
 	}
-	return opts, o.Metadata
+	return opts
 }
 
 // ========================================= constants =========================================

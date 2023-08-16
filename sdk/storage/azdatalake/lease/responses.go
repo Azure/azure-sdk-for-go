@@ -8,20 +8,20 @@ package lease
 
 import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 
-// FilesystemAcquireResponse contains the response from method FilesystemClient.AcquireLease.
-type FilesystemAcquireResponse = lease.ContainerAcquireResponse
+// FileSystemAcquireResponse contains the response from method FileSystemClient.AcquireLease.
+type FileSystemAcquireResponse = lease.ContainerAcquireResponse
 
-// FilesystemBreakResponse contains the response from method FilesystemClient.BreakLease.
-type FilesystemBreakResponse = lease.ContainerBreakResponse
+// FileSystemBreakResponse contains the response from method FileSystemClient.BreakLease.
+type FileSystemBreakResponse = lease.ContainerBreakResponse
 
-// FilesystemChangeResponse contains the response from method FilesystemClient.ChangeLease.
-type FilesystemChangeResponse = lease.ContainerChangeResponse
+// FileSystemChangeResponse contains the response from method FileSystemClient.ChangeLease.
+type FileSystemChangeResponse = lease.ContainerChangeResponse
 
-// FilesystemReleaseResponse contains the response from method FilesystemClient.ReleaseLease.
-type FilesystemReleaseResponse = lease.ContainerReleaseResponse
+// FileSystemReleaseResponse contains the response from method FileSystemClient.ReleaseLease.
+type FileSystemReleaseResponse = lease.ContainerReleaseResponse
 
-// FilesystemRenewResponse contains the response from method FilesystemClient.RenewLease.
-type FilesystemRenewResponse = lease.ContainerRenewResponse
+// FileSystemRenewResponse contains the response from method FileSystemClient.RenewLease.
+type FileSystemRenewResponse = lease.ContainerRenewResponse
 
 // PathAcquireResponse contains the response from method PathClient.AcquireLease.
 type PathAcquireResponse = lease.BlobAcquireResponse

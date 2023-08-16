@@ -32,6 +32,51 @@ type CreateResponse = generated.PathClientCreateResponse
 // DeleteResponse contains the response fields for the Delete operation.
 type DeleteResponse = generated.PathClientDeleteResponse
 
+type RenameResponse struct {
+	// ContentLength contains the information returned from the Content-Length header response.
+	ContentLength *int64
+
+	// Continuation contains the information returned from the x-ms-continuation header response.
+	Continuation *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *azcore.ETag
+
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	EncryptionKeySHA256 *string
+
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	IsServerEncrypted *bool
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
+// We need to do this now in case we add the new client to renamed response - we don't want to break the cx
+
+func FormatRenameResponse(createResp *CreateResponse) RenameResponse {
+	newResp := RenameResponse{}
+	newResp.ContentLength = createResp.ContentLength
+	newResp.Continuation = createResp.Continuation
+	newResp.Date = createResp.Date
+	newResp.ETag = createResp.ETag
+	newResp.EncryptionKeySHA256 = createResp.EncryptionKeySHA256
+	newResp.IsServerEncrypted = createResp.IsServerEncrypted
+	newResp.LastModified = createResp.LastModified
+	newResp.RequestID = createResp.RequestID
+	newResp.Version = createResp.Version
+	return newResp
+}
+
 // removed BlobSequenceNumber, BlobCommittedBlockCount and BlobType headers from the original response:
 
 // GetPropertiesResponse contains the response fields for the GetProperties operation.

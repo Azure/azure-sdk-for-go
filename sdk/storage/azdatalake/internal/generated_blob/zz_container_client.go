@@ -1001,10 +1001,10 @@ func (client *ContainerClient) releaseLeaseHandleResponse(resp *http.Response) (
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-10-02
-//   - sourceFilesystemName - Required. Specifies the name of the container to rename.
+//   - sourceFileSystemName - Required. Specifies the name of the container to rename.
 //   - options - ContainerClientRenameOptions contains the optional parameters for the ContainerClient.Rename method.
-func (client *ContainerClient) Rename(ctx context.Context, sourceFilesystemName string, options *ContainerClientRenameOptions) (ContainerClientRenameResponse, error) {
-	req, err := client.renameCreateRequest(ctx, sourceFilesystemName, options)
+func (client *ContainerClient) Rename(ctx context.Context, sourceFileSystemName string, options *ContainerClientRenameOptions) (ContainerClientRenameResponse, error) {
+	req, err := client.renameCreateRequest(ctx, sourceFileSystemName, options)
 	if err != nil {
 		return ContainerClientRenameResponse{}, err
 	}
@@ -1019,7 +1019,7 @@ func (client *ContainerClient) Rename(ctx context.Context, sourceFilesystemName 
 }
 
 // renameCreateRequest creates the Rename request.
-func (client *ContainerClient) renameCreateRequest(ctx context.Context, sourceFilesystemName string, options *ContainerClientRenameOptions) (*policy.Request, error) {
+func (client *ContainerClient) renameCreateRequest(ctx context.Context, sourceFileSystemName string, options *ContainerClientRenameOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1035,7 +1035,7 @@ func (client *ContainerClient) renameCreateRequest(ctx context.Context, sourceFi
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-source-container-name"] = []string{sourceFilesystemName}
+	req.Raw().Header["x-ms-source-container-name"] = []string{sourceFileSystemName}
 	if options != nil && options.SourceLeaseID != nil {
 		req.Raw().Header["x-ms-source-lease-id"] = []string{*options.SourceLeaseID}
 	}
@@ -1189,8 +1189,8 @@ func (client *ContainerClient) restoreCreateRequest(ctx context.Context, options
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	if options != nil && options.DeletedFilesystemName != nil {
-		req.Raw().Header["x-ms-deleted-container-name"] = []string{*options.DeletedFilesystemName}
+	if options != nil && options.DeletedFileSystemName != nil {
+		req.Raw().Header["x-ms-deleted-container-name"] = []string{*options.DeletedFileSystemName}
 	}
 	if options != nil && options.DeletedContainerVersion != nil {
 		req.Raw().Header["x-ms-deleted-container-version"] = []string{*options.DeletedContainerVersion}

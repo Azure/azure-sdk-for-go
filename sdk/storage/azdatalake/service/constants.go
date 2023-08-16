@@ -16,7 +16,7 @@ type PublicAccessType = filesystem.PublicAccessType
 
 const (
 	File       PublicAccessType = filesystem.File
-	Filesystem PublicAccessType = filesystem.Filesystem
+	FileSystem PublicAccessType = filesystem.FileSystem
 )
 
 // StatusType defines values for StatusType

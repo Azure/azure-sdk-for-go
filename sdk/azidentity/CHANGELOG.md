@@ -1,5 +1,15 @@
 # Release History
 
+## 1.4.0-beta.4 (2023-08-16)
+
+### Other Changes
+* Upgraded dependencies
+
+## 1.3.1 (2023-08-16)
+
+### Other Changes
+* Upgraded dependencies
+
 ## 1.4.0-beta.3 (2023-08-08)
 
 ### Bugs Fixed

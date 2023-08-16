@@ -156,7 +156,7 @@ func (o *ListPathsOptions) format() generated.FileSystemClientListPathsOptions {
 	}
 }
 
-// ListDeletedPathsOptions contains the optional parameters for the FileSystem.ListDeletedPaths operation. PLACEHOLDER
+// ListDeletedPathsOptions contains the optional parameters for the FileSystem.ListDeletedPaths operation.
 type ListDeletedPathsOptions struct {
 	// Marker contains last continuation token returned from the service for listing.
 	Marker *string

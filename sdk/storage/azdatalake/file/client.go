@@ -229,14 +229,14 @@ func (f *Client) renamePathInURL(newName string) (string, string, string) {
 	// Split the string based on the last occurrence of the separator
 	firstPart := endpoint[:lastIndex] // From the beginning of the string to the last occurrence of the separator
 	newBlobURL, newPathURL := shared.GetURLs(runtime.JoinPaths(firstPart, newName))
-	parsedNewURL, _ := url.Parse(f.DFSURL())
-	return parsedNewURL.Path, newPathURL, newBlobURL
+	oldURL, _ := url.Parse(f.DFSURL())
+	return oldURL.Path, newPathURL, newBlobURL
 }
 
-// Rename renames a file.
+// Rename renames a file. The original file will no longer exist and the client will be stale.
 func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
-	newPathWithoutURL, newPathURL, newBlobURL := f.renamePathInURL(newName)
-	lac, mac, smac, createOpts := path.FormatRenameOptions(options, newPathWithoutURL)
+	oldPathWithoutURL, newPathURL, newBlobURL := f.renamePathInURL(newName)
+	lac, mac, smac, createOpts := path.FormatRenameOptions(options, oldPathWithoutURL)
 	var newBlobClient *blockblob.Client
 	var err error
 	if f.identityCredential() != nil {
@@ -256,7 +256,7 @@ func (f *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 	//	Response:      resp,
 	//	NewFileClient: newFileClient,
 	//}, exported.ConvertToDFSError(err)
-	return resp, exported.ConvertToDFSError(err)
+	return path.FormatRenameResponse(&resp), exported.ConvertToDFSError(err)
 }
 
 // SetExpiry operation sets an expiry time on an existing file.

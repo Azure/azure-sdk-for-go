@@ -245,14 +245,14 @@ func (d *Client) renamePathInURL(newName string) (string, string, string) {
 	// Split the string based on the last occurrence of the separator
 	firstPart := endpoint[:lastIndex] // From the beginning of the string to the last occurrence of the separator
 	newBlobURL, newPathURL := shared.GetURLs(runtime.JoinPaths(firstPart, newName))
-	parsedNewURL, _ := url.Parse(d.DFSURL())
-	return parsedNewURL.Path, newPathURL, newBlobURL
+	oldURL, _ := url.Parse(d.DFSURL())
+	return oldURL.Path, newPathURL, newBlobURL
 }
 
-// Rename renames a directory.
+// Rename renames a directory. The original directory will no longer exist and the client will be stale.
 func (d *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
-	newPathWithoutURL, newPathURL, newBlobURL := d.renamePathInURL(newName)
-	lac, mac, smac, createOpts := path.FormatRenameOptions(options, newPathWithoutURL)
+	oldURL, newPathURL, newBlobURL := d.renamePathInURL(newName)
+	lac, mac, smac, createOpts := path.FormatRenameOptions(options, oldURL)
 	var newBlobClient *blockblob.Client
 	var err error
 	if d.identityCredential() != nil {
@@ -272,7 +272,7 @@ func (d *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 	//	Response:           resp,
 	//	NewDirectoryClient: newDirClient,
 	//}, exported.ConvertToDFSError(err)
-	return resp, exported.ConvertToDFSError(err)
+	return path.FormatRenameResponse(&resp), exported.ConvertToDFSError(err)
 }
 
 // SetAccessControl sets the owner, owning group, and permissions for a directory.

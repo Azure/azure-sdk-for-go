@@ -27,15 +27,7 @@ type AppendDataResponse = generated.PathClientAppendDataResponse
 type FlushDataResponse = generated.PathClientFlushDataResponse
 
 // RenameResponse contains the response fields for the Rename operation.
-type RenameResponse = CreateResponse
-
-//// RenameResponse contains the response fields for the Create operation.
-//type RenameResponse struct {
-//	// Response of the operation.
-//	Response CreateResponse
-//	// NewFileClient is a client for the renamed file.
-//	NewFileClient *Client
-//}
+type RenameResponse = path.RenameResponse
 
 // DownloadStreamResponse contains the response from the DownloadStream method.
 // To read from the stream, read from the Body field, or call the NewRetryReader method.

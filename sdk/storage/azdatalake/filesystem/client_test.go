@@ -8,6 +8,11 @@ package filesystem_test
 
 import (
 	"context"
+	"strconv"
+	"strings"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
@@ -17,10 +22,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"strconv"
-	"strings"
-	"testing"
-	"time"
 )
 
 func Test(t *testing.T) {
@@ -100,6 +101,7 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	_require.Nil(err)
 
 	props, err := fsClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 	_require.NotNil(props.Metadata)
 	_require.Equal(*props.PublicAccess, filesystem.Filesystem)
 }
@@ -123,6 +125,7 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithFileAccess() {
 	_, err = fsClient.Create(context.Background(), &opts)
 	_require.Nil(err)
 	props, err := fsClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 	_require.NotNil(props.Metadata)
 	_require.Equal(*props.PublicAccess, filesystem.File)
 }
@@ -146,6 +149,7 @@ func (s *RecordedTestSuite) TestCreateFilesystemEmptyMetadata() {
 	_require.Nil(err)
 
 	props, err := fsClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 	_require.Nil(props.Metadata)
 	_require.Equal(*props.PublicAccess, filesystem.Filesystem)
 

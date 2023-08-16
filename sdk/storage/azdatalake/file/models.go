@@ -62,13 +62,13 @@ type CreateOptions struct {
 // CreateExpiryValues describes when a newly created file should expire.
 // A zero-value indicates the file has no expiration date.
 type CreateExpiryValues struct {
+	// ExpiryType indicates how the value of ExpiresOn should be interpreted (absolute, relative to now, etc).
+	ExpiryType CreateExpiryType
+
 	// ExpiresOn contains the time the file should expire.
 	// The value will either be an absolute UTC time in RFC1123 format or an integer expressing a number of milliseconds.
 	// NOTE: when ExpiryType is CreateExpiryTypeNeverExpire, this value is ignored.
 	ExpiresOn string
-
-	// ExpiryType indicates how the value of ExpiresOn should be interpreted (absolute, relative to now, etc).
-	ExpiryType CreateExpiryType
 }
 
 func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, *generated.PathClientCreateOptions, *generated.CPKInfo) {
@@ -502,13 +502,13 @@ func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
 // SetExpiryValues describes when a file should expire.
 // A zero-value indicates the file has no expiration date.
 type SetExpiryValues struct {
+	// ExpiryType indicates how the value of ExpiresOn should be interpreted (absolute, relative to now, etc).
+	ExpiryType SetExpiryType
+
 	// ExpiresOn contains the time the file should expire.
 	// The value will either be an absolute UTC time in RFC1123 format or an integer expressing a number of milliseconds.
 	// NOTE: when ExpiryType is SetExpiryTypeNeverExpire, this value is ignored.
 	ExpiresOn string
-
-	// ExpiryType indicates how the value of ExpiresOn should be interpreted (absolute, relative to now, etc).
-	ExpiryType SetExpiryType
 }
 
 // ACLFailedEntry contains the failed ACL entry (response model).

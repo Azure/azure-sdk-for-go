@@ -476,8 +476,8 @@ func (s *UnrecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
 	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
 	createFileOpts := &file.CreateOptions{
 		Expiry: file.CreateExpiryValues{
-			ExpiresOn:  time.Now().Add(8 * time.Second).UTC().Format(http.TimeFormat),
 			ExpiryType: file.CreateExpiryTypeAbsolute,
+			ExpiresOn:  time.Now().Add(8 * time.Second).UTC().Format(http.TimeFormat),
 		},
 	}
 
@@ -511,8 +511,8 @@ func (s *RecordedTestSuite) TestCreateFileWithExpiryRelativeToNow() {
 
 	createFileOpts := &file.CreateOptions{
 		Expiry: file.CreateExpiryValues{
-			ExpiresOn:  strconv.FormatInt((8 * time.Second).Milliseconds(), 10),
 			ExpiryType: file.CreateExpiryTypeRelativeToNow,
+			ExpiresOn:  strconv.FormatInt((8 * time.Second).Milliseconds(), 10),
 		},
 	}
 

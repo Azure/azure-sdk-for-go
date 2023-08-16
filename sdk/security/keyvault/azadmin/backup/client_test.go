@@ -39,7 +39,7 @@ func TestBackupRestore(t *testing.T) {
 	folderURI := s[strings.LastIndex(s, "/")+1:]
 	restoreOperationParameters := backup.RestoreOperationParameters{
 		FolderToRestore:    &folderURI,
-		SasTokenParameters: &sasToken,
+		SASTokenParameters: &sasToken,
 	}
 	testSerde(t, &restoreOperationParameters)
 	restorePoller, err := client.BeginFullRestore(context.Background(), restoreOperationParameters, nil)
@@ -83,7 +83,7 @@ func TestBackupRestoreWithResumeToken(t *testing.T) {
 	folderURI := s[strings.LastIndex(s, "/")+1:]
 	restoreOperationParameters := backup.RestoreOperationParameters{
 		FolderToRestore:    &folderURI,
-		SasTokenParameters: &sasToken,
+		SASTokenParameters: &sasToken,
 	}
 	testSerde(t, &restoreOperationParameters)
 	restorePoller, err := client.BeginFullRestore(context.Background(), restoreOperationParameters, nil)
@@ -136,7 +136,7 @@ func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
 	folderURI := s[strings.LastIndex(s, "/")+1:]
 	restoreOperationParameters := backup.SelectiveKeyRestoreOperationParameters{
 		Folder:             &folderURI,
-		SasTokenParameters: &sasToken,
+		SASTokenParameters: &sasToken,
 	}
 	testSerde(t, &restoreOperationParameters)
 	selectivePoller, err := backupClient.BeginSelectiveKeyRestore(context.Background(), "selective-restore-test-key", restoreOperationParameters, nil)

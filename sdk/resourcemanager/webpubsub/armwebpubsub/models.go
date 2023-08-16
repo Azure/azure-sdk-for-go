@@ -66,6 +66,11 @@ type ClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClientListReplicaSKUsOptions contains the optional parameters for the Client.ListReplicaSKUs method.
+type ClientListReplicaSKUsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClientListSKUsOptions contains the optional parameters for the Client.ListSKUs method.
 type ClientListSKUsOptions struct {
 	// placeholder for future optional parameters
@@ -76,16 +81,16 @@ type CustomCertificate struct {
 	// REQUIRED; Custom certificate properties.
 	Properties *CustomCertificateProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -140,16 +145,16 @@ type CustomDomain struct {
 	// REQUIRED; Properties of a custom domain.
 	Properties *CustomDomainProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -357,16 +362,16 @@ type Hub struct {
 	// REQUIRED; Properties of a hub.
 	Properties *HubProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -531,7 +536,8 @@ type NameAvailabilityParameters struct {
 	// REQUIRED; The resource name to validate. e.g."my-resource-name"
 	Name *string
 
-	// REQUIRED; The resource type. Can be "Microsoft.SignalRService/SignalR" or "Microsoft.SignalRService/webPubSub"
+	// REQUIRED; The resource type. Can be "Microsoft.SignalRService/SignalR", "Microsoft.SignalRService/WebPubSub", "Microsoft.SignalRService/SignalR/replicas"
+	// or "Microsoft.SignalRService/WebPubSub/replicas"
 	Type *string
 }
 
@@ -633,16 +639,16 @@ type PrivateEndpointConnection struct {
 	// Private endpoint connection properties
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -701,13 +707,16 @@ type PrivateLinkResource struct {
 	// Private link resource properties
 	Properties *PrivateLinkResourceProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -806,16 +815,19 @@ type Properties struct {
 	Version *string
 }
 
-// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
-// and tags
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -825,25 +837,102 @@ type RegenerateKeyParameters struct {
 	KeyType *KeyType
 }
 
-// Resource - The core properties of ARM resources.
-type Resource struct {
-	// READ-ONLY; Fully qualified resource Id for the resource.
+// Replica - A class represent a replica resource.
+type Replica struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location   *string
+	Properties *ReplicaProperties
+
+	// The billing information of the resource.
+	SKU *ResourceSKU
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+type ReplicaList struct {
+	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// List of the replica
+	Value []*Replica
+}
+
+type ReplicaProperties struct {
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ReplicasClientBeginCreateOrUpdateOptions contains the optional parameters for the ReplicasClient.BeginCreateOrUpdate method.
+type ReplicasClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReplicasClientBeginRestartOptions contains the optional parameters for the ReplicasClient.BeginRestart method.
+type ReplicasClientBeginRestartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReplicasClientBeginUpdateOptions contains the optional parameters for the ReplicasClient.BeginUpdate method.
+type ReplicasClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReplicasClientDeleteOptions contains the optional parameters for the ReplicasClient.Delete method.
+type ReplicasClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReplicasClientGetOptions contains the optional parameters for the ReplicasClient.Get method.
+type ReplicasClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReplicasClientListOptions contains the optional parameters for the ReplicasClient.NewListPager method.
+type ReplicasClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // ResourceInfo - A class represent a resource.
 type ResourceInfo struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
 	// A class represent managed identities used for request and response
 	Identity *ManagedIdentity
 
-	// The GEO location of the resource. e.g. West US | East US | North Central US | South Central US.
-	Location *string
+	// The kind of the service
+	Kind *ServiceKind
 
 	// A class that describes the properties of the resource
 	Properties *Properties
@@ -851,19 +940,19 @@ type ResourceInfo struct {
 	// The billing information of the resource.
 	SKU *ResourceSKU
 
-	// Tags of the service which is a list of key value pairs that describe the resource.
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -995,16 +1084,16 @@ type SharedPrivateLinkResource struct {
 	// Describes the properties of an existing Shared Private Link Resource
 	Properties *SharedPrivateLinkResourceProperties
 
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1121,25 +1210,30 @@ type SystemData struct {
 
 // TLSSettings - TLS settings for the resource
 type TLSSettings struct {
-	// Request client certificate during TLS handshake if enabled
+	// Request client certificate during TLS handshake if enabled. Not supported for free tier. Any input will be ignored for
+	// free tier.
 	ClientCertEnabled *bool
 }
 
-// TrackedResource - The resource model definition for a ARM tracked top level resource.
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	// The GEO location of the resource. e.g. West US | East US | North Central US | South Central US.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Tags of the service which is a list of key value pairs that describe the resource.
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 

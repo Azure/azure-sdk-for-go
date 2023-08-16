@@ -8,50 +8,17 @@ package azsecrets_test
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
 	"fmt"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
 	"github.com/stretchr/testify/require"
 )
-
-// pollStatus calls a function until it stops returning a response error with the given status code.
-// If this takes more than 2 minutes, it fails the test.
-func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
-	var err error
-	for i := 0; i < 12; i++ {
-		err = fn()
-		var respErr *azcore.ResponseError
-		if !(errors.As(err, &respErr) && respErr.StatusCode == expectedStatus) {
-			break
-		}
-		if i < 11 {
-			recording.Sleep(10 * time.Second)
-		}
-	}
-	require.NoError(t, err)
-}
-
-type serdeModel interface {
-	json.Marshaler
-	json.Unmarshaler
-}
-
-func testSerde[T serdeModel](t *testing.T, model T) {
-	data, err := model.MarshalJSON()
-	require.NoError(t, err)
-	err = model.UnmarshalJSON(data)
-	require.NoError(t, err)
-}
 
 func TestBackupRestore(t *testing.T) {
 	client := startTest(t)
@@ -114,7 +81,7 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, setParams.Value, setResp.Value)
 	require.Equal(t, name, setResp.ID.Name())
 	require.NotEmpty(t, setResp.ID.Version())
-	testSerde(t, &setResp.SecretBundle)
+	testSerde(t, &setResp.Secret)
 
 	getResp, err := client.GetSecret(context.Background(), setResp.ID.Name(), "", nil)
 	require.NoError(t, err)
@@ -128,13 +95,13 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, setParams.Tags, getResp.Tags)
 	require.Equal(t, setParams.Value, getResp.Value)
 
-	updateParams := azsecrets.UpdateSecretParameters{
+	updateParams := azsecrets.UpdateSecretPropertiesParameters{
 		SecretAttributes: &azsecrets.SecretAttributes{
 			Expires: to.Ptr(time.Date(2040, 1, 1, 1, 1, 1, 0, time.UTC)),
 		},
 	}
 	testSerde(t, &updateParams)
-	updateResp, err := client.UpdateSecret(context.Background(), name, setResp.ID.Version(), updateParams, nil)
+	updateResp, err := client.UpdateSecretProperties(context.Background(), name, setResp.ID.Version(), updateParams, nil)
 	require.NoError(t, err)
 	require.Equal(t, setParams.ContentType, updateResp.ContentType)
 	require.Equal(t, setResp.ID, updateResp.ID)
@@ -153,7 +120,7 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, setParams.Tags, deleteResp.Tags)
 	require.Equal(t, name, deleteResp.ID.Name())
 	require.Equal(t, updateResp.ID.Version(), deleteResp.ID.Version())
-	testSerde(t, &deleteResp.DeletedSecretBundle)
+	testSerde(t, &deleteResp.DeletedSecret)
 	pollStatus(t, 404, func() error {
 		_, err := client.GetDeletedSecret(context.Background(), name, nil)
 		return err
@@ -212,7 +179,7 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 			}
 			client, err := azsecrets.NewClient(vaultURL, &FakeCredential{}, options)
 			require.NoError(t, err)
-			pager := client.NewListSecretsPager(nil)
+			pager := client.NewListSecretPropertiesPager(nil)
 			_, err = pager.NextPage(context.Background())
 			if test.err {
 				require.Error(t, err)
@@ -270,11 +237,11 @@ func TestListDeletedSecrets(t *testing.T) {
 	})
 
 	expected := map[string]struct{}{secret1: {}, secret2: {}}
-	pager := client.NewListDeletedSecretsPager(&azsecrets.ListDeletedSecretsOptions{MaxResults: to.Ptr(int32(1))})
+	pager := client.NewListDeletedSecretPropertiesPager(nil)
 	for pager.More() && len(expected) > 0 {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
-		testSerde(t, &page.DeletedSecretListResult)
+		testSerde(t, &page.DeletedSecretPropertiesListResult)
 		for _, secret := range page.Value {
 			testSerde(t, secret)
 			delete(expected, secret.ID.Name())
@@ -298,11 +265,11 @@ func TestListSecrets(t *testing.T) {
 		defer cleanUpSecret(t, client, name)
 	}
 
-	pager := client.NewListSecretsPager(&azsecrets.ListSecretsOptions{MaxResults: to.Ptr(int32(1))})
+	pager := client.NewListSecretPropertiesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
-		testSerde(t, &page.SecretListResult)
+		testSerde(t, &page.SecretPropertiesListResult)
 		for _, secret := range page.Value {
 			testSerde(t, secret)
 			if strings.HasPrefix(secret.ID.Name(), "listsecrets") {
@@ -335,11 +302,11 @@ func TestListSecretVersions(t *testing.T) {
 	}
 	defer cleanUpSecret(t, client, name)
 
-	pager := client.NewListSecretVersionsPager(name, &azsecrets.ListSecretVersionsOptions{MaxResults: to.Ptr(int32(1))})
+	pager := client.NewListSecretPropertiesVersionsPager(name, nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
-		testSerde(t, &page.SecretListResult)
+		testSerde(t, &page.SecretPropertiesListResult)
 		for i, secret := range page.Value {
 			testSerde(t, secret)
 			if i > 0 {
@@ -377,7 +344,7 @@ func TestNameRequired(t *testing.T) {
 	require.EqualError(t, err, expected)
 	_, err = client.SetSecret(context.Background(), "", azsecrets.SetSecretParameters{}, nil)
 	require.EqualError(t, err, expected)
-	_, err = client.UpdateSecret(context.Background(), "", "", azsecrets.UpdateSecretParameters{}, nil)
+	_, err = client.UpdateSecretProperties(context.Background(), "", "", azsecrets.UpdateSecretPropertiesParameters{}, nil)
 	require.EqualError(t, err, expected)
 }
 

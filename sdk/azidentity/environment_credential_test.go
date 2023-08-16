@@ -10,13 +10,12 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
@@ -92,6 +91,30 @@ func TestEnvironmentCredential_ClientSecretSet(t *testing.T) {
 	}
 	if _, ok := cred.cred.(*ClientSecretCredential); !ok {
 		t.Fatalf("Did not receive the right credential type. Expected *azidentity.ClientSecretCredential, Received: %t", cred)
+	}
+}
+
+func TestEnvironmentCredential_CertificateErrors(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	for _, test := range []struct {
+		name, path string
+	}{
+		{"file doesn't exist", filepath.Join(t.TempDir(), t.Name())},
+		{"invalid file", "testdata/certificate-wrong-key.pem"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			for k, v := range map[string]string{
+				azureClientID:              fakeClientID,
+				azureClientCertificatePath: test.path,
+				azureTenantID:              fakeTenantID,
+			} {
+				t.Setenv(k, v)
+				_, err := NewEnvironmentCredential(nil)
+				if err == nil {
+					t.Fatal("expected an error")
+				}
+			}
+		})
 	}
 }
 
@@ -205,13 +228,7 @@ func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
 		t.Fatal(err)
 	}
 	resetEnvironmentVarsForTest()
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
-	srv.AppendResponse(mock.WithPredicate(validateX5C(t, certs)), mock.WithBody(accessTokenRespSuccess))
-	srv.AppendResponse()
-
+	sts := mockSTS{tokenRequestCallback: validateX5C(t, certs)}
 	vars := map[string]string{
 		azureClientID:              liveSP.clientID,
 		azureClientCertificatePath: liveSP.pfxPath,
@@ -219,11 +236,11 @@ func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
 		envVarSendCertChain:        "true",
 	}
 	setEnvironmentVariables(t, vars)
-	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: &sts}})
 	if err != nil {
 		t.Fatal(err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -297,7 +314,7 @@ func TestEnvironmentCredential_InvalidClientSecretLive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if !reflect.ValueOf(tk).IsZero() {
 		t.Fatal("expected a zero value AccessToken")
 	}
@@ -381,7 +398,7 @@ func TestEnvironmentCredential_InvalidPasswordLive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if !reflect.ValueOf(tk).IsZero() {
 		t.Fatal("expected a zero value AccessToken")
 	}

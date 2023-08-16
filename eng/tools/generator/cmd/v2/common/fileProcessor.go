@@ -5,6 +5,7 @@ package common
 
 import (
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"os"
@@ -287,7 +288,10 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 			} else {
 				prl = FirstGALabel
 			}
-		} else if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
+		} else if changelog.HasBreakingChanges() {
+			newVersion = version.IncMinor()
+			prl = BetaBreakingChangeLabel
+		} else if changelog.Modified.HasAdditiveChanges() {
 			newVersion = version.IncMinor()
 			prl = BetaLabel
 		} else {
@@ -491,4 +495,74 @@ func AddTagSet(path, tag string) error {
 	}
 
 	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+}
+
+func isGenerateFake(path string) bool {
+	b, _ := os.ReadFile(filepath.Join(path, "autorest.md"))
+	if strings.Contains(string(b), "generate-fakes: true") {
+		return true
+	}
+
+	return false
+}
+
+func replaceModuleImport(path, rpName, namespaceName, previousVersion, currentVersion, subPath string, suffixes ...string) error {
+	previous, err := semver.NewVersion(previousVersion)
+	if err != nil {
+		return err
+	}
+
+	current, err := semver.NewVersion(currentVersion)
+	if err != nil {
+		return err
+	}
+
+	if previous.Major() == current.Major() {
+		return nil
+	}
+
+	oldModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
+	if previous.Major() > 1 {
+		oldModule = fmt.Sprintf("%s/v%d", oldModule, previous.Major())
+	}
+
+	newModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
+	if current.Major() > 1 {
+		newModule = fmt.Sprintf("%s/v%d", newModule, current.Major())
+	}
+
+	if oldModule == newModule {
+		return nil
+	}
+
+	return filepath.Walk(filepath.Join(path, subPath), func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		suffix := false
+		for i := 0; i < len(suffixes) && !suffix; i++ {
+			suffix = strings.HasSuffix(info.Name(), suffixes[i])
+		}
+
+		if suffix {
+			b, err := os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+
+			newFile := strings.ReplaceAll(string(b), oldModule, newModule)
+			if newFile != string(b) {
+				if err = os.WriteFile(path, []byte(newFile), 0666); err != nil {
+					return err
+				}
+			}
+		}
+
+		return nil
+	})
 }

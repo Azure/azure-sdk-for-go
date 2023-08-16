@@ -1,5 +1,24 @@
 # Release History
 
+## 0.4.0 (2023-05-26)
+### Breaking Changes
+
+- Type of `GitHubWorkflowProfile.AuthStatus` has been changed from `*ManifestType` to `*AuthorizationStatus`
+
+### Features Added
+
+- New enum type `AuthorizationStatus` with values `AuthorizationStatusAuthorized`, `AuthorizationStatusError`, `AuthorizationStatusNotFound`
+- New enum type `DockerfileGenerationMode` with values `DockerfileGenerationModeDisabled`, `DockerfileGenerationModeEnabled`
+- New enum type `GenerationLanguage` with values `GenerationLanguageClojure`, `GenerationLanguageCsharp`, `GenerationLanguageErlang`, `GenerationLanguageGo`, `GenerationLanguageGomodule`, `GenerationLanguageGradle`, `GenerationLanguageJava`, `GenerationLanguageJavascript`, `GenerationLanguagePhp`, `GenerationLanguagePython`, `GenerationLanguageRuby`, `GenerationLanguageRust`, `GenerationLanguageSwift`
+- New enum type `GenerationManifestType` with values `GenerationManifestTypeHelm`, `GenerationManifestTypeKube`
+- New enum type `ManifestGenerationMode` with values `ManifestGenerationModeDisabled`, `ManifestGenerationModeEnabled`
+- New enum type `WorkflowRunStatus` with values `WorkflowRunStatusCompleted`, `WorkflowRunStatusInprogress`, `WorkflowRunStatusQueued`
+- New function `*DeveloperHubServiceClient.GeneratePreviewArtifacts(context.Context, string, ArtifactGenerationProperties, *DeveloperHubServiceClientGeneratePreviewArtifactsOptions) (DeveloperHubServiceClientGeneratePreviewArtifactsResponse, error)`
+- New struct `ArtifactGenerationProperties`
+- New field `ArtifactGenerationProperties` in struct `WorkflowProperties`
+- New field `WorkflowRunStatus` in struct `WorkflowRun`
+
+
 ## 0.3.0 (2023-03-28)
 ### Features Added
 

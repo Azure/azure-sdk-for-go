@@ -1,5 +1,17 @@
 # Release History
 
+## 2.0.0 (2023-07-28)
+### Breaking Changes
+
+- Type of `ContainerConfiguration.Type` has been changed from `*string` to `*ContainerType`
+
+### Features Added
+
+- New enum type `ContainerType` with values `ContainerTypeCriCompatible`, `ContainerTypeDockerCompatible`
+- New field `EnableAcceleratedNetworking` in struct `NetworkConfiguration`
+- New field `EnableAutomaticUpgrade` in struct `VMExtension`
+
+
 ## 1.2.1 (2023-04-14)
 ### Bug Fixes
 

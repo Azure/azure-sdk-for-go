@@ -123,17 +123,13 @@ func (c *CommitPkgsReport) UpdateAffectedPackages(commit string, r PkgsReport) {
 		c.AffectedPackages = map[string]PkgsList{}
 	}
 
-	for _, pkg := range r.AddedPackages {
-		c.AffectedPackages[commit] = append(c.AffectedPackages[commit], pkg)
-	}
+	c.AffectedPackages[commit] = append(c.AffectedPackages[commit], r.AddedPackages...)
 
 	for pkgName := range r.ModifiedPackages {
 		c.AffectedPackages[commit] = append(c.AffectedPackages[commit], pkgName)
 	}
 
-	for _, pkg := range r.RemovedPackages {
-		c.AffectedPackages[commit] = append(c.AffectedPackages[commit], pkg)
-	}
+	c.AffectedPackages[commit] = append(c.AffectedPackages[commit], r.RemovedPackages...)
 }
 
 // PkgsReport represents a complete report of added, removed, and modified packages

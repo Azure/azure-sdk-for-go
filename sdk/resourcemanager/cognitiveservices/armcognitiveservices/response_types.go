@@ -184,6 +184,11 @@ type ManagementClientCheckSKUAvailabilityResponse struct {
 	SKUAvailabilityListResult
 }
 
+// ModelsClientListResponse contains the response from method ModelsClient.NewListPager.
+type ModelsClientListResponse struct {
+	ModelListResult
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
@@ -217,4 +222,9 @@ type PrivateLinkResourcesClientListResponse struct {
 // ResourceSKUsClientListResponse contains the response from method ResourceSKUsClient.NewListPager.
 type ResourceSKUsClientListResponse struct {
 	ResourceSKUListResult
+}
+
+// UsagesClientListResponse contains the response from method UsagesClient.NewListPager.
+type UsagesClientListResponse struct {
+	UsageListResult
 }

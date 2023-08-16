@@ -251,74 +251,14 @@ func messageFromReceivedMessage(t *testing.T, receivedMessage *ReceivedMessage) 
 }
 
 func Test_Sender_ScheduleAMQPMessages(t *testing.T) {
-	ctx := context.Background()
-
-	client, cleanup, queueName := setupLiveTest(t, nil)
-	defer cleanup()
-
-	receiver, err := client.NewReceiverForQueue(
-		queueName, &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
-	require.NoError(t, err)
-	defer receiver.Close(context.Background())
-
-	sender, err := client.NewSender(queueName, nil)
-	require.NoError(t, err)
-	defer sender.Close(context.Background())
-
-	now := time.Now()
-	nearFuture := now.Add(20 * time.Second)
-
-	// there are two ways to schedule a message - you can use the
-	// `ScheduleMessages` API (in which case you get a sequence number that
-	// you can use with CancelScheduledMessage(s)) or you can set the
-	// `Scheduled`
-	sequenceNumbers, err := sender.ScheduleAMQPAnnotatedMessages(ctx,
-		[]*AMQPAnnotatedMessage{
-			{Body: AMQPAnnotatedMessageBody{Data: [][]byte{[]byte("To the future (that will be cancelled!)")}}},
-			{Body: AMQPAnnotatedMessageBody{Data: [][]byte{[]byte("To the future (not cancelled)")}}},
-		},
-		nearFuture, nil)
-
-	require.NoError(t, err)
-	require.EqualValues(t, 2, len(sequenceNumbers))
-
-	peekedMsg := peekSingleMessageForTest(t, receiver)
-	require.EqualValues(t, MessageStateScheduled, peekedMsg.State)
-
-	// cancel one of the ones scheduled using `ScheduleMessages`
-	err = sender.CancelScheduledMessages(ctx, []int64{sequenceNumbers[0]}, nil)
-	require.NoError(t, err)
-
-	// this isn't a typical way of doing this, but it's possible to set the field directly
-	// rather than using the simpler ScheduleAMQPMessages
-	err = sender.SendAMQPAnnotatedMessage(ctx,
-		&AMQPAnnotatedMessage{
-			Body: AMQPAnnotatedMessageBody{
-				Data: [][]byte{[]byte("To the future (scheduled using the field)")},
-			},
-			MessageAnnotations: map[any]any{
-				"x-opt-scheduled-enqueue-time": &nearFuture,
-			},
-		}, nil)
-
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(ctx, 2, nil)
-	require.NoError(t, err)
-
-	// we cancelled one of the messages so it won't get enqueued (this is the one that survived)
-	require.EqualValues(t, []string{"To the future (not cancelled)", "To the future (scheduled using the field)"}, getSortedBodies(messages))
-
-	for _, m := range messages {
-		// and the scheduled enqueue time should match what we set pretty closely.
-		diff := m.ScheduledEnqueueTime.Sub(nearFuture.UTC())
-
-		// add a little wiggle room, but the scheduled time and the time we set when we scheduled it.
-		require.LessOrEqual(t, diff, time.Second, "The requested scheduled time and the actual scheduled time should be close [%s]", m.ScheduledEnqueueTime)
-	}
+	testScheduleMessages(t, true)
 }
 
 func Test_Sender_ScheduleMessages(t *testing.T) {
+	testScheduleMessages(t, false)
+}
+
+func testScheduleMessages(t *testing.T, rawAMQP bool) {
 	ctx := context.Background()
 
 	client, cleanup, queueName := setupLiveTest(t, nil)
@@ -334,50 +274,85 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 	defer sender.Close(context.Background())
 
 	now := time.Now()
-	nearFuture := now.Add(20 * time.Second)
+	farFuture := now.Add(time.Hour)
 
-	// there are two ways to schedule a message - you can use the
-	// `ScheduleMessages` API (in which case you get a sequence number that
-	// you can use with CancelScheduledMessage(s)) or you can set the
-	// `Scheduled`
-	sequenceNumbers, err := sender.ScheduleMessages(ctx,
-		[]*Message{
-			{Body: []byte("To the future (that will be cancelled!)")},
-			{Body: []byte("To the future (not cancelled)")},
-		},
-		nearFuture, nil)
+	var sequenceNumbers []int64
 
-	require.NoError(t, err)
+	if rawAMQP {
+		// there are two ways to schedule a message - you can use the
+		// `ScheduleMessages` API (in which case you get a sequence number that
+		// you can use with CancelScheduledMessage(s)) or you can set the
+		// `ScheduledEnqueueTime` field.
+		tmp, err := sender.ScheduleAMQPAnnotatedMessages(ctx,
+			[]*AMQPAnnotatedMessage{
+				{Body: AMQPAnnotatedMessageBody{Data: [][]byte{[]byte("To the future (that will be cancelled!)")}}},
+				{Body: AMQPAnnotatedMessageBody{Data: [][]byte{[]byte("To the future (not cancelled)")}}},
+			},
+			farFuture, nil)
+		require.NoError(t, err)
+		sequenceNumbers = tmp
+	} else {
+		// there are two ways to schedule a message - you can use the
+		// `ScheduleMessages` API (in which case you get a sequence number that
+		// you can use with CancelScheduledMessage(s)) or you can set the
+		// `ScheduledEnqueueTime` field.
+		tmp, err := sender.ScheduleMessages(ctx,
+			[]*Message{
+				{Body: []byte("To the future (that will be cancelled!)")},
+				{Body: []byte("To the future (not cancelled)")},
+			},
+			farFuture, nil)
+		require.NoError(t, err)
+		sequenceNumbers = tmp
+	}
+
 	require.EqualValues(t, 2, len(sequenceNumbers))
 
-	peekedMsg := peekSingleMessageForTest(t, receiver)
-	require.EqualValues(t, MessageStateScheduled, peekedMsg.State)
+	if rawAMQP {
+		err := sender.SendAMQPAnnotatedMessage(ctx,
+			&AMQPAnnotatedMessage{
+				Body: AMQPAnnotatedMessageBody{
+					Data: [][]byte{[]byte("To the future (scheduled using the field)")},
+				},
+				MessageAnnotations: map[any]any{
+					"x-opt-scheduled-enqueue-time": &farFuture,
+				},
+			}, nil)
+		require.NoError(t, err)
+	} else {
+		err := sender.SendAMQPAnnotatedMessage(ctx,
+			&AMQPAnnotatedMessage{
+				Body: AMQPAnnotatedMessageBody{
+					Data: [][]byte{[]byte("To the future (scheduled using the field)")},
+				},
+				MessageAnnotations: map[any]any{
+					"x-opt-scheduled-enqueue-time": &farFuture,
+				},
+			}, nil)
+		require.NoError(t, err)
+	}
 
-	// cancel one of the ones scheduled using `ScheduleMessages`
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	var peekedMsgs []*ReceivedMessage
+
+	for len(peekedMsgs) < 3 {
+		msgs, err := receiver.PeekMessages(ctx, 1, nil)
+		require.NoError(t, err)
+
+		if len(msgs) > 0 {
+			require.Equal(t, MessageStateScheduled, msgs[0].State)
+			peekedMsgs = append(peekedMsgs, msgs...)
+		}
+	}
+
 	err = sender.CancelScheduledMessages(ctx, []int64{sequenceNumbers[0]}, nil)
 	require.NoError(t, err)
 
-	err = sender.SendMessage(ctx,
-		&Message{
-			Body:                 []byte("To the future (scheduled using the field)"),
-			ScheduledEnqueueTime: &nearFuture,
-		}, nil)
-
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(ctx, 2, nil)
-	require.NoError(t, err)
-
-	// we cancelled one of the messages so it won't get enqueued (this is the one that survived)
-	require.EqualValues(t, []string{"To the future (not cancelled)", "To the future (scheduled using the field)"}, getSortedBodies(messages))
-
-	for _, m := range messages {
-		// and the scheduled enqueue time should match what we set pretty closely.
-		diff := m.ScheduledEnqueueTime.Sub(nearFuture.UTC())
-
-		// add a little wiggle room, but the scheduled time and the time we set when we scheduled it.
-		require.LessOrEqual(t, diff, time.Second, "The requested scheduled time and the actual scheduled time should be close [%s]", m.ScheduledEnqueueTime)
-	}
+	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+	requireScheduledMessageDisappears(ctx, t, receiver, sequenceNumbers[0])
 }
 
 func TestSender_SendMessagesDetach(t *testing.T) {

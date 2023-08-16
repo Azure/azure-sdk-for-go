@@ -8,6 +8,8 @@ package exported
 
 import (
 	"context"
+	"encoding/base64"
+	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -55,6 +57,13 @@ type TokenRequestOptions struct {
 	// service may return in a claims challenge following an authorization failure. If a service returned the
 	// claims value base64 encoded, it must be decoded before setting this field.
 	Claims string
+
+	// EnableCAE indicates whether to enable Continuous Access Evaluation (CAE) for the requested token. When true,
+	// azidentity credentials request CAE tokens for resource APIs supporting CAE. Clients are responsible for
+	// handling CAE challenges. If a client that doesn't handle CAE challenges receives a CAE token, it may end up
+	// in a loop retrying an API call with a token that has been revoked due to CAE.
+	EnableCAE bool
+
 	// Scopes contains the list of permission scopes required for the token.
 	Scopes []string
 
@@ -68,4 +77,36 @@ type TokenRequestOptions struct {
 type TokenCredential interface {
 	// GetToken requests an access token for the specified set of scopes.
 	GetToken(ctx context.Context, options TokenRequestOptions) (AccessToken, error)
+}
+
+// DecodeByteArray will base-64 decode the provided string into v.
+// Exported as runtime.DecodeByteArray()
+func DecodeByteArray(s string, v *[]byte, format Base64Encoding) error {
+	if len(s) == 0 {
+		return nil
+	}
+	payload := string(s)
+	if payload[0] == '"' {
+		// remove surrounding quotes
+		payload = payload[1 : len(payload)-1]
+	}
+	switch format {
+	case Base64StdFormat:
+		decoded, err := base64.StdEncoding.DecodeString(payload)
+		if err == nil {
+			*v = decoded
+			return nil
+		}
+		return err
+	case Base64URLFormat:
+		// use raw encoding as URL format should not contain any '=' characters
+		decoded, err := base64.RawURLEncoding.DecodeString(payload)
+		if err == nil {
+			*v = decoded
+			return nil
+		}
+		return err
+	default:
+		return fmt.Errorf("unrecognized byte array format: %d", format)
+	}
 }

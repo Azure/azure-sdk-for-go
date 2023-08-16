@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicenetworking/armservicenetworking"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71121282e39bccae590462648e77bca283df6d2b/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationsGet.json
 func ExampleAssociationsInterfaceClient_NewListByTrafficControllerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleAssociationsInterfaceClient_NewListByTrafficControllerPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAssociationsInterfaceClient().NewListByTrafficControllerPager("rg1", "TC1", nil)
+	pager := clientFactory.NewAssociationsInterfaceClient().NewListByTrafficControllerPager("rg1", "tc1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,15 +43,15 @@ func ExampleAssociationsInterfaceClient_NewListByTrafficControllerPager() {
 		// page.AssociationListResult = armservicenetworking.AssociationListResult{
 		// 	Value: []*armservicenetworking.Association{
 		// 		{
-		// 			Name: to.Ptr("associatedvnet-2"),
+		// 			Name: to.Ptr("as1"),
 		// 			Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/associations"),
-		// 			ID: to.Ptr("resourceUriAsString"),
-		// 			Location: to.Ptr("West US"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/associations/as1"),
+		// 			Location: to.Ptr("NorthCentralUS"),
 		// 			Properties: &armservicenetworking.AssociationProperties{
-		// 				AssociationType: to.Ptr("subnets"),
+		// 				AssociationType: to.Ptr(armservicenetworking.AssociationTypeSubnets),
 		// 				ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
 		// 				Subnet: &armservicenetworking.AssociationSubnet{
-		// 					ID: to.Ptr("subnetFullRef"),
+		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet"),
 		// 				},
 		// 			},
 		// 	}},
@@ -59,7 +59,7 @@ func ExampleAssociationsInterfaceClient_NewListByTrafficControllerPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71121282e39bccae590462648e77bca283df6d2b/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationGet.json
 func ExampleAssociationsInterfaceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleAssociationsInterfaceClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAssociationsInterfaceClient().Get(ctx, "rg1", "TC1", "associatedvnet-2", nil)
+	res, err := clientFactory.NewAssociationsInterfaceClient().Get(ctx, "rg1", "tc1", "as1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -78,21 +78,21 @@ func ExampleAssociationsInterfaceClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Association = armservicenetworking.Association{
-	// 	Name: to.Ptr("associatedvnet-2"),
+	// 	Name: to.Ptr("as1"),
 	// 	Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/associations"),
-	// 	ID: to.Ptr("resourceUriAsString"),
-	// 	Location: to.Ptr("West US"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/associations/as1"),
+	// 	Location: to.Ptr("NorthCentralUS"),
 	// 	Properties: &armservicenetworking.AssociationProperties{
-	// 		AssociationType: to.Ptr("subnets"),
+	// 		AssociationType: to.Ptr(armservicenetworking.AssociationTypeSubnets),
 	// 		ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
 	// 		Subnet: &armservicenetworking.AssociationSubnet{
-	// 			ID: to.Ptr("subnetFullRef"),
+	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71121282e39bccae590462648e77bca283df6d2b/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationPut.json
 func ExampleAssociationsInterfaceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,12 +103,12 @@ func ExampleAssociationsInterfaceClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAssociationsInterfaceClient().BeginCreateOrUpdate(ctx, "rg1", "TC1", "associatedvnet-1", armservicenetworking.Association{
-		Location: to.Ptr("West US"),
+	poller, err := clientFactory.NewAssociationsInterfaceClient().BeginCreateOrUpdate(ctx, "rg1", "tc1", "as1", armservicenetworking.Association{
+		Location: to.Ptr("NorthCentralUS"),
 		Properties: &armservicenetworking.AssociationProperties{
-			AssociationType: to.Ptr("subnets"),
+			AssociationType: to.Ptr(armservicenetworking.AssociationTypeSubnets),
 			Subnet: &armservicenetworking.AssociationSubnet{
-				ID: to.Ptr("subnetFullRef"),
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet"),
 			},
 		},
 	}, nil)
@@ -125,19 +125,19 @@ func ExampleAssociationsInterfaceClient_BeginCreateOrUpdate() {
 	// res.Association = armservicenetworking.Association{
 	// 	Name: to.Ptr("associatedvnet-1"),
 	// 	Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/associations"),
-	// 	ID: to.Ptr("resourceUriAsString  "),
-	// 	Location: to.Ptr("West US"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/associations/as1"),
+	// 	Location: to.Ptr("NorthCentralUS"),
 	// 	Properties: &armservicenetworking.AssociationProperties{
-	// 		AssociationType: to.Ptr("subnets"),
+	// 		AssociationType: to.Ptr(armservicenetworking.AssociationTypeSubnets),
 	// 		ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
 	// 		Subnet: &armservicenetworking.AssociationSubnet{
-	// 			ID: to.Ptr("subnetFullRef"),
+	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71121282e39bccae590462648e77bca283df6d2b/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationPatch.json
 func ExampleAssociationsInterfaceClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,11 +148,11 @@ func ExampleAssociationsInterfaceClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAssociationsInterfaceClient().Update(ctx, "rg1", "TC1", "associatedvnet-1", armservicenetworking.AssociationUpdate{
+	res, err := clientFactory.NewAssociationsInterfaceClient().Update(ctx, "rg1", "tc1", "as1", armservicenetworking.AssociationUpdate{
 		Properties: &armservicenetworking.AssociationUpdateProperties{
-			AssociationType: to.Ptr("subnets"),
-			Subnet: &armservicenetworking.AssociationSubnet{
-				ID: to.Ptr("subnetFullRef"),
+			AssociationType: to.Ptr(armservicenetworking.AssociationTypeSubnets),
+			Subnet: &armservicenetworking.AssociationSubnetUpdate{
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet"),
 			},
 		},
 	}, nil)
@@ -163,20 +163,20 @@ func ExampleAssociationsInterfaceClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Association = armservicenetworking.Association{
-	// 	Name: to.Ptr("associatedvnet-1"),
+	// 	Name: to.Ptr("as1"),
 	// 	Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/associations"),
-	// 	ID: to.Ptr("resourceUriAsString  "),
-	// 	Location: to.Ptr("West US"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/associations/as1"),
+	// 	Location: to.Ptr("NorthCentralUS"),
 	// 	Properties: &armservicenetworking.AssociationProperties{
-	// 		AssociationType: to.Ptr("subnets"),
+	// 		AssociationType: to.Ptr(armservicenetworking.AssociationTypeSubnets),
 	// 		Subnet: &armservicenetworking.AssociationSubnet{
-	// 			ID: to.Ptr("subnetFullRef"),
+	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71121282e39bccae590462648e77bca283df6d2b/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationDelete.json
 func ExampleAssociationsInterfaceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleAssociationsInterfaceClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAssociationsInterfaceClient().BeginDelete(ctx, "rg1", "TC1", "associatedvnet-2", nil)
+	poller, err := clientFactory.NewAssociationsInterfaceClient().BeginDelete(ctx, "rg1", "tc1", "as1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

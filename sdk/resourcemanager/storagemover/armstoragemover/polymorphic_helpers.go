@@ -23,10 +23,38 @@ func unmarshalEndpointBasePropertiesClassification(rawMsg json.RawMessage) (Endp
 	switch m["endpointType"] {
 	case string(EndpointTypeAzureStorageBlobContainer):
 		b = &AzureStorageBlobContainerEndpointProperties{}
+	case string(EndpointTypeAzureStorageSmbFileShare):
+		b = &AzureStorageSmbFileShareEndpointProperties{}
 	case string(EndpointTypeNfsMount):
 		b = &NfsMountEndpointProperties{}
+	case string(EndpointTypeSmbMount):
+		b = &SmbMountEndpointProperties{}
 	default:
 		b = &EndpointBaseProperties{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalEndpointBaseUpdatePropertiesClassification(rawMsg json.RawMessage) (EndpointBaseUpdatePropertiesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b EndpointBaseUpdatePropertiesClassification
+	switch m["endpointType"] {
+	case string(EndpointTypeAzureStorageBlobContainer):
+		b = &AzureStorageBlobContainerEndpointUpdateProperties{}
+	case string(EndpointTypeAzureStorageSmbFileShare):
+		b = &AzureStorageSmbFileShareEndpointUpdateProperties{}
+	case string(EndpointTypeNfsMount):
+		b = &NfsMountEndpointUpdateProperties{}
+	case string(EndpointTypeSmbMount):
+		b = &SmbMountEndpointUpdateProperties{}
+	default:
+		b = &EndpointBaseUpdateProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }

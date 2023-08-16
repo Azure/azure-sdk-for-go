@@ -49,7 +49,7 @@ func TestResolveTenant(t *testing.T) {
 		{tenant: "invalid:tenant", expectError: true},
 	} {
 		t.Run("", func(t *testing.T) {
-			s := newSyncer("", defaultTenant, test.allowed, nil, nil)
+			s := newSyncer("", defaultTenant, nil, nil, syncerOptions{AdditionallyAllowedTenants: test.allowed})
 			tenant, err := s.resolveTenant(test.tenant)
 			if err != nil {
 				if test.expectError {
@@ -68,7 +68,7 @@ func TestResolveTenant(t *testing.T) {
 
 func TestSyncer(t *testing.T) {
 	silentAuths, tokenRequests := 0, 0
-	s := newSyncer("", "tenant", nil,
+	s := newSyncer("", "tenant",
 		func(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
 			tokenRequests++
 			return azcore.AccessToken{}, nil
@@ -81,13 +81,14 @@ func TestSyncer(t *testing.T) {
 			silentAuths++
 			return azcore.AccessToken{}, err
 		},
+		syncerOptions{},
 	)
 	goroutines := 50
 	wg := sync.WaitGroup{}
 	for i := 0; i < goroutines; i++ {
 		wg.Add(1)
 		go func() {
-			_, err := s.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+			_, err := s.GetToken(context.Background(), testTRO)
 			if err != nil {
 				t.Error(err)
 			}

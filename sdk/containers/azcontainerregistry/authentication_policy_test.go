@@ -10,10 +10,13 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/stretchr/testify/require"
 	"net/http"
@@ -89,6 +92,14 @@ func Test_findServiceAndScope(t *testing.T) {
 	resp2.Header = http.Header{}
 	resp2.Header.Set("WWW-Authenticate", "Bearer realm=\"https://contosoregistry.azurecr.io/oauth2/token\",service=\"contosoregistry.azurecr.io\",scope=\"artifact-repository:repo:pull\"")
 
+	resp3 := http.Response{}
+	resp3.Header = http.Header{}
+	resp3.Header.Set("WWW-Authenticate", "Bearer realm=\"https://contosoregistry.azurecr.io/oauth2/token\",scope=\"artifact-repository:repo:pull\"")
+
+	resp4 := http.Response{}
+	resp4.Header = http.Header{}
+	resp4.Header.Set("WWW-Authenticate", "Bearer realm=\"https://contosoregistry.azurecr.io/oauth2/token\",service=\"contosoregistry.azurecr.io\"")
+
 	for _, test := range []struct {
 		acrScope   string
 		acrService string
@@ -98,6 +109,8 @@ func Test_findServiceAndScope(t *testing.T) {
 		{"registry:catalog:*", "contosoregistry.azurecr.io", &resp1, false},
 		{"artifact-repository:repo:pull", "contosoregistry.azurecr.io", &resp2, false},
 		{"error", "error", &http.Response{}, true},
+		{"error2", "error", &resp3, true},
+		{"error3", "error", &resp4, true},
 	} {
 		t.Run(fmt.Sprintf("%s-%s", test.acrService, test.acrScope), func(t *testing.T) {
 			service, scope, err := findServiceAndScope(test.resp)
@@ -131,6 +144,36 @@ func Test_authenticationPolicy_getAccessToken_live(t *testing.T) {
 	token, err := p.getAccessToken(request, strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
 	require.NoError(t, err)
 	require.NotEmpty(t, token)
+}
+
+func Test_authenticationPolicy_getAccessToken_error(t *testing.T) {
+	srv, closeServer := mock.NewServer()
+	defer closeServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("wrong response")))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("{\"refresh_token\": \"test\"}")))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("{\"refresh_token\": \".eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0.\"}")))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("wrong response")))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("wrong response")))
+	authClient := newAuthenticationClient(srv.URL(), &authenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+
+	p := &authenticationPolicy{
+		temporal.NewResource(acquireRefreshToken),
+		atomic.Value{},
+		&FakeCredential{},
+		[]string{"test"},
+		authClient,
+	}
+	request, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	_, err = p.getAccessToken(request, "service", "scope")
+	require.Error(t, err)
+	_, err = p.getAccessToken(request, "service", "scope")
+	require.Error(t, err)
+	_, err = p.getAccessToken(request, "service", "scope")
+	require.Error(t, err)
+	p.cred = nil
+	_, err = p.getAccessToken(request, "service", "scope")
+	require.Error(t, err)
 }
 
 func Test_authenticationPolicy_getAccessToken_live_anonymous(t *testing.T) {
@@ -180,4 +223,40 @@ func Test_authenticationPolicy_getChallengeRequest(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, fmt.Sprintf("%d", len(testBody)), oriReq.Raw().Header.Get("Content-Length"))
 	require.Equal(t, "", challengeReq.Raw().Header.Get("Content-Length"))
+}
+
+func Test_authenticationPolicy(t *testing.T) {
+	srv, closeServer := mock.NewServer()
+	defer closeServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized), mock.WithHeader("WWW-Authenticate", "Bearer realm=\"https://contosoregistry.azurecr.io/oauth2/token\",service=\"contosoregistry.azurecr.io\",scope=\"registry:catalog:*\""))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized), mock.WithHeader("WWW-Authenticate", "Bearer realm=\"https://contosoregistry.azurecr.io/oauth2/token\",service=\"contosoregistry.azurecr.io\",scope=\"registry:catalog:*\""))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("{\"refresh_token\": \".eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0.\"}")))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("{\"access_token\": \"test\"}")))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+
+	authClient := newAuthenticationClient(srv.URL(), &authenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	authPolicy := &authenticationPolicy{
+		temporal.NewResource(acquireRefreshToken),
+		atomic.Value{},
+		&FakeCredential{},
+		[]string{"test"},
+		authClient,
+	}
+	pl := runtime.NewPipeline("testmodule", "v0.1.0", runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &policy.ClientOptions{Transport: srv})
+
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	req.Raw().Header.Set(headerAuthorization, "test")
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+
+	req, err = runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	resp, err = pl.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
 }

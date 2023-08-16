@@ -44,6 +44,31 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// PrivateEndpointConnectionsClientCreateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreate.
+type PrivateEndpointConnectionsClientCreateResponse struct {
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
+type PrivateEndpointConnectionsClientListResponse struct {
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateLinkResourcesClientListByElasticSanResponse contains the response from method PrivateLinkResourcesClient.ListByElasticSan.
+type PrivateLinkResourcesClientListByElasticSanResponse struct {
+	PrivateLinkResourceListResult
+}
+
 // SKUsClientListResponse contains the response from method SKUsClient.NewListPager.
 type SKUsClientListResponse struct {
 	SKUInformationList

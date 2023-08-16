@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePoint_Copy_BetweenRegions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/restorePointExamples/RestorePoint_Copy_BetweenRegions.json
 func ExampleRestorePointsClient_BeginCreate_copyARestorePointToADifferentRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleRestorePointsClient_BeginCreate_copyARestorePointToADifferentRegion(
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePoint_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/restorePointExamples/RestorePoint_Create.json
 func ExampleRestorePointsClient_BeginCreate_createARestorePoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,8 +73,8 @@ func ExampleRestorePointsClient_BeginCreate_createARestorePoint() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePoints_Delete_MaximumSet_Gen.json
-func ExampleRestorePointsClient_BeginDelete_restorePointsDeleteMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/restorePointExamples/RestorePoint_Delete_MaximumSet_Gen.json
+func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -94,8 +94,8 @@ func ExampleRestorePointsClient_BeginDelete_restorePointsDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePoints_Delete_MinimumSet_Gen.json
-func ExampleRestorePointsClient_BeginDelete_restorePointsDeleteMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/restorePointExamples/RestorePoint_Delete_MinimumSet_Gen.json
+func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -115,7 +115,7 @@ func ExampleRestorePointsClient_BeginDelete_restorePointsDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePoint_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/restorePointExamples/RestorePoint_Get.json
 func ExampleRestorePointsClient_Get_getARestorePoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleRestorePointsClient_Get_getARestorePoint() {
 	// 					{
 	// 						Name: to.Ptr("testingexcludedisk_DataDisk_1"),
 	// 						Caching: to.Ptr(armcompute.CachingTypesNone),
-	// 						DiskRestorePoint: &armcompute.APIEntityReference{
+	// 						DiskRestorePoint: &armcompute.DiskRestorePointAttributes{
 	// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/userdata/providers/Microsoft.Compute/restorePointCollections/mynewrpc/restorePoints/restorepointtwo/diskRestorePoints/testingexcludedisk_DataDisk_1_68785190-1acb-4d5e-a8ae-705b45f3dca5"),
 	// 						},
 	// 						Lun: to.Ptr[int32](1),
@@ -182,7 +182,7 @@ func ExampleRestorePointsClient_Get_getARestorePoint() {
 	// 				OSDisk: &armcompute.RestorePointSourceVMOSDisk{
 	// 					Name: to.Ptr("testingexcludedisk_OsDisk_1_74cdaedcea50483d9833c96adefa100f"),
 	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 					DiskRestorePoint: &armcompute.APIEntityReference{
+	// 					DiskRestorePoint: &armcompute.DiskRestorePointAttributes{
 	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName/restorePoints/rpName/diskRestorePoints/testingexcludedisk_OsDisk_1_74cdaedcea50483d9833c96adefa100f_22b4bdfe-6c54-4f72-84d8-85d8860f0c57"),
 	// 					},
 	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
@@ -199,7 +199,7 @@ func ExampleRestorePointsClient_Get_getARestorePoint() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePoint_Get_WithInstanceView.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/restorePointExamples/RestorePoint_Get_WithInstanceView.json
 func ExampleRestorePointsClient_Get_getRestorePointWithInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,7 +285,7 @@ func ExampleRestorePointsClient_Get_getRestorePointWithInstanceView() {
 	// 					{
 	// 						Name: to.Ptr("testingexcludedisk_DataDisk_1"),
 	// 						Caching: to.Ptr(armcompute.CachingTypesNone),
-	// 						DiskRestorePoint: &armcompute.APIEntityReference{
+	// 						DiskRestorePoint: &armcompute.DiskRestorePointAttributes{
 	// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/userdata/providers/Microsoft.Compute/restorePointCollections/mynewrpc/restorePoints/restorepointtwo/diskRestorePoints/testingexcludedisk_DataDisk_1_68785190-1acb-4d5e-a8ae-705b45f3dca5"),
 	// 						},
 	// 						Lun: to.Ptr[int32](1),
@@ -297,7 +297,7 @@ func ExampleRestorePointsClient_Get_getRestorePointWithInstanceView() {
 	// 				OSDisk: &armcompute.RestorePointSourceVMOSDisk{
 	// 					Name: to.Ptr("testingexcludedisk_OsDisk_1_74cdaedcea50483d9833c96adefa100f"),
 	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 					DiskRestorePoint: &armcompute.APIEntityReference{
+	// 					DiskRestorePoint: &armcompute.DiskRestorePointAttributes{
 	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName/restorePoints/rpName/diskRestorePoints/testingexcludedisk_OsDisk_1_74cdaedcea50483d9833c96adefa100f_22b4bdfe-6c54-4f72-84d8-85d8860f0c57"),
 	// 					},
 	// 					ManagedDisk: &armcompute.ManagedDiskParameters{

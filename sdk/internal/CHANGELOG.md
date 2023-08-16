@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Add support for auto-installing the test proxy standalone tooling in the test recording package
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -11,7 +11,7 @@ package armtrafficmanager
 
 const (
 	moduleName    = "armtrafficmanager"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.2.0"
 )
 
 // AllowedEndpointRecordType - The allowed type DNS record types for this profile.
@@ -34,6 +34,23 @@ func PossibleAllowedEndpointRecordTypeValues() []AllowedEndpointRecordType {
 	}
 }
 
+// AlwaysServe - If Always Serve is enabled, probing for endpoint health will be disabled and endpoints will be included in
+// the traffic routing method.
+type AlwaysServe string
+
+const (
+	AlwaysServeDisabled AlwaysServe = "Disabled"
+	AlwaysServeEnabled  AlwaysServe = "Enabled"
+)
+
+// PossibleAlwaysServeValues returns the possible values for the AlwaysServe const type.
+func PossibleAlwaysServeValues() []AlwaysServe {
+	return []AlwaysServe{
+		AlwaysServeDisabled,
+		AlwaysServeEnabled,
+	}
+}
+
 // EndpointMonitorStatus - The monitoring status of the endpoint.
 type EndpointMonitorStatus string
 
@@ -44,6 +61,7 @@ const (
 	EndpointMonitorStatusInactive         EndpointMonitorStatus = "Inactive"
 	EndpointMonitorStatusOnline           EndpointMonitorStatus = "Online"
 	EndpointMonitorStatusStopped          EndpointMonitorStatus = "Stopped"
+	EndpointMonitorStatusUnmonitored      EndpointMonitorStatus = "Unmonitored"
 )
 
 // PossibleEndpointMonitorStatusValues returns the possible values for the EndpointMonitorStatus const type.
@@ -55,6 +73,7 @@ func PossibleEndpointMonitorStatusValues() []EndpointMonitorStatus {
 		EndpointMonitorStatusInactive,
 		EndpointMonitorStatusOnline,
 		EndpointMonitorStatusStopped,
+		EndpointMonitorStatusUnmonitored,
 	}
 }
 

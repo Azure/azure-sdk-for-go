@@ -1,5 +1,13 @@
 # Release History
 
+## 2.3.0 (2023-06-23)
+### Features Added
+
+- New field `StorageSubscriptionID` in struct `CommonPropertiesRedisConfiguration`
+- New field `StorageSubscriptionID` in struct `ExportRDBParameters`
+- New field `StorageSubscriptionID` in struct `ImportRDBParameters`
+
+
 ## 2.2.1 (2023-04-14)
 ### Bug Fixes
 

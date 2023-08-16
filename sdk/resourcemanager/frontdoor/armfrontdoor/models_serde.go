@@ -550,6 +550,64 @@ func (c *CustomRuleList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DefaultErrorResponse.
+func (d DefaultErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "error", d.Error)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DefaultErrorResponse.
+func (d *DefaultErrorResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "error":
+			err = unpopulate(val, "Error", &d.Error)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DefaultErrorResponseError.
+func (d DefaultErrorResponseError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "code", d.Code)
+	populate(objectMap, "message", d.Message)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DefaultErrorResponseError.
+func (d *DefaultErrorResponseError) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "code":
+			err = unpopulate(val, "Code", &d.Code)
+			delete(rawMsg, key)
+		case "message":
+			err = unpopulate(val, "Message", &d.Message)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Endpoint.
 func (e Endpoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2553,6 +2611,7 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backendPoolsSettings", p.BackendPoolsSettings)
 	populate(objectMap, "cname", p.Cname)
 	populate(objectMap, "enabledState", p.EnabledState)
+	populate(objectMap, "extendedProperties", p.ExtendedProperties)
 	populate(objectMap, "friendlyName", p.FriendlyName)
 	populate(objectMap, "frontdoorId", p.FrontdoorID)
 	populate(objectMap, "frontendEndpoints", p.FrontendEndpoints)
@@ -2585,6 +2644,9 @@ func (p *Properties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "enabledState":
 			err = unpopulate(val, "EnabledState", &p.EnabledState)
+			delete(rawMsg, key)
+		case "extendedProperties":
+			err = unpopulate(val, "ExtendedProperties", &p.ExtendedProperties)
 			delete(rawMsg, key)
 		case "friendlyName":
 			err = unpopulate(val, "FriendlyName", &p.FriendlyName)

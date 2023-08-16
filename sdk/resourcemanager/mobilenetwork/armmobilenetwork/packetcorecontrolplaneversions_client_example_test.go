@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneVersionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/eba34b9c764e877193788a87a81cebfa915eb858/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneVersionGet.json
 func ExamplePacketCoreControlPlaneVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExamplePacketCoreControlPlaneVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneVersionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/eba34b9c764e877193788a87a81cebfa915eb858/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneVersionList.json
 func ExamplePacketCoreControlPlaneVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,6 +110,114 @@ func ExamplePacketCoreControlPlaneVersionsClient_NewListPager() {
 		// 			Name: to.Ptr("PMN-4-11-1"),
 		// 			Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
 		// 			ID: to.Ptr("/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-11-1"),
+		// 			Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
+		// 				Platforms: []*armmobilenetwork.Platform{
+		// 					{
+		// 						MaximumPlatformSoftwareVersion: to.Ptr("2301"),
+		// 						MinimumPlatformSoftwareVersion: to.Ptr("2211"),
+		// 						PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+		// 						RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionRecommended),
+		// 						VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+		// 				}},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/eba34b9c764e877193788a87a81cebfa915eb858/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneVersionGetBySubscription.json
+func ExamplePacketCoreControlPlaneVersionsClient_GetBySubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmobilenetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPacketCoreControlPlaneVersionsClient().GetBySubscription(ctx, "PMN-4-11-1", "00000000-0000-0000-0000-000000000000", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.PacketCoreControlPlaneVersion = armmobilenetwork.PacketCoreControlPlaneVersion{
+	// 	Name: to.Ptr("PMN-4-11-1"),
+	// 	Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-11-1"),
+	// 	Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
+	// 		Platforms: []*armmobilenetwork.Platform{
+	// 			{
+	// 				MaximumPlatformSoftwareVersion: to.Ptr("2211"),
+	// 				MinimumPlatformSoftwareVersion: to.Ptr("2209"),
+	// 				PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+	// 				RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionRecommended),
+	// 				VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/eba34b9c764e877193788a87a81cebfa915eb858/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneVersionListBySubscription.json
+func ExamplePacketCoreControlPlaneVersionsClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmobilenetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPacketCoreControlPlaneVersionsClient().NewListBySubscriptionPager("00000000-0000-0000-0000-000000000000", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.PacketCoreControlPlaneVersionListResult = armmobilenetwork.PacketCoreControlPlaneVersionListResult{
+		// 	Value: []*armmobilenetwork.PacketCoreControlPlaneVersion{
+		// 		{
+		// 			Name: to.Ptr("PMN-4-9-4"),
+		// 			Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-9-4"),
+		// 			Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
+		// 				Platforms: []*armmobilenetwork.Platform{
+		// 					{
+		// 						MaximumPlatformSoftwareVersion: to.Ptr("2211"),
+		// 						MinimumPlatformSoftwareVersion: to.Ptr("2209"),
+		// 						PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+		// 						RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionNotRecommended),
+		// 						VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+		// 				}},
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("PMN-4-10-2"),
+		// 			Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-10-2"),
+		// 			Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
+		// 				Platforms: []*armmobilenetwork.Platform{
+		// 					{
+		// 						MaximumPlatformSoftwareVersion: to.Ptr("2212"),
+		// 						MinimumPlatformSoftwareVersion: to.Ptr("2210"),
+		// 						PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+		// 						RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionNotRecommended),
+		// 						VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+		// 				}},
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("PMN-4-11-1"),
+		// 			Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-11-1"),
 		// 			Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
 		// 				Platforms: []*armmobilenetwork.Platform{
 		// 					{

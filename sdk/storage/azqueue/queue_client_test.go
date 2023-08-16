@@ -1456,3 +1456,74 @@ func (s *UnrecordedTestSuite) TestServiceSASDequeueMessage() {
 	_require.Equal(0, len(resp.Messages))
 	_require.Nil(err)
 }
+
+func (s *UnrecordedTestSuite) TestQueueSASUsingAccessPolicy() {
+	_require := require.New(s.T())
+
+	cred, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	id := "testAccessPolicy"
+	ps := azqueue.AccessPolicyPermission{Read: true, Add: true, Update: true, Process: true}
+	signedIdentifiers := make([]*azqueue.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &azqueue.SignedIdentifier{
+		AccessPolicy: &azqueue.AccessPolicy{
+			Expiry:     to.Ptr(time.Now().Add(1 * time.Hour)),
+			Start:      to.Ptr(time.Now()),
+			Permission: to.Ptr(ps.String()),
+		},
+		ID: &id,
+	})
+
+	_, err = queueClient.SetAccessPolicy(context.Background(), &azqueue.SetAccessPolicyOptions{
+		QueueACL: signedIdentifiers,
+	})
+	_require.NoError(err)
+
+	gResp, err := queueClient.GetAccessPolicy(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(gResp.SignedIdentifiers, 1)
+
+	time.Sleep(30 * time.Second)
+
+	sasQueryParams, err := sas.QueueSignatureValues{
+		Protocol:   sas.ProtocolHTTPS,
+		Identifier: id,
+		QueueName:  queueName,
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	queueSAS := queueClient.URL() + "?" + sasQueryParams.Encode()
+	queueClientSAS, err := azqueue.NewQueueClientWithNoCredential(queueSAS, nil)
+	_require.NoError(err)
+
+	_, err = queueClientSAS.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClientSAS.EnqueueMessage(context.Background(), fmt.Sprintf("%v : %v", testcommon.QueueDefaultData, i), nil)
+		_require.NoError(err)
+	}
+
+	// dequeue 4 messages
+	for i := 0; i < 4; i++ {
+		resp, err := queueClientSAS.DequeueMessage(context.Background(), nil)
+		_require.NoError(err)
+		_require.Equal(1, len(resp.Messages))
+		_require.NotNil(resp.Messages[0].MessageText)
+		_require.Equal(fmt.Sprintf("%v : %v", testcommon.QueueDefaultData, i), *resp.Messages[0].MessageText)
+		_require.NotNil(resp.Messages[0].MessageID)
+	}
+}

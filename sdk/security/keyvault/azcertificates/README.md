@@ -98,7 +98,7 @@ azlog.SetListener(func(cls azlog.Event, msg string) {
 	fmt.Println(msg)
 })
 
-// Includes only requests and responses in credential logs
+// Includes only requests and responses in logs
 azlog.SetEvents(azlog.EventRequest, azlog.EventResponse)
 ```
 

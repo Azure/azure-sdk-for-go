@@ -48,12 +48,24 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 	if options == nil {
 		options = &UsernamePasswordCredentialOptions{}
 	}
-	c, err := getPublicClient(clientID, tenantID, &options.ClientOptions, public.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
+	msalOpts := msalClientOptions{
+		ClientOptions:            options.ClientOptions,
+		DisableInstanceDiscovery: options.DisableInstanceDiscovery,
+	}
+	c, err := getPublicClient(clientID, tenantID, msalOpts)
 	if err != nil {
 		return nil, err
 	}
 	upc := UsernamePasswordCredential{client: c, password: password, username: username}
-	upc.s = newSyncer(credNameUserPassword, tenantID, options.AdditionallyAllowedTenants, upc.requestToken, upc.silentAuth)
+	upc.s = newSyncer(
+		credNameUserPassword,
+		tenantID,
+		upc.requestToken,
+		upc.silentAuth,
+		syncerOptions{
+			AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+		},
+	)
 	return &upc, nil
 }
 
@@ -63,7 +75,7 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.T
 }
 
 func (c *UsernamePasswordCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	ar, err := c.client.AcquireTokenByUsernamePassword(ctx, opts.Scopes, c.username, c.password, public.WithTenantID(opts.TenantID))
+	ar, err := c.client.AcquireTokenByUsernamePassword(ctx, opts.Scopes, c.username, c.password, public.WithClaims(opts.Claims), public.WithTenantID(opts.TenantID))
 	if err == nil {
 		c.account = ar.Account
 	}
@@ -72,6 +84,7 @@ func (c *UsernamePasswordCredential) requestToken(ctx context.Context, opts poli
 
 func (c *UsernamePasswordCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes,
+		public.WithClaims(opts.Claims),
 		public.WithSilentAccount(c.account),
 		public.WithTenantID(opts.TenantID),
 	)

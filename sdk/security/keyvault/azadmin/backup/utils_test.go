@@ -35,30 +35,6 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		hsmURL = os.Getenv("AZURE_MANAGEDHSM_URL")
-		blobURL = "https://" + os.Getenv("BLOB_STORAGE_ACCOUNT_NAME") + ".blob." + os.Getenv("KEYVAULT_STORAGE_ENDPOINT_SUFFIX") + "/" + os.Getenv("BLOB_CONTAINER_NAME")
-		token = os.Getenv("BLOB_STORAGE_SAS_TOKEN")
-	}
-	if hsmURL == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			panic("no value for AZURE_MANAGEDHSM_URL")
-		}
-		hsmURL = fakeHsmURL
-	}
-	if blobURL == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			panic("no value for blob url")
-		}
-		blobURL = fakeBlobURL
-	}
-	if token == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			panic("no value for BLOB_STORAGE_SAS_TOKEN")
-		}
-		token = fakeToken
-	}
-
 	err := recording.ResetProxy(nil)
 	if err != nil {
 		panic(err)
@@ -74,25 +50,16 @@ func TestMain(m *testing.M) {
 			panic(err)
 		}
 	}
+
+	hsmURL = getEnvVar("AZURE_MANAGEDHSM_URL", fakeHsmURL)
+	blobURL = getEnvVar("BLOB_CONTAINER_URL", fakeBlobURL)
+	token = getEnvVar("BLOB_STORAGE_SAS_TOKEN", fakeToken)
+
 	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddGeneralRegexSanitizer(fakeHsmURL, hsmURL, nil)
-		if err != nil {
-			panic(err)
-		}
-		err = recording.AddGeneralRegexSanitizer(fakeBlobURL, blobURL, nil)
-		if err != nil {
-			panic(err)
-		}
 		err = recording.AddBodyRegexSanitizer(fakeToken, `sv=[^"]*`, nil)
 		if err != nil {
 			panic(err)
 		}
-		defer func() {
-			err := recording.ResetProxy(nil)
-			if err != nil {
-				panic(err)
-			}
-		}()
 	}
 	code := m.Run()
 	os.Exit(code)
@@ -107,14 +74,14 @@ func startRecording(t *testing.T) {
 	})
 }
 
-func startBackupTest(t *testing.T) (*backup.Client, backup.SASTokenParameter) {
+func startBackupTest(t *testing.T) (*backup.Client, backup.SASTokenParameters) {
 	startRecording(t)
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 	opts := &backup.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
 	client, err := backup.NewClient(hsmURL, credential, opts)
 	require.NoError(t, err)
-	sasToken := backup.SASTokenParameter{
+	sasToken := backup.SASTokenParameters{
 		StorageResourceURI: &blobURL,
 		Token:              &token,
 	}
@@ -122,12 +89,26 @@ func startBackupTest(t *testing.T) (*backup.Client, backup.SASTokenParameter) {
 	return client, sasToken
 }
 
+func getEnvVar(lookupValue string, fakeValue string) string {
+	envVar := fakeValue
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		envVar = lookupEnvVar(lookupValue)
+	}
+	if recording.GetRecordMode() == recording.RecordingMode {
+		err := recording.AddGeneralRegexSanitizer(fakeValue, envVar, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+	return envVar
+}
+
 func lookupEnvVar(s string) string {
-	ret, ok := os.LookupEnv(s)
-	if !ok {
+	v := os.Getenv(s)
+	if v == "" {
 		panic(fmt.Sprintf("Could not find env var: '%s'", s))
 	}
-	return ret
+	return v
 }
 
 type FakeCredential struct{}

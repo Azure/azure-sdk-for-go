@@ -11,7 +11,7 @@ package armstoragemover
 
 const (
 	moduleName    = "armstoragemover"
-	moduleVersion = "v1.1.1"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -88,19 +88,37 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// CredentialType - The Credentials type.
+type CredentialType string
+
+const (
+	CredentialTypeAzureKeyVaultSmb CredentialType = "AzureKeyVaultSmb"
+)
+
+// PossibleCredentialTypeValues returns the possible values for the CredentialType const type.
+func PossibleCredentialTypeValues() []CredentialType {
+	return []CredentialType{
+		CredentialTypeAzureKeyVaultSmb,
+	}
+}
+
 // EndpointType - The Endpoint resource type.
 type EndpointType string
 
 const (
 	EndpointTypeAzureStorageBlobContainer EndpointType = "AzureStorageBlobContainer"
+	EndpointTypeAzureStorageSmbFileShare  EndpointType = "AzureStorageSmbFileShare"
 	EndpointTypeNfsMount                  EndpointType = "NfsMount"
+	EndpointTypeSmbMount                  EndpointType = "SmbMount"
 )
 
 // PossibleEndpointTypeValues returns the possible values for the EndpointType const type.
 func PossibleEndpointTypeValues() []EndpointType {
 	return []EndpointType{
 		EndpointTypeAzureStorageBlobContainer,
+		EndpointTypeAzureStorageSmbFileShare,
 		EndpointTypeNfsMount,
+		EndpointTypeSmbMount,
 	}
 }
 

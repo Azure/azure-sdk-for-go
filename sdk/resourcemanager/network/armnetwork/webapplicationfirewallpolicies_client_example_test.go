@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/WafListPolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/WafListPolicies.json
 func ExampleWebApplicationFirewallPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,32 +102,77 @@ func ExampleWebApplicationFirewallPoliciesClient_NewListPager() {
 		// 									Priority: to.Ptr[int32](2),
 		// 									RuleType: to.Ptr(armnetwork.WebApplicationFirewallRuleTypeMatchRule),
 		// 									State: to.Ptr(armnetwork.WebApplicationFirewallStateEnabled),
-		// 							}},
-		// 							ManagedRules: &armnetwork.ManagedRulesDefinition{
-		// 								ManagedRuleSets: []*armnetwork.ManagedRuleSet{
-		// 									{
-		// 										RuleSetType: to.Ptr("OWASP"),
-		// 										RuleSetVersion: to.Ptr("3.2"),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("RateLimitRule3"),
+		// 									Action: to.Ptr(armnetwork.WebApplicationFirewallActionBlock),
+		// 									GroupByUserSession: []*armnetwork.GroupByUserSession{
+		// 										{
+		// 											GroupByVariables: []*armnetwork.GroupByVariable{
+		// 												{
+		// 													VariableName: to.Ptr(armnetwork.ApplicationGatewayFirewallUserSessionVariableClientAddr),
+		// 											}},
+		// 									}},
+		// 									MatchConditions: []*armnetwork.MatchCondition{
+		// 										{
+		// 											MatchValues: []*string{
+		// 												to.Ptr("192.168.1.0/24"),
+		// 												to.Ptr("10.0.0.0/24")},
+		// 												MatchVariables: []*armnetwork.MatchVariable{
+		// 													{
+		// 														VariableName: to.Ptr(armnetwork.WebApplicationFirewallMatchVariableRemoteAddr),
+		// 												}},
+		// 												NegationConditon: to.Ptr(true),
+		// 												Operator: to.Ptr(armnetwork.WebApplicationFirewallOperatorIPMatch),
+		// 										}},
+		// 										Priority: to.Ptr[int32](3),
+		// 										RateLimitDuration: to.Ptr(armnetwork.ApplicationGatewayFirewallRateLimitDurationOneMin),
+		// 										RateLimitThreshold: to.Ptr[int32](10),
+		// 										RuleType: to.Ptr(armnetwork.WebApplicationFirewallRuleTypeRateLimitRule),
 		// 								}},
+		// 								ManagedRules: &armnetwork.ManagedRulesDefinition{
+		// 									ManagedRuleSets: []*armnetwork.ManagedRuleSet{
+		// 										{
+		// 											RuleSetType: to.Ptr("OWASP"),
+		// 											RuleSetVersion: to.Ptr("3.2"),
+		// 									}},
+		// 								},
+		// 								PolicySettings: &armnetwork.PolicySettings{
+		// 									CustomBlockResponseBody: to.Ptr("SGVsbG8="),
+		// 									CustomBlockResponseStatusCode: to.Ptr[int32](405),
+		// 									FileUploadEnforcement: to.Ptr(true),
+		// 									FileUploadLimitInMb: to.Ptr[int32](4000),
+		// 									LogScrubbing: &armnetwork.PolicySettingsLogScrubbing{
+		// 										ScrubbingRules: []*armnetwork.WebApplicationFirewallScrubbingRules{
+		// 											{
+		// 												MatchVariable: to.Ptr(armnetwork.ScrubbingRuleEntryMatchVariableRequestArgNames),
+		// 												Selector: to.Ptr("test"),
+		// 												SelectorMatchOperator: to.Ptr(armnetwork.ScrubbingRuleEntryMatchOperatorEquals),
+		// 												State: to.Ptr(armnetwork.ScrubbingRuleEntryStateEnabled),
+		// 											},
+		// 											{
+		// 												MatchVariable: to.Ptr(armnetwork.ScrubbingRuleEntryMatchVariableRequestIPAddress),
+		// 												SelectorMatchOperator: to.Ptr(armnetwork.ScrubbingRuleEntryMatchOperatorEqualsAny),
+		// 												State: to.Ptr(armnetwork.ScrubbingRuleEntryStateEnabled),
+		// 										}},
+		// 										State: to.Ptr(armnetwork.WebApplicationFirewallScrubbingStateEnabled),
+		// 									},
+		// 									MaxRequestBodySizeInKb: to.Ptr[int32](2000),
+		// 									Mode: to.Ptr(armnetwork.WebApplicationFirewallModeDetection),
+		// 									RequestBodyCheck: to.Ptr(true),
+		// 									RequestBodyEnforcement: to.Ptr(true),
+		// 									RequestBodyInspectLimitInKB: to.Ptr[int32](2000),
+		// 									State: to.Ptr(armnetwork.WebApplicationFirewallEnabledStateEnabled),
+		// 								},
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								ResourceState: to.Ptr(armnetwork.WebApplicationFirewallPolicyResourceStateEnabled),
 		// 							},
-		// 							PolicySettings: &armnetwork.PolicySettings{
-		// 								CustomBlockResponseBody: to.Ptr("SGVsbG8="),
-		// 								CustomBlockResponseStatusCode: to.Ptr[int32](405),
-		// 								FileUploadLimitInMb: to.Ptr[int32](4000),
-		// 								MaxRequestBodySizeInKb: to.Ptr[int32](2000),
-		// 								Mode: to.Ptr(armnetwork.WebApplicationFirewallModeDetection),
-		// 								RequestBodyCheck: to.Ptr(true),
-		// 								State: to.Ptr(armnetwork.WebApplicationFirewallEnabledStateEnabled),
-		// 							},
-		// 							ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							ResourceState: to.Ptr(armnetwork.WebApplicationFirewallPolicyResourceStateEnabled),
-		// 						},
-		// 				}},
-		// 			}
+		// 					}},
+		// 				}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/WafListAllPolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/WafListAllPolicies.json
 func ExampleWebApplicationFirewallPoliciesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,32 +256,78 @@ func ExampleWebApplicationFirewallPoliciesClient_NewListAllPager() {
 		// 									Priority: to.Ptr[int32](2),
 		// 									RuleType: to.Ptr(armnetwork.WebApplicationFirewallRuleTypeMatchRule),
 		// 									State: to.Ptr(armnetwork.WebApplicationFirewallStateEnabled),
-		// 							}},
-		// 							ManagedRules: &armnetwork.ManagedRulesDefinition{
-		// 								ManagedRuleSets: []*armnetwork.ManagedRuleSet{
-		// 									{
-		// 										RuleSetType: to.Ptr("OWASP"),
-		// 										RuleSetVersion: to.Ptr("3.2"),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("RateLimitRule3"),
+		// 									Action: to.Ptr(armnetwork.WebApplicationFirewallActionBlock),
+		// 									GroupByUserSession: []*armnetwork.GroupByUserSession{
+		// 										{
+		// 											GroupByVariables: []*armnetwork.GroupByVariable{
+		// 												{
+		// 													VariableName: to.Ptr(armnetwork.ApplicationGatewayFirewallUserSessionVariableClientAddr),
+		// 											}},
+		// 									}},
+		// 									MatchConditions: []*armnetwork.MatchCondition{
+		// 										{
+		// 											MatchValues: []*string{
+		// 												to.Ptr("192.168.1.0/24"),
+		// 												to.Ptr("10.0.0.0/24")},
+		// 												MatchVariables: []*armnetwork.MatchVariable{
+		// 													{
+		// 														VariableName: to.Ptr(armnetwork.WebApplicationFirewallMatchVariableRemoteAddr),
+		// 												}},
+		// 												NegationConditon: to.Ptr(true),
+		// 												Operator: to.Ptr(armnetwork.WebApplicationFirewallOperatorIPMatch),
+		// 										}},
+		// 										Priority: to.Ptr[int32](3),
+		// 										RateLimitDuration: to.Ptr(armnetwork.ApplicationGatewayFirewallRateLimitDurationOneMin),
+		// 										RateLimitThreshold: to.Ptr[int32](10),
+		// 										RuleType: to.Ptr(armnetwork.WebApplicationFirewallRuleTypeRateLimitRule),
 		// 								}},
+		// 								ManagedRules: &armnetwork.ManagedRulesDefinition{
+		// 									ManagedRuleSets: []*armnetwork.ManagedRuleSet{
+		// 										{
+		// 											RuleSetType: to.Ptr("OWASP"),
+		// 											RuleSetVersion: to.Ptr("3.2"),
+		// 									}},
+		// 								},
+		// 								PolicySettings: &armnetwork.PolicySettings{
+		// 									CustomBlockResponseBody: to.Ptr("SGVsbG8="),
+		// 									CustomBlockResponseStatusCode: to.Ptr[int32](405),
+		// 									FileUploadEnforcement: to.Ptr(true),
+		// 									FileUploadLimitInMb: to.Ptr[int32](4000),
+		// 									LogScrubbing: &armnetwork.PolicySettingsLogScrubbing{
+		// 										ScrubbingRules: []*armnetwork.WebApplicationFirewallScrubbingRules{
+		// 											{
+		// 												MatchVariable: to.Ptr(armnetwork.ScrubbingRuleEntryMatchVariableRequestArgNames),
+		// 												Selector: to.Ptr("test"),
+		// 												SelectorMatchOperator: to.Ptr(armnetwork.ScrubbingRuleEntryMatchOperatorEquals),
+		// 												State: to.Ptr(armnetwork.ScrubbingRuleEntryStateEnabled),
+		// 											},
+		// 											{
+		// 												MatchVariable: to.Ptr(armnetwork.ScrubbingRuleEntryMatchVariableRequestIPAddress),
+		// 												Selector: to.Ptr("*"),
+		// 												SelectorMatchOperator: to.Ptr(armnetwork.ScrubbingRuleEntryMatchOperatorEqualsAny),
+		// 												State: to.Ptr(armnetwork.ScrubbingRuleEntryStateEnabled),
+		// 										}},
+		// 										State: to.Ptr(armnetwork.WebApplicationFirewallScrubbingStateEnabled),
+		// 									},
+		// 									MaxRequestBodySizeInKb: to.Ptr[int32](2000),
+		// 									Mode: to.Ptr(armnetwork.WebApplicationFirewallModePrevention),
+		// 									RequestBodyCheck: to.Ptr(true),
+		// 									RequestBodyEnforcement: to.Ptr(true),
+		// 									RequestBodyInspectLimitInKB: to.Ptr[int32](2000),
+		// 									State: to.Ptr(armnetwork.WebApplicationFirewallEnabledStateEnabled),
+		// 								},
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								ResourceState: to.Ptr(armnetwork.WebApplicationFirewallPolicyResourceStateEnabled),
 		// 							},
-		// 							PolicySettings: &armnetwork.PolicySettings{
-		// 								CustomBlockResponseBody: to.Ptr("SGVsbG8="),
-		// 								CustomBlockResponseStatusCode: to.Ptr[int32](405),
-		// 								FileUploadLimitInMb: to.Ptr[int32](4000),
-		// 								MaxRequestBodySizeInKb: to.Ptr[int32](2000),
-		// 								Mode: to.Ptr(armnetwork.WebApplicationFirewallModePrevention),
-		// 								RequestBodyCheck: to.Ptr(true),
-		// 								State: to.Ptr(armnetwork.WebApplicationFirewallEnabledStateEnabled),
-		// 							},
-		// 							ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							ResourceState: to.Ptr(armnetwork.WebApplicationFirewallPolicyResourceStateEnabled),
-		// 						},
-		// 				}},
-		// 			}
+		// 					}},
+		// 				}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/WafPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/WafPolicyGet.json
 func ExampleWebApplicationFirewallPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -314,118 +405,163 @@ func ExampleWebApplicationFirewallPoliciesClient_Get() {
 	// 							Priority: to.Ptr[int32](2),
 	// 							RuleType: to.Ptr(armnetwork.WebApplicationFirewallRuleTypeMatchRule),
 	// 							State: to.Ptr(armnetwork.WebApplicationFirewallStateEnabled),
-	// 					}},
-	// 					ManagedRules: &armnetwork.ManagedRulesDefinition{
-	// 						Exclusions: []*armnetwork.OwaspCrsExclusionEntry{
-	// 							{
-	// 								MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestHeaderNames),
-	// 								Selector: to.Ptr("testHeader1"),
-	// 								SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorEquals),
-	// 							},
-	// 							{
-	// 								MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestHeaderNames),
-	// 								Selector: to.Ptr("testHeader2"),
-	// 								SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith),
-	// 							},
-	// 							{
-	// 								MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgValues),
-	// 								Selector: to.Ptr("hello"),
-	// 								SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith),
-	// 							},
-	// 							{
-	// 								ExclusionManagedRuleSets: []*armnetwork.ExclusionManagedRuleSet{
-	// 									{
-	// 										RuleGroups: []*armnetwork.ExclusionManagedRuleGroup{
+	// 						},
+	// 						{
+	// 							Name: to.Ptr("RateLimitRule3"),
+	// 							Action: to.Ptr(armnetwork.WebApplicationFirewallActionBlock),
+	// 							GroupByUserSession: []*armnetwork.GroupByUserSession{
+	// 								{
+	// 									GroupByVariables: []*armnetwork.GroupByVariable{
+	// 										{
+	// 											VariableName: to.Ptr(armnetwork.ApplicationGatewayFirewallUserSessionVariableClientAddr),
+	// 									}},
+	// 							}},
+	// 							MatchConditions: []*armnetwork.MatchCondition{
+	// 								{
+	// 									MatchValues: []*string{
+	// 										to.Ptr("192.168.1.0/24"),
+	// 										to.Ptr("10.0.0.0/24")},
+	// 										MatchVariables: []*armnetwork.MatchVariable{
 	// 											{
-	// 												RuleGroupName: to.Ptr("REQUEST-930-APPLICATION-ATTACK-LFI"),
-	// 												Rules: []*armnetwork.ExclusionManagedRule{
-	// 													{
-	// 														RuleID: to.Ptr("930120"),
-	// 												}},
-	// 											},
-	// 											{
-	// 												RuleGroupName: to.Ptr("REQUEST-932-APPLICATION-ATTACK-RCE"),
+	// 												VariableName: to.Ptr(armnetwork.WebApplicationFirewallMatchVariableRemoteAddr),
 	// 										}},
-	// 										RuleSetType: to.Ptr("OWASP"),
-	// 										RuleSetVersion: to.Ptr("3.2"),
+	// 										NegationConditon: to.Ptr(true),
+	// 										Operator: to.Ptr(armnetwork.WebApplicationFirewallOperatorIPMatch),
 	// 								}},
-	// 								MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgNames),
-	// 								Selector: to.Ptr("hello"),
-	// 								SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith),
-	// 							},
-	// 							{
-	// 								ExclusionManagedRuleSets: []*armnetwork.ExclusionManagedRuleSet{
-	// 									{
-	// 										RuleGroups: []*armnetwork.ExclusionManagedRuleGroup{
-	// 										},
-	// 										RuleSetType: to.Ptr("OWASP"),
-	// 										RuleSetVersion: to.Ptr("3.1"),
-	// 								}},
-	// 								MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgNames),
-	// 								Selector: to.Ptr("hello"),
-	// 								SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith),
+	// 								Priority: to.Ptr[int32](3),
+	// 								RateLimitDuration: to.Ptr(armnetwork.ApplicationGatewayFirewallRateLimitDurationOneMin),
+	// 								RateLimitThreshold: to.Ptr[int32](10),
+	// 								RuleType: to.Ptr(armnetwork.WebApplicationFirewallRuleTypeRateLimitRule),
 	// 						}},
-	// 						ManagedRuleSets: []*armnetwork.ManagedRuleSet{
-	// 							{
-	// 								RuleGroupOverrides: []*armnetwork.ManagedRuleGroupOverride{
+	// 						ManagedRules: &armnetwork.ManagedRulesDefinition{
+	// 							Exclusions: []*armnetwork.OwaspCrsExclusionEntry{
+	// 								{
+	// 									MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestHeaderNames),
+	// 									Selector: to.Ptr("testHeader1"),
+	// 									SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorEquals),
+	// 								},
+	// 								{
+	// 									MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestHeaderNames),
+	// 									Selector: to.Ptr("testHeader2"),
+	// 									SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith),
+	// 								},
+	// 								{
+	// 									MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgValues),
+	// 									Selector: to.Ptr("hello"),
+	// 									SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith),
+	// 								},
+	// 								{
+	// 									ExclusionManagedRuleSets: []*armnetwork.ExclusionManagedRuleSet{
+	// 										{
+	// 											RuleGroups: []*armnetwork.ExclusionManagedRuleGroup{
+	// 												{
+	// 													RuleGroupName: to.Ptr("REQUEST-930-APPLICATION-ATTACK-LFI"),
+	// 													Rules: []*armnetwork.ExclusionManagedRule{
+	// 														{
+	// 															RuleID: to.Ptr("930120"),
+	// 													}},
+	// 												},
+	// 												{
+	// 													RuleGroupName: to.Ptr("REQUEST-932-APPLICATION-ATTACK-RCE"),
+	// 											}},
+	// 											RuleSetType: to.Ptr("OWASP"),
+	// 											RuleSetVersion: to.Ptr("3.2"),
+	// 									}},
+	// 									MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgNames),
+	// 									Selector: to.Ptr("hello"),
+	// 									SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith),
+	// 								},
+	// 								{
+	// 									ExclusionManagedRuleSets: []*armnetwork.ExclusionManagedRuleSet{
+	// 										{
+	// 											RuleGroups: []*armnetwork.ExclusionManagedRuleGroup{
+	// 											},
+	// 											RuleSetType: to.Ptr("OWASP"),
+	// 											RuleSetVersion: to.Ptr("3.1"),
+	// 									}},
+	// 									MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgNames),
+	// 									Selector: to.Ptr("hello"),
+	// 									SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith),
+	// 							}},
+	// 							ManagedRuleSets: []*armnetwork.ManagedRuleSet{
+	// 								{
+	// 									RuleGroupOverrides: []*armnetwork.ManagedRuleGroupOverride{
+	// 										{
+	// 											RuleGroupName: to.Ptr("REQUEST-942-APPLICATION-ATTACK-SQLI"),
+	// 											Rules: []*armnetwork.ManagedRuleOverride{
+	// 												{
+	// 													Action: to.Ptr(armnetwork.ActionTypeAnomalyScoring),
+	// 													RuleID: to.Ptr("942130"),
+	// 													State: to.Ptr(armnetwork.ManagedRuleEnabledStateDisabled),
+	// 												},
+	// 												{
+	// 													Action: to.Ptr(armnetwork.ActionTypeAnomalyScoring),
+	// 													RuleID: to.Ptr("942110"),
+	// 													State: to.Ptr(armnetwork.ManagedRuleEnabledStateDisabled),
+	// 												},
+	// 												{
+	// 													Action: to.Ptr(armnetwork.ActionTypeLog),
+	// 													RuleID: to.Ptr("942140"),
+	// 													State: to.Ptr(armnetwork.ManagedRuleEnabledStateEnabled),
+	// 											}},
+	// 										},
+	// 										{
+	// 											RuleGroupName: to.Ptr("REQUEST-920-PROTOCOL-ENFORCEMENT"),
+	// 											Rules: []*armnetwork.ManagedRuleOverride{
+	// 												{
+	// 													Action: to.Ptr(armnetwork.ActionTypeAnomalyScoring),
+	// 													RuleID: to.Ptr("920100"),
+	// 													State: to.Ptr(armnetwork.ManagedRuleEnabledStateDisabled),
+	// 												},
+	// 												{
+	// 													Action: to.Ptr(armnetwork.ActionTypeAnomalyScoring),
+	// 													RuleID: to.Ptr("920120"),
+	// 													State: to.Ptr(armnetwork.ManagedRuleEnabledStateDisabled),
+	// 												},
+	// 												{
+	// 													Action: to.Ptr(armnetwork.ActionTypeBlock),
+	// 													RuleID: to.Ptr("920130"),
+	// 													State: to.Ptr(armnetwork.ManagedRuleEnabledStateEnabled),
+	// 											}},
+	// 									}},
+	// 									RuleSetType: to.Ptr("OWASP"),
+	// 									RuleSetVersion: to.Ptr("3.2"),
+	// 							}},
+	// 						},
+	// 						PolicySettings: &armnetwork.PolicySettings{
+	// 							CustomBlockResponseBody: to.Ptr("SGVsbG8="),
+	// 							CustomBlockResponseStatusCode: to.Ptr[int32](405),
+	// 							FileUploadEnforcement: to.Ptr(true),
+	// 							FileUploadLimitInMb: to.Ptr[int32](4000),
+	// 							LogScrubbing: &armnetwork.PolicySettingsLogScrubbing{
+	// 								ScrubbingRules: []*armnetwork.WebApplicationFirewallScrubbingRules{
 	// 									{
-	// 										RuleGroupName: to.Ptr("REQUEST-942-APPLICATION-ATTACK-SQLI"),
-	// 										Rules: []*armnetwork.ManagedRuleOverride{
-	// 											{
-	// 												Action: to.Ptr(armnetwork.ActionTypeAnomalyScoring),
-	// 												RuleID: to.Ptr("942130"),
-	// 												State: to.Ptr(armnetwork.ManagedRuleEnabledStateDisabled),
-	// 											},
-	// 											{
-	// 												Action: to.Ptr(armnetwork.ActionTypeAnomalyScoring),
-	// 												RuleID: to.Ptr("942110"),
-	// 												State: to.Ptr(armnetwork.ManagedRuleEnabledStateDisabled),
-	// 											},
-	// 											{
-	// 												Action: to.Ptr(armnetwork.ActionTypeLog),
-	// 												RuleID: to.Ptr("942140"),
-	// 												State: to.Ptr(armnetwork.ManagedRuleEnabledStateEnabled),
-	// 										}},
+	// 										MatchVariable: to.Ptr(armnetwork.ScrubbingRuleEntryMatchVariableRequestArgNames),
+	// 										Selector: to.Ptr("test"),
+	// 										SelectorMatchOperator: to.Ptr(armnetwork.ScrubbingRuleEntryMatchOperatorEquals),
+	// 										State: to.Ptr(armnetwork.ScrubbingRuleEntryStateEnabled),
 	// 									},
 	// 									{
-	// 										RuleGroupName: to.Ptr("REQUEST-920-PROTOCOL-ENFORCEMENT"),
-	// 										Rules: []*armnetwork.ManagedRuleOverride{
-	// 											{
-	// 												Action: to.Ptr(armnetwork.ActionTypeAnomalyScoring),
-	// 												RuleID: to.Ptr("920100"),
-	// 												State: to.Ptr(armnetwork.ManagedRuleEnabledStateDisabled),
-	// 											},
-	// 											{
-	// 												Action: to.Ptr(armnetwork.ActionTypeAnomalyScoring),
-	// 												RuleID: to.Ptr("920120"),
-	// 												State: to.Ptr(armnetwork.ManagedRuleEnabledStateDisabled),
-	// 											},
-	// 											{
-	// 												Action: to.Ptr(armnetwork.ActionTypeBlock),
-	// 												RuleID: to.Ptr("920130"),
-	// 												State: to.Ptr(armnetwork.ManagedRuleEnabledStateEnabled),
-	// 										}},
+	// 										MatchVariable: to.Ptr(armnetwork.ScrubbingRuleEntryMatchVariableRequestIPAddress),
+	// 										SelectorMatchOperator: to.Ptr(armnetwork.ScrubbingRuleEntryMatchOperatorEqualsAny),
+	// 										State: to.Ptr(armnetwork.ScrubbingRuleEntryStateEnabled),
 	// 								}},
-	// 								RuleSetType: to.Ptr("OWASP"),
-	// 								RuleSetVersion: to.Ptr("3.2"),
-	// 						}},
+	// 								State: to.Ptr(armnetwork.WebApplicationFirewallScrubbingStateEnabled),
+	// 							},
+	// 							MaxRequestBodySizeInKb: to.Ptr[int32](2000),
+	// 							Mode: to.Ptr(armnetwork.WebApplicationFirewallModePrevention),
+	// 							RequestBodyCheck: to.Ptr(true),
+	// 							RequestBodyEnforcement: to.Ptr(true),
+	// 							RequestBodyInspectLimitInKB: to.Ptr[int32](2000),
+	// 							State: to.Ptr(armnetwork.WebApplicationFirewallEnabledStateEnabled),
+	// 						},
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						ResourceState: to.Ptr(armnetwork.WebApplicationFirewallPolicyResourceStateEnabled),
 	// 					},
-	// 					PolicySettings: &armnetwork.PolicySettings{
-	// 						CustomBlockResponseBody: to.Ptr("SGVsbG8="),
-	// 						CustomBlockResponseStatusCode: to.Ptr[int32](405),
-	// 						FileUploadLimitInMb: to.Ptr[int32](4000),
-	// 						MaxRequestBodySizeInKb: to.Ptr[int32](2000),
-	// 						Mode: to.Ptr(armnetwork.WebApplicationFirewallModePrevention),
-	// 						RequestBodyCheck: to.Ptr(true),
-	// 						State: to.Ptr(armnetwork.WebApplicationFirewallEnabledStateEnabled),
-	// 					},
-	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 					ResourceState: to.Ptr(armnetwork.WebApplicationFirewallPolicyResourceStateEnabled),
-	// 				},
-	// 			}
+	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/WafPolicyCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/WafPolicyCreateOrUpdate.json
 func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,6 +618,33 @@ func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate() {
 						}},
 					Priority: to.Ptr[int32](2),
 					RuleType: to.Ptr(armnetwork.WebApplicationFirewallRuleTypeMatchRule),
+				},
+				{
+					Name:   to.Ptr("RateLimitRule3"),
+					Action: to.Ptr(armnetwork.WebApplicationFirewallActionBlock),
+					GroupByUserSession: []*armnetwork.GroupByUserSession{
+						{
+							GroupByVariables: []*armnetwork.GroupByVariable{
+								{
+									VariableName: to.Ptr(armnetwork.ApplicationGatewayFirewallUserSessionVariableClientAddr),
+								}},
+						}},
+					MatchConditions: []*armnetwork.MatchCondition{
+						{
+							MatchValues: []*string{
+								to.Ptr("192.168.1.0/24"),
+								to.Ptr("10.0.0.0/24")},
+							MatchVariables: []*armnetwork.MatchVariable{
+								{
+									VariableName: to.Ptr(armnetwork.WebApplicationFirewallMatchVariableRemoteAddr),
+								}},
+							NegationConditon: to.Ptr(true),
+							Operator:         to.Ptr(armnetwork.WebApplicationFirewallOperatorIPMatch),
+						}},
+					Priority:           to.Ptr[int32](3),
+					RateLimitDuration:  to.Ptr(armnetwork.ApplicationGatewayFirewallRateLimitDurationOneMin),
+					RateLimitThreshold: to.Ptr[int32](10),
+					RuleType:           to.Ptr(armnetwork.WebApplicationFirewallRuleTypeRateLimitRule),
 				}},
 			ManagedRules: &armnetwork.ManagedRulesDefinition{
 				Exclusions: []*armnetwork.OwaspCrsExclusionEntry{
@@ -547,6 +710,23 @@ func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate() {
 						RuleSetType:    to.Ptr("OWASP"),
 						RuleSetVersion: to.Ptr("3.2"),
 					}},
+			},
+			PolicySettings: &armnetwork.PolicySettings{
+				LogScrubbing: &armnetwork.PolicySettingsLogScrubbing{
+					ScrubbingRules: []*armnetwork.WebApplicationFirewallScrubbingRules{
+						{
+							MatchVariable:         to.Ptr(armnetwork.ScrubbingRuleEntryMatchVariableRequestArgNames),
+							Selector:              to.Ptr("test"),
+							SelectorMatchOperator: to.Ptr(armnetwork.ScrubbingRuleEntryMatchOperatorEquals),
+							State:                 to.Ptr(armnetwork.ScrubbingRuleEntryStateEnabled),
+						},
+						{
+							MatchVariable:         to.Ptr(armnetwork.ScrubbingRuleEntryMatchVariableRequestIPAddress),
+							SelectorMatchOperator: to.Ptr(armnetwork.ScrubbingRuleEntryMatchOperatorEqualsAny),
+							State:                 to.Ptr(armnetwork.ScrubbingRuleEntryStateEnabled),
+						}},
+					State: to.Ptr(armnetwork.WebApplicationFirewallScrubbingStateEnabled),
+				},
 			},
 		},
 	}, nil)
@@ -616,89 +796,134 @@ func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate() {
 	// 							Priority: to.Ptr[int32](2),
 	// 							RuleType: to.Ptr(armnetwork.WebApplicationFirewallRuleTypeMatchRule),
 	// 							State: to.Ptr(armnetwork.WebApplicationFirewallStateEnabled),
-	// 					}},
-	// 					ManagedRules: &armnetwork.ManagedRulesDefinition{
-	// 						Exclusions: []*armnetwork.OwaspCrsExclusionEntry{
-	// 							{
-	// 								ExclusionManagedRuleSets: []*armnetwork.ExclusionManagedRuleSet{
-	// 									{
-	// 										RuleGroups: []*armnetwork.ExclusionManagedRuleGroup{
+	// 						},
+	// 						{
+	// 							Name: to.Ptr("RateLimitRule3"),
+	// 							Action: to.Ptr(armnetwork.WebApplicationFirewallActionBlock),
+	// 							GroupByUserSession: []*armnetwork.GroupByUserSession{
+	// 								{
+	// 									GroupByVariables: []*armnetwork.GroupByVariable{
+	// 										{
+	// 											VariableName: to.Ptr(armnetwork.ApplicationGatewayFirewallUserSessionVariableClientAddr),
+	// 									}},
+	// 							}},
+	// 							MatchConditions: []*armnetwork.MatchCondition{
+	// 								{
+	// 									MatchValues: []*string{
+	// 										to.Ptr("192.168.1.0/24"),
+	// 										to.Ptr("10.0.0.0/24")},
+	// 										MatchVariables: []*armnetwork.MatchVariable{
 	// 											{
-	// 												RuleGroupName: to.Ptr("REQUEST-930-APPLICATION-ATTACK-LFI"),
-	// 												Rules: []*armnetwork.ExclusionManagedRule{
-	// 													{
-	// 														RuleID: to.Ptr("930120"),
-	// 												}},
-	// 											},
-	// 											{
-	// 												RuleGroupName: to.Ptr("REQUEST-932-APPLICATION-ATTACK-RCE"),
+	// 												VariableName: to.Ptr(armnetwork.WebApplicationFirewallMatchVariableRemoteAddr),
 	// 										}},
-	// 										RuleSetType: to.Ptr("OWASP"),
-	// 										RuleSetVersion: to.Ptr("3.2"),
+	// 										NegationConditon: to.Ptr(true),
+	// 										Operator: to.Ptr(armnetwork.WebApplicationFirewallOperatorIPMatch),
 	// 								}},
-	// 								MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgNames),
-	// 								Selector: to.Ptr("hello"),
-	// 								SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith),
-	// 							},
-	// 							{
-	// 								ExclusionManagedRuleSets: []*armnetwork.ExclusionManagedRuleSet{
-	// 									{
-	// 										RuleGroups: []*armnetwork.ExclusionManagedRuleGroup{
-	// 										},
-	// 										RuleSetType: to.Ptr("OWASP"),
-	// 										RuleSetVersion: to.Ptr("3.1"),
-	// 								}},
-	// 								MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgNames),
-	// 								Selector: to.Ptr("hello"),
-	// 								SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith),
-	// 							},
-	// 							{
-	// 								MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgNames),
-	// 								Selector: to.Ptr("test"),
-	// 								SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith),
-	// 							},
-	// 							{
-	// 								MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgValues),
-	// 								Selector: to.Ptr("test"),
-	// 								SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith),
+	// 								Priority: to.Ptr[int32](3),
+	// 								RateLimitDuration: to.Ptr(armnetwork.ApplicationGatewayFirewallRateLimitDurationOneMin),
+	// 								RateLimitThreshold: to.Ptr[int32](10),
+	// 								RuleType: to.Ptr(armnetwork.WebApplicationFirewallRuleTypeRateLimitRule),
 	// 						}},
-	// 						ManagedRuleSets: []*armnetwork.ManagedRuleSet{
-	// 							{
-	// 								RuleGroupOverrides: []*armnetwork.ManagedRuleGroupOverride{
-	// 									{
-	// 										RuleGroupName: to.Ptr("REQUEST-931-APPLICATION-ATTACK-RFI"),
-	// 										Rules: []*armnetwork.ManagedRuleOverride{
-	// 											{
-	// 												Action: to.Ptr(armnetwork.ActionTypeLog),
-	// 												RuleID: to.Ptr("931120"),
-	// 												State: to.Ptr(armnetwork.ManagedRuleEnabledStateEnabled),
+	// 						ManagedRules: &armnetwork.ManagedRulesDefinition{
+	// 							Exclusions: []*armnetwork.OwaspCrsExclusionEntry{
+	// 								{
+	// 									ExclusionManagedRuleSets: []*armnetwork.ExclusionManagedRuleSet{
+	// 										{
+	// 											RuleGroups: []*armnetwork.ExclusionManagedRuleGroup{
+	// 												{
+	// 													RuleGroupName: to.Ptr("REQUEST-930-APPLICATION-ATTACK-LFI"),
+	// 													Rules: []*armnetwork.ExclusionManagedRule{
+	// 														{
+	// 															RuleID: to.Ptr("930120"),
+	// 													}},
+	// 												},
+	// 												{
+	// 													RuleGroupName: to.Ptr("REQUEST-932-APPLICATION-ATTACK-RCE"),
+	// 											}},
+	// 											RuleSetType: to.Ptr("OWASP"),
+	// 											RuleSetVersion: to.Ptr("3.2"),
+	// 									}},
+	// 									MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgNames),
+	// 									Selector: to.Ptr("hello"),
+	// 									SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith),
+	// 								},
+	// 								{
+	// 									ExclusionManagedRuleSets: []*armnetwork.ExclusionManagedRuleSet{
+	// 										{
+	// 											RuleGroups: []*armnetwork.ExclusionManagedRuleGroup{
 	// 											},
-	// 											{
-	// 												Action: to.Ptr(armnetwork.ActionTypeAnomalyScoring),
-	// 												RuleID: to.Ptr("931130"),
-	// 												State: to.Ptr(armnetwork.ManagedRuleEnabledStateDisabled),
-	// 										}},
+	// 											RuleSetType: to.Ptr("OWASP"),
+	// 											RuleSetVersion: to.Ptr("3.1"),
+	// 									}},
+	// 									MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgNames),
+	// 									Selector: to.Ptr("hello"),
+	// 									SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith),
+	// 								},
+	// 								{
+	// 									MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgNames),
+	// 									Selector: to.Ptr("test"),
+	// 									SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith),
+	// 								},
+	// 								{
+	// 									MatchVariable: to.Ptr(armnetwork.OwaspCrsExclusionEntryMatchVariableRequestArgValues),
+	// 									Selector: to.Ptr("test"),
+	// 									SelectorMatchOperator: to.Ptr(armnetwork.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith),
+	// 							}},
+	// 							ManagedRuleSets: []*armnetwork.ManagedRuleSet{
+	// 								{
+	// 									RuleGroupOverrides: []*armnetwork.ManagedRuleGroupOverride{
+	// 										{
+	// 											RuleGroupName: to.Ptr("REQUEST-931-APPLICATION-ATTACK-RFI"),
+	// 											Rules: []*armnetwork.ManagedRuleOverride{
+	// 												{
+	// 													Action: to.Ptr(armnetwork.ActionTypeLog),
+	// 													RuleID: to.Ptr("931120"),
+	// 													State: to.Ptr(armnetwork.ManagedRuleEnabledStateEnabled),
+	// 												},
+	// 												{
+	// 													Action: to.Ptr(armnetwork.ActionTypeAnomalyScoring),
+	// 													RuleID: to.Ptr("931130"),
+	// 													State: to.Ptr(armnetwork.ManagedRuleEnabledStateDisabled),
+	// 											}},
+	// 									}},
+	// 									RuleSetType: to.Ptr("OWASP"),
+	// 									RuleSetVersion: to.Ptr("3.2"),
+	// 							}},
+	// 						},
+	// 						PolicySettings: &armnetwork.PolicySettings{
+	// 							CustomBlockResponseBody: to.Ptr("SGVsbG8="),
+	// 							CustomBlockResponseStatusCode: to.Ptr[int32](405),
+	// 							FileUploadEnforcement: to.Ptr(true),
+	// 							FileUploadLimitInMb: to.Ptr[int32](4000),
+	// 							LogScrubbing: &armnetwork.PolicySettingsLogScrubbing{
+	// 								ScrubbingRules: []*armnetwork.WebApplicationFirewallScrubbingRules{
+	// 									{
+	// 										MatchVariable: to.Ptr(armnetwork.ScrubbingRuleEntryMatchVariableRequestArgNames),
+	// 										Selector: to.Ptr("test"),
+	// 										SelectorMatchOperator: to.Ptr(armnetwork.ScrubbingRuleEntryMatchOperatorEquals),
+	// 										State: to.Ptr(armnetwork.ScrubbingRuleEntryStateEnabled),
+	// 									},
+	// 									{
+	// 										MatchVariable: to.Ptr(armnetwork.ScrubbingRuleEntryMatchVariableRequestIPAddress),
+	// 										SelectorMatchOperator: to.Ptr(armnetwork.ScrubbingRuleEntryMatchOperatorEqualsAny),
+	// 										State: to.Ptr(armnetwork.ScrubbingRuleEntryStateEnabled),
 	// 								}},
-	// 								RuleSetType: to.Ptr("OWASP"),
-	// 								RuleSetVersion: to.Ptr("3.2"),
-	// 						}},
+	// 								State: to.Ptr(armnetwork.WebApplicationFirewallScrubbingStateEnabled),
+	// 							},
+	// 							MaxRequestBodySizeInKb: to.Ptr[int32](2000),
+	// 							Mode: to.Ptr(armnetwork.WebApplicationFirewallModeDetection),
+	// 							RequestBodyCheck: to.Ptr(true),
+	// 							RequestBodyEnforcement: to.Ptr(true),
+	// 							RequestBodyInspectLimitInKB: to.Ptr[int32](2000),
+	// 							State: to.Ptr(armnetwork.WebApplicationFirewallEnabledStateEnabled),
+	// 						},
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						ResourceState: to.Ptr(armnetwork.WebApplicationFirewallPolicyResourceStateEnabled),
 	// 					},
-	// 					PolicySettings: &armnetwork.PolicySettings{
-	// 						CustomBlockResponseBody: to.Ptr("SGVsbG8="),
-	// 						CustomBlockResponseStatusCode: to.Ptr[int32](405),
-	// 						FileUploadLimitInMb: to.Ptr[int32](4000),
-	// 						MaxRequestBodySizeInKb: to.Ptr[int32](2000),
-	// 						Mode: to.Ptr(armnetwork.WebApplicationFirewallModeDetection),
-	// 						RequestBodyCheck: to.Ptr(true),
-	// 						State: to.Ptr(armnetwork.WebApplicationFirewallEnabledStateEnabled),
-	// 					},
-	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 					ResourceState: to.Ptr(armnetwork.WebApplicationFirewallPolicyResourceStateEnabled),
-	// 				},
-	// 			}
+	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/WafPolicyDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/WafPolicyDelete.json
 func ExampleWebApplicationFirewallPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -173,7 +173,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 
 	// add tag set
-	if !generateParam.RemoveTagSet && generateParam.NamespaceConfig != "" {
+	if !generateParam.RemoveTagSet && generateParam.NamespaceConfig != "" && !onBoard {
 		log.Printf("Add tag in `autorest.md`...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
 		if err := AddTagSet(autorestMdPath, generateParam.NamespaceConfig); err != nil {
@@ -296,6 +296,14 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		log.Printf("Replace version in autorest.md and constants...")
 		if err = ReplaceVersion(packagePath, version.String()); err != nil {
 			return nil, err
+		}
+
+		if changelog.HasBreakingChanges() && isGenerateFake(packagePath) {
+			log.Printf("Replace fake module v2+...")
+			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, previousVersion, version.String(),
+				"fake", "_server.go"); err != nil {
+				return nil, err
+			}
 		}
 
 		// Example generation should be the last step because the package import relay on the new calculated version

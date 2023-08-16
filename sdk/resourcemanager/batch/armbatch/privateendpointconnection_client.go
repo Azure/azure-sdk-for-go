@@ -48,7 +48,7 @@ func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore
 // BeginDelete - Deletes the specified private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - privateEndpointConnectionName - The private endpoint connection name. This must be unique within the account.
@@ -71,7 +71,7 @@ func (client *PrivateEndpointConnectionClient) BeginDelete(ctx context.Context, 
 // Delete - Deletes the specified private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 func (client *PrivateEndpointConnectionClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -111,7 +111,7 @@ func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -120,7 +120,7 @@ func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.C
 // Get - Gets information about the specified private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - privateEndpointConnectionName - The private endpoint connection name. This must be unique within the account.
@@ -165,7 +165,7 @@ func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -182,7 +182,7 @@ func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Resp
 
 // NewListByBatchAccountPager - Lists all of the private endpoint connections in the specified account.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - options - PrivateEndpointConnectionClientListByBatchAccountOptions contains the optional parameters for the PrivateEndpointConnectionClient.NewListByBatchAccountPager
@@ -235,7 +235,7 @@ func (client *PrivateEndpointConnectionClient) listByBatchAccountCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-05-01")
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
@@ -256,7 +256,7 @@ func (client *PrivateEndpointConnectionClient) listByBatchAccountHandleResponse(
 // BeginUpdate - Updates the properties of an existing private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - privateEndpointConnectionName - The private endpoint connection name. This must be unique within the account.
@@ -281,7 +281,7 @@ func (client *PrivateEndpointConnectionClient) BeginUpdate(ctx context.Context, 
 // Update - Updates the properties of an existing private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 func (client *PrivateEndpointConnectionClient) update(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, parameters, options)
 	if err != nil {
@@ -321,7 +321,7 @@ func (client *PrivateEndpointConnectionClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

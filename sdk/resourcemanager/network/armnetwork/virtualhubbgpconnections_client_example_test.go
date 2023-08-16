@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualHubBgpConnectionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualHubBgpConnectionList.json
 func ExampleVirtualHubBgpConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleVirtualHubBgpConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualRouterPeerListLearnedRoute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualRouterPeerListLearnedRoute.json
 func ExampleVirtualHubBgpConnectionsClient_BeginListLearnedRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,8 +81,27 @@ func ExampleVirtualHubBgpConnectionsClient_BeginListLearnedRoutes() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.PeerRouteList = armnetwork.PeerRouteList{
-	// 	Value: []*armnetwork.PeerRoute{
+	// res.Value = map[string][]*armnetwork.PeerRoute{
+	// 	"RouteServiceRole_IN_0": []*armnetwork.PeerRoute{
+	// 		{
+	// 			AsPath: to.Ptr("65002-65001"),
+	// 			LocalAddress: to.Ptr("10.85.3.4"),
+	// 			Network: to.Ptr("10.101.0.0/16"),
+	// 			NextHop: to.Ptr("10.85.4.4"),
+	// 			Origin: to.Ptr("EBgp"),
+	// 			SourcePeer: to.Ptr("10.85.4.4"),
+	// 			Weight: to.Ptr[int32](32768),
+	// 		},
+	// 		{
+	// 			AsPath: to.Ptr("65002-65001"),
+	// 			LocalAddress: to.Ptr("10.85.3.5"),
+	// 			Network: to.Ptr("10.101.0.0/16"),
+	// 			NextHop: to.Ptr("10.85.4.4"),
+	// 			Origin: to.Ptr("EBgp"),
+	// 			SourcePeer: to.Ptr("10.85.4.4"),
+	// 			Weight: to.Ptr[int32](32768),
+	// 	}},
+	// 	"RouteServiceRole_IN_1": []*armnetwork.PeerRoute{
 	// 		{
 	// 			AsPath: to.Ptr("65002-65001"),
 	// 			LocalAddress: to.Ptr("10.85.3.4"),
@@ -104,7 +123,7 @@ func ExampleVirtualHubBgpConnectionsClient_BeginListLearnedRoutes() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualRouterPeerListAdvertisedRoute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualRouterPeerListAdvertisedRoute.json
 func ExampleVirtualHubBgpConnectionsClient_BeginListAdvertisedRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,8 +145,36 @@ func ExampleVirtualHubBgpConnectionsClient_BeginListAdvertisedRoutes() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.PeerRouteList = armnetwork.PeerRouteList{
-	// 	Value: []*armnetwork.PeerRoute{
+	// res.Value = map[string][]*armnetwork.PeerRoute{
+	// 	"RouteServiceRole_IN_0": []*armnetwork.PeerRoute{
+	// 		{
+	// 			AsPath: to.Ptr("65515"),
+	// 			LocalAddress: to.Ptr("10.85.3.4"),
+	// 			Network: to.Ptr("10.45.0.0/16"),
+	// 			NextHop: to.Ptr("10.85.3.4"),
+	// 			Origin: to.Ptr("Igp"),
+	// 			SourcePeer: to.Ptr("10.85.3.4"),
+	// 			Weight: to.Ptr[int32](0),
+	// 		},
+	// 		{
+	// 			AsPath: to.Ptr("65515"),
+	// 			LocalAddress: to.Ptr("10.85.3.4"),
+	// 			Network: to.Ptr("10.85.0.0/16"),
+	// 			NextHop: to.Ptr("10.85.3.4"),
+	// 			Origin: to.Ptr("Igp"),
+	// 			SourcePeer: to.Ptr("10.85.3.4"),
+	// 			Weight: to.Ptr[int32](0),
+	// 		},
+	// 		{
+	// 			AsPath: to.Ptr("65515"),
+	// 			LocalAddress: to.Ptr("10.85.3.4"),
+	// 			Network: to.Ptr("10.100.0.0/16"),
+	// 			NextHop: to.Ptr("10.85.3.4"),
+	// 			Origin: to.Ptr("Igp"),
+	// 			SourcePeer: to.Ptr("10.85.3.4"),
+	// 			Weight: to.Ptr[int32](0),
+	// 	}},
+	// 	"RouteServiceRole_IN_1": []*armnetwork.PeerRoute{
 	// 		{
 	// 			AsPath: to.Ptr("65515"),
 	// 			LocalAddress: to.Ptr("10.85.3.4"),

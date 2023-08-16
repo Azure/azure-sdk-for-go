@@ -8,8 +8,10 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/Azure/go-amqp"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
@@ -26,9 +28,9 @@ func TestNegotiateClaimWithCloseTimeout(t *testing.T) {
 			session := mock.NewMockAMQPSession(ctrl)
 			client := mock.NewMockAMQPClient(ctrl)
 
-			client.EXPECT().NewSession(mock.NotCancelled, gomock.Any()).Return(session, nil)
-			session.EXPECT().NewReceiver(mock.NotCancelled, gomock.Any(), gomock.Any()).Return(receiver, nil)
-			session.EXPECT().NewSender(mock.NotCancelled, gomock.Any(), gomock.Any()).Return(sender, nil)
+			client.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(session, nil)
+			session.EXPECT().NewReceiver(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(receiver, nil)
+			session.EXPECT().NewSender(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(sender, nil)
 			tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
 
 			mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
@@ -44,7 +46,7 @@ func TestNegotiateClaimWithCloseTimeout(t *testing.T) {
 			// context was cancelled. This basically just falls through the error handling
 			// but it's okay - each resource should close any local state they can before
 			// returning and we're going to end up abandoning ship on the connection.
-			session.EXPECT().Close(mock.NotCancelled).DoAndReturn(func(ctx context.Context) error {
+			session.EXPECT().Close(test.NotCancelled).DoAndReturn(func(ctx context.Context) error {
 				cancelCallerCtx()
 				<-ctx.Done()
 				return errToReturn
@@ -65,12 +67,16 @@ func TestNegotiateClaimWithAuthFailure(t *testing.T) {
 	session := mock.NewMockAMQPSession(ctrl)
 	client := mock.NewMockAMQPClient(ctrl)
 
-	client.EXPECT().NewSession(mock.NotCancelled, gomock.Any()).Return(session, nil)
-	session.EXPECT().NewReceiver(mock.NotCancelled, gomock.Any(), gomock.Any()).Return(receiver, nil)
-	session.EXPECT().NewSender(mock.NotCancelled, gomock.Any(), gomock.Any()).Return(sender, nil)
-	tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
+	client.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(session, nil)
 
-	session.EXPECT().Close(mock.NotCancelled)
+	sender.EXPECT().LinkName().Return("sender-link-name")
+
+	session.EXPECT().NewReceiver(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(receiver, nil)
+	session.EXPECT().NewSender(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(sender, nil)
+	session.EXPECT().Close(test.NotCancelled)
+	session.EXPECT().ConnID().Return(uint64(101))
+
+	tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
 
 	mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
 		// this is the kind of error you get if your connection string is inconsistent
@@ -86,6 +92,12 @@ func TestNegotiateClaimWithAuthFailure(t *testing.T) {
 
 	require.EqualError(t, err, "rpc: failed, status code 401 and description: InvalidSignature: The token has an invalid signature.")
 	require.Equal(t, GetRecoveryKind(err), RecoveryKindFatal)
+
+	var amqpwrapErr amqpwrap.Error
+	require.ErrorAs(t, err, &amqpwrapErr)
+	require.Equal(t, uint64(101), amqpwrapErr.ConnID)
+	require.Equal(t, "sender-link-name", amqpwrapErr.LinkName)
+	require.Empty(t, amqpwrapErr.PartitionID)
 }
 
 func TestNegotiateClaimSuccess(t *testing.T) {
@@ -97,12 +109,12 @@ func TestNegotiateClaimSuccess(t *testing.T) {
 	session := mock.NewMockAMQPSession(ctrl)
 	client := mock.NewMockAMQPClient(ctrl)
 
-	client.EXPECT().NewSession(mock.NotCancelled, gomock.Any()).Return(session, nil)
-	session.EXPECT().NewReceiver(mock.NotCancelled, gomock.Any(), gomock.Any()).Return(receiver, nil)
-	session.EXPECT().NewSender(mock.NotCancelled, gomock.Any(), gomock.Any()).Return(sender, nil)
+	client.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(session, nil)
+	session.EXPECT().NewReceiver(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(receiver, nil)
+	session.EXPECT().NewSender(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(sender, nil)
 	tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
 
-	session.EXPECT().Close(mock.NotCancelled)
+	session.EXPECT().Close(test.NotCancelled)
 
 	mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
 		response.ApplicationProperties = map[string]any{

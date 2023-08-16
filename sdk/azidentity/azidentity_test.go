@@ -23,7 +23,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
-	"github.com/golang-jwt/jwt/v4"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 // constants used throughout this package
@@ -35,9 +35,8 @@ const (
 )
 
 var (
-	accessTokenRespSuccess    = []byte(fmt.Sprintf(`{"access_token": "%s", "expires_in": %d}`, tokenValue, tokenExpiresIn))
-	instanceDiscoveryResponse = getInstanceDiscoveryResponse(fakeTenantID)
-	tenantDiscoveryResponse   = getTenantDiscoveryResponse(fakeTenantID)
+	accessTokenRespSuccess = []byte(fmt.Sprintf(`{"access_token": "%s", "expires_in": %d}`, tokenValue, tokenExpiresIn))
+	testTRO                = policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
 )
 
 // constants for this file
@@ -45,97 +44,8 @@ const (
 	testHost = "https://localhost"
 )
 
-func getInstanceDiscoveryResponse(tenant string) []byte {
-	return []byte(strings.ReplaceAll(`{
-		"tenant_discovery_endpoint": "https://login.microsoftonline.com/{tenant}/v2.0/.well-known/openid-configuration",
-		"api-version": "1.1",
-		"metadata": [
-			{
-				"preferred_network": "login.microsoftonline.com",
-				"preferred_cache": "login.windows.net",
-				"aliases": [
-					"login.microsoftonline.com",
-					"login.windows.net",
-					"login.microsoft.com",
-					"sts.windows.net"
-				]
-			}
-		]
-	}`, "{tenant}", tenant))
-}
-
-func getTenantDiscoveryResponse(tenant string) []byte {
-	return []byte(strings.ReplaceAll(`{
-		"token_endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token",
-		"token_endpoint_auth_methods_supported": [
-			"client_secret_post",
-			"private_key_jwt",
-			"client_secret_basic"
-		],
-		"jwks_uri": "https://login.microsoftonline.com/{tenant}/discovery/v2.0/keys",
-		"response_modes_supported": [
-			"query",
-			"fragment",
-			"form_post"
-		],
-		"subject_types_supported": [
-			"pairwise"
-		],
-		"id_token_signing_alg_values_supported": [
-			"RS256"
-		],
-		"response_types_supported": [
-			"code",
-			"id_token",
-			"code id_token",
-			"id_token token"
-		],
-		"scopes_supported": [
-			"openid",
-			"profile",
-			"email",
-			"offline_access"
-		],
-		"issuer": "https://login.microsoftonline.com/{tenant}/v2.0",
-		"request_uri_parameter_supported": false,
-		"userinfo_endpoint": "https://graph.microsoft.com/oidc/userinfo",
-		"authorization_endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize",
-		"device_authorization_endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/devicecode",
-		"http_logout_supported": true,
-		"frontchannel_logout_supported": true,
-		"end_session_endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/logout",
-		"claims_supported": [
-			"sub",
-			"iss",
-			"cloud_instance_name",
-			"cloud_instance_host_name",
-			"cloud_graph_host_name",
-			"msgraph_host",
-			"aud",
-			"exp",
-			"iat",
-			"auth_time",
-			"acr",
-			"nonce",
-			"preferred_username",
-			"name",
-			"tid",
-			"ver",
-			"at_hash",
-			"c_hash",
-			"email"
-		],
-		"kerberos_endpoint": "https://login.microsoftonline.com/{tenant}/kerberos",
-		"tenant_region_scope": "NA",
-		"cloud_instance_name": "microsoftonline.com",
-		"cloud_graph_host_name": "graph.windows.net",
-		"msgraph_host": "graph.microsoft.com",
-		"rbac_url": "https://pas.windows.net"
-	}`, "{tenant}", tenant))
-}
-
-func validateX5C(t *testing.T, certs []*x509.Certificate) mock.ResponsePredicate {
-	return func(req *http.Request) bool {
+func validateX5C(t *testing.T, certs []*x509.Certificate) func(*http.Request) *http.Response {
+	return func(req *http.Request) *http.Response {
 		err := req.ParseForm()
 		if err != nil {
 			t.Fatal("expected a form body")
@@ -156,41 +66,16 @@ func validateX5C(t *testing.T, certs []*x509.Certificate) mock.ResponsePredicate
 		} else if actual := len(v); actual != len(certs) {
 			t.Fatalf("expected %d certs, got %d", len(certs), actual)
 		}
-		return true
+		return nil
 	}
 }
 
 // Set environment variables for the duration of a test. Restore their prior values
-// after the test completes. Obviated by 1.17's T.Setenv
+// after the test completes. uses t.Setenv on the key/value pairs in vars.
 func setEnvironmentVariables(t *testing.T, vars map[string]string) {
-	unsetSentinel := "variables having no initial value must be unset after the test"
-	priorValues := make(map[string]string, len(vars))
 	for k, v := range vars {
-		priorValue, ok := os.LookupEnv(k)
-		if ok {
-			priorValues[k] = priorValue
-		} else {
-			priorValues[k] = unsetSentinel
-		}
-		err := os.Setenv(k, v)
-		if err != nil {
-			t.Fatalf("Unexpected error setting %s: %v", k, err)
-		}
+		t.Setenv(k, v)
 	}
-
-	t.Cleanup(func() {
-		for k, v := range priorValues {
-			var err error
-			if v == unsetSentinel {
-				err = os.Unsetenv(k)
-			} else {
-				err = os.Setenv(k, v)
-			}
-			if err != nil {
-				t.Fatalf("Unexpected error resetting %s: %v", k, err)
-			}
-		}
-	})
 }
 
 func Test_WellKnownHosts(t *testing.T) {
@@ -486,10 +371,11 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				}
 				sts := mockSTS{
 					tenant: test.tenant,
-					tokenRequestCallback: func(r *http.Request) {
+					tokenRequestCallback: func(r *http.Request) *http.Response {
 						if actual := strings.Split(r.URL.Path, "/")[1]; actual != test.expected {
 							t.Fatalf("expected tenant %q, got %q", test.expected, actual)
 						}
+						return nil
 					},
 				}
 				c, err := subtest.ctor(policy.ClientOptions{Transport: &sts})
@@ -560,7 +446,6 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 }
 
 func TestClaims(t *testing.T) {
-	t.Skip("unskip this test after adding back CAE support")
 	realCP1 := disableCP1
 	t.Cleanup(func() { disableCP1 = realCP1 })
 	claim := `"test":"pass"`
@@ -623,7 +508,7 @@ func TestClaims(t *testing.T) {
 				disableCP1 = d
 				reqs := 0
 				sts := mockSTS{
-					tokenRequestCallback: func(r *http.Request) {
+					tokenRequestCallback: func(r *http.Request) *http.Response {
 						if err := r.ParseForm(); err != nil {
 							t.Error(err)
 						}
@@ -640,6 +525,7 @@ func TestClaims(t *testing.T) {
 								t.Fatalf(`unexpected claims "%v"`, actual)
 							}
 						}
+						return nil
 					},
 				}
 				o := azcore.ClientOptions{Transport: &sts}
@@ -650,10 +536,9 @@ func TestClaims(t *testing.T) {
 				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"A"}}); err != nil {
 					t.Fatal(err)
 				}
-				// TODO: uncomment after restoring TokenRequestOptions.Claims
-				// if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
-				// 	t.Fatal(err)
-				// }
+				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
+					t.Fatal(err)
+				}
 				if reqs != 2 {
 					t.Fatalf("expected %d token requests, got %d", 2, reqs)
 				}

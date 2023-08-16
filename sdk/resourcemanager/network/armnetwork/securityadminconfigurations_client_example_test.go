@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerSecurityAdminConfigurationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerSecurityAdminConfigurationList.json
 func ExampleSecurityAdminConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,6 +53,7 @@ func ExampleSecurityAdminConfigurationsClient_NewListPager() {
 		// 				ApplyOnNetworkIntentPolicyBasedServices: []*armnetwork.NetworkIntentPolicyBasedService{
 		// 					to.Ptr(armnetwork.NetworkIntentPolicyBasedServiceNone)},
 		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				SystemData: &armnetwork.SystemData{
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
@@ -67,7 +68,7 @@ func ExampleSecurityAdminConfigurationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerSecurityAdminConfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerSecurityAdminConfigurationGet.json
 func ExampleSecurityAdminConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,6 +95,7 @@ func ExampleSecurityAdminConfigurationsClient_Get() {
 	// 		ApplyOnNetworkIntentPolicyBasedServices: []*armnetwork.NetworkIntentPolicyBasedService{
 	// 			to.Ptr(armnetwork.NetworkIntentPolicyBasedServiceNone)},
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
@@ -106,7 +108,7 @@ func ExampleSecurityAdminConfigurationsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerSecurityAdminConfigurationPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerSecurityAdminConfigurationPut.json
 func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,6 +141,7 @@ func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate() {
 	// 		ApplyOnNetworkIntentPolicyBasedServices: []*armnetwork.NetworkIntentPolicyBasedService{
 	// 			to.Ptr(armnetwork.NetworkIntentPolicyBasedServiceNone)},
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
@@ -151,7 +154,7 @@ func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerSecurityAdminConfigurationDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerSecurityAdminConfigurationDelete.json
 func ExampleSecurityAdminConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

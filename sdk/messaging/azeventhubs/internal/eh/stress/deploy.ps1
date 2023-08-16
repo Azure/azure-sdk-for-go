@@ -17,10 +17,8 @@ function deployUsingLocalAddons() {
         -LocalAddonsPath "$stressTestAddonsFolder"  `
         -clusterGroup "$clusterResourceGroup" `
         -subscription "$clusterSubscription" `
-        -Environment $helmEnv `
-        -Login `
-        -PushImages
+        -Environment $helmEnv
 }
 
 # deployUsingLocalAddons
-pwsh "../../../../../../eng/common/scripts/stress-testing/deploy-stress-tests.ps1" -Login -PushImages @args
+pwsh "../../../../../../eng/common/scripts/stress-testing/deploy-stress-tests.ps1" @args

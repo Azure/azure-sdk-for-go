@@ -220,6 +220,22 @@ func unmarshalBasePolicyRuleClassificationArray(rawMsg json.RawMessage) ([]BaseP
 	return fArray, nil
 }
 
+func unmarshalBaseResourcePropertiesClassification(rawMsg json.RawMessage) (BaseResourcePropertiesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b BaseResourcePropertiesClassification
+	switch m["objectType"] {
+	default:
+		b = &BaseResourceProperties{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
 func unmarshalCopyOptionClassification(rawMsg json.RawMessage) (CopyOptionClassification, error) {
 	if rawMsg == nil {
 		return nil, nil

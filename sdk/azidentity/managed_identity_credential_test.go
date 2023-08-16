@@ -85,8 +85,79 @@ func TestManagedIdentityCredential_AzureArc(t *testing.T) {
 	testGetTokenSuccess(t, cred)
 }
 
+func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
+	for k, v := range map[string]string{
+		arcIMDSEndpoint:  "https://localhost",
+		identityEndpoint: "https://localhost",
+	} {
+		t.Setenv(k, v)
+	}
+
+	for _, test := range []struct {
+		challenge, name string
+		statusCode      int
+	}{
+		{name: "no challenge", statusCode: http.StatusUnauthorized},
+		{name: "malformed challenge", challenge: "Basic realm", statusCode: http.StatusUnauthorized},
+		{name: "unexpected status code", statusCode: http.StatusOK},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.AppendResponse(
+				mock.WithHeader("WWW-Authenticate", test.challenge),
+				mock.WithStatusCode(test.statusCode),
+			)
+			cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+				ClientOptions: azcore.ClientOptions{Transport: srv},
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, err = cred.GetToken(context.Background(), testTRO)
+			if err == nil {
+				t.Fatal("expected an error")
+			}
+		})
+	}
+	t.Run("failed to get key", func(t *testing.T) {
+		srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+		defer close()
+		srv.SetError(fmt.Errorf("it didn't work"))
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+			ClientOptions: azcore.ClientOptions{
+				Retry:     policy.RetryOptions{MaxRetries: -1},
+				Transport: srv,
+			},
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, err = cred.GetToken(context.Background(), testTRO)
+		if err == nil {
+			t.Fatal("expected an error")
+		}
+	})
+	t.Run("no key file", func(t *testing.T) {
+		srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+		defer close()
+		srv.AppendResponse(
+			mock.WithHeader("WWW-Authenticate", "Basic realm="+filepath.Join(t.TempDir(), t.Name())),
+			mock.WithStatusCode(http.StatusUnauthorized),
+		)
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, err = cred.GetToken(context.Background(), testTRO)
+		if err == nil {
+			t.Fatal("expected an error")
+		}
+	})
+}
+
 func TestManagedIdentityCredential_CloudShell(t *testing.T) {
-	validateReq := func(req *http.Request) bool {
+	validateReq := func(req *http.Request) *http.Response {
 		err := req.ParseForm()
 		if err != nil {
 			t.Fatal(err)
@@ -97,15 +168,10 @@ func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 		if h := req.Header.Get("metadata"); h != "true" {
 			t.Fatalf("unexpected metadata header: %s", h)
 		}
-		return true
+		return nil
 	}
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody(accessTokenRespSuccess))
-	srv.AppendResponse()
-	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	options := ManagedIdentityCredentialOptions{}
-	options.Transport = srv
+	options.Transport = &mockSTS{tokenRequestCallback: validateReq}
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatal(err)
@@ -184,7 +250,7 @@ func TestManagedIdentityCredential_AppServiceError(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = msiCred.GetToken(context.Background(), testTRO)
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
@@ -205,7 +271,7 @@ func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
 	}
 	// cred should return credentialUnavailableError when IMDS responds 400 to a token request
 	for i := 0; i < 3; i++ {
-		_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+		_, err = cred.GetToken(context.Background(), testTRO)
 		if _, ok := err.(*credentialUnavailableError); !ok {
 			t.Fatalf("expected credentialUnavailableError, received %T", err)
 		}
@@ -240,7 +306,7 @@ func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = msiCred.GetToken(context.Background(), testTRO)
 	if err == nil {
 		t.Fatalf("Expected a JSON marshal error but received nil")
 	}
@@ -301,11 +367,7 @@ func TestManagedIdentityCredential_GetTokenScopes(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_ScopesImmutable(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(expiresOnIntResp)))
-	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
-	options := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
+	options := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: &mockSTS{}}}
 	cred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -357,7 +419,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = msiCred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -375,7 +437,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = msiCred.GetToken(context.Background(), testTRO)
 	if err == nil {
 		t.Fatalf("expected to receive an error but received none")
 	}

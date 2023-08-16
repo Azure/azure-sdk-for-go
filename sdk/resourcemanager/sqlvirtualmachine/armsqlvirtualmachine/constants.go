@@ -11,7 +11,7 @@ package armsqlvirtualmachine
 
 const (
 	moduleName    = "armsqlvirtualmachine"
-	moduleVersion = "v0.8.0"
+	moduleVersion = "v0.9.0"
 )
 
 // AssessmentDayOfWeek - Day of the week to run assessment.
@@ -280,12 +280,14 @@ type LeastPrivilegeMode string
 
 const (
 	LeastPrivilegeModeEnabled LeastPrivilegeMode = "Enabled"
+	LeastPrivilegeModeNotSet  LeastPrivilegeMode = "NotSet"
 )
 
 // PossibleLeastPrivilegeModeValues returns the possible values for the LeastPrivilegeMode const type.
 func PossibleLeastPrivilegeModeValues() []LeastPrivilegeMode {
 	return []LeastPrivilegeMode{
 		LeastPrivilegeModeEnabled,
+		LeastPrivilegeModeNotSet,
 	}
 }
 
@@ -460,5 +462,19 @@ func PossibleStorageWorkloadTypeValues() []StorageWorkloadType {
 		StorageWorkloadTypeDW,
 		StorageWorkloadTypeGENERAL,
 		StorageWorkloadTypeOLTP,
+	}
+}
+
+// TroubleshootingScenario - SQL VM troubleshooting scenario.
+type TroubleshootingScenario string
+
+const (
+	TroubleshootingScenarioUnhealthyReplica TroubleshootingScenario = "UnhealthyReplica"
+)
+
+// PossibleTroubleshootingScenarioValues returns the possible values for the TroubleshootingScenario const type.
+func PossibleTroubleshootingScenarioValues() []TroubleshootingScenario {
+	return []TroubleshootingScenario{
+		TroubleshootingScenarioUnhealthyReplica,
 	}
 }

@@ -7,8 +7,9 @@
 package shared
 
 const (
-	ContentTypeAppJSON = "application/json"
-	ContentTypeAppXML  = "application/xml"
+	ContentTypeAppJSON   = "application/json"
+	ContentTypeAppXML    = "application/xml"
+	ContentTypeTextPlain = "text/plain"
 )
 
 const (
@@ -35,5 +36,5 @@ const (
 	Module = "azcore"
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v1.6.1"
+	Version = "v1.8.0-beta.3"
 )

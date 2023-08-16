@@ -29,6 +29,31 @@ type AlertsClientListResponse struct {
 	AlertsResult
 }
 
+// BenefitRecommendationsClientListResponse contains the response from method BenefitRecommendationsClient.NewListPager.
+type BenefitRecommendationsClientListResponse struct {
+	BenefitRecommendationsListResult
+}
+
+// BenefitUtilizationSummariesClientListByBillingAccountIDResponse contains the response from method BenefitUtilizationSummariesClient.NewListByBillingAccountIDPager.
+type BenefitUtilizationSummariesClientListByBillingAccountIDResponse struct {
+	BenefitUtilizationSummariesListResult
+}
+
+// BenefitUtilizationSummariesClientListByBillingProfileIDResponse contains the response from method BenefitUtilizationSummariesClient.NewListByBillingProfileIDPager.
+type BenefitUtilizationSummariesClientListByBillingProfileIDResponse struct {
+	BenefitUtilizationSummariesListResult
+}
+
+// BenefitUtilizationSummariesClientListBySavingsPlanIDResponse contains the response from method BenefitUtilizationSummariesClient.NewListBySavingsPlanIDPager.
+type BenefitUtilizationSummariesClientListBySavingsPlanIDResponse struct {
+	BenefitUtilizationSummariesListResult
+}
+
+// BenefitUtilizationSummariesClientListBySavingsPlanOrderResponse contains the response from method BenefitUtilizationSummariesClient.NewListBySavingsPlanOrderPager.
+type BenefitUtilizationSummariesClientListBySavingsPlanOrderResponse struct {
+	BenefitUtilizationSummariesListResult
+}
+
 // DimensionsClientByExternalCloudProviderTypeResponse contains the response from method DimensionsClient.NewByExternalCloudProviderTypePager.
 type DimensionsClientByExternalCloudProviderTypeResponse struct {
 	DimensionsListResult
@@ -71,12 +96,22 @@ type ExportsClientListResponse struct {
 
 // ForecastClientExternalCloudProviderUsageResponse contains the response from method ForecastClient.ExternalCloudProviderUsage.
 type ForecastClientExternalCloudProviderUsageResponse struct {
-	QueryResult
+	ForecastResult
 }
 
 // ForecastClientUsageResponse contains the response from method ForecastClient.Usage.
 type ForecastClientUsageResponse struct {
-	QueryResult
+	ForecastResult
+}
+
+// GenerateCostDetailsReportClientCreateOperationResponse contains the response from method GenerateCostDetailsReportClient.BeginCreateOperation.
+type GenerateCostDetailsReportClientCreateOperationResponse struct {
+	CostDetailsOperationResults
+}
+
+// GenerateCostDetailsReportClientGetOperationResultsResponse contains the response from method GenerateCostDetailsReportClient.BeginGetOperationResults.
+type GenerateCostDetailsReportClientGetOperationResultsResponse struct {
+	CostDetailsOperationResults
 }
 
 // GenerateDetailedCostReportClientCreateOperationResponse contains the response from method GenerateDetailedCostReportClient.BeginCreateOperation.
@@ -84,7 +119,7 @@ type GenerateDetailedCostReportClientCreateOperationResponse struct {
 	GenerateDetailedCostReportOperationResult
 }
 
-// GenerateDetailedCostReportOperationResultsClientGetResponse contains the response from method GenerateDetailedCostReportOperationResultsClient.Get.
+// GenerateDetailedCostReportOperationResultsClientGetResponse contains the response from method GenerateDetailedCostReportOperationResultsClient.BeginGet.
 type GenerateDetailedCostReportOperationResultsClientGetResponse struct {
 	GenerateDetailedCostReportOperationResult
 }
@@ -109,6 +144,16 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// PriceSheetClientDownloadByBillingProfileResponse contains the response from method PriceSheetClient.BeginDownloadByBillingProfile.
+type PriceSheetClientDownloadByBillingProfileResponse struct {
+	DownloadURL
+}
+
+// PriceSheetClientDownloadResponse contains the response from method PriceSheetClient.BeginDownload.
+type PriceSheetClientDownloadResponse struct {
+	DownloadURL
+}
+
 // QueryClientUsageByExternalCloudProviderTypeResponse contains the response from method QueryClient.UsageByExternalCloudProviderType.
 type QueryClientUsageByExternalCloudProviderTypeResponse struct {
 	QueryResult
@@ -117,6 +162,66 @@ type QueryClientUsageByExternalCloudProviderTypeResponse struct {
 // QueryClientUsageResponse contains the response from method QueryClient.Usage.
 type QueryClientUsageResponse struct {
 	QueryResult
+}
+
+// ScheduledActionsClientCheckNameAvailabilityByScopeResponse contains the response from method ScheduledActionsClient.CheckNameAvailabilityByScope.
+type ScheduledActionsClientCheckNameAvailabilityByScopeResponse struct {
+	CheckNameAvailabilityResponse
+}
+
+// ScheduledActionsClientCheckNameAvailabilityResponse contains the response from method ScheduledActionsClient.CheckNameAvailability.
+type ScheduledActionsClientCheckNameAvailabilityResponse struct {
+	CheckNameAvailabilityResponse
+}
+
+// ScheduledActionsClientCreateOrUpdateByScopeResponse contains the response from method ScheduledActionsClient.CreateOrUpdateByScope.
+type ScheduledActionsClientCreateOrUpdateByScopeResponse struct {
+	ScheduledAction
+}
+
+// ScheduledActionsClientCreateOrUpdateResponse contains the response from method ScheduledActionsClient.CreateOrUpdate.
+type ScheduledActionsClientCreateOrUpdateResponse struct {
+	ScheduledAction
+}
+
+// ScheduledActionsClientDeleteByScopeResponse contains the response from method ScheduledActionsClient.DeleteByScope.
+type ScheduledActionsClientDeleteByScopeResponse struct {
+	// placeholder for future response values
+}
+
+// ScheduledActionsClientDeleteResponse contains the response from method ScheduledActionsClient.Delete.
+type ScheduledActionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ScheduledActionsClientGetByScopeResponse contains the response from method ScheduledActionsClient.GetByScope.
+type ScheduledActionsClientGetByScopeResponse struct {
+	ScheduledAction
+}
+
+// ScheduledActionsClientGetResponse contains the response from method ScheduledActionsClient.Get.
+type ScheduledActionsClientGetResponse struct {
+	ScheduledAction
+}
+
+// ScheduledActionsClientListByScopeResponse contains the response from method ScheduledActionsClient.NewListByScopePager.
+type ScheduledActionsClientListByScopeResponse struct {
+	ScheduledActionListResult
+}
+
+// ScheduledActionsClientListResponse contains the response from method ScheduledActionsClient.NewListPager.
+type ScheduledActionsClientListResponse struct {
+	ScheduledActionListResult
+}
+
+// ScheduledActionsClientRunByScopeResponse contains the response from method ScheduledActionsClient.RunByScope.
+type ScheduledActionsClientRunByScopeResponse struct {
+	// placeholder for future response values
+}
+
+// ScheduledActionsClientRunResponse contains the response from method ScheduledActionsClient.Run.
+type ScheduledActionsClientRunResponse struct {
+	// placeholder for future response values
 }
 
 // ViewsClientCreateOrUpdateByScopeResponse contains the response from method ViewsClient.CreateOrUpdateByScope.

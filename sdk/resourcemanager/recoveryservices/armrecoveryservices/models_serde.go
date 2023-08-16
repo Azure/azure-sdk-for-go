@@ -505,6 +505,33 @@ func (c *CmkKeyVaultProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type CrossSubscriptionRestoreSettings.
+func (c CrossSubscriptionRestoreSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "crossSubscriptionRestoreState", c.CrossSubscriptionRestoreState)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CrossSubscriptionRestoreSettings.
+func (c *CrossSubscriptionRestoreSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "crossSubscriptionRestoreState":
+			err = unpopulate(val, "CrossSubscriptionRestoreState", &c.CrossSubscriptionRestoreState)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type DNSZone.
 func (d DNSZone) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1668,6 +1695,33 @@ func (r *ResourceCertificateDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type RestoreSettings.
+func (r RestoreSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "crossSubscriptionRestoreSettings", r.CrossSubscriptionRestoreSettings)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RestoreSettings.
+func (r *RestoreSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "crossSubscriptionRestoreSettings":
+			err = unpopulate(val, "CrossSubscriptionRestoreSettings", &r.CrossSubscriptionRestoreSettings)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SKU.
 func (s SKU) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2151,6 +2205,7 @@ func (v VaultProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "publicNetworkAccess", v.PublicNetworkAccess)
 	populate(objectMap, "redundancySettings", v.RedundancySettings)
+	populate(objectMap, "restoreSettings", v.RestoreSettings)
 	populate(objectMap, "securitySettings", v.SecuritySettings)
 	populate(objectMap, "upgradeDetails", v.UpgradeDetails)
 	return json.Marshal(objectMap)
@@ -2197,6 +2252,9 @@ func (v *VaultProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "redundancySettings":
 			err = unpopulate(val, "RedundancySettings", &v.RedundancySettings)
+			delete(rawMsg, key)
+		case "restoreSettings":
+			err = unpopulate(val, "RestoreSettings", &v.RestoreSettings)
 			delete(rawMsg, key)
 		case "securitySettings":
 			err = unpopulate(val, "SecuritySettings", &v.SecuritySettings)

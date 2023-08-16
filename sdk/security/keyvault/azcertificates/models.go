@@ -11,16 +11,10 @@ package azcertificates
 
 import "time"
 
-// Action - The action that will be executed.
-type Action struct {
-	// The type of the action.
-	ActionType *CertificatePolicyAction `json:"action_type,omitempty"`
-}
-
-// AdministratorDetails - Details of the organization administrator of the certificate issuer.
-type AdministratorDetails struct {
+// AdministratorContact - Details of the organization administrator of the certificate issuer.
+type AdministratorContact struct {
 	// Email address.
-	EmailAddress *string `json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
 
 	// First name.
 	FirstName *string `json:"first_name,omitempty"`
@@ -36,6 +30,36 @@ type AdministratorDetails struct {
 type BackupCertificateResult struct {
 	// READ-ONLY; The backup blob containing the backed up certificate.
 	Value []byte `json:"value,omitempty" azure:"ro"`
+}
+
+// Certificate - A certificate bundle consists of a certificate (X509) plus its attributes.
+type Certificate struct {
+	// The certificate attributes.
+	Attributes *CertificateAttributes `json:"attributes,omitempty"`
+
+	// CER contents of x509 certificate.
+	CER []byte `json:"cer,omitempty"`
+
+	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
+	ContentType *string `json:"contentType,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The certificate id.
+	ID *ID `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The key id.
+	KID *ID `json:"kid,omitempty" azure:"ro"`
+
+	// READ-ONLY; The management policy.
+	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
+
+	// READ-ONLY; The secret id.
+	SID *ID `json:"sid,omitempty" azure:"ro"`
+
+	// READ-ONLY; Thumbprint of the certificate.
+	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
 // CertificateAttributes - The certificate management attributes.
@@ -58,84 +82,10 @@ type CertificateAttributes struct {
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains
 	// 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise,
 	// only the system can purge the certificate, at the end of the retention interval.
-	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
+	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
-}
-
-// CertificateBundle - A certificate bundle consists of a certificate (X509) plus its attributes.
-type CertificateBundle struct {
-	// The certificate attributes.
-	Attributes *CertificateAttributes `json:"attributes,omitempty"`
-
-	// CER contents of x509 certificate.
-	CER []byte `json:"cer,omitempty"`
-
-	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
-	ContentType *string `json:"contentType,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; The certificate id.
-	ID *ID `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The key id.
-	KID *string `json:"kid,omitempty" azure:"ro"`
-
-	// READ-ONLY; The management policy.
-	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
-
-	// READ-ONLY; The secret id.
-	SID *string `json:"sid,omitempty" azure:"ro"`
-
-	// READ-ONLY; Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
-}
-
-// CertificateIssuerItem - The certificate issuer item containing certificate issuer metadata.
-type CertificateIssuerItem struct {
-	// Certificate Identifier.
-	ID *string `json:"id,omitempty"`
-
-	// The issuer provider.
-	Provider *string `json:"provider,omitempty"`
-}
-
-// CertificateIssuerListResult - The certificate issuer list result.
-type CertificateIssuerListResult struct {
-	// READ-ONLY; The URL to get the next set of certificate issuers.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; A response message containing a list of certificate issuers in the key vault along with a link to the next page
-	// of certificate issuers.
-	Value []*CertificateIssuerItem `json:"value,omitempty" azure:"ro"`
-}
-
-// CertificateItem - The certificate item containing certificate metadata.
-type CertificateItem struct {
-	// The certificate management attributes.
-	Attributes *CertificateAttributes `json:"attributes,omitempty"`
-
-	// Certificate identifier.
-	ID *ID `json:"id,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty"`
-}
-
-// CertificateListResult - The certificate list result.
-type CertificateListResult struct {
-	// READ-ONLY; The URL to get the next set of certificates.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of
-	// certificates.
-	Value []*CertificateItem `json:"value,omitempty" azure:"ro"`
 }
 
 // CertificateOperation - A certificate operation is returned in case of asynchronous requests.
@@ -165,7 +115,7 @@ type CertificateOperation struct {
 	Target *string `json:"target,omitempty"`
 
 	// READ-ONLY; The certificate id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *ID `json:"id,omitempty" azure:"ro"`
 }
 
 // CertificatePolicy - Management policy for a certificate.
@@ -189,7 +139,32 @@ type CertificatePolicy struct {
 	X509CertificateProperties *X509CertificateProperties `json:"x509_props,omitempty"`
 
 	// READ-ONLY; The certificate id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *ID `json:"id,omitempty" azure:"ro"`
+}
+
+// CertificateProperties - The certificate item containing certificate metadata.
+type CertificateProperties struct {
+	// The certificate management attributes.
+	Attributes *CertificateAttributes `json:"attributes,omitempty"`
+
+	// Certificate identifier.
+	ID *ID `json:"id,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// Thumbprint of the certificate.
+	X509Thumbprint []byte `json:"x5t,omitempty"`
+}
+
+// CertificatePropertiesListResult - The certificate list result.
+type CertificatePropertiesListResult struct {
+	// READ-ONLY; The URL to get the next set of certificates.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of
+	// certificates.
+	Value []*CertificateProperties `json:"value,omitempty" azure:"ro"`
 }
 
 // BackupCertificateOptions contains the optional parameters for the Client.BackupCertificate method.
@@ -199,16 +174,6 @@ type BackupCertificateOptions struct {
 
 // CreateCertificateOptions contains the optional parameters for the Client.CreateCertificate method.
 type CreateCertificateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeleteCertificateContactsOptions contains the optional parameters for the Client.DeleteCertificateContacts method.
-type DeleteCertificateContactsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeleteCertificateIssuerOptions contains the optional parameters for the Client.DeleteCertificateIssuer method.
-type DeleteCertificateIssuerOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -222,13 +187,13 @@ type DeleteCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GetCertificateContactsOptions contains the optional parameters for the Client.GetCertificateContacts method.
-type GetCertificateContactsOptions struct {
+// DeleteContactsOptions contains the optional parameters for the Client.DeleteContacts method.
+type DeleteContactsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GetCertificateIssuerOptions contains the optional parameters for the Client.GetCertificateIssuer method.
-type GetCertificateIssuerOptions struct {
+// DeleteIssuerOptions contains the optional parameters for the Client.DeleteIssuer method.
+type DeleteIssuerOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -247,8 +212,18 @@ type GetCertificatePolicyOptions struct {
 	// placeholder for future optional parameters
 }
 
+// GetContactsOptions contains the optional parameters for the Client.GetContacts method.
+type GetContactsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GetDeletedCertificateOptions contains the optional parameters for the Client.GetDeletedCertificate method.
 type GetDeletedCertificateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GetIssuerOptions contains the optional parameters for the Client.GetIssuer method.
+type GetIssuerOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -257,32 +232,29 @@ type ImportCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListCertificateIssuersOptions contains the optional parameters for the Client.NewListCertificateIssuersPager method.
-type ListCertificateIssuersOptions struct {
-	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-	MaxResults *int32
-}
-
-// ListCertificateVersionsOptions contains the optional parameters for the Client.NewListCertificateVersionsPager method.
-type ListCertificateVersionsOptions struct {
-	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-	MaxResults *int32
-}
-
-// ListCertificatesOptions contains the optional parameters for the Client.NewListCertificatesPager method.
-type ListCertificatesOptions struct {
+// ListCertificatePropertiesOptions contains the optional parameters for the Client.NewListCertificatePropertiesPager
+// method.
+type ListCertificatePropertiesOptions struct {
 	// Specifies whether to include certificates which are not completely provisioned.
 	IncludePending *bool
-	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-	MaxResults *int32
 }
 
-// ListDeletedCertificatesOptions contains the optional parameters for the Client.NewListDeletedCertificatesPager method.
-type ListDeletedCertificatesOptions struct {
+// ListCertificatePropertiesVersionsOptions contains the optional parameters for the Client.NewListCertificatePropertiesVersionsPager
+// method.
+type ListCertificatePropertiesVersionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ListDeletedCertificatePropertiesOptions contains the optional parameters for the Client.NewListDeletedCertificatePropertiesPager
+// method.
+type ListDeletedCertificatePropertiesOptions struct {
 	// Specifies whether to include certificates which are not completely provisioned.
 	IncludePending *bool
-	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-	MaxResults *int32
+}
+
+// ListIssuerPropertiesOptions contains the optional parameters for the Client.NewListIssuerPropertiesPager method.
+type ListIssuerPropertiesOptions struct {
+	// placeholder for future optional parameters
 }
 
 // MergeCertificateOptions contains the optional parameters for the Client.MergeCertificate method.
@@ -305,18 +277,13 @@ type RestoreCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SetCertificateContactsOptions contains the optional parameters for the Client.SetCertificateContacts method.
-type SetCertificateContactsOptions struct {
+// SetContactsOptions contains the optional parameters for the Client.SetContacts method.
+type SetContactsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SetCertificateIssuerOptions contains the optional parameters for the Client.SetCertificateIssuer method.
-type SetCertificateIssuerOptions struct {
-	// placeholder for future optional parameters
-}
-
-// UpdateCertificateIssuerOptions contains the optional parameters for the Client.UpdateCertificateIssuer method.
-type UpdateCertificateIssuerOptions struct {
+// SetIssuerOptions contains the optional parameters for the Client.SetIssuer method.
+type SetIssuerOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -335,10 +302,15 @@ type UpdateCertificatePolicyOptions struct {
 	// placeholder for future optional parameters
 }
 
+// UpdateIssuerOptions contains the optional parameters for the Client.UpdateIssuer method.
+type UpdateIssuerOptions struct {
+	// placeholder for future optional parameters
+}
+
 // Contact - The contact information for the vault certificates.
 type Contact struct {
 	// Email address.
-	EmailAddress *string `json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
 
 	// Name.
 	Name *string `json:"name,omitempty"`
@@ -368,9 +340,9 @@ type CreateCertificateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// DeletedCertificateBundle - A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information
+// DeletedCertificate - A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information
 // on when it will be purged.
-type DeletedCertificateBundle struct {
+type DeletedCertificate struct {
 	// The certificate attributes.
 	Attributes *CertificateAttributes `json:"attributes,omitempty"`
 
@@ -393,13 +365,13 @@ type DeletedCertificateBundle struct {
 	ID *ID `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The key id.
-	KID *string `json:"kid,omitempty" azure:"ro"`
+	KID *ID `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; The management policy.
 	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
 
 	// READ-ONLY; The secret id.
-	SID *string `json:"sid,omitempty" azure:"ro"`
+	SID *ID `json:"sid,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
@@ -408,8 +380,8 @@ type DeletedCertificateBundle struct {
 	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
-// DeletedCertificateItem - The deleted certificate item containing metadata about the deleted certificate.
-type DeletedCertificateItem struct {
+// DeletedCertificateProperties - The deleted certificate item containing metadata about the deleted certificate.
+type DeletedCertificateProperties struct {
 	// The certificate management attributes.
 	Attributes *CertificateAttributes `json:"attributes,omitempty"`
 
@@ -432,14 +404,14 @@ type DeletedCertificateItem struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// DeletedCertificateListResult - A list of certificates that have been deleted in this vault.
-type DeletedCertificateListResult struct {
+// DeletedCertificatePropertiesListResult - A list of certificates that have been deleted in this vault.
+type DeletedCertificatePropertiesListResult struct {
 	// READ-ONLY; The URL to get the next set of deleted certificates.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page
 	// of deleted certificates
-	Value []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
+	Value []*DeletedCertificateProperties `json:"value,omitempty" azure:"ro"`
 }
 
 // ImportCertificateParameters - The certificate import parameters.
@@ -461,20 +433,8 @@ type ImportCertificateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// IssuerAttributes - The attributes of an issuer managed by the Key Vault service.
-type IssuerAttributes struct {
-	// Determines whether the issuer is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// READ-ONLY; Creation time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
-
-	// READ-ONLY; Last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
-}
-
-// IssuerBundle - The issuer for Key Vault certificate.
-type IssuerBundle struct {
+// Issuer - The issuer for Key Vault certificate.
+type Issuer struct {
 	// Attributes of the issuer object.
 	Attributes *IssuerAttributes `json:"attributes,omitempty"`
 
@@ -489,6 +449,18 @@ type IssuerBundle struct {
 
 	// READ-ONLY; Identifier for the issuer object.
 	ID *string `json:"id,omitempty" azure:"ro"`
+}
+
+// IssuerAttributes - The attributes of an issuer managed by the Key Vault service.
+type IssuerAttributes struct {
+	// Determines whether the issuer is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// READ-ONLY; Creation time in UTC.
+	Created *time.Time `json:"created,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last updated time in UTC.
+	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 // IssuerCredentials - The credentials to be used for the certificate issuer.
@@ -512,10 +484,29 @@ type IssuerParameters struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// IssuerProperties - The certificate issuer item containing certificate issuer metadata.
+type IssuerProperties struct {
+	// Certificate Identifier.
+	ID *string `json:"id,omitempty"`
+
+	// The issuer provider.
+	Provider *string `json:"provider,omitempty"`
+}
+
+// IssuerPropertiesListResult - The certificate issuer list result.
+type IssuerPropertiesListResult struct {
+	// READ-ONLY; The URL to get the next set of certificate issuers.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; A response message containing a list of certificate issuers in the key vault along with a link to the next page
+	// of certificate issuers.
+	Value []*IssuerProperties `json:"value,omitempty" azure:"ro"`
+}
+
 // KeyProperties - Properties of the key pair backing a certificate.
 type KeyProperties struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
+	Curve *CurveName `json:"crv,omitempty"`
 
 	// Indicates if the private key can be exported. Release policy must be provided when creating the first version of an exportable
 	// key.
@@ -525,7 +516,7 @@ type KeyProperties struct {
 	KeySize *int32 `json:"key_size,omitempty"`
 
 	// The type of key pair to be used for the certificate.
-	KeyType *JSONWebKeyType `json:"kty,omitempty"`
+	KeyType *KeyType `json:"kty,omitempty"`
 
 	// Indicates if the same key pair will be used on certificate renewal.
 	ReuseKey *bool `json:"reuse_key,omitempty"`
@@ -534,10 +525,26 @@ type KeyProperties struct {
 // LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of a certificate.
 type LifetimeAction struct {
 	// The action that will be executed.
-	Action *Action `json:"action,omitempty"`
+	Action *LifetimeActionType `json:"action,omitempty"`
 
 	// The condition that will execute the action.
-	Trigger *Trigger `json:"trigger,omitempty"`
+	Trigger *LifetimeActionTrigger `json:"trigger,omitempty"`
+}
+
+// LifetimeActionTrigger - A condition to be satisfied for an action to be executed.
+type LifetimeActionTrigger struct {
+	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths
+	// is 36, then value should be between 1 and 972 (36 * 27).
+	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
+
+	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
+	LifetimePercentage *int32 `json:"lifetime_percentage,omitempty"`
+}
+
+// LifetimeActionType - The action that will be executed.
+type LifetimeActionType struct {
+	// The type of the action.
+	ActionType *CertificatePolicyAction `json:"action_type,omitempty"`
 }
 
 // MergeCertificateParameters - The certificate merge parameters
@@ -555,7 +562,7 @@ type MergeCertificateParameters struct {
 // OrganizationDetails - Details of the organization of the certificate issuer.
 type OrganizationDetails struct {
 	// Details of the organization administrator.
-	AdminDetails []*AdministratorDetails `json:"admin_details,omitempty"`
+	AdminContacts []*AdministratorContact `json:"admin_details,omitempty"`
 
 	// Id of the organization.
 	ID *string `json:"id,omitempty"`
@@ -564,7 +571,7 @@ type OrganizationDetails struct {
 // RestoreCertificateParameters - The certificate restore parameters.
 type RestoreCertificateParameters struct {
 	// REQUIRED; The backup blob associated with a certificate bundle.
-	CertificateBundleBackup []byte `json:"value,omitempty"`
+	CertificateBackup []byte `json:"value,omitempty"`
 }
 
 // SecretProperties - Properties of the key backing a certificate.
@@ -573,8 +580,8 @@ type SecretProperties struct {
 	ContentType *string `json:"contentType,omitempty"`
 }
 
-// SetCertificateIssuerParameters - The certificate issuer set parameters.
-type SetCertificateIssuerParameters struct {
+// SetIssuerParameters - The certificate issuer set parameters.
+type SetIssuerParameters struct {
 	// REQUIRED; The issuer provider.
 	Provider *string `json:"provider,omitempty"`
 
@@ -597,32 +604,7 @@ type SubjectAlternativeNames struct {
 	Emails []*string `json:"emails,omitempty"`
 
 	// User principal names.
-	UPNs []*string `json:"upns,omitempty"`
-}
-
-// Trigger - A condition to be satisfied for an action to be executed.
-type Trigger struct {
-	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths
-	// is 36, then value should be between 1 and 972 (36 * 27).
-	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
-
-	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
-	LifetimePercentage *int32 `json:"lifetime_percentage,omitempty"`
-}
-
-// UpdateCertificateIssuerParameters - The certificate issuer update parameters.
-type UpdateCertificateIssuerParameters struct {
-	// Attributes of the issuer object.
-	Attributes *IssuerAttributes `json:"attributes,omitempty"`
-
-	// The credentials to be used for the issuer.
-	Credentials *IssuerCredentials `json:"credentials,omitempty"`
-
-	// Details of the organization as provided to the issuer.
-	OrganizationDetails *OrganizationDetails `json:"org_details,omitempty"`
-
-	// The issuer provider.
-	Provider *string `json:"provider,omitempty"`
+	UserPrincipalNames []*string `json:"upns,omitempty"`
 }
 
 // UpdateCertificateOperationParameter - The certificate operation update parameters.
@@ -643,10 +625,25 @@ type UpdateCertificateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
+// UpdateIssuerParameters - The certificate issuer update parameters.
+type UpdateIssuerParameters struct {
+	// Attributes of the issuer object.
+	Attributes *IssuerAttributes `json:"attributes,omitempty"`
+
+	// The credentials to be used for the issuer.
+	Credentials *IssuerCredentials `json:"credentials,omitempty"`
+
+	// Details of the organization as provided to the issuer.
+	OrganizationDetails *OrganizationDetails `json:"org_details,omitempty"`
+
+	// The issuer provider.
+	Provider *string `json:"provider,omitempty"`
+}
+
 // X509CertificateProperties - Properties of the X509 component of a certificate.
 type X509CertificateProperties struct {
 	// The enhanced key usage.
-	EKUs []*string `json:"ekus,omitempty"`
+	EnhancedKeyUsage []*string `json:"ekus,omitempty"`
 
 	// Defines how the certificate's key may be used.
 	KeyUsage []*KeyUsageType `json:"key_usage,omitempty"`

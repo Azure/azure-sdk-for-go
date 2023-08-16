@@ -91,7 +91,7 @@ func (d *Client) URL() string {
 // NewSubdirectoryClient creates a new Client object by concatenating subDirectoryName to the end of this Client's URL.
 // The new subdirectory Client uses the same request policy pipeline as the parent directory Client.
 func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
-	subDirectoryName = url.PathEscape(subDirectoryName)
+	subDirectoryName = url.PathEscape(strings.TrimRight(subDirectoryName, "/"))
 	subDirectoryURL := runtime.JoinPaths(d.URL(), subDirectoryName)
 	return (*Client)(base.NewDirectoryClient(subDirectoryURL, d.generated().Pipeline(), d.sharedKey()))
 }
@@ -105,6 +105,7 @@ func (d *Client) NewFileClient(fileName string) *file.Client {
 }
 
 // Create operation creates a new directory under the specified share or parent directory.
+// file.ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-directory.
 func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	fileAttributes, fileCreationTime, fileLastWriteTime, opts := options.format()
@@ -122,6 +123,7 @@ func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 }
 
 // GetProperties operation returns all system properties for the specified directory, and it can also be used to check the existence of a directory.
+// file.ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-directory-properties.
 func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := options.format()
@@ -130,6 +132,7 @@ func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 }
 
 // SetProperties operation sets system properties for the specified directory.
+// file.ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-directory-properties.
 func (d *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	fileAttributes, fileCreationTime, fileLastWriteTime, opts := options.format()

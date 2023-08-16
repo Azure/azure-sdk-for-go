@@ -22,18 +22,15 @@ func TestProviderZeroValues(t *testing.T) {
 	ctx, sp := tr.Start(context.Background(), "spanName", nil)
 	require.Equal(t, context.Background(), ctx)
 	require.Zero(t, sp)
-	sp.AddError(nil)
 	sp.AddEvent("event")
 	sp.End()
 	sp.SetAttributes(Attribute{})
 	sp.SetStatus(SpanStatusError, "boom")
-	sp, ok := tr.SpanFromContext(ctx)
-	require.False(t, ok)
-	require.Zero(t, sp)
+	spCtx := tr.SpanFromContext(ctx)
+	require.Zero(t, spCtx)
 }
 
 func TestProvider(t *testing.T) {
-	var addErrorCalled bool
 	var addEventCalled bool
 	var endCalled bool
 	var setAttributesCalled bool
@@ -43,24 +40,22 @@ func TestProvider(t *testing.T) {
 	pr := NewProvider(func(name, version string) Tracer {
 		return NewTracer(func(context.Context, string, *SpanOptions) (context.Context, Span) {
 			return nil, NewSpan(SpanImpl{
-				AddError:      func(error) { addErrorCalled = true },
 				AddEvent:      func(string, ...Attribute) { addEventCalled = true },
 				End:           func() { endCalled = true },
 				SetAttributes: func(...Attribute) { setAttributesCalled = true },
 				SetStatus:     func(SpanStatus, string) { setStatusCalled = true },
 			})
 		}, &TracerOptions{
-			SpanFromContext: func(context.Context) (Span, bool) {
+			SpanFromContext: func(context.Context) Span {
 				spanFromContextCalled = true
-				return Span{}, true
+				return Span{}
 			},
 		})
 	}, nil)
 	tr := pr.NewTracer("name", "version")
 	require.NotZero(t, tr)
 	require.True(t, tr.Enabled())
-	sp, ok := tr.SpanFromContext(context.Background())
-	require.True(t, ok)
+	sp := tr.SpanFromContext(context.Background())
 	require.Zero(t, sp)
 	tr.SetAttributes(Attribute{Key: "some", Value: "attribute"})
 	require.Len(t, tr.attrs, 1)
@@ -71,12 +66,10 @@ func TestProvider(t *testing.T) {
 	require.NotEqual(t, context.Background(), ctx)
 	require.NotZero(t, sp)
 
-	sp.AddError(nil)
 	sp.AddEvent("event")
 	sp.End()
 	sp.SetAttributes()
 	sp.SetStatus(SpanStatusError, "desc")
-	require.True(t, addErrorCalled)
 	require.True(t, addEventCalled)
 	require.True(t, endCalled)
 	require.True(t, setAttributesCalled)

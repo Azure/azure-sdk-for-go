@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ListBySubscription_ByLocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_ListBySubscription_ByLocation.json
 func ExampleVirtualMachinesClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,8 +162,8 @@ func ExampleVirtualMachinesClient_NewListByLocationPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Capture_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginCapture_virtualMachinesCaptureMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Capture_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginCapture_virtualMachineCaptureMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -200,8 +200,8 @@ func ExampleVirtualMachinesClient_BeginCapture_virtualMachinesCaptureMaximumSetG
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Capture_MinimumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginCapture_virtualMachinesCaptureMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Capture_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginCapture_virtualMachineCaptureMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -230,7 +230,7 @@ func ExampleVirtualMachinesClient_BeginCapture_virtualMachinesCaptureMinimumSetG
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSettingAssessmentModeOfImageDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,7 +350,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -384,7 +384,8 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSe
 					PatchSettings: &armcompute.LinuxPatchSettings{
 						AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeAutomaticByPlatform),
 						AutomaticByPlatformSettings: &armcompute.LinuxVMGuestPatchAutomaticByPlatformSettings{
-							RebootSetting: to.Ptr(armcompute.LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever),
+							BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(true),
+							RebootSetting:                            to.Ptr(armcompute.LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever),
 						},
 						PatchMode: to.Ptr(armcompute.LinuxVMGuestPatchModeAutomaticByPlatform),
 					},
@@ -444,6 +445,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSe
 	// 				PatchSettings: &armcompute.LinuxPatchSettings{
 	// 					AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeAutomaticByPlatform),
 	// 					AutomaticByPlatformSettings: &armcompute.LinuxVMGuestPatchAutomaticByPlatformSettings{
+	// 						BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(true),
 	// 						RebootSetting: to.Ptr(armcompute.LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever),
 	// 					},
 	// 					PatchMode: to.Ptr(armcompute.LinuxVMGuestPatchModeAutomaticByPlatform),
@@ -478,7 +480,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSettingPatchModeOfImageDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -598,7 +600,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSettingsPatchModeAndAssessmentModeSetToAutomaticByPlatform() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -720,7 +722,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromACommunityGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -826,7 +828,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromACommunityGal
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromASharedGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -932,7 +934,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromASharedGaller
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithDiskControllerType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1059,7 +1061,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithDiskControlle
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithHibernationEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1189,7 +1191,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithHibernationEn
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithUefiSettingsOfSecureBootAndVTpm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1315,7 +1317,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithUefiSettingsO
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithUserData.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithUserData.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithUserData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1440,7 +1442,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithUserData() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_CreateWithVMSizeProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithVMSizeProperties.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithVmSizeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1573,7 +1575,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithVmSizePropert
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithNetworkInterfaceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1705,7 +1707,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithNetworkInterf
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithSecurityTypeConfidentialVmWithCustomerManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1842,7 +1844,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithSecurityTypeC
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithSecurityTypeConfidentialVmWithPlatformManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1973,7 +1975,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithSecurityTypeC
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatchSettingAssessmentModeOfImageDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2095,7 +2097,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatch
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByOs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2217,7 +2219,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatch
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2252,7 +2254,8 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatch
 					PatchSettings: &armcompute.PatchSettings{
 						AssessmentMode: to.Ptr(armcompute.WindowsPatchAssessmentModeAutomaticByPlatform),
 						AutomaticByPlatformSettings: &armcompute.WindowsVMGuestPatchAutomaticByPlatformSettings{
-							RebootSetting: to.Ptr(armcompute.WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever),
+							BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(false),
+							RebootSetting:                            to.Ptr(armcompute.WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever),
 						},
 						PatchMode: to.Ptr(armcompute.WindowsVMGuestPatchModeAutomaticByPlatform),
 					},
@@ -2315,6 +2318,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatch
 	// 				PatchSettings: &armcompute.PatchSettings{
 	// 					AssessmentMode: to.Ptr(armcompute.WindowsPatchAssessmentModeAutomaticByPlatform),
 	// 					AutomaticByPlatformSettings: &armcompute.WindowsVMGuestPatchAutomaticByPlatformSettings{
+	// 						BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(false),
 	// 						RebootSetting: to.Ptr(armcompute.WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever),
 	// 					},
 	// 					PatchMode: to.Ptr(armcompute.WindowsVMGuestPatchModeAutomaticByPlatform),
@@ -2347,7 +2351,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatch
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndEnableHotpatchingSetToTrue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2471,7 +2475,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatch
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatchSettingPatchModeOfManual() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2593,7 +2597,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatch
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithPatchSettingsPatchModeAndAssessmentModeSetToAutomaticByPlatform() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2717,7 +2721,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithPatchS
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createACustomImageVmFromAnUnmanagedGeneralizedOsImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2824,7 +2828,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createACustomImageVmFromAn
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAPlatformImageVmWithUnmanagedOsAndDataDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2972,7 +2976,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAPlatformImageVmWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromACustomImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3078,7 +3082,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromACustomImage(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromAGeneralizedSharedImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3184,7 +3188,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromAGeneralizedS
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromASpecializedSharedImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3276,7 +3280,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromASpecializedS
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmInAVirtualMachineScaleSetWithCustomerAssignedPlatformFaultDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3396,7 +3400,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmInAVirtualMachine
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmInAnAvailabilitySet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3514,7 +3518,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmInAnAvailabilityS
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithApplicationProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3658,7 +3662,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithApplicationPr
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithDiskEncryptionSetResourceIdInTheOsDiskAndDataDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3820,7 +3824,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithDiskEncryptio
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithHostEncryptionUsingEncryptionAtHostProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3948,7 +3952,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithHostEncryptio
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithScheduledEventsProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4092,7 +4096,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithScheduledEven
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithAMarketplaceImagePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4214,7 +4218,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithAMarketplaceI
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithAnExtensionsTimeBudget() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4340,7 +4344,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithAnExtensionsT
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithBootDiagnostics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4464,7 +4468,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithBootDiagnosti
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithEmptyDataDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4604,7 +4608,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithEmptyDataDisk
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithEphemeralOsDiskProvisioningInCacheDiskUsingPlacementProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4734,7 +4738,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithEphemeralOsDi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithEphemeralOsDiskProvisioningInResourceDiskUsingPlacementProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4864,7 +4868,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithEphemeralOsDi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithEphemeralOsDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4992,7 +4996,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithEphemeralOsDi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithManagedBootDiagnostics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5114,7 +5118,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithManagedBootDi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithPasswordAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5226,7 +5230,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithPasswordAuthe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithPremiumStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5338,7 +5342,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithPremiumStorag
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithSshAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5465,7 +5469,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithSshAuthentica
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createOrUpdateAVmWithCapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5597,7 +5601,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createOrUpdateAVmWithCapac
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
 func ExampleVirtualMachinesClient_BeginUpdate_updateAVmByDetachingDataDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5740,7 +5744,7 @@ func ExampleVirtualMachinesClient_BeginUpdate_updateAVmByDetachingDataDisk() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Update_ForceDetachDataDisk.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Update_ForceDetachDataDisk.json
 func ExampleVirtualMachinesClient_BeginUpdate_updateAVmByForceDetachingDataDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5885,7 +5889,7 @@ func ExampleVirtualMachinesClient_BeginUpdate_updateAVmByForceDetachingDataDisk(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Delete_Force.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Delete_Force.json
 func ExampleVirtualMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5906,7 +5910,7 @@ func ExampleVirtualMachinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Get.json
 func ExampleVirtualMachinesClient_Get_getAVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6046,7 +6050,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachine() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
 func ExampleVirtualMachinesClient_Get_getAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6122,7 +6126,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachinePlacedOnADedicatedHostGr
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
 func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithDiskControllerTypeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6263,7 +6267,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithDiskControllerTypePr
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
 func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithVmSizeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6403,7 +6407,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithVmSizeProperties() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Get_InstanceView.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Get_InstanceView.json
 func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6538,7 +6542,7 @@ func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
 func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6567,7 +6571,7 @@ func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachineP
 	// 					Code: to.Ptr("ProvisioningState/succeeded"),
 	// 					DisplayStatus: to.Ptr("Provisioning succeeded"),
 	// 					Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T21:29:47.477089+00:00"); return t}()),
+	// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T21:29:47.477089+00:00"); return t}()),
 	// 			}},
 	// 	}},
 	// 	HyperVGeneration: to.Ptr(armcompute.HyperVGenerationTypeV1),
@@ -6578,7 +6582,7 @@ func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachineP
 	// 			Code: to.Ptr("ProvisioningState/succeeded"),
 	// 			DisplayStatus: to.Ptr("Provisioning succeeded"),
 	// 			Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 			Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T21:30:12.8051917+00:00"); return t}()),
+	// 			Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T21:30:12.8051917+00:00"); return t}()),
 	// 		},
 	// 		{
 	// 			Code: to.Ptr("PowerState/running"),
@@ -6592,15 +6596,15 @@ func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachineP
 	// 				DisplayStatus: to.Ptr("Ready"),
 	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 				Message: to.Ptr("GuestAgent is running and accepting new configurations."),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T23:11:22+00:00"); return t}()),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T23:11:22+00:00"); return t}()),
 	// 		}},
 	// 		VMAgentVersion: to.Ptr("2.7.41491.949"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ConvertToManagedDisks_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachinesConvertToManagedDisksMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachineConvertToManagedDisksMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6620,8 +6624,8 @@ func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachinesConv
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ConvertToManagedDisks_MinimumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachinesConvertToManagedDisksMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachineConvertToManagedDisksMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6641,8 +6645,8 @@ func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachinesConv
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Deallocate_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachinesDeallocateMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Deallocate_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6662,8 +6666,8 @@ func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachinesDeallocateMaxim
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Deallocate_MinimumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachinesDeallocateMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Deallocate_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6683,7 +6687,7 @@ func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachinesDeallocateMinim
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Generalize.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Generalize.json
 func ExampleVirtualMachinesClient_Generalize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6700,8 +6704,8 @@ func ExampleVirtualMachinesClient_Generalize() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_List_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_NewListPager_virtualMachinesListMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_List_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6711,7 +6715,9 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachinesListMaximumSetGen(
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualMachinesClient().NewListPager("rgcompute", &armcompute.VirtualMachinesClientListOptions{Filter: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa")})
+	pager := clientFactory.NewVirtualMachinesClient().NewListPager("rgcompute", &armcompute.VirtualMachinesClientListOptions{Filter: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+		Expand: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -7607,8 +7613,8 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachinesListMaximumSetGen(
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_List_MinimumSet_Gen.json
-func ExampleVirtualMachinesClient_NewListPager_virtualMachinesListMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_List_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -7618,7 +7624,9 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachinesListMinimumSetGen(
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualMachinesClient().NewListPager("rgcompute", &armcompute.VirtualMachinesClientListOptions{Filter: nil})
+	pager := clientFactory.NewVirtualMachinesClient().NewListPager("rgcompute", &armcompute.VirtualMachinesClientListOptions{Filter: nil,
+		Expand: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -7632,17 +7640,19 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachinesListMinimumSetGen(
 		// page.VirtualMachineListResult = armcompute.VirtualMachineListResult{
 		// 	Value: []*armcompute.VirtualMachine{
 		// 		{
+		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/{virtualMachineName}"),
 		// 			Location: to.Ptr("eastus"),
 		// 		},
 		// 		{
+		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/{virtualMachineName}"),
 		// 			Location: to.Ptr("eastus"),
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ListAll_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_NewListAllPager_virtualMachinesListAllMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_ListAll_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_NewListAllPager_virtualMachineListAllMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -7654,6 +7664,7 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachinesListAllMaximumS
 	}
 	pager := clientFactory.NewVirtualMachinesClient().NewListAllPager(&armcompute.VirtualMachinesClientListAllOptions{StatusOnly: to.Ptr("aaaaaa"),
 		Filter: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		Expand: nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -7976,27 +7987,6 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachinesListAllMaximumS
 		// 							AutoUpgradeMinorVersion: to.Ptr(true),
 		// 							EnableAutomaticUpgrade: to.Ptr(true),
 		// 							ForceUpdateTag: to.Ptr("aaaaaaaaaaaaaaa"),
-		// 							InstanceView: &armcompute.VirtualMachineExtensionInstanceView{
-		// 								Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								Type: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								Statuses: []*armcompute.InstanceViewStatus{
-		// 									{
-		// 										Code: to.Ptr("aaa"),
-		// 										DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 										Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 										Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 								}},
-		// 								Substatuses: []*armcompute.InstanceViewStatus{
-		// 									{
-		// 										Code: to.Ptr("aaa"),
-		// 										DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 										Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 										Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 								}},
-		// 								TypeHandlerVersion: to.Ptr("aaaaaa"),
-		// 							},
 		// 							ProtectedSettings: map[string]any{
 		// 							},
 		// 							ProtectedSettingsFromKeyVault: &armcompute.KeyVaultSecretReference{
@@ -8089,187 +8079,6 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachinesListAllMaximumS
 		// 						},
 		// 						HostGroup: &armcompute.SubResource{
 		// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 						},
-		// 						InstanceView: &armcompute.VirtualMachineInstanceView{
-		// 							AssignedHost: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 							BootDiagnostics: &armcompute.BootDiagnosticsInstanceView{
-		// 								ConsoleScreenshotBlobURI: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-		// 								SerialConsoleLogBlobURI: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 								Status: &armcompute.InstanceViewStatus{
-		// 									Code: to.Ptr("aaa"),
-		// 									DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 									Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 									Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 									Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 								},
-		// 							},
-		// 							ComputerName: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 							Disks: []*armcompute.DiskInstanceView{
-		// 								{
-		// 									Name: to.Ptr("a"),
-		// 									EncryptionSettings: []*armcompute.DiskEncryptionSettings{
-		// 										{
-		// 											DiskEncryptionKey: &armcompute.KeyVaultSecretReference{
-		// 												SecretURL: to.Ptr("aaaaaaaaa"),
-		// 												SourceVault: &armcompute.SubResource{
-		// 													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 												},
-		// 											},
-		// 											Enabled: to.Ptr(true),
-		// 											KeyEncryptionKey: &armcompute.KeyVaultKeyReference{
-		// 												KeyURL: to.Ptr("aaaaaaaaaaaaa"),
-		// 												SourceVault: &armcompute.SubResource{
-		// 													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-		// 												},
-		// 											},
-		// 									}},
-		// 									Statuses: []*armcompute.InstanceViewStatus{
-		// 										{
-		// 											Code: to.Ptr("aaa"),
-		// 											DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 											Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 											Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 											Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 									}},
-		// 							}},
-		// 							HyperVGeneration: to.Ptr(armcompute.HyperVGenerationTypeV1),
-		// 							MaintenanceRedeployStatus: &armcompute.MaintenanceRedeployStatus{
-		// 								IsCustomerInitiatedMaintenanceAllowed: to.Ptr(true),
-		// 								LastOperationMessage: to.Ptr("aa"),
-		// 								LastOperationResultCode: to.Ptr(armcompute.MaintenanceOperationResultCodeTypesNone),
-		// 								MaintenanceWindowEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.682Z"); return t}()),
-		// 								MaintenanceWindowStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.682Z"); return t}()),
-		// 								PreMaintenanceWindowEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.682Z"); return t}()),
-		// 								PreMaintenanceWindowStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.682Z"); return t}()),
-		// 							},
-		// 							OSName: to.Ptr("aaaaaaaaaaa"),
-		// 							OSVersion: to.Ptr("aaaaaaaaaaaaaa"),
-		// 							PatchStatus: &armcompute.VirtualMachinePatchStatus{
-		// 								AvailablePatchSummary: &armcompute.AvailablePatchSummary{
-		// 									AssessmentActivityID: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 									CriticalAndSecurityPatchCount: to.Ptr[int32](22),
-		// 									Error: &armcompute.APIError{
-		// 										Code: to.Ptr("aaaaaa"),
-		// 										Innererror: &armcompute.InnerError{
-		// 											Errordetail: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 											Exceptiontype: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										},
-		// 										Message: to.Ptr("aaa"),
-		// 										Target: to.Ptr("aaaaaaaaa"),
-		// 										Details: []*armcompute.APIErrorBase{
-		// 											{
-		// 												Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
-		// 												Message: to.Ptr("aaaaaaaaaaaaa"),
-		// 												Target: to.Ptr("aaaaaa"),
-		// 										}},
-		// 									},
-		// 									LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.683Z"); return t}()),
-		// 									OtherPatchCount: to.Ptr[int32](25),
-		// 									RebootPending: to.Ptr(true),
-		// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.682Z"); return t}()),
-		// 									Status: to.Ptr(armcompute.PatchOperationStatusUnknown),
-		// 								},
-		// 								ConfigurationStatuses: []*armcompute.InstanceViewStatus{
-		// 									{
-		// 										Code: to.Ptr("aaa"),
-		// 										DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 										Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 										Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 								}},
-		// 								LastPatchInstallationSummary: &armcompute.LastPatchInstallationSummary{
-		// 									Error: &armcompute.APIError{
-		// 										Code: to.Ptr("aaaaaa"),
-		// 										Innererror: &armcompute.InnerError{
-		// 											Errordetail: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 											Exceptiontype: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										},
-		// 										Message: to.Ptr("aaa"),
-		// 										Target: to.Ptr("aaaaaaaaa"),
-		// 										Details: []*armcompute.APIErrorBase{
-		// 											{
-		// 												Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
-		// 												Message: to.Ptr("aaaaaaaaaaaaa"),
-		// 												Target: to.Ptr("aaaaaa"),
-		// 										}},
-		// 									},
-		// 									ExcludedPatchCount: to.Ptr[int32](1),
-		// 									FailedPatchCount: to.Ptr[int32](30),
-		// 									InstallationActivityID: to.Ptr("aaaaaa"),
-		// 									InstalledPatchCount: to.Ptr[int32](28),
-		// 									LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.683Z"); return t}()),
-		// 									MaintenanceWindowExceeded: to.Ptr(true),
-		// 									NotSelectedPatchCount: to.Ptr[int32](20),
-		// 									PendingPatchCount: to.Ptr[int32](2),
-		// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.683Z"); return t}()),
-		// 									Status: to.Ptr(armcompute.PatchOperationStatusUnknown),
-		// 								},
-		// 							},
-		// 							PlatformFaultDomain: to.Ptr[int32](29),
-		// 							PlatformUpdateDomain: to.Ptr[int32](1),
-		// 							RdpThumbPrint: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-		// 							Statuses: []*armcompute.InstanceViewStatus{
-		// 								{
-		// 									Code: to.Ptr("aaa"),
-		// 									DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 									Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 									Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 									Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 							}},
-		// 							VMAgent: &armcompute.VirtualMachineAgentInstanceView{
-		// 								ExtensionHandlers: []*armcompute.VirtualMachineExtensionHandlerInstanceView{
-		// 									{
-		// 										Type: to.Ptr("aaaaa"),
-		// 										Status: &armcompute.InstanceViewStatus{
-		// 											Code: to.Ptr("aaa"),
-		// 											DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 											Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 											Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 											Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 										},
-		// 										TypeHandlerVersion: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 								}},
-		// 								Statuses: []*armcompute.InstanceViewStatus{
-		// 									{
-		// 										Code: to.Ptr("aaa"),
-		// 										DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 										Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 										Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 								}},
-		// 								VMAgentVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 							},
-		// 							VMHealth: &armcompute.VirtualMachineHealthStatus{
-		// 								Status: &armcompute.InstanceViewStatus{
-		// 									Code: to.Ptr("aaa"),
-		// 									DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 									Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 									Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 									Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 								},
-		// 							},
-		// 							Extensions: []*armcompute.VirtualMachineExtensionInstanceView{
-		// 								{
-		// 									Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 									Type: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 									Statuses: []*armcompute.InstanceViewStatus{
-		// 										{
-		// 											Code: to.Ptr("aaa"),
-		// 											DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 											Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 											Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 											Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 									}},
-		// 									Substatuses: []*armcompute.InstanceViewStatus{
-		// 										{
-		// 											Code: to.Ptr("aaa"),
-		// 											DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 											Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 											Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 											Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 									}},
-		// 									TypeHandlerVersion: to.Ptr("aaaaaa"),
-		// 							}},
 		// 						},
 		// 						LicenseType: to.Ptr("aaaaaaaaaaaaaa"),
 		// 						NetworkProfile: &armcompute.NetworkProfile{
@@ -8506,27 +8315,6 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachinesListAllMaximumS
 		// 									AutoUpgradeMinorVersion: to.Ptr(true),
 		// 									EnableAutomaticUpgrade: to.Ptr(true),
 		// 									ForceUpdateTag: to.Ptr("aaaaaaaaaaaaaaa"),
-		// 									InstanceView: &armcompute.VirtualMachineExtensionInstanceView{
-		// 										Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										Type: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 										Statuses: []*armcompute.InstanceViewStatus{
-		// 											{
-		// 												Code: to.Ptr("aaa"),
-		// 												DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 												Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 												Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 												Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 										}},
-		// 										Substatuses: []*armcompute.InstanceViewStatus{
-		// 											{
-		// 												Code: to.Ptr("aaa"),
-		// 												DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 												Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-		// 												Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 												Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
-		// 										}},
-		// 										TypeHandlerVersion: to.Ptr("aaaaaa"),
-		// 									},
 		// 									ProtectedSettings: map[string]any{
 		// 									},
 		// 									ProtectedSettingsFromKeyVault: &armcompute.KeyVaultSecretReference{
@@ -8550,8 +8338,8 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachinesListAllMaximumS
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ListAll_MinimumSet_Gen.json
-func ExampleVirtualMachinesClient_NewListAllPager_virtualMachinesListAllMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_ListAll_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_NewListAllPager_virtualMachineListAllMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -8563,6 +8351,7 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachinesListAllMinimumS
 	}
 	pager := clientFactory.NewVirtualMachinesClient().NewListAllPager(&armcompute.VirtualMachinesClientListAllOptions{StatusOnly: nil,
 		Filter: nil,
+		Expand: nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -8577,16 +8366,18 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachinesListAllMinimumS
 		// page.VirtualMachineListResult = armcompute.VirtualMachineListResult{
 		// 	Value: []*armcompute.VirtualMachine{
 		// 		{
+		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{virtualMachineName}"),
 		// 			Location: to.Ptr("eastus"),
 		// 		},
 		// 		{
+		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{virtualMachineName}"),
 		// 			Location: to.Ptr("eastus"),
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ListAvailableVmSizes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_ListAvailableVmSizes.json
 func ExampleVirtualMachinesClient_NewListAvailableSizesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8630,8 +8421,8 @@ func ExampleVirtualMachinesClient_NewListAvailableSizesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PowerOff_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinesPowerOffMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_PowerOff_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinePowerOffMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -8651,8 +8442,8 @@ func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinesPowerOffMaximumSe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PowerOff_MinimumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinesPowerOffMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_PowerOff_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinePowerOffMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -8672,7 +8463,7 @@ func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinesPowerOffMinimumSe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Reapply.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Reapply.json
 func ExampleVirtualMachinesClient_BeginReapply() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8693,8 +8484,8 @@ func ExampleVirtualMachinesClient_BeginReapply() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Restart_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginRestart_virtualMachinesRestartMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Restart_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginRestart_virtualMachineRestartMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -8714,8 +8505,8 @@ func ExampleVirtualMachinesClient_BeginRestart_virtualMachinesRestartMaximumSetG
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Restart_MinimumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginRestart_virtualMachinesRestartMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Restart_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginRestart_virtualMachineRestartMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -8735,8 +8526,8 @@ func ExampleVirtualMachinesClient_BeginRestart_virtualMachinesRestartMinimumSetG
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Start_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginStart_virtualMachinesStartMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Start_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginStart_virtualMachineStartMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -8756,8 +8547,8 @@ func ExampleVirtualMachinesClient_BeginStart_virtualMachinesStartMaximumSetGen()
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Start_MinimumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginStart_virtualMachinesStartMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Start_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginStart_virtualMachineStartMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -8777,8 +8568,8 @@ func ExampleVirtualMachinesClient_BeginStart_virtualMachinesStartMinimumSetGen()
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Redeploy_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachinesRedeployMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Redeploy_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachineRedeployMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -8798,8 +8589,8 @@ func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachinesRedeployMaximumSe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Redeploy_MinimumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachinesRedeployMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Redeploy_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachineRedeployMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -8819,7 +8610,7 @@ func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachinesRedeployMinimumSe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Reimage_NonEphemeralVMs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Reimage_NonEphemeralVMs.json
 func ExampleVirtualMachinesClient_BeginReimage_reimageANonEphemeralVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8848,7 +8639,7 @@ func ExampleVirtualMachinesClient_BeginReimage_reimageANonEphemeralVirtualMachin
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Reimage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Reimage.json
 func ExampleVirtualMachinesClient_BeginReimage_reimageAVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8872,7 +8663,7 @@ func ExampleVirtualMachinesClient_BeginReimage_reimageAVirtualMachine() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_RetrieveBootDiagnosticsData.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_RetrieveBootDiagnosticsData.json
 func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8896,8 +8687,8 @@ func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PerformMaintenance_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinesPerformMaintenanceMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_PerformMaintenance_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinePerformMaintenanceMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -8917,8 +8708,8 @@ func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinesPerform
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PerformMaintenance_MinimumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinesPerformMaintenanceMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_PerformMaintenance_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinePerformMaintenanceMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -8938,7 +8729,7 @@ func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinesPerform
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_SimulateEviction.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_SimulateEviction.json
 func ExampleVirtualMachinesClient_SimulateEviction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8955,7 +8746,7 @@ func ExampleVirtualMachinesClient_SimulateEviction() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_AssessPatches.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_AssessPatches.json
 func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -9014,7 +8805,7 @@ func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_InstallPatches.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_InstallPatches.json
 func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -9078,7 +8869,7 @@ func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/runCommandExamples/VirtualMachineRunCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/runCommandExamples/VirtualMachineRunCommand.json
 func ExampleVirtualMachinesClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

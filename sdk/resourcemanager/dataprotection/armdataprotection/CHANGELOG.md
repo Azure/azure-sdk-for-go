@@ -1,5 +1,49 @@
 # Release History
 
+## 2.3.0 (2023-07-28)
+### Features Added
+
+- New enum type `CrossRegionRestoreState` with values `CrossRegionRestoreStateDisabled`, `CrossRegionRestoreStateEnabled`
+- New enum type `SecureScoreLevel` with values `SecureScoreLevelAdequate`, `SecureScoreLevelMaximum`, `SecureScoreLevelMinimum`, `SecureScoreLevelNone`, `SecureScoreLevelNotSupported`
+- New function `*BaseResourceProperties.GetBaseResourceProperties() *BaseResourceProperties`
+- New struct `CrossRegionRestoreSettings`
+- New struct `IdentityDetails`
+- New struct `NamespacedNameResource`
+- New struct `UserAssignedIdentity`
+- New field `RehydrationPriority` in struct `AzureBackupJob`
+- New field `IdentityDetails` in struct `AzureBackupRecoveryPointBasedRestoreRequest`
+- New field `IdentityDetails` in struct `AzureBackupRecoveryTimeBasedRestoreRequest`
+- New field `IdentityDetails` in struct `AzureBackupRestoreRequest`
+- New field `IdentityDetails` in struct `AzureBackupRestoreWithRehydrationRequest`
+- New field `IdentityDetails` in struct `BackupInstance`
+- New field `SecureScore` in struct `BackupVault`
+- New field `ResourceProperties` in struct `Datasource`
+- New field `ResourceProperties` in struct `DatasourceSet`
+- New field `IdentityDetails` in struct `DeletedBackupInstance`
+- New field `UserAssignedIdentities` in struct `DppIdentityDetails`
+- New field `CrossRegionRestoreSettings` in struct `FeatureSettings`
+- New field `BackupHookReferences` in struct `KubernetesClusterBackupDatasourceParameters`
+- New field `RestoreHookReferences` in struct `KubernetesClusterRestoreCriteria`
+
+
+## 2.2.0 (2023-06-23)
+### Features Added
+
+- New function `*ClientFactory.NewDppResourceGuardProxyClient() *DppResourceGuardProxyClient`
+- New function `NewDppResourceGuardProxyClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DppResourceGuardProxyClient, error)`
+- New function `*DppResourceGuardProxyClient.CreateOrUpdate(context.Context, string, string, string, ResourceGuardProxyBaseResource, *DppResourceGuardProxyClientCreateOrUpdateOptions) (DppResourceGuardProxyClientCreateOrUpdateResponse, error)`
+- New function `*DppResourceGuardProxyClient.Delete(context.Context, string, string, string, *DppResourceGuardProxyClientDeleteOptions) (DppResourceGuardProxyClientDeleteResponse, error)`
+- New function `*DppResourceGuardProxyClient.Get(context.Context, string, string, string, *DppResourceGuardProxyClientGetOptions) (DppResourceGuardProxyClientGetResponse, error)`
+- New function `*DppResourceGuardProxyClient.NewListPager(string, string, *DppResourceGuardProxyClientListOptions) *runtime.Pager[DppResourceGuardProxyClientListResponse]`
+- New function `*DppResourceGuardProxyClient.UnlockDelete(context.Context, string, string, string, UnlockDeleteRequest, *DppResourceGuardProxyClientUnlockDeleteOptions) (DppResourceGuardProxyClientUnlockDeleteResponse, error)`
+- New struct `ResourceGuardOperationDetail`
+- New struct `ResourceGuardProxyBase`
+- New struct `ResourceGuardProxyBaseResource`
+- New struct `ResourceGuardProxyBaseResourceList`
+- New struct `UnlockDeleteRequest`
+- New struct `UnlockDeleteResponse`
+
+
 ## 2.1.1 (2023-04-14)
 ### Bug Fixes
 

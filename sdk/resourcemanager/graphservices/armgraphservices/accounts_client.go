@@ -44,9 +44,182 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
+// BeginCreateAndUpdate - Create or update account resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-04-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the resource.
+//   - accountResource - Account details.
+//   - options - AccountsClientBeginCreateAndUpdateOptions contains the optional parameters for the AccountsClient.BeginCreateAndUpdate
+//     method.
+func (client *AccountsClient) BeginCreateAndUpdate(ctx context.Context, resourceGroupName string, resourceName string, accountResource AccountResource, options *AccountsClientBeginCreateAndUpdateOptions) (*runtime.Poller[AccountsClientCreateAndUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createAndUpdate(ctx, resourceGroupName, resourceName, accountResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientCreateAndUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[AccountsClientCreateAndUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// CreateAndUpdate - Create or update account resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-04-13
+func (client *AccountsClient) createAndUpdate(ctx context.Context, resourceGroupName string, resourceName string, accountResource AccountResource, options *AccountsClientBeginCreateAndUpdateOptions) (*http.Response, error) {
+	req, err := client.createAndUpdateCreateRequest(ctx, resourceGroupName, resourceName, accountResource, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// createAndUpdateCreateRequest creates the CreateAndUpdate request.
+func (client *AccountsClient) createAndUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, accountResource AccountResource, options *AccountsClientBeginCreateAndUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.GraphServices/accounts/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-04-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, accountResource)
+}
+
+// Delete - Deletes a account resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-04-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the resource.
+//   - options - AccountsClientDeleteOptions contains the optional parameters for the AccountsClient.Delete method.
+func (client *AccountsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *AccountsClientDeleteOptions) (AccountsClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return AccountsClientDeleteResponse{}, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AccountsClientDeleteResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
+		return AccountsClientDeleteResponse{}, runtime.NewResponseError(resp)
+	}
+	return AccountsClientDeleteResponse{}, nil
+}
+
+// deleteCreateRequest creates the Delete request.
+func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *AccountsClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.GraphServices/accounts/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-04-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// Get - Returns account resource for a given name.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-04-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the resource.
+//   - options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
+func (client *AccountsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *AccountsClientGetOptions) (AccountsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return AccountsClientGetResponse{}, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AccountsClientGetResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return AccountsClientGetResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getHandleResponse(resp)
+}
+
+// getCreateRequest creates the Get request.
+func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *AccountsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.GraphServices/accounts/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-04-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsClientGetResponse, error) {
+	result := AccountsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountResource); err != nil {
+		return AccountsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByResourceGroupPager - Returns list of accounts apps.
 //
-// Generated from API version 2022-09-22-preview
+// Generated from API version 2023-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
 //     method.
@@ -94,7 +267,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-22-preview")
+	reqQP.Set("api-version", "2023-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +284,7 @@ func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - Returns list of accounts belonging to a subscription.
 //
-// Generated from API version 2022-09-22-preview
+// Generated from API version 2023-04-13
 //   - options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.NewListBySubscriptionPager
 //     method.
 func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
@@ -154,7 +327,7 @@ func (client *AccountsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-22-preview")
+	reqQP.Set("api-version", "2023-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -165,6 +338,64 @@ func (client *AccountsClient) listBySubscriptionHandleResponse(resp *http.Respon
 	result := AccountsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountResourceList); err != nil {
 		return AccountsClientListBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
+// Update - Update account details.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-04-13
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the resource.
+//   - accountResource - Account patch details.
+//   - options - AccountsClientUpdateOptions contains the optional parameters for the AccountsClient.Update method.
+func (client *AccountsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, accountResource AccountPatchResource, options *AccountsClientUpdateOptions) (AccountsClientUpdateResponse, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, accountResource, options)
+	if err != nil {
+		return AccountsClientUpdateResponse{}, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AccountsClientUpdateResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return AccountsClientUpdateResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.updateHandleResponse(resp)
+}
+
+// updateCreateRequest creates the Update request.
+func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, accountResource AccountPatchResource, options *AccountsClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.GraphServices/accounts/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-04-13")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, accountResource)
+}
+
+// updateHandleResponse handles the Update response.
+func (client *AccountsClient) updateHandleResponse(resp *http.Response) (AccountsClientUpdateResponse, error) {
+	result := AccountsClientUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountResource); err != nil {
+		return AccountsClientUpdateResponse{}, err
 	}
 	return result, nil
 }

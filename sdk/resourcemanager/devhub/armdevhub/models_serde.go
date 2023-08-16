@@ -55,6 +55,81 @@ func (a *ACR) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ArtifactGenerationProperties.
+func (a ArtifactGenerationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "appName", a.AppName)
+	populate(objectMap, "builderVersion", a.BuilderVersion)
+	populate(objectMap, "dockerfileGenerationMode", a.DockerfileGenerationMode)
+	populate(objectMap, "dockerfileOutputDirectory", a.DockerfileOutputDirectory)
+	populate(objectMap, "generationLanguage", a.GenerationLanguage)
+	populate(objectMap, "imageName", a.ImageName)
+	populate(objectMap, "imageTag", a.ImageTag)
+	populate(objectMap, "languageVersion", a.LanguageVersion)
+	populate(objectMap, "manifestGenerationMode", a.ManifestGenerationMode)
+	populate(objectMap, "manifestOutputDirectory", a.ManifestOutputDirectory)
+	populate(objectMap, "manifestType", a.ManifestType)
+	populate(objectMap, "namespace", a.Namespace)
+	populate(objectMap, "port", a.Port)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactGenerationProperties.
+func (a *ArtifactGenerationProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "appName":
+			err = unpopulate(val, "AppName", &a.AppName)
+			delete(rawMsg, key)
+		case "builderVersion":
+			err = unpopulate(val, "BuilderVersion", &a.BuilderVersion)
+			delete(rawMsg, key)
+		case "dockerfileGenerationMode":
+			err = unpopulate(val, "DockerfileGenerationMode", &a.DockerfileGenerationMode)
+			delete(rawMsg, key)
+		case "dockerfileOutputDirectory":
+			err = unpopulate(val, "DockerfileOutputDirectory", &a.DockerfileOutputDirectory)
+			delete(rawMsg, key)
+		case "generationLanguage":
+			err = unpopulate(val, "GenerationLanguage", &a.GenerationLanguage)
+			delete(rawMsg, key)
+		case "imageName":
+			err = unpopulate(val, "ImageName", &a.ImageName)
+			delete(rawMsg, key)
+		case "imageTag":
+			err = unpopulate(val, "ImageTag", &a.ImageTag)
+			delete(rawMsg, key)
+		case "languageVersion":
+			err = unpopulate(val, "LanguageVersion", &a.LanguageVersion)
+			delete(rawMsg, key)
+		case "manifestGenerationMode":
+			err = unpopulate(val, "ManifestGenerationMode", &a.ManifestGenerationMode)
+			delete(rawMsg, key)
+		case "manifestOutputDirectory":
+			err = unpopulate(val, "ManifestOutputDirectory", &a.ManifestOutputDirectory)
+			delete(rawMsg, key)
+		case "manifestType":
+			err = unpopulate(val, "ManifestType", &a.ManifestType)
+			delete(rawMsg, key)
+		case "namespace":
+			err = unpopulate(val, "Namespace", &a.Namespace)
+			delete(rawMsg, key)
+		case "port":
+			err = unpopulate(val, "Port", &a.Port)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type DeleteWorkflowResponse.
 func (d DeleteWorkflowResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -666,6 +741,7 @@ func (w *WorkflowListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type WorkflowProperties.
 func (w WorkflowProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "artifactGenerationProperties", w.ArtifactGenerationProperties)
 	populate(objectMap, "githubWorkflowProfile", w.GithubWorkflowProfile)
 	return json.Marshal(objectMap)
 }
@@ -679,6 +755,9 @@ func (w *WorkflowProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "artifactGenerationProperties":
+			err = unpopulate(val, "ArtifactGenerationProperties", &w.ArtifactGenerationProperties)
+			delete(rawMsg, key)
 		case "githubWorkflowProfile":
 			err = unpopulate(val, "GithubWorkflowProfile", &w.GithubWorkflowProfile)
 			delete(rawMsg, key)
@@ -695,6 +774,7 @@ func (w WorkflowRun) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "lastRunAt", w.LastRunAt)
 	populate(objectMap, "succeeded", w.Succeeded)
+	populate(objectMap, "workflowRunStatus", w.WorkflowRunStatus)
 	populate(objectMap, "workflowRunURL", w.WorkflowRunURL)
 	return json.Marshal(objectMap)
 }
@@ -713,6 +793,9 @@ func (w *WorkflowRun) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "succeeded":
 			err = unpopulate(val, "Succeeded", &w.Succeeded)
+			delete(rawMsg, key)
+		case "workflowRunStatus":
+			err = unpopulate(val, "WorkflowRunStatus", &w.WorkflowRunStatus)
 			delete(rawMsg, key)
 		case "workflowRunURL":
 			err = unpopulate(val, "WorkflowRunURL", &w.WorkflowRunURL)

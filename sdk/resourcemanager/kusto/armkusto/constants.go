@@ -11,7 +11,7 @@ package armkusto
 
 const (
 	moduleName    = "armkusto"
-	moduleVersion = "v1.3.1"
+	moduleVersion = "v2.0.0"
 )
 
 // AzureSKUName - SKU name.
@@ -593,11 +593,9 @@ func PossibleKindValues() []Kind {
 type LanguageExtensionImageName string
 
 const (
-	LanguageExtensionImageNamePython3108                    LanguageExtensionImageName = "Python3_10_8"
-	LanguageExtensionImageNamePython365                     LanguageExtensionImageName = "Python3_6_5"
-	LanguageExtensionImageNamePython3912                    LanguageExtensionImageName = "Python3_9_12"
-	LanguageExtensionImageNamePython3912IncludeDeepLearning LanguageExtensionImageName = "Python3_9_12IncludeDeepLearning"
-	LanguageExtensionImageNameR                             LanguageExtensionImageName = "R"
+	LanguageExtensionImageNamePython3108 LanguageExtensionImageName = "Python3_10_8"
+	LanguageExtensionImageNamePython365  LanguageExtensionImageName = "Python3_6_5"
+	LanguageExtensionImageNameR          LanguageExtensionImageName = "R"
 )
 
 // PossibleLanguageExtensionImageNameValues returns the possible values for the LanguageExtensionImageName const type.
@@ -605,8 +603,6 @@ func PossibleLanguageExtensionImageNameValues() []LanguageExtensionImageName {
 	return []LanguageExtensionImageName{
 		LanguageExtensionImageNamePython3108,
 		LanguageExtensionImageNamePython365,
-		LanguageExtensionImageNamePython3912,
-		LanguageExtensionImageNamePython3912IncludeDeepLearning,
 		LanguageExtensionImageNameR,
 	}
 }
@@ -624,6 +620,22 @@ func PossibleLanguageExtensionNameValues() []LanguageExtensionName {
 	return []LanguageExtensionName{
 		LanguageExtensionNamePYTHON,
 		LanguageExtensionNameR,
+	}
+}
+
+// MigrationClusterRole - The role of the cluster in the migration process.
+type MigrationClusterRole string
+
+const (
+	MigrationClusterRoleDestination MigrationClusterRole = "Destination"
+	MigrationClusterRoleSource      MigrationClusterRole = "Source"
+)
+
+// PossibleMigrationClusterRoleValues returns the possible values for the MigrationClusterRole const type.
+func PossibleMigrationClusterRoleValues() []MigrationClusterRole {
+	return []MigrationClusterRole{
+		MigrationClusterRoleDestination,
+		MigrationClusterRoleSource,
 	}
 }
 
@@ -745,6 +757,7 @@ const (
 	StateCreating    State = "Creating"
 	StateDeleted     State = "Deleted"
 	StateDeleting    State = "Deleting"
+	StateMigrated    State = "Migrated"
 	StateRunning     State = "Running"
 	StateStarting    State = "Starting"
 	StateStopped     State = "Stopped"
@@ -759,6 +772,7 @@ func PossibleStateValues() []State {
 		StateCreating,
 		StateDeleted,
 		StateDeleting,
+		StateMigrated,
 		StateRunning,
 		StateStarting,
 		StateStopped,

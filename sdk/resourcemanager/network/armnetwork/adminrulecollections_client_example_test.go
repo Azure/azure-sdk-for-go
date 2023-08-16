@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerAdminRuleCollectionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerAdminRuleCollectionList.json
 func ExampleAdminRuleCollectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,6 +55,7 @@ func ExampleAdminRuleCollectionsClient_NewListPager() {
 		// 						NetworkGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/testGroup"),
 		// 				}},
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 				ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 			},
 		// 			SystemData: &armnetwork.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
@@ -69,7 +70,7 @@ func ExampleAdminRuleCollectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerAdminRuleCollectionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerAdminRuleCollectionGet.json
 func ExampleAdminRuleCollectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,6 +99,7 @@ func ExampleAdminRuleCollectionsClient_Get() {
 	// 				NetworkGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/testGroup"),
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},
 	// 	SystemData: &armnetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
@@ -110,7 +112,7 @@ func ExampleAdminRuleCollectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerAdminRuleCollectionPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerAdminRuleCollectionPut.json
 func ExampleAdminRuleCollectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,6 +149,7 @@ func ExampleAdminRuleCollectionsClient_CreateOrUpdate() {
 	// 				NetworkGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/testGroup"),
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},
 	// 	SystemData: &armnetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
@@ -159,7 +162,7 @@ func ExampleAdminRuleCollectionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerAdminRuleCollectionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerAdminRuleCollectionDelete.json
 func ExampleAdminRuleCollectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

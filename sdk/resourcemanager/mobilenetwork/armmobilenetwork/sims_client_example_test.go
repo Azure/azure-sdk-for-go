@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/eba34b9c764e877193788a87a81cebfa915eb858/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimDelete.json
 func ExampleSimsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleSimsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/eba34b9c764e877193788a87a81cebfa915eb858/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGet.json
 func ExampleSimsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleSimsClient_Get() {
 	// res.Sim = armmobilenetwork.Sim{
 	// 	Name: to.Ptr("testSim"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/simGroups/sims"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup/sims/testSim"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup/sims/testSim"),
 	// 	SystemData: &armmobilenetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -75,20 +75,20 @@ func ExampleSimsClient_Get() {
 	// 		InternationalMobileSubscriberIdentity: to.Ptr("00000"),
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 		SimPolicy: &armmobilenetwork.SimPolicyResourceID{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
 	// 		},
 	// 		SimState: to.Ptr(armmobilenetwork.SimStateEnabled),
 	// 		SiteProvisioningState: map[string]*armmobilenetwork.SiteProvisioningState{
-	// 			"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
-	// 			"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite2": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite2": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
 	// 		},
 	// 		StaticIPConfiguration: []*armmobilenetwork.SimStaticIPProperties{
 	// 			{
 	// 				AttachedDataNetwork: &armmobilenetwork.AttachedDataNetworkResourceID{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
 	// 				},
 	// 				Slice: &armmobilenetwork.SliceResourceID{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 	// 				},
 	// 				StaticIP: &armmobilenetwork.SimStaticIPPropertiesStaticIP{
 	// 					IPv4Address: to.Ptr("2.4.0.1"),
@@ -98,7 +98,7 @@ func ExampleSimsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/eba34b9c764e877193788a87a81cebfa915eb858/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimCreate.json
 func ExampleSimsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,15 +115,15 @@ func ExampleSimsClient_BeginCreateOrUpdate() {
 			IntegratedCircuitCardIdentifier:       to.Ptr("8900000000000000000"),
 			InternationalMobileSubscriberIdentity: to.Ptr("00000"),
 			SimPolicy: &armmobilenetwork.SimPolicyResourceID{
-				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
+				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
 			},
 			StaticIPConfiguration: []*armmobilenetwork.SimStaticIPProperties{
 				{
 					AttachedDataNetwork: &armmobilenetwork.AttachedDataNetworkResourceID{
-						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
 					},
 					Slice: &armmobilenetwork.SliceResourceID{
-						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 					},
 					StaticIP: &armmobilenetwork.SimStaticIPPropertiesStaticIP{
 						IPv4Address: to.Ptr("2.4.0.1"),
@@ -146,7 +146,7 @@ func ExampleSimsClient_BeginCreateOrUpdate() {
 	// res.Sim = armmobilenetwork.Sim{
 	// 	Name: to.Ptr("testSim"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/simGroups/sims"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup/sims/testSim"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup/sims/testSim"),
 	// 	SystemData: &armmobilenetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -161,20 +161,20 @@ func ExampleSimsClient_BeginCreateOrUpdate() {
 	// 		InternationalMobileSubscriberIdentity: to.Ptr("00000"),
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 		SimPolicy: &armmobilenetwork.SimPolicyResourceID{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
 	// 		},
 	// 		SimState: to.Ptr(armmobilenetwork.SimStateEnabled),
 	// 		SiteProvisioningState: map[string]*armmobilenetwork.SiteProvisioningState{
-	// 			"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
-	// 			"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite2": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite2": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
 	// 		},
 	// 		StaticIPConfiguration: []*armmobilenetwork.SimStaticIPProperties{
 	// 			{
 	// 				AttachedDataNetwork: &armmobilenetwork.AttachedDataNetworkResourceID{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
 	// 				},
 	// 				Slice: &armmobilenetwork.SliceResourceID{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 	// 				},
 	// 				StaticIP: &armmobilenetwork.SimStaticIPPropertiesStaticIP{
 	// 					IPv4Address: to.Ptr("2.4.0.1"),
@@ -184,7 +184,7 @@ func ExampleSimsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimListBySimGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/eba34b9c764e877193788a87a81cebfa915eb858/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimListBySimGroup.json
 func ExampleSimsClient_NewListByGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleSimsClient_NewListByGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("testSim"),
 		// 			Type: to.Ptr("Microsoft.MobileNetwork/simGroups/sims"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup/sims/testSim"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup/sims/testSim"),
 		// 			SystemData: &armmobilenetwork.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
@@ -226,20 +226,20 @@ func ExampleSimsClient_NewListByGroupPager() {
 		// 				InternationalMobileSubscriberIdentity: to.Ptr("00000"),
 		// 				ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 		// 				SimPolicy: &armmobilenetwork.SimPolicyResourceID{
-		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
+		// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
 		// 				},
 		// 				SimState: to.Ptr(armmobilenetwork.SimStateEnabled),
 		// 				SiteProvisioningState: map[string]*armmobilenetwork.SiteProvisioningState{
-		// 					"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
-		// 					"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite2": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
+		// 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
+		// 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite2": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
 		// 				},
 		// 				StaticIPConfiguration: []*armmobilenetwork.SimStaticIPProperties{
 		// 					{
 		// 						AttachedDataNetwork: &armmobilenetwork.AttachedDataNetworkResourceID{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
 		// 						},
 		// 						Slice: &armmobilenetwork.SliceResourceID{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 		// 						},
 		// 						StaticIP: &armmobilenetwork.SimStaticIPPropertiesStaticIP{
 		// 							IPv4Address: to.Ptr("2.4.0.1"),
@@ -251,7 +251,7 @@ func ExampleSimsClient_NewListByGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimBulkUpload.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/eba34b9c764e877193788a87a81cebfa915eb858/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimBulkUpload.json
 func ExampleSimsClient_BeginBulkUpload() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,15 +271,15 @@ func ExampleSimsClient_BeginBulkUpload() {
 					IntegratedCircuitCardIdentifier:       to.Ptr("8900000000000000000"),
 					InternationalMobileSubscriberIdentity: to.Ptr("00000"),
 					SimPolicy: &armmobilenetwork.SimPolicyResourceID{
-						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
 					},
 					StaticIPConfiguration: []*armmobilenetwork.SimStaticIPProperties{
 						{
 							AttachedDataNetwork: &armmobilenetwork.AttachedDataNetworkResourceID{
-								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
+								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
 							},
 							Slice: &armmobilenetwork.SliceResourceID{
-								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 							},
 							StaticIP: &armmobilenetwork.SimStaticIPPropertiesStaticIP{
 								IPv4Address: to.Ptr("2.4.0.1"),
@@ -296,15 +296,15 @@ func ExampleSimsClient_BeginBulkUpload() {
 					IntegratedCircuitCardIdentifier:       to.Ptr("8900000000000000001"),
 					InternationalMobileSubscriberIdentity: to.Ptr("00000"),
 					SimPolicy: &armmobilenetwork.SimPolicyResourceID{
-						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
 					},
 					StaticIPConfiguration: []*armmobilenetwork.SimStaticIPProperties{
 						{
 							AttachedDataNetwork: &armmobilenetwork.AttachedDataNetworkResourceID{
-								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
+								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
 							},
 							Slice: &armmobilenetwork.SliceResourceID{
-								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 							},
 							StaticIP: &armmobilenetwork.SimStaticIPPropertiesStaticIP{
 								IPv4Address: to.Ptr("2.4.0.2"),
@@ -334,7 +334,7 @@ func ExampleSimsClient_BeginBulkUpload() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimBulkDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/eba34b9c764e877193788a87a81cebfa915eb858/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimBulkDelete.json
 func ExampleSimsClient_BeginBulkDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,7 +369,7 @@ func ExampleSimsClient_BeginBulkDelete() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimBulkUploadEncrypted.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/eba34b9c764e877193788a87a81cebfa915eb858/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimBulkUploadEncrypted.json
 func ExampleSimsClient_BeginBulkUploadEncrypted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -392,15 +392,15 @@ func ExampleSimsClient_BeginBulkUploadEncrypted() {
 					IntegratedCircuitCardIdentifier:       to.Ptr("8900000000000000000"),
 					InternationalMobileSubscriberIdentity: to.Ptr("00000"),
 					SimPolicy: &armmobilenetwork.SimPolicyResourceID{
-						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
 					},
 					StaticIPConfiguration: []*armmobilenetwork.SimStaticIPProperties{
 						{
 							AttachedDataNetwork: &armmobilenetwork.AttachedDataNetworkResourceID{
-								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
+								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
 							},
 							Slice: &armmobilenetwork.SliceResourceID{
-								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 							},
 							StaticIP: &armmobilenetwork.SimStaticIPPropertiesStaticIP{
 								IPv4Address: to.Ptr("2.4.0.1"),
@@ -416,15 +416,15 @@ func ExampleSimsClient_BeginBulkUploadEncrypted() {
 					IntegratedCircuitCardIdentifier:       to.Ptr("8900000000000000001"),
 					InternationalMobileSubscriberIdentity: to.Ptr("00000"),
 					SimPolicy: &armmobilenetwork.SimPolicyResourceID{
-						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
 					},
 					StaticIPConfiguration: []*armmobilenetwork.SimStaticIPProperties{
 						{
 							AttachedDataNetwork: &armmobilenetwork.AttachedDataNetworkResourceID{
-								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
+								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
 							},
 							Slice: &armmobilenetwork.SliceResourceID{
-								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 							},
 							StaticIP: &armmobilenetwork.SimStaticIPPropertiesStaticIP{
 								IPv4Address: to.Ptr("2.4.0.2"),

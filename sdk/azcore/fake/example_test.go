@@ -49,14 +49,17 @@ func ExampleResponder() {
 	// a Responder is used to build a scalar response
 	resp := fake.Responder[WidgetResponse]{}
 
-	// here we set the instance of Widget the Responder is to return
-	resp.Set(WidgetResponse{
-		Widget{ID: 123, Shape: "triangle"},
-	})
+	// optional HTTP headers can be included in the raw response
+	header := http.Header{}
+	header.Set("custom-header1", "value1")
+	header.Set("custom-header2", "value2")
 
-	// optional HTTP headers can also be included in the raw response
-	resp.SetHeader("custom-header1", "value1")
-	resp.SetHeader("custom-header2", "value2")
+	// here we set the instance of Widget the Responder is to return
+	resp.SetResponse(http.StatusOK, WidgetResponse{
+		Widget{ID: 123, Shape: "triangle"},
+	}, &fake.SetResponseOptions{
+		Header: header,
+	})
 }
 
 func ExampleErrorResponder() {
@@ -67,7 +70,7 @@ func ExampleErrorResponder() {
 	errResp.SetError(errors.New("the system is down"))
 
 	// to return an *azcore.ResponseError, use SetResponseError
-	errResp.SetResponseError("ErrorCodeConflict", http.StatusConflict)
+	errResp.SetResponseError(http.StatusConflict, "ErrorCodeConflict")
 
 	// ErrorResponder returns a singular error, so calling Set* APIs overwrites any previous value
 }
@@ -80,14 +83,14 @@ func ExamplePagerResponder() {
 
 	// use AddPage to add one or more pages to the response.
 	// responses are returned in the order in which they were added.
-	pagerResp.AddPage(WidgetListResponse{
+	pagerResp.AddPage(http.StatusOK, WidgetListResponse{
 		Widgets: []Widget{
 			{ID: 1, Shape: "circle"},
 			{ID: 2, Shape: "square"},
 			{ID: 3, Shape: "triangle"},
 		},
 	}, nil)
-	pagerResp.AddPage(WidgetListResponse{
+	pagerResp.AddPage(http.StatusOK, WidgetListResponse{
 		Widgets: []Widget{
 			{ID: 4, Shape: "rectangle"},
 			{ID: 5, Shape: "rhombus"},
@@ -98,7 +101,7 @@ func ExamplePagerResponder() {
 	// this can be used to simulate an error during paging.
 	pagerResp.AddError(errors.New("network too slow"))
 
-	pagerResp.AddPage(WidgetListResponse{
+	pagerResp.AddPage(http.StatusOK, WidgetListResponse{
 		Widgets: []Widget{
 			{ID: 6, Shape: "trapezoid"},
 		},
@@ -115,20 +118,20 @@ func ExamplePollerResponder() {
 	// to the sequence of responses. this is to simulate polling on a LRO.
 	// non-terminal responses are optional. exclude them to simulate a LRO
 	// that synchronously completes.
-	pollerResp.AddNonTerminalResponse(nil)
+	pollerResp.AddNonTerminalResponse(http.StatusOK, nil)
 
 	// non-terminal errors can also be included in the sequence of responses.
 	// use this to simulate an error during polling.
-	pollerResp.AddNonTerminalError(errors.New("flaky network"))
+	pollerResp.AddPollingError(errors.New("flaky network"))
 
 	// use SetTerminalResponse to successfully terminate the long-running operation.
 	// the provided value will be returned as the terminal response.
-	pollerResp.SetTerminalResponse(WidgetResponse{
+	pollerResp.SetTerminalResponse(http.StatusOK, WidgetResponse{
 		Widget: Widget{
 			ID:    987,
 			Shape: "dodecahedron",
 		},
-	})
+	}, nil)
 }
 
 func ExamplePollerResponder_SetTerminalError() {
@@ -139,7 +142,7 @@ func ExamplePollerResponder_SetTerminalError() {
 
 	// use SetTerminalError to terminate the long-running operation with an error.
 	// this returns an *azcore.ResponseError as the terminal response.
-	pollerResp.SetTerminalError("NoMoreWidgets", http.StatusBadRequest)
+	pollerResp.SetTerminalError(http.StatusBadRequest, "NoMoreWidgets")
 
 	// note that SetTerminalResponse and SetTerminalError are meant to be mutually exclusive.
 	// in the event that both are called, the result from SetTerminalError will be used.

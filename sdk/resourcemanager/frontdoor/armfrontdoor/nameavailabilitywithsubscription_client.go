@@ -48,7 +48,7 @@ func NewNameAvailabilityWithSubscriptionClient(subscriptionID string, credential
 // Check - Check the availability of a Front Door subdomain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2021-06-01
 //   - checkFrontDoorNameAvailabilityInput - Input to check.
 //   - options - NameAvailabilityWithSubscriptionClientCheckOptions contains the optional parameters for the NameAvailabilityWithSubscriptionClient.Check
 //     method.
@@ -79,7 +79,7 @@ func (client *NameAvailabilityWithSubscriptionClient) checkCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, checkFrontDoorNameAvailabilityInput)

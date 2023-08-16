@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Schedules_ListByPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Schedules_ListByPool.json
 func ExampleSchedulesClient_NewListByPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleSchedulesClient_NewListByPoolPager() {
 		// 			Properties: &armdevcenter.ScheduleProperties{
 		// 				Type: to.Ptr(armdevcenter.ScheduledTypeStopDevBox),
 		// 				Frequency: to.Ptr(armdevcenter.ScheduledFrequencyDaily),
-		// 				State: to.Ptr(armdevcenter.EnableStatusEnabled),
+		// 				State: to.Ptr(armdevcenter.ScheduleEnableStatusEnabled),
 		// 				Time: to.Ptr("17:30"),
 		// 				TimeZone: to.Ptr("America/Los_Angeles"),
 		// 				ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
@@ -67,7 +67,7 @@ func ExampleSchedulesClient_NewListByPoolPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Schedules_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Schedules_Get.json
 func ExampleSchedulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleSchedulesClient_Get() {
 	// 	Properties: &armdevcenter.ScheduleProperties{
 	// 		Type: to.Ptr(armdevcenter.ScheduledTypeStopDevBox),
 	// 		Frequency: to.Ptr(armdevcenter.ScheduledFrequencyDaily),
-	// 		State: to.Ptr(armdevcenter.EnableStatusEnabled),
+	// 		State: to.Ptr(armdevcenter.ScheduleEnableStatusEnabled),
 	// 		Time: to.Ptr("17:30"),
 	// 		TimeZone: to.Ptr("America/Los_Angeles"),
 	// 		ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
@@ -108,7 +108,7 @@ func ExampleSchedulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Schedules_CreateDailyShutdownPoolSchedule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Schedules_CreateDailyShutdownPoolSchedule.json
 func ExampleSchedulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleSchedulesClient_BeginCreateOrUpdate() {
 		Properties: &armdevcenter.ScheduleProperties{
 			Type:      to.Ptr(armdevcenter.ScheduledTypeStopDevBox),
 			Frequency: to.Ptr(armdevcenter.ScheduledFrequencyDaily),
-			State:     to.Ptr(armdevcenter.EnableStatusEnabled),
+			State:     to.Ptr(armdevcenter.ScheduleEnableStatusEnabled),
 			Time:      to.Ptr("17:30"),
 			TimeZone:  to.Ptr("America/Los_Angeles"),
 		},
@@ -153,7 +153,7 @@ func ExampleSchedulesClient_BeginCreateOrUpdate() {
 	// 	Properties: &armdevcenter.ScheduleProperties{
 	// 		Type: to.Ptr(armdevcenter.ScheduledTypeStopDevBox),
 	// 		Frequency: to.Ptr(armdevcenter.ScheduledFrequencyDaily),
-	// 		State: to.Ptr(armdevcenter.EnableStatusEnabled),
+	// 		State: to.Ptr(armdevcenter.ScheduleEnableStatusEnabled),
 	// 		Time: to.Ptr("17:30"),
 	// 		TimeZone: to.Ptr("America/Los_Angeles"),
 	// 		ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
@@ -161,7 +161,7 @@ func ExampleSchedulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Schedules_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Schedules_Patch.json
 func ExampleSchedulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleSchedulesClient_BeginUpdate() {
 	// 	Properties: &armdevcenter.ScheduleProperties{
 	// 		Type: to.Ptr(armdevcenter.ScheduledTypeStopDevBox),
 	// 		Frequency: to.Ptr(armdevcenter.ScheduledFrequencyDaily),
-	// 		State: to.Ptr(armdevcenter.EnableStatusEnabled),
+	// 		State: to.Ptr(armdevcenter.ScheduleEnableStatusEnabled),
 	// 		Time: to.Ptr("17:30"),
 	// 		TimeZone: to.Ptr("America/Los_Angeles"),
 	// 		ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
@@ -210,7 +210,7 @@ func ExampleSchedulesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Schedules_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Schedules_Delete.json
 func ExampleSchedulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,6 +19,11 @@ type CustomLocationsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// CustomLocationsClientFindTargetResourceGroupResponse contains the response from method CustomLocationsClient.FindTargetResourceGroup.
+type CustomLocationsClientFindTargetResourceGroupResponse struct {
+	CustomLocationFindTargetResourceGroupResult
+}
+
 // CustomLocationsClientGetResponse contains the response from method CustomLocationsClient.Get.
 type CustomLocationsClientGetResponse struct {
 	CustomLocation
@@ -47,4 +52,29 @@ type CustomLocationsClientListOperationsResponse struct {
 // CustomLocationsClientUpdateResponse contains the response from method CustomLocationsClient.Update.
 type CustomLocationsClientUpdateResponse struct {
 	CustomLocation
+}
+
+// ResourceSyncRulesClientCreateOrUpdateResponse contains the response from method ResourceSyncRulesClient.BeginCreateOrUpdate.
+type ResourceSyncRulesClientCreateOrUpdateResponse struct {
+	ResourceSyncRule
+}
+
+// ResourceSyncRulesClientDeleteResponse contains the response from method ResourceSyncRulesClient.Delete.
+type ResourceSyncRulesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ResourceSyncRulesClientGetResponse contains the response from method ResourceSyncRulesClient.Get.
+type ResourceSyncRulesClientGetResponse struct {
+	ResourceSyncRule
+}
+
+// ResourceSyncRulesClientListByCustomLocationIDResponse contains the response from method ResourceSyncRulesClient.NewListByCustomLocationIDPager.
+type ResourceSyncRulesClientListByCustomLocationIDResponse struct {
+	ResourceSyncRuleListResult
+}
+
+// ResourceSyncRulesClientUpdateResponse contains the response from method ResourceSyncRulesClient.BeginUpdate.
+type ResourceSyncRulesClientUpdateResponse struct {
+	ResourceSyncRule
 }

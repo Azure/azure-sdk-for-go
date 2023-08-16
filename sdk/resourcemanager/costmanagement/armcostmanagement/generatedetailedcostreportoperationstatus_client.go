@@ -45,19 +45,10 @@ func NewGenerateDetailedCostReportOperationStatusClient(credential azcore.TokenC
 // response header.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2022-10-01
 //   - operationID - The target operation Id.
-//   - scope - The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription
-//     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for
-//     Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}'
-//     for EnrollmentAccount
-//     scope. Also, Modern Commerce Account scopes are '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for billingAccount
-//     scope,
-//     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billingProfile
-//     scope,
-//     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-//     for invoiceSection scope, and
-//     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+//   - scope - The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For details, see
+//     https://aka.ms/costmgmt/scopes.
 //   - options - GenerateDetailedCostReportOperationStatusClientGetOptions contains the optional parameters for the GenerateDetailedCostReportOperationStatusClient.Get
 //     method.
 func (client *GenerateDetailedCostReportOperationStatusClient) Get(ctx context.Context, operationID string, scope string, options *GenerateDetailedCostReportOperationStatusClientGetOptions) (GenerateDetailedCostReportOperationStatusClientGetResponse, error) {
@@ -88,7 +79,7 @@ func (client *GenerateDetailedCostReportOperationStatusClient) getCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

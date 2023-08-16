@@ -9,6 +9,12 @@
 
 package armdevhub
 
+// DeveloperHubServiceClientGeneratePreviewArtifactsResponse contains the response from method DeveloperHubServiceClient.GeneratePreviewArtifacts.
+type DeveloperHubServiceClientGeneratePreviewArtifactsResponse struct {
+	// Dockerfile and manifest artifacts generated as a preview are returned as a map<path string,content string>
+	Value map[string]*string
+}
+
 // DeveloperHubServiceClientGitHubOAuthCallbackResponse contains the response from method DeveloperHubServiceClient.GitHubOAuthCallback.
 type DeveloperHubServiceClientGitHubOAuthCallbackResponse struct {
 	GitHubOAuthResponse

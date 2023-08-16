@@ -11,6 +11,76 @@ package armmysqlflexibleservers
 
 import "time"
 
+// AdministratorListResult - A List of azure ad administrators.
+type AdministratorListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+
+	// The list of azure ad administrator of a server
+	Value []*AzureADAdministrator
+}
+
+// AdministratorProperties - The properties of an administrator.
+type AdministratorProperties struct {
+	// Type of the sever administrator.
+	AdministratorType *AdministratorType
+
+	// The resource id of the identity used for AAD Authentication.
+	IdentityResourceID *string
+
+	// Login name of the server administrator.
+	Login *string
+
+	// SID (object ID) of the server administrator.
+	Sid *string
+
+	// Tenant ID of the administrator.
+	TenantID *string
+}
+
+// AzureADAdministrator - Represents a Administrator.
+type AzureADAdministrator struct {
+	// The properties of an administrator.
+	Properties *AdministratorProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The system metadata relating to this resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AzureADAdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureADAdministratorsClient.BeginCreateOrUpdate
+// method.
+type AzureADAdministratorsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AzureADAdministratorsClientBeginDeleteOptions contains the optional parameters for the AzureADAdministratorsClient.BeginDelete
+// method.
+type AzureADAdministratorsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AzureADAdministratorsClientGetOptions contains the optional parameters for the AzureADAdministratorsClient.Get method.
+type AzureADAdministratorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureADAdministratorsClientListByServerOptions contains the optional parameters for the AzureADAdministratorsClient.NewListByServerPager
+// method.
+type AzureADAdministratorsClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
 // Backup - Storage Profile properties of a server
 type Backup struct {
 	// Backup retention days for the server.
@@ -23,6 +93,102 @@ type Backup struct {
 	EarliestRestoreDate *time.Time
 }
 
+// BackupAndExportClientBeginCreateOptions contains the optional parameters for the BackupAndExportClient.BeginCreate method.
+type BackupAndExportClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupAndExportClientValidateBackupOptions contains the optional parameters for the BackupAndExportClient.ValidateBackup
+// method.
+type BackupAndExportClientValidateBackupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupAndExportRequest - BackupAndExport API Request
+type BackupAndExportRequest struct {
+	// REQUIRED; Backup Settings
+	BackupSettings *BackupSettings
+
+	// REQUIRED; Backup Target Store Details
+	TargetDetails BackupStoreDetailsClassification
+}
+
+// BackupAndExportResponse - Represents BackupAndExport API Response
+type BackupAndExportResponse struct {
+	// End time
+	EndTime *time.Time
+
+	// The BackupAndExport operation error response.
+	Error *ErrorResponse
+
+	// Operation progress (0-100).
+	PercentComplete *float64
+
+	// The response properties of a backup and export operation.
+	Properties *BackupAndExportResponseProperties
+
+	// Start time
+	StartTime *time.Time
+
+	// The operation status
+	Status *OperationStatus
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BackupAndExportResponseProperties - BackupAndExport Response Properties
+type BackupAndExportResponseProperties struct {
+	// Metadata related to backup to be stored for restoring resource in key-value pairs.
+	BackupMetadata *string
+
+	// Data transferred in bytes
+	DataTransferredInBytes *int64
+
+	// Size of datasource in bytes
+	DatasourceSizeInBytes *int64
+}
+
+// BackupRequestBase is the base for all backup request.
+type BackupRequestBase struct {
+	// REQUIRED; Backup Settings
+	BackupSettings *BackupSettings
+}
+
+// BackupSettings - Backup Settings
+type BackupSettings struct {
+	// REQUIRED; The name of the backup.
+	BackupName *string
+
+	// Backup Format for the current backup. (CollatedFormat is INTERNAL – DO NOT USE)
+	BackupFormat *BackupFormat
+}
+
+// BackupStoreDetailsClassification provides polymorphic access to related types.
+// Call the interface's GetBackupStoreDetails() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BackupStoreDetails, *FullBackupStoreDetails
+type BackupStoreDetailsClassification interface {
+	// GetBackupStoreDetails returns the BackupStoreDetails content of the underlying type.
+	GetBackupStoreDetails() *BackupStoreDetails
+}
+
+// BackupStoreDetails - Details about the target where the backup content will be stored.
+type BackupStoreDetails struct {
+	// REQUIRED; Type of the specific object - used for deserializing
+	ObjectType *string
+}
+
+// GetBackupStoreDetails implements the BackupStoreDetailsClassification interface for type BackupStoreDetails.
+func (b *BackupStoreDetails) GetBackupStoreDetails() *BackupStoreDetails { return b }
+
 // BackupsClientGetOptions contains the optional parameters for the BackupsClient.Get method.
 type BackupsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -30,6 +196,11 @@ type BackupsClientGetOptions struct {
 
 // BackupsClientListByServerOptions contains the optional parameters for the BackupsClient.NewListByServerPager method.
 type BackupsClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsClientPutOptions contains the optional parameters for the BackupsClient.Put method.
+type BackupsClientPutOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -60,6 +231,12 @@ type CapabilityProperties struct {
 // CheckNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityClient.Execute
 // method.
 type CheckNameAvailabilityClientExecuteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CheckNameAvailabilityWithoutLocationClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityWithoutLocationClient.Execute
+// method.
+type CheckNameAvailabilityWithoutLocationClientExecuteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -107,6 +284,9 @@ type ConfigurationForBatchUpdateProperties struct {
 
 // ConfigurationListForBatchUpdate - A list of server configurations to update.
 type ConfigurationListForBatchUpdate struct {
+	// Whether to reset all server parameters to default.
+	ResetAllToDefault *ResetAllToDefault
+
 	// The list of server configurations.
 	Value []*ConfigurationForBatchUpdate
 }
@@ -122,6 +302,9 @@ type ConfigurationListResult struct {
 
 // ConfigurationProperties - The properties of a configuration.
 type ConfigurationProperties struct {
+	// Current value of the configuration.
+	CurrentValue *string
+
 	// Source of the configuration.
 	Source *ConfigurationSource
 
@@ -140,6 +323,9 @@ type ConfigurationProperties struct {
 	// READ-ONLY; Description of the configuration.
 	Description *string
 
+	// READ-ONLY; The link used to get the document from community or Azure site.
+	DocumentationLink *string
+
 	// READ-ONLY; If is the configuration pending restart or not.
 	IsConfigPendingRestart *IsConfigPendingRestart
 
@@ -153,6 +339,13 @@ type ConfigurationProperties struct {
 // ConfigurationsClientBeginBatchUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginBatchUpdate
 // method.
 type ConfigurationsClientBeginBatchUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginCreateOrUpdate
+// method.
+type ConfigurationsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -171,7 +364,14 @@ type ConfigurationsClientGetOptions struct {
 // ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.NewListByServerPager
 // method.
 type ConfigurationsClientListByServerOptions struct {
-	// placeholder for future optional parameters
+	// The keyword of the server configuration.
+	Keyword *string
+	// The page of the server configuration.
+	Page *int32
+	// The pageSize of the server configuration.
+	PageSize *int32
+	// The tags of the server configuration.
+	Tags *string
 }
 
 // DataEncryption - The date encryption for cmk.
@@ -348,6 +548,22 @@ type FirewallRulesClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
+// FullBackupStoreDetails is used for scenarios where backup data is streamed/copied over to a storage destination.
+type FullBackupStoreDetails struct {
+	// REQUIRED; Type of the specific object - used for deserializing
+	ObjectType *string
+
+	// REQUIRED; SASUriList of storage containers where backup data is to be streamed/copied.
+	SasURIList []*string
+}
+
+// GetBackupStoreDetails implements the BackupStoreDetailsClassification interface for type FullBackupStoreDetails.
+func (f *FullBackupStoreDetails) GetBackupStoreDetails() *BackupStoreDetails {
+	return &BackupStoreDetails{
+		ObjectType: f.ObjectType,
+	}
+}
+
 // GetPrivateDNSZoneSuffixClientExecuteOptions contains the optional parameters for the GetPrivateDNSZoneSuffixClient.Execute
 // method.
 type GetPrivateDNSZoneSuffixClientExecuteOptions struct {
@@ -375,7 +591,7 @@ type HighAvailability struct {
 // Identity - Properties to configure Identity for Bring your Own Keys
 type Identity struct {
 	// Type of managed service identity.
-	Type *string
+	Type *ManagedServiceIdentityType
 
 	// Metadata of user assigned identity.
 	UserAssignedIdentities map[string]any
@@ -390,6 +606,56 @@ type Identity struct {
 // LocationBasedCapabilitiesClientListOptions contains the optional parameters for the LocationBasedCapabilitiesClient.NewListPager
 // method.
 type LocationBasedCapabilitiesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogFile - Represents a logFile.
+type LogFile struct {
+	// The properties of a logFile.
+	Properties *LogFileProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The system metadata relating to this resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// LogFileListResult - A List of logFiles.
+type LogFileListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+
+	// The list of logFiles in a server
+	Value []*LogFile
+}
+
+// LogFileProperties - The properties of a logFile.
+type LogFileProperties struct {
+	// Creation timestamp of the log file.
+	CreatedTime *time.Time
+
+	// Last modified timestamp of the log file.
+	LastModifiedTime *time.Time
+
+	// The size in kb of the logFile.
+	SizeInKB *int64
+
+	// Type of the log file.
+	Type *string
+
+	// The url to download the log file from.
+	URL *string
+}
+
+// LogFilesClientListByServerOptions contains the optional parameters for the LogFilesClient.NewListByServerPager method.
+type LogFilesClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -437,7 +703,7 @@ type Network struct {
 	// Private DNS zone resource id.
 	PrivateDNSZoneResourceID *string
 
-	// READ-ONLY; Whether or not public network access is allowed for this server. Value is 'Disabled' when server has VNet integration.
+	// Whether or not public network access is allowed for this server. Value is 'Disabled' when server has VNet integration.
 	PublicNetworkAccess *EnableStatusEnum
 }
 
@@ -635,6 +901,12 @@ type ServerForUpdate struct {
 	Tags map[string]*string
 }
 
+// ServerGtidSetParameter - Server gtid set parameters.
+type ServerGtidSetParameter struct {
+	// The gtid set of server.
+	GtidSet *string
+}
+
 // ServerListResult - A list of servers.
 type ServerListResult struct {
 	// The link used to get the next page of operations.
@@ -721,6 +993,9 @@ type ServerPropertiesForUpdate struct {
 
 	// Storage related properties of a server.
 	Storage *Storage
+
+	// Server version.
+	Version *ServerVersion
 }
 
 // ServerRestartParameter - Server restart parameters.
@@ -755,6 +1030,12 @@ type ServersClientBeginDeleteOptions struct {
 
 // ServersClientBeginFailoverOptions contains the optional parameters for the ServersClient.BeginFailover method.
 type ServersClientBeginFailoverOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServersClientBeginResetGtidOptions contains the optional parameters for the ServersClient.BeginResetGtid method.
+type ServersClientBeginResetGtidOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -804,8 +1085,14 @@ type Storage struct {
 	// Enable Storage Auto Grow or not.
 	AutoGrow *EnableStatusEnum
 
+	// Enable IO Auto Scaling or not.
+	AutoIoScaling *EnableStatusEnum
+
 	// Storage IOPS for a server.
 	Iops *int32
+
+	// Enable Log On Disk or not.
+	LogOnDisk *EnableStatusEnum
 
 	// Max storage size allowed for a server.
 	StorageSizeGB *int32
@@ -881,6 +1168,18 @@ type UserAssignedIdentity struct {
 	PrincipalID *string
 }
 
+// ValidateBackupResponse - Represents ValidateBackup API Response
+type ValidateBackupResponse struct {
+	// The response properties of a pre backup operation.
+	Properties *ValidateBackupResponseProperties
+}
+
+// ValidateBackupResponseProperties - ValidateBackup Response Properties
+type ValidateBackupResponseProperties struct {
+	// Estimated no of storage containers required for resource data to be backed up.
+	NumberOfContainers *int32
+}
+
 // VirtualNetworkSubnetUsageParameter - Virtual network subnet usage parameter
 type VirtualNetworkSubnetUsageParameter struct {
 	// Virtual network resource id.
@@ -891,4 +1190,10 @@ type VirtualNetworkSubnetUsageParameter struct {
 type VirtualNetworkSubnetUsageResult struct {
 	// READ-ONLY; A list of delegated subnet usage
 	DelegatedSubnetsUsage []*DelegatedSubnetUsage
+
+	// READ-ONLY; The location name.
+	Location *string
+
+	// READ-ONLY; The subscription id.
+	SubscriptionID *string
 }

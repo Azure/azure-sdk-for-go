@@ -1,5 +1,17 @@
 # Release History
 
+## 1.2.0 (2023-05-26)
+### Features Added
+
+- New value `ActionTypeAnomalyScoring` added to enum type `ActionType`
+- New value `FrontDoorResourceStateMigrated`, `FrontDoorResourceStateMigrating` added to enum type `FrontDoorResourceState`
+- New function `*PoliciesClient.NewListBySubscriptionPager(*PoliciesClientListBySubscriptionOptions) *runtime.Pager[PoliciesClientListBySubscriptionResponse]`
+- New function `*PoliciesClient.BeginUpdate(context.Context, string, string, TagsObject, *PoliciesClientBeginUpdateOptions) (*runtime.Poller[PoliciesClientUpdateResponse], error)`
+- New struct `DefaultErrorResponse`
+- New struct `DefaultErrorResponseError`
+- New field `ExtendedProperties` in struct `Properties`
+
+
 ## 1.1.0 (2023-03-28)
 ### Features Added
 

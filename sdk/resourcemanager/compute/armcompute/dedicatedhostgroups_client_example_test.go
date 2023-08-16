@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
 func ExampleDedicatedHostGroupsClient_CreateOrUpdate_createOrUpdateADedicatedHostGroupWithUltraSsdSupport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleDedicatedHostGroupsClient_CreateOrUpdate_createOrUpdateADedicatedHos
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
 func ExampleDedicatedHostGroupsClient_CreateOrUpdate_createOrUpdateADedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,8 +118,8 @@ func ExampleDedicatedHostGroupsClient_CreateOrUpdate_createOrUpdateADedicatedHos
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroups_Update_MaximumSet_Gen.json
-func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupsUpdateMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_Update_MaximumSet_Gen.json
+func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -208,8 +208,8 @@ func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupsUpdateMaximumSet
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroups_Update_MinimumSet_Gen.json
-func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupsUpdateMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_Update_MinimumSet_Gen.json
+func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -231,8 +231,8 @@ func ExampleDedicatedHostGroupsClient_Update_dedicatedHostGroupsUpdateMinimumSet
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroups_Delete_MaximumSet_Gen.json
-func ExampleDedicatedHostGroupsClient_Delete_dedicatedHostGroupsDeleteMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_Delete_MaximumSet_Gen.json
+func ExampleDedicatedHostGroupsClient_Delete_dedicatedHostGroupDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -248,8 +248,8 @@ func ExampleDedicatedHostGroupsClient_Delete_dedicatedHostGroupsDeleteMaximumSet
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroups_Delete_MinimumSet_Gen.json
-func ExampleDedicatedHostGroupsClient_Delete_dedicatedHostGroupsDeleteMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_Delete_MinimumSet_Gen.json
+func ExampleDedicatedHostGroupsClient_Delete_dedicatedHostGroupDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -265,7 +265,7 @@ func ExampleDedicatedHostGroupsClient_Delete_dedicatedHostGroupsDeleteMinimumSet
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroup_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_Get.json
 func ExampleDedicatedHostGroupsClient_Get_createADedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,6 +285,7 @@ func ExampleDedicatedHostGroupsClient_Get_createADedicatedHostGroup() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DedicatedHostGroup = armcompute.DedicatedHostGroup{
 	// 	Name: to.Ptr("myDedicatedHostGroup"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup"),
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"{tagName}": to.Ptr("{tagValue}"),
@@ -352,7 +353,7 @@ func ExampleDedicatedHostGroupsClient_Get_createADedicatedHostGroup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroup_Get_UltraSSDEnabledDedicatedHostGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_Get_UltraSSDEnabledDedicatedHostGroup.json
 func ExampleDedicatedHostGroupsClient_Get_createAnUltraSsdEnabledDedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -372,6 +373,7 @@ func ExampleDedicatedHostGroupsClient_Get_createAnUltraSsdEnabledDedicatedHostGr
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DedicatedHostGroup = armcompute.DedicatedHostGroup{
 	// 	Name: to.Ptr("myDedicatedHostGroup"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup"),
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"{tagName}": to.Ptr("{tagValue}"),
@@ -417,8 +419,8 @@ func ExampleDedicatedHostGroupsClient_Get_createAnUltraSsdEnabledDedicatedHostGr
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroups_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleDedicatedHostGroupsClient_NewListByResourceGroupPager_dedicatedHostGroupsListByResourceGroupMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleDedicatedHostGroupsClient_NewListByResourceGroupPager_dedicatedHostGroupListByResourceGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -485,8 +487,8 @@ func ExampleDedicatedHostGroupsClient_NewListByResourceGroupPager_dedicatedHostG
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroups_ListByResourceGroup_MinimumSet_Gen.json
-func ExampleDedicatedHostGroupsClient_NewListByResourceGroupPager_dedicatedHostGroupsListByResourceGroupMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_ListByResourceGroup_MinimumSet_Gen.json
+func ExampleDedicatedHostGroupsClient_NewListByResourceGroupPager_dedicatedHostGroupListByResourceGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -510,14 +512,15 @@ func ExampleDedicatedHostGroupsClient_NewListByResourceGroupPager_dedicatedHostG
 		// page.DedicatedHostGroupListResult = armcompute.DedicatedHostGroupListResult{
 		// 	Value: []*armcompute.DedicatedHostGroup{
 		// 		{
+		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup"),
 		// 			Location: to.Ptr("westus"),
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroups_ListBySubscription_MaximumSet_Gen.json
-func ExampleDedicatedHostGroupsClient_NewListBySubscriptionPager_dedicatedHostGroupsListBySubscriptionMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_ListBySubscription_MaximumSet_Gen.json
+func ExampleDedicatedHostGroupsClient_NewListBySubscriptionPager_dedicatedHostGroupListBySubscriptionMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -584,8 +587,8 @@ func ExampleDedicatedHostGroupsClient_NewListBySubscriptionPager_dedicatedHostGr
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroups_ListBySubscription_MinimumSet_Gen.json
-func ExampleDedicatedHostGroupsClient_NewListBySubscriptionPager_dedicatedHostGroupsListBySubscriptionMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_ListBySubscription_MinimumSet_Gen.json
+func ExampleDedicatedHostGroupsClient_NewListBySubscriptionPager_dedicatedHostGroupListBySubscriptionMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -609,6 +612,7 @@ func ExampleDedicatedHostGroupsClient_NewListBySubscriptionPager_dedicatedHostGr
 		// page.DedicatedHostGroupListResult = armcompute.DedicatedHostGroupListResult{
 		// 	Value: []*armcompute.DedicatedHostGroup{
 		// 		{
+		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup"),
 		// 			Location: to.Ptr("westus"),
 		// 	}},
 		// }

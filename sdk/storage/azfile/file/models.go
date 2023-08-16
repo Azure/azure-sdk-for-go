@@ -34,6 +34,13 @@ type SMBProperties = exported.SMBProperties
 // The subset of attributes is listed at: https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties#file-system-attributes.
 type NTFSFileAttributes = exported.NTFSFileAttributes
 
+// ParseNTFSFileAttributes parses the file attributes from *string to *NTFSFileAttributes.
+// It can be used to convert the file attributes to *NTFSFileAttributes where it is returned as *string type in the response.
+// It returns an error for any unknown file attribute.
+func ParseNTFSFileAttributes(attributes *string) (*NTFSFileAttributes, error) {
+	return exported.ParseNTFSFileAttributes(attributes)
+}
+
 // Permissions contains the optional parameters for the permissions on the file.
 type Permissions = exported.Permissions
 

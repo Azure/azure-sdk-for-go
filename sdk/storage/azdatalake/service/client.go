@@ -113,7 +113,7 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobSharedKey, err := cred.ConvertToBlobSharedKey()
+	blobSharedKey, err := exported.ConvertToBlobSharedKey(cred)
 	if err != nil {
 		return nil, err
 	}

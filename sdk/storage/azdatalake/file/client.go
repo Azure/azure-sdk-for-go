@@ -125,7 +125,7 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobSharedKey, err := cred.ConvertToBlobSharedKey()
+	blobSharedKey, err := exported.ConvertToBlobSharedKey(cred)
 	if err != nil {
 		return nil, err
 	}
@@ -244,7 +244,7 @@ func (f *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 	if f.identityCredential() != nil {
 		newBlobClient, err = blockblob.NewClient(newBlobURL, *f.identityCredential(), nil)
 	} else if f.sharedKey() != nil {
-		blobSharedKey, _ := f.sharedKey().ConvertToBlobSharedKey()
+		blobSharedKey, _ := exported.ConvertToBlobSharedKey(f.sharedKey())
 		newBlobClient, err = blockblob.NewClientWithSharedKeyCredential(newBlobURL, blobSharedKey, nil)
 	} else {
 		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, nil)

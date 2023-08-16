@@ -8,9 +8,15 @@ package azidentity
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
+)
+
+const (
+	mockClientInfo = "eyJ1aWQiOiJjNzNjNmYyOC1hZTVmLTQxM2QtYTlhMi1lMTFlNWFmNjY4ZjgiLCJ1dGlkIjoiZTBiZDIzMjEtMDdmYS00Y2YwLTg3YjgtMDBhYTJhNzQ3MzI5In0"
+	mockIDT        = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imwzc1EtNTBjQ0g0eEJWWkxIVEd3blNSNzY4MCJ9.eyJhdWQiOiIwNGIwNzc5NS04ZGRiLTQ2MWEtYmJlZS0wMmY5ZTFiZjdiNDYiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vYzU0ZmFjODgtM2RkMy00NjFmLWE3YzQtOGEzNjhlMDM0MGIzL3YyLjAiLCJpYXQiOjE2MzcxOTEyMTIsIm5iZiI6MTYzNzE5MTIxMiwiZXhwIjoxNjM3MTk1MTEyLCJhaW8iOiJBVVFBdS84VEFBQUFQMExOZGNRUXQxNmJoSkFreXlBdjFoUGJuQVhtT0o3RXJDVHV4N0hNTjhHd2VMb2FYMWR1cDJhQ2Y0a0p5bDFzNmovSzF5R05DZmVIQlBXM21QUWlDdz09IiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTBiZDIzMjEtMDdmYS00Y2YwLTg3YjgtMDBhYTJhNzQ3MzI5LyIsIm5hbWUiOiJJZGVudGl0eSBUZXN0IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJpZGVudGl0eXRlc3R1c2VyQGF6dXJlc2Rrb3V0bG9vay5vbm1pY3Jvc29mdC5jb20iLCJyaCI6IjAuQVMwQWlLeFB4ZE05SDBhbnhJbzJqZ05BczVWM3NBVGJqUnBHdS00Qy1lR19lMFl0QUxFLiIsInN1YiI6ImMxYTBsY2xtbWxCYW9wc0MwVmlaLVpPMjFCT2dSUXE3SG9HRUtOOXloZnMiLCJ0aWQiOiJjNTRmYWM4OC0zZGQzLTQ2MWYtYTdjNC04YTM2OGUwMzQwYjMiLCJ1dGkiOiI5TXFOSWI5WjdrQy1QVHRtai11X0FBIiwidmVyIjoiMi4wIn0.hh5Exz9MBjTXrTuTZnz7vceiuQjcC_oRSTeBIC9tYgSO2c2sqQRpZi91qBZFQD9okayLPPKcwqXgEJD9p0-c4nUR5UQN7YSeDLmYtZUYMG79EsA7IMiQaiy94AyIe2E-oBDcLwFycGwh1iIOwwOwjbanmu2Dx3HfQx831lH9uVjagf0Aow0wTkTVCsedGSZvG-cRUceFLj-kFN-feFH3NuScuOfLR2Magf541pJda7X7oStwL_RNUFqjJFTdsiFV4e-VHK5qo--3oPU06z0rS9bosj0pFSATIVHrrS4gY7jiSvgMbG837CDBQkz5b08GUN5GlLN9jlygl1plBmbgww"
 )
 
 // mockSTS returns mock Azure AD responses so tests don't have to account for
@@ -42,7 +48,17 @@ func (m *mockSTS) Do(req *http.Request) (*http.Response, error) {
 		if m.tokenRequestCallback != nil {
 			m.tokenRequestCallback(req)
 		}
-		res.Body = io.NopCloser(bytes.NewReader(accessTokenRespSuccess))
+		if err := req.ParseForm(); err != nil {
+			return nil, fmt.Errorf("mockSTS failed to parse a request body: %w", err)
+		}
+		if grant := req.FormValue("grant_type"); grant == "device_code" || grant == "password" {
+			// include account info because we're authenticating a user
+			res.Body = io.NopCloser(bytes.NewReader(
+				[]byte(fmt.Sprintf(`{"access_token":"at","expires_in": 3600,"refresh_token":"rt","client_info":%q,"id_token":%q}`, mockClientInfo, mockIDT)),
+			))
+		} else {
+			res.Body = io.NopCloser(bytes.NewReader(accessTokenRespSuccess))
+		}
 	default:
 		// User realm metadata request paths look like "/common/UserRealm/user@domain".
 		// Matching on the UserRealm segment avoids having to know the UPN.
@@ -51,7 +67,7 @@ func (m *mockSTS) Do(req *http.Request) (*http.Response, error) {
 				strings.NewReader(`{"account_type":"Managed","cloud_audience_urn":"urn","cloud_instance_name":"...","domain_name":"..."}`),
 			)
 		} else {
-			panic("unexpected request " + req.URL.String())
+			return nil, fmt.Errorf("mockSTS received an unexpected request for %s", req.URL.String())
 		}
 	}
 	return &res, nil

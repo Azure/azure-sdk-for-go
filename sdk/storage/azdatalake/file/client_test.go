@@ -11,6 +11,15 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
+	"hash/crc64"
+	"io"
+	"math/rand"
+	"net/http"
+	"os"
+	"strconv"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -21,13 +30,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"hash/crc64"
-	"io"
-	"math/rand"
-	"net/http"
-	"os"
-	"testing"
-	"time"
 )
 
 var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
@@ -472,9 +474,11 @@ func (s *UnrecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
 	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
 
 	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
-	expiry := file.CreationExpiryTypeAbsolute(expiryTimeAbsolute)
 	createFileOpts := &file.CreateOptions{
-		Expiry: expiry,
+		Expiry: file.CreateExpiryValues{
+			ExpiryType: file.CreateExpiryTypeAbsolute,
+			ExpiresOn:  time.Now().Add(8 * time.Second).UTC().Format(http.TimeFormat),
+		},
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
@@ -505,9 +509,11 @@ func (s *RecordedTestSuite) TestCreateFileWithExpiryRelativeToNow() {
 	_require.NoError(err)
 	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
 
-	expiry := file.CreationExpiryTypeRelativeToNow(8 * time.Second)
 	createFileOpts := &file.CreateOptions{
-		Expiry: expiry,
+		Expiry: file.CreateExpiryValues{
+			ExpiryType: file.CreateExpiryTypeRelativeToNow,
+			ExpiresOn:  strconv.FormatInt((8 * time.Second).Milliseconds(), 10),
+		},
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
@@ -540,7 +546,9 @@ func (s *RecordedTestSuite) TestCreateFileWithNeverExpire() {
 	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
 
 	createFileOpts := &file.CreateOptions{
-		Expiry: file.CreationExpiryTypeNever{},
+		Expiry: file.CreateExpiryValues{
+			ExpiryType: file.CreateExpiryTypeNeverExpire,
+		},
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
@@ -2961,6 +2969,7 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushAndDownloadDataWithLeasedFile(
 	_require.Nil(err)
 
 	_, err = rsc.Seek(0, io.SeekStart)
+	_require.NoError(err)
 
 	_, err = srcFClient.AppendData(context.Background(), int64(contentSize), rsc, opts)
 	_require.Nil(err)

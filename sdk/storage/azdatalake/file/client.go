@@ -10,6 +10,15 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"io"
+	"net/http"
+	"net/url"
+	"os"
+	"reflect"
+	"strings"
+	"sync"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -25,13 +34,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
-	"io"
-	"net/http"
-	"net/url"
-	"os"
-	"strings"
-	"sync"
-	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -259,9 +261,15 @@ func (f *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 }
 
 // SetExpiry operation sets an expiry time on an existing file (blob2).
-func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
-	expMode, opts := expiryType.Format(o)
-	resp, err := f.generatedFileClientWithBlob().SetExpiry(ctx, expMode, opts)
+func (f *Client) SetExpiry(ctx context.Context, expiryValues SetExpiryValues, o *SetExpiryOptions) (SetExpiryResponse, error) {
+	if reflect.ValueOf(expiryValues).IsZero() {
+		expiryValues.ExpiryType = SetExpiryTypeNeverExpire
+	}
+	opts := &generated_blob.BlobClientSetExpiryOptions{}
+	if expiryValues.ExpiryType != SetExpiryTypeNeverExpire {
+		opts.ExpiresOn = &expiryValues.ExpiresOn
+	}
+	resp, err := f.generatedFileClientWithBlob().SetExpiry(ctx, expiryValues.ExpiryType, opts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }

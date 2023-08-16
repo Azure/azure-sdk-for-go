@@ -47,7 +47,7 @@ type WorkloadIdentityCredentialOptions struct {
 	DisableInstanceDiscovery bool
 	// TenantID of the service principal. Defaults to the value of the environment variable AZURE_TENANT_ID.
 	TenantID string
-	// TokenFilePath is the path a file containing the workload identity token. Defaults to the value of the
+	// TokenFilePath is the path of a file containing a Kubernetes service account token. Defaults to the value of the
 	// environment variable AZURE_FEDERATED_TOKEN_FILE.
 	TokenFilePath string
 }

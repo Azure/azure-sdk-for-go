@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0 (2023-08-02)
+## 1.0.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2023-08-15)
 
 ### Features Added
 * This is the first stable release of the `internal` library for KeyVault.

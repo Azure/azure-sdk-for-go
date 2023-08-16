@@ -24,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -3347,7 +3348,7 @@ func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesUsingOAuth() {
 
 	getResp, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.Equal(getResp.LastModified.IsZero(), false)
 	_require.Equal(*getResp.FileType, "File")
 
 	_require.EqualValues(getResp.ContentType, options.HTTPHeaders.ContentType)
@@ -3811,6 +3812,520 @@ func (f *FileUnrecordedTestsSuite) TestFileRenameUsingSAS() {
 	destFileClient := resp.Client
 	_, err = destFileClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (f *FileRecordedTestsSuite) TestFileCreateDeleteTrailingDot() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	options := &service.ClientOptions{AllowTrailingDot: to.Ptr(true)}
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, options)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := "file.."
+	fileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, fileName, 2048, shareClient)
+
+	_, err = fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = fileClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = fileClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+}
+
+func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesTrailingDotOAuth() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := "file.."
+	fileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + fileName
+
+	clOptions := &file.ClientOptions{
+		FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup),
+		AllowTrailingDot:  to.Ptr(true),
+	}
+	testcommon.SetClientOptions(f.T(), &clOptions.ClientOptions)
+	fClient, err := file.NewClient(fileURL, cred, clOptions)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+
+	md5Str := "MDAwMDAwMDA="
+	testMd5 := []byte(md5Str)
+
+	options := &file.SetHTTPHeadersOptions{
+		Permissions: &file.Permissions{Permission: &testcommon.SampleSDDL},
+		SMBProperties: &file.SMBProperties{
+			Attributes: &file.NTFSFileAttributes{Hidden: true, ReadOnly: true},
+		},
+		HTTPHeaders: &file.HTTPHeaders{
+			ContentType:        to.Ptr("text/html"),
+			ContentEncoding:    to.Ptr("gzip"),
+			ContentLanguage:    to.Ptr("en"),
+			ContentMD5:         testMd5,
+			CacheControl:       to.Ptr("no-transform"),
+			ContentDisposition: to.Ptr("attachment"),
+		},
+	}
+	setResp, err := fClient.SetHTTPHeaders(context.Background(), options)
+	_require.NoError(err)
+	_require.NotNil(setResp.ETag)
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.NotNil(setResp.RequestID)
+	_require.NotNil(setResp.Version)
+	_require.Equal(setResp.Date.IsZero(), false)
+	_require.NotNil(setResp.IsServerEncrypted)
+
+	fileAttributes, err := file.ParseNTFSFileAttributes(setResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
+	_require.True(fileAttributes.Hidden)
+	_require.True(fileAttributes.ReadOnly)
+
+	getResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(getResp.LastModified.IsZero(), false)
+	_require.Equal(*getResp.FileType, "File")
+
+	_require.EqualValues(getResp.ContentType, options.HTTPHeaders.ContentType)
+	_require.EqualValues(getResp.ContentEncoding, options.HTTPHeaders.ContentEncoding)
+	_require.EqualValues(getResp.ContentLanguage, options.HTTPHeaders.ContentLanguage)
+	_require.EqualValues(getResp.ContentMD5, options.HTTPHeaders.ContentMD5)
+	_require.EqualValues(getResp.CacheControl, options.HTTPHeaders.CacheControl)
+	_require.EqualValues(getResp.ContentDisposition, options.HTTPHeaders.ContentDisposition)
+	_require.Equal(*getResp.ContentLength, int64(2048))
+	_require.NotEqual(getResp.FilePermissionKey, "")
+
+	fileAttributes2, err := file.ParseNTFSFileAttributes(getResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes2)
+	_require.True(fileAttributes2.Hidden)
+	_require.True(fileAttributes2.ReadOnly)
+	_require.EqualValues(fileAttributes, fileAttributes2)
+	_require.NotNil(getResp.ETag)
+	_require.NotNil(getResp.RequestID)
+	_require.NotNil(getResp.Version)
+	_require.Equal(getResp.Date.IsZero(), false)
+	_require.NotNil(getResp.IsServerEncrypted)
+}
+
+func (f *FileRecordedTestsSuite) TestFileSetMetadataTrailingDot() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	options := &service.ClientOptions{AllowTrailingDot: to.Ptr(true)}
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, options)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := "file.."
+	fileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, fileName, 2048, shareClient)
+
+	metadata := map[string]*string{
+		"Foo": to.Ptr("Foovalue"),
+		"Bar": to.Ptr("Barvalue"),
+	}
+	_, err = fileClient.SetMetadata(context.Background(), &file.SetMetadataOptions{
+		Metadata: metadata,
+	})
+	_require.NoError(err)
+
+	getResp, err := fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*getResp.ContentLength, int64(2048))
+	_require.EqualValues(getResp.Metadata, metadata)
+}
+
+func (f *FileRecordedTestsSuite) TestFileUploadClearListRangeTrailingDotOAuth() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName) + ".."
+	fileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + fileName
+
+	options := &file.ClientOptions{
+		FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup),
+		AllowTrailingDot:  to.Ptr(true),
+	}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	fileClient, err := file.NewClient(fileURL, cred, options)
+	_require.NoError(err)
+
+	_, err = fileClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+
+	contentSize := 1024 * 2 // 2KB
+	contentR, contentD := testcommon.GenerateData(contentSize)
+	md5Value := md5.Sum(contentD)
+	contentMD5 := md5Value[:]
+
+	uResp, err := fileClient.UploadRange(context.Background(), 0, contentR, &file.UploadRangeOptions{
+		TransactionalValidation: file.TransferValidationTypeMD5(contentMD5),
+	})
+	_require.NoError(err)
+	_require.NotNil(uResp.ContentMD5)
+	_require.EqualValues(uResp.ContentMD5, contentMD5)
+
+	rangeList, err := fileClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(rangeList.Ranges, 1)
+	_require.EqualValues(*rangeList.Ranges[0], file.ShareFileRange{Start: to.Ptr(int64(0)), End: to.Ptr(int64(contentSize - 1))})
+
+	cResp, err := fileClient.ClearRange(context.Background(), file.HTTPRange{Offset: 0, Count: int64(contentSize)}, nil)
+	_require.NoError(err)
+	_require.Nil(cResp.ContentMD5)
+
+	rangeList2, err := fileClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(rangeList2.Ranges, 0)
+}
+
+func (f *FileRecordedTestsSuite) TestFileRenameTrailingDotOAuth() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName) + ".."
+	fileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + fileName
+
+	options := &file.ClientOptions{
+		FileRequestIntent:      to.Ptr(file.ShareTokenIntentBackup),
+		AllowTrailingDot:       to.Ptr(true),
+		AllowSourceTrailingDot: to.Ptr(true),
+	}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	srcFileClient, err := file.NewClient(fileURL, cred, options)
+	_require.NoError(err)
+
+	_, err = srcFileClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+
+	resp, err := srcFileClient.Rename(context.Background(), "file..", nil)
+	_require.NoError(err)
+	_require.NotNil(resp.Client)
+
+	_, err = srcFileClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+
+	destFileClient := resp.Client
+	_, err = destFileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (f *FileRecordedTestsSuite) TestFileRenameNegativeSourceTrailingDot() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	options := &service.ClientOptions{
+		AllowTrailingDot: to.Ptr(true),
+	}
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, options)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName) + ".."
+	srcFileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, fileName, 2048, shareClient)
+
+	_, err = srcFileClient.Rename(context.Background(), "file..", nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLTrailingDot() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	options := &service.ClientOptions{
+		AllowTrailingDot:       to.Ptr(true),
+		AllowSourceTrailingDot: to.Ptr(true),
+	}
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, options)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 10
+	contentSize := 1024 * 8 // 8KB
+	rsc, content := testcommon.GenerateData(contentSize)
+	contentCRC64 := crc64.Checksum(content, shared.CRC64Table)
+
+	srcFileName := "srcFile.."
+	srcFClient := testcommon.CreateNewFileFromShare(context.Background(), _require, srcFileName, fileSize, shareClient)
+	_, err = srcFClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	perms := sas.FilePermissions{Read: true, Write: true}
+	sasQueryParams, err := sas.SignatureValues{
+		//Protocol:    sas.ProtocolHTTPS,
+		ExpiryTime:  time.Now().UTC().Add(1 * time.Hour),
+		ShareName:   shareName,
+		FilePath:    srcFileName,
+		Permissions: perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	srcFileSAS := srcFClient.URL() + "?" + sasQueryParams.Encode()
+
+	destFClient := testcommon.CreateNewFileFromShare(context.Background(), _require, "destFile..", fileSize, shareClient)
+
+	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
+		SourceContentCRC64: contentCRC64,
+	})
+	_require.NoError(err)
+	_require.NotNil(uResp.XMSContentCRC64)
+	_require.EqualValues(binary.LittleEndian.Uint64(uResp.XMSContentCRC64), contentCRC64)
+
+	// validate the content uploaded
+	dResp, err := destFClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{
+		Range: file.HTTPRange{Offset: 0, Count: int64(contentSize)},
+	})
+	_require.NoError(err)
+
+	data, err := ioutil.ReadAll(dResp.Body)
+	defer func() {
+		err = dResp.Body.Close()
+		_require.NoError(err)
+	}()
+
+	_require.EqualValues(data, content)
+}
+
+func (f *FileRecordedTestsSuite) TestStartCopyTrailingDotOAuth() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	clOptions := &file.ClientOptions{
+		FileRequestIntent:      to.Ptr(file.ShareTokenIntentBackup),
+		AllowTrailingDot:       to.Ptr(true),
+		AllowSourceTrailingDot: to.Ptr(true),
+	}
+	testcommon.SetClientOptions(f.T(), &clOptions.ClientOptions)
+
+	srcFileName, destFileName := "srcFile..", "destFile.."
+	srcFileClient, err := file.NewClient(fmt.Sprintf("https://%s.file.core.windows.net/%s/%s", accountName, shareName, srcFileName), cred, clOptions)
+	_require.NoError(err)
+	destFileClient, err := file.NewClient(fmt.Sprintf("https://%s.file.core.windows.net/%s/%s", accountName, shareName, destFileName), cred, clOptions)
+	_require.NoError(err)
+
+	fileSize := int64(2048)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	contentR, srcContent := testcommon.GenerateData(int(fileSize))
+	srcContentMD5 := md5.Sum(srcContent)
+
+	_, err = srcFileClient.UploadRange(context.Background(), 0, contentR, nil)
+	_require.NoError(err)
+
+	copyResp, err := destFileClient.StartCopyFromURL(context.Background(), srcFileClient.URL(), nil)
+	_require.NoError(err)
+	_require.NotEqual(copyResp.CopyStatus, "")
+
+	time.Sleep(time.Duration(5) * time.Second)
+
+	getResp, err := destFileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.EqualValues(getResp.CopyID, copyResp.CopyID)
+	_require.NotEqual(*getResp.CopyStatus, "")
+	_require.Equal(*getResp.CopySource, srcFileClient.URL())
+	_require.Equal(*getResp.CopyStatus, file.CopyStatusTypeSuccess)
+
+	// validate data copied
+	dResp, err := destFileClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{
+		Range:              file.HTTPRange{Offset: 0, Count: fileSize},
+		RangeGetContentMD5: to.Ptr(true),
+	})
+	_require.NoError(err)
+
+	destContent, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+	_require.EqualValues(srcContent, destContent)
+	_require.Equal(dResp.ContentMD5, srcContentMD5[:])
+
+	fileAttributes, err := file.ParseNTFSFileAttributes(dResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLPreserve() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 20
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+	srcFClient := testcommon.CreateNewFileFromShare(context.Background(), _require, srcFileName, fileSize, shareClient)
+
+	contentSize := 1024 * 8 // 8KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+	contentCRC64 := crc64.Checksum(content, shared.CRC64Table)
+
+	_, err = srcFClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	perms := sas.FilePermissions{Read: true, Write: true}
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:    sas.ProtocolHTTPS,
+		ExpiryTime:  time.Now().UTC().Add(1 * time.Hour),
+		ShareName:   shareName,
+		FilePath:    srcFileName,
+		Permissions: perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	srcFileSAS := srcFClient.URL() + "?" + sasQueryParams.Encode()
+
+	destFClient := testcommon.GetFileClientFromShare("dest"+testcommon.GenerateFileName(testName), shareClient)
+	cResp, err := destFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FileLastWriteTime)
+
+	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
+		SourceContentCRC64: contentCRC64,
+		LastWrittenMode:    to.Ptr(file.LastWrittenModePreserve),
+	})
+	_require.NoError(err)
+	_require.NotNil(uResp.XMSContentCRC64)
+	_require.EqualValues(binary.LittleEndian.Uint64(uResp.XMSContentCRC64), contentCRC64)
+	_require.NotNil(uResp.FileLastWriteTime)
+	_require.EqualValues(*uResp.FileLastWriteTime, *cResp.FileLastWriteTime)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLNow() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 20
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+	srcFClient := testcommon.CreateNewFileFromShare(context.Background(), _require, srcFileName, fileSize, shareClient)
+
+	contentSize := 1024 * 8 // 8KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+	contentCRC64 := crc64.Checksum(content, shared.CRC64Table)
+
+	_, err = srcFClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	perms := sas.FilePermissions{Read: true, Write: true}
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:    sas.ProtocolHTTPS,
+		ExpiryTime:  time.Now().UTC().Add(1 * time.Hour),
+		ShareName:   shareName,
+		FilePath:    srcFileName,
+		Permissions: perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	srcFileSAS := srcFClient.URL() + "?" + sasQueryParams.Encode()
+
+	destFClient := testcommon.GetFileClientFromShare("dest"+testcommon.GenerateFileName(testName), shareClient)
+	cResp, err := destFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FileLastWriteTime)
+
+	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
+		SourceContentCRC64: contentCRC64,
+		LastWrittenMode:    to.Ptr(file.LastWrittenModeNow),
+	})
+	_require.NoError(err)
+	_require.NotNil(uResp.XMSContentCRC64)
+	_require.EqualValues(binary.LittleEndian.Uint64(uResp.XMSContentCRC64), contentCRC64)
+	_require.NotNil(uResp.FileLastWriteTime)
+	_require.NotEqualValues(*uResp.FileLastWriteTime, *cResp.FileLastWriteTime)
 }
 
 // TODO: Add tests for retry header options

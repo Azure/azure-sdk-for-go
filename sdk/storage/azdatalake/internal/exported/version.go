@@ -8,5 +8,5 @@ package exported
 
 const (
 	ModuleName    = "azdatalake"
-	ModuleVersion = "v0.1.0"
+	ModuleVersion = "v0.1.0-beta.1"
 )

@@ -16,39 +16,39 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
-// FilesystemClient provides lease functionality for the underlying filesystem client.
-type FilesystemClient struct {
+// FileSystemClient provides lease functionality for the underlying filesystem client.
+type FileSystemClient struct {
 	containerClient *lease.ContainerClient
 	leaseID         *string
 }
 
-// FilesystemClientOptions contains the optional values when creating a FilesystemClient.
-type FilesystemClientOptions = lease.ContainerClientOptions
+// FileSystemClientOptions contains the optional values when creating a FileSystemClient.
+type FileSystemClientOptions = lease.ContainerClientOptions
 
-// NewFilesystemClient creates a filesystem lease client for the provided filesystem client.
+// NewFileSystemClient creates a filesystem lease client for the provided filesystem client.
 //   - client - an instance of a filesystem client
 //   - options - client options; pass nil to accept the default values
-func NewFilesystemClient(client *filesystem.Client, options *FilesystemClientOptions) (*FilesystemClient, error) {
+func NewFileSystemClient(client *filesystem.Client, options *FileSystemClientOptions) (*FileSystemClient, error) {
 	_, _, containerClient := base.InnerClients((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(client))
 	containerLeaseClient, err := lease.NewContainerClient(containerClient, options)
 	if err != nil {
 		return nil, exported.ConvertToDFSError(err)
 	}
-	return &FilesystemClient{
+	return &FileSystemClient{
 		containerClient: containerLeaseClient,
 		leaseID:         containerLeaseClient.LeaseID(),
 	}, nil
 }
 
 // LeaseID returns leaseID of the client.
-func (c *FilesystemClient) LeaseID() *string {
+func (c *FileSystemClient) LeaseID() *string {
 	return c.leaseID
 }
 
 // AcquireLease acquires a lease on the filesystem for write and delete operations.
 // The lease Duration must be between 15 and 60 seconds, or infinite (-1).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *FilesystemClient) AcquireLease(ctx context.Context, duration int32, o *FilesystemAcquireOptions) (FilesystemAcquireResponse, error) {
+func (c *FileSystemClient) AcquireLease(ctx context.Context, duration int32, o *FileSystemAcquireOptions) (FileSystemAcquireResponse, error) {
 	opts := o.format()
 	resp, err := c.containerClient.AcquireLease(ctx, duration, opts)
 	return resp, exported.ConvertToDFSError(err)
@@ -57,7 +57,7 @@ func (c *FilesystemClient) AcquireLease(ctx context.Context, duration int32, o *
 // BreakLease breaks the filesystem's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1)
 // constant to break a fixed-Duration lease when it expires or an infinite lease immediately.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *FilesystemClient) BreakLease(ctx context.Context, o *FilesystemBreakOptions) (FilesystemBreakResponse, error) {
+func (c *FileSystemClient) BreakLease(ctx context.Context, o *FileSystemBreakOptions) (FileSystemBreakResponse, error) {
 	opts := o.format()
 	resp, err := c.containerClient.BreakLease(ctx, opts)
 	return resp, exported.ConvertToDFSError(err)
@@ -65,7 +65,7 @@ func (c *FilesystemClient) BreakLease(ctx context.Context, o *FilesystemBreakOpt
 
 // ChangeLease changes the filesystem's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *FilesystemClient) ChangeLease(ctx context.Context, proposedLeaseID string, o *FilesystemChangeOptions) (FilesystemChangeResponse, error) {
+func (c *FileSystemClient) ChangeLease(ctx context.Context, proposedLeaseID string, o *FileSystemChangeOptions) (FileSystemChangeResponse, error) {
 	opts := o.format()
 	resp, err := c.containerClient.ChangeLease(ctx, proposedLeaseID, opts)
 	if err != nil {
@@ -77,14 +77,14 @@ func (c *FilesystemClient) ChangeLease(ctx context.Context, proposedLeaseID stri
 
 // RenewLease renews the filesystem's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *FilesystemClient) RenewLease(ctx context.Context, o *FilesystemRenewOptions) (FilesystemRenewResponse, error) {
+func (c *FileSystemClient) RenewLease(ctx context.Context, o *FileSystemRenewOptions) (FileSystemRenewResponse, error) {
 	opts := o.format()
 	resp, err := c.containerClient.RenewLease(ctx, opts)
 	return resp, exported.ConvertToDFSError(err)
 }
 
 // ReleaseLease releases the filesystem's previously-acquired lease.
-func (c *FilesystemClient) ReleaseLease(ctx context.Context, o *FilesystemReleaseOptions) (FilesystemReleaseResponse, error) {
+func (c *FileSystemClient) ReleaseLease(ctx context.Context, o *FileSystemReleaseOptions) (FileSystemReleaseResponse, error) {
 	opts := o.format()
 	resp, err := c.containerClient.ReleaseLease(ctx, opts)
 	return resp, exported.ConvertToDFSError(err)

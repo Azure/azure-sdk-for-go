@@ -30,6 +30,7 @@ func HasCode(err error, codes ...StorageErrorCode) bool {
 	return false
 }
 
+// StorageErrorCode - Error codes returned by the service
 type StorageErrorCode string
 
 // dfs errors
@@ -79,10 +80,10 @@ const (
 	CannotVerifyCopySource                            StorageErrorCode = "CannotVerifyCopySource"
 	ConditionHeadersNotSupported                      StorageErrorCode = "ConditionHeadersNotSupported"
 	ConditionNotMet                                   StorageErrorCode = "ConditionNotMet"
-	FilesystemAlreadyExists                           StorageErrorCode = "FilesystemAlreadyExists"
-	FilesystemBeingDeleted                            StorageErrorCode = "FilesystemBeingDeleted"
-	FilesystemDisabled                                StorageErrorCode = "FilesystemDisabled"
-	FilesystemNotFound                                StorageErrorCode = "FilesystemNotFound"
+	FileSystemAlreadyExists                           StorageErrorCode = "FileSystemAlreadyExists"
+	FileSystemBeingDeleted                            StorageErrorCode = "FileSystemBeingDeleted"
+	FileSystemDisabled                                StorageErrorCode = "FileSystemDisabled"
+	FileSystemNotFound                                StorageErrorCode = "FileSystemNotFound"
 	ContentLengthLargerThanTierLimit                  StorageErrorCode = "ContentLengthLargerThanTierLimit"
 	CopyAcrossAccountsNotSupported                    StorageErrorCode = "CopyAcrossAccountsNotSupported"
 	CopyIDMismatch                                    StorageErrorCode = "CopyIdMismatch"
@@ -119,7 +120,7 @@ const (
 	LeaseAlreadyBroken                                StorageErrorCode = "LeaseAlreadyBroken"
 	LeaseAlreadyPresent                               StorageErrorCode = "LeaseAlreadyPresent"
 	LeaseIDMismatchWithPathOperation                  StorageErrorCode = "LeaseIdMismatchWithPathOperation"
-	LeaseIDMismatchWithFilesystemOperation            StorageErrorCode = "LeaseIdMismatchWithFilesystemOperation"
+	LeaseIDMismatchWithFileSystemOperation            StorageErrorCode = "LeaseIdMismatchWithFileSystemOperation"
 	LeaseIDMismatchWithLeaseOperation                 StorageErrorCode = "LeaseIdMismatchWithLeaseOperation"
 	LeaseIDMissing                                    StorageErrorCode = "LeaseIdMissing"
 	LeaseIsBreakingAndCannotBeAcquired                StorageErrorCode = "LeaseIsBreakingAndCannotBeAcquired"
@@ -127,7 +128,7 @@ const (
 	LeaseIsBrokenAndCannotBeRenewed                   StorageErrorCode = "LeaseIsBrokenAndCannotBeRenewed"
 	LeaseLost                                         StorageErrorCode = "LeaseLost"
 	LeaseNotPresentWithPathOperation                  StorageErrorCode = "LeaseNotPresentWithPathOperation"
-	LeaseNotPresentWithFilesystemOperation            StorageErrorCode = "LeaseNotPresentWithFilesystemOperation"
+	LeaseNotPresentWithFileSystemOperation            StorageErrorCode = "LeaseNotPresentWithFileSystemOperation"
 	LeaseNotPresentWithLeaseOperation                 StorageErrorCode = "LeaseNotPresentWithLeaseOperation"
 	MD5Mismatch                                       StorageErrorCode = "Md5Mismatch"
 	CRC64Mismatch                                     StorageErrorCode = "Crc64Mismatch"

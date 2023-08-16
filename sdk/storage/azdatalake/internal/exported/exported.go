@@ -45,7 +45,7 @@ func ConvertToDFSError(err error) error {
 		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "blob", "path", -1)
 		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "Blob", "Path", -1)
 		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "container", "filesystem", -1)
-		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "Container", "Filesystem", -1)
+		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "Container", "FileSystem", -1)
 		return responseErr
 	}
 	return err

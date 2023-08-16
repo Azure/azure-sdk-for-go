@@ -47,7 +47,7 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FilesystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.FileSystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 		ClientOptions: options.ClientOptions,
 	}
 	blobContainerClient, _ := container.NewClient(containerURL, cred, &containerClientOpts)
-	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
+	fsClient := base.NewFileSystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil
 }
@@ -74,7 +74,7 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FilesystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.FileSystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +86,7 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 		ClientOptions: options.ClientOptions,
 	}
 	blobContainerClient, _ := container.NewClientWithNoCredential(containerURL, &containerClientOpts)
-	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, nil, (*base.ClientOptions)(conOptions))
+	fsClient := base.NewFileSystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil
 }
@@ -104,7 +104,7 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FilesystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.FileSystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -115,12 +115,12 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobSharedKey, err := cred.ConvertToBlobSharedKey()
+	blobSharedKey, err := exported.ConvertToBlobSharedKey(cred)
 	if err != nil {
 		return nil, err
 	}
 	blobContainerClient, _ := container.NewClientWithSharedKeyCredential(containerURL, blobSharedKey, &containerClientOpts)
-	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, cred, nil, (*base.ClientOptions)(conOptions))
+	fsClient := base.NewFileSystemClient(filesystemURL, containerURL, blobContainerClient, azClient, cred, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil
 }
@@ -201,7 +201,7 @@ func (fs *Client) NewFileClient(filePath string) *file.Client {
 	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(shared.FileClient), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }
 
-// Create creates a new filesystem under the specified account. (blob3).
+// Create creates a new filesystem under the specified account.
 func (fs *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	opts := options.format()
 	resp, err := fs.containerClient().Create(ctx, opts)
@@ -209,7 +209,7 @@ func (fs *Client) Create(ctx context.Context, options *CreateOptions) (CreateRes
 	return resp, err
 }
 
-// Delete deletes the specified filesystem and any files or directories it contains. (blob3).
+// Delete deletes the specified filesystem and any files or directories it contains.
 func (fs *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	opts := options.format()
 	resp, err := fs.containerClient().Delete(ctx, opts)
@@ -217,17 +217,17 @@ func (fs *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteRes
 	return resp, err
 }
 
-// GetProperties returns all user-defined metadata, standard HTTP properties, and system properties for the filesystem. (blob3).
+// GetProperties returns all user-defined metadata, standard HTTP properties, and system properties for the filesystem.
 func (fs *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := options.format()
 	newResp := GetPropertiesResponse{}
 	resp, err := fs.containerClient().GetProperties(ctx, opts)
-	formatFilesystemProperties(&newResp, &resp)
+	formatFileSystemProperties(&newResp, &resp)
 	err = exported.ConvertToDFSError(err)
 	return newResp, err
 }
 
-// SetMetadata sets one or more user-defined name-value pairs for the specified filesystem. (blob3).
+// SetMetadata sets one or more user-defined name-value pairs for the specified filesystem.
 func (fs *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
 	opts := options.format()
 	resp, err := fs.containerClient().SetMetadata(ctx, opts)
@@ -235,7 +235,7 @@ func (fs *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) 
 	return resp, err
 }
 
-// SetAccessPolicy sets the permissions for the specified filesystem or the files and directories under it. (blob3).
+// SetAccessPolicy sets the permissions for the specified filesystem or the files and directories under it.
 func (fs *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
 	opts := options.format()
 	resp, err := fs.containerClient().SetAccessPolicy(ctx, opts)
@@ -243,7 +243,7 @@ func (fs *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyO
 	return resp, err
 }
 
-// GetAccessPolicy returns the permissions for the specified filesystem or the files and directories under it. (blob3).
+// GetAccessPolicy returns the permissions for the specified filesystem or the files and directories under it.
 func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
 	opts := options.format()
 	newResp := GetAccessPolicyResponse{}
@@ -255,7 +255,7 @@ func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyO
 
 // TODO: implement undelete path in fs client as well
 
-// NewListPathsPager operation returns a pager of the shares under the specified account. (dfs1)
+// NewListPathsPager operation returns a pager of the shares under the specified account.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (fs *Client) NewListPathsPager(recursive bool, options *ListPathsOptions) *runtime.Pager[ListPathsSegmentResponse] {
 	listOptions := options.format()
@@ -291,7 +291,7 @@ func (fs *Client) NewListPathsPager(recursive bool, options *ListPathsOptions) *
 	})
 }
 
-// NewListDeletedPathsPager operation returns a pager of the shares under the specified account. (dfs op/blob2).
+// NewListDeletedPathsPager operation returns a pager of the shares under the specified account.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *runtime.Pager[ListDeletedPathsSegmentResponse] {
 	listOptions := options.format()
@@ -327,9 +327,9 @@ func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *ru
 	})
 }
 
-// GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at filesystem.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (fs *Client) GetSASURL(permissions sas.FilesystemPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+func (fs *Client) GetSASURL(permissions sas.FileSystemPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if fs.sharedKey() == nil {
 		return "", datalakeerror.MissingSharedKeyCredential
 	}
@@ -342,7 +342,7 @@ func (fs *Client) GetSASURL(permissions sas.FilesystemPermissions, expiry time.T
 	qps, err := sas.DatalakeSignatureValues{
 		Version:        sas.Version,
 		Protocol:       sas.ProtocolHTTPS,
-		FilesystemName: urlParts.FilesystemName,
+		FileSystemName: urlParts.FileSystemName,
 		Permissions:    permissions.String(),
 		StartTime:      st,
 		ExpiryTime:     expiry.UTC(),

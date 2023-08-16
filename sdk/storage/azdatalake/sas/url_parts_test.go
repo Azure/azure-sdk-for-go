@@ -27,7 +27,7 @@ func TestParseURLIPStyle(t *testing.T) {
 	require.Equal(t, blobURLParts.Scheme, "https")
 	require.Equal(t, blobURLParts.Host, "127.0.0.1:5000")
 	require.Equal(t, blobURLParts.IPEndpointStyleInfo.AccountName, "fakestorageaccount")
-	require.Equal(t, blobURLParts.FilesystemName, "fakecontainer")
+	require.Equal(t, blobURLParts.FileSystemName, "fakecontainer")
 
 	urlWithIP = "https://127.0.0.1:5000/fakestorageaccount/fakecontainer/fakeblob"
 	blobURLParts, err = ParseURL(urlWithIP)
@@ -35,7 +35,7 @@ func TestParseURLIPStyle(t *testing.T) {
 	require.Equal(t, blobURLParts.Scheme, "https")
 	require.Equal(t, blobURLParts.Host, "127.0.0.1:5000")
 	require.Equal(t, blobURLParts.IPEndpointStyleInfo.AccountName, "fakestorageaccount")
-	require.Equal(t, blobURLParts.FilesystemName, "fakecontainer")
+	require.Equal(t, blobURLParts.FileSystemName, "fakecontainer")
 	require.Equal(t, blobURLParts.PathName, "fakeblob")
 }
 
@@ -54,7 +54,7 @@ func TestParseURL(t *testing.T) {
 
 		require.Equal(t, blobURLParts.Scheme, "https")
 		require.Equal(t, blobURLParts.Host, host)
-		require.Equal(t, blobURLParts.FilesystemName, testContainer)
+		require.Equal(t, blobURLParts.FileSystemName, testContainer)
 
 		validateSAS(t, sasStr, blobURLParts.SAS)
 	}
@@ -66,7 +66,7 @@ func TestParseURL(t *testing.T) {
 
 		require.Equal(t, blobURLParts.Scheme, "https")
 		require.Equal(t, blobURLParts.Host, host)
-		require.Equal(t, blobURLParts.FilesystemName, testContainer)
+		require.Equal(t, blobURLParts.FileSystemName, testContainer)
 
 		validateSAS(t, sasStr, blobURLParts.SAS)
 	}

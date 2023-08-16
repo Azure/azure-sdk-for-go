@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
+// EncryptionAlgorithmType defines values for EncryptionAlgorithmType.
 type EncryptionAlgorithmType = path.EncryptionAlgorithmType
 
 const (
@@ -23,6 +24,7 @@ const (
 
 // response models:
 
+// ImmutabilityPolicyMode Specifies the immutability policy mode to set on the file.
 type ImmutabilityPolicyMode = path.ImmutabilityPolicyMode
 
 const (

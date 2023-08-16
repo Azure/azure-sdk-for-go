@@ -24,15 +24,15 @@ type DatalakeSignatureValues struct {
 	Protocol       Protocol  `param:"spr"` // See the Protocol* constants
 	StartTime      time.Time `param:"st"`  // Not specified if IsZero
 	ExpiryTime     time.Time `param:"se"`  // Not specified if IsZero
-	Permissions    string    `param:"sp"`  // Create by initializing FilesystemPermissions, FilePermissions or DirectoryPermissions and then call String()
+	Permissions    string    `param:"sp"`  // Create by initializing FileSystemPermissions, FilePermissions or DirectoryPermissions and then call String()
 	IPRange        IPRange   `param:"sip"`
 	Identifier     string    `param:"si"`
-	FilesystemName string
-	// Use "" to create a Filesystem SAS
+	FileSystemName string
+	// Use "" to create a FileSystem SAS
 	// DirectoryPath will set this to "" if it is passed
 	FilePath string
 	// Not nil for a directory SAS (ie sr=d)
-	// Use "" to create a Filesystem SAS
+	// Use "" to create a FileSystem SAS
 	DirectoryPath        string
 	CacheControl         string // rscc
 	ContentDisposition   string // rscd
@@ -88,7 +88,7 @@ func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKe
 		v.Permissions,
 		startTime,
 		expiryTime,
-		getCanonicalName(sharedKeyCredential.AccountName(), v.FilesystemName, v.FilePath, v.DirectoryPath),
+		getCanonicalName(sharedKeyCredential.AccountName(), v.FileSystemName, v.FilePath, v.DirectoryPath),
 		signedIdentifier,
 		v.IPRange.String(),
 		string(v.Protocol),
@@ -157,7 +157,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 	}
 	// make sure the permission characters are in the correct order
 	if resource == "c" {
-		perms, err := parseFilesystemPermissions(v.Permissions)
+		perms, err := parseFileSystemPermissions(v.Permissions)
 		if err != nil {
 			return QueryParameters{}, err
 		}
@@ -183,7 +183,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		v.Permissions,
 		startTime,
 		expiryTime,
-		getCanonicalName(exported.GetAccountName(userDelegationCredential), v.FilesystemName, v.FilePath, v.DirectoryPath),
+		getCanonicalName(exported.GetAccountName(userDelegationCredential), v.FileSystemName, v.FilePath, v.DirectoryPath),
 		*udk.SignedOID,
 		*udk.SignedTID,
 		udkStart,
@@ -259,17 +259,17 @@ func getCanonicalName(account string, filesystemName string, fileName string, di
 	return strings.Join(elements, "")
 }
 
-// FilesystemPermissions type simplifies creating the permissions string for an Azure Storage container SAS.
+// FileSystemPermissions type simplifies creating the permissions string for an Azure Storage container SAS.
 // Initialize an instance of this type and then call its String method to set BlobSignatureValues' Permissions field.
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
-type FilesystemPermissions struct {
+type FileSystemPermissions struct {
 	Read, Add, Create, Write, Delete, List, Move bool
 	Execute, ModifyOwnership, ModifyPermissions  bool // Meant for hierarchical namespace accounts
 }
 
 // String produces the SAS permissions string for an Azure Storage container.
 // Call this method to set BlobSignatureValues' Permissions field.
-func (p *FilesystemPermissions) String() string {
+func (p *FileSystemPermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {
 		b.WriteRune('r')
@@ -305,8 +305,8 @@ func (p *FilesystemPermissions) String() string {
 }
 
 // Parse initializes ContainerPermissions' fields from a string.
-func parseFilesystemPermissions(s string) (FilesystemPermissions, error) {
-	p := FilesystemPermissions{} // Clear the flags
+func parseFileSystemPermissions(s string) (FileSystemPermissions, error) {
+	p := FileSystemPermissions{} // Clear the flags
 	for _, r := range s {
 		switch r {
 		case 'r':
@@ -330,7 +330,7 @@ func parseFilesystemPermissions(s string) (FilesystemPermissions, error) {
 		case 'p':
 			p.ModifyPermissions = true
 		default:
-			return FilesystemPermissions{}, fmt.Errorf("invalid permission: '%v'", r)
+			return FileSystemPermissions{}, fmt.Errorf("invalid permission: '%v'", r)
 		}
 	}
 	return p, nil

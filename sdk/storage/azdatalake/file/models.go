@@ -22,19 +22,17 @@ const (
 	_1MiB      = 1024 * 1024
 	CountToEnd = 0
 
-	// MaxAppendBytes indicates the maximum number of bytes that can be updated in a call to Client.UploadRange.
+	// MaxAppendBytes indicates the maximum number of bytes that can be updated in a call to Client.AppendData.
 	MaxAppendBytes = 100 * 1024 * 1024 // 100iB
 
 	// MaxFileSize indicates the maximum size of the file allowed.
 	MaxFileSize = 4 * 1024 * 1024 * 1024 * 1024 // 4 TiB
 )
 
-// CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint.
+// CreateOptions contains the optional parameters when calling the Create operation.
 type CreateOptions struct {
 	// AccessConditions contains parameters for accessing the file.
 	AccessConditions *AccessConditions
-	// Metadata is a map of name-value pairs to associate with the file storage object.
-	Metadata map[string]*string
 	// CPKInfo contains a group of parameters for client provided encryption key.
 	CPKInfo *CPKInfo
 	// HTTPHeaders contains the HTTP headers for path operations.
@@ -175,12 +173,17 @@ type UploadFileOptions = uploadFromReaderOptions
 
 // FlushDataOptions contains the optional parameters for the Client.FlushData method.
 type FlushDataOptions struct {
+	// AccessConditions contains parameters for accessing the file.
 	AccessConditions *AccessConditions
-	// HTTPHeaders contains the optional path HTTP headers to set when the file is created.
 	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
-	CPKInfo               *CPKInfo
-	HTTPHeaders           *HTTPHeaders
-	Close                 *bool
+	CPKInfo *CPKInfo
+	// HTTPHeaders contains the HTTP headers for path operations.
+	HTTPHeaders *HTTPHeaders
+	// Close This event has a property indicating whether this is the final change to distinguish the
+	// difference between an intermediate flush to a file stream and the final close of a file stream.
+	Close *bool
+	// RetainUncommittedData if "true", uncommitted data is retained after the flush operation
+	// completes, otherwise, the uncommitted data is deleted after the flush operation.
 	RetainUncommittedData *bool
 }
 
@@ -231,7 +234,7 @@ func (o *FlushDataOptions) format(offset int64) (*generated.PathClientFlushDataO
 	return flushDataOpts, modifiedAccessConditions, leaseAccessConditions, httpHeaderOpts, cpkInfoOpts, nil
 }
 
-// AppendDataOptions contains the optional parameters for the Client.UploadRange method.
+// AppendDataOptions contains the optional parameters for the Client.AppendData method.
 type AppendDataOptions struct {
 	// TransactionalValidation specifies the transfer validation type to use.
 	// The default is nil (no transfer validation).
@@ -342,18 +345,19 @@ func (u *UploadStreamOptions) getFlushDataOptions() *FlushDataOptions {
 	}
 }
 
-// DownloadStreamOptions contains the optional parameters for the Client.Download method.
+// DownloadStreamOptions contains the optional parameters for the Client.DownloadStream method.
 type DownloadStreamOptions struct {
 	// When set to true and specified together with the Range, the service returns the MD5 hash for the range, as long as the
 	// range is less than or equal to 4 MB in size.
 	RangeGetContentMD5 *bool
-
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range *HTTPRange
-
+	// AccessConditions contains parameters for accessing the file.
 	AccessConditions *AccessConditions
-	CPKInfo          *CPKInfo
-	CPKScopeInfo     *CPKScopeInfo
+	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
+	CPKInfo *CPKInfo
+	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
+	CPKScopeInfo *CPKScopeInfo
 }
 
 func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
@@ -383,26 +387,19 @@ func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
 type DownloadBufferOptions struct {
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range *HTTPRange
-
-	// ChunkSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
+	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
 	ChunkSize int64
-
 	// Progress is a function that is invoked periodically as bytes are received.
 	Progress func(bytesTransferred int64)
-
-	// BlobAccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
+	// AccessConditions indicates the access conditions used when making HTTP GET requests against the file.
 	AccessConditions *AccessConditions
-
 	// CPKInfo contains a group of parameters for client provided encryption key.
 	CPKInfo *CPKInfo
-
 	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
 	CPKScopeInfo *CPKScopeInfo
-
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of chunks to download in parallel (0=default).
 	Concurrency uint16
-
-	// RetryReaderOptionsPerChunk is used when downloading each block.
+	// RetryReaderOptionsPerChunk is used when downloading each chunk.
 	RetryReaderOptionsPerChunk *RetryReaderOptions
 }
 
@@ -444,24 +441,19 @@ func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
 type DownloadFileOptions struct {
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range *HTTPRange
-
-	// ChunkSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
+	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
 	ChunkSize int64
-
 	// Progress is a function that is invoked periodically as bytes are received.
 	Progress func(bytesTransferred int64)
-
-	// BlobAccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
+	// AccessConditions indicates the access conditions used when making HTTP GET requests against the file.
 	AccessConditions *AccessConditions
-
-	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
-	CPKInfo      *CPKInfo
+	// CPKInfo contains a group of parameters for client provided encryption key.
+	CPKInfo *CPKInfo
+	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
 	CPKScopeInfo *CPKScopeInfo
-
-	// Concurrency indicates the maximum number of blocks to download in parallel.  The default value is 5.
+	// Concurrency indicates the maximum number of chunks to download in parallel. The default value is 5.
 	Concurrency uint16
-
-	// RetryReaderOptionsPerChunk is used when downloading each block.
+	// RetryReaderOptionsPerChunk is used when downloading each chunk.
 	RetryReaderOptionsPerChunk *RetryReaderOptions
 }
 
@@ -522,11 +514,14 @@ type SetExpiryOptions struct {
 	// placeholder for future options
 }
 
+// HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
+// ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
+// which has an offset but no zero value count indicates from the offset to the resource's end.
 type HTTPRange = exported.HTTPRange
 
 // ================================= path imports ==================================
 
-// DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
+// DeleteOptions contains the optional parameters when calling the Delete operation.
 type DeleteOptions = path.DeleteOptions
 
 // RenameOptions contains the optional parameters when calling the Rename operation.
@@ -535,13 +530,13 @@ type RenameOptions = path.RenameOptions
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions = path.GetPropertiesOptions
 
-// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation. dfs endpoint
+// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation.
 type SetAccessControlOptions = path.SetAccessControlOptions
 
 // GetAccessControlOptions contains the optional parameters when calling the GetAccessControl operation.
 type GetAccessControlOptions = path.GetAccessControlOptions
 
-// CPKInfo contains a group of parameters for the PathClient.Download method.
+// CPKInfo contains CPK related information.
 type CPKInfo = path.CPKInfo
 
 // GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
@@ -559,10 +554,10 @@ type SetMetadataOptions = path.SetMetadataOptions
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = path.SharedKeyCredential
 
-// AccessConditions identifies blob-specific access conditions which you optionally set.
+// AccessConditions identifies file-specific access conditions which you optionally set.
 type AccessConditions = path.AccessConditions
 
-// SourceAccessConditions identifies blob-specific access conditions which you optionally set.
+// SourceAccessConditions identifies file-specific source access conditions which you optionally set.
 type SourceAccessConditions = path.SourceAccessConditions
 
 // LeaseAccessConditions contains optional parameters to access leased entity.

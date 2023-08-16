@@ -55,10 +55,10 @@ func IdentityCredentialComposite[T, K, U any](client *CompositeClient[T, K, U]) 
 	return client.identityCred
 }
 
-func NewFilesystemClient(fsURL string, fsURLWithBlobEndpoint string, client *container.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, identityCred *azcore.TokenCredential, options *ClientOptions) *CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client] {
+func NewFileSystemClient(fsURL string, fsURLWithBlobEndpoint string, client *container.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, identityCred *azcore.TokenCredential, options *ClientOptions) *CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client] {
 	return &CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client]{
-		innerT:       generated.NewFilesystemClient(fsURL, azClient),
-		innerK:       generated.NewFilesystemClient(fsURLWithBlobEndpoint, azClient),
+		innerT:       generated.NewFileSystemClient(fsURL, azClient),
+		innerK:       generated.NewFileSystemClient(fsURLWithBlobEndpoint, azClient),
 		sharedKey:    sharedKey,
 		identityCred: identityCred,
 		innerU:       client,

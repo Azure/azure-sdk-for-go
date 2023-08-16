@@ -113,7 +113,7 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobSharedKey, err := cred.ConvertToBlobSharedKey()
+	blobSharedKey, err := exported.ConvertToBlobSharedKey(cred)
 	if err != nil {
 		return nil, err
 	}
@@ -147,12 +147,12 @@ func (s *Client) getClientOptions() *base.ClientOptions {
 	return base.GetCompositeClientOptions((*base.CompositeClient[generated.ServiceClient, generated_blob.ServiceClient, service.Client])(s))
 }
 
-// NewFilesystemClient creates a new filesystem.Client object by concatenating filesystemName to the end of this Client's URL.
+// NewFileSystemClient creates a new filesystem.Client object by concatenating filesystemName to the end of this Client's URL.
 // The new filesystem.Client uses the same request policy pipeline as the Client.
-func (s *Client) NewFilesystemClient(filesystemName string) *filesystem.Client {
+func (s *Client) NewFileSystemClient(filesystemName string) *filesystem.Client {
 	filesystemURL := runtime.JoinPaths(s.generatedServiceClientWithDFS().Endpoint(), filesystemName)
 	containerURL, filesystemURL := shared.GetURLs(filesystemURL)
-	return (*filesystem.Client)(base.NewFilesystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), s.generatedServiceClientWithDFS().InternalClient().WithClientName(shared.FilesystemClient), s.sharedKey(), s.identityCredential(), s.getClientOptions()))
+	return (*filesystem.Client)(base.NewFileSystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), s.generatedServiceClientWithDFS().InternalClient().WithClientName(shared.FileSystemClient), s.sharedKey(), s.identityCredential(), s.getClientOptions()))
 }
 
 // GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
@@ -205,23 +205,23 @@ func (s *Client) BlobURL() string {
 	return s.generatedServiceClientWithBlob().Endpoint()
 }
 
-// CreateFilesystem creates a new filesystem under the specified account. (blob3)
-func (s *Client) CreateFilesystem(ctx context.Context, filesystem string, options *CreateFilesystemOptions) (CreateFilesystemResponse, error) {
-	filesystemClient := s.NewFilesystemClient(filesystem)
+// CreateFileSystem creates a new filesystem under the specified account.
+func (s *Client) CreateFileSystem(ctx context.Context, filesystem string, options *CreateFileSystemOptions) (CreateFileSystemResponse, error) {
+	filesystemClient := s.NewFileSystemClient(filesystem)
 	resp, err := filesystemClient.Create(ctx, options)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }
 
-// DeleteFilesystem deletes the specified filesystem. (blob3)
-func (s *Client) DeleteFilesystem(ctx context.Context, filesystem string, options *DeleteFilesystemOptions) (DeleteFilesystemResponse, error) {
-	filesystemClient := s.NewFilesystemClient(filesystem)
+// DeleteFileSystem deletes the specified filesystem.
+func (s *Client) DeleteFileSystem(ctx context.Context, filesystem string, options *DeleteFileSystemOptions) (DeleteFileSystemResponse, error) {
+	filesystemClient := s.NewFileSystemClient(filesystem)
 	resp, err := filesystemClient.Delete(ctx, options)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }
 
-// SetProperties sets properties for a storage account's File service endpoint. (blob3)
+// SetProperties sets properties for a storage account's Datalake service endpoint.
 func (s *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	opts := options.format()
 	resp, err := s.serviceClient().SetProperties(ctx, opts)
@@ -229,7 +229,7 @@ func (s *Client) SetProperties(ctx context.Context, options *SetPropertiesOption
 	return resp, err
 }
 
-// GetProperties gets properties for a storage account's File service endpoint. (blob3)
+// GetProperties gets properties for a storage account's Datalake service endpoint.
 func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := options.format()
 	resp, err := s.serviceClient().GetProperties(ctx, opts)
@@ -238,29 +238,30 @@ func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 
 }
 
-// NewListFilesystemsPager operation returns a pager of the shares under the specified account. (blob3)
+// NewListFileSystemsPager operation returns a pager of the shares under the specified account.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
-func (s *Client) NewListFilesystemsPager(o *ListFilesystemsOptions) *runtime.Pager[ListFilesystemsResponse] {
+func (s *Client) NewListFileSystemsPager(o *ListFileSystemsOptions) *runtime.Pager[ListFileSystemsResponse] {
 	listOptions := generated_blob.ServiceClientListContainersSegmentOptions{}
+	defaultInclude := ListFileSystemsInclude{}
 	if o != nil {
-		if o.Include.Deleted {
+		if o.Include != defaultInclude && o.Include.Deleted != nil && *o.Include.Deleted {
 			listOptions.Include = append(listOptions.Include, generated_blob.ListContainersIncludeTypeDeleted)
 		}
-		if o.Include.Metadata {
+		if o.Include != defaultInclude && o.Include.Metadata != nil && *o.Include.Metadata {
 			listOptions.Include = append(listOptions.Include, generated_blob.ListContainersIncludeTypeMetadata)
 		}
-		if o.Include.System {
+		if o.Include != defaultInclude && o.Include.System != nil && *o.Include.System {
 			listOptions.Include = append(listOptions.Include, generated_blob.ListContainersIncludeTypeSystem)
 		}
 		listOptions.Marker = o.Marker
 		listOptions.Maxresults = o.MaxResults
 		listOptions.Prefix = o.Prefix
 	}
-	return runtime.NewPager(runtime.PagingHandler[ListFilesystemsResponse]{
-		More: func(page ListFilesystemsResponse) bool {
+	return runtime.NewPager(runtime.PagingHandler[ListFileSystemsResponse]{
+		More: func(page ListFileSystemsResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ListFilesystemsResponse) (ListFilesystemsResponse, error) {
+		Fetcher: func(ctx context.Context, page *ListFileSystemsResponse) (ListFileSystemsResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -270,14 +271,14 @@ func (s *Client) NewListFilesystemsPager(o *ListFilesystemsOptions) *runtime.Pag
 				req, err = s.generatedServiceClientWithBlob().ListContainersSegmentCreateRequest(ctx, &listOptions)
 			}
 			if err != nil {
-				return ListFilesystemsResponse{}, exported.ConvertToDFSError(err)
+				return ListFileSystemsResponse{}, exported.ConvertToDFSError(err)
 			}
 			resp, err := s.generatedServiceClientWithBlob().InternalClient().Pipeline().Do(req)
 			if err != nil {
-				return ListFilesystemsResponse{}, exported.ConvertToDFSError(err)
+				return ListFileSystemsResponse{}, exported.ConvertToDFSError(err)
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListFilesystemsResponse{}, exported.ConvertToDFSError(runtime.NewResponseError(resp))
+				return ListFileSystemsResponse{}, exported.ConvertToDFSError(runtime.NewResponseError(resp))
 			}
 			resp1, err := s.generatedServiceClientWithBlob().ListContainersSegmentHandleResponse(resp)
 			return resp1, exported.ConvertToDFSError(err)

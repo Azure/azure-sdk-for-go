@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"reflect"
+	"strconv"
 	"time"
 )
 
@@ -230,7 +231,10 @@ func (p *Path) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "contentLength":
-			err = unpopulate(val, "ContentLength", &p.ContentLength)
+			var rawVal string
+			err = unpopulate(val, "ContentLength", &rawVal)
+			intVal, _ := strconv.ParseInt(rawVal, 10, 64)
+			p.ContentLength = &intVal
 			delete(rawMsg, key)
 		case "creationTime":
 			err = unpopulate(val, "CreationTime", &p.CreationTime)
@@ -248,7 +252,10 @@ func (p *Path) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Group", &p.Group)
 			delete(rawMsg, key)
 		case "isDirectory":
-			err = unpopulate(val, "IsDirectory", &p.IsDirectory)
+			var rawVal string
+			err = unpopulate(val, "IsDirectory", &rawVal)
+			boolVal, _ := strconv.ParseBool(rawVal)
+			p.IsDirectory = &boolVal
 			delete(rawMsg, key)
 		case "lastModified":
 			err = unpopulate(val, "LastModified", &p.LastModified)

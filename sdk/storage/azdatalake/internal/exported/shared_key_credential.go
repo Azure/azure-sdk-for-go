@@ -49,7 +49,7 @@ func (c *SharedKeyCredential) AccountName() string {
 	return c.accountName
 }
 
-func (c *SharedKeyCredential) ConvertToBlobSharedKey() (*azblob.SharedKeyCredential, error) {
+func ConvertToBlobSharedKey(c *SharedKeyCredential) (*azblob.SharedKeyCredential, error) {
 	cred, err := azblob.NewSharedKeyCredential(c.accountName, c.accountKeyString)
 	if err != nil {
 		return nil, err

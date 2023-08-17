@@ -49,7 +49,7 @@ func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 	return generated.PossibleDeleteSnapshotsOptionTypeValues()
 }
 
-// TokenIntent defines values for TokenIntent
+// TokenIntent is required if authorization header specifies an OAuth token.
 type TokenIntent = generated.ShareTokenIntent
 
 const (

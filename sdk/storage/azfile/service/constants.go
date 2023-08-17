@@ -36,7 +36,7 @@ func PossibleShareRootSquashValues() []ShareRootSquash {
 	return generated.PossibleShareRootSquashValues()
 }
 
-// ShareTokenIntent defines values for ShareTokenIntent
+// ShareTokenIntent is required if authorization header specifies an OAuth token.
 type ShareTokenIntent = generated.ShareTokenIntent
 
 const (

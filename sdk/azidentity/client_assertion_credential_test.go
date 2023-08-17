@@ -65,6 +65,13 @@ func TestClientAssertionCredentialCallbackError(t *testing.T) {
 	}
 }
 
+func TestClientAssertionCredentialNilCallback(t *testing.T) {
+	_, err := NewClientAssertionCredential(fakeTenantID, fakeClientID, nil, nil)
+	if err == nil {
+		t.Fatal("expected an error")
+	}
+}
+
 func TestClientAssertionCredential_Live(t *testing.T) {
 	data, err := os.ReadFile(liveSP.pemPath)
 	if err != nil {

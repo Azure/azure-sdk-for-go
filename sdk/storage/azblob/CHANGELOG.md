@@ -3,15 +3,22 @@
 ## 1.1.1 (Unreleased)
 
 ### Features Added
+* Added support for [Cold Tier](https://learn.microsoft.com/azure/storage/blobs/access-tiers-overview?tabs=azure-portal).
+* Added `CopySourceTag` option for `UploadBlobFromURLOptions`
+* Added [FilterBlobs by Tags](https://learn.microsoft.com/rest/api/storageservices/find-blobs-by-tags-container) API for container client.
+* Added `System` option to `ListContainersInclude` to allow listing of system containers (i.e, $web).
+* Updated the SAS Version to `2021-12-02` and added `Encryption Scope` to Account SAS, Service SAS, and User Delegation SAS
 
 ### Breaking Changes
 
 ### Bugs Fixed
-* Fixed issue where some requests fail with mismatch in string to sign. 
+* Fixed issue where some requests fail with mismatch in string to sign.
+* Fixed service SAS creation where expiry time or permissions can be omitted when stored access policy is used. Fixes [#21229](https://github.com/Azure/azure-sdk-for-go/issues/21229).
 
 * Fixed service SAS creation where expiry time or permissions can be omitted when stored access policy is used. Fixes [#21229](https://github.com/Azure/azure-sdk-for-go/issues/21229).
 
 ### Other Changes
+* Updating version of azcore to 1.6.0.
 
 ## 1.1.0 (2023-07-13)
 

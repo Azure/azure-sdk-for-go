@@ -3,6 +3,8 @@ module github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai
 
 go 1.18
 
+retract [v0.1.0, v0.1.2] // use github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai instead.
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.6.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.3.0

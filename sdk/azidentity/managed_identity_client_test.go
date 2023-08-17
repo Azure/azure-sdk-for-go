@@ -15,6 +15,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 type userAgentValidatingPolicy struct {
@@ -71,5 +73,85 @@ func TestManagedIdentityClient_ApplicationID(t *testing.T) {
 	_, err = client.authenticate(context.Background(), nil, []string{liveTestScope})
 	if err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestManagedIdentityClient_IMDS400(t *testing.T) {
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	body := `{"error":"invalid_request","error_description":"Identity not found"}`
+	srv.SetResponse(mock.WithBody([]byte(body)), mock.WithStatusCode(http.StatusBadRequest))
+	client, err := newManagedIdentityClient(&ManagedIdentityCredentialOptions{
+		ClientOptions: azcore.ClientOptions{Transport: srv},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = client.authenticate(context.Background(), nil, testTRO.Scopes)
+	if err == nil {
+		t.Fatal("expected an error")
+	}
+	if actual := err.Error(); !strings.Contains(actual, body) {
+		t.Fatalf("expected response body in error, got %q", actual)
+	}
+}
+
+func TestManagedIdentityClient_UserAssignedIDWarning(t *testing.T) {
+	for _, test := range []struct {
+		name          string
+		createRequest func(*managedIdentityClient) error
+	}{
+		{
+			name: "Azure Arc",
+			createRequest: func(client *managedIdentityClient) error {
+				_, err := client.createAzureArcAuthRequest(context.Background(), client.id, []string{liveTestScope}, "key")
+				return err
+			},
+		},
+		{
+			name: "Cloud Shell",
+			createRequest: func(client *managedIdentityClient) error {
+				_, err := client.createCloudShellAuthRequest(context.Background(), client.id, []string{liveTestScope})
+				return err
+			},
+		},
+		{
+			name: "Service Fabric",
+			createRequest: func(client *managedIdentityClient) error {
+				_, err := client.createServiceFabricAuthRequest(context.Background(), client.id, []string{liveTestScope})
+				return err
+			},
+		},
+	} {
+		for _, id := range []ManagedIDKind{ClientID(fakeClientID), ResourceID(fakeResourceID)} {
+			s := "-ClientID"
+			if id.String() == fakeResourceID {
+				s = "-ResourceID"
+			}
+			t.Run(test.name+s, func(t *testing.T) {
+				msgs := []string{}
+				log.SetListener(func(event log.Event, msg string) {
+					if event == EventAuthentication {
+						msgs = append(msgs, msg)
+					}
+				})
+				client, err := newManagedIdentityClient(&ManagedIdentityCredentialOptions{
+					ID: id,
+				})
+				if err != nil {
+					t.Fatal(err)
+				}
+				err = test.createRequest(client)
+				if err != nil {
+					t.Fatal(err)
+				}
+				for _, msg := range msgs {
+					if strings.Contains(msg, test.name) && strings.Contains(msg, "user-assigned") {
+						return
+					}
+				}
+				t.Fatalf("expected warning about user-assigned ID, got:\n%s", strings.Join(msgs, "\n"))
+			})
+		}
 	}
 }

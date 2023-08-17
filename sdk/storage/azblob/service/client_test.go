@@ -10,6 +10,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"io"
@@ -158,6 +159,33 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 
 	_require.Nil(err)
 	_require.GreaterOrEqual(count, 0)
+}
+
+func (s *ServiceRecordedTestsSuite) TestListContainersSystem() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+
+	listOptions := service.ListContainersOptions{Include: service.ListContainersInclude{System: true}}
+	pager := svcClient.NewListContainersPager(&listOptions)
+
+	count := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, c := range resp.ContainerItems {
+			_require.NotNil(c.Name)
+			if strings.Contains(*c.Name, "$") {
+				count += 1
+			}
+		}
+		if err != nil {
+			break
+		}
+	}
+
+	_require.Nil(err)
+	_require.GreaterOrEqual(count, 1) // every account will always have one system container, i.e. '$logs'
 }
 
 func (s *ServiceRecordedTestsSuite) TestSetPropertiesLogging() {
@@ -1056,6 +1084,78 @@ func (s *ServiceRecordedTestsSuite) TestAccountFilterBlobs() {
 	resp, err := svcClient.FilterBlobs(context.Background(), filter, &service.FilterBlobsOptions{})
 	_require.Nil(err)
 	_require.Len(resp.FilterBlobSegment.Blobs, 0)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestFilterBlobsTagsWithServiceSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	cred, _ := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", cred.AccountName()), cred, nil)
+	_require.Nil(err)
+
+	// Note: Always set all permissions, services, types to true to ensure order of string formed is correct.
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:                  true,
+		Write:                 true,
+		Delete:                true,
+		DeletePreviousVersion: true,
+		List:                  true,
+		Add:                   true,
+		Create:                true,
+		Update:                true,
+		Process:               true,
+		Tag:                   true,
+		FilterByTags:          true,
+		PermanentDelete:       true,
+	}
+	expiry := time.Now().Add(time.Hour)
+	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
+	_require.Nil(err)
+
+	svcClient, err := testcommon.GetServiceClientNoCredential(s.T(), sasUrl, nil)
+	_require.Nil(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := testcommon.GetAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+
+	createAppendBlobOptions := appendblob.CreateOptions{
+		Tags: testcommon.SpecialCharBlobTagsMap,
+	}
+	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
+	_require.Nil(err)
+	_require.NotNil(createResp.VersionID)
+	time.Sleep(10 * time.Second)
+
+	_, err = abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	blobGetTagsResponse, err := abClient.GetTags(context.Background(), nil)
+	_require.Nil(err)
+	blobTagsSet := blobGetTagsResponse.BlobTagSet
+	_require.NotNil(blobTagsSet)
+	_require.Len(blobTagsSet, len(testcommon.SpecialCharBlobTagsMap))
+	for _, blobTag := range blobTagsSet {
+		_require.Equal(testcommon.SpecialCharBlobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+
+	// Tags with spaces
+	where := "\"GO \"='.Net'"
+	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
+	_require.Nil(err)
+	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
+	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[2])
+
+	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
 }
 
 func batchSetup(containerName string, svcClient *service.Client, bb *service.BatchBuilder, operationType exported.BlobBatchOperationType) ([]*container.Client, error) {

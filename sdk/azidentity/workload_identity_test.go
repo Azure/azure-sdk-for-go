@@ -119,6 +119,10 @@ func TestWorkloadIdentityCredential(t *testing.T) {
 		t.Fatal(err)
 	}
 	testGetTokenSuccess(t, cred)
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"scope"}})
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
@@ -183,6 +187,25 @@ func TestTestWorkloadIdentityCredential_IncompleteConfig(t *testing.T) {
 				t.Fatal("expected an error")
 			}
 		})
+	}
+}
+
+func TestWorkloadIdentityCredential_NoFile(t *testing.T) {
+	for k, v := range map[string]string{
+		azureClientID:           fakeClientID,
+		azureFederatedTokenFile: filepath.Join(t.TempDir(), t.Name()),
+		azureTenantID:           fakeTenantID,
+	} {
+		t.Setenv(k, v)
+	}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientOptions: policy.ClientOptions{Transport: &mockSTS{}},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = cred.GetToken(context.Background(), testTRO); err == nil {
+		t.Fatal("expected an error")
 	}
 }
 

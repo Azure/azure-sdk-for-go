@@ -664,10 +664,15 @@ func (s *AZBlobUnrecordedTestsSuite) TestBasicDoBatchTransfer() {
 		totalSizeCount := int64(0)
 		runCount := int64(0)
 
+		numChunks := uint16(0)
+		if (test.chunkSize != 0) {
+			numChunks = uint16(((test.transferSize - 1) / test.chunkSize) + 1)
+		}
+
 		err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 			TransferSize: test.transferSize,
 			ChunkSize:    test.chunkSize,
-			NumChunks:    uint16(((test.transferSize - 1) / test.chunkSize) + 1),
+			NumChunks:    numChunks,
 			Concurrency:  test.concurrency,
 			Operation: func(ctx context.Context, offset int64, chunkSize int64) error {
 				atomic.AddInt64(&totalSizeCount, chunkSize)

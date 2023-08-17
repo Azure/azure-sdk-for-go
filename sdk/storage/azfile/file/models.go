@@ -91,9 +91,9 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 		return nil, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := o.SMBProperties.Format(false)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
 
-	permission, permissionKey := o.Permissions.Format()
+	permission, permissionKey := exported.FormatPermissions(o.Permissions)
 
 	createOptions := &generated.FileClientCreateOptions{
 		FileAttributes:    fileAttributes,
@@ -154,9 +154,9 @@ func (o *RenameOptions) format() (*generated.FileClientRenameOptions, *generated
 		return nil, nil, nil, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := o.SMBProperties.Format(false)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
 
-	permission, permissionKey := o.Permissions.Format()
+	permission, permissionKey := exported.FormatPermissions(o.Permissions)
 
 	renameOpts := &generated.FileClientRenameOptions{
 		FilePermission:    permission,
@@ -221,9 +221,9 @@ func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOpt
 		return nil, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := o.SMBProperties.Format(false)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
 
-	permission, permissionKey := o.Permissions.Format()
+	permission, permissionKey := exported.FormatPermissions(o.Permissions)
 
 	opts := &generated.FileClientSetHTTPHeadersOptions{
 		FileAttributes:    fileAttributes,

@@ -27,8 +27,14 @@ type SMBProperties struct {
 	ChangeTime *time.Time
 }
 
+// Deprecated: Internal implementation; use FormatSMBProperties instead.
 // Format returns file attributes, creation time and last write time.
-func (sp *SMBProperties) Format(isDir bool) (fileAttributes *string, creationTime *string, lastWriteTime *string, changeTime *string) {
+func (sp *SMBProperties) Format(isDir bool, defaultFileAttributes string, defaultCurrentTimeString string) (fileAttributes string, creationTime string, lastWriteTime string) {
+	return
+}
+
+// FormatSMBProperties returns file attributes, creation time, last write time and change time.
+func FormatSMBProperties(sp *SMBProperties, isDir bool) (fileAttributes *string, creationTime *string, lastWriteTime *string, changeTime *string) {
 	if sp == nil {
 		return nil, nil, nil, nil
 	}

@@ -18,8 +18,14 @@ type Permissions struct {
 	PermissionKey *string
 }
 
+// Deprecated: Internal implementation; use FormatPermissions instead.
 // Format returns file permission string and permission key.
-func (p *Permissions) Format() (*string, *string) {
+func (p *Permissions) Format(defaultFilePermissionStr string) (*string, *string) {
+	return nil, nil
+}
+
+// FormatPermissions returns file permission string and permission key.
+func FormatPermissions(p *Permissions) (*string, *string) {
 	if p == nil {
 		return nil, nil
 	}

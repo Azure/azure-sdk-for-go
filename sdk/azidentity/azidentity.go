@@ -46,7 +46,7 @@ const (
 var (
 	// capability CP1 indicates the client application is capable of handling CAE claims challenges
 	cp1                = []string{"CP1"}
-	errInvalidTenantID = errors.New("invalid tenantID. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names")
+	errInvalidTenantID = errors.New("invalid tenantID. You can locate your tenantID by following the instructions listed here: https://learn.microsoft.com/partner-center/find-ids-and-domain-names")
 )
 
 // setAuthorityHost initializes the authority host for credentials. Precedence is:

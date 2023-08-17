@@ -9,6 +9,7 @@ package blob
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 const (
@@ -18,6 +19,9 @@ const (
 
 	// DefaultDownloadBlockSize is default block size
 	DefaultDownloadBlockSize = int64(4 * 1024 * 1024) // 4MB
+
+	// DefaultConcurrency is the default number of blocks downloaded or uploaded in parallel
+	DefaultConcurrency = shared.DefaultConcurrency
 )
 
 // BlobType defines values for BlobType

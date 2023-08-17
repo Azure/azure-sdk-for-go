@@ -404,6 +404,8 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 		destBuffer = make([]byte, downloadCount)
 	}
 
+	_, err = destFile.Seek(0, 0)
+	_require.NoError(err)
 	n, err := destFile.Read(destBuffer)
 	_require.NoError(err)
 
@@ -662,9 +664,15 @@ func (s *AZBlobUnrecordedTestsSuite) TestBasicDoBatchTransfer() {
 		totalSizeCount := int64(0)
 		runCount := int64(0)
 
+		numChunks := uint16(0)
+		if test.chunkSize != 0 {
+			numChunks = uint16(((test.transferSize - 1) / test.chunkSize) + 1)
+		}
+
 		err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 			TransferSize: test.transferSize,
 			ChunkSize:    test.chunkSize,
+			NumChunks:    numChunks,
 			Concurrency:  test.concurrency,
 			Operation: func(ctx context.Context, offset int64, chunkSize int64) error {
 				atomic.AddInt64(&totalSizeCount, chunkSize)
@@ -707,6 +715,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestDoBatchTransferWithError() {
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 		TransferSize: 5,
 		ChunkSize:    1,
+		NumChunks:    5,
 		Concurrency:  5,
 		Operation: func(ctx context.Context, offset int64, chunkSize int64) error {
 			// simulate doing some work (HTTP call in real scenarios)

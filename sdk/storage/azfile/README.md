@@ -60,7 +60,7 @@ client, err := service.NewClient("https://<my-storage-account-name>.file.core.wi
 
 Learn more about enabling Azure Active Directory for authentication with Azure Storage: [Authorize access to blobs using Azure Active Directory][storage_ad]
 
-Other options for authentication include connection strings, shared key, shared access signatures (SAS), and anonymous public access. 
+Other options for authentication include connection strings, shared key, and shared access signatures (SAS). 
 Use the appropriate client constructor function for the authentication mechanism you wish to use.
 
 ## Key concepts

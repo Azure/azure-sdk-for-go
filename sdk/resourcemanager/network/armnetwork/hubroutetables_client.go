@@ -75,6 +75,10 @@ func (client *HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, res
 // Generated from API version 2023-02-01
 func (client *HubRouteTablesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "HubRouteTablesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, routeTableParameters, options)
 	if err != nil {
 		return nil, err
@@ -153,6 +157,10 @@ func (client *HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGro
 // Generated from API version 2023-02-01
 func (client *HubRouteTablesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "HubRouteTablesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 	if err != nil {
 		return nil, err
@@ -208,6 +216,10 @@ func (client *HubRouteTablesClient) deleteCreateRequest(ctx context.Context, res
 //   - options - HubRouteTablesClientGetOptions contains the optional parameters for the HubRouteTablesClient.Get method.
 func (client *HubRouteTablesClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesClientGetOptions) (HubRouteTablesClientGetResponse, error) {
 	var err error
+	const operationName = "HubRouteTablesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 	if err != nil {
 		return HubRouteTablesClientGetResponse{}, err
@@ -275,6 +287,7 @@ func (client *HubRouteTablesClient) NewListPager(resourceGroupName string, virtu
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *HubRouteTablesClientListResponse) (HubRouteTablesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "HubRouteTablesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -294,6 +307,7 @@ func (client *HubRouteTablesClient) NewListPager(resourceGroupName string, virtu
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

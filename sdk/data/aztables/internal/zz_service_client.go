@@ -23,7 +23,6 @@ import (
 type ServiceClient struct {
 	internal *azcore.Client
 	endpoint string
-	version  Enum0
 }
 
 // GetProperties - Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
@@ -31,12 +30,10 @@ type ServiceClient struct {
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2019-02-02
-//   - restype - Required query string to set the service properties.
-//   - comp - Required query string to set the service properties.
 //   - options - ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
-func (client *ServiceClient) GetProperties(ctx context.Context, restype Enum5, comp Enum6, options *ServiceClientGetPropertiesOptions) (ServiceClientGetPropertiesResponse, error) {
+func (client *ServiceClient) GetProperties(ctx context.Context, options *ServiceClientGetPropertiesOptions) (ServiceClientGetPropertiesResponse, error) {
 	var err error
-	req, err := client.getPropertiesCreateRequest(ctx, restype, comp, options)
+	req, err := client.getPropertiesCreateRequest(ctx, options)
 	if err != nil {
 		return ServiceClientGetPropertiesResponse{}, err
 	}
@@ -53,19 +50,19 @@ func (client *ServiceClient) GetProperties(ctx context.Context, restype Enum5, c
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
-func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, restype Enum5, comp Enum6, options *ServiceClientGetPropertiesOptions) (*policy.Request, error) {
+func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, options *ServiceClientGetPropertiesOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("restype", string(restype))
-	reqQP.Set("comp", string(comp))
+	reqQP.Set("restype", "service")
+	reqQP.Set("comp", "properties")
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -96,12 +93,10 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2019-02-02
-//   - restype - Required query string to get service stats.
-//   - comp - Required query string to get service stats.
 //   - options - ServiceClientGetStatisticsOptions contains the optional parameters for the ServiceClient.GetStatistics method.
-func (client *ServiceClient) GetStatistics(ctx context.Context, restype Enum5, comp Enum7, options *ServiceClientGetStatisticsOptions) (ServiceClientGetStatisticsResponse, error) {
+func (client *ServiceClient) GetStatistics(ctx context.Context, options *ServiceClientGetStatisticsOptions) (ServiceClientGetStatisticsResponse, error) {
 	var err error
-	req, err := client.getStatisticsCreateRequest(ctx, restype, comp, options)
+	req, err := client.getStatisticsCreateRequest(ctx, options)
 	if err != nil {
 		return ServiceClientGetStatisticsResponse{}, err
 	}
@@ -118,19 +113,19 @@ func (client *ServiceClient) GetStatistics(ctx context.Context, restype Enum5, c
 }
 
 // getStatisticsCreateRequest creates the GetStatistics request.
-func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, restype Enum5, comp Enum7, options *ServiceClientGetStatisticsOptions) (*policy.Request, error) {
+func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, options *ServiceClientGetStatisticsOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("restype", string(restype))
-	reqQP.Set("comp", string(comp))
+	reqQP.Set("restype", "service")
+	reqQP.Set("comp", "stats")
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -168,13 +163,11 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2019-02-02
-//   - restype - Required query string to set the service properties.
-//   - comp - Required query string to set the service properties.
 //   - tableServiceProperties - The Table Service properties.
 //   - options - ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
-func (client *ServiceClient) SetProperties(ctx context.Context, restype Enum5, comp Enum6, tableServiceProperties TableServiceProperties, options *ServiceClientSetPropertiesOptions) (ServiceClientSetPropertiesResponse, error) {
+func (client *ServiceClient) SetProperties(ctx context.Context, tableServiceProperties TableServiceProperties, options *ServiceClientSetPropertiesOptions) (ServiceClientSetPropertiesResponse, error) {
 	var err error
-	req, err := client.setPropertiesCreateRequest(ctx, restype, comp, tableServiceProperties, options)
+	req, err := client.setPropertiesCreateRequest(ctx, tableServiceProperties, options)
 	if err != nil {
 		return ServiceClientSetPropertiesResponse{}, err
 	}
@@ -191,19 +184,19 @@ func (client *ServiceClient) SetProperties(ctx context.Context, restype Enum5, c
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, restype Enum5, comp Enum6, tableServiceProperties TableServiceProperties, options *ServiceClientSetPropertiesOptions) (*policy.Request, error) {
+func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, tableServiceProperties TableServiceProperties, options *ServiceClientSetPropertiesOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("restype", string(restype))
-	reqQP.Set("comp", string(comp))
+	reqQP.Set("restype", "service")
+	reqQP.Set("comp", "properties")
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}

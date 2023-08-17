@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-
+* Fixed issue where some requests fail with mismatch in string to sign.
 * Fixed service SAS creation where expiry time or permissions can be omitted when stored access policy is used.
 
 #### Other Changes

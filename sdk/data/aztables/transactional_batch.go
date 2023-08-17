@@ -245,7 +245,6 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		}
 		req, err = t.client.DeleteEntityCreateRequest(
 			ctx,
-			generated.Enum1Three0,
 			t.name,
 			entity[partitionKey].(string),
 			entity[rowKey].(string),
@@ -259,7 +258,6 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	case TransactionTypeAdd:
 		req, err = t.client.InsertEntityCreateRequest(
 			ctx,
-			generated.Enum1Three0,
 			t.name,
 			&generated.TableClientInsertEntityOptions{
 				TableEntityProperties: entity,
@@ -279,7 +277,6 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		}
 		req, err = t.client.MergeEntityCreateRequest(
 			ctx,
-			generated.Enum1Three0,
 			t.name,
 			entity[partitionKey].(string),
 			entity[rowKey].(string),
@@ -301,7 +298,6 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		}
 		req, err = t.client.UpdateEntityCreateRequest(
 			ctx,
-			generated.Enum1Three0,
 			t.name,
 			entity[partitionKey].(string),
 			entity[rowKey].(string),

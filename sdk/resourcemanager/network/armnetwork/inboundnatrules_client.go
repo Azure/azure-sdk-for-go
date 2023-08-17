@@ -75,6 +75,10 @@ func (client *InboundNatRulesClient) BeginCreateOrUpdate(ctx context.Context, re
 // Generated from API version 2023-02-01
 func (client *InboundNatRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, inboundNatRuleParameters InboundNatRule, options *InboundNatRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "InboundNatRulesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, loadBalancerName, inboundNatRuleName, inboundNatRuleParameters, options)
 	if err != nil {
 		return nil, err
@@ -153,6 +157,10 @@ func (client *InboundNatRulesClient) BeginDelete(ctx context.Context, resourceGr
 // Generated from API version 2023-02-01
 func (client *InboundNatRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, options *InboundNatRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "InboundNatRulesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, loadBalancerName, inboundNatRuleName, options)
 	if err != nil {
 		return nil, err
@@ -208,6 +216,10 @@ func (client *InboundNatRulesClient) deleteCreateRequest(ctx context.Context, re
 //   - options - InboundNatRulesClientGetOptions contains the optional parameters for the InboundNatRulesClient.Get method.
 func (client *InboundNatRulesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, options *InboundNatRulesClientGetOptions) (InboundNatRulesClientGetResponse, error) {
 	var err error
+	const operationName = "InboundNatRulesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, inboundNatRuleName, options)
 	if err != nil {
 		return InboundNatRulesClientGetResponse{}, err
@@ -279,6 +291,7 @@ func (client *InboundNatRulesClient) NewListPager(resourceGroupName string, load
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *InboundNatRulesClientListResponse) (InboundNatRulesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "InboundNatRulesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -298,6 +311,7 @@ func (client *InboundNatRulesClient) NewListPager(resourceGroupName string, load
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

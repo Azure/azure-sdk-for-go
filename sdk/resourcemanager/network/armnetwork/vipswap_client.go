@@ -71,6 +71,10 @@ func (client *VipSwapClient) BeginCreate(ctx context.Context, groupName string, 
 // Generated from API version 2023-02-01
 func (client *VipSwapClient) create(ctx context.Context, groupName string, resourceName string, parameters SwapResource, options *VipSwapClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VipSwapClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, groupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -126,6 +130,10 @@ func (client *VipSwapClient) createCreateRequest(ctx context.Context, groupName 
 //   - options - VipSwapClientGetOptions contains the optional parameters for the VipSwapClient.Get method.
 func (client *VipSwapClient) Get(ctx context.Context, groupName string, resourceName string, options *VipSwapClientGetOptions) (VipSwapClientGetResponse, error) {
 	var err error
+	const operationName = "VipSwapClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, groupName, resourceName, options)
 	if err != nil {
 		return VipSwapClientGetResponse{}, err
@@ -188,6 +196,10 @@ func (client *VipSwapClient) getHandleResponse(resp *http.Response) (VipSwapClie
 //   - options - VipSwapClientListOptions contains the optional parameters for the VipSwapClient.List method.
 func (client *VipSwapClient) List(ctx context.Context, groupName string, resourceName string, options *VipSwapClientListOptions) (VipSwapClientListResponse, error) {
 	var err error
+	const operationName = "VipSwapClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, groupName, resourceName, options)
 	if err != nil {
 		return VipSwapClientListResponse{}, err

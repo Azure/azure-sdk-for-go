@@ -3,10 +3,15 @@ module github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.8.0-beta.1
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.8.0-beta.2
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.3.0
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.7.0
+)
+
+replace (
+	// temporary until we officially release the next beta.
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.8.0-beta.2 => ../../azcore
 )
 
 require (

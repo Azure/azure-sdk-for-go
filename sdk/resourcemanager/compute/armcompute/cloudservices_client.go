@@ -73,6 +73,10 @@ func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, reso
 // Generated from API version 2022-09-04
 func (client *CloudServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters CloudService, options *CloudServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServicesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudServiceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -144,6 +148,10 @@ func (client *CloudServicesClient) BeginDelete(ctx context.Context, resourceGrou
 // Generated from API version 2022-09-04
 func (client *CloudServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServicesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -212,6 +220,10 @@ func (client *CloudServicesClient) BeginDeleteInstances(ctx context.Context, res
 // Generated from API version 2022-09-04
 func (client *CloudServicesClient) deleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteInstancesOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServicesClient.BeginDeleteInstances"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteInstancesCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -268,6 +280,10 @@ func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Cont
 //   - options - CloudServicesClientGetOptions contains the optional parameters for the CloudServicesClient.Get method.
 func (client *CloudServicesClient) Get(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientGetOptions) (CloudServicesClientGetResponse, error) {
 	var err error
+	const operationName = "CloudServicesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return CloudServicesClientGetResponse{}, err
@@ -329,6 +345,10 @@ func (client *CloudServicesClient) getHandleResponse(resp *http.Response) (Cloud
 //     method.
 func (client *CloudServicesClient) GetInstanceView(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientGetInstanceViewOptions) (CloudServicesClientGetInstanceViewResponse, error) {
 	var err error
+	const operationName = "CloudServicesClient.GetInstanceView"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getInstanceViewCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return CloudServicesClientGetInstanceViewResponse{}, err
@@ -392,6 +412,7 @@ func (client *CloudServicesClient) NewListPager(resourceGroupName string, option
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CloudServicesClientListResponse) (CloudServicesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServicesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -411,6 +432,7 @@ func (client *CloudServicesClient) NewListPager(resourceGroupName string, option
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -458,6 +480,7 @@ func (client *CloudServicesClient) NewListAllPager(options *CloudServicesClientL
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CloudServicesClientListAllResponse) (CloudServicesClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServicesClient.NewListAllPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -477,6 +500,7 @@ func (client *CloudServicesClient) NewListAllPager(options *CloudServicesClientL
 			}
 			return client.listAllHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -535,6 +559,10 @@ func (client *CloudServicesClient) BeginPowerOff(ctx context.Context, resourceGr
 // Generated from API version 2022-09-04
 func (client *CloudServicesClient) powerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginPowerOffOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServicesClient.BeginPowerOff"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.powerOffCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -607,6 +635,10 @@ func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGro
 // Generated from API version 2022-09-04
 func (client *CloudServicesClient) rebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRebuildOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServicesClient.BeginRebuild"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.rebuildCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -681,6 +713,10 @@ func (client *CloudServicesClient) BeginReimage(ctx context.Context, resourceGro
 // Generated from API version 2022-09-04
 func (client *CloudServicesClient) reimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginReimageOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServicesClient.BeginReimage"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.reimageCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -755,6 +791,10 @@ func (client *CloudServicesClient) BeginRestart(ctx context.Context, resourceGro
 // Generated from API version 2022-09-04
 func (client *CloudServicesClient) restart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRestartOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServicesClient.BeginRestart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -829,6 +869,10 @@ func (client *CloudServicesClient) BeginStart(ctx context.Context, resourceGroup
 // Generated from API version 2022-09-04
 func (client *CloudServicesClient) start(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginStartOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServicesClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.startCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -898,6 +942,10 @@ func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGrou
 // Generated from API version 2022-09-04
 func (client *CloudServicesClient) update(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters CloudServiceUpdate, options *CloudServicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServicesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudServiceName, parameters, options)
 	if err != nil {
 		return nil, err

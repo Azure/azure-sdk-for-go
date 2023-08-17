@@ -55,6 +55,10 @@ func NewWebApplicationFirewallPoliciesClient(subscriptionID string, credential a
 //     method.
 func (client *WebApplicationFirewallPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *WebApplicationFirewallPoliciesClientCreateOrUpdateOptions) (WebApplicationFirewallPoliciesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "WebApplicationFirewallPoliciesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, policyName, parameters, options)
 	if err != nil {
 		return WebApplicationFirewallPoliciesClientCreateOrUpdateResponse{}, err
@@ -138,6 +142,10 @@ func (client *WebApplicationFirewallPoliciesClient) BeginDelete(ctx context.Cont
 // Generated from API version 2023-02-01
 func (client *WebApplicationFirewallPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WebApplicationFirewallPoliciesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, policyName, options)
 	if err != nil {
 		return nil, err
@@ -189,6 +197,10 @@ func (client *WebApplicationFirewallPoliciesClient) deleteCreateRequest(ctx cont
 //     method.
 func (client *WebApplicationFirewallPoliciesClient) Get(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesClientGetOptions) (WebApplicationFirewallPoliciesClientGetResponse, error) {
 	var err error
+	const operationName = "WebApplicationFirewallPoliciesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, policyName, options)
 	if err != nil {
 		return WebApplicationFirewallPoliciesClientGetResponse{}, err
@@ -252,6 +264,7 @@ func (client *WebApplicationFirewallPoliciesClient) NewListPager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WebApplicationFirewallPoliciesClientListResponse) (WebApplicationFirewallPoliciesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WebApplicationFirewallPoliciesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -271,6 +284,7 @@ func (client *WebApplicationFirewallPoliciesClient) NewListPager(resourceGroupNa
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -316,6 +330,7 @@ func (client *WebApplicationFirewallPoliciesClient) NewListAllPager(options *Web
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WebApplicationFirewallPoliciesClientListAllResponse) (WebApplicationFirewallPoliciesClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WebApplicationFirewallPoliciesClient.NewListAllPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -335,6 +350,7 @@ func (client *WebApplicationFirewallPoliciesClient) NewListAllPager(options *Web
 			}
 			return client.listAllHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

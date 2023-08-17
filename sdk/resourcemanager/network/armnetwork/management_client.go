@@ -55,6 +55,10 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 //     method.
 func (client *ManagementClient) CheckDNSNameAvailability(ctx context.Context, location string, domainNameLabel string, options *ManagementClientCheckDNSNameAvailabilityOptions) (ManagementClientCheckDNSNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "ManagementClient.CheckDNSNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkDNSNameAvailabilityCreateRequest(ctx, location, domainNameLabel, options)
 	if err != nil {
 		return ManagementClientCheckDNSNameAvailabilityResponse{}, err
@@ -133,6 +137,10 @@ func (client *ManagementClient) BeginDeleteBastionShareableLink(ctx context.Cont
 // Generated from API version 2023-02-01
 func (client *ManagementClient) deleteBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *ManagementClientBeginDeleteBastionShareableLinkOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagementClient.BeginDeleteBastionShareableLink"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, options)
 	if err != nil {
 		return nil, err
@@ -191,6 +199,7 @@ func (client *ManagementClient) NewDisconnectActiveSessionsPager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagementClientDisconnectActiveSessionsResponse) (ManagementClientDisconnectActiveSessionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagementClient.NewDisconnectActiveSessionsPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -210,6 +219,7 @@ func (client *ManagementClient) NewDisconnectActiveSessionsPager(resourceGroupNa
 			}
 			return client.disconnectActiveSessionsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -260,6 +270,10 @@ func (client *ManagementClient) disconnectActiveSessionsHandleResponse(resp *htt
 //     method.
 func (client *ManagementClient) ExpressRouteProviderPort(ctx context.Context, providerport string, options *ManagementClientExpressRouteProviderPortOptions) (ManagementClientExpressRouteProviderPortResponse, error) {
 	var err error
+	const operationName = "ManagementClient.ExpressRouteProviderPort"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.expressRouteProviderPortCreateRequest(ctx, providerport, options)
 	if err != nil {
 		return ManagementClientExpressRouteProviderPortResponse{}, err
@@ -339,6 +353,10 @@ func (client *ManagementClient) BeginGeneratevirtualwanvpnserverconfigurationvpn
 // Generated from API version 2023-02-01
 func (client *ManagementClient) generatevirtualwanvpnserverconfigurationvpnprofile(ctx context.Context, resourceGroupName string, virtualWANName string, vpnClientParams VirtualWanVPNProfileParameters, options *ManagementClientBeginGeneratevirtualwanvpnserverconfigurationvpnprofileOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagementClient.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.generatevirtualwanvpnserverconfigurationvpnprofileCreateRequest(ctx, resourceGroupName, virtualWANName, vpnClientParams, options)
 	if err != nil {
 		return nil, err
@@ -396,6 +414,7 @@ func (client *ManagementClient) BeginGetActiveSessions(ctx context.Context, reso
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagementClientGetActiveSessionsResponse) (ManagementClientGetActiveSessionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagementClient.BeginGetActiveSessions")
 			req, err := runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			if err != nil {
 				return ManagementClientGetActiveSessionsResponse{}, err
@@ -409,6 +428,7 @@ func (client *ManagementClient) BeginGetActiveSessions(ctx context.Context, reso
 			}
 			return client.getActiveSessionsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.getActiveSessions(ctx, resourceGroupName, bastionHostName, options)
@@ -432,6 +452,10 @@ func (client *ManagementClient) BeginGetActiveSessions(ctx context.Context, reso
 // Generated from API version 2023-02-01
 func (client *ManagementClient) getActiveSessions(ctx context.Context, resourceGroupName string, bastionHostName string, options *ManagementClientBeginGetActiveSessionsOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagementClient.BeginGetActiveSessions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getActiveSessionsCreateRequest(ctx, resourceGroupName, bastionHostName, options)
 	if err != nil {
 		return nil, err
@@ -496,6 +520,7 @@ func (client *ManagementClient) NewGetBastionShareableLinkPager(resourceGroupNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagementClientGetBastionShareableLinkResponse) (ManagementClientGetBastionShareableLinkResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagementClient.NewGetBastionShareableLinkPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -515,6 +540,7 @@ func (client *ManagementClient) NewGetBastionShareableLinkPager(resourceGroupNam
 			}
 			return client.getBastionShareableLinkHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -567,6 +593,10 @@ func (client *ManagementClient) getBastionShareableLinkHandleResponse(resp *http
 //     method.
 func (client *ManagementClient) ListActiveConnectivityConfigurations(ctx context.Context, resourceGroupName string, networkManagerName string, parameters ActiveConfigurationParameter, options *ManagementClientListActiveConnectivityConfigurationsOptions) (ManagementClientListActiveConnectivityConfigurationsResponse, error) {
 	var err error
+	const operationName = "ManagementClient.ListActiveConnectivityConfigurations"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listActiveConnectivityConfigurationsCreateRequest(ctx, resourceGroupName, networkManagerName, parameters, options)
 	if err != nil {
 		return ManagementClientListActiveConnectivityConfigurationsResponse{}, err
@@ -635,6 +665,10 @@ func (client *ManagementClient) listActiveConnectivityConfigurationsHandleRespon
 //     method.
 func (client *ManagementClient) ListActiveSecurityAdminRules(ctx context.Context, resourceGroupName string, networkManagerName string, parameters ActiveConfigurationParameter, options *ManagementClientListActiveSecurityAdminRulesOptions) (ManagementClientListActiveSecurityAdminRulesResponse, error) {
 	var err error
+	const operationName = "ManagementClient.ListActiveSecurityAdminRules"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listActiveSecurityAdminRulesCreateRequest(ctx, resourceGroupName, networkManagerName, parameters, options)
 	if err != nil {
 		return ManagementClientListActiveSecurityAdminRulesResponse{}, err
@@ -704,6 +738,10 @@ func (client *ManagementClient) listActiveSecurityAdminRulesHandleResponse(resp 
 //     for the ManagementClient.ListNetworkManagerEffectiveConnectivityConfigurations method.
 func (client *ManagementClient) ListNetworkManagerEffectiveConnectivityConfigurations(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters QueryRequestOptions, options *ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsOptions) (ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsResponse, error) {
 	var err error
+	const operationName = "ManagementClient.ListNetworkManagerEffectiveConnectivityConfigurations"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listNetworkManagerEffectiveConnectivityConfigurationsCreateRequest(ctx, resourceGroupName, virtualNetworkName, parameters, options)
 	if err != nil {
 		return ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsResponse{}, err
@@ -772,6 +810,10 @@ func (client *ManagementClient) listNetworkManagerEffectiveConnectivityConfigura
 //     ManagementClient.ListNetworkManagerEffectiveSecurityAdminRules method.
 func (client *ManagementClient) ListNetworkManagerEffectiveSecurityAdminRules(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters QueryRequestOptions, options *ManagementClientListNetworkManagerEffectiveSecurityAdminRulesOptions) (ManagementClientListNetworkManagerEffectiveSecurityAdminRulesResponse, error) {
 	var err error
+	const operationName = "ManagementClient.ListNetworkManagerEffectiveSecurityAdminRules"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listNetworkManagerEffectiveSecurityAdminRulesCreateRequest(ctx, resourceGroupName, virtualNetworkName, parameters, options)
 	if err != nil {
 		return ManagementClientListNetworkManagerEffectiveSecurityAdminRulesResponse{}, err
@@ -843,6 +885,7 @@ func (client *ManagementClient) BeginPutBastionShareableLink(ctx context.Context
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagementClientPutBastionShareableLinkResponse) (ManagementClientPutBastionShareableLinkResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagementClient.BeginPutBastionShareableLink")
 			req, err := runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			if err != nil {
 				return ManagementClientPutBastionShareableLinkResponse{}, err
@@ -856,6 +899,7 @@ func (client *ManagementClient) BeginPutBastionShareableLink(ctx context.Context
 			}
 			return client.putBastionShareableLinkHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.putBastionShareableLink(ctx, resourceGroupName, bastionHostName, bslRequest, options)
@@ -879,6 +923,10 @@ func (client *ManagementClient) BeginPutBastionShareableLink(ctx context.Context
 // Generated from API version 2023-02-01
 func (client *ManagementClient) putBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *ManagementClientBeginPutBastionShareableLinkOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagementClient.BeginPutBastionShareableLink"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.putBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, options)
 	if err != nil {
 		return nil, err
@@ -942,6 +990,10 @@ func (client *ManagementClient) putBastionShareableLinkHandleResponse(resp *http
 //     method.
 func (client *ManagementClient) SupportedSecurityProviders(ctx context.Context, resourceGroupName string, virtualWANName string, options *ManagementClientSupportedSecurityProvidersOptions) (ManagementClientSupportedSecurityProvidersResponse, error) {
 	var err error
+	const operationName = "ManagementClient.SupportedSecurityProviders"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.supportedSecurityProvidersCreateRequest(ctx, resourceGroupName, virtualWANName, options)
 	if err != nil {
 		return ManagementClientSupportedSecurityProvidersResponse{}, err

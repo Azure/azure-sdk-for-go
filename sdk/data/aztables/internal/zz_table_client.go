@@ -27,20 +27,18 @@ import (
 type TableClient struct {
 	internal *azcore.Client
 	endpoint string
-	version  Enum0
 }
 
 // Create - Creates a new table under the given account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2019-02-02
-//   - dataServiceVersion - Specifies the data service version.
 //   - tableProperties - The Table properties.
 //   - options - TableClientCreateOptions contains the optional parameters for the TableClient.Create method.
 //   - QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
-func (client *TableClient) Create(ctx context.Context, dataServiceVersion Enum1, tableProperties TableProperties, options *TableClientCreateOptions, queryOptions *QueryOptions) (TableClientCreateResponse, error) {
+func (client *TableClient) Create(ctx context.Context, tableProperties TableProperties, options *TableClientCreateOptions, queryOptions *QueryOptions) (TableClientCreateResponse, error) {
 	var err error
-	req, err := client.createCreateRequest(ctx, dataServiceVersion, tableProperties, options, queryOptions)
+	req, err := client.createCreateRequest(ctx, tableProperties, options, queryOptions)
 	if err != nil {
 		return TableClientCreateResponse{}, err
 	}
@@ -57,7 +55,7 @@ func (client *TableClient) Create(ctx context.Context, dataServiceVersion Enum1,
 }
 
 // createCreateRequest creates the Create request.
-func (client *TableClient) createCreateRequest(ctx context.Context, dataServiceVersion Enum1, tableProperties TableProperties, options *TableClientCreateOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) createCreateRequest(ctx context.Context, tableProperties TableProperties, options *TableClientCreateOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/Tables"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -68,11 +66,11 @@ func (client *TableClient) createCreateRequest(ctx context.Context, dataServiceV
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["DataServiceVersion"] = []string{string(dataServiceVersion)}
+	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.ResponsePreference != nil {
 		req.Raw().Header["Prefer"] = []string{string(*options.ResponsePreference)}
 	}
@@ -146,7 +144,7 @@ func (client *TableClient) deleteCreateRequest(ctx context.Context, table string
 	if err != nil {
 		return nil, err
 	}
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -180,7 +178,6 @@ func (client *TableClient) deleteHandleResponse(resp *http.Response) (TableClien
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2019-02-02
-//   - dataServiceVersion - Specifies the data service version.
 //   - table - The name of the table.
 //   - partitionKey - The partition key of the entity.
 //   - rowKey - The row key of the entity.
@@ -188,9 +185,9 @@ func (client *TableClient) deleteHandleResponse(resp *http.Response) (TableClien
 //     raised. To force an unconditional delete, set to the wildcard character (*).
 //   - options - TableClientDeleteEntityOptions contains the optional parameters for the TableClient.DeleteEntity method.
 //   - QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
-func (client *TableClient) DeleteEntity(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, ifMatch string, options *TableClientDeleteEntityOptions, queryOptions *QueryOptions) (TableClientDeleteEntityResponse, error) {
+func (client *TableClient) DeleteEntity(ctx context.Context, table string, partitionKey string, rowKey string, ifMatch string, options *TableClientDeleteEntityOptions, queryOptions *QueryOptions) (TableClientDeleteEntityResponse, error) {
 	var err error
-	req, err := client.DeleteEntityCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, ifMatch, options, queryOptions)
+	req, err := client.DeleteEntityCreateRequest(ctx, table, partitionKey, rowKey, ifMatch, options, queryOptions)
 	if err != nil {
 		return TableClientDeleteEntityResponse{}, err
 	}
@@ -207,7 +204,7 @@ func (client *TableClient) DeleteEntity(ctx context.Context, dataServiceVersion 
 }
 
 // deleteEntityCreateRequest creates the DeleteEntity request.
-func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, ifMatch string, options *TableClientDeleteEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, ifMatch string, options *TableClientDeleteEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -230,11 +227,11 @@ func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, dataSe
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["DataServiceVersion"] = []string{string(dataServiceVersion)}
+	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
 	return req, nil
@@ -268,11 +265,10 @@ func (client *TableClient) deleteEntityHandleResponse(resp *http.Response) (Tabl
 //
 // Generated from API version 2019-02-02
 //   - table - The name of the table.
-//   - comp - Required query string to handle stored access policies for the table that may be used with Shared Access Signatures.
 //   - options - TableClientGetAccessPolicyOptions contains the optional parameters for the TableClient.GetAccessPolicy method.
-func (client *TableClient) GetAccessPolicy(ctx context.Context, table string, comp Enum4, options *TableClientGetAccessPolicyOptions) (TableClientGetAccessPolicyResponse, error) {
+func (client *TableClient) GetAccessPolicy(ctx context.Context, table string, options *TableClientGetAccessPolicyOptions) (TableClientGetAccessPolicyResponse, error) {
 	var err error
-	req, err := client.getAccessPolicyCreateRequest(ctx, table, comp, options)
+	req, err := client.getAccessPolicyCreateRequest(ctx, table, options)
 	if err != nil {
 		return TableClientGetAccessPolicyResponse{}, err
 	}
@@ -289,7 +285,7 @@ func (client *TableClient) GetAccessPolicy(ctx context.Context, table string, co
 }
 
 // getAccessPolicyCreateRequest creates the GetAccessPolicy request.
-func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, table string, comp Enum4, options *TableClientGetAccessPolicyOptions) (*policy.Request, error) {
+func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, table string, options *TableClientGetAccessPolicyOptions) (*policy.Request, error) {
 	urlPath := "/{table}"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -303,9 +299,9 @@ func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, tab
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	reqQP.Set("comp", string(comp))
+	reqQP.Set("comp", "acl")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -342,13 +338,12 @@ func (client *TableClient) getAccessPolicyHandleResponse(resp *http.Response) (T
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2019-02-02
-//   - dataServiceVersion - Specifies the data service version.
 //   - table - The name of the table.
 //   - options - TableClientInsertEntityOptions contains the optional parameters for the TableClient.InsertEntity method.
 //   - QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
-func (client *TableClient) InsertEntity(ctx context.Context, dataServiceVersion Enum1, table string, options *TableClientInsertEntityOptions, queryOptions *QueryOptions) (TableClientInsertEntityResponse, error) {
+func (client *TableClient) InsertEntity(ctx context.Context, table string, options *TableClientInsertEntityOptions, queryOptions *QueryOptions) (TableClientInsertEntityResponse, error) {
 	var err error
-	req, err := client.InsertEntityCreateRequest(ctx, dataServiceVersion, table, options, queryOptions)
+	req, err := client.InsertEntityCreateRequest(ctx, table, options, queryOptions)
 	if err != nil {
 		return TableClientInsertEntityResponse{}, err
 	}
@@ -365,7 +360,7 @@ func (client *TableClient) InsertEntity(ctx context.Context, dataServiceVersion 
 }
 
 // insertEntityCreateRequest creates the InsertEntity request.
-func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, options *TableClientInsertEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, table string, options *TableClientInsertEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -383,11 +378,11 @@ func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, dataSe
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["DataServiceVersion"] = []string{string(dataServiceVersion)}
+	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.ResponsePreference != nil {
 		req.Raw().Header["Prefer"] = []string{string(*options.ResponsePreference)}
 	}
@@ -439,15 +434,14 @@ func (client *TableClient) insertEntityHandleResponse(resp *http.Response) (Tabl
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2019-02-02
-//   - dataServiceVersion - Specifies the data service version.
 //   - table - The name of the table.
 //   - partitionKey - The partition key of the entity.
 //   - rowKey - The row key of the entity.
 //   - options - TableClientMergeEntityOptions contains the optional parameters for the TableClient.MergeEntity method.
 //   - QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
-func (client *TableClient) MergeEntity(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, options *TableClientMergeEntityOptions, queryOptions *QueryOptions) (TableClientMergeEntityResponse, error) {
+func (client *TableClient) MergeEntity(ctx context.Context, table string, partitionKey string, rowKey string, options *TableClientMergeEntityOptions, queryOptions *QueryOptions) (TableClientMergeEntityResponse, error) {
 	var err error
-	req, err := client.MergeEntityCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, options, queryOptions)
+	req, err := client.MergeEntityCreateRequest(ctx, table, partitionKey, rowKey, options, queryOptions)
 	if err != nil {
 		return TableClientMergeEntityResponse{}, err
 	}
@@ -464,7 +458,7 @@ func (client *TableClient) MergeEntity(ctx context.Context, dataServiceVersion E
 }
 
 // mergeEntityCreateRequest creates the MergeEntity request.
-func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, options *TableClientMergeEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, options *TableClientMergeEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -487,11 +481,11 @@ func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, dataSer
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["DataServiceVersion"] = []string{string(dataServiceVersion)}
+	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
@@ -534,12 +528,11 @@ func (client *TableClient) mergeEntityHandleResponse(resp *http.Response) (Table
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2019-02-02
-//   - dataServiceVersion - Specifies the data service version.
 //   - options - TableClientQueryOptions contains the optional parameters for the TableClient.Query method.
 //   - QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
-func (client *TableClient) Query(ctx context.Context, dataServiceVersion Enum1, options *TableClientQueryOptions, queryOptions *QueryOptions) (TableClientQueryResponse, error) {
+func (client *TableClient) Query(ctx context.Context, options *TableClientQueryOptions, queryOptions *QueryOptions) (TableClientQueryResponse, error) {
 	var err error
-	req, err := client.queryCreateRequest(ctx, dataServiceVersion, options, queryOptions)
+	req, err := client.queryCreateRequest(ctx, options, queryOptions)
 	if err != nil {
 		return TableClientQueryResponse{}, err
 	}
@@ -556,7 +549,7 @@ func (client *TableClient) Query(ctx context.Context, dataServiceVersion Enum1, 
 }
 
 // queryCreateRequest creates the Query request.
-func (client *TableClient) queryCreateRequest(ctx context.Context, dataServiceVersion Enum1, options *TableClientQueryOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) queryCreateRequest(ctx context.Context, options *TableClientQueryOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/Tables"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -579,11 +572,11 @@ func (client *TableClient) queryCreateRequest(ctx context.Context, dataServiceVe
 		reqQP.Set("NextTableName", *options.NextTableName)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["DataServiceVersion"] = []string{string(dataServiceVersion)}
+	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
 	return req, nil
 }
@@ -620,13 +613,12 @@ func (client *TableClient) queryHandleResponse(resp *http.Response) (TableClient
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2019-02-02
-//   - dataServiceVersion - Specifies the data service version.
 //   - table - The name of the table.
 //   - options - TableClientQueryEntitiesOptions contains the optional parameters for the TableClient.QueryEntities method.
 //   - QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
-func (client *TableClient) QueryEntities(ctx context.Context, dataServiceVersion Enum1, table string, options *TableClientQueryEntitiesOptions, queryOptions *QueryOptions) (TableClientQueryEntitiesResponse, error) {
+func (client *TableClient) QueryEntities(ctx context.Context, table string, options *TableClientQueryEntitiesOptions, queryOptions *QueryOptions) (TableClientQueryEntitiesResponse, error) {
 	var err error
-	req, err := client.queryEntitiesCreateRequest(ctx, dataServiceVersion, table, options, queryOptions)
+	req, err := client.queryEntitiesCreateRequest(ctx, table, options, queryOptions)
 	if err != nil {
 		return TableClientQueryEntitiesResponse{}, err
 	}
@@ -643,7 +635,7 @@ func (client *TableClient) QueryEntities(ctx context.Context, dataServiceVersion
 }
 
 // queryEntitiesCreateRequest creates the QueryEntities request.
-func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, options *TableClientQueryEntitiesOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, table string, options *TableClientQueryEntitiesOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}()"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -676,11 +668,11 @@ func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, dataS
 		reqQP.Set("NextRowKey", *options.NextRowKey)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["DataServiceVersion"] = []string{string(dataServiceVersion)}
+	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
 	return req, nil
 }
@@ -720,16 +712,15 @@ func (client *TableClient) queryEntitiesHandleResponse(resp *http.Response) (Tab
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2019-02-02
-//   - dataServiceVersion - Specifies the data service version.
 //   - table - The name of the table.
 //   - partitionKey - The partition key of the entity.
 //   - rowKey - The row key of the entity.
 //   - options - TableClientQueryEntityWithPartitionAndRowKeyOptions contains the optional parameters for the TableClient.QueryEntityWithPartitionAndRowKey
 //     method.
 //   - QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
-func (client *TableClient) QueryEntityWithPartitionAndRowKey(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, options *TableClientQueryEntityWithPartitionAndRowKeyOptions, queryOptions *QueryOptions) (TableClientQueryEntityWithPartitionAndRowKeyResponse, error) {
+func (client *TableClient) QueryEntityWithPartitionAndRowKey(ctx context.Context, table string, partitionKey string, rowKey string, options *TableClientQueryEntityWithPartitionAndRowKeyOptions, queryOptions *QueryOptions) (TableClientQueryEntityWithPartitionAndRowKeyResponse, error) {
 	var err error
-	req, err := client.queryEntityWithPartitionAndRowKeyCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, options, queryOptions)
+	req, err := client.queryEntityWithPartitionAndRowKeyCreateRequest(ctx, table, partitionKey, rowKey, options, queryOptions)
 	if err != nil {
 		return TableClientQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
@@ -746,7 +737,7 @@ func (client *TableClient) QueryEntityWithPartitionAndRowKey(ctx context.Context
 }
 
 // queryEntityWithPartitionAndRowKeyCreateRequest creates the QueryEntityWithPartitionAndRowKey request.
-func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, options *TableClientQueryEntityWithPartitionAndRowKeyOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, options *TableClientQueryEntityWithPartitionAndRowKeyOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -775,11 +766,11 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["DataServiceVersion"] = []string{string(dataServiceVersion)}
+	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
 	return req, nil
 }
@@ -823,11 +814,10 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyHandleResponse(resp 
 //
 // Generated from API version 2019-02-02
 //   - table - The name of the table.
-//   - comp - Required query string to handle stored access policies for the table that may be used with Shared Access Signatures.
 //   - options - TableClientSetAccessPolicyOptions contains the optional parameters for the TableClient.SetAccessPolicy method.
-func (client *TableClient) SetAccessPolicy(ctx context.Context, table string, comp Enum4, options *TableClientSetAccessPolicyOptions) (TableClientSetAccessPolicyResponse, error) {
+func (client *TableClient) SetAccessPolicy(ctx context.Context, table string, options *TableClientSetAccessPolicyOptions) (TableClientSetAccessPolicyResponse, error) {
 	var err error
-	req, err := client.setAccessPolicyCreateRequest(ctx, table, comp, options)
+	req, err := client.setAccessPolicyCreateRequest(ctx, table, options)
 	if err != nil {
 		return TableClientSetAccessPolicyResponse{}, err
 	}
@@ -844,7 +834,7 @@ func (client *TableClient) SetAccessPolicy(ctx context.Context, table string, co
 }
 
 // setAccessPolicyCreateRequest creates the SetAccessPolicy request.
-func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, table string, comp Enum4, options *TableClientSetAccessPolicyOptions) (*policy.Request, error) {
+func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, table string, options *TableClientSetAccessPolicyOptions) (*policy.Request, error) {
 	urlPath := "/{table}"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -858,9 +848,9 @@ func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, tab
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	reqQP.Set("comp", string(comp))
+	reqQP.Set("comp", "acl")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -904,15 +894,14 @@ func (client *TableClient) setAccessPolicyHandleResponse(resp *http.Response) (T
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2019-02-02
-//   - dataServiceVersion - Specifies the data service version.
 //   - table - The name of the table.
 //   - partitionKey - The partition key of the entity.
 //   - rowKey - The row key of the entity.
 //   - options - TableClientUpdateEntityOptions contains the optional parameters for the TableClient.UpdateEntity method.
 //   - QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
-func (client *TableClient) UpdateEntity(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, options *TableClientUpdateEntityOptions, queryOptions *QueryOptions) (TableClientUpdateEntityResponse, error) {
+func (client *TableClient) UpdateEntity(ctx context.Context, table string, partitionKey string, rowKey string, options *TableClientUpdateEntityOptions, queryOptions *QueryOptions) (TableClientUpdateEntityResponse, error) {
 	var err error
-	req, err := client.UpdateEntityCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, options, queryOptions)
+	req, err := client.UpdateEntityCreateRequest(ctx, table, partitionKey, rowKey, options, queryOptions)
 	if err != nil {
 		return TableClientUpdateEntityResponse{}, err
 	}
@@ -929,7 +918,7 @@ func (client *TableClient) UpdateEntity(ctx context.Context, dataServiceVersion 
 }
 
 // updateEntityCreateRequest creates the UpdateEntity request.
-func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, options *TableClientUpdateEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, options *TableClientUpdateEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -952,11 +941,11 @@ func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, dataSe
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{string(client.version)}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["DataServiceVersion"] = []string{string(dataServiceVersion)}
+	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}

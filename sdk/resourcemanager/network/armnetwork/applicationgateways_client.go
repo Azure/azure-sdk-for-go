@@ -73,6 +73,10 @@ func (client *ApplicationGatewaysClient) BeginBackendHealth(ctx context.Context,
 // Generated from API version 2023-02-01
 func (client *ApplicationGatewaysClient) backendHealth(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginBackendHealthOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.BeginBackendHealth"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.backendHealthCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return nil, err
@@ -149,6 +153,10 @@ func (client *ApplicationGatewaysClient) BeginBackendHealthOnDemand(ctx context.
 // Generated from API version 2023-02-01
 func (client *ApplicationGatewaysClient) backendHealthOnDemand(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, options *ApplicationGatewaysClientBeginBackendHealthOnDemandOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.BeginBackendHealthOnDemand"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.backendHealthOnDemandCreateRequest(ctx, resourceGroupName, applicationGatewayName, probeRequest, options)
 	if err != nil {
 		return nil, err
@@ -226,6 +234,10 @@ func (client *ApplicationGatewaysClient) BeginCreateOrUpdate(ctx context.Context
 // Generated from API version 2023-02-01
 func (client *ApplicationGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway, options *ApplicationGatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, applicationGatewayName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -299,6 +311,10 @@ func (client *ApplicationGatewaysClient) BeginDelete(ctx context.Context, resour
 // Generated from API version 2023-02-01
 func (client *ApplicationGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return nil, err
@@ -349,6 +365,10 @@ func (client *ApplicationGatewaysClient) deleteCreateRequest(ctx context.Context
 //   - options - ApplicationGatewaysClientGetOptions contains the optional parameters for the ApplicationGatewaysClient.Get method.
 func (client *ApplicationGatewaysClient) Get(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientGetOptions) (ApplicationGatewaysClientGetResponse, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return ApplicationGatewaysClientGetResponse{}, err
@@ -409,6 +429,10 @@ func (client *ApplicationGatewaysClient) getHandleResponse(resp *http.Response) 
 //     method.
 func (client *ApplicationGatewaysClient) GetSSLPredefinedPolicy(ctx context.Context, predefinedPolicyName string, options *ApplicationGatewaysClientGetSSLPredefinedPolicyOptions) (ApplicationGatewaysClientGetSSLPredefinedPolicyResponse, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.GetSSLPredefinedPolicy"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getSSLPredefinedPolicyCreateRequest(ctx, predefinedPolicyName, options)
 	if err != nil {
 		return ApplicationGatewaysClientGetSSLPredefinedPolicyResponse{}, err
@@ -468,6 +492,7 @@ func (client *ApplicationGatewaysClient) NewListPager(resourceGroupName string, 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationGatewaysClientListResponse) (ApplicationGatewaysClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGatewaysClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -487,6 +512,7 @@ func (client *ApplicationGatewaysClient) NewListPager(resourceGroupName string, 
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -532,6 +558,7 @@ func (client *ApplicationGatewaysClient) NewListAllPager(options *ApplicationGat
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationGatewaysClientListAllResponse) (ApplicationGatewaysClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGatewaysClient.NewListAllPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -551,6 +578,7 @@ func (client *ApplicationGatewaysClient) NewListAllPager(options *ApplicationGat
 			}
 			return client.listAllHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -589,6 +617,10 @@ func (client *ApplicationGatewaysClient) listAllHandleResponse(resp *http.Respon
 //     method.
 func (client *ApplicationGatewaysClient) ListAvailableRequestHeaders(ctx context.Context, options *ApplicationGatewaysClientListAvailableRequestHeadersOptions) (ApplicationGatewaysClientListAvailableRequestHeadersResponse, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.ListAvailableRequestHeaders"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listAvailableRequestHeadersCreateRequest(ctx, options)
 	if err != nil {
 		return ApplicationGatewaysClientListAvailableRequestHeadersResponse{}, err
@@ -640,6 +672,10 @@ func (client *ApplicationGatewaysClient) listAvailableRequestHeadersHandleRespon
 //     method.
 func (client *ApplicationGatewaysClient) ListAvailableResponseHeaders(ctx context.Context, options *ApplicationGatewaysClientListAvailableResponseHeadersOptions) (ApplicationGatewaysClientListAvailableResponseHeadersResponse, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.ListAvailableResponseHeaders"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listAvailableResponseHeadersCreateRequest(ctx, options)
 	if err != nil {
 		return ApplicationGatewaysClientListAvailableResponseHeadersResponse{}, err
@@ -691,6 +727,10 @@ func (client *ApplicationGatewaysClient) listAvailableResponseHeadersHandleRespo
 //     method.
 func (client *ApplicationGatewaysClient) ListAvailableSSLOptions(ctx context.Context, options *ApplicationGatewaysClientListAvailableSSLOptionsOptions) (ApplicationGatewaysClientListAvailableSSLOptionsResponse, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.ListAvailableSSLOptions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listAvailableSSLOptionsCreateRequest(ctx, options)
 	if err != nil {
 		return ApplicationGatewaysClientListAvailableSSLOptionsResponse{}, err
@@ -745,6 +785,7 @@ func (client *ApplicationGatewaysClient) NewListAvailableSSLPredefinedPoliciesPa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse) (ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGatewaysClient.NewListAvailableSSLPredefinedPoliciesPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -764,6 +805,7 @@ func (client *ApplicationGatewaysClient) NewListAvailableSSLPredefinedPoliciesPa
 			}
 			return client.listAvailableSSLPredefinedPoliciesHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -802,6 +844,10 @@ func (client *ApplicationGatewaysClient) listAvailableSSLPredefinedPoliciesHandl
 //     method.
 func (client *ApplicationGatewaysClient) ListAvailableServerVariables(ctx context.Context, options *ApplicationGatewaysClientListAvailableServerVariablesOptions) (ApplicationGatewaysClientListAvailableServerVariablesResponse, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.ListAvailableServerVariables"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listAvailableServerVariablesCreateRequest(ctx, options)
 	if err != nil {
 		return ApplicationGatewaysClientListAvailableServerVariablesResponse{}, err
@@ -853,6 +899,10 @@ func (client *ApplicationGatewaysClient) listAvailableServerVariablesHandleRespo
 //     method.
 func (client *ApplicationGatewaysClient) ListAvailableWafRuleSets(ctx context.Context, options *ApplicationGatewaysClientListAvailableWafRuleSetsOptions) (ApplicationGatewaysClientListAvailableWafRuleSetsResponse, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.ListAvailableWafRuleSets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listAvailableWafRuleSetsCreateRequest(ctx, options)
 	if err != nil {
 		return ApplicationGatewaysClientListAvailableWafRuleSetsResponse{}, err
@@ -925,6 +975,10 @@ func (client *ApplicationGatewaysClient) BeginStart(ctx context.Context, resourc
 // Generated from API version 2023-02-01
 func (client *ApplicationGatewaysClient) start(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginStartOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.startCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return nil, err
@@ -995,6 +1049,10 @@ func (client *ApplicationGatewaysClient) BeginStop(ctx context.Context, resource
 // Generated from API version 2023-02-01
 func (client *ApplicationGatewaysClient) stop(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginStopOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
 	if err != nil {
 		return nil, err
@@ -1047,6 +1105,10 @@ func (client *ApplicationGatewaysClient) stopCreateRequest(ctx context.Context, 
 //     method.
 func (client *ApplicationGatewaysClient) UpdateTags(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters TagsObject, options *ApplicationGatewaysClientUpdateTagsOptions) (ApplicationGatewaysClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "ApplicationGatewaysClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, applicationGatewayName, parameters, options)
 	if err != nil {
 		return ApplicationGatewaysClientUpdateTagsResponse{}, err

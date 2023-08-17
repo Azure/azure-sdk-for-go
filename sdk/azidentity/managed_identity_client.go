@@ -179,7 +179,11 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		if id != nil {
 			return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "the requested identity isn't assigned to this resource", resp, nil)
 		}
-		return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, "no default identity is assigned to this resource")
+		msg := "failed to authenticate a system assigned identity"
+		if body, err := runtime.Payload(resp); err == nil && len(body) > 0 {
+			msg += fmt.Sprintf(". The endpoint responded with %s", body)
+		}
+		return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, msg)
 	}
 
 	return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "authentication failed", resp, nil)

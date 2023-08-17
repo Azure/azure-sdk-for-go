@@ -52,6 +52,10 @@ func NewExpressRouteProviderPortsLocationClient(subscriptionID string, credentia
 //     method.
 func (client *ExpressRouteProviderPortsLocationClient) List(ctx context.Context, options *ExpressRouteProviderPortsLocationClientListOptions) (ExpressRouteProviderPortsLocationClientListResponse, error) {
 	var err error
+	const operationName = "ExpressRouteProviderPortsLocationClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
 		return ExpressRouteProviderPortsLocationClientListResponse{}, err

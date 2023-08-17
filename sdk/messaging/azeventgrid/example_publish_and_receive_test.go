@@ -5,7 +5,6 @@ package azeventgrid_test
 
 import (
 	"context"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -22,32 +21,54 @@ func Example_publishAndReceiveCloudEvents() {
 	topicName := os.Getenv("EVENTGRID_TOPIC")
 	subscriptionName := os.Getenv("EVENTGRID_SUBSCRIPTION")
 
+	if endpoint == "" || key == "" || topicName == "" || subscriptionName == "" {
+		return
+	}
+
 	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, key, nil)
 
 	if err != nil {
 		panic(err)
 	}
 
+	//
+	// Publish an event with a string payload
+	//
+	fmt.Fprintf(os.Stderr, "Published event with a string payload 'hello world'\n")
 	eventWithString, err := publishAndReceiveEvent(client, topicName, subscriptionName, "hello world")
 
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("ID: %s\n", eventWithString.Event.ID)
-	fmt.Printf("  Body: %s\n", eventWithString.Event.Data.(string))
-	fmt.Printf("  Delivery count: %d\n", eventWithString.BrokerProperties.DeliveryCount)
+	fmt.Fprintf(os.Stderr, "Received an event with a string payload\n")
+	fmt.Fprintf(os.Stderr, "ID: %s\n", eventWithString.Event.ID)
 
+	var str *string
+
+	if err := json.Unmarshal(eventWithString.Event.Data.([]byte), &str); err != nil {
+		panic(err)
+	}
+
+	fmt.Fprintf(os.Stderr, "  Body: %s\n", *str) // prints 'Body: hello world'
+	fmt.Fprintf(os.Stderr, "  Delivery count: %d\n", eventWithString.BrokerProperties.DeliveryCount)
+
+	//
+	// Publish an event with a []byte payload
+	//
 	eventWithBytes, err := publishAndReceiveEvent(client, topicName, subscriptionName, []byte{0, 1, 2})
 
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("ID: %s\n", eventWithBytes.Event.ID)
-	fmt.Printf("  Body: %s\n", hex.EncodeToString(eventWithBytes.Event.Data.([]byte)))
-	fmt.Printf("  Delivery count: %d\n", eventWithBytes.BrokerProperties.DeliveryCount)
+	fmt.Fprintf(os.Stderr, "ID: %s\n", eventWithBytes.Event.ID)
+	fmt.Fprintf(os.Stderr, "  Body: %#v\n", eventWithBytes.Event.Data.([]byte)) // prints 'Body: []byte{0x0, 0x1, 0x2}'
+	fmt.Fprintf(os.Stderr, "  Delivery count: %d\n", eventWithBytes.BrokerProperties.DeliveryCount)
 
+	//
+	// Publish an event with a struct as the payload
+	//
 	type SampleData struct {
 		Name string `json:"name"`
 	}
@@ -59,13 +80,15 @@ func Example_publishAndReceiveCloudEvents() {
 	}
 
 	var sampleData *SampleData
-	if err := json.Unmarshal(eventWithStruct.Event.Data.(json.RawMessage), &sampleData); err != nil {
+	if err := json.Unmarshal(eventWithStruct.Event.Data.([]byte), &sampleData); err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("ID: %s\n", eventWithStruct.Event.ID)
-	fmt.Printf("  Body: %#v\n", sampleData)
-	fmt.Printf("  Delivery count: %d\n", eventWithStruct.BrokerProperties.DeliveryCount)
+	fmt.Fprintf(os.Stderr, "ID: %s\n", eventWithStruct.Event.ID)
+	fmt.Fprintf(os.Stderr, "  Body: %#v\n", sampleData) // prints 'Body: &azeventgrid_test.SampleData{Name:"hello"}'
+	fmt.Fprintf(os.Stderr, "  Delivery count: %d\n", eventWithStruct.BrokerProperties.DeliveryCount)
+
+	// Output:
 }
 
 func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscriptionName string, payload any) (azeventgrid.ReceiveDetails, error) {

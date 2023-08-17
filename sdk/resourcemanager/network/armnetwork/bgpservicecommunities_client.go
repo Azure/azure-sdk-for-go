@@ -55,6 +55,7 @@ func (client *BgpServiceCommunitiesClient) NewListPager(options *BgpServiceCommu
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *BgpServiceCommunitiesClientListResponse) (BgpServiceCommunitiesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BgpServiceCommunitiesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -74,6 +75,7 @@ func (client *BgpServiceCommunitiesClient) NewListPager(options *BgpServiceCommu
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

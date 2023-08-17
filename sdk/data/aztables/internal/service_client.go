@@ -19,7 +19,6 @@ func NewServiceClient(endpoint string, plOpts runtime.PipelineOptions, options *
 	return &ServiceClient{
 		endpoint: endpoint,
 		internal: client,
-		version:  Enum0TwoThousandNineteen0202,
 	}, nil
 }
 

@@ -53,6 +53,10 @@ func NewVirtualApplianceSKUsClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *VirtualApplianceSKUsClient) Get(ctx context.Context, skuName string, options *VirtualApplianceSKUsClientGetOptions) (VirtualApplianceSKUsClientGetResponse, error) {
 	var err error
+	const operationName = "VirtualApplianceSKUsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, skuName, options)
 	if err != nil {
 		return VirtualApplianceSKUsClientGetResponse{}, err
@@ -111,6 +115,7 @@ func (client *VirtualApplianceSKUsClient) NewListPager(options *VirtualAppliance
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VirtualApplianceSKUsClientListResponse) (VirtualApplianceSKUsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualApplianceSKUsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -130,6 +135,7 @@ func (client *VirtualApplianceSKUsClient) NewListPager(options *VirtualAppliance
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

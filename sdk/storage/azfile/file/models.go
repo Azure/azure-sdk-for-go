@@ -292,17 +292,28 @@ func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOption
 
 // CopyFileSMBInfo contains a group of parameters for the FileClient.StartCopy method.
 type CopyFileSMBInfo struct {
-	// Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes
-	// to set on a target file.
+	// Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes to set on a target file.
+	// CopyFileAttributes is an interface and its underlying implementation are:
+	//   - SourceCopyFileAttributes - specifies to copy file attributes from a source file to a target file.
+	//   - DestinationCopyFileAttributes - specifies a list of attributes to set on a target file.
 	Attributes CopyFileAttributes
 	// Specifies either the option to copy file change time from a source file(source) to a target file or a time value in
 	// ISO 8601 format to set as change time on a target file.
+	// CopyFileChangeTime is an interface and its underlying implementation are:
+	//   - SourceCopyFileChangeTime - specifies to copy file change time from a source file to a target file.
+	//   - DestinationCopyFileChangeTime - specifies a time value in ISO 8601 format to set as change time on a target file.
 	ChangeTime CopyFileChangeTime
 	// Specifies either the option to copy file creation time from a source file(source) to a target file or a time value in ISO
 	// 8601 format to set as creation time on a target file.
+	// CopyFileCreationTime is an interface and its underlying implementation are:
+	//   - SourceCopyFileCreationTime - specifies to copy file creation time from a source file to a target file.
+	//   - DestinationCopyFileCreationTime - specifies a time value in ISO 8601 format to set as creation time on a target file.
 	CreationTime CopyFileCreationTime
 	// Specifies either the option to copy file last write time from a source file(source) to a target file or a time value in
 	// ISO 8601 format to set as last write time on a target file.
+	// CopyFileLastWriteTime is an interface and its underlying implementation are:
+	//   - SourceCopyFileLastWriteTime - specifies to copy file last write time from a source file to a target file.
+	//   - DestinationCopyFileLastWriteTime - specifies a time value in ISO 8601 format to set as last write time on a target file.
 	LastWriteTime CopyFileLastWriteTime
 	// Specifies the option to copy file security descriptor from source file or to set it using the value which is defined by
 	// the header value of x-ms-file-permission or x-ms-file-permission-key.

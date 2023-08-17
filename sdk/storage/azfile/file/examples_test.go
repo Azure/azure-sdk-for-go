@@ -732,3 +732,87 @@ func Example_fileClient_Rename() {
 	handleError(err)
 	fmt.Println("File renamed")
 }
+
+func Example_fileClient_CopyFileUsingSourceProperties() {
+	// Your connection string can be obtained from the Azure Portal.
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+	shareName := "testShare"
+	srcFileName := "testFile"
+	dstFileName := "testFile2"
+	fileSize := int64(5)
+
+	shareClient, err := share.NewClientFromConnectionString(connectionString, shareName, nil)
+	handleError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	handleError(err)
+
+	srcFileClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	dstFileClient := shareClient.NewRootDirectoryClient().NewFileClient(dstFileName)
+
+	contentR, _ := generateData(int(fileSize))
+
+	_, err = srcFileClient.UploadRange(context.Background(), 0, contentR, nil)
+	handleError(err)
+
+	_, err = dstFileClient.StartCopyFromURL(context.Background(), srcFileClient.URL(), &file.StartCopyFromURLOptions{
+		CopyFileSMBInfo: &file.CopyFileSMBInfo{
+			CreationTime:       file.SourceCopyFileCreationTime{},
+			LastWriteTime:      file.SourceCopyFileLastWriteTime{},
+			ChangeTime:         file.SourceCopyFileChangeTime{},
+			Attributes:         file.SourceCopyFileAttributes{},
+			PermissionCopyMode: to.Ptr(file.PermissionCopyModeTypeSource),
+		},
+	})
+	handleError(err)
+	fmt.Println("File copied")
+}
+
+func Example_fileClient_CopyFileUsingDestinationProperties() {
+	// Your connection string can be obtained from the Azure Portal.
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+	shareName := "testShare"
+	srcFileName := "testFile"
+	dstFileName := "testFile2"
+	fileSize := int64(5)
+
+	shareClient, err := share.NewClientFromConnectionString(connectionString, shareName, nil)
+	handleError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	handleError(err)
+
+	srcFileClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	dstFileClient := shareClient.NewRootDirectoryClient().NewFileClient(dstFileName)
+
+	contentR, _ := generateData(int(fileSize))
+
+	_, err = srcFileClient.UploadRange(context.Background(), 0, contentR, nil)
+	handleError(err)
+
+	destCreationTime := time.Now().Add(5 * time.Minute)
+	destLastWriteTIme := time.Now().Add(6 * time.Minute)
+	destChangeTime := time.Now().Add(7 * time.Minute)
+	_, err = dstFileClient.StartCopyFromURL(context.Background(), srcFileClient.URL(), &file.StartCopyFromURLOptions{
+		CopyFileSMBInfo: &file.CopyFileSMBInfo{
+			CreationTime:  file.DestinationCopyFileCreationTime(destCreationTime),
+			LastWriteTime: file.DestinationCopyFileLastWriteTime(destLastWriteTIme),
+			ChangeTime:    file.DestinationCopyFileChangeTime(destChangeTime),
+			Attributes:    file.DestinationCopyFileAttributes{ReadOnly: true},
+		},
+	})
+	handleError(err)
+	fmt.Println("File copied")
+}

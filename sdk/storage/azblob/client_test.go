@@ -665,7 +665,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestBasicDoBatchTransfer() {
 		runCount := int64(0)
 
 		numChunks := uint16(0)
-		if (test.chunkSize != 0) {
+		if test.chunkSize != 0 {
 			numChunks = uint16(((test.transferSize - 1) / test.chunkSize) + 1)
 		}
 

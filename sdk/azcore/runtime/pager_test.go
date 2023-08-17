@@ -313,22 +313,3 @@ func TestFetcherHelper(t *testing.T) {
 	require.False(t, createReqCalled)
 	require.Nil(t, resp)
 }
-
-func TestEncodeNextLink(t *testing.T) {
-	const testURL = "https://contoso.com/"
-	nextLink, err := encodeNextLink(testURL + "query?$skip=5&$filter='foo eq bar'")
-	require.NoError(t, err)
-	require.EqualValues(t, testURL+"query?%24filter=%27foo+eq+bar%27&%24skip=5", nextLink)
-	nextLink, err = encodeNextLink(testURL + "query?%24filter=%27foo+eq+bar%27&%24skip=5")
-	require.NoError(t, err)
-	require.EqualValues(t, testURL+"query?%24filter=%27foo+eq+bar%27&%24skip=5", nextLink)
-	nextLink, err = encodeNextLink(testURL + "query?foo=bar&one=two")
-	require.NoError(t, err)
-	require.EqualValues(t, testURL+"query?foo=bar&one=two", nextLink)
-	nextLink, err = encodeNextLink(testURL)
-	require.NoError(t, err)
-	require.EqualValues(t, testURL, nextLink)
-	nextLink, err = encodeNextLink(testURL + "query?invalid=;semicolon")
-	require.Error(t, err)
-	require.Empty(t, nextLink)
-}

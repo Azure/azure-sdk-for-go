@@ -12,9 +12,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"net/url"
 	"reflect"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
@@ -99,7 +97,7 @@ func FetcherHelper(ctx context.Context, pl Pipeline, nextLink string, createReq 
 	var err error
 	if nextLink == "" {
 		req, err = createReq(ctx)
-	} else if nextLink, err = encodeNextLink(nextLink); err == nil {
+	} else if nextLink, err = EncodeQueryParams(nextLink); err == nil {
 		req, err = NewRequest(ctx, http.MethodGet, nextLink)
 	}
 	if err != nil {
@@ -113,17 +111,4 @@ func FetcherHelper(ctx context.Context, pl Pipeline, nextLink string, createReq 
 		return nil, NewResponseError(resp)
 	}
 	return resp, nil
-}
-
-// encode any query parameters in the nextLink
-func encodeNextLink(nextLink string) (string, error) {
-	before, after, found := strings.Cut(nextLink, "?")
-	if !found {
-		return nextLink, nil
-	}
-	qp, err := url.ParseQuery(after)
-	if err != nil {
-		return "", err
-	}
-	return before + "?" + qp.Encode(), nil
 }

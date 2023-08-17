@@ -10,9 +10,9 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"crypto/rand"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"io"
 	"net/url"
 	"os"
@@ -20,6 +20,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -189,6 +191,134 @@ func waitForCopy(_require *require.Assertions, copyBlobClient *blockblob.Client,
 			_require.Fail("If the copy takes longer than a minute, we will fail")
 		}
 	}
+}
+
+func (s *BlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	const contentSize = 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	contentMD5 := md5.Sum(content)
+	body := bytes.NewReader(content)
+
+	srcBlob := containerClient.NewBlockBlobClient("srcblob")
+	destBlob := containerClient.NewBlockBlobClient("destblob")
+
+	// Prepare source bbClient for copy.
+	_, err = srcBlob.Upload(context.Background(), streaming.NopCloser(body), nil)
+	_require.Nil(err)
+
+	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	if err != nil {
+		s.T().Fatal("Couldn't fetch credential because " + err.Error())
+	}
+
+	// Get source blob url with SAS for StageFromURL.
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    expiryTime,
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+	srcBlobParts.SAS = sasQueryParams
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	// Invoke CopyFromURL.
+	sourceContentMD5 := contentMD5[:]
+	resp, err := destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &blob.CopyFromURLOptions{
+		SourceContentMD5: sourceContentMD5,
+	})
+	_require.Nil(err)
+	_require.EqualValues(resp.ContentMD5, sourceContentMD5)
+
+	// Provide bad MD5 and make sure the copy fails
+	_, badMD5 := testcommon.GetDataAndReader(testName, 16)
+	resp, err = destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &blob.CopyFromURLOptions{
+		SourceContentMD5: badMD5,
+	})
+	_require.NotNil(err)
+}
+
+// This test simulates DownloadFile/Buffer methods,
+// and verifies length and content of file
+func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	const MiB = 1024 * 1024
+	testUploadDownload := func(contentSize int) {
+		content := make([]byte, contentSize)
+		_, _ = rand.Read(content)
+		contentMD5 := md5.Sum(content)
+		body := streaming.NopCloser(bytes.NewReader(content))
+
+		srcBlob := containerClient.NewBlockBlobClient("srcblob")
+
+		// Prepare source bbClient for copy.
+		_, err = srcBlob.Upload(context.Background(), body, nil)
+		_require.Nil(err)
+
+		// downlod to a temp file and verify contents
+		tmp, err := os.CreateTemp("", "")
+		_require.Nil(err)
+		defer tmp.Close()
+
+		f := blob.DownloadFileOptions{BlockSize: 2 * MiB}
+		n, err := srcBlob.DownloadFile(context.Background(), tmp, &f)
+		_require.Nil(err)
+		_require.Equal(int64(contentSize), n)
+
+		// Compute md5 of file, and verify it against stored value.
+		_, _ = tmp.Seek(0, io.SeekStart)
+		buff := make([]byte, contentSize)
+		_, err = io.ReadFull(tmp, buff)
+		_require.Nil(err)
+		_require.Equal(contentMD5, md5.Sum(buff))
+
+		// Download to a buffer and verify contents
+		buff = make([]byte, contentSize)
+		b := blob.DownloadBufferOptions{BlockSize: 2 * MiB}
+		n, err = srcBlob.DownloadBuffer(context.Background(), buff, &b)
+		_require.Nil(err)
+		_require.Equal(int64(contentSize), n)
+		_require.Equal(contentMD5, md5.Sum(buff[:]))
+	}
+
+	testUploadDownload(0)         // zero byte blob.
+	testUploadDownload(16 * 1024) // 16Kb file will be downloaded in a single chunk
+
+	// Downloading with default concurrency of 5, and blocksize = 2MiB
+	// 6MB file has fewer blocks than number of threads.
+	testUploadDownload(5 * MiB)
+
+	// 10MB file, same blocks as number of threads
+	testUploadDownload(10 * MiB)
+
+	// 199 MB file, more blocks than threads
+	testUploadDownload(199 * MiB)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestEmpty() {

@@ -177,7 +177,7 @@ client, err := armcontainerregistry.NewAgentPoolsClient("subscriptionID", azfake
 - [Replication](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerregistry/replication)
 - [Container Task](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerregistry/task)
 - [Container Token](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerregistry/token)
-- [Creating a Fake](./fake_example_test.go)
+- [Creating a Fake](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/containerregistry/armcontainerregistry/fake_example_test.go)
 
 ## Provide Feedback
 

@@ -88,7 +88,7 @@ client, err := armstorage.NewAccountsClient("subscriptionID", azfake.NewTokenCre
 ## More sample code
 
 - [Blob](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/storage/blob)
-- [Creating a Fake](./fake_example_test.go)
+- [Creating a Fake](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/storage/armstorage/fake_example_test.go)
 - [File](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/storage/file)
 - [Management Policy](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/storage/managementpolicy)
 - [Queue](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/storage/queue)

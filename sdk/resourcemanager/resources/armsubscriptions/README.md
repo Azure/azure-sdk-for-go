@@ -85,6 +85,8 @@ client, err := armsubscriptions.NewClient("subscriptionID", azfake.NewTokenCrede
 })
 ```
 
+See [creating a fake](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/resources/armsubscriptions/fake_example_test.go) for a complete example.
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

@@ -1,6 +1,17 @@
 # Release History
 
-## 0.11.0 (unreleased)
+## 0.11.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+* Upgraded dependencies
+
+## 0.11.0 (2023-07-17)
 
 ### Breaking Changes
 * Rename `ListCertificates` to `ListCertificateProperties`

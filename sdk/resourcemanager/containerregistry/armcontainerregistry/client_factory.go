@@ -37,6 +37,11 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
+	subClient, _ := NewAgentPoolsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewCacheRulesClient() *CacheRulesClient {
 	subClient, _ := NewCacheRulesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -54,11 +59,6 @@ func (c *ClientFactory) NewCredentialSetsClient() *CredentialSetsClient {
 
 func (c *ClientFactory) NewExportPipelinesClient() *ExportPipelinesClient {
 	subClient, _ := NewExportPipelinesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewRegistriesClient() *RegistriesClient {
-	subClient, _ := NewRegistriesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -82,33 +82,23 @@ func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointCo
 	return subClient
 }
 
+func (c *ClientFactory) NewRegistriesClient() *RegistriesClient {
+	subClient, _ := NewRegistriesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewReplicationsClient() *ReplicationsClient {
 	subClient, _ := NewReplicationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewScopeMapsClient() *ScopeMapsClient {
-	subClient, _ := NewScopeMapsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewTokensClient() *TokensClient {
-	subClient, _ := NewTokensClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewWebhooksClient() *WebhooksClient {
-	subClient, _ := NewWebhooksClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
-	subClient, _ := NewAgentPoolsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewRunsClient() *RunsClient {
 	subClient, _ := NewRunsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewScopeMapsClient() *ScopeMapsClient {
+	subClient, _ := NewScopeMapsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -119,5 +109,15 @@ func (c *ClientFactory) NewTaskRunsClient() *TaskRunsClient {
 
 func (c *ClientFactory) NewTasksClient() *TasksClient {
 	subClient, _ := NewTasksClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewTokensClient() *TokensClient {
+	subClient, _ := NewTokensClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewWebhooksClient() *WebhooksClient {
+	subClient, _ := NewWebhooksClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

@@ -62,7 +62,7 @@ func TestCloudEventJSONData(t *testing.T) {
 	actualCE := roundTrip(t, ce)
 
 	var dest *map[string]string
-	require.NoError(t, json.Unmarshal(actualCE.Data.(json.RawMessage), &dest))
+	require.NoError(t, json.Unmarshal(actualCE.Data.([]byte), &dest))
 
 	require.Equal(t, data, *dest)
 }

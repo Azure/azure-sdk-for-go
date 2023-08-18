@@ -9,14 +9,17 @@ input-file: https://github.com/Azure/azure-rest-api-specs/blob/d744b6bcb95ab4034
 license-header: MICROSOFT_MIT_NO_VERSION
 clear-output-folder: false
 output-folder: internal
+file-prefix: "zz_"
 tag: package-2019-02
 credential-scope: none
-use: "@autorest/go@4.0.0-preview.40"
-module-version: 1.0.1
+use: "@autorest/go@4.0.0-preview.53"
+module-version: 1.0.2
 security: "AADToken"
 security-scopes: "https://storage.azure.com/.default"
+honor-body-placement: true
 modelerfour:
   group-parameters: false
+  seal-single-value-enum-by-default: true
 
 directive:
   - from: source-file-go

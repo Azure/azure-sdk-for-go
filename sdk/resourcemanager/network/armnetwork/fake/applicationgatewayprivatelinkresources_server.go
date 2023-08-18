@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,17 +29,20 @@ type ApplicationGatewayPrivateLinkResourcesServer struct {
 }
 
 // NewApplicationGatewayPrivateLinkResourcesServerTransport creates a new instance of ApplicationGatewayPrivateLinkResourcesServerTransport with the provided implementation.
-// The returned ApplicationGatewayPrivateLinkResourcesServerTransport instance is connected to an instance of armnetwork.ApplicationGatewayPrivateLinkResourcesClient by way of the
-// undefined.Transporter field.
+// The returned ApplicationGatewayPrivateLinkResourcesServerTransport instance is connected to an instance of armnetwork.ApplicationGatewayPrivateLinkResourcesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewApplicationGatewayPrivateLinkResourcesServerTransport(srv *ApplicationGatewayPrivateLinkResourcesServer) *ApplicationGatewayPrivateLinkResourcesServerTransport {
-	return &ApplicationGatewayPrivateLinkResourcesServerTransport{srv: srv}
+	return &ApplicationGatewayPrivateLinkResourcesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.ApplicationGatewayPrivateLinkResourcesClientListResponse]](),
+	}
 }
 
 // ApplicationGatewayPrivateLinkResourcesServerTransport connects instances of armnetwork.ApplicationGatewayPrivateLinkResourcesClient to instances of ApplicationGatewayPrivateLinkResourcesServer.
 // Don't use this type directly, use NewApplicationGatewayPrivateLinkResourcesServerTransport instead.
 type ApplicationGatewayPrivateLinkResourcesServerTransport struct {
 	srv          *ApplicationGatewayPrivateLinkResourcesServer
-	newListPager *azfake.PagerResponder[armnetwork.ApplicationGatewayPrivateLinkResourcesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.ApplicationGatewayPrivateLinkResourcesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ApplicationGatewayPrivateLinkResourcesServerTransport.
@@ -71,7 +74,8 @@ func (a *ApplicationGatewayPrivateLinkResourcesServerTransport) dispatchNewListP
 	if a.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if a.newListPager == nil {
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGateways/(?P<applicationGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -87,20 +91,22 @@ func (a *ApplicationGatewayPrivateLinkResourcesServerTransport) dispatchNewListP
 			return nil, err
 		}
 		resp := a.srv.NewListPager(resourceGroupNameUnescaped, applicationGatewayNameUnescaped, nil)
-		a.newListPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListPager, req, func(page *armnetwork.ApplicationGatewayPrivateLinkResourcesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ApplicationGatewayPrivateLinkResourcesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListPager) {
-		a.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
 	}
 	return resp, nil
 }

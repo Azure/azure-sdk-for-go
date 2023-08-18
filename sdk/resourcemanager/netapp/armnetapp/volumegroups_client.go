@@ -47,7 +47,7 @@ func NewVolumeGroupsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreate - Create a volume group along with specified volumes
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - volumeGroupName - The name of the volumeGroup
@@ -69,7 +69,7 @@ func (client *VolumeGroupsClient) BeginCreate(ctx context.Context, resourceGroup
 // Create - Create a volume group along with specified volumes
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *VolumeGroupsClient) create(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, body VolumeGroupDetails, options *VolumeGroupsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, volumeGroupName, body, options)
 	if err != nil {
@@ -109,7 +109,7 @@ func (client *VolumeGroupsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -118,7 +118,7 @@ func (client *VolumeGroupsClient) createCreateRequest(ctx context.Context, resou
 // BeginDelete - Delete the specified volume group only if there are no volumes under volume group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - volumeGroupName - The name of the volumeGroup
@@ -139,7 +139,7 @@ func (client *VolumeGroupsClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Delete the specified volume group only if there are no volumes under volume group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *VolumeGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, volumeGroupName, options)
 	if err != nil {
@@ -179,7 +179,7 @@ func (client *VolumeGroupsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -187,7 +187,7 @@ func (client *VolumeGroupsClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Get details of the specified volume group
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - volumeGroupName - The name of the volumeGroup
@@ -231,7 +231,7 @@ func (client *VolumeGroupsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -248,7 +248,7 @@ func (client *VolumeGroupsClient) getHandleResponse(resp *http.Response) (Volume
 
 // NewListByNetAppAccountPager - List all volume groups for given account
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - options - VolumeGroupsClientListByNetAppAccountOptions contains the optional parameters for the VolumeGroupsClient.NewListByNetAppAccountPager
@@ -295,7 +295,7 @@ func (client *VolumeGroupsClient) listByNetAppAccountCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

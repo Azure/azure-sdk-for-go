@@ -83,18 +83,22 @@ type BlobContainersServer struct {
 }
 
 // NewBlobContainersServerTransport creates a new instance of BlobContainersServerTransport with the provided implementation.
-// The returned BlobContainersServerTransport instance is connected to an instance of armstorage.BlobContainersClient by way of the
-// undefined.Transporter field.
+// The returned BlobContainersServerTransport instance is connected to an instance of armstorage.BlobContainersClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewBlobContainersServerTransport(srv *BlobContainersServer) *BlobContainersServerTransport {
-	return &BlobContainersServerTransport{srv: srv}
+	return &BlobContainersServerTransport{
+		srv:                  srv,
+		newListPager:         newTracker[azfake.PagerResponder[armstorage.BlobContainersClientListResponse]](),
+		beginObjectLevelWorm: newTracker[azfake.PollerResponder[armstorage.BlobContainersClientObjectLevelWormResponse]](),
+	}
 }
 
 // BlobContainersServerTransport connects instances of armstorage.BlobContainersClient to instances of BlobContainersServer.
 // Don't use this type directly, use NewBlobContainersServerTransport instead.
 type BlobContainersServerTransport struct {
 	srv                  *BlobContainersServer
-	newListPager         *azfake.PagerResponder[armstorage.BlobContainersClientListResponse]
-	beginObjectLevelWorm *azfake.PollerResponder[armstorage.BlobContainersClientObjectLevelWormResponse]
+	newListPager         *tracker[azfake.PagerResponder[armstorage.BlobContainersClientListResponse]]
+	beginObjectLevelWorm *tracker[azfake.PollerResponder[armstorage.BlobContainersClientObjectLevelWormResponse]]
 }
 
 // Do implements the policy.Transporter interface for BlobContainersServerTransport.
@@ -544,7 +548,8 @@ func (b *BlobContainersServerTransport) dispatchNewListPager(req *http.Request) 
 	if b.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if b.newListPager == nil {
+	newListPager := b.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -584,20 +589,22 @@ func (b *BlobContainersServerTransport) dispatchNewListPager(req *http.Request) 
 			}
 		}
 		resp := b.srv.NewListPager(resourceGroupNameUnescaped, accountNameUnescaped, options)
-		b.newListPager = &resp
-		server.PagerResponderInjectNextLinks(b.newListPager, req, func(page *armstorage.BlobContainersClientListResponse, createLink func() string) {
+		newListPager = &resp
+		b.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstorage.BlobContainersClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(b.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(b.newListPager) {
-		b.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		b.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -646,7 +653,8 @@ func (b *BlobContainersServerTransport) dispatchBeginObjectLevelWorm(req *http.R
 	if b.srv.BeginObjectLevelWorm == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginObjectLevelWorm not implemented")}
 	}
-	if b.beginObjectLevelWorm == nil {
+	beginObjectLevelWorm := b.beginObjectLevelWorm.get(req)
+	if beginObjectLevelWorm == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/blobServices/default/containers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -669,19 +677,21 @@ func (b *BlobContainersServerTransport) dispatchBeginObjectLevelWorm(req *http.R
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		b.beginObjectLevelWorm = &respr
+		beginObjectLevelWorm = &respr
+		b.beginObjectLevelWorm.add(req, beginObjectLevelWorm)
 	}
 
-	resp, err := server.PollerResponderNext(b.beginObjectLevelWorm, req)
+	resp, err := server.PollerResponderNext(beginObjectLevelWorm, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		b.beginObjectLevelWorm.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(b.beginObjectLevelWorm) {
-		b.beginObjectLevelWorm = nil
+	if !server.PollerResponderMore(beginObjectLevelWorm) {
+		b.beginObjectLevelWorm.remove(req)
 	}
 
 	return resp, nil

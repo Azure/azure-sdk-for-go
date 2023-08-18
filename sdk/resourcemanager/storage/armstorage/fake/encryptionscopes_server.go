@@ -43,17 +43,20 @@ type EncryptionScopesServer struct {
 }
 
 // NewEncryptionScopesServerTransport creates a new instance of EncryptionScopesServerTransport with the provided implementation.
-// The returned EncryptionScopesServerTransport instance is connected to an instance of armstorage.EncryptionScopesClient by way of the
-// undefined.Transporter field.
+// The returned EncryptionScopesServerTransport instance is connected to an instance of armstorage.EncryptionScopesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewEncryptionScopesServerTransport(srv *EncryptionScopesServer) *EncryptionScopesServerTransport {
-	return &EncryptionScopesServerTransport{srv: srv}
+	return &EncryptionScopesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armstorage.EncryptionScopesClientListResponse]](),
+	}
 }
 
 // EncryptionScopesServerTransport connects instances of armstorage.EncryptionScopesClient to instances of EncryptionScopesServer.
 // Don't use this type directly, use NewEncryptionScopesServerTransport instead.
 type EncryptionScopesServerTransport struct {
 	srv          *EncryptionScopesServer
-	newListPager *azfake.PagerResponder[armstorage.EncryptionScopesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armstorage.EncryptionScopesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for EncryptionScopesServerTransport.
@@ -128,7 +131,8 @@ func (e *EncryptionScopesServerTransport) dispatchNewListPager(req *http.Request
 	if e.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if e.newListPager == nil {
+	newListPager := e.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/encryptionScopes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -177,20 +181,22 @@ func (e *EncryptionScopesServerTransport) dispatchNewListPager(req *http.Request
 			}
 		}
 		resp := e.srv.NewListPager(resourceGroupNameUnescaped, accountNameUnescaped, options)
-		e.newListPager = &resp
-		server.PagerResponderInjectNextLinks(e.newListPager, req, func(page *armstorage.EncryptionScopesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		e.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstorage.EncryptionScopesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(e.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(e.newListPager) {
-		e.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		e.newListPager.remove(req)
 	}
 	return resp, nil
 }

@@ -50,18 +50,22 @@ type ProximityPlacementGroupsServer struct {
 }
 
 // NewProximityPlacementGroupsServerTransport creates a new instance of ProximityPlacementGroupsServerTransport with the provided implementation.
-// The returned ProximityPlacementGroupsServerTransport instance is connected to an instance of armcompute.ProximityPlacementGroupsClient by way of the
-// undefined.Transporter field.
+// The returned ProximityPlacementGroupsServerTransport instance is connected to an instance of armcompute.ProximityPlacementGroupsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewProximityPlacementGroupsServerTransport(srv *ProximityPlacementGroupsServer) *ProximityPlacementGroupsServerTransport {
-	return &ProximityPlacementGroupsServerTransport{srv: srv}
+	return &ProximityPlacementGroupsServerTransport{
+		srv:                         srv,
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListBySubscriptionResponse]](),
+	}
 }
 
 // ProximityPlacementGroupsServerTransport connects instances of armcompute.ProximityPlacementGroupsClient to instances of ProximityPlacementGroupsServer.
 // Don't use this type directly, use NewProximityPlacementGroupsServerTransport instead.
 type ProximityPlacementGroupsServerTransport struct {
 	srv                         *ProximityPlacementGroupsServer
-	newListByResourceGroupPager *azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListByResourceGroupResponse]
-	newListBySubscriptionPager  *azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListBySubscriptionResponse]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProximityPlacementGroupsServerTransport.
@@ -218,7 +222,8 @@ func (p *ProximityPlacementGroupsServerTransport) dispatchNewListByResourceGroup
 	if p.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if p.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/proximityPlacementGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -230,20 +235,22 @@ func (p *ProximityPlacementGroupsServerTransport) dispatchNewListByResourceGroup
 			return nil, err
 		}
 		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		p.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListByResourceGroupPager, req, func(page *armcompute.ProximityPlacementGroupsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.ProximityPlacementGroupsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListByResourceGroupPager) {
-		p.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		p.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -252,7 +259,8 @@ func (p *ProximityPlacementGroupsServerTransport) dispatchNewListBySubscriptionP
 	if p.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
-	if p.newListBySubscriptionPager == nil {
+	newListBySubscriptionPager := p.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/proximityPlacementGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -260,20 +268,22 @@ func (p *ProximityPlacementGroupsServerTransport) dispatchNewListBySubscriptionP
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := p.srv.NewListBySubscriptionPager(nil)
-		p.newListBySubscriptionPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListBySubscriptionPager, req, func(page *armcompute.ProximityPlacementGroupsClientListBySubscriptionResponse, createLink func() string) {
+		newListBySubscriptionPager = &resp
+		p.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armcompute.ProximityPlacementGroupsClientListBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListBySubscriptionPager, req)
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListBySubscriptionPager) {
-		p.newListBySubscriptionPager = nil
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		p.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

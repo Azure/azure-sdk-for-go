@@ -34,17 +34,20 @@ type DeletedAccountsServer struct {
 }
 
 // NewDeletedAccountsServerTransport creates a new instance of DeletedAccountsServerTransport with the provided implementation.
-// The returned DeletedAccountsServerTransport instance is connected to an instance of armstorage.DeletedAccountsClient by way of the
-// undefined.Transporter field.
+// The returned DeletedAccountsServerTransport instance is connected to an instance of armstorage.DeletedAccountsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDeletedAccountsServerTransport(srv *DeletedAccountsServer) *DeletedAccountsServerTransport {
-	return &DeletedAccountsServerTransport{srv: srv}
+	return &DeletedAccountsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armstorage.DeletedAccountsClientListResponse]](),
+	}
 }
 
 // DeletedAccountsServerTransport connects instances of armstorage.DeletedAccountsClient to instances of DeletedAccountsServer.
 // Don't use this type directly, use NewDeletedAccountsServerTransport instead.
 type DeletedAccountsServerTransport struct {
 	srv          *DeletedAccountsServer
-	newListPager *azfake.PagerResponder[armstorage.DeletedAccountsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armstorage.DeletedAccountsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeletedAccountsServerTransport.
@@ -111,7 +114,8 @@ func (d *DeletedAccountsServerTransport) dispatchNewListPager(req *http.Request)
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if d.newListPager == nil {
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/deletedAccounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,20 +123,22 @@ func (d *DeletedAccountsServerTransport) dispatchNewListPager(req *http.Request)
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := d.srv.NewListPager(nil)
-		d.newListPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListPager, req, func(page *armstorage.DeletedAccountsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstorage.DeletedAccountsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListPager) {
-		d.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }

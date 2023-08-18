@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -54,20 +54,26 @@ type ExpressRoutePortsServer struct {
 }
 
 // NewExpressRoutePortsServerTransport creates a new instance of ExpressRoutePortsServerTransport with the provided implementation.
-// The returned ExpressRoutePortsServerTransport instance is connected to an instance of armnetwork.ExpressRoutePortsClient by way of the
-// undefined.Transporter field.
+// The returned ExpressRoutePortsServerTransport instance is connected to an instance of armnetwork.ExpressRoutePortsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewExpressRoutePortsServerTransport(srv *ExpressRoutePortsServer) *ExpressRoutePortsServerTransport {
-	return &ExpressRoutePortsServerTransport{srv: srv}
+	return &ExpressRoutePortsServerTransport{
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.ExpressRoutePortsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.ExpressRoutePortsClientDeleteResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListByResourceGroupResponse]](),
+	}
 }
 
 // ExpressRoutePortsServerTransport connects instances of armnetwork.ExpressRoutePortsClient to instances of ExpressRoutePortsServer.
 // Don't use this type directly, use NewExpressRoutePortsServerTransport instead.
 type ExpressRoutePortsServerTransport struct {
 	srv                         *ExpressRoutePortsServer
-	beginCreateOrUpdate         *azfake.PollerResponder[armnetwork.ExpressRoutePortsClientCreateOrUpdateResponse]
-	beginDelete                 *azfake.PollerResponder[armnetwork.ExpressRoutePortsClientDeleteResponse]
-	newListPager                *azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListResponse]
-	newListByResourceGroupPager *azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListByResourceGroupResponse]
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.ExpressRoutePortsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.ExpressRoutePortsClientDeleteResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.ExpressRoutePortsClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExpressRoutePortsServerTransport.
@@ -111,7 +117,8 @@ func (e *ExpressRoutePortsServerTransport) dispatchBeginCreateOrUpdate(req *http
 	if e.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if e.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ExpressRoutePorts/(?P<expressRoutePortName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -134,19 +141,21 @@ func (e *ExpressRoutePortsServerTransport) dispatchBeginCreateOrUpdate(req *http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		e.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		e.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginCreateOrUpdate) {
-		e.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		e.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -156,7 +165,8 @@ func (e *ExpressRoutePortsServerTransport) dispatchBeginDelete(req *http.Request
 	if e.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if e.beginDelete == nil {
+	beginDelete := e.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ExpressRoutePorts/(?P<expressRoutePortName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -175,19 +185,21 @@ func (e *ExpressRoutePortsServerTransport) dispatchBeginDelete(req *http.Request
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginDelete = &respr
+		beginDelete = &respr
+		e.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		e.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginDelete) {
-		e.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		e.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -267,7 +279,8 @@ func (e *ExpressRoutePortsServerTransport) dispatchNewListPager(req *http.Reques
 	if e.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if e.newListPager == nil {
+	newListPager := e.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ExpressRoutePorts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -275,20 +288,22 @@ func (e *ExpressRoutePortsServerTransport) dispatchNewListPager(req *http.Reques
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := e.srv.NewListPager(nil)
-		e.newListPager = &resp
-		server.PagerResponderInjectNextLinks(e.newListPager, req, func(page *armnetwork.ExpressRoutePortsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		e.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRoutePortsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(e.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(e.newListPager) {
-		e.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		e.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -297,7 +312,8 @@ func (e *ExpressRoutePortsServerTransport) dispatchNewListByResourceGroupPager(r
 	if e.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if e.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := e.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ExpressRoutePorts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -309,20 +325,22 @@ func (e *ExpressRoutePortsServerTransport) dispatchNewListByResourceGroupPager(r
 			return nil, err
 		}
 		resp := e.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		e.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(e.newListByResourceGroupPager, req, func(page *armnetwork.ExpressRoutePortsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		e.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.ExpressRoutePortsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(e.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(e.newListByResourceGroupPager) {
-		e.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		e.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }

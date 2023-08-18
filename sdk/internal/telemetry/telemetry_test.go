@@ -15,12 +15,13 @@ func TestFormat(t *testing.T) {
 	// Examples:
 	// * azsdk-go-azservicebus/v1.0.0 (go1.19.3; linux)
 	// * azsdk-go-azservicebus/v1.0.0 (go1.19; Windows_NT)
+	// * azsdk-go-azservicebus/v1.0.0 (go1.21rc3; linux)
 	//
 	// The OS varies based on the actual platform but it's a small set.
 	re := `^azsdk-go-azservicebus/v1.0.0` +
 		` ` +
 		`\(` +
-		`go\d+\.\d+(|\.\d+); (Windows_NT|linux|freebsd)` +
+		`go\d+\.\d+(|\.\d+|rc\d+); (Windows_NT|linux|freebsd)` +
 		`\)$`
 
 	require.Regexp(t, re, userAgent)

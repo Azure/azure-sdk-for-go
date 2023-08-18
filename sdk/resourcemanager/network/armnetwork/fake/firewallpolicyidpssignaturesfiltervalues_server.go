@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,8 +29,8 @@ type FirewallPolicyIdpsSignaturesFilterValuesServer struct {
 }
 
 // NewFirewallPolicyIdpsSignaturesFilterValuesServerTransport creates a new instance of FirewallPolicyIdpsSignaturesFilterValuesServerTransport with the provided implementation.
-// The returned FirewallPolicyIdpsSignaturesFilterValuesServerTransport instance is connected to an instance of armnetwork.FirewallPolicyIdpsSignaturesFilterValuesClient by way of the
-// undefined.Transporter field.
+// The returned FirewallPolicyIdpsSignaturesFilterValuesServerTransport instance is connected to an instance of armnetwork.FirewallPolicyIdpsSignaturesFilterValuesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewFirewallPolicyIdpsSignaturesFilterValuesServerTransport(srv *FirewallPolicyIdpsSignaturesFilterValuesServer) *FirewallPolicyIdpsSignaturesFilterValuesServerTransport {
 	return &FirewallPolicyIdpsSignaturesFilterValuesServerTransport{srv: srv}
 }

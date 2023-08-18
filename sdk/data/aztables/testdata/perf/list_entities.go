@@ -96,7 +96,7 @@ func NewListEntitiesTest(ctx context.Context, options perf.PerfTestOptions) (per
 				return nil, err
 			}
 
-			_, err = client.InsertEntity(ctx, marshalled, nil)
+			_, err = client.UpsertEntity(ctx, marshalled, nil)
 			if err != nil {
 				return nil, err
 			}
@@ -112,7 +112,7 @@ func NewListEntitiesTest(ctx context.Context, options perf.PerfTestOptions) (per
 				return nil, err
 			}
 
-			_, err = client.InsertEntity(ctx, marshalled, nil)
+			_, err = client.UpsertEntity(ctx, marshalled, nil)
 			if err != nil {
 				return nil, err
 			}
@@ -170,7 +170,7 @@ func (g *listEntityTestGlobal) NewPerfTest(ctx context.Context, options *perf.Pe
 }
 
 func (d *listEntitiesPerfTest) Run(ctx context.Context) error {
-	pager := d.client.List(nil)
+	pager := d.client.NewListEntitiesPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
 		if err != nil {

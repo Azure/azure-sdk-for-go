@@ -55,7 +55,7 @@ func NewCertificateClient(subscriptionID string, credential azcore.TokenCredenti
 // instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
@@ -101,7 +101,7 @@ func (client *CertificateClient) cancelDeletionCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -124,7 +124,7 @@ func (client *CertificateClient) cancelDeletionHandleResponse(resp *http.Respons
 // instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
@@ -170,7 +170,7 @@ func (client *CertificateClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -199,7 +199,7 @@ func (client *CertificateClient) createHandleResponse(resp *http.Response) (Cert
 // instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
@@ -224,7 +224,7 @@ func (client *CertificateClient) BeginDelete(ctx context.Context, resourceGroupN
 // instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 func (client *CertificateClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, certificateName string, options *CertificateClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, certificateName, options)
 	if err != nil {
@@ -264,7 +264,7 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -275,7 +275,7 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 // instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
@@ -320,7 +320,7 @@ func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -342,7 +342,7 @@ func (client *CertificateClient) getHandleResponse(resp *http.Response) (Certifi
 // the Azure KeyVault Extension [https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide]
 // instead.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - options - CertificateClientListByBatchAccountOptions contains the optional parameters for the CertificateClient.NewListByBatchAccountPager
@@ -404,7 +404,7 @@ func (client *CertificateClient) listByBatchAccountCreateRequest(ctx context.Con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -424,7 +424,7 @@ func (client *CertificateClient) listByBatchAccountHandleResponse(resp *http.Res
 // instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
@@ -470,7 +470,7 @@ func (client *CertificateClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -42,19 +42,24 @@ type HubVirtualNetworkConnectionsServer struct {
 }
 
 // NewHubVirtualNetworkConnectionsServerTransport creates a new instance of HubVirtualNetworkConnectionsServerTransport with the provided implementation.
-// The returned HubVirtualNetworkConnectionsServerTransport instance is connected to an instance of armnetwork.HubVirtualNetworkConnectionsClient by way of the
-// undefined.Transporter field.
+// The returned HubVirtualNetworkConnectionsServerTransport instance is connected to an instance of armnetwork.HubVirtualNetworkConnectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewHubVirtualNetworkConnectionsServerTransport(srv *HubVirtualNetworkConnectionsServer) *HubVirtualNetworkConnectionsServerTransport {
-	return &HubVirtualNetworkConnectionsServerTransport{srv: srv}
+	return &HubVirtualNetworkConnectionsServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.HubVirtualNetworkConnectionsClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.HubVirtualNetworkConnectionsClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.HubVirtualNetworkConnectionsClientListResponse]](),
+	}
 }
 
 // HubVirtualNetworkConnectionsServerTransport connects instances of armnetwork.HubVirtualNetworkConnectionsClient to instances of HubVirtualNetworkConnectionsServer.
 // Don't use this type directly, use NewHubVirtualNetworkConnectionsServerTransport instead.
 type HubVirtualNetworkConnectionsServerTransport struct {
 	srv                 *HubVirtualNetworkConnectionsServer
-	beginCreateOrUpdate *azfake.PollerResponder[armnetwork.HubVirtualNetworkConnectionsClientCreateOrUpdateResponse]
-	beginDelete         *azfake.PollerResponder[armnetwork.HubVirtualNetworkConnectionsClientDeleteResponse]
-	newListPager        *azfake.PagerResponder[armnetwork.HubVirtualNetworkConnectionsClientListResponse]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.HubVirtualNetworkConnectionsClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armnetwork.HubVirtualNetworkConnectionsClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.HubVirtualNetworkConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for HubVirtualNetworkConnectionsServerTransport.
@@ -92,7 +97,8 @@ func (h *HubVirtualNetworkConnectionsServerTransport) dispatchBeginCreateOrUpdat
 	if h.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if h.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := h.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hubVirtualNetworkConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (h *HubVirtualNetworkConnectionsServerTransport) dispatchBeginCreateOrUpdat
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		h.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		h.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(h.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		h.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(h.beginCreateOrUpdate) {
-		h.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		h.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (h *HubVirtualNetworkConnectionsServerTransport) dispatchBeginDelete(req *h
 	if h.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if h.beginDelete == nil {
+	beginDelete := h.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hubVirtualNetworkConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (h *HubVirtualNetworkConnectionsServerTransport) dispatchBeginDelete(req *h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		h.beginDelete = &respr
+		beginDelete = &respr
+		h.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(h.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		h.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(h.beginDelete) {
-		h.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		h.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (h *HubVirtualNetworkConnectionsServerTransport) dispatchNewListPager(req *
 	if h.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if h.newListPager == nil {
+	newListPager := h.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hubVirtualNetworkConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (h *HubVirtualNetworkConnectionsServerTransport) dispatchNewListPager(req *
 			return nil, err
 		}
 		resp := h.srv.NewListPager(resourceGroupNameUnescaped, virtualHubNameUnescaped, nil)
-		h.newListPager = &resp
-		server.PagerResponderInjectNextLinks(h.newListPager, req, func(page *armnetwork.HubVirtualNetworkConnectionsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		h.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.HubVirtualNetworkConnectionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(h.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		h.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(h.newListPager) {
-		h.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		h.newListPager.remove(req)
 	}
 	return resp, nil
 }

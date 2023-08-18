@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,17 +29,20 @@ type VPNServerConfigurationsAssociatedWithVirtualWanServer struct {
 }
 
 // NewVPNServerConfigurationsAssociatedWithVirtualWanServerTransport creates a new instance of VPNServerConfigurationsAssociatedWithVirtualWanServerTransport with the provided implementation.
-// The returned VPNServerConfigurationsAssociatedWithVirtualWanServerTransport instance is connected to an instance of armnetwork.VPNServerConfigurationsAssociatedWithVirtualWanClient by way of the
-// undefined.Transporter field.
+// The returned VPNServerConfigurationsAssociatedWithVirtualWanServerTransport instance is connected to an instance of armnetwork.VPNServerConfigurationsAssociatedWithVirtualWanClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVPNServerConfigurationsAssociatedWithVirtualWanServerTransport(srv *VPNServerConfigurationsAssociatedWithVirtualWanServer) *VPNServerConfigurationsAssociatedWithVirtualWanServerTransport {
-	return &VPNServerConfigurationsAssociatedWithVirtualWanServerTransport{srv: srv}
+	return &VPNServerConfigurationsAssociatedWithVirtualWanServerTransport{
+		srv:       srv,
+		beginList: newTracker[azfake.PollerResponder[armnetwork.VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse]](),
+	}
 }
 
 // VPNServerConfigurationsAssociatedWithVirtualWanServerTransport connects instances of armnetwork.VPNServerConfigurationsAssociatedWithVirtualWanClient to instances of VPNServerConfigurationsAssociatedWithVirtualWanServer.
 // Don't use this type directly, use NewVPNServerConfigurationsAssociatedWithVirtualWanServerTransport instead.
 type VPNServerConfigurationsAssociatedWithVirtualWanServerTransport struct {
 	srv       *VPNServerConfigurationsAssociatedWithVirtualWanServer
-	beginList *azfake.PollerResponder[armnetwork.VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse]
+	beginList *tracker[azfake.PollerResponder[armnetwork.VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VPNServerConfigurationsAssociatedWithVirtualWanServerTransport.
@@ -71,7 +74,8 @@ func (v *VPNServerConfigurationsAssociatedWithVirtualWanServerTransport) dispatc
 	if v.srv.BeginList == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginList not implemented")}
 	}
-	if v.beginList == nil {
+	beginList := v.beginList.get(req)
+	if beginList == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualWans/(?P<virtualWANName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnServerConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -90,19 +94,21 @@ func (v *VPNServerConfigurationsAssociatedWithVirtualWanServerTransport) dispatc
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginList = &respr
+		beginList = &respr
+		v.beginList.add(req, beginList)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginList, req)
+	resp, err := server.PollerResponderNext(beginList, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginList.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginList) {
-		v.beginList = nil
+	if !server.PollerResponderMore(beginList) {
+		v.beginList.remove(req)
 	}
 
 	return resp, nil

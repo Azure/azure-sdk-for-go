@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -30,17 +30,20 @@ type ServiceTagInformationServer struct {
 }
 
 // NewServiceTagInformationServerTransport creates a new instance of ServiceTagInformationServerTransport with the provided implementation.
-// The returned ServiceTagInformationServerTransport instance is connected to an instance of armnetwork.ServiceTagInformationClient by way of the
-// undefined.Transporter field.
+// The returned ServiceTagInformationServerTransport instance is connected to an instance of armnetwork.ServiceTagInformationClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServiceTagInformationServerTransport(srv *ServiceTagInformationServer) *ServiceTagInformationServerTransport {
-	return &ServiceTagInformationServerTransport{srv: srv}
+	return &ServiceTagInformationServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.ServiceTagInformationClientListResponse]](),
+	}
 }
 
 // ServiceTagInformationServerTransport connects instances of armnetwork.ServiceTagInformationClient to instances of ServiceTagInformationServer.
 // Don't use this type directly, use NewServiceTagInformationServerTransport instead.
 type ServiceTagInformationServerTransport struct {
 	srv          *ServiceTagInformationServer
-	newListPager *azfake.PagerResponder[armnetwork.ServiceTagInformationClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.ServiceTagInformationClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServiceTagInformationServerTransport.
@@ -72,7 +75,8 @@ func (s *ServiceTagInformationServerTransport) dispatchNewListPager(req *http.Re
 	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if s.newListPager == nil {
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceTagDetails`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -105,20 +109,22 @@ func (s *ServiceTagInformationServerTransport) dispatchNewListPager(req *http.Re
 			}
 		}
 		resp := s.srv.NewListPager(locationUnescaped, options)
-		s.newListPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListPager, req, func(page *armnetwork.ServiceTagInformationClientListResponse, createLink func() string) {
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ServiceTagInformationClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListPager) {
-		s.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

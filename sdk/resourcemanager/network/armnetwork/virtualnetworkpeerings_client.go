@@ -47,7 +47,7 @@ func NewVirtualNetworkPeeringsClient(subscriptionID string, credential azcore.To
 // BeginCreateOrUpdate - Creates or updates a peering in the specified virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkName - The name of the virtual network.
 //   - virtualNetworkPeeringName - The name of the peering.
@@ -72,7 +72,7 @@ func (client *VirtualNetworkPeeringsClient) BeginCreateOrUpdate(ctx context.Cont
 // CreateOrUpdate - Creates or updates a peering in the specified virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 func (client *VirtualNetworkPeeringsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VirtualNetworkPeeringsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkPeeringsClient.BeginCreateOrUpdate"
@@ -121,7 +121,7 @@ func (client *VirtualNetworkPeeringsClient) createOrUpdateCreateRequest(ctx cont
 	if options != nil && options.SyncRemoteAddressSpace != nil {
 		reqQP.Set("syncRemoteAddressSpace", string(*options.SyncRemoteAddressSpace))
 	}
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, virtualNetworkPeeringParameters); err != nil {
@@ -133,7 +133,7 @@ func (client *VirtualNetworkPeeringsClient) createOrUpdateCreateRequest(ctx cont
 // BeginDelete - Deletes the specified virtual network peering.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkName - The name of the virtual network.
 //   - virtualNetworkPeeringName - The name of the virtual network peering.
@@ -157,7 +157,7 @@ func (client *VirtualNetworkPeeringsClient) BeginDelete(ctx context.Context, res
 // Delete - Deletes the specified virtual network peering.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 func (client *VirtualNetworkPeeringsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, options *VirtualNetworkPeeringsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkPeeringsClient.BeginDelete"
@@ -203,7 +203,7 @@ func (client *VirtualNetworkPeeringsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,7 +212,7 @@ func (client *VirtualNetworkPeeringsClient) deleteCreateRequest(ctx context.Cont
 // Get - Gets the specified virtual network peering.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkName - The name of the virtual network.
 //   - virtualNetworkPeeringName - The name of the virtual network peering.
@@ -264,7 +264,7 @@ func (client *VirtualNetworkPeeringsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -281,7 +281,7 @@ func (client *VirtualNetworkPeeringsClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - Gets all virtual network peerings in a virtual network.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkName - The name of the virtual network.
 //   - options - VirtualNetworkPeeringsClientListOptions contains the optional parameters for the VirtualNetworkPeeringsClient.NewListPager
@@ -336,7 +336,7 @@ func (client *VirtualNetworkPeeringsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

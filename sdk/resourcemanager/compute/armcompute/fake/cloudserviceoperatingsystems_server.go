@@ -42,18 +42,22 @@ type CloudServiceOperatingSystemsServer struct {
 }
 
 // NewCloudServiceOperatingSystemsServerTransport creates a new instance of CloudServiceOperatingSystemsServerTransport with the provided implementation.
-// The returned CloudServiceOperatingSystemsServerTransport instance is connected to an instance of armcompute.CloudServiceOperatingSystemsClient by way of the
-// undefined.Transporter field.
+// The returned CloudServiceOperatingSystemsServerTransport instance is connected to an instance of armcompute.CloudServiceOperatingSystemsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServiceOperatingSystemsServerTransport(srv *CloudServiceOperatingSystemsServer) *CloudServiceOperatingSystemsServerTransport {
-	return &CloudServiceOperatingSystemsServerTransport{srv: srv}
+	return &CloudServiceOperatingSystemsServerTransport{
+		srv:                    srv,
+		newListOSFamiliesPager: newTracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse]](),
+		newListOSVersionsPager: newTracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse]](),
+	}
 }
 
 // CloudServiceOperatingSystemsServerTransport connects instances of armcompute.CloudServiceOperatingSystemsClient to instances of CloudServiceOperatingSystemsServer.
 // Don't use this type directly, use NewCloudServiceOperatingSystemsServerTransport instead.
 type CloudServiceOperatingSystemsServerTransport struct {
 	srv                    *CloudServiceOperatingSystemsServer
-	newListOSFamiliesPager *azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse]
-	newListOSVersionsPager *azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse]
+	newListOSFamiliesPager *tracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse]]
+	newListOSVersionsPager *tracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudServiceOperatingSystemsServerTransport.
@@ -157,7 +161,8 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchNewListOSFamiliesP
 	if c.srv.NewListOSFamiliesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListOSFamiliesPager not implemented")}
 	}
-	if c.newListOSFamiliesPager == nil {
+	newListOSFamiliesPager := c.newListOSFamiliesPager.get(req)
+	if newListOSFamiliesPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsFamilies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -169,20 +174,22 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchNewListOSFamiliesP
 			return nil, err
 		}
 		resp := c.srv.NewListOSFamiliesPager(locationUnescaped, nil)
-		c.newListOSFamiliesPager = &resp
-		server.PagerResponderInjectNextLinks(c.newListOSFamiliesPager, req, func(page *armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse, createLink func() string) {
+		newListOSFamiliesPager = &resp
+		c.newListOSFamiliesPager.add(req, newListOSFamiliesPager)
+		server.PagerResponderInjectNextLinks(newListOSFamiliesPager, req, func(page *armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(c.newListOSFamiliesPager, req)
+	resp, err := server.PagerResponderNext(newListOSFamiliesPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListOSFamiliesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(c.newListOSFamiliesPager) {
-		c.newListOSFamiliesPager = nil
+	if !server.PagerResponderMore(newListOSFamiliesPager) {
+		c.newListOSFamiliesPager.remove(req)
 	}
 	return resp, nil
 }
@@ -191,7 +198,8 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchNewListOSVersionsP
 	if c.srv.NewListOSVersionsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListOSVersionsPager not implemented")}
 	}
-	if c.newListOSVersionsPager == nil {
+	newListOSVersionsPager := c.newListOSVersionsPager.get(req)
+	if newListOSVersionsPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsVersions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -203,20 +211,22 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchNewListOSVersionsP
 			return nil, err
 		}
 		resp := c.srv.NewListOSVersionsPager(locationUnescaped, nil)
-		c.newListOSVersionsPager = &resp
-		server.PagerResponderInjectNextLinks(c.newListOSVersionsPager, req, func(page *armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse, createLink func() string) {
+		newListOSVersionsPager = &resp
+		c.newListOSVersionsPager.add(req, newListOSVersionsPager)
+		server.PagerResponderInjectNextLinks(newListOSVersionsPager, req, func(page *armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(c.newListOSVersionsPager, req)
+	resp, err := server.PagerResponderNext(newListOSVersionsPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListOSVersionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(c.newListOSVersionsPager) {
-		c.newListOSVersionsPager = nil
+	if !server.PagerResponderMore(newListOSVersionsPager) {
+		c.newListOSVersionsPager.remove(req)
 	}
 	return resp, nil
 }

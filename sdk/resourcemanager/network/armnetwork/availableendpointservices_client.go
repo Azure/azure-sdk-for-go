@@ -46,7 +46,7 @@ func NewAvailableEndpointServicesClient(subscriptionID string, credential azcore
 
 // NewListPager - List what values of endpoint services are available for use.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - location - The location to check available endpoint services.
 //   - options - AvailableEndpointServicesClientListOptions contains the optional parameters for the AvailableEndpointServicesClient.NewListPager
 //     method.
@@ -96,7 +96,7 @@ func (client *AvailableEndpointServicesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

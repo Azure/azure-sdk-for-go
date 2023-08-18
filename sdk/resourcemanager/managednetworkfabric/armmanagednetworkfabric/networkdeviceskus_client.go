@@ -29,7 +29,7 @@ type NetworkDeviceSKUsClient struct {
 }
 
 // NewNetworkDeviceSKUsClient creates a new instance of NetworkDeviceSKUsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNetworkDeviceSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkDeviceSKUsClient, error) {
@@ -44,11 +44,11 @@ func NewNetworkDeviceSKUsClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// Get - Get Network Device SKU details.
+// Get - Get a Network Device SKU details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-//   - networkDeviceSKUName - Name of the Network Device Sku
+// Generated from API version 2023-06-15
+//   - networkDeviceSKUName - Name of the Network Device SKU.
 //   - options - NetworkDeviceSKUsClientGetOptions contains the optional parameters for the NetworkDeviceSKUsClient.Get method.
 func (client *NetworkDeviceSKUsClient) Get(ctx context.Context, networkDeviceSKUName string, options *NetworkDeviceSKUsClientGetOptions) (NetworkDeviceSKUsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, networkDeviceSKUName, options)
@@ -68,9 +68,6 @@ func (client *NetworkDeviceSKUsClient) Get(ctx context.Context, networkDeviceSKU
 // getCreateRequest creates the Get request.
 func (client *NetworkDeviceSKUsClient) getCreateRequest(ctx context.Context, networkDeviceSKUName string, options *NetworkDeviceSKUsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkDeviceSkus/{networkDeviceSkuName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if networkDeviceSKUName == "" {
 		return nil, errors.New("parameter networkDeviceSKUName cannot be empty")
@@ -81,7 +78,7 @@ func (client *NetworkDeviceSKUsClient) getCreateRequest(ctx context.Context, net
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -98,7 +95,7 @@ func (client *NetworkDeviceSKUsClient) getHandleResponse(resp *http.Response) (N
 
 // NewListBySubscriptionPager - List Network Device SKUs for the given subscription.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - options - NetworkDeviceSKUsClientListBySubscriptionOptions contains the optional parameters for the NetworkDeviceSKUsClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkDeviceSKUsClient) NewListBySubscriptionPager(options *NetworkDeviceSKUsClientListBySubscriptionOptions) *runtime.Pager[NetworkDeviceSKUsClientListBySubscriptionResponse] {
@@ -132,16 +129,13 @@ func (client *NetworkDeviceSKUsClient) NewListBySubscriptionPager(options *Netwo
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *NetworkDeviceSKUsClient) listBySubscriptionCreateRequest(ctx context.Context, options *NetworkDeviceSKUsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkDeviceSkus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

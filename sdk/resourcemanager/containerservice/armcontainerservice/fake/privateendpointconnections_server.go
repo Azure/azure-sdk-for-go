@@ -41,17 +41,20 @@ type PrivateEndpointConnectionsServer struct {
 }
 
 // NewPrivateEndpointConnectionsServerTransport creates a new instance of PrivateEndpointConnectionsServerTransport with the provided implementation.
-// The returned PrivateEndpointConnectionsServerTransport instance is connected to an instance of armcontainerservice.PrivateEndpointConnectionsClient by way of the
-// undefined.Transporter field.
+// The returned PrivateEndpointConnectionsServerTransport instance is connected to an instance of armcontainerservice.PrivateEndpointConnectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnectionsServer) *PrivateEndpointConnectionsServerTransport {
-	return &PrivateEndpointConnectionsServerTransport{srv: srv}
+	return &PrivateEndpointConnectionsServerTransport{
+		srv:         srv,
+		beginDelete: newTracker[azfake.PollerResponder[armcontainerservice.PrivateEndpointConnectionsClientDeleteResponse]](),
+	}
 }
 
 // PrivateEndpointConnectionsServerTransport connects instances of armcontainerservice.PrivateEndpointConnectionsClient to instances of PrivateEndpointConnectionsServer.
 // Don't use this type directly, use NewPrivateEndpointConnectionsServerTransport instead.
 type PrivateEndpointConnectionsServerTransport struct {
 	srv         *PrivateEndpointConnectionsServer
-	beginDelete *azfake.PollerResponder[armcontainerservice.PrivateEndpointConnectionsClientDeleteResponse]
+	beginDelete *tracker[azfake.PollerResponder[armcontainerservice.PrivateEndpointConnectionsClientDeleteResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateEndpointConnectionsServerTransport.
@@ -89,7 +92,8 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *htt
 	if p.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if p.beginDelete == nil {
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -112,19 +116,21 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginDelete = &respr
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginDelete) {
-		p.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
 	}
 
 	return resp, nil

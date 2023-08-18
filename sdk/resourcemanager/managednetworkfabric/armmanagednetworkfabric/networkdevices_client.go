@@ -29,7 +29,7 @@ type NetworkDevicesClient struct {
 }
 
 // NewNetworkDevicesClient creates a new instance of NetworkDevicesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNetworkDevicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkDevicesClient, error) {
@@ -47,9 +47,9 @@ func NewNetworkDevicesClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreate - Create a Network Device resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the Network Device
+//   - networkDeviceName - Name of the Network Device.
 //   - body - Request payload.
 //   - options - NetworkDevicesClientBeginCreateOptions contains the optional parameters for the NetworkDevicesClient.BeginCreate
 //     method.
@@ -70,7 +70,7 @@ func (client *NetworkDevicesClient) BeginCreate(ctx context.Context, resourceGro
 // Create - Create a Network Device resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkDevicesClient) create(ctx context.Context, resourceGroupName string, networkDeviceName string, body NetworkDevice, options *NetworkDevicesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, networkDeviceName, body, options)
 	if err != nil {
@@ -89,9 +89,6 @@ func (client *NetworkDevicesClient) create(ctx context.Context, resourceGroupNam
 // createCreateRequest creates the Create request.
 func (client *NetworkDevicesClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body NetworkDevice, options *NetworkDevicesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -106,7 +103,7 @@ func (client *NetworkDevicesClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -115,9 +112,9 @@ func (client *NetworkDevicesClient) createCreateRequest(ctx context.Context, res
 // BeginDelete - Delete the Network Device resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the Network Device
+//   - networkDeviceName - Name of the Network Device.
 //   - options - NetworkDevicesClientBeginDeleteOptions contains the optional parameters for the NetworkDevicesClient.BeginDelete
 //     method.
 func (client *NetworkDevicesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginDeleteOptions) (*runtime.Poller[NetworkDevicesClientDeleteResponse], error) {
@@ -137,7 +134,7 @@ func (client *NetworkDevicesClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Delete the Network Device resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkDevicesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkDeviceName, options)
 	if err != nil {
@@ -147,7 +144,7 @@ func (client *NetworkDevicesClient) deleteOperation(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -156,9 +153,6 @@ func (client *NetworkDevicesClient) deleteOperation(ctx context.Context, resourc
 // deleteCreateRequest creates the Delete request.
 func (client *NetworkDevicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -173,85 +167,18 @@ func (client *NetworkDevicesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginGenerateSupportPackage - Generate Support Package for the given Network Device.
+// Get - Gets the Network Device resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice.
-//   - options - NetworkDevicesClientBeginGenerateSupportPackageOptions contains the optional parameters for the NetworkDevicesClient.BeginGenerateSupportPackage
-//     method.
-func (client *NetworkDevicesClient) BeginGenerateSupportPackage(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginGenerateSupportPackageOptions) (*runtime.Poller[NetworkDevicesClientGenerateSupportPackageResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.generateSupportPackage(ctx, resourceGroupName, networkDeviceName, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkDevicesClientGenerateSupportPackageResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[NetworkDevicesClientGenerateSupportPackageResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// GenerateSupportPackage - Generate Support Package for the given Network Device.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *NetworkDevicesClient) generateSupportPackage(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginGenerateSupportPackageOptions) (*http.Response, error) {
-	req, err := client.generateSupportPackageCreateRequest(ctx, resourceGroupName, networkDeviceName, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// generateSupportPackageCreateRequest creates the GenerateSupportPackage request.
-func (client *NetworkDevicesClient) generateSupportPackageCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginGenerateSupportPackageOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/generateSupportPackage"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkDeviceName == "" {
-		return nil, errors.New("parameter networkDeviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkDeviceName}", url.PathEscape(networkDeviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// Get - Get the Network Device resource details.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the Network Device
+//   - networkDeviceName - Name of the Network Device.
 //   - options - NetworkDevicesClientGetOptions contains the optional parameters for the NetworkDevicesClient.Get method.
 func (client *NetworkDevicesClient) Get(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientGetOptions) (NetworkDevicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkDeviceName, options)
@@ -271,9 +198,6 @@ func (client *NetworkDevicesClient) Get(ctx context.Context, resourceGroupName s
 // getCreateRequest creates the Get request.
 func (client *NetworkDevicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -288,7 +212,7 @@ func (client *NetworkDevicesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -303,210 +227,9 @@ func (client *NetworkDevicesClient) getHandleResponse(resp *http.Response) (Netw
 	return result, nil
 }
 
-// BeginGetDynamicInterfaceMaps - Get the dynamic interface maps for the given Network Device.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice.
-//   - options - NetworkDevicesClientBeginGetDynamicInterfaceMapsOptions contains the optional parameters for the NetworkDevicesClient.BeginGetDynamicInterfaceMaps
-//     method.
-func (client *NetworkDevicesClient) BeginGetDynamicInterfaceMaps(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginGetDynamicInterfaceMapsOptions) (*runtime.Poller[NetworkDevicesClientGetDynamicInterfaceMapsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getDynamicInterfaceMaps(ctx, resourceGroupName, networkDeviceName, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkDevicesClientGetDynamicInterfaceMapsResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[NetworkDevicesClientGetDynamicInterfaceMapsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// GetDynamicInterfaceMaps - Get the dynamic interface maps for the given Network Device.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *NetworkDevicesClient) getDynamicInterfaceMaps(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginGetDynamicInterfaceMapsOptions) (*http.Response, error) {
-	req, err := client.getDynamicInterfaceMapsCreateRequest(ctx, resourceGroupName, networkDeviceName, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// getDynamicInterfaceMapsCreateRequest creates the GetDynamicInterfaceMaps request.
-func (client *NetworkDevicesClient) getDynamicInterfaceMapsCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginGetDynamicInterfaceMapsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/getDynamicInterfaceMaps"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkDeviceName == "" {
-		return nil, errors.New("parameter networkDeviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkDeviceName}", url.PathEscape(networkDeviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginGetStaticInterfaceMaps - Get the static interface maps for the given Network Device.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice.
-//   - options - NetworkDevicesClientBeginGetStaticInterfaceMapsOptions contains the optional parameters for the NetworkDevicesClient.BeginGetStaticInterfaceMaps
-//     method.
-func (client *NetworkDevicesClient) BeginGetStaticInterfaceMaps(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginGetStaticInterfaceMapsOptions) (*runtime.Poller[NetworkDevicesClientGetStaticInterfaceMapsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getStaticInterfaceMaps(ctx, resourceGroupName, networkDeviceName, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkDevicesClientGetStaticInterfaceMapsResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[NetworkDevicesClientGetStaticInterfaceMapsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// GetStaticInterfaceMaps - Get the static interface maps for the given Network Device.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *NetworkDevicesClient) getStaticInterfaceMaps(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginGetStaticInterfaceMapsOptions) (*http.Response, error) {
-	req, err := client.getStaticInterfaceMapsCreateRequest(ctx, resourceGroupName, networkDeviceName, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// getStaticInterfaceMapsCreateRequest creates the GetStaticInterfaceMaps request.
-func (client *NetworkDevicesClient) getStaticInterfaceMapsCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginGetStaticInterfaceMapsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/getStaticInterfaceMaps"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkDeviceName == "" {
-		return nil, errors.New("parameter networkDeviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkDeviceName}", url.PathEscape(networkDeviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginGetStatus - Get the running status of the Network Device.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice.
-//   - options - NetworkDevicesClientBeginGetStatusOptions contains the optional parameters for the NetworkDevicesClient.BeginGetStatus
-//     method.
-func (client *NetworkDevicesClient) BeginGetStatus(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginGetStatusOptions) (*runtime.Poller[NetworkDevicesClientGetStatusResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getStatus(ctx, resourceGroupName, networkDeviceName, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkDevicesClientGetStatusResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[NetworkDevicesClientGetStatusResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// GetStatus - Get the running status of the Network Device.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *NetworkDevicesClient) getStatus(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginGetStatusOptions) (*http.Response, error) {
-	req, err := client.getStatusCreateRequest(ctx, resourceGroupName, networkDeviceName, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// getStatusCreateRequest creates the GetStatus request.
-func (client *NetworkDevicesClient) getStatusCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginGetStatusOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/getStatus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkDeviceName == "" {
-		return nil, errors.New("parameter networkDeviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkDeviceName}", url.PathEscape(networkDeviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
 // NewListByResourceGroupPager - List all the Network Device resources in a given resource group.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkDevicesClientListByResourceGroupOptions contains the optional parameters for the NetworkDevicesClient.NewListByResourceGroupPager
 //     method.
@@ -541,9 +264,6 @@ func (client *NetworkDevicesClient) NewListByResourceGroupPager(resourceGroupNam
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *NetworkDevicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *NetworkDevicesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -554,7 +274,7 @@ func (client *NetworkDevicesClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -571,7 +291,7 @@ func (client *NetworkDevicesClient) listByResourceGroupHandleResponse(resp *http
 
 // NewListBySubscriptionPager - List all the Network Device resources in a given subscription.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - options - NetworkDevicesClientListBySubscriptionOptions contains the optional parameters for the NetworkDevicesClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkDevicesClient) NewListBySubscriptionPager(options *NetworkDevicesClientListBySubscriptionOptions) *runtime.Pager[NetworkDevicesClientListBySubscriptionResponse] {
@@ -605,16 +325,13 @@ func (client *NetworkDevicesClient) NewListBySubscriptionPager(options *NetworkD
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *NetworkDevicesClient) listBySubscriptionCreateRequest(ctx context.Context, options *NetworkDevicesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkDevices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -632,14 +349,15 @@ func (client *NetworkDevicesClient) listBySubscriptionHandleResponse(resp *http.
 // BeginReboot - Reboot the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice.
+//   - networkDeviceName - Name of the Network Device.
+//   - body - Request payload.
 //   - options - NetworkDevicesClientBeginRebootOptions contains the optional parameters for the NetworkDevicesClient.BeginReboot
 //     method.
-func (client *NetworkDevicesClient) BeginReboot(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginRebootOptions) (*runtime.Poller[NetworkDevicesClientRebootResponse], error) {
+func (client *NetworkDevicesClient) BeginReboot(ctx context.Context, resourceGroupName string, networkDeviceName string, body RebootProperties, options *NetworkDevicesClientBeginRebootOptions) (*runtime.Poller[NetworkDevicesClientRebootResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reboot(ctx, resourceGroupName, networkDeviceName, options)
+		resp, err := client.reboot(ctx, resourceGroupName, networkDeviceName, body, options)
 		if err != nil {
 			return nil, err
 		}
@@ -654,9 +372,9 @@ func (client *NetworkDevicesClient) BeginReboot(ctx context.Context, resourceGro
 // Reboot - Reboot the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-func (client *NetworkDevicesClient) reboot(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginRebootOptions) (*http.Response, error) {
-	req, err := client.rebootCreateRequest(ctx, resourceGroupName, networkDeviceName, options)
+// Generated from API version 2023-06-15
+func (client *NetworkDevicesClient) reboot(ctx context.Context, resourceGroupName string, networkDeviceName string, body RebootProperties, options *NetworkDevicesClientBeginRebootOptions) (*http.Response, error) {
+	req, err := client.rebootCreateRequest(ctx, resourceGroupName, networkDeviceName, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -664,18 +382,15 @@ func (client *NetworkDevicesClient) reboot(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // rebootCreateRequest creates the Reboot request.
-func (client *NetworkDevicesClient) rebootCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginRebootOptions) (*policy.Request, error) {
+func (client *NetworkDevicesClient) rebootCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body RebootProperties, options *NetworkDevicesClientBeginRebootOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/reboot"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -690,40 +405,40 @@ func (client *NetworkDevicesClient) rebootCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
+	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// BeginRestoreConfig - Restore the configuration of the Network Device resource to last known good configuration.
+// BeginRefreshConfiguration - Refreshes the configuration the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice.
-//   - options - NetworkDevicesClientBeginRestoreConfigOptions contains the optional parameters for the NetworkDevicesClient.BeginRestoreConfig
+//   - networkDeviceName - Name of the Network Device.
+//   - options - NetworkDevicesClientBeginRefreshConfigurationOptions contains the optional parameters for the NetworkDevicesClient.BeginRefreshConfiguration
 //     method.
-func (client *NetworkDevicesClient) BeginRestoreConfig(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginRestoreConfigOptions) (*runtime.Poller[NetworkDevicesClientRestoreConfigResponse], error) {
+func (client *NetworkDevicesClient) BeginRefreshConfiguration(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginRefreshConfigurationOptions) (*runtime.Poller[NetworkDevicesClientRefreshConfigurationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restoreConfig(ctx, resourceGroupName, networkDeviceName, options)
+		resp, err := client.refreshConfiguration(ctx, resourceGroupName, networkDeviceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkDevicesClientRestoreConfigResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkDevicesClientRefreshConfigurationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[NetworkDevicesClientRestoreConfigResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[NetworkDevicesClientRefreshConfigurationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// RestoreConfig - Restore the configuration of the Network Device resource to last known good configuration.
+// RefreshConfiguration - Refreshes the configuration the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-func (client *NetworkDevicesClient) restoreConfig(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginRestoreConfigOptions) (*http.Response, error) {
-	req, err := client.restoreConfigCreateRequest(ctx, resourceGroupName, networkDeviceName, options)
+// Generated from API version 2023-06-15
+func (client *NetworkDevicesClient) refreshConfiguration(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginRefreshConfigurationOptions) (*http.Response, error) {
+	req, err := client.refreshConfigurationCreateRequest(ctx, resourceGroupName, networkDeviceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -731,18 +446,15 @@ func (client *NetworkDevicesClient) restoreConfig(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
-// restoreConfigCreateRequest creates the RestoreConfig request.
-func (client *NetworkDevicesClient) restoreConfigCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginRestoreConfigOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/restoreConfig"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
+// refreshConfigurationCreateRequest creates the RefreshConfiguration request.
+func (client *NetworkDevicesClient) refreshConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginRefreshConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/refreshConfiguration"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -757,7 +469,7 @@ func (client *NetworkDevicesClient) restoreConfigCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -766,9 +478,9 @@ func (client *NetworkDevicesClient) restoreConfigCreateRequest(ctx context.Conte
 // BeginUpdate - Update certain properties of the Network Device resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the Network Device
+//   - networkDeviceName - Name of the Network Device.
 //   - body - Network Device properties to update.
 //   - options - NetworkDevicesClientBeginUpdateOptions contains the optional parameters for the NetworkDevicesClient.BeginUpdate
 //     method.
@@ -789,7 +501,7 @@ func (client *NetworkDevicesClient) BeginUpdate(ctx context.Context, resourceGro
 // Update - Update certain properties of the Network Device resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkDevicesClient) update(ctx context.Context, resourceGroupName string, networkDeviceName string, body NetworkDevicePatchParameters, options *NetworkDevicesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkDeviceName, body, options)
 	if err != nil {
@@ -808,9 +520,6 @@ func (client *NetworkDevicesClient) update(ctx context.Context, resourceGroupNam
 // updateCreateRequest creates the Update request.
 func (client *NetworkDevicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body NetworkDevicePatchParameters, options *NetworkDevicesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -825,41 +534,41 @@ func (client *NetworkDevicesClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// BeginUpdatePowerCycle - Update PDU power cycle of the Network Device.
+// BeginUpdateAdministrativeState - Updates the Administrative state of the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice.
+//   - networkDeviceName - Name of the Network Device.
 //   - body - Request payload.
-//   - options - NetworkDevicesClientBeginUpdatePowerCycleOptions contains the optional parameters for the NetworkDevicesClient.BeginUpdatePowerCycle
+//   - options - NetworkDevicesClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the NetworkDevicesClient.BeginUpdateAdministrativeState
 //     method.
-func (client *NetworkDevicesClient) BeginUpdatePowerCycle(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdatePowerCycleProperties, options *NetworkDevicesClientBeginUpdatePowerCycleOptions) (*runtime.Poller[NetworkDevicesClientUpdatePowerCycleResponse], error) {
+func (client *NetworkDevicesClient) BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdateDeviceAdministrativeState, options *NetworkDevicesClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[NetworkDevicesClientUpdateAdministrativeStateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updatePowerCycle(ctx, resourceGroupName, networkDeviceName, body, options)
+		resp, err := client.updateAdministrativeState(ctx, resourceGroupName, networkDeviceName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkDevicesClientUpdatePowerCycleResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkDevicesClientUpdateAdministrativeStateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[NetworkDevicesClientUpdatePowerCycleResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[NetworkDevicesClientUpdateAdministrativeStateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// UpdatePowerCycle - Update PDU power cycle of the Network Device.
+// UpdateAdministrativeState - Updates the Administrative state of the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-func (client *NetworkDevicesClient) updatePowerCycle(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdatePowerCycleProperties, options *NetworkDevicesClientBeginUpdatePowerCycleOptions) (*http.Response, error) {
-	req, err := client.updatePowerCycleCreateRequest(ctx, resourceGroupName, networkDeviceName, body, options)
+// Generated from API version 2023-06-15
+func (client *NetworkDevicesClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdateDeviceAdministrativeState, options *NetworkDevicesClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
+	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, networkDeviceName, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -867,18 +576,15 @@ func (client *NetworkDevicesClient) updatePowerCycle(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
-// updatePowerCycleCreateRequest creates the UpdatePowerCycle request.
-func (client *NetworkDevicesClient) updatePowerCycleCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdatePowerCycleProperties, options *NetworkDevicesClientBeginUpdatePowerCycleOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/updatePowerCycle"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
+// updateAdministrativeStateCreateRequest creates the UpdateAdministrativeState request.
+func (client *NetworkDevicesClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdateDeviceAdministrativeState, options *NetworkDevicesClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/updateAdministrativeState"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -893,41 +599,41 @@ func (client *NetworkDevicesClient) updatePowerCycleCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// BeginUpdateVersion - Update the SKU version of the Network Device resource.
+// BeginUpgrade - Upgrades the version of the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice.
+//   - networkDeviceName - Name of the Network Device.
 //   - body - Request payload.
-//   - options - NetworkDevicesClientBeginUpdateVersionOptions contains the optional parameters for the NetworkDevicesClient.BeginUpdateVersion
+//   - options - NetworkDevicesClientBeginUpgradeOptions contains the optional parameters for the NetworkDevicesClient.BeginUpgrade
 //     method.
-func (client *NetworkDevicesClient) BeginUpdateVersion(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdateVersionProperties, options *NetworkDevicesClientBeginUpdateVersionOptions) (*runtime.Poller[NetworkDevicesClientUpdateVersionResponse], error) {
+func (client *NetworkDevicesClient) BeginUpgrade(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdateVersion, options *NetworkDevicesClientBeginUpgradeOptions) (*runtime.Poller[NetworkDevicesClientUpgradeResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateVersion(ctx, resourceGroupName, networkDeviceName, body, options)
+		resp, err := client.upgrade(ctx, resourceGroupName, networkDeviceName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkDevicesClientUpdateVersionResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkDevicesClientUpgradeResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[NetworkDevicesClientUpdateVersionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[NetworkDevicesClientUpgradeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// UpdateVersion - Update the SKU version of the Network Device resource.
+// Upgrade - Upgrades the version of the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-func (client *NetworkDevicesClient) updateVersion(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdateVersionProperties, options *NetworkDevicesClientBeginUpdateVersionOptions) (*http.Response, error) {
-	req, err := client.updateVersionCreateRequest(ctx, resourceGroupName, networkDeviceName, body, options)
+// Generated from API version 2023-06-15
+func (client *NetworkDevicesClient) upgrade(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdateVersion, options *NetworkDevicesClientBeginUpgradeOptions) (*http.Response, error) {
+	req, err := client.upgradeCreateRequest(ctx, resourceGroupName, networkDeviceName, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -935,18 +641,15 @@ func (client *NetworkDevicesClient) updateVersion(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
-// updateVersionCreateRequest creates the UpdateVersion request.
-func (client *NetworkDevicesClient) updateVersionCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdateVersionProperties, options *NetworkDevicesClientBeginUpdateVersionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/updateVersion"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
+// upgradeCreateRequest creates the Upgrade request.
+func (client *NetworkDevicesClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdateVersion, options *NetworkDevicesClientBeginUpgradeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/upgrade"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -961,7 +664,7 @@ func (client *NetworkDevicesClient) updateVersionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

@@ -28,17 +28,20 @@ type MetricNamespacesServer struct {
 }
 
 // NewMetricNamespacesServerTransport creates a new instance of MetricNamespacesServerTransport with the provided implementation.
-// The returned MetricNamespacesServerTransport instance is connected to an instance of armmonitor.MetricNamespacesClient by way of the
-// undefined.Transporter field.
+// The returned MetricNamespacesServerTransport instance is connected to an instance of armmonitor.MetricNamespacesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMetricNamespacesServerTransport(srv *MetricNamespacesServer) *MetricNamespacesServerTransport {
-	return &MetricNamespacesServerTransport{srv: srv}
+	return &MetricNamespacesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armmonitor.MetricNamespacesClientListResponse]](),
+	}
 }
 
 // MetricNamespacesServerTransport connects instances of armmonitor.MetricNamespacesClient to instances of MetricNamespacesServer.
 // Don't use this type directly, use NewMetricNamespacesServerTransport instead.
 type MetricNamespacesServerTransport struct {
 	srv          *MetricNamespacesServer
-	newListPager *azfake.PagerResponder[armmonitor.MetricNamespacesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armmonitor.MetricNamespacesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for MetricNamespacesServerTransport.
@@ -70,7 +73,8 @@ func (m *MetricNamespacesServerTransport) dispatchNewListPager(req *http.Request
 	if m.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if m.newListPager == nil {
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.insights/metricNamespaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -94,17 +98,19 @@ func (m *MetricNamespacesServerTransport) dispatchNewListPager(req *http.Request
 			}
 		}
 		resp := m.srv.NewListPager(resourceURIUnescaped, options)
-		m.newListPager = &resp
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
 	}
-	resp, err := server.PagerResponderNext(m.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(m.newListPager) {
-		m.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
 	}
 	return resp, nil
 }

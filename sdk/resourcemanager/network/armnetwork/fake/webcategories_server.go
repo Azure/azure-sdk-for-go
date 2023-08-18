@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -34,17 +34,20 @@ type WebCategoriesServer struct {
 }
 
 // NewWebCategoriesServerTransport creates a new instance of WebCategoriesServerTransport with the provided implementation.
-// The returned WebCategoriesServerTransport instance is connected to an instance of armnetwork.WebCategoriesClient by way of the
-// undefined.Transporter field.
+// The returned WebCategoriesServerTransport instance is connected to an instance of armnetwork.WebCategoriesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWebCategoriesServerTransport(srv *WebCategoriesServer) *WebCategoriesServerTransport {
-	return &WebCategoriesServerTransport{srv: srv}
+	return &WebCategoriesServerTransport{
+		srv:                        srv,
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armnetwork.WebCategoriesClientListBySubscriptionResponse]](),
+	}
 }
 
 // WebCategoriesServerTransport connects instances of armnetwork.WebCategoriesClient to instances of WebCategoriesServer.
 // Don't use this type directly, use NewWebCategoriesServerTransport instead.
 type WebCategoriesServerTransport struct {
 	srv                        *WebCategoriesServer
-	newListBySubscriptionPager *azfake.PagerResponder[armnetwork.WebCategoriesClientListBySubscriptionResponse]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armnetwork.WebCategoriesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for WebCategoriesServerTransport.
@@ -119,7 +122,8 @@ func (w *WebCategoriesServerTransport) dispatchNewListBySubscriptionPager(req *h
 	if w.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
-	if w.newListBySubscriptionPager == nil {
+	newListBySubscriptionPager := w.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/azureWebCategories`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -127,20 +131,22 @@ func (w *WebCategoriesServerTransport) dispatchNewListBySubscriptionPager(req *h
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := w.srv.NewListBySubscriptionPager(nil)
-		w.newListBySubscriptionPager = &resp
-		server.PagerResponderInjectNextLinks(w.newListBySubscriptionPager, req, func(page *armnetwork.WebCategoriesClientListBySubscriptionResponse, createLink func() string) {
+		newListBySubscriptionPager = &resp
+		w.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetwork.WebCategoriesClientListBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(w.newListBySubscriptionPager, req)
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(w.newListBySubscriptionPager) {
-		w.newListBySubscriptionPager = nil
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		w.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

@@ -183,6 +183,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 }
 
 func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRepoParam, specCommitHash string) error {
+	var generateErr []error
 	var pullRequestUrls = make(map[string]string)
 	var pushBranch = make(map[string]struct {
 		requestLink      string
@@ -220,7 +221,8 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			}
 			err = c.generate(sdkRepo, specCommitHash)
 			if err != nil {
-				return err
+				generateErr = append(generateErr, err)
+				continue
 			}
 
 			// get current branch name
@@ -286,6 +288,13 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 		log.Println("Fixes:")
 		for branch, url := range pullRequestUrls {
 			log.Printf("%s : %s", branch, url)
+		}
+	}
+
+	if len(generateErr) != 0 {
+		fmt.Println("generator error:")
+		for _, e := range generateErr {
+			fmt.Println(e)
 		}
 	}
 

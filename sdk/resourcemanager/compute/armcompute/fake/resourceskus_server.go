@@ -29,17 +29,20 @@ type ResourceSKUsServer struct {
 }
 
 // NewResourceSKUsServerTransport creates a new instance of ResourceSKUsServerTransport with the provided implementation.
-// The returned ResourceSKUsServerTransport instance is connected to an instance of armcompute.ResourceSKUsClient by way of the
-// undefined.Transporter field.
+// The returned ResourceSKUsServerTransport instance is connected to an instance of armcompute.ResourceSKUsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewResourceSKUsServerTransport(srv *ResourceSKUsServer) *ResourceSKUsServerTransport {
-	return &ResourceSKUsServerTransport{srv: srv}
+	return &ResourceSKUsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armcompute.ResourceSKUsClientListResponse]](),
+	}
 }
 
 // ResourceSKUsServerTransport connects instances of armcompute.ResourceSKUsClient to instances of ResourceSKUsServer.
 // Don't use this type directly, use NewResourceSKUsServerTransport instead.
 type ResourceSKUsServerTransport struct {
 	srv          *ResourceSKUsServer
-	newListPager *azfake.PagerResponder[armcompute.ResourceSKUsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armcompute.ResourceSKUsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ResourceSKUsServerTransport.
@@ -71,7 +74,8 @@ func (r *ResourceSKUsServerTransport) dispatchNewListPager(req *http.Request) (*
 	if r.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if r.newListPager == nil {
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -97,20 +101,22 @@ func (r *ResourceSKUsServerTransport) dispatchNewListPager(req *http.Request) (*
 			}
 		}
 		resp := r.srv.NewListPager(options)
-		r.newListPager = &resp
-		server.PagerResponderInjectNextLinks(r.newListPager, req, func(page *armcompute.ResourceSKUsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.ResourceSKUsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(r.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(r.newListPager) {
-		r.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }

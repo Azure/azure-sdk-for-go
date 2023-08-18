@@ -47,7 +47,7 @@ func NewPrivateLinkServicesClient(subscriptionID string, credential azcore.Token
 // BeginCheckPrivateLinkServiceVisibility - Checks whether the subscription is visible to private link service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - location - The location of the domain name.
 //   - parameters - The request body of CheckPrivateLinkService API call.
 //   - options - PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityOptions contains the optional parameters for the
@@ -70,7 +70,7 @@ func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibility(
 // CheckPrivateLinkServiceVisibility - Checks whether the subscription is visible to private link service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibility(ctx context.Context, location string, parameters CheckPrivateLinkServiceVisibilityRequest, options *PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateLinkServicesClient.BeginCheckPrivateLinkServiceVisibility"
@@ -108,7 +108,7 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -121,7 +121,7 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityCreate
 // in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - location - The location of the domain name.
 //   - resourceGroupName - The name of the resource group.
 //   - parameters - The request body of CheckPrivateLinkService API call.
@@ -146,7 +146,7 @@ func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibilityB
 // the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest, options *PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateLinkServicesClient.BeginCheckPrivateLinkServiceVisibilityByResourceGroup"
@@ -188,7 +188,7 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityByReso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -200,7 +200,7 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityByReso
 // BeginCreateOrUpdate - Creates or updates an private link service in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - serviceName - The name of the private link service.
 //   - parameters - Parameters supplied to the create or update private link service operation.
@@ -224,7 +224,7 @@ func (client *PrivateLinkServicesClient) BeginCreateOrUpdate(ctx context.Context
 // CreateOrUpdate - Creates or updates an private link service in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 func (client *PrivateLinkServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PrivateLinkService, options *PrivateLinkServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateLinkServicesClient.BeginCreateOrUpdate"
@@ -266,7 +266,7 @@ func (client *PrivateLinkServicesClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -278,7 +278,7 @@ func (client *PrivateLinkServicesClient) createOrUpdateCreateRequest(ctx context
 // BeginDelete - Deletes the specified private link service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - serviceName - The name of the private link service.
 //   - options - PrivateLinkServicesClientBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesClient.BeginDelete
@@ -301,7 +301,7 @@ func (client *PrivateLinkServicesClient) BeginDelete(ctx context.Context, resour
 // Delete - Deletes the specified private link service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 func (client *PrivateLinkServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, options *PrivateLinkServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateLinkServicesClient.BeginDelete"
@@ -343,7 +343,7 @@ func (client *PrivateLinkServicesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -352,7 +352,7 @@ func (client *PrivateLinkServicesClient) deleteCreateRequest(ctx context.Context
 // BeginDeletePrivateEndpointConnection - Delete private end point connection for a private link service in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - serviceName - The name of the private link service.
 //   - peConnectionName - The name of the private end point connection.
@@ -376,7 +376,7 @@ func (client *PrivateLinkServicesClient) BeginDeletePrivateEndpointConnection(ct
 // DeletePrivateEndpointConnection - Delete private end point connection for a private link service in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 func (client *PrivateLinkServicesClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, options *PrivateLinkServicesClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateLinkServicesClient.BeginDeletePrivateEndpointConnection"
@@ -422,7 +422,7 @@ func (client *PrivateLinkServicesClient) deletePrivateEndpointConnectionCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -431,7 +431,7 @@ func (client *PrivateLinkServicesClient) deletePrivateEndpointConnectionCreateRe
 // Get - Gets the specified private link service by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - serviceName - The name of the private link service.
 //   - options - PrivateLinkServicesClientGetOptions contains the optional parameters for the PrivateLinkServicesClient.Get method.
@@ -477,7 +477,7 @@ func (client *PrivateLinkServicesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -499,7 +499,7 @@ func (client *PrivateLinkServicesClient) getHandleResponse(resp *http.Response) 
 // group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - serviceName - The name of the private link service.
 //   - peConnectionName - The name of the private end point connection.
@@ -551,7 +551,7 @@ func (client *PrivateLinkServicesClient) getPrivateEndpointConnectionCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -571,7 +571,7 @@ func (client *PrivateLinkServicesClient) getPrivateEndpointConnectionHandleRespo
 
 // NewListPager - Gets all private link services in a resource group.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - PrivateLinkServicesClientListOptions contains the optional parameters for the PrivateLinkServicesClient.NewListPager
 //     method.
@@ -621,7 +621,7 @@ func (client *PrivateLinkServicesClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -639,7 +639,7 @@ func (client *PrivateLinkServicesClient) listHandleResponse(resp *http.Response)
 // NewListAutoApprovedPrivateLinkServicesPager - Returns all of the private link service ids that can be linked to a Private
 // Endpoint with auto approved in this subscription in this region.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - location - The location of the domain name.
 //   - options - PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions contains the optional parameters for the
 //     PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesPager method.
@@ -689,7 +689,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -707,7 +707,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesHand
 // NewListAutoApprovedPrivateLinkServicesByResourceGroupPager - Returns all of the private link service ids that can be linked
 // to a Private Endpoint with auto approved in this subscription in this region.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - location - The location of the domain name.
 //   - resourceGroupName - The name of the resource group.
 //   - options - PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions contains the optional parameters
@@ -762,7 +762,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesByRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -779,7 +779,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesByRe
 
 // NewListBySubscriptionPager - Gets all private link service in a subscription.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - options - PrivateLinkServicesClientListBySubscriptionOptions contains the optional parameters for the PrivateLinkServicesClient.NewListBySubscriptionPager
 //     method.
 func (client *PrivateLinkServicesClient) NewListBySubscriptionPager(options *PrivateLinkServicesClientListBySubscriptionOptions) *runtime.Pager[PrivateLinkServicesClientListBySubscriptionResponse] {
@@ -824,7 +824,7 @@ func (client *PrivateLinkServicesClient) listBySubscriptionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -841,7 +841,7 @@ func (client *PrivateLinkServicesClient) listBySubscriptionHandleResponse(resp *
 
 // NewListPrivateEndpointConnectionsPager - Gets all private end point connections for a specific private link service.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - serviceName - The name of the private link service.
 //   - options - PrivateLinkServicesClientListPrivateEndpointConnectionsOptions contains the optional parameters for the PrivateLinkServicesClient.NewListPrivateEndpointConnectionsPager
@@ -896,7 +896,7 @@ func (client *PrivateLinkServicesClient) listPrivateEndpointConnectionsCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -914,7 +914,7 @@ func (client *PrivateLinkServicesClient) listPrivateEndpointConnectionsHandleRes
 // UpdatePrivateEndpointConnection - Approve or reject private end point connection for a private link service in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - serviceName - The name of the private link service.
 //   - peConnectionName - The name of the private end point connection.
@@ -967,7 +967,7 @@ func (client *PrivateLinkServicesClient) updatePrivateEndpointConnectionCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

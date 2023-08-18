@@ -207,40 +207,66 @@ type DeploymentsServer struct {
 }
 
 // NewDeploymentsServerTransport creates a new instance of DeploymentsServerTransport with the provided implementation.
-// The returned DeploymentsServerTransport instance is connected to an instance of armresources.DeploymentsClient by way of the
-// undefined.Transporter field.
+// The returned DeploymentsServerTransport instance is connected to an instance of armresources.DeploymentsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDeploymentsServerTransport(srv *DeploymentsServer) *DeploymentsServerTransport {
-	return &DeploymentsServerTransport{srv: srv}
+	return &DeploymentsServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateResponse]](),
+		beginCreateOrUpdateAtManagementGroupScope: newTracker[azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse]](),
+		beginCreateOrUpdateAtScope:                newTracker[azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateAtScopeResponse]](),
+		beginCreateOrUpdateAtSubscriptionScope:    newTracker[azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse]](),
+		beginCreateOrUpdateAtTenantScope:          newTracker[azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateAtTenantScopeResponse]](),
+		beginDelete:                               newTracker[azfake.PollerResponder[armresources.DeploymentsClientDeleteResponse]](),
+		beginDeleteAtManagementGroupScope:         newTracker[azfake.PollerResponder[armresources.DeploymentsClientDeleteAtManagementGroupScopeResponse]](),
+		beginDeleteAtScope:                        newTracker[azfake.PollerResponder[armresources.DeploymentsClientDeleteAtScopeResponse]](),
+		beginDeleteAtSubscriptionScope:            newTracker[azfake.PollerResponder[armresources.DeploymentsClientDeleteAtSubscriptionScopeResponse]](),
+		beginDeleteAtTenantScope:                  newTracker[azfake.PollerResponder[armresources.DeploymentsClientDeleteAtTenantScopeResponse]](),
+		newListAtManagementGroupScopePager:        newTracker[azfake.PagerResponder[armresources.DeploymentsClientListAtManagementGroupScopeResponse]](),
+		newListAtScopePager:                       newTracker[azfake.PagerResponder[armresources.DeploymentsClientListAtScopeResponse]](),
+		newListAtSubscriptionScopePager:           newTracker[azfake.PagerResponder[armresources.DeploymentsClientListAtSubscriptionScopeResponse]](),
+		newListAtTenantScopePager:                 newTracker[azfake.PagerResponder[armresources.DeploymentsClientListAtTenantScopeResponse]](),
+		newListByResourceGroupPager:               newTracker[azfake.PagerResponder[armresources.DeploymentsClientListByResourceGroupResponse]](),
+		beginValidate:                             newTracker[azfake.PollerResponder[armresources.DeploymentsClientValidateResponse]](),
+		beginValidateAtManagementGroupScope:       newTracker[azfake.PollerResponder[armresources.DeploymentsClientValidateAtManagementGroupScopeResponse]](),
+		beginValidateAtScope:                      newTracker[azfake.PollerResponder[armresources.DeploymentsClientValidateAtScopeResponse]](),
+		beginValidateAtSubscriptionScope:          newTracker[azfake.PollerResponder[armresources.DeploymentsClientValidateAtSubscriptionScopeResponse]](),
+		beginValidateAtTenantScope:                newTracker[azfake.PollerResponder[armresources.DeploymentsClientValidateAtTenantScopeResponse]](),
+		beginWhatIf:                               newTracker[azfake.PollerResponder[armresources.DeploymentsClientWhatIfResponse]](),
+		beginWhatIfAtManagementGroupScope:         newTracker[azfake.PollerResponder[armresources.DeploymentsClientWhatIfAtManagementGroupScopeResponse]](),
+		beginWhatIfAtSubscriptionScope:            newTracker[azfake.PollerResponder[armresources.DeploymentsClientWhatIfAtSubscriptionScopeResponse]](),
+		beginWhatIfAtTenantScope:                  newTracker[azfake.PollerResponder[armresources.DeploymentsClientWhatIfAtTenantScopeResponse]](),
+	}
 }
 
 // DeploymentsServerTransport connects instances of armresources.DeploymentsClient to instances of DeploymentsServer.
 // Don't use this type directly, use NewDeploymentsServerTransport instead.
 type DeploymentsServerTransport struct {
 	srv                                       *DeploymentsServer
-	beginCreateOrUpdate                       *azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateResponse]
-	beginCreateOrUpdateAtManagementGroupScope *azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse]
-	beginCreateOrUpdateAtScope                *azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateAtScopeResponse]
-	beginCreateOrUpdateAtSubscriptionScope    *azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse]
-	beginCreateOrUpdateAtTenantScope          *azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateAtTenantScopeResponse]
-	beginDelete                               *azfake.PollerResponder[armresources.DeploymentsClientDeleteResponse]
-	beginDeleteAtManagementGroupScope         *azfake.PollerResponder[armresources.DeploymentsClientDeleteAtManagementGroupScopeResponse]
-	beginDeleteAtScope                        *azfake.PollerResponder[armresources.DeploymentsClientDeleteAtScopeResponse]
-	beginDeleteAtSubscriptionScope            *azfake.PollerResponder[armresources.DeploymentsClientDeleteAtSubscriptionScopeResponse]
-	beginDeleteAtTenantScope                  *azfake.PollerResponder[armresources.DeploymentsClientDeleteAtTenantScopeResponse]
-	newListAtManagementGroupScopePager        *azfake.PagerResponder[armresources.DeploymentsClientListAtManagementGroupScopeResponse]
-	newListAtScopePager                       *azfake.PagerResponder[armresources.DeploymentsClientListAtScopeResponse]
-	newListAtSubscriptionScopePager           *azfake.PagerResponder[armresources.DeploymentsClientListAtSubscriptionScopeResponse]
-	newListAtTenantScopePager                 *azfake.PagerResponder[armresources.DeploymentsClientListAtTenantScopeResponse]
-	newListByResourceGroupPager               *azfake.PagerResponder[armresources.DeploymentsClientListByResourceGroupResponse]
-	beginValidate                             *azfake.PollerResponder[armresources.DeploymentsClientValidateResponse]
-	beginValidateAtManagementGroupScope       *azfake.PollerResponder[armresources.DeploymentsClientValidateAtManagementGroupScopeResponse]
-	beginValidateAtScope                      *azfake.PollerResponder[armresources.DeploymentsClientValidateAtScopeResponse]
-	beginValidateAtSubscriptionScope          *azfake.PollerResponder[armresources.DeploymentsClientValidateAtSubscriptionScopeResponse]
-	beginValidateAtTenantScope                *azfake.PollerResponder[armresources.DeploymentsClientValidateAtTenantScopeResponse]
-	beginWhatIf                               *azfake.PollerResponder[armresources.DeploymentsClientWhatIfResponse]
-	beginWhatIfAtManagementGroupScope         *azfake.PollerResponder[armresources.DeploymentsClientWhatIfAtManagementGroupScopeResponse]
-	beginWhatIfAtSubscriptionScope            *azfake.PollerResponder[armresources.DeploymentsClientWhatIfAtSubscriptionScopeResponse]
-	beginWhatIfAtTenantScope                  *azfake.PollerResponder[armresources.DeploymentsClientWhatIfAtTenantScopeResponse]
+	beginCreateOrUpdate                       *tracker[azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateResponse]]
+	beginCreateOrUpdateAtManagementGroupScope *tracker[azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse]]
+	beginCreateOrUpdateAtScope                *tracker[azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateAtScopeResponse]]
+	beginCreateOrUpdateAtSubscriptionScope    *tracker[azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse]]
+	beginCreateOrUpdateAtTenantScope          *tracker[azfake.PollerResponder[armresources.DeploymentsClientCreateOrUpdateAtTenantScopeResponse]]
+	beginDelete                               *tracker[azfake.PollerResponder[armresources.DeploymentsClientDeleteResponse]]
+	beginDeleteAtManagementGroupScope         *tracker[azfake.PollerResponder[armresources.DeploymentsClientDeleteAtManagementGroupScopeResponse]]
+	beginDeleteAtScope                        *tracker[azfake.PollerResponder[armresources.DeploymentsClientDeleteAtScopeResponse]]
+	beginDeleteAtSubscriptionScope            *tracker[azfake.PollerResponder[armresources.DeploymentsClientDeleteAtSubscriptionScopeResponse]]
+	beginDeleteAtTenantScope                  *tracker[azfake.PollerResponder[armresources.DeploymentsClientDeleteAtTenantScopeResponse]]
+	newListAtManagementGroupScopePager        *tracker[azfake.PagerResponder[armresources.DeploymentsClientListAtManagementGroupScopeResponse]]
+	newListAtScopePager                       *tracker[azfake.PagerResponder[armresources.DeploymentsClientListAtScopeResponse]]
+	newListAtSubscriptionScopePager           *tracker[azfake.PagerResponder[armresources.DeploymentsClientListAtSubscriptionScopeResponse]]
+	newListAtTenantScopePager                 *tracker[azfake.PagerResponder[armresources.DeploymentsClientListAtTenantScopeResponse]]
+	newListByResourceGroupPager               *tracker[azfake.PagerResponder[armresources.DeploymentsClientListByResourceGroupResponse]]
+	beginValidate                             *tracker[azfake.PollerResponder[armresources.DeploymentsClientValidateResponse]]
+	beginValidateAtManagementGroupScope       *tracker[azfake.PollerResponder[armresources.DeploymentsClientValidateAtManagementGroupScopeResponse]]
+	beginValidateAtScope                      *tracker[azfake.PollerResponder[armresources.DeploymentsClientValidateAtScopeResponse]]
+	beginValidateAtSubscriptionScope          *tracker[azfake.PollerResponder[armresources.DeploymentsClientValidateAtSubscriptionScopeResponse]]
+	beginValidateAtTenantScope                *tracker[azfake.PollerResponder[armresources.DeploymentsClientValidateAtTenantScopeResponse]]
+	beginWhatIf                               *tracker[azfake.PollerResponder[armresources.DeploymentsClientWhatIfResponse]]
+	beginWhatIfAtManagementGroupScope         *tracker[azfake.PollerResponder[armresources.DeploymentsClientWhatIfAtManagementGroupScopeResponse]]
+	beginWhatIfAtSubscriptionScope            *tracker[azfake.PollerResponder[armresources.DeploymentsClientWhatIfAtSubscriptionScopeResponse]]
+	beginWhatIfAtTenantScope                  *tracker[azfake.PollerResponder[armresources.DeploymentsClientWhatIfAtTenantScopeResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeploymentsServerTransport.
@@ -697,7 +723,8 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 	if d.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if d.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -720,19 +747,21 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		d.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		d.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginCreateOrUpdate) {
-		d.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		d.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -742,7 +771,8 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtManagementGrou
 	if d.srv.BeginCreateOrUpdateAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateAtManagementGroupScope not implemented")}
 	}
-	if d.beginCreateOrUpdateAtManagementGroupScope == nil {
+	beginCreateOrUpdateAtManagementGroupScope := d.beginCreateOrUpdateAtManagementGroupScope.get(req)
+	if beginCreateOrUpdateAtManagementGroupScope == nil {
 		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -765,19 +795,21 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtManagementGrou
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginCreateOrUpdateAtManagementGroupScope = &respr
+		beginCreateOrUpdateAtManagementGroupScope = &respr
+		d.beginCreateOrUpdateAtManagementGroupScope.add(req, beginCreateOrUpdateAtManagementGroupScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginCreateOrUpdateAtManagementGroupScope, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateAtManagementGroupScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		d.beginCreateOrUpdateAtManagementGroupScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginCreateOrUpdateAtManagementGroupScope) {
-		d.beginCreateOrUpdateAtManagementGroupScope = nil
+	if !server.PollerResponderMore(beginCreateOrUpdateAtManagementGroupScope) {
+		d.beginCreateOrUpdateAtManagementGroupScope.remove(req)
 	}
 
 	return resp, nil
@@ -787,7 +819,8 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtScope(req *htt
 	if d.srv.BeginCreateOrUpdateAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateAtScope not implemented")}
 	}
-	if d.beginCreateOrUpdateAtScope == nil {
+	beginCreateOrUpdateAtScope := d.beginCreateOrUpdateAtScope.get(req)
+	if beginCreateOrUpdateAtScope == nil {
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -810,19 +843,21 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtScope(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginCreateOrUpdateAtScope = &respr
+		beginCreateOrUpdateAtScope = &respr
+		d.beginCreateOrUpdateAtScope.add(req, beginCreateOrUpdateAtScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginCreateOrUpdateAtScope, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateAtScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		d.beginCreateOrUpdateAtScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginCreateOrUpdateAtScope) {
-		d.beginCreateOrUpdateAtScope = nil
+	if !server.PollerResponderMore(beginCreateOrUpdateAtScope) {
+		d.beginCreateOrUpdateAtScope.remove(req)
 	}
 
 	return resp, nil
@@ -832,7 +867,8 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtSubscriptionSc
 	if d.srv.BeginCreateOrUpdateAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateAtSubscriptionScope not implemented")}
 	}
-	if d.beginCreateOrUpdateAtSubscriptionScope == nil {
+	beginCreateOrUpdateAtSubscriptionScope := d.beginCreateOrUpdateAtSubscriptionScope.get(req)
+	if beginCreateOrUpdateAtSubscriptionScope == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -851,19 +887,21 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtSubscriptionSc
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginCreateOrUpdateAtSubscriptionScope = &respr
+		beginCreateOrUpdateAtSubscriptionScope = &respr
+		d.beginCreateOrUpdateAtSubscriptionScope.add(req, beginCreateOrUpdateAtSubscriptionScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginCreateOrUpdateAtSubscriptionScope, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateAtSubscriptionScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		d.beginCreateOrUpdateAtSubscriptionScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginCreateOrUpdateAtSubscriptionScope) {
-		d.beginCreateOrUpdateAtSubscriptionScope = nil
+	if !server.PollerResponderMore(beginCreateOrUpdateAtSubscriptionScope) {
+		d.beginCreateOrUpdateAtSubscriptionScope.remove(req)
 	}
 
 	return resp, nil
@@ -873,7 +911,8 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtTenantScope(re
 	if d.srv.BeginCreateOrUpdateAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateAtTenantScope not implemented")}
 	}
-	if d.beginCreateOrUpdateAtTenantScope == nil {
+	beginCreateOrUpdateAtTenantScope := d.beginCreateOrUpdateAtTenantScope.get(req)
+	if beginCreateOrUpdateAtTenantScope == nil {
 		const regexStr = `/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -892,19 +931,21 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtTenantScope(re
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginCreateOrUpdateAtTenantScope = &respr
+		beginCreateOrUpdateAtTenantScope = &respr
+		d.beginCreateOrUpdateAtTenantScope.add(req, beginCreateOrUpdateAtTenantScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginCreateOrUpdateAtTenantScope, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateAtTenantScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		d.beginCreateOrUpdateAtTenantScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginCreateOrUpdateAtTenantScope) {
-		d.beginCreateOrUpdateAtTenantScope = nil
+	if !server.PollerResponderMore(beginCreateOrUpdateAtTenantScope) {
+		d.beginCreateOrUpdateAtTenantScope.remove(req)
 	}
 
 	return resp, nil
@@ -914,7 +955,8 @@ func (d *DeploymentsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	if d.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if d.beginDelete == nil {
+	beginDelete := d.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -933,19 +975,21 @@ func (d *DeploymentsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginDelete = &respr
+		beginDelete = &respr
+		d.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginDelete) {
-		d.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		d.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -955,7 +999,8 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtManagementGroupScope(r
 	if d.srv.BeginDeleteAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteAtManagementGroupScope not implemented")}
 	}
-	if d.beginDeleteAtManagementGroupScope == nil {
+	beginDeleteAtManagementGroupScope := d.beginDeleteAtManagementGroupScope.get(req)
+	if beginDeleteAtManagementGroupScope == nil {
 		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -974,19 +1019,21 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtManagementGroupScope(r
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginDeleteAtManagementGroupScope = &respr
+		beginDeleteAtManagementGroupScope = &respr
+		d.beginDeleteAtManagementGroupScope.add(req, beginDeleteAtManagementGroupScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginDeleteAtManagementGroupScope, req)
+	resp, err := server.PollerResponderNext(beginDeleteAtManagementGroupScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginDeleteAtManagementGroupScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginDeleteAtManagementGroupScope) {
-		d.beginDeleteAtManagementGroupScope = nil
+	if !server.PollerResponderMore(beginDeleteAtManagementGroupScope) {
+		d.beginDeleteAtManagementGroupScope.remove(req)
 	}
 
 	return resp, nil
@@ -996,7 +1043,8 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtScope(req *http.Reques
 	if d.srv.BeginDeleteAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteAtScope not implemented")}
 	}
-	if d.beginDeleteAtScope == nil {
+	beginDeleteAtScope := d.beginDeleteAtScope.get(req)
+	if beginDeleteAtScope == nil {
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1015,19 +1063,21 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtScope(req *http.Reques
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginDeleteAtScope = &respr
+		beginDeleteAtScope = &respr
+		d.beginDeleteAtScope.add(req, beginDeleteAtScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginDeleteAtScope, req)
+	resp, err := server.PollerResponderNext(beginDeleteAtScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginDeleteAtScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginDeleteAtScope) {
-		d.beginDeleteAtScope = nil
+	if !server.PollerResponderMore(beginDeleteAtScope) {
+		d.beginDeleteAtScope.remove(req)
 	}
 
 	return resp, nil
@@ -1037,7 +1087,8 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtSubscriptionScope(req 
 	if d.srv.BeginDeleteAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteAtSubscriptionScope not implemented")}
 	}
-	if d.beginDeleteAtSubscriptionScope == nil {
+	beginDeleteAtSubscriptionScope := d.beginDeleteAtSubscriptionScope.get(req)
+	if beginDeleteAtSubscriptionScope == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1052,19 +1103,21 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtSubscriptionScope(req 
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginDeleteAtSubscriptionScope = &respr
+		beginDeleteAtSubscriptionScope = &respr
+		d.beginDeleteAtSubscriptionScope.add(req, beginDeleteAtSubscriptionScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginDeleteAtSubscriptionScope, req)
+	resp, err := server.PollerResponderNext(beginDeleteAtSubscriptionScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginDeleteAtSubscriptionScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginDeleteAtSubscriptionScope) {
-		d.beginDeleteAtSubscriptionScope = nil
+	if !server.PollerResponderMore(beginDeleteAtSubscriptionScope) {
+		d.beginDeleteAtSubscriptionScope.remove(req)
 	}
 
 	return resp, nil
@@ -1074,7 +1127,8 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtTenantScope(req *http.
 	if d.srv.BeginDeleteAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteAtTenantScope not implemented")}
 	}
-	if d.beginDeleteAtTenantScope == nil {
+	beginDeleteAtTenantScope := d.beginDeleteAtTenantScope.get(req)
+	if beginDeleteAtTenantScope == nil {
 		const regexStr = `/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1089,19 +1143,21 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtTenantScope(req *http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginDeleteAtTenantScope = &respr
+		beginDeleteAtTenantScope = &respr
+		d.beginDeleteAtTenantScope.add(req, beginDeleteAtTenantScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginDeleteAtTenantScope, req)
+	resp, err := server.PollerResponderNext(beginDeleteAtTenantScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginDeleteAtTenantScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginDeleteAtTenantScope) {
-		d.beginDeleteAtTenantScope = nil
+	if !server.PollerResponderMore(beginDeleteAtTenantScope) {
+		d.beginDeleteAtTenantScope.remove(req)
 	}
 
 	return resp, nil
@@ -1425,7 +1481,8 @@ func (d *DeploymentsServerTransport) dispatchNewListAtManagementGroupScopePager(
 	if d.srv.NewListAtManagementGroupScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAtManagementGroupScopePager not implemented")}
 	}
-	if d.newListAtManagementGroupScopePager == nil {
+	newListAtManagementGroupScopePager := d.newListAtManagementGroupScopePager.get(req)
+	if newListAtManagementGroupScopePager == nil {
 		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1464,20 +1521,22 @@ func (d *DeploymentsServerTransport) dispatchNewListAtManagementGroupScopePager(
 			}
 		}
 		resp := d.srv.NewListAtManagementGroupScopePager(groupIDUnescaped, options)
-		d.newListAtManagementGroupScopePager = &resp
-		server.PagerResponderInjectNextLinks(d.newListAtManagementGroupScopePager, req, func(page *armresources.DeploymentsClientListAtManagementGroupScopeResponse, createLink func() string) {
+		newListAtManagementGroupScopePager = &resp
+		d.newListAtManagementGroupScopePager.add(req, newListAtManagementGroupScopePager)
+		server.PagerResponderInjectNextLinks(newListAtManagementGroupScopePager, req, func(page *armresources.DeploymentsClientListAtManagementGroupScopeResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListAtManagementGroupScopePager, req)
+	resp, err := server.PagerResponderNext(newListAtManagementGroupScopePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListAtManagementGroupScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListAtManagementGroupScopePager) {
-		d.newListAtManagementGroupScopePager = nil
+	if !server.PagerResponderMore(newListAtManagementGroupScopePager) {
+		d.newListAtManagementGroupScopePager.remove(req)
 	}
 	return resp, nil
 }
@@ -1486,7 +1545,8 @@ func (d *DeploymentsServerTransport) dispatchNewListAtScopePager(req *http.Reque
 	if d.srv.NewListAtScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAtScopePager not implemented")}
 	}
-	if d.newListAtScopePager == nil {
+	newListAtScopePager := d.newListAtScopePager.get(req)
+	if newListAtScopePager == nil {
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1525,20 +1585,22 @@ func (d *DeploymentsServerTransport) dispatchNewListAtScopePager(req *http.Reque
 			}
 		}
 		resp := d.srv.NewListAtScopePager(scopeUnescaped, options)
-		d.newListAtScopePager = &resp
-		server.PagerResponderInjectNextLinks(d.newListAtScopePager, req, func(page *armresources.DeploymentsClientListAtScopeResponse, createLink func() string) {
+		newListAtScopePager = &resp
+		d.newListAtScopePager.add(req, newListAtScopePager)
+		server.PagerResponderInjectNextLinks(newListAtScopePager, req, func(page *armresources.DeploymentsClientListAtScopeResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListAtScopePager, req)
+	resp, err := server.PagerResponderNext(newListAtScopePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListAtScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListAtScopePager) {
-		d.newListAtScopePager = nil
+	if !server.PagerResponderMore(newListAtScopePager) {
+		d.newListAtScopePager.remove(req)
 	}
 	return resp, nil
 }
@@ -1547,7 +1609,8 @@ func (d *DeploymentsServerTransport) dispatchNewListAtSubscriptionScopePager(req
 	if d.srv.NewListAtSubscriptionScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAtSubscriptionScopePager not implemented")}
 	}
-	if d.newListAtSubscriptionScopePager == nil {
+	newListAtSubscriptionScopePager := d.newListAtSubscriptionScopePager.get(req)
+	if newListAtSubscriptionScopePager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1582,20 +1645,22 @@ func (d *DeploymentsServerTransport) dispatchNewListAtSubscriptionScopePager(req
 			}
 		}
 		resp := d.srv.NewListAtSubscriptionScopePager(options)
-		d.newListAtSubscriptionScopePager = &resp
-		server.PagerResponderInjectNextLinks(d.newListAtSubscriptionScopePager, req, func(page *armresources.DeploymentsClientListAtSubscriptionScopeResponse, createLink func() string) {
+		newListAtSubscriptionScopePager = &resp
+		d.newListAtSubscriptionScopePager.add(req, newListAtSubscriptionScopePager)
+		server.PagerResponderInjectNextLinks(newListAtSubscriptionScopePager, req, func(page *armresources.DeploymentsClientListAtSubscriptionScopeResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListAtSubscriptionScopePager, req)
+	resp, err := server.PagerResponderNext(newListAtSubscriptionScopePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListAtSubscriptionScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListAtSubscriptionScopePager) {
-		d.newListAtSubscriptionScopePager = nil
+	if !server.PagerResponderMore(newListAtSubscriptionScopePager) {
+		d.newListAtSubscriptionScopePager.remove(req)
 	}
 	return resp, nil
 }
@@ -1604,7 +1669,8 @@ func (d *DeploymentsServerTransport) dispatchNewListAtTenantScopePager(req *http
 	if d.srv.NewListAtTenantScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAtTenantScopePager not implemented")}
 	}
-	if d.newListAtTenantScopePager == nil {
+	newListAtTenantScopePager := d.newListAtTenantScopePager.get(req)
+	if newListAtTenantScopePager == nil {
 		qp := req.URL.Query()
 		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
 		if err != nil {
@@ -1633,20 +1699,22 @@ func (d *DeploymentsServerTransport) dispatchNewListAtTenantScopePager(req *http
 			}
 		}
 		resp := d.srv.NewListAtTenantScopePager(options)
-		d.newListAtTenantScopePager = &resp
-		server.PagerResponderInjectNextLinks(d.newListAtTenantScopePager, req, func(page *armresources.DeploymentsClientListAtTenantScopeResponse, createLink func() string) {
+		newListAtTenantScopePager = &resp
+		d.newListAtTenantScopePager.add(req, newListAtTenantScopePager)
+		server.PagerResponderInjectNextLinks(newListAtTenantScopePager, req, func(page *armresources.DeploymentsClientListAtTenantScopeResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListAtTenantScopePager, req)
+	resp, err := server.PagerResponderNext(newListAtTenantScopePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListAtTenantScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListAtTenantScopePager) {
-		d.newListAtTenantScopePager = nil
+	if !server.PagerResponderMore(newListAtTenantScopePager) {
+		d.newListAtTenantScopePager.remove(req)
 	}
 	return resp, nil
 }
@@ -1655,7 +1723,8 @@ func (d *DeploymentsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	if d.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if d.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1694,20 +1763,22 @@ func (d *DeploymentsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 			}
 		}
 		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, options)
-		d.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListByResourceGroupPager, req, func(page *armresources.DeploymentsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armresources.DeploymentsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListByResourceGroupPager) {
-		d.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		d.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -1716,7 +1787,8 @@ func (d *DeploymentsServerTransport) dispatchBeginValidate(req *http.Request) (*
 	if d.srv.BeginValidate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidate not implemented")}
 	}
-	if d.beginValidate == nil {
+	beginValidate := d.beginValidate.get(req)
+	if beginValidate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1739,19 +1811,21 @@ func (d *DeploymentsServerTransport) dispatchBeginValidate(req *http.Request) (*
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginValidate = &respr
+		beginValidate = &respr
+		d.beginValidate.add(req, beginValidate)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginValidate, req)
+	resp, err := server.PollerResponderNext(beginValidate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
+		d.beginValidate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginValidate) {
-		d.beginValidate = nil
+	if !server.PollerResponderMore(beginValidate) {
+		d.beginValidate.remove(req)
 	}
 
 	return resp, nil
@@ -1761,7 +1835,8 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtManagementGroupScope
 	if d.srv.BeginValidateAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidateAtManagementGroupScope not implemented")}
 	}
-	if d.beginValidateAtManagementGroupScope == nil {
+	beginValidateAtManagementGroupScope := d.beginValidateAtManagementGroupScope.get(req)
+	if beginValidateAtManagementGroupScope == nil {
 		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1784,19 +1859,21 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtManagementGroupScope
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginValidateAtManagementGroupScope = &respr
+		beginValidateAtManagementGroupScope = &respr
+		d.beginValidateAtManagementGroupScope.add(req, beginValidateAtManagementGroupScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginValidateAtManagementGroupScope, req)
+	resp, err := server.PollerResponderNext(beginValidateAtManagementGroupScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
+		d.beginValidateAtManagementGroupScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginValidateAtManagementGroupScope) {
-		d.beginValidateAtManagementGroupScope = nil
+	if !server.PollerResponderMore(beginValidateAtManagementGroupScope) {
+		d.beginValidateAtManagementGroupScope.remove(req)
 	}
 
 	return resp, nil
@@ -1806,7 +1883,8 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtScope(req *http.Requ
 	if d.srv.BeginValidateAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidateAtScope not implemented")}
 	}
-	if d.beginValidateAtScope == nil {
+	beginValidateAtScope := d.beginValidateAtScope.get(req)
+	if beginValidateAtScope == nil {
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1829,19 +1907,21 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtScope(req *http.Requ
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginValidateAtScope = &respr
+		beginValidateAtScope = &respr
+		d.beginValidateAtScope.add(req, beginValidateAtScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginValidateAtScope, req)
+	resp, err := server.PollerResponderNext(beginValidateAtScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
+		d.beginValidateAtScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginValidateAtScope) {
-		d.beginValidateAtScope = nil
+	if !server.PollerResponderMore(beginValidateAtScope) {
+		d.beginValidateAtScope.remove(req)
 	}
 
 	return resp, nil
@@ -1851,7 +1931,8 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtSubscriptionScope(re
 	if d.srv.BeginValidateAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidateAtSubscriptionScope not implemented")}
 	}
-	if d.beginValidateAtSubscriptionScope == nil {
+	beginValidateAtSubscriptionScope := d.beginValidateAtSubscriptionScope.get(req)
+	if beginValidateAtSubscriptionScope == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1870,19 +1951,21 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtSubscriptionScope(re
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginValidateAtSubscriptionScope = &respr
+		beginValidateAtSubscriptionScope = &respr
+		d.beginValidateAtSubscriptionScope.add(req, beginValidateAtSubscriptionScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginValidateAtSubscriptionScope, req)
+	resp, err := server.PollerResponderNext(beginValidateAtSubscriptionScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
+		d.beginValidateAtSubscriptionScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginValidateAtSubscriptionScope) {
-		d.beginValidateAtSubscriptionScope = nil
+	if !server.PollerResponderMore(beginValidateAtSubscriptionScope) {
+		d.beginValidateAtSubscriptionScope.remove(req)
 	}
 
 	return resp, nil
@@ -1892,7 +1975,8 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtTenantScope(req *htt
 	if d.srv.BeginValidateAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidateAtTenantScope not implemented")}
 	}
-	if d.beginValidateAtTenantScope == nil {
+	beginValidateAtTenantScope := d.beginValidateAtTenantScope.get(req)
+	if beginValidateAtTenantScope == nil {
 		const regexStr = `/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1911,19 +1995,21 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtTenantScope(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginValidateAtTenantScope = &respr
+		beginValidateAtTenantScope = &respr
+		d.beginValidateAtTenantScope.add(req, beginValidateAtTenantScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginValidateAtTenantScope, req)
+	resp, err := server.PollerResponderNext(beginValidateAtTenantScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
+		d.beginValidateAtTenantScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginValidateAtTenantScope) {
-		d.beginValidateAtTenantScope = nil
+	if !server.PollerResponderMore(beginValidateAtTenantScope) {
+		d.beginValidateAtTenantScope.remove(req)
 	}
 
 	return resp, nil
@@ -1933,7 +2019,8 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIf(req *http.Request) (*ht
 	if d.srv.BeginWhatIf == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginWhatIf not implemented")}
 	}
-	if d.beginWhatIf == nil {
+	beginWhatIf := d.beginWhatIf.get(req)
+	if beginWhatIf == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -1956,19 +2043,21 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIf(req *http.Request) (*ht
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginWhatIf = &respr
+		beginWhatIf = &respr
+		d.beginWhatIf.add(req, beginWhatIf)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginWhatIf, req)
+	resp, err := server.PollerResponderNext(beginWhatIf, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginWhatIf.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginWhatIf) {
-		d.beginWhatIf = nil
+	if !server.PollerResponderMore(beginWhatIf) {
+		d.beginWhatIf.remove(req)
 	}
 
 	return resp, nil
@@ -1978,7 +2067,8 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtManagementGroupScope(r
 	if d.srv.BeginWhatIfAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginWhatIfAtManagementGroupScope not implemented")}
 	}
-	if d.beginWhatIfAtManagementGroupScope == nil {
+	beginWhatIfAtManagementGroupScope := d.beginWhatIfAtManagementGroupScope.get(req)
+	if beginWhatIfAtManagementGroupScope == nil {
 		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -2001,19 +2091,21 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtManagementGroupScope(r
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginWhatIfAtManagementGroupScope = &respr
+		beginWhatIfAtManagementGroupScope = &respr
+		d.beginWhatIfAtManagementGroupScope.add(req, beginWhatIfAtManagementGroupScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginWhatIfAtManagementGroupScope, req)
+	resp, err := server.PollerResponderNext(beginWhatIfAtManagementGroupScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginWhatIfAtManagementGroupScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginWhatIfAtManagementGroupScope) {
-		d.beginWhatIfAtManagementGroupScope = nil
+	if !server.PollerResponderMore(beginWhatIfAtManagementGroupScope) {
+		d.beginWhatIfAtManagementGroupScope.remove(req)
 	}
 
 	return resp, nil
@@ -2023,7 +2115,8 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtSubscriptionScope(req 
 	if d.srv.BeginWhatIfAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginWhatIfAtSubscriptionScope not implemented")}
 	}
-	if d.beginWhatIfAtSubscriptionScope == nil {
+	beginWhatIfAtSubscriptionScope := d.beginWhatIfAtSubscriptionScope.get(req)
+	if beginWhatIfAtSubscriptionScope == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -2042,19 +2135,21 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtSubscriptionScope(req 
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginWhatIfAtSubscriptionScope = &respr
+		beginWhatIfAtSubscriptionScope = &respr
+		d.beginWhatIfAtSubscriptionScope.add(req, beginWhatIfAtSubscriptionScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginWhatIfAtSubscriptionScope, req)
+	resp, err := server.PollerResponderNext(beginWhatIfAtSubscriptionScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginWhatIfAtSubscriptionScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginWhatIfAtSubscriptionScope) {
-		d.beginWhatIfAtSubscriptionScope = nil
+	if !server.PollerResponderMore(beginWhatIfAtSubscriptionScope) {
+		d.beginWhatIfAtSubscriptionScope.remove(req)
 	}
 
 	return resp, nil
@@ -2064,7 +2159,8 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtTenantScope(req *http.
 	if d.srv.BeginWhatIfAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginWhatIfAtTenantScope not implemented")}
 	}
-	if d.beginWhatIfAtTenantScope == nil {
+	beginWhatIfAtTenantScope := d.beginWhatIfAtTenantScope.get(req)
+	if beginWhatIfAtTenantScope == nil {
 		const regexStr = `/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -2083,19 +2179,21 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtTenantScope(req *http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginWhatIfAtTenantScope = &respr
+		beginWhatIfAtTenantScope = &respr
+		d.beginWhatIfAtTenantScope.add(req, beginWhatIfAtTenantScope)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginWhatIfAtTenantScope, req)
+	resp, err := server.PollerResponderNext(beginWhatIfAtTenantScope, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginWhatIfAtTenantScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginWhatIfAtTenantScope) {
-		d.beginWhatIfAtTenantScope = nil
+	if !server.PollerResponderMore(beginWhatIfAtTenantScope) {
+		d.beginWhatIfAtTenantScope.remove(req)
 	}
 
 	return resp, nil

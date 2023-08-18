@@ -51,18 +51,22 @@ type AzureMonitorWorkspacesServer struct {
 }
 
 // NewAzureMonitorWorkspacesServerTransport creates a new instance of AzureMonitorWorkspacesServerTransport with the provided implementation.
-// The returned AzureMonitorWorkspacesServerTransport instance is connected to an instance of armmonitor.AzureMonitorWorkspacesClient by way of the
-// undefined.Transporter field.
+// The returned AzureMonitorWorkspacesServerTransport instance is connected to an instance of armmonitor.AzureMonitorWorkspacesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAzureMonitorWorkspacesServerTransport(srv *AzureMonitorWorkspacesServer) *AzureMonitorWorkspacesServerTransport {
-	return &AzureMonitorWorkspacesServerTransport{srv: srv}
+	return &AzureMonitorWorkspacesServerTransport{
+		srv:                         srv,
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.AzureMonitorWorkspacesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmonitor.AzureMonitorWorkspacesClientListBySubscriptionResponse]](),
+	}
 }
 
 // AzureMonitorWorkspacesServerTransport connects instances of armmonitor.AzureMonitorWorkspacesClient to instances of AzureMonitorWorkspacesServer.
 // Don't use this type directly, use NewAzureMonitorWorkspacesServerTransport instead.
 type AzureMonitorWorkspacesServerTransport struct {
 	srv                         *AzureMonitorWorkspacesServer
-	newListByResourceGroupPager *azfake.PagerResponder[armmonitor.AzureMonitorWorkspacesClientListByResourceGroupResponse]
-	newListBySubscriptionPager  *azfake.PagerResponder[armmonitor.AzureMonitorWorkspacesClientListBySubscriptionResponse]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.AzureMonitorWorkspacesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmonitor.AzureMonitorWorkspacesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for AzureMonitorWorkspacesServerTransport.
@@ -207,7 +211,8 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchNewListByResourceGroupPa
 	if a.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if a.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Monitor/accounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -219,20 +224,22 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchNewListByResourceGroupPa
 			return nil, err
 		}
 		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		a.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListByResourceGroupPager, req, func(page *armmonitor.AzureMonitorWorkspacesClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmonitor.AzureMonitorWorkspacesClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListByResourceGroupPager) {
-		a.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		a.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -241,7 +248,8 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchNewListBySubscriptionPag
 	if a.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
-	if a.newListBySubscriptionPager == nil {
+	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Monitor/accounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -249,20 +257,22 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchNewListBySubscriptionPag
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListBySubscriptionPager(nil)
-		a.newListBySubscriptionPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListBySubscriptionPager, req, func(page *armmonitor.AzureMonitorWorkspacesClientListBySubscriptionResponse, createLink func() string) {
+		newListBySubscriptionPager = &resp
+		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmonitor.AzureMonitorWorkspacesClientListBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListBySubscriptionPager, req)
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListBySubscriptionPager) {
-		a.newListBySubscriptionPager = nil
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		a.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

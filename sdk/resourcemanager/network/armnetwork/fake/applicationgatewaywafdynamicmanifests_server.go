@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,17 +29,20 @@ type ApplicationGatewayWafDynamicManifestsServer struct {
 }
 
 // NewApplicationGatewayWafDynamicManifestsServerTransport creates a new instance of ApplicationGatewayWafDynamicManifestsServerTransport with the provided implementation.
-// The returned ApplicationGatewayWafDynamicManifestsServerTransport instance is connected to an instance of armnetwork.ApplicationGatewayWafDynamicManifestsClient by way of the
-// undefined.Transporter field.
+// The returned ApplicationGatewayWafDynamicManifestsServerTransport instance is connected to an instance of armnetwork.ApplicationGatewayWafDynamicManifestsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewApplicationGatewayWafDynamicManifestsServerTransport(srv *ApplicationGatewayWafDynamicManifestsServer) *ApplicationGatewayWafDynamicManifestsServerTransport {
-	return &ApplicationGatewayWafDynamicManifestsServerTransport{srv: srv}
+	return &ApplicationGatewayWafDynamicManifestsServerTransport{
+		srv:         srv,
+		newGetPager: newTracker[azfake.PagerResponder[armnetwork.ApplicationGatewayWafDynamicManifestsClientGetResponse]](),
+	}
 }
 
 // ApplicationGatewayWafDynamicManifestsServerTransport connects instances of armnetwork.ApplicationGatewayWafDynamicManifestsClient to instances of ApplicationGatewayWafDynamicManifestsServer.
 // Don't use this type directly, use NewApplicationGatewayWafDynamicManifestsServerTransport instead.
 type ApplicationGatewayWafDynamicManifestsServerTransport struct {
 	srv         *ApplicationGatewayWafDynamicManifestsServer
-	newGetPager *azfake.PagerResponder[armnetwork.ApplicationGatewayWafDynamicManifestsClientGetResponse]
+	newGetPager *tracker[azfake.PagerResponder[armnetwork.ApplicationGatewayWafDynamicManifestsClientGetResponse]]
 }
 
 // Do implements the policy.Transporter interface for ApplicationGatewayWafDynamicManifestsServerTransport.
@@ -71,7 +74,8 @@ func (a *ApplicationGatewayWafDynamicManifestsServerTransport) dispatchNewGetPag
 	if a.srv.NewGetPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewGetPager not implemented")}
 	}
-	if a.newGetPager == nil {
+	newGetPager := a.newGetPager.get(req)
+	if newGetPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationGatewayWafDynamicManifests`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -83,20 +87,22 @@ func (a *ApplicationGatewayWafDynamicManifestsServerTransport) dispatchNewGetPag
 			return nil, err
 		}
 		resp := a.srv.NewGetPager(locationUnescaped, nil)
-		a.newGetPager = &resp
-		server.PagerResponderInjectNextLinks(a.newGetPager, req, func(page *armnetwork.ApplicationGatewayWafDynamicManifestsClientGetResponse, createLink func() string) {
+		newGetPager = &resp
+		a.newGetPager.add(req, newGetPager)
+		server.PagerResponderInjectNextLinks(newGetPager, req, func(page *armnetwork.ApplicationGatewayWafDynamicManifestsClientGetResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newGetPager, req)
+	resp, err := server.PagerResponderNext(newGetPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newGetPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newGetPager) {
-		a.newGetPager = nil
+	if !server.PagerResponderMore(newGetPager) {
+		a.newGetPager.remove(req)
 	}
 	return resp, nil
 }

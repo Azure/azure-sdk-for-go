@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -34,17 +34,20 @@ type LoadBalancerLoadBalancingRulesServer struct {
 }
 
 // NewLoadBalancerLoadBalancingRulesServerTransport creates a new instance of LoadBalancerLoadBalancingRulesServerTransport with the provided implementation.
-// The returned LoadBalancerLoadBalancingRulesServerTransport instance is connected to an instance of armnetwork.LoadBalancerLoadBalancingRulesClient by way of the
-// undefined.Transporter field.
+// The returned LoadBalancerLoadBalancingRulesServerTransport instance is connected to an instance of armnetwork.LoadBalancerLoadBalancingRulesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLoadBalancerLoadBalancingRulesServerTransport(srv *LoadBalancerLoadBalancingRulesServer) *LoadBalancerLoadBalancingRulesServerTransport {
-	return &LoadBalancerLoadBalancingRulesServerTransport{srv: srv}
+	return &LoadBalancerLoadBalancingRulesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.LoadBalancerLoadBalancingRulesClientListResponse]](),
+	}
 }
 
 // LoadBalancerLoadBalancingRulesServerTransport connects instances of armnetwork.LoadBalancerLoadBalancingRulesClient to instances of LoadBalancerLoadBalancingRulesServer.
 // Don't use this type directly, use NewLoadBalancerLoadBalancingRulesServerTransport instead.
 type LoadBalancerLoadBalancingRulesServerTransport struct {
 	srv          *LoadBalancerLoadBalancingRulesServer
-	newListPager *azfake.PagerResponder[armnetwork.LoadBalancerLoadBalancingRulesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.LoadBalancerLoadBalancingRulesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for LoadBalancerLoadBalancingRulesServerTransport.
@@ -115,7 +118,8 @@ func (l *LoadBalancerLoadBalancingRulesServerTransport) dispatchNewListPager(req
 	if l.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if l.newListPager == nil {
+	newListPager := l.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/loadBalancingRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -131,20 +135,22 @@ func (l *LoadBalancerLoadBalancingRulesServerTransport) dispatchNewListPager(req
 			return nil, err
 		}
 		resp := l.srv.NewListPager(resourceGroupNameUnescaped, loadBalancerNameUnescaped, nil)
-		l.newListPager = &resp
-		server.PagerResponderInjectNextLinks(l.newListPager, req, func(page *armnetwork.LoadBalancerLoadBalancingRulesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		l.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.LoadBalancerLoadBalancingRulesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(l.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(l.newListPager) {
-		l.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		l.newListPager.remove(req)
 	}
 	return resp, nil
 }

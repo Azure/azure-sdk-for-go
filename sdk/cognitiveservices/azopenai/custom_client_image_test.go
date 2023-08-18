@@ -26,16 +26,20 @@ func TestImageGeneration_AzureOpenAI(t *testing.T) {
 		t.Skipf("Ignoring poller-based test")
 	}
 
-	cred, err := azopenai.NewKeyCredential(apiKey)
+	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
 	require.NoError(t, err)
 
-	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, "", newClientOptionsForTest(t))
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatURL)
 }
 
 func TestImageGeneration_OpenAI(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
+	}
+
 	client := newOpenAIClientForTest(t)
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatURL)
 }
@@ -45,13 +49,13 @@ func TestImageGeneration_AzureOpenAI_WithError(t *testing.T) {
 		t.Skip()
 	}
 
-	client := newBogusAzureOpenAIClient(t, "")
+	client := newBogusAzureOpenAIClient(t)
 	testImageGenerationFailure(t, client)
 }
 
 func TestImageGeneration_OpenAI_WithError(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip()
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
 	}
 
 	client := newBogusOpenAIClient(t)
@@ -59,6 +63,10 @@ func TestImageGeneration_OpenAI_WithError(t *testing.T) {
 }
 
 func TestImageGeneration_OpenAI_Base64(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
+	}
+
 	client := newOpenAIClientForTest(t)
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatB64JSON)
 }

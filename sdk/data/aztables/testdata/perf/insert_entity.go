@@ -164,8 +164,8 @@ func (g *insertEntityTestGlobal) NewPerfTest(ctx context.Context, options *perf.
 }
 
 func (d *insertEntityPerfTest) Run(ctx context.Context) error {
-	_, err := d.tableClient.InsertEntity(ctx, d.entity, &aztables.InsertEntityOptions{
-		UpdateMode: aztables.EntityUpdateModeMerge,
+	_, err := d.tableClient.UpsertEntity(ctx, d.entity, &aztables.UpsertEntityOptions{
+		UpdateMode: aztables.UpdateModeMerge,
 	})
 	return err
 }

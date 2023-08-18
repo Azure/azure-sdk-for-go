@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -34,17 +34,20 @@ type VirtualApplianceSKUsServer struct {
 }
 
 // NewVirtualApplianceSKUsServerTransport creates a new instance of VirtualApplianceSKUsServerTransport with the provided implementation.
-// The returned VirtualApplianceSKUsServerTransport instance is connected to an instance of armnetwork.VirtualApplianceSKUsClient by way of the
-// undefined.Transporter field.
+// The returned VirtualApplianceSKUsServerTransport instance is connected to an instance of armnetwork.VirtualApplianceSKUsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualApplianceSKUsServerTransport(srv *VirtualApplianceSKUsServer) *VirtualApplianceSKUsServerTransport {
-	return &VirtualApplianceSKUsServerTransport{srv: srv}
+	return &VirtualApplianceSKUsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.VirtualApplianceSKUsClientListResponse]](),
+	}
 }
 
 // VirtualApplianceSKUsServerTransport connects instances of armnetwork.VirtualApplianceSKUsClient to instances of VirtualApplianceSKUsServer.
 // Don't use this type directly, use NewVirtualApplianceSKUsServerTransport instead.
 type VirtualApplianceSKUsServerTransport struct {
 	srv          *VirtualApplianceSKUsServer
-	newListPager *azfake.PagerResponder[armnetwork.VirtualApplianceSKUsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.VirtualApplianceSKUsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualApplianceSKUsServerTransport.
@@ -107,7 +110,8 @@ func (v *VirtualApplianceSKUsServerTransport) dispatchNewListPager(req *http.Req
 	if v.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if v.newListPager == nil {
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkVirtualApplianceSkus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -115,20 +119,22 @@ func (v *VirtualApplianceSKUsServerTransport) dispatchNewListPager(req *http.Req
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := v.srv.NewListPager(nil)
-		v.newListPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListPager, req, func(page *armnetwork.VirtualApplianceSKUsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualApplianceSKUsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListPager) {
-		v.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }

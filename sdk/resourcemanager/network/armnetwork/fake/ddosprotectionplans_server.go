@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -50,20 +50,26 @@ type DdosProtectionPlansServer struct {
 }
 
 // NewDdosProtectionPlansServerTransport creates a new instance of DdosProtectionPlansServerTransport with the provided implementation.
-// The returned DdosProtectionPlansServerTransport instance is connected to an instance of armnetwork.DdosProtectionPlansClient by way of the
-// undefined.Transporter field.
+// The returned DdosProtectionPlansServerTransport instance is connected to an instance of armnetwork.DdosProtectionPlansClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDdosProtectionPlansServerTransport(srv *DdosProtectionPlansServer) *DdosProtectionPlansServerTransport {
-	return &DdosProtectionPlansServerTransport{srv: srv}
+	return &DdosProtectionPlansServerTransport{
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.DdosProtectionPlansClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.DdosProtectionPlansClientDeleteResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.DdosProtectionPlansClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.DdosProtectionPlansClientListByResourceGroupResponse]](),
+	}
 }
 
 // DdosProtectionPlansServerTransport connects instances of armnetwork.DdosProtectionPlansClient to instances of DdosProtectionPlansServer.
 // Don't use this type directly, use NewDdosProtectionPlansServerTransport instead.
 type DdosProtectionPlansServerTransport struct {
 	srv                         *DdosProtectionPlansServer
-	beginCreateOrUpdate         *azfake.PollerResponder[armnetwork.DdosProtectionPlansClientCreateOrUpdateResponse]
-	beginDelete                 *azfake.PollerResponder[armnetwork.DdosProtectionPlansClientDeleteResponse]
-	newListPager                *azfake.PagerResponder[armnetwork.DdosProtectionPlansClientListResponse]
-	newListByResourceGroupPager *azfake.PagerResponder[armnetwork.DdosProtectionPlansClientListByResourceGroupResponse]
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.DdosProtectionPlansClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.DdosProtectionPlansClientDeleteResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.DdosProtectionPlansClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.DdosProtectionPlansClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for DdosProtectionPlansServerTransport.
@@ -105,7 +111,8 @@ func (d *DdosProtectionPlansServerTransport) dispatchBeginCreateOrUpdate(req *ht
 	if d.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if d.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ddosProtectionPlans/(?P<ddosProtectionPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -128,19 +135,21 @@ func (d *DdosProtectionPlansServerTransport) dispatchBeginCreateOrUpdate(req *ht
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		d.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		d.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginCreateOrUpdate) {
-		d.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		d.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -150,7 +159,8 @@ func (d *DdosProtectionPlansServerTransport) dispatchBeginDelete(req *http.Reque
 	if d.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if d.beginDelete == nil {
+	beginDelete := d.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ddosProtectionPlans/(?P<ddosProtectionPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -169,19 +179,21 @@ func (d *DdosProtectionPlansServerTransport) dispatchBeginDelete(req *http.Reque
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginDelete = &respr
+		beginDelete = &respr
+		d.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginDelete) {
-		d.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		d.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -224,7 +236,8 @@ func (d *DdosProtectionPlansServerTransport) dispatchNewListPager(req *http.Requ
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if d.newListPager == nil {
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ddosProtectionPlans`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -232,20 +245,22 @@ func (d *DdosProtectionPlansServerTransport) dispatchNewListPager(req *http.Requ
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := d.srv.NewListPager(nil)
-		d.newListPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListPager, req, func(page *armnetwork.DdosProtectionPlansClientListResponse, createLink func() string) {
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.DdosProtectionPlansClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListPager) {
-		d.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -254,7 +269,8 @@ func (d *DdosProtectionPlansServerTransport) dispatchNewListByResourceGroupPager
 	if d.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if d.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ddosProtectionPlans`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -266,20 +282,22 @@ func (d *DdosProtectionPlansServerTransport) dispatchNewListByResourceGroupPager
 			return nil, err
 		}
 		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		d.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListByResourceGroupPager, req, func(page *armnetwork.DdosProtectionPlansClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.DdosProtectionPlansClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListByResourceGroupPager) {
-		d.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		d.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }

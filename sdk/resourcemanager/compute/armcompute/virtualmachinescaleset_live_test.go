@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -42,10 +43,10 @@ func (testsuite *VirtualMachineScaleSetTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.adminUsername = testutil.GenerateAlphaNumericID(testsuite.T(), "vmuserna", 6)
-	testsuite.virtualNetworkSubnetName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmssvnetna", 6)
-	testsuite.vmScaleSetName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmscaleset", 6)
-	testsuite.vmssExtensionName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmssextens", 6)
+	testsuite.adminUsername, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmuserna", 14, true)
+	testsuite.virtualNetworkSubnetName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmssvnetna", 16, false)
+	testsuite.vmScaleSetName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmscaleset", 16, false)
+	testsuite.vmssExtensionName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmssextens", 16, false)
 	testsuite.adminPassword = testutil.GetEnv("ADMIN_PASSWORD", "")
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")

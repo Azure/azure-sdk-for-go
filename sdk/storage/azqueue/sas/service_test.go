@@ -7,8 +7,11 @@
 package sas
 
 import (
+	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
 	"github.com/stretchr/testify/require"
 	"testing"
+	"time"
 )
 
 func TestQueuePermissions_String(t *testing.T) {
@@ -77,5 +80,47 @@ func TestGetCanonicalName(t *testing.T) {
 	}
 	for _, c := range testdata {
 		require.Equal(t, c.expected, getCanonicalName(c.inputAccount, c.inputQueue))
+	}
+}
+
+func TestQueueSignatureValues_SignWithSharedKey(t *testing.T) {
+	cred, err := exported.NewSharedKeyCredential("fakeaccountname", "AKIAIOSFODNN7EXAMPLE")
+	require.Nil(t, err, "error creating valid shared key credentials.")
+
+	expiryDate, err := time.Parse("2006-01-02", "2023-07-20")
+	require.Nil(t, err, "error creating valid expiry date.")
+
+	testdata := []struct {
+		object        QueueSignatureValues
+		expected      QueryParameters
+		expectedError error
+	}{
+		{
+			object:        QueueSignatureValues{QueueName: "fakestoragequeue", Permissions: "r", ExpiryTime: expiryDate},
+			expected:      QueryParameters{version: Version, permissions: "r", expiryTime: expiryDate},
+			expectedError: nil,
+		},
+		{
+			object:        QueueSignatureValues{QueueName: "fakestoragequeue", Permissions: "", ExpiryTime: expiryDate},
+			expected:      QueryParameters{},
+			expectedError: errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions"),
+		},
+		{
+			object:        QueueSignatureValues{QueueName: "fakestoragequeue", Permissions: "r", ExpiryTime: *new(time.Time)},
+			expected:      QueryParameters{},
+			expectedError: errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions"),
+		},
+		{
+			object:        QueueSignatureValues{QueueName: "fakestoragequeue", Permissions: "", ExpiryTime: *new(time.Time), Identifier: "fakepolicyname"},
+			expected:      QueryParameters{version: Version, identifier: "fakepolicyname"},
+			expectedError: nil,
+		},
+	}
+	for _, c := range testdata {
+		act, err := c.object.SignWithSharedKey(cred)
+		// ignore signature value
+		act.signature = ""
+		require.Equal(t, c.expected, act)
+		require.Equal(t, c.expectedError, err)
 	}
 }

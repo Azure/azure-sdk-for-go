@@ -47,19 +47,24 @@ type RunsServer struct {
 }
 
 // NewRunsServerTransport creates a new instance of RunsServerTransport with the provided implementation.
-// The returned RunsServerTransport instance is connected to an instance of armcontainerregistry.RunsClient by way of the
-// undefined.Transporter field.
+// The returned RunsServerTransport instance is connected to an instance of armcontainerregistry.RunsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRunsServerTransport(srv *RunsServer) *RunsServerTransport {
-	return &RunsServerTransport{srv: srv}
+	return &RunsServerTransport{
+		srv:          srv,
+		beginCancel:  newTracker[azfake.PollerResponder[armcontainerregistry.RunsClientCancelResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.RunsClientListResponse]](),
+		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.RunsClientUpdateResponse]](),
+	}
 }
 
 // RunsServerTransport connects instances of armcontainerregistry.RunsClient to instances of RunsServer.
 // Don't use this type directly, use NewRunsServerTransport instead.
 type RunsServerTransport struct {
 	srv          *RunsServer
-	beginCancel  *azfake.PollerResponder[armcontainerregistry.RunsClientCancelResponse]
-	newListPager *azfake.PagerResponder[armcontainerregistry.RunsClientListResponse]
-	beginUpdate  *azfake.PollerResponder[armcontainerregistry.RunsClientUpdateResponse]
+	beginCancel  *tracker[azfake.PollerResponder[armcontainerregistry.RunsClientCancelResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.RunsClientListResponse]]
+	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.RunsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for RunsServerTransport.
@@ -99,7 +104,8 @@ func (r *RunsServerTransport) dispatchBeginCancel(req *http.Request) (*http.Resp
 	if r.srv.BeginCancel == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCancel not implemented")}
 	}
-	if r.beginCancel == nil {
+	beginCancel := r.beginCancel.get(req)
+	if beginCancel == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runs/(?P<runId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -122,19 +128,21 @@ func (r *RunsServerTransport) dispatchBeginCancel(req *http.Request) (*http.Resp
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		r.beginCancel = &respr
+		beginCancel = &respr
+		r.beginCancel.add(req, beginCancel)
 	}
 
-	resp, err := server.PollerResponderNext(r.beginCancel, req)
+	resp, err := server.PollerResponderNext(beginCancel, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginCancel.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(r.beginCancel) {
-		r.beginCancel = nil
+	if !server.PollerResponderMore(beginCancel) {
+		r.beginCancel.remove(req)
 	}
 
 	return resp, nil
@@ -218,7 +226,8 @@ func (r *RunsServerTransport) dispatchNewListPager(req *http.Request) (*http.Res
 	if r.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if r.newListPager == nil {
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -261,20 +270,22 @@ func (r *RunsServerTransport) dispatchNewListPager(req *http.Request) (*http.Res
 			}
 		}
 		resp := r.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, options)
-		r.newListPager = &resp
-		server.PagerResponderInjectNextLinks(r.newListPager, req, func(page *armcontainerregistry.RunsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.RunsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(r.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(r.newListPager) {
-		r.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -283,7 +294,8 @@ func (r *RunsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Resp
 	if r.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if r.beginUpdate == nil {
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runs/(?P<runId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -310,19 +322,21 @@ func (r *RunsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Resp
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		r.beginUpdate = &respr
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(r.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(r.beginUpdate) {
-		r.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
 	}
 
 	return resp, nil

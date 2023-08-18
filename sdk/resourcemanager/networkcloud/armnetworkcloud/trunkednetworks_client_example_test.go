@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/TrunkedNetworks_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/TrunkedNetworks_ListBySubscription.json
 func ExampleTrunkedNetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleTrunkedNetworksClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("trunkedNetworkName"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/trunkedNetworks"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -60,33 +60,30 @@ func ExampleTrunkedNetworksClient_NewListBySubscriptionPager() {
 		// 				"key2": to.Ptr("myvalue2"),
 		// 			},
 		// 			ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.TrunkedNetworkProperties{
-		// 				ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-		// 				DetailedStatus: to.Ptr(armnetworkcloud.TrunkedNetworkDetailedStatusAvailable),
-		// 				DetailedStatusMessage: to.Ptr("Trunked network is up"),
-		// 				HybridAksClustersAssociatedIDs: []*string{
-		// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
-		// 					HybridAksPluginType: to.Ptr(armnetworkcloud.HybridAksPluginTypeDPDK),
+		// 				AssociatedResourceIDs: []*string{
+		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+		// 					ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 					DetailedStatus: to.Ptr(armnetworkcloud.TrunkedNetworkDetailedStatusAvailable),
+		// 					DetailedStatusMessage: to.Ptr("Trunked network is up"),
 		// 					InterfaceName: to.Ptr("eth0"),
 		// 					IsolationDomainIDs: []*string{
-		// 						to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName"),
-		// 						to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")},
+		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName"),
+		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")},
 		// 						ProvisioningState: to.Ptr(armnetworkcloud.TrunkedNetworkProvisioningStateSucceeded),
-		// 						VirtualMachinesAssociatedIDs: []*string{
-		// 							to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-		// 							Vlans: []*int64{
-		// 								to.Ptr[int64](12),
-		// 								to.Ptr[int64](14)},
-		// 							},
-		// 					}},
-		// 				}
+		// 						Vlans: []*int64{
+		// 							to.Ptr[int64](12),
+		// 							to.Ptr[int64](14)},
+		// 						},
+		// 				}},
+		// 			}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/TrunkedNetworks_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/TrunkedNetworks_ListByResourceGroup.json
 func ExampleTrunkedNetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +110,7 @@ func ExampleTrunkedNetworksClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("trunkedNetworkName"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/trunkedNetworks"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -128,33 +125,30 @@ func ExampleTrunkedNetworksClient_NewListByResourceGroupPager() {
 		// 				"key2": to.Ptr("myvalue2"),
 		// 			},
 		// 			ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.TrunkedNetworkProperties{
-		// 				ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-		// 				DetailedStatus: to.Ptr(armnetworkcloud.TrunkedNetworkDetailedStatusAvailable),
-		// 				DetailedStatusMessage: to.Ptr("Trunked network is up"),
-		// 				HybridAksClustersAssociatedIDs: []*string{
-		// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
-		// 					HybridAksPluginType: to.Ptr(armnetworkcloud.HybridAksPluginTypeDPDK),
+		// 				AssociatedResourceIDs: []*string{
+		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+		// 					ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 					DetailedStatus: to.Ptr(armnetworkcloud.TrunkedNetworkDetailedStatusAvailable),
+		// 					DetailedStatusMessage: to.Ptr("Trunked network is up"),
 		// 					InterfaceName: to.Ptr("eth0"),
 		// 					IsolationDomainIDs: []*string{
-		// 						to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName"),
-		// 						to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")},
+		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName"),
+		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")},
 		// 						ProvisioningState: to.Ptr(armnetworkcloud.TrunkedNetworkProvisioningStateSucceeded),
-		// 						VirtualMachinesAssociatedIDs: []*string{
-		// 							to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-		// 							Vlans: []*int64{
-		// 								to.Ptr[int64](12),
-		// 								to.Ptr[int64](14)},
-		// 							},
-		// 					}},
-		// 				}
+		// 						Vlans: []*int64{
+		// 							to.Ptr[int64](12),
+		// 							to.Ptr[int64](14)},
+		// 						},
+		// 				}},
+		// 			}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/TrunkedNetworks_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/TrunkedNetworks_Get.json
 func ExampleTrunkedNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +169,7 @@ func ExampleTrunkedNetworksClient_Get() {
 	// res.TrunkedNetwork = armnetworkcloud.TrunkedNetwork{
 	// 	Name: to.Ptr("trunkedNetworkName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/trunkedNetworks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -190,31 +184,28 @@ func ExampleTrunkedNetworksClient_Get() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.TrunkedNetworkProperties{
-	// 		ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		DetailedStatus: to.Ptr(armnetworkcloud.TrunkedNetworkDetailedStatusAvailable),
-	// 		DetailedStatusMessage: to.Ptr("Trunked network is up"),
-	// 		HybridAksClustersAssociatedIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
-	// 			HybridAksPluginType: to.Ptr(armnetworkcloud.HybridAksPluginTypeDPDK),
+	// 		AssociatedResourceIDs: []*string{
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.TrunkedNetworkDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("Trunked network is up"),
 	// 			InterfaceName: to.Ptr("eth0"),
 	// 			IsolationDomainIDs: []*string{
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName"),
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")},
+	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName"),
+	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")},
 	// 				ProvisioningState: to.Ptr(armnetworkcloud.TrunkedNetworkProvisioningStateSucceeded),
-	// 				VirtualMachinesAssociatedIDs: []*string{
-	// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-	// 					Vlans: []*int64{
-	// 						to.Ptr[int64](12),
-	// 						to.Ptr[int64](14)},
-	// 					},
-	// 				}
+	// 				Vlans: []*int64{
+	// 					to.Ptr[int64](12),
+	// 					to.Ptr[int64](14)},
+	// 				},
+	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/TrunkedNetworks_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/TrunkedNetworks_Create.json
 func ExampleTrunkedNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,15 +223,14 @@ func ExampleTrunkedNetworksClient_BeginCreateOrUpdate() {
 			"key2": to.Ptr("myvalue2"),
 		},
 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 			Type: to.Ptr("CustomLocation"),
 		},
 		Properties: &armnetworkcloud.TrunkedNetworkProperties{
-			HybridAksPluginType: to.Ptr(armnetworkcloud.HybridAksPluginTypeDPDK),
-			InterfaceName:       to.Ptr("eth0"),
+			InterfaceName: to.Ptr("eth0"),
 			IsolationDomainIDs: []*string{
-				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName"),
-				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")},
+				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName"),
+				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")},
 			Vlans: []*int64{
 				to.Ptr[int64](12),
 				to.Ptr[int64](14)},
@@ -259,7 +249,7 @@ func ExampleTrunkedNetworksClient_BeginCreateOrUpdate() {
 	// res.TrunkedNetwork = armnetworkcloud.TrunkedNetwork{
 	// 	Name: to.Ptr("trunkedNetworkName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/trunkedNetworks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -274,31 +264,28 @@ func ExampleTrunkedNetworksClient_BeginCreateOrUpdate() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.TrunkedNetworkProperties{
-	// 		ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		DetailedStatus: to.Ptr(armnetworkcloud.TrunkedNetworkDetailedStatusAvailable),
-	// 		DetailedStatusMessage: to.Ptr("Trunked network is up"),
-	// 		HybridAksClustersAssociatedIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
-	// 			HybridAksPluginType: to.Ptr(armnetworkcloud.HybridAksPluginTypeDPDK),
+	// 		AssociatedResourceIDs: []*string{
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.TrunkedNetworkDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("Trunked network is up"),
 	// 			InterfaceName: to.Ptr("eth0"),
 	// 			IsolationDomainIDs: []*string{
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName"),
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")},
+	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName"),
+	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")},
 	// 				ProvisioningState: to.Ptr(armnetworkcloud.TrunkedNetworkProvisioningStateSucceeded),
-	// 				VirtualMachinesAssociatedIDs: []*string{
-	// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-	// 					Vlans: []*int64{
-	// 						to.Ptr[int64](12),
-	// 						to.Ptr[int64](14)},
-	// 					},
-	// 				}
+	// 				Vlans: []*int64{
+	// 					to.Ptr[int64](12),
+	// 					to.Ptr[int64](14)},
+	// 				},
+	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/TrunkedNetworks_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/TrunkedNetworks_Delete.json
 func ExampleTrunkedNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +306,7 @@ func ExampleTrunkedNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/TrunkedNetworks_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/TrunkedNetworks_Patch.json
 func ExampleTrunkedNetworksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +332,7 @@ func ExampleTrunkedNetworksClient_Update() {
 	// res.TrunkedNetwork = armnetworkcloud.TrunkedNetwork{
 	// 	Name: to.Ptr("trunkedNetworkName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/trunkedNetworks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -360,26 +347,23 @@ func ExampleTrunkedNetworksClient_Update() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.TrunkedNetworkProperties{
-	// 		ClusterID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 		DetailedStatus: to.Ptr(armnetworkcloud.TrunkedNetworkDetailedStatusAvailable),
-	// 		DetailedStatusMessage: to.Ptr("Trunked network is up"),
-	// 		HybridAksClustersAssociatedIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/hybridAksClusters/hybridAksClusterName")},
-	// 			HybridAksPluginType: to.Ptr(armnetworkcloud.HybridAksPluginTypeDPDK),
+	// 		AssociatedResourceIDs: []*string{
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.TrunkedNetworkDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("Trunked network is up"),
 	// 			InterfaceName: to.Ptr("eth0"),
 	// 			IsolationDomainIDs: []*string{
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName"),
-	// 				to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")},
+	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName"),
+	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")},
 	// 				ProvisioningState: to.Ptr(armnetworkcloud.TrunkedNetworkProvisioningStateSucceeded),
-	// 				VirtualMachinesAssociatedIDs: []*string{
-	// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
-	// 					Vlans: []*int64{
-	// 						to.Ptr[int64](12),
-	// 						to.Ptr[int64](14)},
-	// 					},
-	// 				}
+	// 				Vlans: []*int64{
+	// 					to.Ptr[int64](12),
+	// 					to.Ptr[int64](14)},
+	// 				},
+	// 			}
 }

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -34,17 +34,20 @@ type DefaultSecurityRulesServer struct {
 }
 
 // NewDefaultSecurityRulesServerTransport creates a new instance of DefaultSecurityRulesServerTransport with the provided implementation.
-// The returned DefaultSecurityRulesServerTransport instance is connected to an instance of armnetwork.DefaultSecurityRulesClient by way of the
-// undefined.Transporter field.
+// The returned DefaultSecurityRulesServerTransport instance is connected to an instance of armnetwork.DefaultSecurityRulesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDefaultSecurityRulesServerTransport(srv *DefaultSecurityRulesServer) *DefaultSecurityRulesServerTransport {
-	return &DefaultSecurityRulesServerTransport{srv: srv}
+	return &DefaultSecurityRulesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.DefaultSecurityRulesClientListResponse]](),
+	}
 }
 
 // DefaultSecurityRulesServerTransport connects instances of armnetwork.DefaultSecurityRulesClient to instances of DefaultSecurityRulesServer.
 // Don't use this type directly, use NewDefaultSecurityRulesServerTransport instead.
 type DefaultSecurityRulesServerTransport struct {
 	srv          *DefaultSecurityRulesServer
-	newListPager *azfake.PagerResponder[armnetwork.DefaultSecurityRulesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.DefaultSecurityRulesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DefaultSecurityRulesServerTransport.
@@ -115,7 +118,8 @@ func (d *DefaultSecurityRulesServerTransport) dispatchNewListPager(req *http.Req
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if d.newListPager == nil {
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkSecurityGroups/(?P<networkSecurityGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/defaultSecurityRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -131,20 +135,22 @@ func (d *DefaultSecurityRulesServerTransport) dispatchNewListPager(req *http.Req
 			return nil, err
 		}
 		resp := d.srv.NewListPager(resourceGroupNameUnescaped, networkSecurityGroupNameUnescaped, nil)
-		d.newListPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListPager, req, func(page *armnetwork.DefaultSecurityRulesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.DefaultSecurityRulesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListPager) {
-		d.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }

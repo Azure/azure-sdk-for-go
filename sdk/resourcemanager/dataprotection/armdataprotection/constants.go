@@ -11,7 +11,7 @@ package armdataprotection
 
 const (
 	moduleName    = "armdataprotection"
-	moduleVersion = "v2.2.0"
+	moduleVersion = "v2.3.0"
 )
 
 type AbsoluteMarker string
@@ -67,6 +67,22 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// CrossRegionRestoreState - CrossRegionRestore state
+type CrossRegionRestoreState string
+
+const (
+	CrossRegionRestoreStateDisabled CrossRegionRestoreState = "Disabled"
+	CrossRegionRestoreStateEnabled  CrossRegionRestoreState = "Enabled"
+)
+
+// PossibleCrossRegionRestoreStateValues returns the possible values for the CrossRegionRestoreState const type.
+func PossibleCrossRegionRestoreStateValues() []CrossRegionRestoreState {
+	return []CrossRegionRestoreState{
+		CrossRegionRestoreStateDisabled,
+		CrossRegionRestoreStateEnabled,
 	}
 }
 
@@ -450,6 +466,28 @@ func PossibleSecretStoreTypeValues() []SecretStoreType {
 	return []SecretStoreType{
 		SecretStoreTypeAzureKeyVault,
 		SecretStoreTypeInvalid,
+	}
+}
+
+// SecureScoreLevel - Secure Score of Backup Vault
+type SecureScoreLevel string
+
+const (
+	SecureScoreLevelAdequate     SecureScoreLevel = "Adequate"
+	SecureScoreLevelMaximum      SecureScoreLevel = "Maximum"
+	SecureScoreLevelMinimum      SecureScoreLevel = "Minimum"
+	SecureScoreLevelNone         SecureScoreLevel = "None"
+	SecureScoreLevelNotSupported SecureScoreLevel = "NotSupported"
+)
+
+// PossibleSecureScoreLevelValues returns the possible values for the SecureScoreLevel const type.
+func PossibleSecureScoreLevelValues() []SecureScoreLevel {
+	return []SecureScoreLevel{
+		SecureScoreLevelAdequate,
+		SecureScoreLevelMaximum,
+		SecureScoreLevelMinimum,
+		SecureScoreLevelNone,
+		SecureScoreLevelNotSupported,
 	}
 }
 

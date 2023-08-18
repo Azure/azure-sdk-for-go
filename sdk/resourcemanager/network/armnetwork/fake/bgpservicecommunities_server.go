@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"regexp"
 )
@@ -28,17 +28,20 @@ type BgpServiceCommunitiesServer struct {
 }
 
 // NewBgpServiceCommunitiesServerTransport creates a new instance of BgpServiceCommunitiesServerTransport with the provided implementation.
-// The returned BgpServiceCommunitiesServerTransport instance is connected to an instance of armnetwork.BgpServiceCommunitiesClient by way of the
-// undefined.Transporter field.
+// The returned BgpServiceCommunitiesServerTransport instance is connected to an instance of armnetwork.BgpServiceCommunitiesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewBgpServiceCommunitiesServerTransport(srv *BgpServiceCommunitiesServer) *BgpServiceCommunitiesServerTransport {
-	return &BgpServiceCommunitiesServerTransport{srv: srv}
+	return &BgpServiceCommunitiesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.BgpServiceCommunitiesClientListResponse]](),
+	}
 }
 
 // BgpServiceCommunitiesServerTransport connects instances of armnetwork.BgpServiceCommunitiesClient to instances of BgpServiceCommunitiesServer.
 // Don't use this type directly, use NewBgpServiceCommunitiesServerTransport instead.
 type BgpServiceCommunitiesServerTransport struct {
 	srv          *BgpServiceCommunitiesServer
-	newListPager *azfake.PagerResponder[armnetwork.BgpServiceCommunitiesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.BgpServiceCommunitiesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for BgpServiceCommunitiesServerTransport.
@@ -70,7 +73,8 @@ func (b *BgpServiceCommunitiesServerTransport) dispatchNewListPager(req *http.Re
 	if b.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if b.newListPager == nil {
+	newListPager := b.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/bgpServiceCommunities`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -78,20 +82,22 @@ func (b *BgpServiceCommunitiesServerTransport) dispatchNewListPager(req *http.Re
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := b.srv.NewListPager(nil)
-		b.newListPager = &resp
-		server.PagerResponderInjectNextLinks(b.newListPager, req, func(page *armnetwork.BgpServiceCommunitiesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		b.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.BgpServiceCommunitiesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(b.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(b.newListPager) {
-		b.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		b.newListPager.remove(req)
 	}
 	return resp, nil
 }

@@ -237,7 +237,7 @@ func TestPublishingAndReceivingCloudEvents(t *testing.T) {
 		SpecVersion: "1.0",
 		Source:      "hello-source",
 		Type:        "eventType",
-		Data:        json.RawMessage("\"hello world 1\""),
+		Data:        []byte("\"hello world 1\""),
 	}, resp.Value[0].Event)
 
 	requireEqualCloudEvent(t, messaging.CloudEvent{
@@ -245,7 +245,7 @@ func TestPublishingAndReceivingCloudEvents(t *testing.T) {
 		Source:          "hello-source",
 		Type:            "eventType",
 		DataSchema:      to.Ptr("https://dataschema"),
-		Data:            json.RawMessage("\"hello world 2\""),
+		Data:            []byte("\"hello world 2\""),
 		DataContentType: to.Ptr("data content type"),
 		Subject:         to.Ptr("subject"),
 		Extensions: map[string]any{
@@ -260,7 +260,7 @@ func TestPublishingAndReceivingCloudEvents(t *testing.T) {
 		SpecVersion: "1.0",
 		Source:      "hello-source",
 		Type:        "eventType",
-		Data:        json.RawMessage(bytes),
+		Data:        []byte(bytes),
 	}, resp.Value[2].Event)
 
 	ackArgs := azeventgrid.AcknowledgeOptions{}

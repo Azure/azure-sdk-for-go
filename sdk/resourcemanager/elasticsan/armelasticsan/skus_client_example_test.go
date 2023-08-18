@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/Skus_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Skus_List_MaximumSet_Gen.json
 func ExampleSKUsClient_NewListPager_skusListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleSKUsClient_NewListPager_skusListMaximumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSKUsClient().NewListPager(&armelasticsan.SKUsClientListOptions{Filter: to.Ptr("aaaa")})
+	pager := clientFactory.NewSKUsClient().NewListPager(&armelasticsan.SKUsClientListOptions{Filter: to.Ptr("dtycml")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -46,25 +46,25 @@ func ExampleSKUsClient_NewListPager_skusListMaximumSetGen() {
 		// 			Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
 		// 			Capabilities: []*armelasticsan.SKUCapability{
 		// 				{
-		// 					Name: to.Ptr("aaaaaaaaaaaaaaa"),
-		// 					Value: to.Ptr("aaaaaaaa"),
+		// 					Name: to.Ptr("fihkmeasrwpjyti"),
+		// 					Value: to.Ptr("jlojmjpjucekutlgtwhjgxwpqctdjy"),
 		// 			}},
 		// 			LocationInfo: []*armelasticsan.SKULocationInfo{
 		// 				{
-		// 					Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 					Location: to.Ptr("oxpkwgcdvlonfcwtttor"),
 		// 					Zones: []*string{
-		// 						to.Ptr("aaa")},
+		// 						to.Ptr("1")},
 		// 				}},
 		// 				Locations: []*string{
-		// 					to.Ptr("aaaaaaaaa")},
-		// 					ResourceType: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 					to.Ptr("jqdpabrworxiinhlmfmtko")},
+		// 					ResourceType: to.Ptr("rnumsqm"),
 		// 					Tier: to.Ptr(armelasticsan.SKUTierPremium),
 		// 			}},
 		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/Skus_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Skus_List_MinimumSet_Gen.json
 func ExampleSKUsClient_NewListPager_skusListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -58,22 +58,30 @@ type LoadBalancersServer struct {
 }
 
 // NewLoadBalancersServerTransport creates a new instance of LoadBalancersServerTransport with the provided implementation.
-// The returned LoadBalancersServerTransport instance is connected to an instance of armnetwork.LoadBalancersClient by way of the
-// undefined.Transporter field.
+// The returned LoadBalancersServerTransport instance is connected to an instance of armnetwork.LoadBalancersClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLoadBalancersServerTransport(srv *LoadBalancersServer) *LoadBalancersServerTransport {
-	return &LoadBalancersServerTransport{srv: srv}
+	return &LoadBalancersServerTransport{
+		srv:                                 srv,
+		beginCreateOrUpdate:                 newTracker[azfake.PollerResponder[armnetwork.LoadBalancersClientCreateOrUpdateResponse]](),
+		beginDelete:                         newTracker[azfake.PollerResponder[armnetwork.LoadBalancersClientDeleteResponse]](),
+		newListPager:                        newTracker[azfake.PagerResponder[armnetwork.LoadBalancersClientListResponse]](),
+		newListAllPager:                     newTracker[azfake.PagerResponder[armnetwork.LoadBalancersClientListAllResponse]](),
+		beginListInboundNatRulePortMappings: newTracker[azfake.PollerResponder[armnetwork.LoadBalancersClientListInboundNatRulePortMappingsResponse]](),
+		beginSwapPublicIPAddresses:          newTracker[azfake.PollerResponder[armnetwork.LoadBalancersClientSwapPublicIPAddressesResponse]](),
+	}
 }
 
 // LoadBalancersServerTransport connects instances of armnetwork.LoadBalancersClient to instances of LoadBalancersServer.
 // Don't use this type directly, use NewLoadBalancersServerTransport instead.
 type LoadBalancersServerTransport struct {
 	srv                                 *LoadBalancersServer
-	beginCreateOrUpdate                 *azfake.PollerResponder[armnetwork.LoadBalancersClientCreateOrUpdateResponse]
-	beginDelete                         *azfake.PollerResponder[armnetwork.LoadBalancersClientDeleteResponse]
-	newListPager                        *azfake.PagerResponder[armnetwork.LoadBalancersClientListResponse]
-	newListAllPager                     *azfake.PagerResponder[armnetwork.LoadBalancersClientListAllResponse]
-	beginListInboundNatRulePortMappings *azfake.PollerResponder[armnetwork.LoadBalancersClientListInboundNatRulePortMappingsResponse]
-	beginSwapPublicIPAddresses          *azfake.PollerResponder[armnetwork.LoadBalancersClientSwapPublicIPAddressesResponse]
+	beginCreateOrUpdate                 *tracker[azfake.PollerResponder[armnetwork.LoadBalancersClientCreateOrUpdateResponse]]
+	beginDelete                         *tracker[azfake.PollerResponder[armnetwork.LoadBalancersClientDeleteResponse]]
+	newListPager                        *tracker[azfake.PagerResponder[armnetwork.LoadBalancersClientListResponse]]
+	newListAllPager                     *tracker[azfake.PagerResponder[armnetwork.LoadBalancersClientListAllResponse]]
+	beginListInboundNatRulePortMappings *tracker[azfake.PollerResponder[armnetwork.LoadBalancersClientListInboundNatRulePortMappingsResponse]]
+	beginSwapPublicIPAddresses          *tracker[azfake.PollerResponder[armnetwork.LoadBalancersClientSwapPublicIPAddressesResponse]]
 }
 
 // Do implements the policy.Transporter interface for LoadBalancersServerTransport.
@@ -119,7 +127,8 @@ func (l *LoadBalancersServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 	if l.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if l.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := l.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -142,19 +151,21 @@ func (l *LoadBalancersServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		l.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		l.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(l.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		l.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(l.beginCreateOrUpdate) {
-		l.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		l.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -164,7 +175,8 @@ func (l *LoadBalancersServerTransport) dispatchBeginDelete(req *http.Request) (*
 	if l.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if l.beginDelete == nil {
+	beginDelete := l.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -183,19 +195,21 @@ func (l *LoadBalancersServerTransport) dispatchBeginDelete(req *http.Request) (*
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		l.beginDelete = &respr
+		beginDelete = &respr
+		l.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(l.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		l.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(l.beginDelete) {
-		l.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		l.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -250,7 +264,8 @@ func (l *LoadBalancersServerTransport) dispatchNewListPager(req *http.Request) (
 	if l.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if l.newListPager == nil {
+	newListPager := l.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -262,20 +277,22 @@ func (l *LoadBalancersServerTransport) dispatchNewListPager(req *http.Request) (
 			return nil, err
 		}
 		resp := l.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		l.newListPager = &resp
-		server.PagerResponderInjectNextLinks(l.newListPager, req, func(page *armnetwork.LoadBalancersClientListResponse, createLink func() string) {
+		newListPager = &resp
+		l.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.LoadBalancersClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(l.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(l.newListPager) {
-		l.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		l.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -284,7 +301,8 @@ func (l *LoadBalancersServerTransport) dispatchNewListAllPager(req *http.Request
 	if l.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if l.newListAllPager == nil {
+	newListAllPager := l.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -292,20 +310,22 @@ func (l *LoadBalancersServerTransport) dispatchNewListAllPager(req *http.Request
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := l.srv.NewListAllPager(nil)
-		l.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(l.newListAllPager, req, func(page *armnetwork.LoadBalancersClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		l.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.LoadBalancersClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(l.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(l.newListAllPager) {
-		l.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		l.newListAllPager.remove(req)
 	}
 	return resp, nil
 }
@@ -314,7 +334,8 @@ func (l *LoadBalancersServerTransport) dispatchBeginListInboundNatRulePortMappin
 	if l.srv.BeginListInboundNatRulePortMappings == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListInboundNatRulePortMappings not implemented")}
 	}
-	if l.beginListInboundNatRulePortMappings == nil {
+	beginListInboundNatRulePortMappings := l.beginListInboundNatRulePortMappings.get(req)
+	if beginListInboundNatRulePortMappings == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<groupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backendAddressPools/(?P<backendPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryInboundNatRulePortMapping`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -341,19 +362,21 @@ func (l *LoadBalancersServerTransport) dispatchBeginListInboundNatRulePortMappin
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		l.beginListInboundNatRulePortMappings = &respr
+		beginListInboundNatRulePortMappings = &respr
+		l.beginListInboundNatRulePortMappings.add(req, beginListInboundNatRulePortMappings)
 	}
 
-	resp, err := server.PollerResponderNext(l.beginListInboundNatRulePortMappings, req)
+	resp, err := server.PollerResponderNext(beginListInboundNatRulePortMappings, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		l.beginListInboundNatRulePortMappings.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(l.beginListInboundNatRulePortMappings) {
-		l.beginListInboundNatRulePortMappings = nil
+	if !server.PollerResponderMore(beginListInboundNatRulePortMappings) {
+		l.beginListInboundNatRulePortMappings.remove(req)
 	}
 
 	return resp, nil
@@ -363,7 +386,8 @@ func (l *LoadBalancersServerTransport) dispatchBeginSwapPublicIPAddresses(req *h
 	if l.srv.BeginSwapPublicIPAddresses == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginSwapPublicIPAddresses not implemented")}
 	}
-	if l.beginSwapPublicIPAddresses == nil {
+	beginSwapPublicIPAddresses := l.beginSwapPublicIPAddresses.get(req)
+	if beginSwapPublicIPAddresses == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/setLoadBalancerFrontendPublicIpAddresses`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -382,19 +406,21 @@ func (l *LoadBalancersServerTransport) dispatchBeginSwapPublicIPAddresses(req *h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		l.beginSwapPublicIPAddresses = &respr
+		beginSwapPublicIPAddresses = &respr
+		l.beginSwapPublicIPAddresses.add(req, beginSwapPublicIPAddresses)
 	}
 
-	resp, err := server.PollerResponderNext(l.beginSwapPublicIPAddresses, req)
+	resp, err := server.PollerResponderNext(beginSwapPublicIPAddresses, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		l.beginSwapPublicIPAddresses.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(l.beginSwapPublicIPAddresses) {
-		l.beginSwapPublicIPAddresses = nil
+	if !server.PollerResponderMore(beginSwapPublicIPAddresses) {
+		l.beginSwapPublicIPAddresses.remove(req)
 	}
 
 	return resp, nil

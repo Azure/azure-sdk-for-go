@@ -145,6 +145,7 @@ func (a *AccountList) UnmarshalJSON(data []byte) error {
 func (a AccountPatch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", a.ID)
+	populate(objectMap, "identity", a.Identity)
 	populate(objectMap, "location", a.Location)
 	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
@@ -164,6 +165,9 @@ func (a *AccountPatch) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "id":
 			err = unpopulate(val, "ID", &a.ID)
+			delete(rawMsg, key)
+		case "identity":
+			err = unpopulate(val, "Identity", &a.Identity)
 			delete(rawMsg, key)
 		case "location":
 			err = unpopulate(val, "Location", &a.Location)
@@ -1243,6 +1247,60 @@ func (f *FilePathAvailabilityRequest) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GetGroupIDListForLDAPUserRequest.
+func (g GetGroupIDListForLDAPUserRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "username", g.Username)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GetGroupIDListForLDAPUserRequest.
+func (g *GetGroupIDListForLDAPUserRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", g, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "username":
+			err = unpopulate(val, "Username", &g.Username)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", g, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GetGroupIDListForLDAPUserResponse.
+func (g GetGroupIDListForLDAPUserResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "groupIdsForLdapUser", g.GroupIDsForLdapUser)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GetGroupIDListForLDAPUserResponse.
+func (g *GetGroupIDListForLDAPUserResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", g, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "groupIdsForLdapUser":
+			err = unpopulate(val, "GroupIDsForLdapUser", &g.GroupIDsForLdapUser)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", g, err)
 		}
 	}
 	return nil
@@ -3582,6 +3640,7 @@ func (v VolumePatchProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "exportPolicy", v.ExportPolicy)
 	populate(objectMap, "isDefaultQuotaEnabled", v.IsDefaultQuotaEnabled)
 	populate(objectMap, "serviceLevel", v.ServiceLevel)
+	populate(objectMap, "snapshotDirectoryVisible", v.SnapshotDirectoryVisible)
 	populate(objectMap, "throughputMibps", v.ThroughputMibps)
 	populate(objectMap, "unixPermissions", v.UnixPermissions)
 	populate(objectMap, "usageThreshold", v.UsageThreshold)
@@ -3620,6 +3679,9 @@ func (v *VolumePatchProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "serviceLevel":
 			err = unpopulate(val, "ServiceLevel", &v.ServiceLevel)
+			delete(rawMsg, key)
+		case "snapshotDirectoryVisible":
+			err = unpopulate(val, "SnapshotDirectoryVisible", &v.SnapshotDirectoryVisible)
 			delete(rawMsg, key)
 		case "throughputMibps":
 			err = unpopulate(val, "ThroughputMibps", &v.ThroughputMibps)
@@ -3699,6 +3761,7 @@ func (v *VolumePatchPropertiesExportPolicy) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VolumeProperties.
 func (v VolumeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "actualThroughputMibps", v.ActualThroughputMibps)
 	populate(objectMap, "avsDataStore", v.AvsDataStore)
 	populate(objectMap, "backupId", v.BackupID)
 	populate(objectMap, "baremetalTenantId", v.BaremetalTenantID)
@@ -3728,6 +3791,7 @@ func (v VolumeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "mountTargets", v.MountTargets)
 	populate(objectMap, "networkFeatures", v.NetworkFeatures)
 	populate(objectMap, "networkSiblingSetId", v.NetworkSiblingSetID)
+	populate(objectMap, "originatingResourceId", v.OriginatingResourceID)
 	populate(objectMap, "placementRules", v.PlacementRules)
 	populate(objectMap, "protocolTypes", v.ProtocolTypes)
 	populate(objectMap, "provisionedAvailabilityZone", v.ProvisionedAvailabilityZone)
@@ -3762,6 +3826,9 @@ func (v *VolumeProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "actualThroughputMibps":
+			err = unpopulate(val, "ActualThroughputMibps", &v.ActualThroughputMibps)
+			delete(rawMsg, key)
 		case "avsDataStore":
 			err = unpopulate(val, "AvsDataStore", &v.AvsDataStore)
 			delete(rawMsg, key)
@@ -3848,6 +3915,9 @@ func (v *VolumeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "networkSiblingSetId":
 			err = unpopulate(val, "NetworkSiblingSetID", &v.NetworkSiblingSetID)
+			delete(rawMsg, key)
+		case "originatingResourceId":
+			err = unpopulate(val, "OriginatingResourceID", &v.OriginatingResourceID)
 			delete(rawMsg, key)
 		case "placementRules":
 			err = unpopulate(val, "PlacementRules", &v.PlacementRules)

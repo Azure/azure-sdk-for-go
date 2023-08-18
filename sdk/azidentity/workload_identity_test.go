@@ -23,11 +23,11 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/golang-jwt/jwt/v4"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 )
 
-func getAssertion(cert *x509.Certificate, key crypto.PrivateKey) (string, error) {
+func assertion(cert *x509.Certificate, key crypto.PrivateKey) (string, error) {
 	j := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
 		"aud": fmt.Sprintf("https://login.microsoftonline.com/%s/oauth2/v2.0/token", liveSP.tenantID),
 		"exp": json.Number(strconv.FormatInt(time.Now().Add(10*time.Minute).Unix(), 10)),
@@ -54,7 +54,7 @@ func TestWorkloadIdentityCredential_Live(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	a, err := getAssertion(certs[0], key)
+	a, err := assertion(certs[0], key)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -90,7 +90,7 @@ func TestWorkloadIdentityCredential(t *testing.T) {
 	if err := os.WriteFile(tempFile, []byte(tokenValue), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
 	}
-	sts := mockSTS{tenant: fakeTenantID, tokenRequestCallback: func(req *http.Request) {
+	sts := mockSTS{tenant: fakeTenantID, tokenRequestCallback: func(req *http.Request) *http.Response {
 		if err := req.ParseForm(); err != nil {
 			t.Error(err)
 		}
@@ -107,6 +107,7 @@ func TestWorkloadIdentityCredential(t *testing.T) {
 		if actual := strings.Split(req.URL.Path, "/")[1]; actual != fakeTenantID {
 			t.Errorf(`unexpected tenant "%s"`, actual)
 		}
+		return nil
 	}}
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:      fakeClientID,
@@ -118,12 +119,16 @@ func TestWorkloadIdentityCredential(t *testing.T) {
 		t.Fatal(err)
 	}
 	testGetTokenSuccess(t, cred)
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"scope"}})
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
 	tokenReqs := 0
 	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
-	sts := mockSTS{tenant: fakeTenantID, tokenRequestCallback: func(req *http.Request) {
+	sts := mockSTS{tenant: fakeTenantID, tokenRequestCallback: func(req *http.Request) *http.Response {
 		if err := req.ParseForm(); err != nil {
 			t.Error(err)
 		}
@@ -133,6 +138,7 @@ func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
 			t.Errorf(`expected assertion "%d", got "%s"`, tokenReqs, actual[0])
 		}
 		tokenReqs++
+		return nil
 	}}
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:      fakeClientID,
@@ -184,6 +190,25 @@ func TestTestWorkloadIdentityCredential_IncompleteConfig(t *testing.T) {
 	}
 }
 
+func TestWorkloadIdentityCredential_NoFile(t *testing.T) {
+	for k, v := range map[string]string{
+		azureClientID:           fakeClientID,
+		azureFederatedTokenFile: filepath.Join(t.TempDir(), t.Name()),
+		azureTenantID:           fakeTenantID,
+	} {
+		t.Setenv(k, v)
+	}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientOptions: policy.ClientOptions{Transport: &mockSTS{}},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = cred.GetToken(context.Background(), testTRO); err == nil {
+		t.Fatal("expected an error")
+	}
+}
+
 func TestWorkloadIdentityCredential_Options(t *testing.T) {
 	clientID := "not-" + fakeClientID
 	tenantID := "not-" + fakeTenantID
@@ -194,7 +219,7 @@ func TestWorkloadIdentityCredential_Options(t *testing.T) {
 	}
 	sts := mockSTS{
 		tenant: tenantID,
-		tokenRequestCallback: func(req *http.Request) {
+		tokenRequestCallback: func(req *http.Request) *http.Response {
 			if err := req.ParseForm(); err != nil {
 				t.Error(err)
 			}
@@ -211,6 +236,7 @@ func TestWorkloadIdentityCredential_Options(t *testing.T) {
 			if actual := strings.Split(req.URL.Path, "/")[1]; actual != tenantID {
 				t.Errorf(`unexpected tenant "%s"`, actual)
 			}
+			return nil
 		},
 	}
 	// options should override environment variables

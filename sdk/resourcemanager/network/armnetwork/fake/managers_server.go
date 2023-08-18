@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -51,19 +51,24 @@ type ManagersServer struct {
 }
 
 // NewManagersServerTransport creates a new instance of ManagersServerTransport with the provided implementation.
-// The returned ManagersServerTransport instance is connected to an instance of armnetwork.ManagersClient by way of the
-// undefined.Transporter field.
+// The returned ManagersServerTransport instance is connected to an instance of armnetwork.ManagersClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewManagersServerTransport(srv *ManagersServer) *ManagersServerTransport {
-	return &ManagersServerTransport{srv: srv}
+	return &ManagersServerTransport{
+		srv:                        srv,
+		beginDelete:                newTracker[azfake.PollerResponder[armnetwork.ManagersClientDeleteResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armnetwork.ManagersClientListResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armnetwork.ManagersClientListBySubscriptionResponse]](),
+	}
 }
 
 // ManagersServerTransport connects instances of armnetwork.ManagersClient to instances of ManagersServer.
 // Don't use this type directly, use NewManagersServerTransport instead.
 type ManagersServerTransport struct {
 	srv                        *ManagersServer
-	beginDelete                *azfake.PollerResponder[armnetwork.ManagersClientDeleteResponse]
-	newListPager               *azfake.PagerResponder[armnetwork.ManagersClientListResponse]
-	newListBySubscriptionPager *azfake.PagerResponder[armnetwork.ManagersClientListBySubscriptionResponse]
+	beginDelete                *tracker[azfake.PollerResponder[armnetwork.ManagersClientDeleteResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armnetwork.ManagersClientListResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armnetwork.ManagersClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagersServerTransport.
@@ -142,7 +147,8 @@ func (m *ManagersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	if m.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if m.beginDelete == nil {
+	beginDelete := m.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -176,19 +182,21 @@ func (m *ManagersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		m.beginDelete = &respr
+		beginDelete = &respr
+		m.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(m.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		m.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(m.beginDelete) {
-		m.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		m.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -231,7 +239,8 @@ func (m *ManagersServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if m.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if m.newListPager == nil {
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -270,20 +279,22 @@ func (m *ManagersServerTransport) dispatchNewListPager(req *http.Request) (*http
 			}
 		}
 		resp := m.srv.NewListPager(resourceGroupNameUnescaped, options)
-		m.newListPager = &resp
-		server.PagerResponderInjectNextLinks(m.newListPager, req, func(page *armnetwork.ManagersClientListResponse, createLink func() string) {
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ManagersClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(m.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(m.newListPager) {
-		m.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -292,7 +303,8 @@ func (m *ManagersServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if m.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
-	if m.newListBySubscriptionPager == nil {
+	newListBySubscriptionPager := m.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -327,20 +339,22 @@ func (m *ManagersServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 			}
 		}
 		resp := m.srv.NewListBySubscriptionPager(options)
-		m.newListBySubscriptionPager = &resp
-		server.PagerResponderInjectNextLinks(m.newListBySubscriptionPager, req, func(page *armnetwork.ManagersClientListBySubscriptionResponse, createLink func() string) {
+		newListBySubscriptionPager = &resp
+		m.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetwork.ManagersClientListBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(m.newListBySubscriptionPager, req)
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(m.newListBySubscriptionPager) {
-		m.newListBySubscriptionPager = nil
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		m.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

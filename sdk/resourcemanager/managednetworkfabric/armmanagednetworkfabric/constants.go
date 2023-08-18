@@ -11,8 +11,42 @@ package armmanagednetworkfabric
 
 const (
 	moduleName    = "armmanagednetworkfabric"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
+
+// ACLActionType - Type of actions that can be performed.
+type ACLActionType string
+
+const (
+	ACLActionTypeCount ACLActionType = "Count"
+	ACLActionTypeDrop  ACLActionType = "Drop"
+	ACLActionTypeLog   ACLActionType = "Log"
+)
+
+// PossibleACLActionTypeValues returns the possible values for the ACLActionType const type.
+func PossibleACLActionTypeValues() []ACLActionType {
+	return []ACLActionType{
+		ACLActionTypeCount,
+		ACLActionTypeDrop,
+		ACLActionTypeLog,
+	}
+}
+
+// Action - Specify action.
+type Action string
+
+const (
+	ActionAllow Action = "Allow"
+	ActionDeny  Action = "Deny"
+)
+
+// PossibleActionValues returns the possible values for the Action const type.
+func PossibleActionValues() []Action {
+	return []Action{
+		ActionAllow,
+		ActionDeny,
+	}
+}
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
@@ -28,35 +62,39 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// AddressFamily - IP address family. Example: ipv4 | ipv6.
-type AddressFamily string
+// AddressFamilyType - AddressFamilyType. This parameter decides whether the given ipv4 or ipv6 route policy.
+type AddressFamilyType string
 
 const (
-	AddressFamilyIPv4 AddressFamily = "ipv4"
-	AddressFamilyIPv6 AddressFamily = "ipv6"
+	AddressFamilyTypeIPv4 AddressFamilyType = "IPv4"
+	AddressFamilyTypeIPv6 AddressFamilyType = "IPv6"
 )
 
-// PossibleAddressFamilyValues returns the possible values for the AddressFamily const type.
-func PossibleAddressFamilyValues() []AddressFamily {
-	return []AddressFamily{
-		AddressFamilyIPv4,
-		AddressFamilyIPv6,
+// PossibleAddressFamilyTypeValues returns the possible values for the AddressFamilyType const type.
+func PossibleAddressFamilyTypeValues() []AddressFamilyType {
+	return []AddressFamilyType{
+		AddressFamilyTypeIPv4,
+		AddressFamilyTypeIPv6,
 	}
 }
 
-// AdministrativeState - Administrative state.
+// AdministrativeState - State defined to represent administrative actions or post actions on a particular resource.
 type AdministrativeState string
 
 const (
-	AdministrativeStateDisable AdministrativeState = "Disable"
-	AdministrativeStateEnable  AdministrativeState = "Enable"
+	AdministrativeStateDisabled AdministrativeState = "Disabled"
+	AdministrativeStateEnabled  AdministrativeState = "Enabled"
+	AdministrativeStateMAT      AdministrativeState = "MAT"
+	AdministrativeStateRMA      AdministrativeState = "RMA"
 )
 
 // PossibleAdministrativeStateValues returns the possible values for the AdministrativeState const type.
 func PossibleAdministrativeStateValues() []AdministrativeState {
 	return []AdministrativeState{
-		AdministrativeStateDisable,
-		AdministrativeStateEnable,
+		AdministrativeStateDisabled,
+		AdministrativeStateEnabled,
+		AdministrativeStateMAT,
+		AdministrativeStateRMA,
 	}
 }
 
@@ -73,6 +111,26 @@ func PossibleAllowASOverrideValues() []AllowASOverride {
 	return []AllowASOverride{
 		AllowASOverrideDisable,
 		AllowASOverrideEnable,
+	}
+}
+
+// BfdAdministrativeState - Administrative state of the BfdConfiguration. Example: Enabled | Disabled.
+type BfdAdministrativeState string
+
+const (
+	BfdAdministrativeStateDisabled BfdAdministrativeState = "Disabled"
+	BfdAdministrativeStateEnabled  BfdAdministrativeState = "Enabled"
+	BfdAdministrativeStateMAT      BfdAdministrativeState = "MAT"
+	BfdAdministrativeStateRMA      BfdAdministrativeState = "RMA"
+)
+
+// PossibleBfdAdministrativeStateValues returns the possible values for the BfdAdministrativeState const type.
+func PossibleBfdAdministrativeStateValues() []BfdAdministrativeState {
+	return []BfdAdministrativeState{
+		BfdAdministrativeStateDisabled,
+		BfdAdministrativeStateEnabled,
+		BfdAdministrativeStateMAT,
+		BfdAdministrativeStateRMA,
 	}
 }
 
@@ -115,6 +173,7 @@ const (
 	ConditionEqualTo              Condition = "EqualTo"
 	ConditionGreaterThanOrEqualTo Condition = "GreaterThanOrEqualTo"
 	ConditionLesserThanOrEqualTo  Condition = "LesserThanOrEqualTo"
+	ConditionRange                Condition = "Range"
 )
 
 // PossibleConditionValues returns the possible values for the Condition const type.
@@ -123,22 +182,55 @@ func PossibleConditionValues() []Condition {
 		ConditionEqualTo,
 		ConditionGreaterThanOrEqualTo,
 		ConditionLesserThanOrEqualTo,
+		ConditionRange,
 	}
 }
 
-// ConditionActionType - action. Example: allow | deny.
-type ConditionActionType string
+// ConfigurationState - Configuration state for the resource.
+type ConfigurationState string
 
 const (
-	ConditionActionTypeAllow ConditionActionType = "allow"
-	ConditionActionTypeDeny  ConditionActionType = "deny"
+	ConfigurationStateAccepted            ConfigurationState = "Accepted"
+	ConfigurationStateDeferredControl     ConfigurationState = "DeferredControl"
+	ConfigurationStateDeprovisioned       ConfigurationState = "Deprovisioned"
+	ConfigurationStateDeprovisioning      ConfigurationState = "Deprovisioning"
+	ConfigurationStateErrorDeprovisioning ConfigurationState = "ErrorDeprovisioning"
+	ConfigurationStateErrorProvisioning   ConfigurationState = "ErrorProvisioning"
+	ConfigurationStateFailed              ConfigurationState = "Failed"
+	ConfigurationStateProvisioned         ConfigurationState = "Provisioned"
+	ConfigurationStateRejected            ConfigurationState = "Rejected"
+	ConfigurationStateSucceeded           ConfigurationState = "Succeeded"
 )
 
-// PossibleConditionActionTypeValues returns the possible values for the ConditionActionType const type.
-func PossibleConditionActionTypeValues() []ConditionActionType {
-	return []ConditionActionType{
-		ConditionActionTypeAllow,
-		ConditionActionTypeDeny,
+// PossibleConfigurationStateValues returns the possible values for the ConfigurationState const type.
+func PossibleConfigurationStateValues() []ConfigurationState {
+	return []ConfigurationState{
+		ConfigurationStateAccepted,
+		ConfigurationStateDeferredControl,
+		ConfigurationStateDeprovisioned,
+		ConfigurationStateDeprovisioning,
+		ConfigurationStateErrorDeprovisioning,
+		ConfigurationStateErrorProvisioning,
+		ConfigurationStateFailed,
+		ConfigurationStateProvisioned,
+		ConfigurationStateRejected,
+		ConfigurationStateSucceeded,
+	}
+}
+
+// ConfigurationType - Input method to configure Access Control List.
+type ConfigurationType string
+
+const (
+	ConfigurationTypeFile   ConfigurationType = "File"
+	ConfigurationTypeInline ConfigurationType = "Inline"
+)
+
+// PossibleConfigurationTypeValues returns the possible values for the ConfigurationType const type.
+func PossibleConfigurationTypeValues() []ConfigurationType {
+	return []ConfigurationType{
+		ConfigurationTypeFile,
+		ConfigurationTypeInline,
 	}
 }
 
@@ -162,19 +254,151 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// EnabledDisabledState - EnabledDisabledState state for the resource.
-type EnabledDisabledState string
+// DestinationType - Type of destination. Input can be IsolationDomain or Direct.
+type DestinationType string
 
 const (
-	EnabledDisabledStateDisabled EnabledDisabledState = "Disabled"
-	EnabledDisabledStateEnabled  EnabledDisabledState = "Enabled"
+	DestinationTypeDirect          DestinationType = "Direct"
+	DestinationTypeIsolationDomain DestinationType = "IsolationDomain"
 )
 
-// PossibleEnabledDisabledStateValues returns the possible values for the EnabledDisabledState const type.
-func PossibleEnabledDisabledStateValues() []EnabledDisabledState {
-	return []EnabledDisabledState{
-		EnabledDisabledStateDisabled,
-		EnabledDisabledStateEnabled,
+// PossibleDestinationTypeValues returns the possible values for the DestinationType const type.
+func PossibleDestinationTypeValues() []DestinationType {
+	return []DestinationType{
+		DestinationTypeDirect,
+		DestinationTypeIsolationDomain,
+	}
+}
+
+// DeviceAdministrativeState - Administrative state.
+type DeviceAdministrativeState string
+
+const (
+	DeviceAdministrativeStateGracefulQuarantine DeviceAdministrativeState = "GracefulQuarantine"
+	DeviceAdministrativeStateQuarantine         DeviceAdministrativeState = "Quarantine"
+	DeviceAdministrativeStateRMA                DeviceAdministrativeState = "RMA"
+	DeviceAdministrativeStateResync             DeviceAdministrativeState = "Resync"
+)
+
+// PossibleDeviceAdministrativeStateValues returns the possible values for the DeviceAdministrativeState const type.
+func PossibleDeviceAdministrativeStateValues() []DeviceAdministrativeState {
+	return []DeviceAdministrativeState{
+		DeviceAdministrativeStateGracefulQuarantine,
+		DeviceAdministrativeStateQuarantine,
+		DeviceAdministrativeStateRMA,
+		DeviceAdministrativeStateResync,
+	}
+}
+
+// EnableDisableState - Administrative state.
+type EnableDisableState string
+
+const (
+	EnableDisableStateDisable EnableDisableState = "Disable"
+	EnableDisableStateEnable  EnableDisableState = "Enable"
+)
+
+// PossibleEnableDisableStateValues returns the possible values for the EnableDisableState const type.
+func PossibleEnableDisableStateValues() []EnableDisableState {
+	return []EnableDisableState{
+		EnableDisableStateDisable,
+		EnableDisableStateEnable,
+	}
+}
+
+// Encapsulation - Type of encapsulation.
+type Encapsulation string
+
+const (
+	EncapsulationGRE  Encapsulation = "GRE"
+	EncapsulationNone Encapsulation = "None"
+)
+
+// PossibleEncapsulationValues returns the possible values for the Encapsulation const type.
+func PossibleEncapsulationValues() []Encapsulation {
+	return []Encapsulation{
+		EncapsulationGRE,
+		EncapsulationNone,
+	}
+}
+
+// EncapsulationType - Encapsulation Type.
+type EncapsulationType string
+
+const (
+	EncapsulationTypeGTPv1 EncapsulationType = "GTPv1"
+	EncapsulationTypeNone  EncapsulationType = "None"
+)
+
+// PossibleEncapsulationTypeValues returns the possible values for the EncapsulationType const type.
+func PossibleEncapsulationTypeValues() []EncapsulationType {
+	return []EncapsulationType{
+		EncapsulationTypeGTPv1,
+		EncapsulationTypeNone,
+	}
+}
+
+// Extension - Extension. Example: NoExtension | NPB.
+type Extension string
+
+const (
+	ExtensionNPB         Extension = "NPB"
+	ExtensionNoExtension Extension = "NoExtension"
+)
+
+// PossibleExtensionValues returns the possible values for the Extension const type.
+func PossibleExtensionValues() []Extension {
+	return []Extension{
+		ExtensionNPB,
+		ExtensionNoExtension,
+	}
+}
+
+// FabricSKUType - Type of Network Fabric SKU.
+type FabricSKUType string
+
+const (
+	FabricSKUTypeMultiRack  FabricSKUType = "MultiRack"
+	FabricSKUTypeSingleRack FabricSKUType = "SingleRack"
+)
+
+// PossibleFabricSKUTypeValues returns the possible values for the FabricSKUType const type.
+func PossibleFabricSKUTypeValues() []FabricSKUType {
+	return []FabricSKUType{
+		FabricSKUTypeMultiRack,
+		FabricSKUTypeSingleRack,
+	}
+}
+
+// GatewayType - Gateway Type of the resource.
+type GatewayType string
+
+const (
+	GatewayTypeInfrastructure GatewayType = "Infrastructure"
+	GatewayTypeWorkload       GatewayType = "Workload"
+)
+
+// PossibleGatewayTypeValues returns the possible values for the GatewayType const type.
+func PossibleGatewayTypeValues() []GatewayType {
+	return []GatewayType{
+		GatewayTypeInfrastructure,
+		GatewayTypeWorkload,
+	}
+}
+
+// IPAddressType - IP Address type.
+type IPAddressType string
+
+const (
+	IPAddressTypeIPv4 IPAddressType = "IPv4"
+	IPAddressTypeIPv6 IPAddressType = "IPv6"
+)
+
+// PossibleIPAddressTypeValues returns the possible values for the IPAddressType const type.
+func PossibleIPAddressTypeValues() []IPAddressType {
+	return []IPAddressType{
+		IPAddressTypeIPv4,
+		IPAddressTypeIPv6,
 	}
 }
 
@@ -194,57 +418,91 @@ func PossibleInterfaceTypeValues() []InterfaceType {
 	}
 }
 
-// IsCurrentVersion - If the current version is in use.
-type IsCurrentVersion string
+// IsManagementType - Configuration to use NNI for Infrastructure Management. Example: True/False.
+type IsManagementType string
 
 const (
-	IsCurrentVersionFalse IsCurrentVersion = "false"
-	IsCurrentVersionTrue  IsCurrentVersion = "true"
+	IsManagementTypeFalse IsManagementType = "False"
+	IsManagementTypeTrue  IsManagementType = "True"
 )
 
-// PossibleIsCurrentVersionValues returns the possible values for the IsCurrentVersion const type.
-func PossibleIsCurrentVersionValues() []IsCurrentVersion {
-	return []IsCurrentVersion{
-		IsCurrentVersionFalse,
-		IsCurrentVersionTrue,
+// PossibleIsManagementTypeValues returns the possible values for the IsManagementType const type.
+func PossibleIsManagementTypeValues() []IsManagementType {
+	return []IsManagementType{
+		IsManagementTypeFalse,
+		IsManagementTypeTrue,
 	}
 }
 
-// IsTestVersion - If the current version is a test version.
-type IsTestVersion string
+// IsMonitoringEnabled - To check whether monitoring of internal network is enabled or not.
+type IsMonitoringEnabled string
 
 const (
-	IsTestVersionFalse IsTestVersion = "false"
-	IsTestVersionTrue  IsTestVersion = "true"
+	IsMonitoringEnabledFalse IsMonitoringEnabled = "False"
+	IsMonitoringEnabledTrue  IsMonitoringEnabled = "True"
 )
 
-// PossibleIsTestVersionValues returns the possible values for the IsTestVersion const type.
-func PossibleIsTestVersionValues() []IsTestVersion {
-	return []IsTestVersion{
-		IsTestVersionFalse,
-		IsTestVersionTrue,
+// PossibleIsMonitoringEnabledValues returns the possible values for the IsMonitoringEnabled const type.
+func PossibleIsMonitoringEnabledValues() []IsMonitoringEnabled {
+	return []IsMonitoringEnabled{
+		IsMonitoringEnabledFalse,
+		IsMonitoringEnabledTrue,
 	}
 }
 
-// NetworkDeviceRackRoleType - Role for the network device.
-type NetworkDeviceRackRoleType string
+// IsWorkloadManagementNetworkEnabled - A workload management network is required for all the tenant (workload) traffic. This
+// traffic is only dedicated for Tenant workloads which are required to access internet or any other MSFT/Public
+// endpoints.
+type IsWorkloadManagementNetworkEnabled string
 
 const (
-	NetworkDeviceRackRoleTypeCE         NetworkDeviceRackRoleType = "CE"
-	NetworkDeviceRackRoleTypeManagement NetworkDeviceRackRoleType = "Management"
-	NetworkDeviceRackRoleTypeNPB        NetworkDeviceRackRoleType = "NPB"
-	NetworkDeviceRackRoleTypeTS         NetworkDeviceRackRoleType = "TS"
-	NetworkDeviceRackRoleTypeToR        NetworkDeviceRackRoleType = "ToR"
+	IsWorkloadManagementNetworkEnabledFalse IsWorkloadManagementNetworkEnabled = "False"
+	IsWorkloadManagementNetworkEnabledTrue  IsWorkloadManagementNetworkEnabled = "True"
 )
 
-// PossibleNetworkDeviceRackRoleTypeValues returns the possible values for the NetworkDeviceRackRoleType const type.
-func PossibleNetworkDeviceRackRoleTypeValues() []NetworkDeviceRackRoleType {
-	return []NetworkDeviceRackRoleType{
-		NetworkDeviceRackRoleTypeCE,
-		NetworkDeviceRackRoleTypeManagement,
-		NetworkDeviceRackRoleTypeNPB,
-		NetworkDeviceRackRoleTypeTS,
-		NetworkDeviceRackRoleTypeToR,
+// PossibleIsWorkloadManagementNetworkEnabledValues returns the possible values for the IsWorkloadManagementNetworkEnabled const type.
+func PossibleIsWorkloadManagementNetworkEnabledValues() []IsWorkloadManagementNetworkEnabled {
+	return []IsWorkloadManagementNetworkEnabled{
+		IsWorkloadManagementNetworkEnabledFalse,
+		IsWorkloadManagementNetworkEnabledTrue,
+	}
+}
+
+// Layer4Protocol - Layer4 protocol type that needs to be matched.
+type Layer4Protocol string
+
+const (
+	Layer4ProtocolTCP Layer4Protocol = "TCP"
+	Layer4ProtocolUDP Layer4Protocol = "UDP"
+)
+
+// PossibleLayer4ProtocolValues returns the possible values for the Layer4Protocol const type.
+func PossibleLayer4ProtocolValues() []Layer4Protocol {
+	return []Layer4Protocol{
+		Layer4ProtocolTCP,
+		Layer4ProtocolUDP,
+	}
+}
+
+// NetworkDeviceRole - NetworkDeviceRole is the device role: Example: CE | ToR.
+type NetworkDeviceRole string
+
+const (
+	NetworkDeviceRoleCE         NetworkDeviceRole = "CE"
+	NetworkDeviceRoleManagement NetworkDeviceRole = "Management"
+	NetworkDeviceRoleNPB        NetworkDeviceRole = "NPB"
+	NetworkDeviceRoleTS         NetworkDeviceRole = "TS"
+	NetworkDeviceRoleToR        NetworkDeviceRole = "ToR"
+)
+
+// PossibleNetworkDeviceRoleValues returns the possible values for the NetworkDeviceRole const type.
+func PossibleNetworkDeviceRoleValues() []NetworkDeviceRole {
+	return []NetworkDeviceRole{
+		NetworkDeviceRoleCE,
+		NetworkDeviceRoleManagement,
+		NetworkDeviceRoleNPB,
+		NetworkDeviceRoleTS,
+		NetworkDeviceRoleToR,
 	}
 }
 
@@ -270,85 +528,39 @@ func PossibleNetworkDeviceRoleNameValues() []NetworkDeviceRoleName {
 	}
 }
 
-// NetworkDeviceRoleTypes - Available roles for the network device.
-type NetworkDeviceRoleTypes string
+// NetworkRackType - Network Rack SKU name.
+type NetworkRackType string
 
 const (
-	NetworkDeviceRoleTypesCE         NetworkDeviceRoleTypes = "CE"
-	NetworkDeviceRoleTypesManagement NetworkDeviceRoleTypes = "Management"
-	NetworkDeviceRoleTypesNPB        NetworkDeviceRoleTypes = "NPB"
-	NetworkDeviceRoleTypesTS         NetworkDeviceRoleTypes = "TS"
-	NetworkDeviceRoleTypesToR        NetworkDeviceRoleTypes = "ToR"
+	NetworkRackTypeAggregate NetworkRackType = "Aggregate"
+	NetworkRackTypeCombined  NetworkRackType = "Combined"
+	NetworkRackTypeCompute   NetworkRackType = "Compute"
 )
 
-// PossibleNetworkDeviceRoleTypesValues returns the possible values for the NetworkDeviceRoleTypes const type.
-func PossibleNetworkDeviceRoleTypesValues() []NetworkDeviceRoleTypes {
-	return []NetworkDeviceRoleTypes{
-		NetworkDeviceRoleTypesCE,
-		NetworkDeviceRoleTypesManagement,
-		NetworkDeviceRoleTypesNPB,
-		NetworkDeviceRoleTypesTS,
-		NetworkDeviceRoleTypesToR,
+// PossibleNetworkRackTypeValues returns the possible values for the NetworkRackType const type.
+func PossibleNetworkRackTypeValues() []NetworkRackType {
+	return []NetworkRackType{
+		NetworkRackTypeAggregate,
+		NetworkRackTypeCombined,
+		NetworkRackTypeCompute,
 	}
 }
 
-// NetworkFabricControllerOperationalState - Operational state for the resource.
-type NetworkFabricControllerOperationalState string
+// NfcSKU - Network Fabric Controller SKU.
+type NfcSKU string
 
 const (
-	NetworkFabricControllerOperationalStateConfiguring NetworkFabricControllerOperationalState = "Configuring"
-	NetworkFabricControllerOperationalStateFailed      NetworkFabricControllerOperationalState = "Failed"
-	NetworkFabricControllerOperationalStateSucceeded   NetworkFabricControllerOperationalState = "Succeeded"
+	NfcSKUBasic           NfcSKU = "Basic"
+	NfcSKUHighPerformance NfcSKU = "HighPerformance"
+	NfcSKUStandard        NfcSKU = "Standard"
 )
 
-// PossibleNetworkFabricControllerOperationalStateValues returns the possible values for the NetworkFabricControllerOperationalState const type.
-func PossibleNetworkFabricControllerOperationalStateValues() []NetworkFabricControllerOperationalState {
-	return []NetworkFabricControllerOperationalState{
-		NetworkFabricControllerOperationalStateConfiguring,
-		NetworkFabricControllerOperationalStateFailed,
-		NetworkFabricControllerOperationalStateSucceeded,
-	}
-}
-
-// NetworkFabricOperationalState - Operational state for the resource.
-type NetworkFabricOperationalState string
-
-const (
-	NetworkFabricOperationalStateDeferredControl     NetworkFabricOperationalState = "DeferredControl"
-	NetworkFabricOperationalStateDeprovisioned       NetworkFabricOperationalState = "Deprovisioned"
-	NetworkFabricOperationalStateDeprovisioning      NetworkFabricOperationalState = "Deprovisioning"
-	NetworkFabricOperationalStateErrorDeprovisioning NetworkFabricOperationalState = "ErrorDeprovisioning"
-	NetworkFabricOperationalStateErrorProvisioning   NetworkFabricOperationalState = "ErrorProvisioning"
-	NetworkFabricOperationalStateProvisioned         NetworkFabricOperationalState = "Provisioned"
-	NetworkFabricOperationalStateProvisioning        NetworkFabricOperationalState = "Provisioning"
-)
-
-// PossibleNetworkFabricOperationalStateValues returns the possible values for the NetworkFabricOperationalState const type.
-func PossibleNetworkFabricOperationalStateValues() []NetworkFabricOperationalState {
-	return []NetworkFabricOperationalState{
-		NetworkFabricOperationalStateDeferredControl,
-		NetworkFabricOperationalStateDeprovisioned,
-		NetworkFabricOperationalStateDeprovisioning,
-		NetworkFabricOperationalStateErrorDeprovisioning,
-		NetworkFabricOperationalStateErrorProvisioning,
-		NetworkFabricOperationalStateProvisioned,
-		NetworkFabricOperationalStateProvisioning,
-	}
-}
-
-// NetworkRackRoleName - The role of the Network Rack: Aggregate or Compute.
-type NetworkRackRoleName string
-
-const (
-	NetworkRackRoleNameAggregateRack NetworkRackRoleName = "AggregateRack"
-	NetworkRackRoleNameComputeRack   NetworkRackRoleName = "ComputeRack"
-)
-
-// PossibleNetworkRackRoleNameValues returns the possible values for the NetworkRackRoleName const type.
-func PossibleNetworkRackRoleNameValues() []NetworkRackRoleName {
-	return []NetworkRackRoleName{
-		NetworkRackRoleNameAggregateRack,
-		NetworkRackRoleNameComputeRack,
+// PossibleNfcSKUValues returns the possible values for the NfcSKU const type.
+func PossibleNfcSKUValues() []NfcSKU {
+	return []NfcSKU{
+		NfcSKUBasic,
+		NfcSKUHighPerformance,
+		NfcSKUStandard,
 	}
 }
 
@@ -365,24 +577,6 @@ func PossibleNniTypeValues() []NniType {
 	return []NniType{
 		NniTypeCE,
 		NniTypeNPB,
-	}
-}
-
-// OperationalStatus - Primary or Secondary power end.
-type OperationalStatus string
-
-const (
-	OperationalStatusBootPrompt OperationalStatus = "BootPrompt"
-	OperationalStatusBooted     OperationalStatus = "Booted"
-	OperationalStatusZtp        OperationalStatus = "Ztp"
-)
-
-// PossibleOperationalStatusValues returns the possible values for the OperationalStatus const type.
-func PossibleOperationalStatusValues() []OperationalStatus {
-	return []OperationalStatus{
-		OperationalStatusBootPrompt,
-		OperationalStatusBooted,
-		OperationalStatusZtp,
 	}
 }
 
@@ -421,35 +615,71 @@ func PossiblePeeringOptionValues() []PeeringOption {
 	}
 }
 
-// PowerCycleState - On or Off power cycle state.
-type PowerCycleState string
+// PollingIntervalInSeconds - Polling interval in seconds.
+type PollingIntervalInSeconds int32
 
 const (
-	PowerCycleStateOff PowerCycleState = "Off"
-	PowerCycleStateOn  PowerCycleState = "On"
+	PollingIntervalInSecondsNinety           PollingIntervalInSeconds = 90
+	PollingIntervalInSecondsOneHundredTwenty PollingIntervalInSeconds = 120
+	PollingIntervalInSecondsSixty            PollingIntervalInSeconds = 60
+	PollingIntervalInSecondsThirty           PollingIntervalInSeconds = 30
 )
 
-// PossiblePowerCycleStateValues returns the possible values for the PowerCycleState const type.
-func PossiblePowerCycleStateValues() []PowerCycleState {
-	return []PowerCycleState{
-		PowerCycleStateOff,
-		PowerCycleStateOn,
+// PossiblePollingIntervalInSecondsValues returns the possible values for the PollingIntervalInSeconds const type.
+func PossiblePollingIntervalInSecondsValues() []PollingIntervalInSeconds {
+	return []PollingIntervalInSeconds{
+		PollingIntervalInSecondsNinety,
+		PollingIntervalInSecondsOneHundredTwenty,
+		PollingIntervalInSecondsSixty,
+		PollingIntervalInSecondsThirty,
 	}
 }
 
-// PowerEnd - Primary or Secondary power end.
-type PowerEnd string
+// PollingType - Polling type.
+type PollingType string
 
 const (
-	PowerEndPrimary   PowerEnd = "Primary"
-	PowerEndSecondary PowerEnd = "Secondary"
+	PollingTypePull PollingType = "Pull"
+	PollingTypePush PollingType = "Push"
 )
 
-// PossiblePowerEndValues returns the possible values for the PowerEnd const type.
-func PossiblePowerEndValues() []PowerEnd {
-	return []PowerEnd{
-		PowerEndPrimary,
-		PowerEndSecondary,
+// PossiblePollingTypeValues returns the possible values for the PollingType const type.
+func PossiblePollingTypeValues() []PollingType {
+	return []PollingType{
+		PollingTypePull,
+		PollingTypePush,
+	}
+}
+
+// PortType - Port type that needs to be matched.
+type PortType string
+
+const (
+	PortTypeDestinationPort PortType = "DestinationPort"
+	PortTypeSourcePort      PortType = "SourcePort"
+)
+
+// PossiblePortTypeValues returns the possible values for the PortType const type.
+func PossiblePortTypeValues() []PortType {
+	return []PortType{
+		PortTypeDestinationPort,
+		PortTypeSourcePort,
+	}
+}
+
+// PrefixType - IP Prefix Type.
+type PrefixType string
+
+const (
+	PrefixTypeLongestPrefix PrefixType = "LongestPrefix"
+	PrefixTypePrefix        PrefixType = "Prefix"
+)
+
+// PossiblePrefixTypeValues returns the possible values for the PrefixType const type.
+func PossiblePrefixTypeValues() []PrefixType {
+	return []PrefixType{
+		PrefixTypeLongestPrefix,
+		PrefixTypePrefix,
 	}
 }
 
@@ -457,6 +687,7 @@ func PossiblePowerEndValues() []PowerEnd {
 type ProvisioningState string
 
 const (
+	ProvisioningStateAccepted  ProvisioningState = "Accepted"
 	ProvisioningStateCanceled  ProvisioningState = "Canceled"
 	ProvisioningStateDeleting  ProvisioningState = "Deleting"
 	ProvisioningStateFailed    ProvisioningState = "Failed"
@@ -467,11 +698,32 @@ const (
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
+		ProvisioningStateAccepted,
 		ProvisioningStateCanceled,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
+	}
+}
+
+// RebootType - Type of reboot to be performed. Example: GracefulRebootWithZTP
+type RebootType string
+
+const (
+	RebootTypeGracefulRebootWithZTP      RebootType = "GracefulRebootWithZTP"
+	RebootTypeGracefulRebootWithoutZTP   RebootType = "GracefulRebootWithoutZTP"
+	RebootTypeUngracefulRebootWithZTP    RebootType = "UngracefulRebootWithZTP"
+	RebootTypeUngracefulRebootWithoutZTP RebootType = "UngracefulRebootWithoutZTP"
+)
+
+// PossibleRebootTypeValues returns the possible values for the RebootType const type.
+func PossibleRebootTypeValues() []RebootType {
+	return []RebootType{
+		RebootTypeGracefulRebootWithZTP,
+		RebootTypeGracefulRebootWithoutZTP,
+		RebootTypeUngracefulRebootWithZTP,
+		RebootTypeUngracefulRebootWithoutZTP,
 	}
 }
 
@@ -507,19 +759,97 @@ func PossibleRedistributeStaticRoutesValues() []RedistributeStaticRoutes {
 	}
 }
 
-// State - On or Off toggle state.
-type State string
+// RoutePolicyActionType - Action type. Example: Permit | Deny | Continue.
+type RoutePolicyActionType string
 
 const (
-	StateOff State = "Off"
-	StateOn  State = "On"
+	RoutePolicyActionTypeContinue RoutePolicyActionType = "Continue"
+	RoutePolicyActionTypeDeny     RoutePolicyActionType = "Deny"
+	RoutePolicyActionTypePermit   RoutePolicyActionType = "Permit"
 )
 
-// PossibleStateValues returns the possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{
-		StateOff,
-		StateOn,
+// PossibleRoutePolicyActionTypeValues returns the possible values for the RoutePolicyActionType const type.
+func PossibleRoutePolicyActionTypeValues() []RoutePolicyActionType {
+	return []RoutePolicyActionType{
+		RoutePolicyActionTypeContinue,
+		RoutePolicyActionTypeDeny,
+		RoutePolicyActionTypePermit,
+	}
+}
+
+// RoutePolicyConditionType - Type of the condition used.
+type RoutePolicyConditionType string
+
+const (
+	RoutePolicyConditionTypeAnd RoutePolicyConditionType = "And"
+	RoutePolicyConditionTypeOr  RoutePolicyConditionType = "Or"
+)
+
+// PossibleRoutePolicyConditionTypeValues returns the possible values for the RoutePolicyConditionType const type.
+func PossibleRoutePolicyConditionTypeValues() []RoutePolicyConditionType {
+	return []RoutePolicyConditionType{
+		RoutePolicyConditionTypeAnd,
+		RoutePolicyConditionTypeOr,
+	}
+}
+
+// SourceDestinationType - IP Address type.
+type SourceDestinationType string
+
+const (
+	SourceDestinationTypeDestinationIP SourceDestinationType = "DestinationIP"
+	SourceDestinationTypeSourceIP      SourceDestinationType = "SourceIP"
+)
+
+// PossibleSourceDestinationTypeValues returns the possible values for the SourceDestinationType const type.
+func PossibleSourceDestinationTypeValues() []SourceDestinationType {
+	return []SourceDestinationType{
+		SourceDestinationTypeDestinationIP,
+		SourceDestinationTypeSourceIP,
+	}
+}
+
+// TapRuleActionType - Type of actions that can be performed.
+type TapRuleActionType string
+
+const (
+	TapRuleActionTypeCount     TapRuleActionType = "Count"
+	TapRuleActionTypeDrop      TapRuleActionType = "Drop"
+	TapRuleActionTypeGoto      TapRuleActionType = "Goto"
+	TapRuleActionTypeLog       TapRuleActionType = "Log"
+	TapRuleActionTypeMirror    TapRuleActionType = "Mirror"
+	TapRuleActionTypeRedirect  TapRuleActionType = "Redirect"
+	TapRuleActionTypeReplicate TapRuleActionType = "Replicate"
+)
+
+// PossibleTapRuleActionTypeValues returns the possible values for the TapRuleActionType const type.
+func PossibleTapRuleActionTypeValues() []TapRuleActionType {
+	return []TapRuleActionType{
+		TapRuleActionTypeCount,
+		TapRuleActionTypeDrop,
+		TapRuleActionTypeGoto,
+		TapRuleActionTypeLog,
+		TapRuleActionTypeMirror,
+		TapRuleActionTypeRedirect,
+		TapRuleActionTypeReplicate,
+	}
+}
+
+// ValidateAction - Validate action that to be performed
+type ValidateAction string
+
+const (
+	ValidateActionCabling       ValidateAction = "Cabling"
+	ValidateActionConfiguration ValidateAction = "Configuration"
+	ValidateActionConnectivity  ValidateAction = "Connectivity"
+)
+
+// PossibleValidateActionValues returns the possible values for the ValidateAction const type.
+func PossibleValidateActionValues() []ValidateAction {
+	return []ValidateAction{
+		ValidateActionCabling,
+		ValidateActionConfiguration,
+		ValidateActionConnectivity,
 	}
 }
 

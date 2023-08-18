@@ -47,7 +47,7 @@ func NewNatGatewaysClient(subscriptionID string, credential azcore.TokenCredenti
 // BeginCreateOrUpdate - Creates or updates a nat gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - natGatewayName - The name of the nat gateway.
 //   - parameters - Parameters supplied to the create or update nat gateway operation.
@@ -71,7 +71,7 @@ func (client *NatGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resour
 // CreateOrUpdate - Creates or updates a nat gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 func (client *NatGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, parameters NatGateway, options *NatGatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NatGatewaysClient.BeginCreateOrUpdate"
@@ -113,7 +113,7 @@ func (client *NatGatewaysClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -125,7 +125,7 @@ func (client *NatGatewaysClient) createOrUpdateCreateRequest(ctx context.Context
 // BeginDelete - Deletes the specified nat gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - natGatewayName - The name of the nat gateway.
 //   - options - NatGatewaysClientBeginDeleteOptions contains the optional parameters for the NatGatewaysClient.BeginDelete method.
@@ -147,7 +147,7 @@ func (client *NatGatewaysClient) BeginDelete(ctx context.Context, resourceGroupN
 // Delete - Deletes the specified nat gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 func (client *NatGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, natGatewayName string, options *NatGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NatGatewaysClient.BeginDelete"
@@ -189,7 +189,7 @@ func (client *NatGatewaysClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,7 +198,7 @@ func (client *NatGatewaysClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Gets the specified nat gateway in a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - natGatewayName - The name of the nat gateway.
 //   - options - NatGatewaysClientGetOptions contains the optional parameters for the NatGatewaysClient.Get method.
@@ -244,7 +244,7 @@ func (client *NatGatewaysClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -264,7 +264,7 @@ func (client *NatGatewaysClient) getHandleResponse(resp *http.Response) (NatGate
 
 // NewListPager - Gets all nat gateways in a resource group.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - NatGatewaysClientListOptions contains the optional parameters for the NatGatewaysClient.NewListPager method.
 func (client *NatGatewaysClient) NewListPager(resourceGroupName string, options *NatGatewaysClientListOptions) *runtime.Pager[NatGatewaysClientListResponse] {
@@ -313,7 +313,7 @@ func (client *NatGatewaysClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -330,7 +330,7 @@ func (client *NatGatewaysClient) listHandleResponse(resp *http.Response) (NatGat
 
 // NewListAllPager - Gets all the Nat Gateways in a subscription.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - options - NatGatewaysClientListAllOptions contains the optional parameters for the NatGatewaysClient.NewListAllPager method.
 func (client *NatGatewaysClient) NewListAllPager(options *NatGatewaysClientListAllOptions) *runtime.Pager[NatGatewaysClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[NatGatewaysClientListAllResponse]{
@@ -374,7 +374,7 @@ func (client *NatGatewaysClient) listAllCreateRequest(ctx context.Context, optio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -392,7 +392,7 @@ func (client *NatGatewaysClient) listAllHandleResponse(resp *http.Response) (Nat
 // UpdateTags - Updates nat gateway tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - natGatewayName - The name of the nat gateway.
 //   - parameters - Parameters supplied to update nat gateway tags.
@@ -439,7 +439,7 @@ func (client *NatGatewaysClient) updateTagsCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -16,9 +16,33 @@ After you've set the `AZURE_RECORD_MODE`, set the `PROXY_CERT` environment varia
 $ENV:PROXY_CERT="C:/ <path-to-repo> /azure-sdk-for-go/eng/common/testproxy/dotnet-devcert.crt"
 ```
 
+## Running the test proxy
+
+Recording and playing back tests relies on the [Test Proxy](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md) to intercept traffic. The recording package can automatically install and run an instance of the test-proxy server per package. The following code needs to be added to test setup and teardown in order to achieve this:
+
+```golang
+func TestMain(m *testing.M) {
+	proxy, err := recording.StartTestProxy(nil)
+	if err != nil {
+		panic(err)
+	}
+
+    ... all other test code, including proxy recording setup ...
+
+	code := m.Run()
+
+	err = recording.StopTestProxy(proxy)
+	if err != nil {
+		panic(err)
+	}
+
+	os.Exit(code)
+}
+```
+
 ## Routing Traffic
 
-The first step in instrumenting a client to interact with recorded tests is to direct traffic to the proxy through a custom `policy`. In these examples we'll use testify's [`require`](https://pkg.go.dev/github.com/stretchr/testify/require) library but you can use the framework of your choice. Each test has to call `recording.Start` and `recording.Stop`, the rest is taken care of by the `recording` library and the [`test-proxy`](https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy)
+The first step in instrumenting a client to interact with recorded tests is to direct traffic to the proxy through a custom `policy`. In these examples we'll use testify's [`require`](https://pkg.go.dev/github.com/stretchr/testify/require) library but you can use the framework of your choice. Each test has to call `recording.Start` and `recording.Stop`, the rest is taken care of by the `recording` library and the [`test-proxy`](https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy).
 
 The snippet below demonstrates an example test policy:
 

@@ -92,7 +92,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 	if err != nil {
 		return TransactionResponse{}, err
 	}
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(t.con.Endpoint(), "$batch"))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(t.client.Endpoint(), "$batch"))
 	if err != nil {
 		return TransactionResponse{}, err
 	}
@@ -124,7 +124,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 		return TransactionResponse{}, err
 	}
 
-	resp, err := t.con.Pipeline().Do(req)
+	resp, err := t.client.Pipeline().Do(req)
 	if err != nil {
 		return TransactionResponse{}, err
 	}
@@ -245,7 +245,6 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		}
 		req, err = t.client.DeleteEntityCreateRequest(
 			ctx,
-			generated.Enum1Three0,
 			t.name,
 			entity[partitionKey].(string),
 			entity[rowKey].(string),
@@ -259,7 +258,6 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	case TransactionTypeAdd:
 		req, err = t.client.InsertEntityCreateRequest(
 			ctx,
-			generated.Enum1Three0,
 			t.name,
 			&generated.TableClientInsertEntityOptions{
 				TableEntityProperties: entity,
@@ -279,7 +277,6 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		}
 		req, err = t.client.MergeEntityCreateRequest(
 			ctx,
-			generated.Enum1Three0,
 			t.name,
 			entity[partitionKey].(string),
 			entity[rowKey].(string),
@@ -289,7 +286,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		if err != nil {
 			return err
 		}
-		if isCosmosEndpoint(t.con.Endpoint()) {
+		if isCosmosEndpoint(t.client.Endpoint()) {
 			transformPatchToCosmosPost(req)
 		}
 	case TransactionTypeUpdateReplace:
@@ -301,7 +298,6 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		}
 		req, err = t.client.UpdateEntityCreateRequest(
 			ctx,
-			generated.Enum1Three0,
 			t.name,
 			entity[partitionKey].(string),
 			entity[rowKey].(string),

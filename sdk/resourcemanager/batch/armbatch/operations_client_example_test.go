@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ef6f2f06858cdbec7684968e1a54c7610da97dbb/specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/OperationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/OperationsList.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

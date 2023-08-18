@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -41,8 +41,8 @@ type FirewallPolicyIdpsSignaturesOverridesServer struct {
 }
 
 // NewFirewallPolicyIdpsSignaturesOverridesServerTransport creates a new instance of FirewallPolicyIdpsSignaturesOverridesServerTransport with the provided implementation.
-// The returned FirewallPolicyIdpsSignaturesOverridesServerTransport instance is connected to an instance of armnetwork.FirewallPolicyIdpsSignaturesOverridesClient by way of the
-// undefined.Transporter field.
+// The returned FirewallPolicyIdpsSignaturesOverridesServerTransport instance is connected to an instance of armnetwork.FirewallPolicyIdpsSignaturesOverridesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewFirewallPolicyIdpsSignaturesOverridesServerTransport(srv *FirewallPolicyIdpsSignaturesOverridesServer) *FirewallPolicyIdpsSignaturesOverridesServerTransport {
 	return &FirewallPolicyIdpsSignaturesOverridesServerTransport{srv: srv}
 }

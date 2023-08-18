@@ -29,7 +29,7 @@ type IPPrefixesClient struct {
 }
 
 // NewIPPrefixesClient creates a new instance of IPPrefixesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewIPPrefixesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IPPrefixesClient, error) {
@@ -47,9 +47,9 @@ func NewIPPrefixesClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreate - Implements IP Prefix PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ipPrefixName - Name of the IP Prefix
+//   - ipPrefixName - Name of the IP Prefix.
 //   - body - Request payload.
 //   - options - IPPrefixesClientBeginCreateOptions contains the optional parameters for the IPPrefixesClient.BeginCreate method.
 func (client *IPPrefixesClient) BeginCreate(ctx context.Context, resourceGroupName string, ipPrefixName string, body IPPrefix, options *IPPrefixesClientBeginCreateOptions) (*runtime.Poller[IPPrefixesClientCreateResponse], error) {
@@ -69,7 +69,7 @@ func (client *IPPrefixesClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Create - Implements IP Prefix PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *IPPrefixesClient) create(ctx context.Context, resourceGroupName string, ipPrefixName string, body IPPrefix, options *IPPrefixesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, ipPrefixName, body, options)
 	if err != nil {
@@ -88,9 +88,6 @@ func (client *IPPrefixesClient) create(ctx context.Context, resourceGroupName st
 // createCreateRequest creates the Create request.
 func (client *IPPrefixesClient) createCreateRequest(ctx context.Context, resourceGroupName string, ipPrefixName string, body IPPrefix, options *IPPrefixesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/{ipPrefixName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -105,7 +102,7 @@ func (client *IPPrefixesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -114,9 +111,9 @@ func (client *IPPrefixesClient) createCreateRequest(ctx context.Context, resourc
 // BeginDelete - Implements IP Prefix DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ipPrefixName - Name of the IP Prefix
+//   - ipPrefixName - Name of the IP Prefix.
 //   - options - IPPrefixesClientBeginDeleteOptions contains the optional parameters for the IPPrefixesClient.BeginDelete method.
 func (client *IPPrefixesClient) BeginDelete(ctx context.Context, resourceGroupName string, ipPrefixName string, options *IPPrefixesClientBeginDeleteOptions) (*runtime.Poller[IPPrefixesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -135,7 +132,7 @@ func (client *IPPrefixesClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Implements IP Prefix DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *IPPrefixesClient) deleteOperation(ctx context.Context, resourceGroupName string, ipPrefixName string, options *IPPrefixesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ipPrefixName, options)
 	if err != nil {
@@ -145,7 +142,7 @@ func (client *IPPrefixesClient) deleteOperation(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -154,9 +151,6 @@ func (client *IPPrefixesClient) deleteOperation(ctx context.Context, resourceGro
 // deleteCreateRequest creates the Delete request.
 func (client *IPPrefixesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ipPrefixName string, options *IPPrefixesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/{ipPrefixName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -171,7 +165,7 @@ func (client *IPPrefixesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,9 +174,9 @@ func (client *IPPrefixesClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Implements IP Prefix GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ipPrefixName - Name of the IP Prefix
+//   - ipPrefixName - Name of the IP Prefix.
 //   - options - IPPrefixesClientGetOptions contains the optional parameters for the IPPrefixesClient.Get method.
 func (client *IPPrefixesClient) Get(ctx context.Context, resourceGroupName string, ipPrefixName string, options *IPPrefixesClientGetOptions) (IPPrefixesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ipPrefixName, options)
@@ -202,9 +196,6 @@ func (client *IPPrefixesClient) Get(ctx context.Context, resourceGroupName strin
 // getCreateRequest creates the Get request.
 func (client *IPPrefixesClient) getCreateRequest(ctx context.Context, resourceGroupName string, ipPrefixName string, options *IPPrefixesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/{ipPrefixName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -219,7 +210,7 @@ func (client *IPPrefixesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -236,7 +227,7 @@ func (client *IPPrefixesClient) getHandleResponse(resp *http.Response) (IPPrefix
 
 // NewListByResourceGroupPager - Implements IpPrefixes list by resource group GET method.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - IPPrefixesClientListByResourceGroupOptions contains the optional parameters for the IPPrefixesClient.NewListByResourceGroupPager
 //     method.
@@ -271,9 +262,6 @@ func (client *IPPrefixesClient) NewListByResourceGroupPager(resourceGroupName st
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *IPPrefixesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *IPPrefixesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipPrefixes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,7 +272,7 @@ func (client *IPPrefixesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,7 +289,7 @@ func (client *IPPrefixesClient) listByResourceGroupHandleResponse(resp *http.Res
 
 // NewListBySubscriptionPager - Implements IpPrefixes list by subscription GET method.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - options - IPPrefixesClientListBySubscriptionOptions contains the optional parameters for the IPPrefixesClient.NewListBySubscriptionPager
 //     method.
 func (client *IPPrefixesClient) NewListBySubscriptionPager(options *IPPrefixesClientListBySubscriptionOptions) *runtime.Pager[IPPrefixesClientListBySubscriptionResponse] {
@@ -335,16 +323,13 @@ func (client *IPPrefixesClient) NewListBySubscriptionPager(options *IPPrefixesCl
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *IPPrefixesClient) listBySubscriptionCreateRequest(ctx context.Context, options *IPPrefixesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/ipPrefixes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -362,9 +347,9 @@ func (client *IPPrefixesClient) listBySubscriptionHandleResponse(resp *http.Resp
 // BeginUpdate - API to update certain properties of the IP Prefix resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ipPrefixName - Name of the IP Prefix
+//   - ipPrefixName - Name of the IP Prefix.
 //   - body - IP Prefix properties to update.
 //   - options - IPPrefixesClientBeginUpdateOptions contains the optional parameters for the IPPrefixesClient.BeginUpdate method.
 func (client *IPPrefixesClient) BeginUpdate(ctx context.Context, resourceGroupName string, ipPrefixName string, body IPPrefixPatch, options *IPPrefixesClientBeginUpdateOptions) (*runtime.Poller[IPPrefixesClientUpdateResponse], error) {
@@ -384,7 +369,7 @@ func (client *IPPrefixesClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Update - API to update certain properties of the IP Prefix resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *IPPrefixesClient) update(ctx context.Context, resourceGroupName string, ipPrefixName string, body IPPrefixPatch, options *IPPrefixesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, ipPrefixName, body, options)
 	if err != nil {
@@ -403,9 +388,6 @@ func (client *IPPrefixesClient) update(ctx context.Context, resourceGroupName st
 // updateCreateRequest creates the Update request.
 func (client *IPPrefixesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, ipPrefixName string, body IPPrefixPatch, options *IPPrefixesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/{ipPrefixName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -420,7 +402,7 @@ func (client *IPPrefixesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

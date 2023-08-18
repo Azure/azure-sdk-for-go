@@ -41,17 +41,20 @@ type BlobInventoryPoliciesServer struct {
 }
 
 // NewBlobInventoryPoliciesServerTransport creates a new instance of BlobInventoryPoliciesServerTransport with the provided implementation.
-// The returned BlobInventoryPoliciesServerTransport instance is connected to an instance of armstorage.BlobInventoryPoliciesClient by way of the
-// undefined.Transporter field.
+// The returned BlobInventoryPoliciesServerTransport instance is connected to an instance of armstorage.BlobInventoryPoliciesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewBlobInventoryPoliciesServerTransport(srv *BlobInventoryPoliciesServer) *BlobInventoryPoliciesServerTransport {
-	return &BlobInventoryPoliciesServerTransport{srv: srv}
+	return &BlobInventoryPoliciesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armstorage.BlobInventoryPoliciesClientListResponse]](),
+	}
 }
 
 // BlobInventoryPoliciesServerTransport connects instances of armstorage.BlobInventoryPoliciesClient to instances of BlobInventoryPoliciesServer.
 // Don't use this type directly, use NewBlobInventoryPoliciesServerTransport instead.
 type BlobInventoryPoliciesServerTransport struct {
 	srv          *BlobInventoryPoliciesServer
-	newListPager *azfake.PagerResponder[armstorage.BlobInventoryPoliciesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armstorage.BlobInventoryPoliciesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for BlobInventoryPoliciesServerTransport.
@@ -204,7 +207,8 @@ func (b *BlobInventoryPoliciesServerTransport) dispatchNewListPager(req *http.Re
 	if b.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if b.newListPager == nil {
+	newListPager := b.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inventoryPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -220,17 +224,19 @@ func (b *BlobInventoryPoliciesServerTransport) dispatchNewListPager(req *http.Re
 			return nil, err
 		}
 		resp := b.srv.NewListPager(resourceGroupNameUnescaped, accountNameUnescaped, nil)
-		b.newListPager = &resp
+		newListPager = &resp
+		b.newListPager.add(req, newListPager)
 	}
-	resp, err := server.PagerResponderNext(b.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(b.newListPager) {
-		b.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		b.newListPager.remove(req)
 	}
 	return resp, nil
 }

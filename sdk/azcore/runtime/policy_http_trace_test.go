@@ -161,3 +161,55 @@ func TestStartSpan(t *testing.T) {
 	require.Contains(t, errStr, "*azcore.ResponseError")
 	require.Contains(t, errStr, "ERROR CODE: ErrorItFailed")
 }
+
+func TestStartSpansDontNest(t *testing.T) {
+	srv, close := mock.NewServer()
+	srv.SetResponse() // always return http.StatusOK
+	defer close()
+
+	pl := exported.NewPipeline(srv, newHTTPTracePolicy(nil))
+
+	apiSpanCount := 0
+	httpSpanCount := 0
+	endCalled := 0
+	tr := tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+		if spanName == "HTTP GET" {
+			httpSpanCount++
+		} else if spanName == "FooMethod" {
+			apiSpanCount++
+		} else {
+			t.Fatalf("unexpected span name %s", spanName)
+		}
+		spanImpl := tracing.SpanImpl{
+			End: func() { endCalled++ },
+		}
+		return ctx, tracing.NewSpan(spanImpl)
+	}, nil)
+
+	barMethod := func(ctx context.Context) {
+		ourCtx, endSpan := StartSpan(ctx, "BarMethod", tr, nil)
+		require.Same(t, ctx, ourCtx)
+		defer endSpan(nil)
+		req, err := exported.NewRequest(ourCtx, http.MethodGet, srv.URL()+"/bar")
+		require.NoError(t, err)
+		_, err = pl.Do(req)
+		require.NoError(t, err)
+	}
+
+	fooMethod := func(ctx context.Context) {
+		ctx, endSpan := StartSpan(ctx, "FooMethod", tr, nil)
+		defer endSpan(nil)
+		barMethod(ctx)
+		req, err := exported.NewRequest(ctx, http.MethodGet, srv.URL()+"/foo")
+		require.NoError(t, err)
+		_, err = pl.Do(req)
+		require.NoError(t, err)
+	}
+
+	fooMethod(context.Background())
+
+	// there should be a total of three spans. one for FooMethod, and two HTTP spans
+	require.EqualValues(t, 1, apiSpanCount)
+	require.EqualValues(t, 2, httpSpanCount)
+	require.EqualValues(t, 3, endCalled)
+}

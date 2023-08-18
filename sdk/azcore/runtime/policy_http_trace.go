@@ -103,17 +103,23 @@ func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options 
 	if !tracer.Enabled() {
 		return ctx, func(err error) {}
 	}
+	const newSpanKind = tracing.SpanKindInternal
 	if activeSpan := ctx.Value(ctxActiveSpan{}); activeSpan != nil {
 		// per the design guidelines, if a SDK method Foo() calls SDK method Bar(),
 		// then the span for Bar() must be suppressed. however, if Bar() makes a REST
 		// call, then Bar's HTTP span must be a child of Foo's span.
-		return ctx, func(err error) {}
+		// however, there is an exception to this rule. if the SDK method Foo() is a
+		// messaging producer/consumer, and it takes a callback that's a SDK method
+		// Bar(), then the span for Bar() must _not_ be suppressed.
+		if kind := activeSpan.(tracing.SpanKind); kind == tracing.SpanKindClient || kind == tracing.SpanKindInternal {
+			return ctx, func(err error) {}
+		}
 	}
 	ctx, span := tracer.Start(ctx, name, &tracing.SpanOptions{
-		Kind: tracing.SpanKindInternal,
+		Kind: newSpanKind,
 	})
 	ctx = context.WithValue(ctx, shared.CtxWithTracingTracer{}, tracer)
-	ctx = context.WithValue(ctx, ctxActiveSpan{}, ctxActiveSpan{})
+	ctx = context.WithValue(ctx, ctxActiveSpan{}, newSpanKind)
 	return ctx, func(err error) {
 		if err != nil {
 			errType := strings.Replace(fmt.Sprintf("%T", err), "*exported.", "*azcore.", 1)

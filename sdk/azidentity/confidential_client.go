@@ -49,6 +49,7 @@ func newConfidentialClient(tenantID, clientID, name string, cred confidential.Cr
 	if err != nil {
 		return nil, err
 	}
+	opts.AdditionallyAllowedTenants = resolveAdditionalTenants(opts.AdditionallyAllowedTenants)
 	return &confidentialClient{
 		caeMu:    &sync.Mutex{},
 		clientID: clientID,

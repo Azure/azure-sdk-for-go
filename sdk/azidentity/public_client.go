@@ -48,6 +48,7 @@ func newPublicClient(tenantID, clientID, name string, o publicClientOptions) (*p
 	if err != nil {
 		return nil, err
 	}
+	o.AdditionallyAllowedTenants = resolveAdditionalTenants(o.AdditionallyAllowedTenants)
 	return &publicClient{
 		caeMu:    &sync.Mutex{},
 		clientID: clientID,

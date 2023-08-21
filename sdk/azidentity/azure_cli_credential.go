@@ -66,6 +66,7 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 		cp = *options
 	}
 	cp.init()
+	cp.AdditionallyAllowedTenants = resolveAdditionalTenants(cp.AdditionallyAllowedTenants)
 	return &AzureCLICredential{mu: &sync.Mutex{}, opts: cp}, nil
 }
 

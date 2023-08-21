@@ -74,6 +74,22 @@ func setAuthorityHost(cc cloud.Configuration) (string, error) {
 	return host, nil
 }
 
+// resolveAdditionalTenants returns a copy of tenants, simplified when tenants contains a wildcard
+func resolveAdditionalTenants(tenants []string) []string {
+	if len(tenants) == 0 {
+		return nil
+	}
+	for _, t := range tenants {
+		// a wildcard makes all other values redundant
+		if t == "*" {
+			return []string{"*"}
+		}
+	}
+	cp := make([]string, len(tenants))
+	copy(cp, tenants)
+	return cp
+}
+
 // resolveTenant returns the correct tenant for a token request
 func resolveTenant(defaultTenant, specified, credName string, additionalTenants []string) (string, error) {
 	if specified == "" || specified == defaultTenant {

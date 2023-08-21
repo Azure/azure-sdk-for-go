@@ -3,8 +3,13 @@
 ## 1.4.0-beta.5 (Unreleased)
 
 ### Features Added
+* Service principal credentials can request CAE tokens
 
 ### Breaking Changes
+> These changes affect only code written against a beta version such as v1.4.0-beta.4
+* Whether `GetToken` requests a CAE token is now determined by `TokenRequestOptions.EnableCAE`. Azure
+  SDK clients which support CAE will set this option automatically. Credentials no longer request CAE
+  tokens by default or observe the environment variable "AZURE_IDENTITY_DISABLE_CP1".
 
 ### Bugs Fixed
 

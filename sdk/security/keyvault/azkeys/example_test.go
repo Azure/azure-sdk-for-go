@@ -119,7 +119,7 @@ func ExampleClient_UpdateKey() {
 // [Client.RotateKey] allows you to rotate a key on demand. See [Azure Key Vault documentation] for more information about key
 // rotation.
 //
-// [Azure Key Vault documentation]: https://docs.microsoft.com/azure/key-vault/keys/how-to-configure-key-rotation
+// [Azure Key Vault documentation]: https://learn.microsoft.com/azure/key-vault/keys/how-to-configure-key-rotation
 func ExampleClient_UpdateKeyRotationPolicy() {
 	// this policy rotates the key every 18 months
 	policy := azkeys.KeyRotationPolicy{

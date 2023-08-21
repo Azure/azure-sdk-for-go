@@ -147,12 +147,12 @@ directive:
       - models.go
       - constants.go
     where: $
-    transform: return $.replace(/JSONWebKeyOperation/g, "KeyOperation");
+    transform: return $.replace(/JSONWebKeyOperation|JsonWebKeyOperation/g, "KeyOperation");
   - from: 
       - models.go
       - constants.go
     where: $
-    transform: return $.replace(/JSONWebKeyCurveName/g, "CurveName");
+    transform: return $.replace(/JSONWebKeyCurveName|JsonWebKeyCurveName/g, "CurveName");
   - from: 
       - models.go
       - constants.go
@@ -162,12 +162,12 @@ directive:
       - models.go
       - constants.go
     where: $
-    transform: return $.replace(/JSONWebKeySignatureAlgorithm/g, "SignatureAlgorithm");
+    transform: return $.replace(/JSONWebKeySignatureAlgorithm|JsonWebKeySignatureAlgorithm/g, "SignatureAlgorithm");
   - from: 
       - models.go
       - constants.go
     where: $
-    transform: return $.replace(/JSONWebKeyType/g, "KeyType");
+    transform: return $.replace(/JSONWebKeyType|JsonWebKeyType/g, "KeyType");
 
   # remove DeletionRecoveryLevel type
   - from: models.go
@@ -227,4 +227,11 @@ directive:
   - from: models.go
     where: $
     transform: return $.replace(/(KID \*)string(\s+.*)/g, "$1ID$2")
+
+  # edit doc comments to not contain DeletedKeyBundle
+  - from: 
+      - models.go
+      - response_types.go
+    where: $
+    transform: return $.replace(/DeletedKeyBundle/g, "DeletedKey")
 ```

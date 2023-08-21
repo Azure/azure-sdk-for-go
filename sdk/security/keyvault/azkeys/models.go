@@ -18,10 +18,10 @@ type BackupKeyResult struct {
 
 // CreateKeyParameters - The key create parameters.
 type CreateKeyParameters struct {
-	// REQUIRED; The type of key to create. For valid values, see JsonWebKeyType.
+	// REQUIRED; The type of key to create. For valid values, see KeyType.
 	Kty *KeyType
 
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+	// Elliptic curve name. For valid values, see CurveName.
 	Curve *CurveName
 
 	// The attributes of a key managed by the key vault service.
@@ -41,7 +41,7 @@ type CreateKeyParameters struct {
 	Tags map[string]*string
 }
 
-// DeletedKey - A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
+// DeletedKey - A DeletedKey consisting of a WebKey plus its Attributes and deletion info
 type DeletedKey struct {
 	// The key management attributes.
 	Attributes *KeyAttributes
@@ -130,7 +130,7 @@ type ImportKeyParameters struct {
 
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+	// Elliptic curve name. For valid values, see CurveName.
 	Crv *CurveName
 
 	// RSA private exponent, or the D component of an EC private key.
@@ -390,7 +390,7 @@ type RestoreKeyParameters struct {
 
 // SignParameters - The key operations parameters.
 type SignParameters struct {
-	// REQUIRED; The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
+	// REQUIRED; The signing/verification algorithm identifier. For more information on possible algorithm types, see SignatureAlgorithm.
 	Algorithm *SignatureAlgorithm
 
 	// REQUIRED
@@ -402,7 +402,7 @@ type UpdateKeyParameters struct {
 	// The attributes of a key managed by the key vault service.
 	KeyAttributes *KeyAttributes
 
-	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
+	// Json web key operations. For more information on possible key operations, see KeyOperation.
 	KeyOps []*KeyOperation
 
 	// The policy rules under which the key can be exported.
@@ -414,7 +414,7 @@ type UpdateKeyParameters struct {
 
 // VerifyParameters - The key verify parameters.
 type VerifyParameters struct {
-	// REQUIRED; The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
+	// REQUIRED; The signing/verification algorithm. For more information on possible algorithm types, see SignatureAlgorithm.
 	Algorithm *SignatureAlgorithm
 
 	// REQUIRED; The digest used for signing.

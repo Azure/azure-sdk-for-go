@@ -258,14 +258,14 @@ func TestPagerResponderError(t *testing.T) {
 	require.Empty(t, page)
 }
 
-func TestFetcherHelper(t *testing.T) {
+func TestFetcherForNextLink(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	pl := exported.NewPipeline(srv)
 
 	srv.AppendResponse()
 	createReqCalled := false
-	resp, err := FetcherHelper(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
+	resp, err := FetcherForNextLink(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
 		createReqCalled = true
 		return NewRequest(ctx, http.MethodGet, srv.URL())
 	})
@@ -276,7 +276,7 @@ func TestFetcherHelper(t *testing.T) {
 
 	srv.AppendResponse()
 	createReqCalled = false
-	resp, err = FetcherHelper(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
+	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		createReqCalled = true
 		return NewRequest(ctx, http.MethodGet, srv.URL())
 	})
@@ -285,14 +285,14 @@ func TestFetcherHelper(t *testing.T) {
 	require.NotNil(t, resp)
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
 
-	resp, err = FetcherHelper(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
+	resp, err = FetcherForNextLink(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
 		return nil, errors.New("failed")
 	})
 	require.Error(t, err)
 	require.Nil(t, resp)
 
 	srv.AppendError(errors.New("failed"))
-	resp, err = FetcherHelper(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
+	resp, err = FetcherForNextLink(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
 		createReqCalled = true
 		return NewRequest(ctx, http.MethodGet, srv.URL())
 	})
@@ -302,7 +302,7 @@ func TestFetcherHelper(t *testing.T) {
 
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest), mock.WithBody([]byte(`{ "error": { "code": "InvalidResource", "message": "doesn't exist" } }`)))
 	createReqCalled = false
-	resp, err = FetcherHelper(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
+	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		createReqCalled = true
 		return NewRequest(ctx, http.MethodGet, srv.URL())
 	})

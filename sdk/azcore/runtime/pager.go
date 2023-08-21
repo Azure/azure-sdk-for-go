@@ -91,8 +91,8 @@ func (p *Pager[T]) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &p.current)
 }
 
-// FetcherHelper is a helper containing boilerplate code to simplify creating a PagingHandler[T].Fetcher.
-func FetcherHelper(ctx context.Context, pl Pipeline, nextLink string, createReq func(context.Context) (*policy.Request, error)) (*http.Response, error) {
+// FetcherForNextLink is a helper containing boilerplate code to simplify creating a PagingHandler[T].Fetcher from a next link URL.
+func FetcherForNextLink(ctx context.Context, pl Pipeline, nextLink string, createReq func(context.Context) (*policy.Request, error)) (*http.Response, error) {
 	var req *policy.Request
 	var err error
 	if nextLink == "" {

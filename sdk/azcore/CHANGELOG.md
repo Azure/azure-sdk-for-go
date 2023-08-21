@@ -12,6 +12,11 @@
 
 ### Other Changes
 
+* The following functions in the `runtime` package are now exposed from the `policy` package, and the `runtime` versions have been deprecated.
+  * `WithCaptureResponse`
+  * `WithHTTPHeader`
+  * `WithRetryOptions`
+
 ## 1.8.0-beta.2 (2023-08-14)
 
 ### Features Added

@@ -39,46 +39,17 @@ func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
 	}
 }
 
-func TestDefaultAzureCredential_ConstructorErrorHandler(t *testing.T) {
-	setEnvironmentVariables(t, map[string]string{"AZURE_SDK_GO_LOGGING": "all"})
-	errorMessages := []string{
-		"<credential-name>: <error-message>",
-		"<credential-name>: <error-message>",
-	}
-	err := defaultAzureCredentialConstructorErrorHandler(0, errorMessages)
-	if err == nil {
-		t.Fatalf("Expected an error, but received none.")
-	}
-	expectedError := `<credential-name>: <error-message>
-	<credential-name>: <error-message>`
-	if err.Error() != expectedError {
-		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
-	}
-
-	logMessages := []string{}
-	log.SetListener(func(event log.Event, message string) {
-		logMessages = append(logMessages, message)
-	})
-
-	err = defaultAzureCredentialConstructorErrorHandler(1, errorMessages)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expectedLogs := `NewDefaultAzureCredential failed to initialize some credentials:
-	<credential-name>: <error-message>
-	<credential-name>: <error-message>`
-	if len(logMessages) == 0 {
-		t.Fatal("error handler logged no messages")
-	}
-	if logMessages[0] != expectedLogs {
-		t.Fatalf("Did not receive the expected logs.\n\nReceived:\n%s\n\nExpected:\n%s", logMessages[0], expectedLogs)
-	}
-}
-
 func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 	// ensure NewEnvironmentCredential returns an error
 	t.Setenv(azureTenantID, "")
+
+	logMsgs := []string{}
+	log.SetListener(func(e log.Event, s string) {
+		if e == EventAuthentication {
+			logMsgs = append(logMsgs, s)
+		}
+	})
+
 	cred, err := NewDefaultAzureCredential(nil)
 	if err != nil {
 		t.Fatal(err)
@@ -92,6 +63,7 @@ func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 	}
 	// these credentials' constructors returned errors because their configuration is absent;
 	// those errors should be represented in the error returned by DefaultAzureCredential.GetToken()
+	// and NewDefaultAzureCredential should have logged them
 	for _, name := range []string{"EnvironmentCredential", credNameWorkloadIdentity} {
 		matched, err := regexp.MatchString(name+`: .+\n`, err.Error())
 		if err != nil {
@@ -101,6 +73,13 @@ func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 			t.Errorf("expected an error message from %s", name)
 		}
 	}
+	r := regexp.MustCompile(fmt.Sprintf(`(?m)NewDefaultAzureCredential failed to initialize some credentials:\n.*EnvironmentCredential:.+\n.*%s:`, credNameWorkloadIdentity))
+	for _, msg := range logMsgs {
+		if r.MatchString(msg) {
+			return
+		}
+	}
+	t.Fatalf("expected a log message about the constructor errors, got %s", strings.Join(logMsgs, "\n"))
 }
 
 func TestDefaultAzureCredential_TenantID(t *testing.T) {

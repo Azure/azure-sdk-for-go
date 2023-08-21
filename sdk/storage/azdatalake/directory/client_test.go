@@ -2464,13 +2464,36 @@ func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	var respFromCtx *http.Response
-	ctxWithResp := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
-	resp2, err := dirClient.GetProperties(ctxWithResp, nil)
+	// This tests directory.NewClient
+	var respFromCtxDir *http.Response
+	ctxWithRespDir := runtime.WithCaptureResponse(context.Background(), &respFromCtxDir)
+	resp2, err := dirClient.GetProperties(ctxWithRespDir, nil)
 	_require.Nil(err)
 	_require.NotNil(resp2)
-	_require.NotNil(respFromCtx) // validate that the respFromCtx is actually populated
-	_require.Equal("directory", respFromCtx.Header.Get("x-ms-resource-type"))
+	_require.NotNil(respFromCtxDir) // validate that the respFromCtx is actually populated
+	_require.Equal("directory", respFromCtxDir.Header.Get("x-ms-resource-type"))
+
+	// This tests filesystem.NewClient
+	dirClient = fsClient.NewDirectoryClient(dirName)
+	var respFromCtxFs *http.Response
+	ctxWithRespFs := runtime.WithCaptureResponse(context.Background(), &respFromCtxFs)
+	resp2, err = dirClient.GetProperties(ctxWithRespFs, nil)
+	_require.Nil(err)
+	_require.NotNil(resp2)
+	_require.NotNil(respFromCtxFs) // validate that the respFromCtx is actually populated
+	_require.Equal("directory", respFromCtxFs.Header.Get("x-ms-resource-type"))
+
+	// This tests service.NewClient
+	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	fsClient = serviceClient.NewFileSystemClient(filesystemName)
+	dirClient = fsClient.NewDirectoryClient(dirName)
+	var respFromCtxService *http.Response
+	ctxWithRespService := runtime.WithCaptureResponse(context.Background(), &respFromCtxService)
+	resp2, err = dirClient.GetProperties(ctxWithRespService, nil)
+	_require.Nil(err)
+	_require.NotNil(resp2)
+	_require.NotNil(respFromCtxService) // validate that the respFromCtx is actually populated
+	_require.Equal("directory", respFromCtxService.Header.Get("x-ms-resource-type"))
 }
 
 // TODO: more tests for acls

@@ -211,14 +211,15 @@ func (d *Client) NewFileClient(fileName string) (*file.Client, error) {
 	fileURL := runtime.JoinPaths(d.DFSURL(), fileName)
 	newBlobURL, fileURL := shared.GetURLs(fileURL)
 	var newBlobClient *blockblob.Client
+	clientOptions := &blockblob.ClientOptions{ClientOptions: d.getClientOptions().ClientOptions}
 	var err error
 	if d.identityCredential() != nil {
-		newBlobClient, err = blockblob.NewClient(newBlobURL, *d.identityCredential(), nil)
+		newBlobClient, err = blockblob.NewClient(newBlobURL, *d.identityCredential(), clientOptions)
 	} else if d.sharedKey() != nil {
 		blobSharedKey, _ := exported.ConvertToBlobSharedKey(d.sharedKey())
-		newBlobClient, err = blockblob.NewClientWithSharedKeyCredential(newBlobURL, blobSharedKey, nil)
+		newBlobClient, err = blockblob.NewClientWithSharedKeyCredential(newBlobURL, blobSharedKey, clientOptions)
 	} else {
-		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, nil)
+		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, clientOptions)
 	}
 	if err != nil {
 		return nil, exported.ConvertToDFSError(err)

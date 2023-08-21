@@ -3898,21 +3898,64 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
 
-	fileName := testcommon.GenerateFileName(testName)
-	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	resp, err := fClient.Create(context.Background(), nil)
+	resp, err := dirClient.Create(context.Background(), nil)
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	var respFromCtx *http.Response
-	ctxWithResp := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
-	resp2, err := fClient.GetProperties(ctxWithResp, nil)
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, dirName+"/"+fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err = fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	// This tests file.NewClient
+	var respFromCtxFile *http.Response
+	ctxWithRespFile := runtime.WithCaptureResponse(context.Background(), &respFromCtxFile)
+	resp2, err := fClient.GetProperties(ctxWithRespFile, nil)
 	_require.Nil(err)
 	_require.NotNil(resp2)
-	_require.NotNil(respFromCtx) // validate that the respFromCtx is actually populated
-	_require.Equal("file", respFromCtx.Header.Get("x-ms-resource-type"))
+	_require.NotNil(respFromCtxFile) // validate that the respFromCtx is actually populated
+	_require.Equal("file", respFromCtxFile.Header.Get("x-ms-resource-type"))
+
+	// This tests filesystem.NewClient
+	fClient = fsClient.NewFileClient(dirName + "/" + fileName)
+	var respFromCtxFs *http.Response
+	ctxWithRespFs := runtime.WithCaptureResponse(context.Background(), &respFromCtxFs)
+	resp2, err = fClient.GetProperties(ctxWithRespFs, nil)
+	_require.Nil(err)
+	_require.NotNil(resp2)
+	_require.NotNil(respFromCtxFs) // validate that the respFromCtx is actually populated
+	_require.Equal("file", respFromCtxFs.Header.Get("x-ms-resource-type"))
+
+	// This tests service.NewClient
+	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	fsClient = serviceClient.NewFileSystemClient(filesystemName)
+	dirClient = fsClient.NewDirectoryClient(dirName)
+	fClient, err = dirClient.NewFileClient(fileName)
+	var respFromCtxService *http.Response
+	ctxWithRespService := runtime.WithCaptureResponse(context.Background(), &respFromCtxService)
+	resp2, err = fClient.GetProperties(ctxWithRespService, nil)
+	_require.Nil(err)
+	_require.NotNil(resp2)
+	_require.NotNil(respFromCtxService) // validate that the respFromCtx is actually populated
+	_require.Equal("file", respFromCtxService.Header.Get("x-ms-resource-type"))
+
+	// This tests directory.NewClient
+	var respFromCtxDir *http.Response
+	ctxWithRespDir := runtime.WithCaptureResponse(context.Background(), &respFromCtxDir)
+	dirClient, err = testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	fClient, err = dirClient.NewFileClient(fileName)
+	resp2, err = fClient.GetProperties(ctxWithRespDir, nil)
+	_require.Nil(err)
+	_require.NotNil(resp2)
+	_require.NotNil(respFromCtxDir) // validate that the respFromCtx is actually populated
+	_require.Equal("file", respFromCtxDir.Header.Get("x-ms-resource-type"))
 }
 
 // TODO tests all uploads/downloads with other opts

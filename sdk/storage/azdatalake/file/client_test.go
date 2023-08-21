@@ -3935,9 +3935,11 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 
 	// This tests service.NewClient
 	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.Nil(err)
 	fsClient = serviceClient.NewFileSystemClient(filesystemName)
 	dirClient = fsClient.NewDirectoryClient(dirName)
 	fClient, err = dirClient.NewFileClient(fileName)
+	_require.Nil(err)
 	var respFromCtxService *http.Response
 	ctxWithRespService := runtime.WithCaptureResponse(context.Background(), &respFromCtxService)
 	resp2, err = fClient.GetProperties(ctxWithRespService, nil)
@@ -3950,7 +3952,9 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	var respFromCtxDir *http.Response
 	ctxWithRespDir := runtime.WithCaptureResponse(context.Background(), &respFromCtxDir)
 	dirClient, err = testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.Nil(err)
 	fClient, err = dirClient.NewFileClient(fileName)
+	_require.Nil(err)
 	resp2, err = fClient.GetProperties(ctxWithRespDir, nil)
 	_require.Nil(err)
 	_require.NotNil(resp2)

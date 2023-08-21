@@ -2485,6 +2485,7 @@ func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
 
 	// This tests service.NewClient
 	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.Nil(err)
 	fsClient = serviceClient.NewFileSystemClient(filesystemName)
 	dirClient = fsClient.NewDirectoryClient(dirName)
 	var respFromCtxService *http.Response

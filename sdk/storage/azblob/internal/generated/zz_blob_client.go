@@ -956,6 +956,13 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 		}
 		result.LastModified = &lastModified
 	}
+	if val := resp.Header.Get("x-ms-creation-time"); val != "" {
+		creationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.CreationTime = &creationTime
+	}
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {

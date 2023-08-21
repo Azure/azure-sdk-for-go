@@ -54,6 +54,11 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
+	if options.ClientOptions.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	}
+	options.ClientOptions.PerCallPolicies = perCallPolicies
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -80,6 +85,11 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
+	if options.ClientOptions.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	}
+	options.ClientOptions.PerCallPolicies = perCallPolicies
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -110,6 +120,11 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
+	if options.ClientOptions.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	}
+	options.ClientOptions.PerCallPolicies = perCallPolicies
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}

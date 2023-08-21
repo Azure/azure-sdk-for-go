@@ -8,6 +8,7 @@ package directory_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
@@ -16,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
+	"net/http"
 	"testing"
 	"time"
 )
@@ -2440,6 +2442,35 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatchFalse() {
 
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
+}
+
+func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	var respFromCtx *http.Response
+	ctxWithResp := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
+	resp2, err := dirClient.GetProperties(ctxWithResp, nil)
+	_require.Nil(err)
+	_require.NotNil(resp2)
+	_require.NotNil(respFromCtx) // validate that the respFromCtx is actually populated
+	_require.Equal("directory", respFromCtx.Header.Get("x-ms-resource-type"))
 }
 
 // TODO: more tests for acls

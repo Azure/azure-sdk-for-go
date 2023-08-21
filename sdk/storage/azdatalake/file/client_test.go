@@ -11,6 +11,7 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -3883,6 +3884,35 @@ func (s *RecordedTestSuite) TestFileDownloadSmallBufferWithAccessConditions() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
+}
+
+func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	var respFromCtx *http.Response
+	ctxWithResp := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
+	resp2, err := fClient.GetProperties(ctxWithResp, nil)
+	_require.Nil(err)
+	_require.NotNil(resp2)
+	_require.NotNil(respFromCtx) // validate that the respFromCtx is actually populated
+	_require.Equal("file", respFromCtx.Header.Get("x-ms-resource-type"))
 }
 
 // TODO tests all uploads/downloads with other opts

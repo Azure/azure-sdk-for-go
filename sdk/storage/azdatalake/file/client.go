@@ -63,6 +63,11 @@ func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptio
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
+	if options.ClientOptions.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	}
+	options.ClientOptions.PerCallPolicies = perCallPolicies
 	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -91,6 +96,11 @@ func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client,
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
+	if options.ClientOptions.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	}
+	options.ClientOptions.PerCallPolicies = perCallPolicies
 	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -122,6 +132,11 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
+	if options.ClientOptions.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	}
+	options.ClientOptions.PerCallPolicies = perCallPolicies
 	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -216,7 +231,7 @@ func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := path.FormatGetPropertiesOptions(options)
 	var respFromCtx *http.Response
-	ctxWithResp := runtime.WithCaptureResponse(ctx, &respFromCtx)
+	ctxWithResp := shared.WithCaptureBlobResponse(ctx, &respFromCtx)
 	resp, err := f.blobClient().GetProperties(ctxWithResp, opts)
 	newResp := path.FormatGetPropertiesResponse(&resp, respFromCtx)
 	err = exported.ConvertToDFSError(err)

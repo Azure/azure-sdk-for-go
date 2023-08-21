@@ -7,6 +7,13 @@
 * `messaging/CloudEvent` allows you to serialize/deserialize CloudEvents, as described in the CloudEvents 1.0 specification: [link](https://github.com/cloudevents/spec)
 * Added `TokenRequestOptions.EnableCAE` to indicate whether to request a CAE token
 
+### Other Changes
+
+* The following functions in the `runtime` package are now exposed from the `policy` package, and the `runtime` versions have been deprecated.
+  * `WithCaptureResponse`
+  * `WithHTTPHeader`
+  * `WithRetryOptions`
+
 ## 1.7.2 (2023-09-06)
 
 ### Bugs Fixed

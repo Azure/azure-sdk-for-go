@@ -33,8 +33,8 @@ type publicClientOptions struct {
 type publicClient struct {
 	account                  public.Account
 	cae, noCAE               msalPublicClient
+	caeMu, noCAEMu, clientMu *sync.Mutex
 	clientID, tenantID       string
-	clientMu, caeMu, noCAEMu *sync.Mutex
 	host                     string
 	name                     string
 	opts                     publicClientOptions
@@ -89,19 +89,19 @@ func (p *publicClient) GetToken(ctx context.Context, tro policy.TokenRequestOpti
 }
 
 // reqToken requests a token from the MSAL public client. It's separate from GetToken() to enable Authenticate() to bypass the cache.
-func (m *publicClient) reqToken(ctx context.Context, c msalPublicClient, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	tenant, err := m.resolveTenant(tro.TenantID)
+func (p *publicClient) reqToken(ctx context.Context, c msalPublicClient, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	tenant, err := p.resolveTenant(tro.TenantID)
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
 	var ar public.AuthResult
 	switch {
-	case m.opts.DeviceCodePrompt != nil:
+	case p.opts.DeviceCodePrompt != nil:
 		dc, e := c.AcquireTokenByDeviceCode(ctx, tro.Scopes, public.WithClaims(tro.Claims), public.WithTenantID(tenant))
 		if e != nil {
 			return azcore.AccessToken{}, e
 		}
-		err = m.opts.DeviceCodePrompt(ctx, DeviceCodeMessage{
+		err = p.opts.DeviceCodePrompt(ctx, DeviceCodeMessage{
 			Message:         dc.Result.Message,
 			UserCode:        dc.Result.UserCode,
 			VerificationURL: dc.Result.VerificationURL,
@@ -109,17 +109,17 @@ func (m *publicClient) reqToken(ctx context.Context, c msalPublicClient, tro pol
 		if err == nil {
 			ar, err = dc.AuthenticationResult(ctx)
 		}
-	case m.opts.Username != "" && m.opts.Password != "":
-		ar, err = c.AcquireTokenByUsernamePassword(ctx, tro.Scopes, m.opts.Username, m.opts.Password, public.WithClaims(tro.Claims), public.WithTenantID(tenant))
+	case p.opts.Username != "" && p.opts.Password != "":
+		ar, err = c.AcquireTokenByUsernamePassword(ctx, tro.Scopes, p.opts.Username, p.opts.Password, public.WithClaims(tro.Claims), public.WithTenantID(tenant))
 	default:
 		ar, err = c.AcquireTokenInteractive(ctx, tro.Scopes,
 			public.WithClaims(tro.Claims),
-			public.WithLoginHint(m.opts.LoginHint),
-			public.WithRedirectURI(m.opts.RedirectURL),
+			public.WithLoginHint(p.opts.LoginHint),
+			public.WithRedirectURI(p.opts.RedirectURL),
 			public.WithTenantID(tenant),
 		)
 	}
-	return m.token(ar, err)
+	return p.token(ar, err)
 }
 
 func (p *publicClient) client(tro policy.TokenRequestOptions) (msalPublicClient, *sync.Mutex, error) {
@@ -171,6 +171,6 @@ func (p *publicClient) token(ar public.AuthResult, err error) (azcore.AccessToke
 
 // resolveTenant returns the correct tenant for a token request given the client's
 // configuration, or an error when that configuration doesn't allow the specified tenant
-func (m *publicClient) resolveTenant(specified string) (string, error) {
-	return resolveTenant(m.tenantID, specified, m.name, m.opts.AdditionallyAllowedTenants)
+func (p *publicClient) resolveTenant(specified string) (string, error) {
+	return resolveTenant(p.tenantID, specified, p.name, p.opts.AdditionallyAllowedTenants)
 }

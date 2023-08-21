@@ -33,7 +33,7 @@ type confidentialClientOptions struct {
 // confidentialClient wraps the MSAL confidential client
 type confidentialClient struct {
 	cae, noCAE               msalConfidentialClient
-	caeMu, clientMu, noCAEMu *sync.Mutex
+	caeMu, noCAEMu, clientMu *sync.Mutex
 	clientID, tenantID       string
 	cred                     confidential.Credential
 	host                     string
@@ -68,10 +68,6 @@ func (c *confidentialClient) GetToken(ctx context.Context, tro policy.TokenReque
 	if len(tro.Scopes) < 1 {
 		return azcore.AccessToken{}, fmt.Errorf("%s.GetToken() requires at least one scope", c.name)
 	}
-	client, mu, err := c.client(ctx, tro)
-	if err != nil {
-		return azcore.AccessToken{}, err
-	}
 	// we don't resolve the tenant for managed identities because they acquire tokens only from their home tenants
 	if c.name != credNameManagedIdentity {
 		tenant, err := c.resolveTenant(tro.TenantID)
@@ -79,6 +75,10 @@ func (c *confidentialClient) GetToken(ctx context.Context, tro policy.TokenReque
 			return azcore.AccessToken{}, err
 		}
 		tro.TenantID = tenant
+	}
+	client, mu, err := c.client(ctx, tro)
+	if err != nil {
+		return azcore.AccessToken{}, err
 	}
 	mu.Lock()
 	defer mu.Unlock()

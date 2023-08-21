@@ -42,9 +42,9 @@ func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
 		return nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := o.FileSMBProperties.Format(true)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
 
-	permission, permissionKey := o.FilePermissions.Format()
+	permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
 
 	createOptions := &generated.DirectoryClientCreateOptions{
 		FileAttributes:    fileAttributes,
@@ -97,9 +97,9 @@ func (o *RenameOptions) format() (*generated.DirectoryClientRenameOptions, *gene
 		return nil, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := o.FileSMBProperties.Format(true)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
 
-	permission, permissionKey := o.FilePermissions.Format()
+	permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
 
 	renameOpts := &generated.DirectoryClientRenameOptions{
 		FilePermission:    permission,
@@ -152,9 +152,9 @@ func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesO
 		return nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := o.FileSMBProperties.Format(true)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
 
-	permission, permissionKey := o.FilePermissions.Format()
+	permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
 
 	setPropertiesOptions := &generated.DirectoryClientSetPropertiesOptions{
 		FileAttributes:    fileAttributes,

@@ -194,7 +194,6 @@ func (f *Client) Rename(ctx context.Context, destinationPath string, options *Re
 	resp, err := destFileClient.generated().Rename(ctx, f.URL(), opts, srcLease, destLease, smbInfo, fileHTTPHeaders)
 	return RenameResponse{
 		FileClientRenameResponse: resp,
-		Client:                   destFileClient,
 	}, err
 }
 

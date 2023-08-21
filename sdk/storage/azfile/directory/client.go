@@ -200,7 +200,6 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 	resp, err := destDirClient.generated().Rename(ctx, d.URL(), opts, nil, destLease, smbInfo)
 	return RenameResponse{
 		DirectoryClientRenameResponse: resp,
-		Client:                        destDirClient,
 	}, err
 }
 

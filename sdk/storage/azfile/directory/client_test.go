@@ -1549,7 +1549,6 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameDefault() {
 	_require.Equal(resp.FileCreationTime.IsZero(), false)
 	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
 	_require.Equal(resp.FileChangeTime.IsZero(), false)
-	_require.NotNil(resp.Client)
 
 	_, err = dirClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
@@ -1558,20 +1557,6 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameDefault() {
 	_, err = fClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ParentNotFound)
-
-	newDirClient := resp.Client
-	gResp, err := newDirClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(gResp.ETag)
-	_require.NotNil(gResp.RequestID)
-	_require.Equal(gResp.LastModified.IsZero(), false)
-	_require.Equal(gResp.FileCreationTime.IsZero(), false)
-	_require.Equal(gResp.FileLastWriteTime.IsZero(), false)
-	_require.Equal(gResp.FileChangeTime.IsZero(), false)
-
-	newFileClient := newDirClient.NewFileClient(fileName)
-	_, err = newFileClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 }
 
 func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameUsingOAuth() {
@@ -1614,7 +1599,6 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameUsingOAuth() {
 	_require.Equal(resp.FileCreationTime.IsZero(), false)
 	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
 	_require.Equal(resp.FileChangeTime.IsZero(), false)
-	_require.NotNil(resp.Client)
 
 	_, err = dirClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
@@ -1623,14 +1607,6 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameUsingOAuth() {
 	_, err = fClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ParentNotFound)
-
-	newDirClient := resp.Client
-	_, err = newDirClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-
-	newFileClient := newDirClient.NewFileClient(fileName)
-	_, err = newFileClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 }
 
 func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameParentNotFound() {
@@ -1668,17 +1644,12 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameDifferentDir() {
 
 	_ = testcommon.CreateNewDirectory(context.Background(), _require, "destDir", shareClient)
 
-	resp, err := srcDirCl.Rename(context.Background(), "destDir/subDir2", nil)
+	_, err = srcDirCl.Rename(context.Background(), "destDir/subDir2", nil)
 	_require.NoError(err)
-	_require.NotNil(resp.Client)
 
 	_, err = srcDirCl.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
-
-	destDirCl := resp.Client
-	_, err = destDirCl.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 }
 
 func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameIgnoreReadOnly() {
@@ -1712,20 +1683,15 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameIgnoreReadOnly() {
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ReadOnlyAttribute)
 
-	resp, err := srcDirCl.Rename(context.Background(), "destDir/testFile", &directory.RenameOptions{
+	_, err = srcDirCl.Rename(context.Background(), "destDir/testFile", &directory.RenameOptions{
 		ReplaceIfExists: to.Ptr(true),
 		IgnoreReadOnly:  to.Ptr(true),
 	})
 	_require.NoError(err)
-	_require.NotNil(resp.Client)
 
 	_, err = srcDirCl.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
-
-	destDirCl := resp.Client
-	_, err = destDirCl.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 }
 
 func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameNonDefault() {
@@ -1767,7 +1733,6 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameNonDefault() {
 		Metadata: md,
 	})
 	_require.NoError(err)
-	_require.NotNil(resp.Client)
 	_require.NotNil(resp.FileCreationTime)
 	_require.Equal(*resp.FileCreationTime, creationTime.UTC())
 	_require.NotNil(resp.FileLastWriteTime)
@@ -1782,20 +1747,6 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameNonDefault() {
 	_require.True(fileAttributes.ReadOnly)
 	_require.True(fileAttributes.System)
 	_require.True(fileAttributes.Directory)
-
-	destDirCl := resp.Client
-	gResp, err := destDirCl.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(gResp.FileCreationTime)
-	_require.Equal(*gResp.FileCreationTime, *resp.FileCreationTime)
-	_require.NotNil(gResp.FileLastWriteTime)
-	_require.Equal(*gResp.FileLastWriteTime, *resp.FileLastWriteTime)
-	_require.NotNil(gResp.FileChangeTime)
-	_require.Equal(*gResp.FileChangeTime, *resp.FileChangeTime)
-	_require.NotNil(gResp.FilePermissionKey)
-	_require.Equal(*gResp.FilePermissionKey, *resp.FilePermissionKey)
-	_require.Equal(*gResp.FileAttributes, *resp.FileAttributes)
-	_require.EqualValues(gResp.Metadata, md)
 }
 
 func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameDestLease() {
@@ -1834,22 +1785,17 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameDestLease() {
 	})
 	_require.Error(err)
 
-	resp, err := srcDirCl.Rename(context.Background(), destPath, &directory.RenameOptions{
+	_, err = srcDirCl.Rename(context.Background(), destPath, &directory.RenameOptions{
 		ReplaceIfExists: to.Ptr(true),
 		DestinationLeaseAccessConditions: &directory.DestinationLeaseAccessConditions{
 			DestinationLeaseID: acqResp.LeaseID,
 		},
 	})
 	_require.NoError(err)
-	_require.NotNil(resp.Client)
 
 	_, err = srcDirCl.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
-
-	destDirCl := resp.Client
-	_, err = destDirCl.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 }
 
 func (d *DirectoryUnrecordedTestsSuite) TestDirectoryRenameUsingSAS() {
@@ -1883,17 +1829,12 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryRenameUsingSAS() {
 	_require.NoError(err)
 
 	destPathWithSAS := "dir2?" + sasToken
-	resp, err := srcDirCl.Rename(context.Background(), destPathWithSAS, nil)
+	_, err = srcDirCl.Rename(context.Background(), destPathWithSAS, nil)
 	_require.NoError(err)
-	_require.NotNil(resp.Client)
 
 	_, err = srcDirCl.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
-
-	destDirCl := resp.Client
-	_, err = destDirCl.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 }
 
 func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateDeleteTrailingDot() {
@@ -2170,7 +2111,6 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameSourceTrailingDotAndOAu
 	_require.Equal(resp.FileCreationTime.IsZero(), false)
 	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
 	_require.Equal(resp.FileChangeTime.IsZero(), false)
-	_require.NotNil(resp.Client)
 
 	_, err = dirClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
@@ -2179,14 +2119,6 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameSourceTrailingDotAndOAu
 	_, err = fClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ParentNotFound)
-
-	newDirClient := resp.Client
-	_, err = newDirClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-
-	newFileClient := newDirClient.NewFileClient(fileName)
-	_, err = newFileClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 }
 
 func (d *DirectoryRecordedTestsSuite) TestListFileDirEncoded() {

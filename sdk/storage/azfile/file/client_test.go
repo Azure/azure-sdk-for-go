@@ -3490,23 +3490,10 @@ func (f *FileRecordedTestsSuite) TestFileRenameDefault() {
 	_require.Equal(resp.FileCreationTime.IsZero(), false)
 	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
 	_require.Equal(resp.FileChangeTime.IsZero(), false)
-	_require.NotNil(resp.Client)
 
 	_, err = srcFileClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
-
-	destFileClient := resp.Client
-	gResp, err := destFileClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(gResp.ETag)
-	_require.NotNil(gResp.RequestID)
-	_require.Equal(gResp.LastModified.IsZero(), false)
-	_require.Equal(gResp.FileCreationTime.IsZero(), false)
-	_require.Equal(gResp.FileLastWriteTime.IsZero(), false)
-	_require.Equal(gResp.FileChangeTime.IsZero(), false)
-	_require.NotNil(gResp.ContentLength)
-	_require.EqualValues(*gResp.ContentLength, 2048)
 }
 
 func (f *FileRecordedTestsSuite) TestFileRenameUsingOAuth() {
@@ -3545,15 +3532,10 @@ func (f *FileRecordedTestsSuite) TestFileRenameUsingOAuth() {
 	_require.Equal(resp.FileCreationTime.IsZero(), false)
 	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
 	_require.Equal(resp.FileChangeTime.IsZero(), false)
-	_require.NotNil(resp.Client)
 
 	_, err = srcFileClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
-
-	destFileClient := resp.Client
-	_, err = destFileClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 }
 
 func (f *FileRecordedTestsSuite) TestFileRenameDifferentDir() {
@@ -3574,17 +3556,12 @@ func (f *FileRecordedTestsSuite) TestFileRenameDifferentDir() {
 
 	_ = testcommon.CreateNewDirectory(context.Background(), _require, "dir2", shareClient)
 
-	resp, err := srcFileClient.Rename(context.Background(), "dir2/file2/", nil)
+	_, err = srcFileClient.Rename(context.Background(), "dir2/file2/", nil)
 	_require.NoError(err)
-	_require.NotNil(resp.Client)
 
 	_, err = srcFileClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
-
-	destFileClient := resp.Client
-	_, err = destFileClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 }
 
 func (f *FileRecordedTestsSuite) TestFileRenameIgnoreReadOnly() {
@@ -3616,22 +3593,15 @@ func (f *FileRecordedTestsSuite) TestFileRenameIgnoreReadOnly() {
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ReadOnlyAttribute)
 
-	resp, err := srcFileClient.Rename(context.Background(), "file2", &file.RenameOptions{
+	_, err = srcFileClient.Rename(context.Background(), "file2", &file.RenameOptions{
 		ReplaceIfExists: to.Ptr(true),
 		IgnoreReadOnly:  to.Ptr(true),
 	})
 	_require.NoError(err)
-	_require.NotNil(resp.Client)
 
 	_, err = srcFileClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
-
-	destFileClient := resp.Client
-	gResp, err := destFileClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(gResp.ContentLength)
-	_require.EqualValues(*gResp.ContentLength, 2048)
 }
 
 func (f *FileRecordedTestsSuite) TestFileRenameNonDefault() {
@@ -3676,7 +3646,6 @@ func (f *FileRecordedTestsSuite) TestFileRenameNonDefault() {
 
 	resp, err := srcFileClient.Rename(context.Background(), "file2", &renameOptions)
 	_require.NoError(err)
-	_require.NotNil(resp.Client)
 	_require.NotNil(resp.FileCreationTime)
 	_require.Equal(*resp.FileCreationTime, creationTime.UTC())
 	_require.NotNil(resp.FileLastWriteTime)
@@ -3690,22 +3659,6 @@ func (f *FileRecordedTestsSuite) TestFileRenameNonDefault() {
 	_require.NotNil(fileAttributes)
 	_require.True(fileAttributes.ReadOnly)
 	_require.True(fileAttributes.System)
-
-	destFileClient := resp.Client
-	gResp, err := destFileClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(gResp.FileCreationTime)
-	_require.Equal(*gResp.FileCreationTime, *resp.FileCreationTime)
-	_require.NotNil(gResp.FileLastWriteTime)
-	_require.Equal(*gResp.FileLastWriteTime, *resp.FileLastWriteTime)
-	_require.NotNil(gResp.FileChangeTime)
-	_require.Equal(*gResp.FileChangeTime, *resp.FileChangeTime)
-	_require.NotNil(gResp.FilePermissionKey)
-	_require.Equal(*gResp.FilePermissionKey, *resp.FilePermissionKey)
-	_require.Equal(*gResp.FileAttributes, *resp.FileAttributes)
-	_require.EqualValues(gResp.Metadata, md)
-	_require.NotNil(gResp.ContentType)
-	_require.EqualValues(*gResp.ContentType, *renameOptions.ContentType)
 }
 
 func (f *FileRecordedTestsSuite) TestFileRenameSrcDestLease() {
@@ -3748,7 +3701,7 @@ func (f *FileRecordedTestsSuite) TestFileRenameSrcDestLease() {
 	})
 	_require.Error(err)
 
-	resp, err := srcFileClient.Rename(context.Background(), "file2", &file.RenameOptions{
+	_, err = srcFileClient.Rename(context.Background(), "file2", &file.RenameOptions{
 		ReplaceIfExists: to.Ptr(true),
 		SourceLeaseAccessConditions: &file.SourceLeaseAccessConditions{
 			SourceLeaseID: srcAcqResp.LeaseID,
@@ -3758,15 +3711,10 @@ func (f *FileRecordedTestsSuite) TestFileRenameSrcDestLease() {
 		},
 	})
 	_require.NoError(err)
-	_require.NotNil(resp.Client)
 
 	_, err = srcFileClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
-
-	newFileClient := resp.Client
-	_, err = newFileClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 }
 
 func (f *FileUnrecordedTestsSuite) TestFileRenameUsingSAS() {
@@ -3801,17 +3749,12 @@ func (f *FileUnrecordedTestsSuite) TestFileRenameUsingSAS() {
 	_require.NoError(err)
 
 	destPathWithSAS := "file2?" + sasToken
-	resp, err := srcFileClient.Rename(context.Background(), destPathWithSAS, nil)
+	_, err = srcFileClient.Rename(context.Background(), destPathWithSAS, nil)
 	_require.NoError(err)
-	_require.NotNil(resp.Client)
 
 	_, err = srcFileClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
-
-	destFileClient := resp.Client
-	_, err = destFileClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 }
 
 func (f *FileRecordedTestsSuite) TestFileCreateDeleteTrailingDot() {
@@ -4049,17 +3992,12 @@ func (f *FileRecordedTestsSuite) TestFileRenameTrailingDotOAuth() {
 	_, err = srcFileClient.Create(context.Background(), 2048, nil)
 	_require.NoError(err)
 
-	resp, err := srcFileClient.Rename(context.Background(), "file..", nil)
+	_, err = srcFileClient.Rename(context.Background(), "file..", nil)
 	_require.NoError(err)
-	_require.NotNil(resp.Client)
 
 	_, err = srcFileClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
-
-	destFileClient := resp.Client
-	_, err = destFileClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 }
 
 func (f *FileRecordedTestsSuite) TestFileRenameNegativeSourceTrailingDot() {

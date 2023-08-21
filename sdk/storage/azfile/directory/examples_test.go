@@ -10,9 +10,9 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"log"
 	"os"
@@ -98,6 +98,7 @@ func Example_directoryClient_SetProperties() {
 
 	creationTime := time.Now().Add(5 * time.Minute).Round(time.Microsecond)
 	lastWriteTime := time.Now().Add(10 * time.Minute).Round(time.Millisecond)
+	testSDDL := `O:S-1-5-32-548G:S-1-5-21-397955417-626881126-188441444-512D:(A;;RPWPCCDCLCSWRCWDWOGA;;;S-1-0-0)`
 
 	// Set the custom permissions
 	_, err = dirClient.SetProperties(context.Background(), &directory.SetPropertiesOptions{
@@ -110,7 +111,7 @@ func Example_directoryClient_SetProperties() {
 			LastWriteTime: &lastWriteTime,
 		},
 		FilePermissions: &file.Permissions{
-			Permission: &testcommon.SampleSDDL,
+			Permission: &testSDDL,
 		},
 	})
 	handleError(err)
@@ -190,4 +191,89 @@ func Example_directoryClient_SetMetadata() {
 	_, err = dirClient.Delete(context.Background(), nil)
 	handleError(err)
 	fmt.Println("Directory deleted")
+}
+
+func Example_directoryClient_OAuth() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	shareName := "testShare"
+	dirName := "testDirectory"
+	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	dirClient, err := directory.NewClient(dirURL, cred, &directory.ClientOptions{FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup)})
+	handleError(err)
+
+	_, err = dirClient.Create(context.TODO(), nil)
+	handleError(err)
+	fmt.Println("Directory created")
+
+	_, err = dirClient.GetProperties(context.TODO(), nil)
+	handleError(err)
+	fmt.Println("Directory properties retrieved")
+
+	_, err = dirClient.Delete(context.TODO(), nil)
+	handleError(err)
+	fmt.Println("Directory deleted")
+}
+
+func Example_directoryClient_TrailingDot() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	shareName := "testShare"
+	dirName := "testDirectory.." // directory name with trailing dot
+	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	dirClient, err := directory.NewClient(dirURL, cred, &directory.ClientOptions{
+		FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup),
+		AllowTrailingDot:  to.Ptr(true),
+	})
+	handleError(err)
+
+	fmt.Println(dirClient.URL())
+
+	_, err = dirClient.Create(context.TODO(), nil)
+	handleError(err)
+	fmt.Println("Directory created")
+
+	_, err = dirClient.GetProperties(context.TODO(), nil)
+	handleError(err)
+	fmt.Println("Directory properties retrieved")
+
+	_, err = dirClient.Delete(context.TODO(), nil)
+	handleError(err)
+	fmt.Println("Directory deleted")
+}
+
+func Example_directoryClient_Rename() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	shareName := "testShare"
+	srcDirName := "testDirectory"
+	destDirName := "newDirectory"
+	srcDirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + srcDirName
+
+	srcDirClient, err := directory.NewClient(srcDirURL, cred, &directory.ClientOptions{FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup)})
+	handleError(err)
+
+	_, err = srcDirClient.Rename(context.TODO(), destDirName, nil)
+	handleError(err)
+	fmt.Println("Directory renamed")
 }

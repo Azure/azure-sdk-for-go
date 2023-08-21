@@ -23,7 +23,7 @@ import (
 // ClusterJobsClient contains the methods for the ClusterJobs group.
 // Don't use this type directly, use NewClusterJobsClient() instead.
 type ClusterJobsClient struct {
-	internal *arm.Client
+	internal       *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewClusterJobsClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &ClusterJobsClient{
 		subscriptionID: subscriptionID,
-	internal: cl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewClusterJobsClient(subscriptionID string, credential azcore.TokenCredenti
 //   - clusterPoolName - The name of the cluster pool.
 //   - clusterName - The name of the HDInsight cluster.
 //   - options - ClusterJobsClientListOptions contains the optional parameters for the ClusterJobsClient.NewListPager method.
-func (client *ClusterJobsClient) NewListPager(resourceGroupName string, clusterPoolName string, clusterName string, options *ClusterJobsClientListOptions) (*runtime.Pager[ClusterJobsClientListResponse]) {
+func (client *ClusterJobsClient) NewListPager(resourceGroupName string, clusterPoolName string, clusterName string, options *ClusterJobsClientListOptions) *runtime.Pager[ClusterJobsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClusterJobsClientListResponse]{
 		More: func(page ClusterJobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -184,8 +184,7 @@ func (client *ClusterJobsClient) runJobCreateRequest(ctx context.Context, resour
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterJob); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
-

@@ -30,4 +30,3 @@ func unmarshalClusterJobPropertiesClassification(rawMsg json.RawMessage) (Cluste
 	}
 	return b, nil
 }
-

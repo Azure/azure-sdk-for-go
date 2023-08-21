@@ -16,4 +16,3 @@ type ClusterJobPropertiesClassification interface {
 	// GetClusterJobProperties returns the ClusterJobProperties content of the underlying type.
 	GetClusterJobProperties() *ClusterJobProperties
 }
-

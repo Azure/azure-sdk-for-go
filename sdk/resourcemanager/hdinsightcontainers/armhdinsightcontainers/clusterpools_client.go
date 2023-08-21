@@ -23,7 +23,7 @@ import (
 // ClusterPoolsClient contains the methods for the ClusterPools group.
 // Don't use this type directly, use NewClusterPoolsClient() instead.
 type ClusterPoolsClient struct {
-	internal *arm.Client
+	internal       *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewClusterPoolsClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &ClusterPoolsClient{
 		subscriptionID: subscriptionID,
-	internal: cl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *ClusterPoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterPool); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -242,7 +242,7 @@ func (client *ClusterPoolsClient) getHandleResponse(resp *http.Response) (Cluste
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClusterPoolsClientListByResourceGroupOptions contains the optional parameters for the ClusterPoolsClient.NewListByResourceGroupPager
 //     method.
-func (client *ClusterPoolsClient) NewListByResourceGroupPager(resourceGroupName string, options *ClusterPoolsClientListByResourceGroupOptions) (*runtime.Pager[ClusterPoolsClientListByResourceGroupResponse]) {
+func (client *ClusterPoolsClient) NewListByResourceGroupPager(resourceGroupName string, options *ClusterPoolsClientListByResourceGroupOptions) *runtime.Pager[ClusterPoolsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClusterPoolsClientListByResourceGroupResponse]{
 		More: func(page ClusterPoolsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -303,7 +303,7 @@ func (client *ClusterPoolsClient) listByResourceGroupHandleResponse(resp *http.R
 // Generated from API version 2023-06-01-preview
 //   - options - ClusterPoolsClientListBySubscriptionOptions contains the optional parameters for the ClusterPoolsClient.NewListBySubscriptionPager
 //     method.
-func (client *ClusterPoolsClient) NewListBySubscriptionPager(options *ClusterPoolsClientListBySubscriptionOptions) (*runtime.Pager[ClusterPoolsClientListBySubscriptionResponse]) {
+func (client *ClusterPoolsClient) NewListBySubscriptionPager(options *ClusterPoolsClientListBySubscriptionOptions) *runtime.Pager[ClusterPoolsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClusterPoolsClientListBySubscriptionResponse]{
 		More: func(page ClusterPoolsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -421,8 +421,7 @@ func (client *ClusterPoolsClient) updateTagsCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterPoolTags); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
-

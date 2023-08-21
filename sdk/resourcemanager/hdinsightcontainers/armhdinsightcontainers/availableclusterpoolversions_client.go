@@ -23,7 +23,7 @@ import (
 // AvailableClusterPoolVersionsClient contains the methods for the AvailableClusterPoolVersions group.
 // Don't use this type directly, use NewAvailableClusterPoolVersionsClient() instead.
 type AvailableClusterPoolVersionsClient struct {
-	internal *arm.Client
+	internal       *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAvailableClusterPoolVersionsClient(subscriptionID string, credential azc
 	}
 	client := &AvailableClusterPoolVersionsClient{
 		subscriptionID: subscriptionID,
-	internal: cl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewAvailableClusterPoolVersionsClient(subscriptionID string, credential azc
 //   - location - The name of the Azure region.
 //   - options - AvailableClusterPoolVersionsClientListByLocationOptions contains the optional parameters for the AvailableClusterPoolVersionsClient.NewListByLocationPager
 //     method.
-func (client *AvailableClusterPoolVersionsClient) NewListByLocationPager(location string, options *AvailableClusterPoolVersionsClientListByLocationOptions) (*runtime.Pager[AvailableClusterPoolVersionsClientListByLocationResponse]) {
+func (client *AvailableClusterPoolVersionsClient) NewListByLocationPager(location string, options *AvailableClusterPoolVersionsClientListByLocationOptions) *runtime.Pager[AvailableClusterPoolVersionsClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AvailableClusterPoolVersionsClientListByLocationResponse]{
 		More: func(page AvailableClusterPoolVersionsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -104,4 +104,3 @@ func (client *AvailableClusterPoolVersionsClient) listByLocationHandleResponse(r
 	}
 	return result, nil
 }
-

@@ -9,7 +9,7 @@
 package armhdinsightcontainers
 
 const (
-	moduleName = "armhdinsightcontainers"
+	moduleName    = "armhdinsightcontainers"
 	moduleVersion = "v0.1.0"
 )
 
@@ -19,20 +19,20 @@ const (
 type Action string
 
 const (
-	ActionCANCEL Action = "CANCEL"
-	ActionDELETE Action = "DELETE"
-	ActionLISTSAVEPOINT Action = "LIST_SAVEPOINT"
-	ActionNEW Action = "NEW"
-	ActionSAVEPOINT Action = "SAVEPOINT"
-	ActionSTART Action = "START"
+	ActionCANCEL          Action = "CANCEL"
+	ActionDELETE          Action = "DELETE"
+	ActionLISTSAVEPOINT   Action = "LIST_SAVEPOINT"
+	ActionNEW             Action = "NEW"
+	ActionSAVEPOINT       Action = "SAVEPOINT"
+	ActionSTART           Action = "START"
 	ActionSTATELESSUPDATE Action = "STATELESS_UPDATE"
-	ActionSTOP Action = "STOP"
-	ActionUPDATE Action = "UPDATE"
+	ActionSTOP            Action = "STOP"
+	ActionUPDATE          Action = "UPDATE"
 )
 
 // PossibleActionValues returns the possible values for the Action const type.
 func PossibleActionValues() []Action {
-	return []Action{	
+	return []Action{
 		ActionCANCEL,
 		ActionDELETE,
 		ActionLISTSAVEPOINT,
@@ -54,7 +54,7 @@ const (
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{	
+	return []ActionType{
 		ActionTypeInternal,
 	}
 }
@@ -63,13 +63,13 @@ func PossibleActionTypeValues() []ActionType {
 type AutoscaleType string
 
 const (
-	AutoscaleTypeLoadBased AutoscaleType = "LoadBased"
+	AutoscaleTypeLoadBased     AutoscaleType = "LoadBased"
 	AutoscaleTypeScheduleBased AutoscaleType = "ScheduleBased"
 )
 
 // PossibleAutoscaleTypeValues returns the possible values for the AutoscaleType const type.
 func PossibleAutoscaleTypeValues() []AutoscaleType {
-	return []AutoscaleType{	
+	return []AutoscaleType{
 		AutoscaleTypeLoadBased,
 		AutoscaleTypeScheduleBased,
 	}
@@ -79,15 +79,15 @@ func PossibleAutoscaleTypeValues() []AutoscaleType {
 type ComparisonOperator string
 
 const (
-	ComparisonOperatorGreaterThan ComparisonOperator = "greaterThan"
+	ComparisonOperatorGreaterThan        ComparisonOperator = "greaterThan"
 	ComparisonOperatorGreaterThanOrEqual ComparisonOperator = "greaterThanOrEqual"
-	ComparisonOperatorLessThan ComparisonOperator = "lessThan"
-	ComparisonOperatorLessThanOrEqual ComparisonOperator = "lessThanOrEqual"
+	ComparisonOperatorLessThan           ComparisonOperator = "lessThan"
+	ComparisonOperatorLessThanOrEqual    ComparisonOperator = "lessThanOrEqual"
 )
 
 // PossibleComparisonOperatorValues returns the possible values for the ComparisonOperator const type.
 func PossibleComparisonOperatorValues() []ComparisonOperator {
-	return []ComparisonOperator{	
+	return []ComparisonOperator{
 		ComparisonOperatorGreaterThan,
 		ComparisonOperatorGreaterThanOrEqual,
 		ComparisonOperatorLessThan,
@@ -101,12 +101,12 @@ type ContentEncoding string
 
 const (
 	ContentEncodingBase64 ContentEncoding = "Base64"
-	ContentEncodingNone ContentEncoding = "None"
+	ContentEncodingNone   ContentEncoding = "None"
 )
 
 // PossibleContentEncodingValues returns the possible values for the ContentEncoding const type.
 func PossibleContentEncodingValues() []ContentEncoding {
-	return []ContentEncoding{	
+	return []ContentEncoding{
 		ContentEncodingBase64,
 		ContentEncodingNone,
 	}
@@ -116,15 +116,15 @@ func PossibleContentEncodingValues() []ContentEncoding {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication CreatedByType = "Application"
-	CreatedByTypeKey CreatedByType = "Key"
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser CreatedByType = "User"
+	CreatedByTypeUser            CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{	
+	return []CreatedByType{
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -141,7 +141,7 @@ const (
 
 // PossibleJobTypeValues returns the possible values for the JobType const type.
 func PossibleJobTypeValues() []JobType {
-	return []JobType{	
+	return []JobType{
 		JobTypeFlinkJob,
 	}
 }
@@ -151,13 +151,13 @@ type KeyVaultObjectType string
 
 const (
 	KeyVaultObjectTypeCertificate KeyVaultObjectType = "Certificate"
-	KeyVaultObjectTypeKey KeyVaultObjectType = "Key"
-	KeyVaultObjectTypeSecret KeyVaultObjectType = "Secret"
+	KeyVaultObjectTypeKey         KeyVaultObjectType = "Key"
+	KeyVaultObjectTypeSecret      KeyVaultObjectType = "Secret"
 )
 
 // PossibleKeyVaultObjectTypeValues returns the possible values for the KeyVaultObjectType const type.
 func PossibleKeyVaultObjectTypeValues() []KeyVaultObjectType {
-	return []KeyVaultObjectType{	
+	return []KeyVaultObjectType{
 		KeyVaultObjectTypeCertificate,
 		KeyVaultObjectTypeKey,
 		KeyVaultObjectTypeSecret,
@@ -169,14 +169,14 @@ func PossibleKeyVaultObjectTypeValues() []KeyVaultObjectType {
 type Origin string
 
 const (
-	OriginSystem Origin = "system"
-	OriginUser Origin = "user"
+	OriginSystem     Origin = "system"
+	OriginUser       Origin = "user"
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{	
+	return []Origin{
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -187,15 +187,15 @@ func PossibleOriginValues() []Origin {
 type ProvisioningStatus string
 
 const (
-	ProvisioningStatusAccepted ProvisioningStatus = "Accepted"
-	ProvisioningStatusCanceled ProvisioningStatus = "Canceled"
-	ProvisioningStatusFailed ProvisioningStatus = "Failed"
+	ProvisioningStatusAccepted  ProvisioningStatus = "Accepted"
+	ProvisioningStatusCanceled  ProvisioningStatus = "Canceled"
+	ProvisioningStatusFailed    ProvisioningStatus = "Failed"
 	ProvisioningStatusSucceeded ProvisioningStatus = "Succeeded"
 )
 
 // PossibleProvisioningStatusValues returns the possible values for the ProvisioningStatus const type.
 func PossibleProvisioningStatusValues() []ProvisioningStatus {
-	return []ProvisioningStatus{	
+	return []ProvisioningStatus{
 		ProvisioningStatusAccepted,
 		ProvisioningStatusCanceled,
 		ProvisioningStatusFailed,
@@ -208,12 +208,12 @@ type ScaleActionType string
 
 const (
 	ScaleActionTypeScaledown ScaleActionType = "scaledown"
-	ScaleActionTypeScaleup ScaleActionType = "scaleup"
+	ScaleActionTypeScaleup   ScaleActionType = "scaleup"
 )
 
 // PossibleScaleActionTypeValues returns the possible values for the ScaleActionType const type.
 func PossibleScaleActionTypeValues() []ScaleActionType {
-	return []ScaleActionType{	
+	return []ScaleActionType{
 		ScaleActionTypeScaledown,
 		ScaleActionTypeScaleup,
 	}
@@ -222,18 +222,18 @@ func PossibleScaleActionTypeValues() []ScaleActionType {
 type ScheduleDay string
 
 const (
-	ScheduleDayFriday ScheduleDay = "Friday"
-	ScheduleDayMonday ScheduleDay = "Monday"
-	ScheduleDaySaturday ScheduleDay = "Saturday"
-	ScheduleDaySunday ScheduleDay = "Sunday"
-	ScheduleDayThursday ScheduleDay = "Thursday"
-	ScheduleDayTuesday ScheduleDay = "Tuesday"
+	ScheduleDayFriday    ScheduleDay = "Friday"
+	ScheduleDayMonday    ScheduleDay = "Monday"
+	ScheduleDaySaturday  ScheduleDay = "Saturday"
+	ScheduleDaySunday    ScheduleDay = "Sunday"
+	ScheduleDayThursday  ScheduleDay = "Thursday"
+	ScheduleDayTuesday   ScheduleDay = "Tuesday"
 	ScheduleDayWednesday ScheduleDay = "Wednesday"
 )
 
 // PossibleScheduleDayValues returns the possible values for the ScheduleDay const type.
 func PossibleScheduleDayValues() []ScheduleDay {
-	return []ScheduleDay{	
+	return []ScheduleDay{
 		ScheduleDayFriday,
 		ScheduleDayMonday,
 		ScheduleDaySaturday,
@@ -243,4 +243,3 @@ func PossibleScheduleDayValues() []ScheduleDay {
 		ScheduleDayWednesday,
 	}
 }
-

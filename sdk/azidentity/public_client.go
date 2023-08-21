@@ -95,8 +95,15 @@ func (p *publicClient) reqToken(ctx context.Context, c msalPublicClient, tro pol
 		return azcore.AccessToken{}, err
 	}
 	var ar public.AuthResult
-	switch {
-	case p.opts.DeviceCodePrompt != nil:
+	switch p.name {
+	case credNameBrowser:
+		ar, err = c.AcquireTokenInteractive(ctx, tro.Scopes,
+			public.WithClaims(tro.Claims),
+			public.WithLoginHint(p.opts.LoginHint),
+			public.WithRedirectURI(p.opts.RedirectURL),
+			public.WithTenantID(tenant),
+		)
+	case credNameDeviceCode:
 		dc, e := c.AcquireTokenByDeviceCode(ctx, tro.Scopes, public.WithClaims(tro.Claims), public.WithTenantID(tenant))
 		if e != nil {
 			return azcore.AccessToken{}, e
@@ -109,15 +116,10 @@ func (p *publicClient) reqToken(ctx context.Context, c msalPublicClient, tro pol
 		if err == nil {
 			ar, err = dc.AuthenticationResult(ctx)
 		}
-	case p.opts.Username != "" && p.opts.Password != "":
+	case credNameUserPassword:
 		ar, err = c.AcquireTokenByUsernamePassword(ctx, tro.Scopes, p.opts.Username, p.opts.Password, public.WithClaims(tro.Claims), public.WithTenantID(tenant))
 	default:
-		ar, err = c.AcquireTokenInteractive(ctx, tro.Scopes,
-			public.WithClaims(tro.Claims),
-			public.WithLoginHint(p.opts.LoginHint),
-			public.WithRedirectURI(p.opts.RedirectURL),
-			public.WithTenantID(tenant),
-		)
+		return azcore.AccessToken{}, fmt.Errorf("unknown credential %q", p.name)
 	}
 	return p.token(ar, err)
 }

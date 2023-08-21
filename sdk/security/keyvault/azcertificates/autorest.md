@@ -172,7 +172,7 @@ directive:
       - models.go
       - constants.go
     where: $
-    transform: return $.replace(/JSONWebKeyCurveName/g, "CurveName");
+    transform: return $.replace(/JSONWebKeyCurveName|JsonWebKeyCurveName/g, "CurveName");
   - from: 
       - models.go
       - constants.go

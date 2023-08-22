@@ -8,7 +8,7 @@
 
 package azkeys
 
-// CurveName - Elliptic curve name. For valid values, see CurveName.
+// CurveName - Elliptic curve name.
 type CurveName string
 
 const (
@@ -74,7 +74,7 @@ func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
 	}
 }
 
-// KeyOperation - JSON web key operations. For more information, see KeyOperation.
+// KeyOperation - JSON web key operations. For more information, see JsonWebKeyOperation.
 type KeyOperation string
 
 const (
@@ -102,8 +102,7 @@ func PossibleKeyOperationValues() []KeyOperation {
 	}
 }
 
-// SignatureAlgorithm - The signing/verification algorithm identifier. For more information on possible algorithm
-// types, see SignatureAlgorithm.
+// SignatureAlgorithm - The signing/verification algorithm identifier.
 type SignatureAlgorithm string
 
 const (

@@ -147,12 +147,12 @@ directive:
       - models.go
       - constants.go
     where: $
-    transform: return $.replace(/JSONWebKeyOperation|JsonWebKeyOperation/g, "KeyOperation");
+    transform: return $.replace(/JSONWebKeyOperation/g, "KeyOperation");
   - from: 
       - models.go
       - constants.go
     where: $
-    transform: return $.replace(/JSONWebKeyCurveName|JsonWebKeyCurveName/g, "CurveName");
+    transform: return $.replace(/JSONWebKeyCurveName/g, "CurveName");
   - from: 
       - models.go
       - constants.go
@@ -162,12 +162,12 @@ directive:
       - models.go
       - constants.go
     where: $
-    transform: return $.replace(/JSONWebKeySignatureAlgorithm|JsonWebKeySignatureAlgorithm/g, "SignatureAlgorithm");
+    transform: return $.replace(/JSONWebKeySignatureAlgorithm/g, "SignatureAlgorithm");
   - from: 
       - models.go
       - constants.go
     where: $
-    transform: return $.replace(/JSONWebKeyType|JsonWebKeyType/g, "KeyType");
+    transform: return $.replace(/JSONWebKeyType/g, "KeyType");
 
   # remove DeletionRecoveryLevel type
   - from: models.go
@@ -234,4 +234,11 @@ directive:
       - response_types.go
     where: $
     transform: return $.replace(/DeletedKeyBundle/g, "DeletedKey")
+
+  # remove redundant section of doc comment
+  - from:
+      - models.go
+      - constants.go
+    where: $
+    transform: return $.replace(/(For valid values, (.*)\.)|(For more information .*\.)|(For more information on possible algorithm\n\/\/ types, see JsonWebKeySignatureAlgorithm.)/g, "");
 ```

@@ -505,7 +505,7 @@ type IssuerPropertiesListResult struct {
 
 // KeyProperties - Properties of the key pair backing a certificate.
 type KeyProperties struct {
-	// Elliptic curve name. For valid values, see CurveName.
+	// Elliptic curve name.
 	Curve *CurveName `json:"crv,omitempty"`
 
 	// Indicates if the private key can be exported. Release policy must be provided when creating the first version of an exportable

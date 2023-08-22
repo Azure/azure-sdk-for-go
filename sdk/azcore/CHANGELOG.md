@@ -4,7 +4,7 @@
 
 ### Features Added
 
-* Added function `FetcherForNextLink` to the `runtime` package to centralize creation of `Pager[T].Fetcher` from a next link URL.
+* Added function `FetcherForNextLink` and `FetcherForNextLinkOptions` to the `runtime` package to centralize creation of `Pager[T].Fetcher` from a next link URL.
 
 ### Breaking Changes
 

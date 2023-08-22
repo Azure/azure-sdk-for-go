@@ -1611,10 +1611,10 @@ func (s *ShareRecordedTestsSuite) TestPremiumShareBandwidth() {
 
 	response, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	_require.NotNil(response.ProvisionedBandwidthMibps)
+	_require.NotNil(response.ProvisionedBandwidthMiBps)
 	_require.NotNil(response.ProvisionedIngressMBps)
 	_require.NotNil(response.ProvisionedEgressMBps)
 	_require.NotNil(response.ProvisionedIops)
 	_require.NotNil(response.NextAllowedQuotaDowngradeTime)
-	_require.Greater(*response.ProvisionedBandwidthMibps, (int32)(0))
+	_require.Greater(*response.ProvisionedBandwidthMiBps, (int32)(0))
 }

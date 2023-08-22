@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.1 (2023-08-21)
+## 1.0.1 (2023-08-22)
 
 ### Other Changes
 * Upgraded dependencies

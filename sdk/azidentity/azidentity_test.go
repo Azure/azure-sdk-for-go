@@ -420,7 +420,7 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 			called := false
 			for _, source := range c.chain.sources {
 				if cli, ok := source.(*AzureCLICredential); ok {
-					cli.tokenProvider = func(ctx context.Context, resource, tenantID string) ([]byte, error) {
+					cli.opts.tokenProvider = func(ctx context.Context, resource, tenantID string) ([]byte, error) {
 						called = true
 						if tenantID != test.expected {
 							t.Fatalf(`unexpected tenantID "%s"`, tenantID)
@@ -446,8 +446,6 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 }
 
 func TestClaims(t *testing.T) {
-	realCP1 := disableCP1
-	t.Cleanup(func() { disableCP1 = realCP1 })
 	claim := `"test":"pass"`
 	for _, test := range []struct {
 		ctor func(azcore.ClientOptions) (azcore.TokenCredential, error)
@@ -498,14 +496,24 @@ func TestClaims(t *testing.T) {
 				return NewUsernamePasswordCredential(fakeTenantID, fakeClientID, fakeUsername, "password", &o)
 			},
 		},
+		{
+			name: credNameWorkloadIdentity,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				tokenFile := filepath.Join(t.TempDir(), "token")
+				if err := os.WriteFile(tokenFile, []byte(tokenValue), os.ModePerm); err != nil {
+					t.Fatalf("failed to write token file: %v", err)
+				}
+				o := WorkloadIdentityCredentialOptions{ClientID: fakeClientID, ClientOptions: co, TenantID: fakeTenantID, TokenFilePath: tokenFile}
+				return NewWorkloadIdentityCredential(&o)
+			},
+		},
 	} {
-		for _, d := range []bool{true, false} {
+		for _, enableCAE := range []bool{true, false} {
 			name := test.name
-			if d {
-				name += " disableCP1"
+			if enableCAE {
+				name += " CAE"
 			}
 			t.Run(name, func(t *testing.T) {
-				disableCP1 = d
 				reqs := 0
 				sts := mockSTS{
 					tokenRequestCallback: func(r *http.Request) *http.Response {
@@ -513,14 +521,14 @@ func TestClaims(t *testing.T) {
 							t.Error(err)
 						}
 						reqs++
-						// If the disableCP1 flag isn't set, both requests should specify CP1. The second
-						// GetToken call specifies claims we should find in the following token request.
+						// Both requests should specify CP1 when CAE is enabled for the token.
 						// We check only for substrings because MSAL is responsible for formatting claims.
 						actual := fmt.Sprint(r.Form["claims"])
-						if strings.Contains(actual, "CP1") == disableCP1 {
+						if strings.Contains(actual, "CP1") != enableCAE {
 							t.Fatalf(`unexpected claims "%v"`, actual)
 						}
 						if reqs == 2 {
+							// the second GetToken call specifies claims we should find in the following token request
 							if !strings.Contains(strings.ReplaceAll(actual, " ", ""), claim) {
 								t.Fatalf(`unexpected claims "%v"`, actual)
 							}
@@ -533,10 +541,12 @@ func TestClaims(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"A"}}); err != nil {
+				tro := policy.TokenRequestOptions{EnableCAE: enableCAE, Scopes: []string{"A"}}
+				if _, err = cred.GetToken(context.Background(), tro); err != nil {
 					t.Fatal(err)
 				}
-				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
+				tro = policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), EnableCAE: enableCAE, Scopes: []string{"B"}}
+				if _, err = cred.GetToken(context.Background(), tro); err != nil {
 					t.Fatal(err)
 				}
 				if reqs != 2 {
@@ -544,6 +554,59 @@ func TestClaims(t *testing.T) {
 				}
 			})
 		}
+	}
+}
+
+func TestResolveTenant(t *testing.T) {
+	credName := "testcred"
+	defaultTenant := "default-tenant"
+	otherTenant := "other-tenant"
+	for _, test := range []struct {
+		allowed          []string
+		expected, tenant string
+		expectError      bool
+	}{
+		// no alternate tenant specified -> should get default
+		{expected: defaultTenant},
+		{allowed: []string{""}, expected: defaultTenant},
+		{allowed: []string{"*"}, expected: defaultTenant},
+		{allowed: []string{otherTenant}, expected: defaultTenant},
+
+		// alternate tenant specified and allowed -> should get that tenant
+		{allowed: []string{"*"}, expected: otherTenant, tenant: otherTenant},
+		{allowed: []string{otherTenant}, expected: otherTenant, tenant: otherTenant},
+		{allowed: []string{"not-" + otherTenant, otherTenant}, expected: otherTenant, tenant: otherTenant},
+		{allowed: []string{"not-" + otherTenant, "*"}, expected: otherTenant, tenant: otherTenant},
+
+		// invalid or not allowed tenant -> should get an error
+		{tenant: otherTenant, expectError: true},
+		{allowed: []string{""}, tenant: otherTenant, expectError: true},
+		{allowed: []string{defaultTenant}, tenant: otherTenant, expectError: true},
+		{tenant: badTenantID, expectError: true},
+		{allowed: []string{""}, tenant: badTenantID, expectError: true},
+		{allowed: []string{"*", badTenantID}, tenant: badTenantID, expectError: true},
+		{tenant: "invalid@tenant", expectError: true},
+		{tenant: "invalid/tenant", expectError: true},
+		{tenant: "invalid(tenant", expectError: true},
+		{tenant: "invalid:tenant", expectError: true},
+	} {
+		t.Run("", func(t *testing.T) {
+			tenant, err := resolveTenant(defaultTenant, test.tenant, credName, test.allowed)
+			if err != nil {
+				if test.expectError {
+					if validTenantID(test.tenant) && !strings.Contains(err.Error(), credName) {
+						t.Fatalf("expected error to contain %q, got %q", credName, err.Error())
+					}
+					return
+				}
+				t.Fatal(err)
+			} else if test.expectError {
+				t.Fatal("expected an error")
+			}
+			if tenant != test.expected {
+				t.Fatalf(`expected "%s", got "%s"`, test.expected, tenant)
+			}
+		})
 	}
 }
 
@@ -592,7 +655,7 @@ func (f fakeConfidentialClient) AcquireTokenOnBehalfOf(ctx context.Context, user
 	return f.returnResult()
 }
 
-var _ confidentialClient = (*fakeConfidentialClient)(nil)
+var _ msalConfidentialClient = (*fakeConfidentialClient)(nil)
 
 // ==================================================================================================================================
 
@@ -643,4 +706,4 @@ func (f fakePublicClient) AcquireTokenInteractive(ctx context.Context, scopes []
 	return f.returnResult()
 }
 
-var _ publicClient = (*fakePublicClient)(nil)
+var _ msalPublicClient = (*fakePublicClient)(nil)

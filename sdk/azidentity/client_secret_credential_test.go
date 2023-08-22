@@ -32,7 +32,7 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	cred.client = fakeConfidentialClient{}
+	cred.client.noCAE = fakeConfidentialClient{}
 	_, err = cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %v", err)

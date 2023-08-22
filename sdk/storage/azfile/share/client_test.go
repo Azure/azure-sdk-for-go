@@ -1477,19 +1477,19 @@ func (s *ShareRecordedTestsSuite) TestShareOAuthNegative() {
 
 	_, err = shareClient.Create(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
 
 	_, err = shareClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
 
 	_, err = shareClient.SetProperties(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
 
 	_, err = shareClient.Delete(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
 }
 
 func (s *ShareRecordedTestsSuite) TestShareCreateAndGetPermissionOAuth() {

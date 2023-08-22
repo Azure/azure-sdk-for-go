@@ -1117,8 +1117,8 @@ type ShareClientGetPropertiesResponse struct {
 	// response.
 	NextAllowedQuotaDowngradeTime *time.Time
 
-	// ProvisionedBandwidthMibps contains the information returned from the x-ms-share-provisioned-bandwidth-mibps header response.
-	ProvisionedBandwidthMibps *int32
+	// ProvisionedBandwidthMiBps contains the information returned from the x-ms-share-provisioned-bandwidth-mibps header response.
+	ProvisionedBandwidthMiBps *int32
 
 	// ProvisionedEgressMBps contains the information returned from the x-ms-share-provisioned-egress-mbps header response.
 	ProvisionedEgressMBps *int32

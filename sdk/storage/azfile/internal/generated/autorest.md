@@ -343,3 +343,13 @@ directive:
   transform: >
     $.required = false;
 ```
+
+### Rename ProvisionedBandwidthMiBps response field
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}?restype=share"]
+  transform: >
+    $.get.responses["200"].headers["x-ms-share-provisioned-bandwidth-mibps"]["x-ms-client-name"] = "ProvisionedBandwidthMiBps"
+```

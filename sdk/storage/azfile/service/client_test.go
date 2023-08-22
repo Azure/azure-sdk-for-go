@@ -471,16 +471,16 @@ func (s *ServiceRecordedTestsSuite) TestServiceOAuthNegative() {
 	// service-level operations are not supported using token credential authentication.
 	_, err = svcClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
 
 	_, err = svcClient.SetProperties(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
 
 	pager := svcClient.NewListSharesPager(nil)
 	_, err = pager.NextPage(context.Background())
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
 }
 
 func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteDirOAuth() {

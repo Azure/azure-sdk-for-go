@@ -273,21 +273,6 @@ type ClusterZoneList struct {
 	Zones []*ClusterZone
 }
 
-// CommonClusterProperties - The common properties of a cluster
-type CommonClusterProperties struct {
-	// The cluster size
-	ClusterSize *int32
-
-	// The hosts
-	Hosts []*string
-
-	// READ-ONLY; The identity
-	ClusterID *int32
-
-	// READ-ONLY; The state of the cluster provisioning
-	ProvisioningState *ClusterProvisioningState
-}
-
 // Datastore - A datastore resource
 type Datastore struct {
 	// The properties of a datastore resource
@@ -382,40 +367,6 @@ type Endpoints struct {
 
 	// READ-ONLY; Endpoint for Virtual Center Server Appliance
 	Vcsa *string
-}
-
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
-
-	// READ-ONLY; The additional info type.
-	Type *string
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
-
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail
-
-	// READ-ONLY; The error message.
-	Message *string
-
-	// READ-ONLY; The error target.
-	Target *string
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail
 }
 
 // ExpressRouteAuthorization - ExpressRoute Circuit Authorization
@@ -949,18 +900,6 @@ type PrivateCloudUpdateProperties struct {
 	ManagementCluster *ManagementCluster
 }
 
-// ProxyResource - The resource model definition for a ARM proxy resource
-type ProxyResource struct {
-	// READ-ONLY; Resource ID.
-	ID *string
-
-	// READ-ONLY; Resource name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
 // Quota - Subscription quotas
 type Quota struct {
 	// READ-ONLY; Remaining hosts quota by sku type
@@ -968,18 +907,6 @@ type Quota struct {
 
 	// READ-ONLY; Host quota is active for current subscription
 	QuotaEnabled *QuotaEnabled
-}
-
-// Resource - The core properties of ARM resources
-type Resource struct {
-	// READ-ONLY; Resource ID.
-	ID *string
-
-	// READ-ONLY; Resource name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
 }
 
 // SKU - The resource model definition representing SKU
@@ -1212,24 +1139,6 @@ type ServiceSpecification struct {
 
 	// Specifications of the Metrics for Azure Monitoring
 	MetricSpecifications []*MetricSpecification
-}
-
-// TrackedResource - The resource model definition for a ARM tracked top level resource
-type TrackedResource struct {
-	// Resource location
-	Location *string
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Resource ID.
-	ID *string
-
-	// READ-ONLY; Resource name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
 }
 
 // Trial - Subscription trial availability

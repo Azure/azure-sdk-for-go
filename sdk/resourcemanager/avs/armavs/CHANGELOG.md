@@ -1,14 +1,9 @@
 # Release History
 
-## 2.0.0 (2023-08-25)
-### Breaking Changes
-
-- Field `AdditionalInfo`, `Code`, `Details`, `Message`, `Target` of struct `ErrorResponse` has been removed
+## 1.3.0 (2023-08-25)
 
 ### Features Added
 
-- New struct `ErrorDetail`
-- New field `Error` in struct `ErrorResponse`
 - New field `ExtendedNetworkBlocks` in struct `PrivateCloudProperties`
 - New field `ExtendedNetworkBlocks` in struct `PrivateCloudUpdateProperties`
 

@@ -14,6 +14,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -5485,4 +5486,40 @@ func TestRequestIDGeneration(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.Equal(t, requestIdMatch, true)
+}
+
+type serviceVersionTest struct{}
+
+// newServiceVersionTestPolicy returns a policy that checks the x-ms-version header
+func newServiceVersionTestPolicy() policy.Policy {
+	return &serviceVersionTest{}
+}
+
+func (m serviceVersionTest) Do(req *policy.Request) (*http.Response, error) {
+	const versionHeader = "x-ms-version"
+
+	currentVersion := req.Raw().Header[versionHeader]
+	if currentVersion[0] != generated.ServiceVersion {
+		return nil, fmt.Errorf(currentVersion[0] + " service version doesn't match expected version: " + generated.ServiceVersion)
+	}
+	return req.Next()
+}
+
+func TestServiceVersion(t *testing.T) {
+	fbb := &fakeBlockBlob{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport:       fbb,
+			PerCallPolicies: []policy.Policy{newServiceVersionTestPolicy()},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	// Upload some data to source
+	contentSize := 4 * 1024 // 4KB
+	r, _ := testcommon.GetDataAndReader(t.Name(), contentSize)
+
+	_, err = client.Upload(context.Background(), streaming.NopCloser(r), nil)
+	require.NoError(t, err)
 }

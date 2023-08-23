@@ -298,6 +298,16 @@ func TestFetcherForNextLink(t *testing.T) {
 	require.Error(t, err)
 	require.Nil(t, resp)
 
+	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
+		return nil, nil
+	}, &FetcherForNextLinkOptions{
+		NextReq: func(ctx context.Context, s string) (*policy.Request, error) {
+			return nil, errors.New("failed")
+		},
+	})
+	require.Error(t, err)
+	require.Nil(t, resp)
+
 	srv.AppendError(errors.New("failed"))
 	resp, err = FetcherForNextLink(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
 		firstReqCalled = true

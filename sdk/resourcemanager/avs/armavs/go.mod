@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs
 
 go 1.18
 

@@ -4,6 +4,8 @@
 
 This client module allows you to publish events and receive events using the [Pull delivery](https://learn.microsoft.com/azure/event-grid/pull-delivery-overview) API.
 
+> NOTE: This client does not work with Event Grid topics. Use the Client in the `publisher` sub-package instead.
+
 Key links:
 - [Source code][source]
 - [API Reference Documentation][godoc]
@@ -24,8 +26,8 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
 
 - Go, version 1.18 or higher
 - An [Azure subscription](https://azure.microsoft.com/free/)
-- An [Event Grid namespace](https://learn.microsoft.com/azure/event-grid/).
-- An Event Grid namespace. You can create an Event Grid Namespace using the [Azure Portal](https://learn.microsoft.com/azure/event-grid/create-view-manage-namespaces).
+- An [Event Grid namespace](https://learn.microsoft.com/azure/event-grid/). You can create an Event Grid Namespace 
+  using the [Azure Portal](https://learn.microsoft.com/azure/event-grid/create-view-manage-namespaces).
 
 ### Authenticate the client
 

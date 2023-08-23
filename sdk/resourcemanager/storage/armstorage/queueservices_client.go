@@ -55,10 +55,6 @@ func NewQueueServicesClient(subscriptionID string, credential azcore.TokenCreden
 //     method.
 func (client *QueueServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesClientGetServicePropertiesOptions) (QueueServicesClientGetServicePropertiesResponse, error) {
 	var err error
-	const operationName = "QueueServicesClient.GetServiceProperties"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return QueueServicesClientGetServicePropertiesResponse{}, err
@@ -121,10 +117,6 @@ func (client *QueueServicesClient) getServicePropertiesHandleResponse(resp *http
 //   - options - QueueServicesClientListOptions contains the optional parameters for the QueueServicesClient.List method.
 func (client *QueueServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesClientListOptions) (QueueServicesClientListResponse, error) {
 	var err error
-	const operationName = "QueueServicesClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return QueueServicesClientListResponse{}, err
@@ -190,10 +182,6 @@ func (client *QueueServicesClient) listHandleResponse(resp *http.Response) (Queu
 //     method.
 func (client *QueueServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters QueueServiceProperties, options *QueueServicesClientSetServicePropertiesOptions) (QueueServicesClientSetServicePropertiesResponse, error) {
 	var err error
-	const operationName = "QueueServicesClient.SetServiceProperties"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return QueueServicesClientSetServicePropertiesResponse{}, err

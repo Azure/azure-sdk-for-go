@@ -55,10 +55,6 @@ func NewBlobServicesClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *BlobServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesClientGetServicePropertiesOptions) (BlobServicesClientGetServicePropertiesResponse, error) {
 	var err error
-	const operationName = "BlobServicesClient.GetServiceProperties"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return BlobServicesClientGetServicePropertiesResponse{}, err
@@ -124,7 +120,6 @@ func (client *BlobServicesClient) NewListPager(resourceGroupName string, account
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *BlobServicesClientListResponse) (BlobServicesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BlobServicesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 			if err != nil {
 				return BlobServicesClientListResponse{}, err
@@ -138,7 +133,6 @@ func (client *BlobServicesClient) NewListPager(resourceGroupName string, account
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -191,10 +185,6 @@ func (client *BlobServicesClient) listHandleResponse(resp *http.Response) (BlobS
 //     method.
 func (client *BlobServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, options *BlobServicesClientSetServicePropertiesOptions) (BlobServicesClientSetServicePropertiesResponse, error) {
 	var err error
-	const operationName = "BlobServicesClient.SetServiceProperties"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return BlobServicesClientSetServicePropertiesResponse{}, err

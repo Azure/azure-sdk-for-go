@@ -57,10 +57,6 @@ func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCre
 //   - options - EncryptionScopesClientGetOptions contains the optional parameters for the EncryptionScopesClient.Get method.
 func (client *EncryptionScopesClient) Get(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesClientGetOptions) (EncryptionScopesClientGetResponse, error) {
 	var err error
-	const operationName = "EncryptionScopesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, options)
 	if err != nil {
 		return EncryptionScopesClientGetResponse{}, err
@@ -130,7 +126,6 @@ func (client *EncryptionScopesClient) NewListPager(resourceGroupName string, acc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EncryptionScopesClientListResponse) (EncryptionScopesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EncryptionScopesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -150,7 +145,6 @@ func (client *EncryptionScopesClient) NewListPager(resourceGroupName string, acc
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -213,10 +207,6 @@ func (client *EncryptionScopesClient) listHandleResponse(resp *http.Response) (E
 //   - options - EncryptionScopesClientPatchOptions contains the optional parameters for the EncryptionScopesClient.Patch method.
 func (client *EncryptionScopesClient) Patch(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesClientPatchOptions) (EncryptionScopesClientPatchResponse, error) {
 	var err error
-	const operationName = "EncryptionScopesClient.Patch"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.patchCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, encryptionScope, options)
 	if err != nil {
 		return EncryptionScopesClientPatchResponse{}, err
@@ -291,10 +281,6 @@ func (client *EncryptionScopesClient) patchHandleResponse(resp *http.Response) (
 //   - options - EncryptionScopesClientPutOptions contains the optional parameters for the EncryptionScopesClient.Put method.
 func (client *EncryptionScopesClient) Put(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesClientPutOptions) (EncryptionScopesClientPutResponse, error) {
 	var err error
-	const operationName = "EncryptionScopesClient.Put"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.putCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, encryptionScope, options)
 	if err != nil {
 		return EncryptionScopesClientPutResponse{}, err

@@ -52,10 +52,6 @@ func NewDeletedAccountsClient(subscriptionID string, credential azcore.TokenCred
 //   - options - DeletedAccountsClientGetOptions contains the optional parameters for the DeletedAccountsClient.Get method.
 func (client *DeletedAccountsClient) Get(ctx context.Context, deletedAccountName string, location string, options *DeletedAccountsClientGetOptions) (DeletedAccountsClientGetResponse, error) {
 	var err error
-	const operationName = "DeletedAccountsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, deletedAccountName, location, options)
 	if err != nil {
 		return DeletedAccountsClientGetResponse{}, err
@@ -118,7 +114,6 @@ func (client *DeletedAccountsClient) NewListPager(options *DeletedAccountsClient
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DeletedAccountsClientListResponse) (DeletedAccountsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeletedAccountsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -138,7 +133,6 @@ func (client *DeletedAccountsClient) NewListPager(options *DeletedAccountsClient
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 

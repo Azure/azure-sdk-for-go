@@ -53,7 +53,6 @@ func (client *SKUsClient) NewListPager(options *SKUsClientListOptions) *runtime.
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *SKUsClientListResponse) (SKUsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SKUsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
 				return SKUsClientListResponse{}, err
@@ -67,7 +66,6 @@ func (client *SKUsClient) NewListPager(options *SKUsClientListOptions) *runtime.
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 

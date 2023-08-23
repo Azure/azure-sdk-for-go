@@ -22,6 +22,23 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.49"
 ```
 
+### Updating service version to 2023-08-03
+```yaml
+directive:
+- from: 
+  - zz_appendblob_client.go
+  - zz_blob_client.go
+  - zz_blockblob_client.go
+  - zz_container_client.go
+  - zz_pageblob_client.go
+  - zz_service_client.go
+  where: $
+  transform: >-
+    return $.
+      replaceAll(`[]string{"2021-12-02"}`, `[]string{ServiceVersion}`).
+      replaceAll(`2021-12-02`, `2023-08-03`);
+```
+
 ### Undo breaking change with BlobName 
 ``` yaml
 directive:

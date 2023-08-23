@@ -8,6 +8,8 @@ package azidentity
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -76,23 +78,44 @@ func TestManagedIdentityClient_ApplicationID(t *testing.T) {
 	}
 }
 
-func TestManagedIdentityClient_IMDS400(t *testing.T) {
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	body := `{"error":"invalid_request","error_description":"Identity not found"}`
-	srv.SetResponse(mock.WithBody([]byte(body)), mock.WithStatusCode(http.StatusBadRequest))
-	client, err := newManagedIdentityClient(&ManagedIdentityCredentialOptions{
-		ClientOptions: azcore.ClientOptions{Transport: srv},
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	_, err = client.authenticate(context.Background(), nil, testTRO.Scopes)
-	if err == nil {
-		t.Fatal("expected an error")
-	}
-	if actual := err.Error(); !strings.Contains(actual, body) {
-		t.Fatalf("expected response body in error, got %q", actual)
+func TestManagedIdentityClient_IMDSErrors(t *testing.T) {
+	for _, test := range []struct {
+		body, desc string
+		code       int
+	}{
+		{
+			desc: "No identity assigned",
+			code: http.StatusBadRequest,
+			body: `{"error":"invalid_request","error_description":"Identity not found"}`,
+		},
+		{
+			desc: "Docker Desktop",
+			code: http.StatusForbidden,
+			body: "connecting to 169.254.169.254:80: connecting to 169.254.169.254:80: dial tcp 169.254.169.254:80: connectex: A socket operation was attempted to an unreachable network.",
+		},
+	} {
+		t.Run(fmt.Sprint(test.code), func(t *testing.T) {
+			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.SetResponse(mock.WithBody([]byte(test.body)), mock.WithStatusCode(test.code))
+			client, err := newManagedIdentityClient(&ManagedIdentityCredentialOptions{
+				ClientOptions: azcore.ClientOptions{Transport: srv},
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, err = client.authenticate(context.Background(), nil, testTRO.Scopes)
+			if err == nil {
+				t.Fatal("expected an error")
+			}
+			if actual := err.Error(); !strings.Contains(actual, test.body) {
+				t.Fatalf("expected response body in error, got %q", actual)
+			}
+			var unavailableErr *credentialUnavailableError
+			if !errors.As(err, &unavailableErr) {
+				t.Fatalf("expected %T, got %T", unavailableErr, err)
+			}
+		})
 	}
 }
 

@@ -46,7 +46,7 @@ func NewLoadBalancerNetworkInterfacesClient(subscriptionID string, credential az
 
 // NewListPager - Gets associated load balancer network interfaces.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerNetworkInterfacesClientListOptions contains the optional parameters for the LoadBalancerNetworkInterfacesClient.NewListPager
@@ -57,7 +57,6 @@ func (client *LoadBalancerNetworkInterfacesClient) NewListPager(resourceGroupNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LoadBalancerNetworkInterfacesClientListResponse) (LoadBalancerNetworkInterfacesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoadBalancerNetworkInterfacesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -77,7 +76,6 @@ func (client *LoadBalancerNetworkInterfacesClient) NewListPager(resourceGroupNam
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -101,7 +99,7 @@ func (client *LoadBalancerNetworkInterfacesClient) listCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

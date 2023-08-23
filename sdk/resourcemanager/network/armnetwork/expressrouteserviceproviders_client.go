@@ -46,7 +46,7 @@ func NewExpressRouteServiceProvidersClient(subscriptionID string, credential azc
 
 // NewListPager - Gets all the available express route service providers.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - options - ExpressRouteServiceProvidersClientListOptions contains the optional parameters for the ExpressRouteServiceProvidersClient.NewListPager
 //     method.
 func (client *ExpressRouteServiceProvidersClient) NewListPager(options *ExpressRouteServiceProvidersClientListOptions) *runtime.Pager[ExpressRouteServiceProvidersClientListResponse] {
@@ -55,7 +55,6 @@ func (client *ExpressRouteServiceProvidersClient) NewListPager(options *ExpressR
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExpressRouteServiceProvidersClientListResponse) (ExpressRouteServiceProvidersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpressRouteServiceProvidersClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -75,7 +74,6 @@ func (client *ExpressRouteServiceProvidersClient) NewListPager(options *ExpressR
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -91,7 +89,7 @@ func (client *ExpressRouteServiceProvidersClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

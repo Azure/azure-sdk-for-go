@@ -10,7 +10,7 @@ package armnetwork
 
 const (
 	moduleName    = "armnetwork"
-	moduleVersion = "v4.1.0-beta.1"
+	moduleVersion = "v4.1.0"
 )
 
 // Access - Access to be allowed or denied.
@@ -351,6 +351,7 @@ func PossibleApplicationGatewayRuleSetStatusOptionsValues() []ApplicationGateway
 type ApplicationGatewaySKUName string
 
 const (
+	ApplicationGatewaySKUNameBasic          ApplicationGatewaySKUName = "Basic"
 	ApplicationGatewaySKUNameStandardLarge  ApplicationGatewaySKUName = "Standard_Large"
 	ApplicationGatewaySKUNameStandardMedium ApplicationGatewaySKUName = "Standard_Medium"
 	ApplicationGatewaySKUNameStandardSmall  ApplicationGatewaySKUName = "Standard_Small"
@@ -363,6 +364,7 @@ const (
 // PossibleApplicationGatewaySKUNameValues returns the possible values for the ApplicationGatewaySKUName const type.
 func PossibleApplicationGatewaySKUNameValues() []ApplicationGatewaySKUName {
 	return []ApplicationGatewaySKUName{
+		ApplicationGatewaySKUNameBasic,
 		ApplicationGatewaySKUNameStandardLarge,
 		ApplicationGatewaySKUNameStandardMedium,
 		ApplicationGatewaySKUNameStandardSmall,
@@ -505,6 +507,7 @@ func PossibleApplicationGatewaySSLProtocolValues() []ApplicationGatewaySSLProtoc
 type ApplicationGatewayTier string
 
 const (
+	ApplicationGatewayTierBasic      ApplicationGatewayTier = "Basic"
 	ApplicationGatewayTierStandard   ApplicationGatewayTier = "Standard"
 	ApplicationGatewayTierStandardV2 ApplicationGatewayTier = "Standard_v2"
 	ApplicationGatewayTierWAF        ApplicationGatewayTier = "WAF"
@@ -514,6 +517,7 @@ const (
 // PossibleApplicationGatewayTierValues returns the possible values for the ApplicationGatewayTier const type.
 func PossibleApplicationGatewayTierValues() []ApplicationGatewayTier {
 	return []ApplicationGatewayTier{
+		ApplicationGatewayTierBasic,
 		ApplicationGatewayTierStandard,
 		ApplicationGatewayTierStandardV2,
 		ApplicationGatewayTierWAF,
@@ -3382,6 +3386,22 @@ func PossibleSlotTypeValues() []SlotType {
 	return []SlotType{
 		SlotTypeProduction,
 		SlotTypeStaging,
+	}
+}
+
+// SyncMode - Backend address synchronous mode for the backend pool
+type SyncMode string
+
+const (
+	SyncModeAutomatic SyncMode = "Automatic"
+	SyncModeManual    SyncMode = "Manual"
+)
+
+// PossibleSyncModeValues returns the possible values for the SyncMode const type.
+func PossibleSyncModeValues() []SyncMode {
+	return []SyncMode{
+		SyncModeAutomatic,
+		SyncModeManual,
 	}
 }
 

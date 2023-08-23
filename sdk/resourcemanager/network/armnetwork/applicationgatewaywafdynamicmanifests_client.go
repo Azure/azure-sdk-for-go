@@ -46,7 +46,7 @@ func NewApplicationGatewayWafDynamicManifestsClient(subscriptionID string, crede
 
 // NewGetPager - Gets the regional application gateway waf manifest.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - location - The region where the nrp are located at.
 //   - options - ApplicationGatewayWafDynamicManifestsClientGetOptions contains the optional parameters for the ApplicationGatewayWafDynamicManifestsClient.NewGetPager
 //     method.
@@ -56,7 +56,6 @@ func (client *ApplicationGatewayWafDynamicManifestsClient) NewGetPager(location 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationGatewayWafDynamicManifestsClientGetResponse) (ApplicationGatewayWafDynamicManifestsClientGetResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGatewayWafDynamicManifestsClient.NewGetPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -76,7 +75,6 @@ func (client *ApplicationGatewayWafDynamicManifestsClient) NewGetPager(location 
 			}
 			return client.getHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -96,7 +94,7 @@ func (client *ApplicationGatewayWafDynamicManifestsClient) getCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

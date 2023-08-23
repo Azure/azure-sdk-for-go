@@ -5502,7 +5502,14 @@ func (m serviceVersionTest) Do(req *policy.Request) (*http.Response, error) {
 	if currentVersion[0] != generated.ServiceVersion {
 		return nil, fmt.Errorf(currentVersion[0] + " service version doesn't match expected version: " + generated.ServiceVersion)
 	}
-	return req.Next()
+
+	return &http.Response{
+		Request:    req.Raw(),
+		Status:     "Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
 }
 
 func TestServiceVersion(t *testing.T) {

@@ -47,7 +47,7 @@ func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCre
 // Get - Returns the properties for the specified encryption scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -57,10 +57,6 @@ func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCre
 //   - options - EncryptionScopesClientGetOptions contains the optional parameters for the EncryptionScopesClient.Get method.
 func (client *EncryptionScopesClient) Get(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesClientGetOptions) (EncryptionScopesClientGetResponse, error) {
 	var err error
-	const operationName = "EncryptionScopesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, options)
 	if err != nil {
 		return EncryptionScopesClientGetResponse{}, err
@@ -101,7 +97,7 @@ func (client *EncryptionScopesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -118,7 +114,7 @@ func (client *EncryptionScopesClient) getHandleResponse(resp *http.Response) (En
 
 // NewListPager - Lists all the encryption scopes available under the specified storage account.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -130,7 +126,6 @@ func (client *EncryptionScopesClient) NewListPager(resourceGroupName string, acc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EncryptionScopesClientListResponse) (EncryptionScopesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EncryptionScopesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -150,7 +145,6 @@ func (client *EncryptionScopesClient) NewListPager(resourceGroupName string, acc
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -174,7 +168,7 @@ func (client *EncryptionScopesClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
@@ -202,7 +196,7 @@ func (client *EncryptionScopesClient) listHandleResponse(resp *http.Response) (E
 // does not already exist.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -213,10 +207,6 @@ func (client *EncryptionScopesClient) listHandleResponse(resp *http.Response) (E
 //   - options - EncryptionScopesClientPatchOptions contains the optional parameters for the EncryptionScopesClient.Patch method.
 func (client *EncryptionScopesClient) Patch(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesClientPatchOptions) (EncryptionScopesClientPatchResponse, error) {
 	var err error
-	const operationName = "EncryptionScopesClient.Patch"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.patchCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, encryptionScope, options)
 	if err != nil {
 		return EncryptionScopesClientPatchResponse{}, err
@@ -257,7 +247,7 @@ func (client *EncryptionScopesClient) patchCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, encryptionScope); err != nil {
@@ -280,7 +270,7 @@ func (client *EncryptionScopesClient) patchHandleResponse(resp *http.Response) (
 // encryption scope properties will be updated per the specified request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -291,10 +281,6 @@ func (client *EncryptionScopesClient) patchHandleResponse(resp *http.Response) (
 //   - options - EncryptionScopesClientPutOptions contains the optional parameters for the EncryptionScopesClient.Put method.
 func (client *EncryptionScopesClient) Put(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesClientPutOptions) (EncryptionScopesClientPutResponse, error) {
 	var err error
-	const operationName = "EncryptionScopesClient.Put"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.putCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, encryptionScope, options)
 	if err != nil {
 		return EncryptionScopesClientPutResponse{}, err
@@ -335,7 +321,7 @@ func (client *EncryptionScopesClient) putCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, encryptionScope); err != nil {

@@ -181,13 +181,46 @@ type AccountMicrosoftEndpoints struct {
 	Web *string
 }
 
+// AccountMigration - The parameters or status associated with an ongoing or enqueued storage account migration in order to
+// update its current SKU or region.
+type AccountMigration struct {
+	// REQUIRED; The properties of a storage account’s ongoing or enqueued migration.
+	StorageAccountMigrationDetails *AccountMigrationProperties
+
+	// current value is 'default' for customer initiated migration
+	Name *string
+
+	// SrpAccountMigrationType in ARM contract which is 'accountMigrations'
+	Type *string
+
+	// READ-ONLY; Migration Resource Id
+	ID *string
+}
+
+// AccountMigrationProperties - The properties of a storage account’s ongoing or enqueued migration.
+type AccountMigrationProperties struct {
+	// REQUIRED; Target sku name for the account
+	TargetSKUName *SKUName
+
+	// READ-ONLY; Reason for migration failure
+	MigrationFailedDetailedReason *string
+
+	// READ-ONLY; Error code for migration failure
+	MigrationFailedReason *string
+
+	// READ-ONLY; Current status of migration
+	MigrationStatus *MigrationStatus
+}
+
 // AccountProperties - Properties of the storage account.
 type AccountProperties struct {
-	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for
-	// this property.
+	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is false
+	// for this property.
 	AllowBlobPublicAccess *bool
 
-	// Allow or disallow cross AAD tenant object replication. The default interpretation is true for this property.
+	// Allow or disallow cross AAD tenant object replication. Set this property to true for new or existing accounts only if object
+	// replication policies will involve storage accounts in different AAD
+	// tenants. The default interpretation is false for new accounts to follow best security practices by default.
 	AllowCrossTenantReplication *bool
 
 	// Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If
@@ -249,6 +282,9 @@ type AccountProperties struct {
 	// be changed for the premium block blobs storage account type.
 	AccessTier *AccessTier
 
+	// READ-ONLY; If customer initiated account migration is in progress, the value will be true else it will be null.
+	AccountMigrationInProgress *bool
+
 	// READ-ONLY; Blob restore status
 	BlobRestoreStatus *BlobRestoreStatus
 
@@ -266,6 +302,9 @@ type AccountProperties struct {
 
 	// READ-ONLY; Geo Replication Stats
 	GeoReplicationStats *GeoReplicationStats
+
+	// READ-ONLY; This property will be set to true or false on an event of ongoing migration. Default value is null.
+	IsSKUConversionBlocked *bool
 
 	// READ-ONLY; Storage account keys creation time.
 	KeyCreationTime *KeyCreationTime
@@ -320,11 +359,13 @@ type AccountPropertiesCreateParameters struct {
 	// be changed for the premium block blobs storage account type.
 	AccessTier *AccessTier
 
-	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for
-	// this property.
+	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is false
+	// for this property.
 	AllowBlobPublicAccess *bool
 
-	// Allow or disallow cross AAD tenant object replication. The default interpretation is true for this property.
+	// Allow or disallow cross AAD tenant object replication. Set this property to true for new or existing accounts only if object
+	// replication policies will involve storage accounts in different AAD
+	// tenants. The default interpretation is false for new accounts to follow best security practices by default.
 	AllowCrossTenantReplication *bool
 
 	// Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If
@@ -403,11 +444,13 @@ type AccountPropertiesUpdateParameters struct {
 	// be changed for the premium block blobs storage account type.
 	AccessTier *AccessTier
 
-	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for
-	// this property.
+	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is false
+	// for this property.
 	AllowBlobPublicAccess *bool
 
-	// Allow or disallow cross AAD tenant object replication. The default interpretation is true for this property.
+	// Allow or disallow cross AAD tenant object replication. Set this property to true for new or existing accounts only if object
+	// replication policies will involve storage accounts in different AAD
+	// tenants. The default interpretation is false for new accounts to follow best security practices by default.
 	AllowCrossTenantReplication *bool
 
 	// Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If
@@ -618,6 +661,13 @@ type BlobContainer struct {
 	Type *string
 }
 
+// BlobInventoryCreationTime - This property defines the creation time based filtering condition. Blob Inventory schema parameter
+// 'Creation-Time' is mandatory with this filter.
+type BlobInventoryCreationTime struct {
+	// When set the policy filters the objects that are created in the last N days. Where N is an integer value between 1 to 36500.
+	LastNDays *int32
+}
+
 // BlobInventoryPolicy - The storage account blob inventory policy.
 type BlobInventoryPolicy struct {
 	// Returns the storage account blob inventory policy rules.
@@ -679,6 +729,9 @@ type BlobInventoryPolicyFilter struct {
 	// pageBlobs. This field is required when definition.objectType property is set to
 	// 'Blob'.
 	BlobTypes []*string
+
+	// This property is used to filter objects based on the object creation time
+	CreationTime *BlobInventoryCreationTime
 
 	// An array of strings with maximum 10 blob prefixes to be excluded from the inventory.
 	ExcludePrefix []*string
@@ -1218,10 +1271,44 @@ type Endpoints struct {
 	Web *string
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
 // ErrorResponse - An error response from the storage resource provider.
 type ErrorResponse struct {
 	// Azure Storage Resource Provider error response body.
 	Error *ErrorResponseBody
+}
+
+// ErrorResponseAutoGenerated - Common error response for all Azure Resource Manager APIs to return error details for failed
+// operations. (This also follows the OData error response format.).
+type ErrorResponseAutoGenerated struct {
+	// The error object.
+	Error *ErrorDetail
 }
 
 // ErrorResponseBody - Error response body contract.
@@ -1392,10 +1479,19 @@ type GeoReplicationStats struct {
 	// READ-ONLY; A boolean flag which indicates whether or not account failover is supported for the account.
 	CanFailover *bool
 
+	// READ-ONLY; A boolean flag which indicates whether or not planned account failover is supported for the account.
+	CanPlannedFailover *bool
+
 	// READ-ONLY; All primary writes preceding this UTC date/time value are guaranteed to be available for read operations. Primary
 	// writes following this point in time may or may not be available for reads. Element may
 	// be default value if value of LastSyncTime is not available, this can happen if secondary is offline or we are in bootstrap.
 	LastSyncTime *time.Time
+
+	// READ-ONLY; The redundancy type of the account after an account failover is performed.
+	PostFailoverRedundancy *PostFailoverRedundancy
+
+	// READ-ONLY; The redundancy type of the account after a planned account failover is performed.
+	PostPlannedFailoverRedundancy *PostPlannedFailoverRedundancy
 
 	// READ-ONLY; The status of the secondary location. Possible values are: - Live: Indicates that the secondary location is
 	// active and operational. - Bootstrap: Indicates initial synchronization from the primary

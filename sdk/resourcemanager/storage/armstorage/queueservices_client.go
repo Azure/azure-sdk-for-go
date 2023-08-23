@@ -47,7 +47,7 @@ func NewQueueServicesClient(subscriptionID string, credential azcore.TokenCreden
 // and CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -55,10 +55,6 @@ func NewQueueServicesClient(subscriptionID string, credential azcore.TokenCreden
 //     method.
 func (client *QueueServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesClientGetServicePropertiesOptions) (QueueServicesClientGetServicePropertiesResponse, error) {
 	var err error
-	const operationName = "QueueServicesClient.GetServiceProperties"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return QueueServicesClientGetServicePropertiesResponse{}, err
@@ -96,7 +92,7 @@ func (client *QueueServicesClient) getServicePropertiesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -114,17 +110,13 @@ func (client *QueueServicesClient) getServicePropertiesHandleResponse(resp *http
 // List - List all queue services for the storage account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
 //   - options - QueueServicesClientListOptions contains the optional parameters for the QueueServicesClient.List method.
 func (client *QueueServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesClientListOptions) (QueueServicesClientListResponse, error) {
 	var err error
-	const operationName = "QueueServicesClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return QueueServicesClientListResponse{}, err
@@ -161,7 +153,7 @@ func (client *QueueServicesClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,7 +172,7 @@ func (client *QueueServicesClient) listHandleResponse(resp *http.Response) (Queu
 // and CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -190,10 +182,6 @@ func (client *QueueServicesClient) listHandleResponse(resp *http.Response) (Queu
 //     method.
 func (client *QueueServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters QueueServiceProperties, options *QueueServicesClientSetServicePropertiesOptions) (QueueServicesClientSetServicePropertiesResponse, error) {
 	var err error
-	const operationName = "QueueServicesClient.SetServiceProperties"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return QueueServicesClientSetServicePropertiesResponse{}, err
@@ -231,7 +219,7 @@ func (client *QueueServicesClient) setServicePropertiesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

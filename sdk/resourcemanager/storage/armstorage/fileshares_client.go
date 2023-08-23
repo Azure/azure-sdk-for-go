@@ -48,7 +48,7 @@ func NewFileSharesClient(subscriptionID string, credential azcore.TokenCredentia
 // the share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -59,10 +59,6 @@ func NewFileSharesClient(subscriptionID string, credential azcore.TokenCredentia
 //   - options - FileSharesClientCreateOptions contains the optional parameters for the FileSharesClient.Create method.
 func (client *FileSharesClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesClientCreateOptions) (FileSharesClientCreateResponse, error) {
 	var err error
-	const operationName = "FileSharesClient.Create"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, shareName, fileShare, options)
 	if err != nil {
 		return FileSharesClientCreateResponse{}, err
@@ -106,7 +102,7 @@ func (client *FileSharesClient) createCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, fileShare); err != nil {
@@ -127,7 +123,7 @@ func (client *FileSharesClient) createHandleResponse(resp *http.Response) (FileS
 // Delete - Deletes specified share under its account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -137,10 +133,6 @@ func (client *FileSharesClient) createHandleResponse(resp *http.Response) (FileS
 //   - options - FileSharesClientDeleteOptions contains the optional parameters for the FileSharesClient.Delete method.
 func (client *FileSharesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesClientDeleteOptions) (FileSharesClientDeleteResponse, error) {
 	var err error
-	const operationName = "FileSharesClient.Delete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
 		return FileSharesClientDeleteResponse{}, err
@@ -180,7 +172,7 @@ func (client *FileSharesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	if options != nil && options.Include != nil {
 		reqQP.Set("$include", *options.Include)
 	}
@@ -195,7 +187,7 @@ func (client *FileSharesClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Gets properties of a specified share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -205,10 +197,6 @@ func (client *FileSharesClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - FileSharesClientGetOptions contains the optional parameters for the FileSharesClient.Get method.
 func (client *FileSharesClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesClientGetOptions) (FileSharesClientGetResponse, error) {
 	var err error
-	const operationName = "FileSharesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
 		return FileSharesClientGetResponse{}, err
@@ -249,7 +237,7 @@ func (client *FileSharesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -274,7 +262,7 @@ func (client *FileSharesClient) getHandleResponse(resp *http.Response) (FileShar
 // be 15 to 60 seconds, or can be infinite.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -284,10 +272,6 @@ func (client *FileSharesClient) getHandleResponse(resp *http.Response) (FileShar
 //   - options - FileSharesClientLeaseOptions contains the optional parameters for the FileSharesClient.Lease method.
 func (client *FileSharesClient) Lease(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesClientLeaseOptions) (FileSharesClientLeaseResponse, error) {
 	var err error
-	const operationName = "FileSharesClient.Lease"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.leaseCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
 		return FileSharesClientLeaseResponse{}, err
@@ -328,7 +312,7 @@ func (client *FileSharesClient) leaseCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.XMSSnapshot != nil {
 		req.Raw().Header["x-ms-snapshot"] = []string{*options.XMSSnapshot}
@@ -357,7 +341,7 @@ func (client *FileSharesClient) leaseHandleResponse(resp *http.Response) (FileSh
 
 // NewListPager - Lists all shares.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -368,7 +352,6 @@ func (client *FileSharesClient) NewListPager(resourceGroupName string, accountNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *FileSharesClientListResponse) (FileSharesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FileSharesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -388,7 +371,6 @@ func (client *FileSharesClient) NewListPager(resourceGroupName string, accountNa
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -412,7 +394,7 @@ func (client *FileSharesClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", *options.Maxpagesize)
 	}
@@ -439,7 +421,7 @@ func (client *FileSharesClient) listHandleResponse(resp *http.Response) (FileSha
 // Restore - Restore a file share within a valid retention days if share soft delete is enabled
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -449,10 +431,6 @@ func (client *FileSharesClient) listHandleResponse(resp *http.Response) (FileSha
 //   - options - FileSharesClientRestoreOptions contains the optional parameters for the FileSharesClient.Restore method.
 func (client *FileSharesClient) Restore(ctx context.Context, resourceGroupName string, accountName string, shareName string, deletedShare DeletedShare, options *FileSharesClientRestoreOptions) (FileSharesClientRestoreResponse, error) {
 	var err error
-	const operationName = "FileSharesClient.Restore"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.restoreCreateRequest(ctx, resourceGroupName, accountName, shareName, deletedShare, options)
 	if err != nil {
 		return FileSharesClientRestoreResponse{}, err
@@ -492,7 +470,7 @@ func (client *FileSharesClient) restoreCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, deletedShare); err != nil {
@@ -505,7 +483,7 @@ func (client *FileSharesClient) restoreCreateRequest(ctx context.Context, resour
 // Update fails if the specified share does not already exist.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -516,10 +494,6 @@ func (client *FileSharesClient) restoreCreateRequest(ctx context.Context, resour
 //   - options - FileSharesClientUpdateOptions contains the optional parameters for the FileSharesClient.Update method.
 func (client *FileSharesClient) Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesClientUpdateOptions) (FileSharesClientUpdateResponse, error) {
 	var err error
-	const operationName = "FileSharesClient.Update"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, shareName, fileShare, options)
 	if err != nil {
 		return FileSharesClientUpdateResponse{}, err
@@ -560,7 +534,7 @@ func (client *FileSharesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, fileShare); err != nil {

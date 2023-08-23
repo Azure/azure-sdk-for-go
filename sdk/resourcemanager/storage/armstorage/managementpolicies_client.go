@@ -46,7 +46,7 @@ func NewManagementPoliciesClient(subscriptionID string, credential azcore.TokenC
 // CreateOrUpdate - Sets the managementpolicy to the specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -56,10 +56,6 @@ func NewManagementPoliciesClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesClientCreateOrUpdateOptions) (ManagementPoliciesClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "ManagementPoliciesClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, properties, options)
 	if err != nil {
 		return ManagementPoliciesClientCreateOrUpdateResponse{}, err
@@ -100,7 +96,7 @@ func (client *ManagementPoliciesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -121,7 +117,7 @@ func (client *ManagementPoliciesClient) createOrUpdateHandleResponse(resp *http.
 // Delete - Deletes the managementpolicy associated with the specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -130,10 +126,6 @@ func (client *ManagementPoliciesClient) createOrUpdateHandleResponse(resp *http.
 //     method.
 func (client *ManagementPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesClientDeleteOptions) (ManagementPoliciesClientDeleteResponse, error) {
 	var err error
-	const operationName = "ManagementPoliciesClient.Delete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
 	if err != nil {
 		return ManagementPoliciesClientDeleteResponse{}, err
@@ -173,7 +165,7 @@ func (client *ManagementPoliciesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -181,7 +173,7 @@ func (client *ManagementPoliciesClient) deleteCreateRequest(ctx context.Context,
 // Get - Gets the managementpolicy associated with the specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -189,10 +181,6 @@ func (client *ManagementPoliciesClient) deleteCreateRequest(ctx context.Context,
 //   - options - ManagementPoliciesClientGetOptions contains the optional parameters for the ManagementPoliciesClient.Get method.
 func (client *ManagementPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesClientGetOptions) (ManagementPoliciesClientGetResponse, error) {
 	var err error
-	const operationName = "ManagementPoliciesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
 	if err != nil {
 		return ManagementPoliciesClientGetResponse{}, err
@@ -233,7 +221,7 @@ func (client *ManagementPoliciesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

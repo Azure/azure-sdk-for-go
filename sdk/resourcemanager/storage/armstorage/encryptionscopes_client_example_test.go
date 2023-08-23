@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b32e1896f30e6ea155449cb49719a6286e32b961/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountPutEncryptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0baf811c3c76c87b3c127d098519bd97141222dd/specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountPutEncryptionScope.json
 func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEncryptionScopesClient().Put(ctx, "resource-group-name", "{storage-account-name}", "{encryption-scope-name}", armstorage.EncryptionScope{}, nil)
+	res, err := clientFactory.NewEncryptionScopesClient().Put(ctx, "resource-group-name", "accountname", "{encryption-scope-name}", armstorage.EncryptionScope{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -39,7 +39,7 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScope() {
 	// res.EncryptionScope = armstorage.EncryptionScope{
 	// 	Name: to.Ptr("{encryption-scope-name}"),
 	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/{storage-account-name}/encryptionScopes/{encryption-scope-name}"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/{encryption-scope-name}"),
 	// 	EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
 	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
 	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
@@ -49,7 +49,7 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScope() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b32e1896f30e6ea155449cb49719a6286e32b961/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountPutEncryptionScopeWithInfrastructureEncryption.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0baf811c3c76c87b3c127d098519bd97141222dd/specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountPutEncryptionScopeWithInfrastructureEncryption.json
 func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScopeWithInfrastructureEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScopeWithInfra
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEncryptionScopesClient().Put(ctx, "resource-group-name", "{storage-account-name}", "{encryption-scope-name}", armstorage.EncryptionScope{
+	res, err := clientFactory.NewEncryptionScopesClient().Put(ctx, "resource-group-name", "accountname", "{encryption-scope-name}", armstorage.EncryptionScope{
 		EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
 			RequireInfrastructureEncryption: to.Ptr(true),
 		},
@@ -74,7 +74,7 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScopeWithInfra
 	// res.EncryptionScope = armstorage.EncryptionScope{
 	// 	Name: to.Ptr("{encryption-scope-name}"),
 	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/{storage-account-name}/encryptionScopes/{encryption-scope-name}"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/{encryption-scope-name}"),
 	// 	EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
 	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
 	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
@@ -85,7 +85,7 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScopeWithInfra
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b32e1896f30e6ea155449cb49719a6286e32b961/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountPatchEncryptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0baf811c3c76c87b3c127d098519bd97141222dd/specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountPatchEncryptionScope.json
 func ExampleEncryptionScopesClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleEncryptionScopesClient_Patch() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEncryptionScopesClient().Patch(ctx, "resource-group-name", "{storage-account-name}", "{encryption-scope-name}", armstorage.EncryptionScope{
+	res, err := clientFactory.NewEncryptionScopesClient().Patch(ctx, "resource-group-name", "accountname", "{encryption-scope-name}", armstorage.EncryptionScope{
 		EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
 			KeyVaultProperties: &armstorage.EncryptionScopeKeyVaultProperties{
 				KeyURI: to.Ptr("https://testvault.vault.core.windows.net/keys/key1/863425f1358359c"),
@@ -113,7 +113,7 @@ func ExampleEncryptionScopesClient_Patch() {
 	// res.EncryptionScope = armstorage.EncryptionScope{
 	// 	Name: to.Ptr("{encryption-scope-name}"),
 	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/{storage-account-name}/encryptionScopes/{encryption-scope-name}"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/{encryption-scope-name}"),
 	// 	EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
 	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
 	// 		KeyVaultProperties: &armstorage.EncryptionScopeKeyVaultProperties{
@@ -128,7 +128,7 @@ func ExampleEncryptionScopesClient_Patch() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b32e1896f30e6ea155449cb49719a6286e32b961/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountGetEncryptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0baf811c3c76c87b3c127d098519bd97141222dd/specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetEncryptionScope.json
 func ExampleEncryptionScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleEncryptionScopesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEncryptionScopesClient().Get(ctx, "resource-group-name", "{storage-account-name}", "{encryption-scope-name}", nil)
+	res, err := clientFactory.NewEncryptionScopesClient().Get(ctx, "resource-group-name", "accountname", "{encryption-scope-name}", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -149,7 +149,7 @@ func ExampleEncryptionScopesClient_Get() {
 	// res.EncryptionScope = armstorage.EncryptionScope{
 	// 	Name: to.Ptr("{encyrption-scope-name}"),
 	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/{storage-account-name}/encryptionScopes/{encryption-scope-name}"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/{encryption-scope-name}"),
 	// 	EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
 	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
 	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
@@ -159,7 +159,7 @@ func ExampleEncryptionScopesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b32e1896f30e6ea155449cb49719a6286e32b961/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountEncryptionScopeList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0baf811c3c76c87b3c127d098519bd97141222dd/specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountEncryptionScopeList.json
 func ExampleEncryptionScopesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleEncryptionScopesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewEncryptionScopesClient().NewListPager("resource-group-name", "{storage-account-name}", &armstorage.EncryptionScopesClientListOptions{Maxpagesize: nil,
+	pager := clientFactory.NewEncryptionScopesClient().NewListPager("resource-group-name", "accountname", &armstorage.EncryptionScopesClientListOptions{Maxpagesize: nil,
 		Filter:  nil,
 		Include: nil,
 	})
@@ -189,7 +189,7 @@ func ExampleEncryptionScopesClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("scope-1"),
 		// 			Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
-		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/{storage-account-name}/encryptionScopes/scope-1"),
+		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/scope-1"),
 		// 			EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
 		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
 		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T02:42:41.7633306Z"); return t}()),
@@ -200,7 +200,7 @@ func ExampleEncryptionScopesClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("scope-2"),
 		// 			Type: to.Ptr("Microsoft.Storage/storageAccounts/encryptionScopes"),
-		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/{storage-account-name}/encryptionScopes/scope-2"),
+		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/accountname/encryptionScopes/scope-2"),
 		// 			EncryptionScopeProperties: &armstorage.EncryptionScopeProperties{
 		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-16T04:32:14.3355306Z"); return t}()),
 		// 				KeyVaultProperties: &armstorage.EncryptionScopeKeyVaultProperties{

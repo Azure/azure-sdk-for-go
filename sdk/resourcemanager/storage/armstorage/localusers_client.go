@@ -46,7 +46,7 @@ func NewLocalUsersClient(subscriptionID string, credential azcore.TokenCredentia
 // CreateOrUpdate - Create or update the properties of a local user associated with the storage account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -57,10 +57,6 @@ func NewLocalUsersClient(subscriptionID string, credential azcore.TokenCredentia
 //     method.
 func (client *LocalUsersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, username string, properties LocalUser, options *LocalUsersClientCreateOrUpdateOptions) (LocalUsersClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "LocalUsersClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, username, properties, options)
 	if err != nil {
 		return LocalUsersClientCreateOrUpdateResponse{}, err
@@ -101,7 +97,7 @@ func (client *LocalUsersClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -122,7 +118,7 @@ func (client *LocalUsersClient) createOrUpdateHandleResponse(resp *http.Response
 // Delete - Deletes the local user associated with the specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -131,10 +127,6 @@ func (client *LocalUsersClient) createOrUpdateHandleResponse(resp *http.Response
 //   - options - LocalUsersClientDeleteOptions contains the optional parameters for the LocalUsersClient.Delete method.
 func (client *LocalUsersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, username string, options *LocalUsersClientDeleteOptions) (LocalUsersClientDeleteResponse, error) {
 	var err error
-	const operationName = "LocalUsersClient.Delete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, username, options)
 	if err != nil {
 		return LocalUsersClientDeleteResponse{}, err
@@ -174,7 +166,7 @@ func (client *LocalUsersClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +175,7 @@ func (client *LocalUsersClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Get the local user of the storage account by username.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -192,10 +184,6 @@ func (client *LocalUsersClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - LocalUsersClientGetOptions contains the optional parameters for the LocalUsersClient.Get method.
 func (client *LocalUsersClient) Get(ctx context.Context, resourceGroupName string, accountName string, username string, options *LocalUsersClientGetOptions) (LocalUsersClientGetResponse, error) {
 	var err error
-	const operationName = "LocalUsersClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, username, options)
 	if err != nil {
 		return LocalUsersClientGetResponse{}, err
@@ -236,7 +224,7 @@ func (client *LocalUsersClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -253,7 +241,7 @@ func (client *LocalUsersClient) getHandleResponse(resp *http.Response) (LocalUse
 
 // NewListPager - List the local users associated with the storage account.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -264,7 +252,6 @@ func (client *LocalUsersClient) NewListPager(resourceGroupName string, accountNa
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *LocalUsersClientListResponse) (LocalUsersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LocalUsersClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 			if err != nil {
 				return LocalUsersClientListResponse{}, err
@@ -278,7 +265,6 @@ func (client *LocalUsersClient) NewListPager(resourceGroupName string, accountNa
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -302,7 +288,7 @@ func (client *LocalUsersClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -320,7 +306,7 @@ func (client *LocalUsersClient) listHandleResponse(resp *http.Response) (LocalUs
 // ListKeys - List SSH authorized keys and shared key of the local user.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -329,10 +315,6 @@ func (client *LocalUsersClient) listHandleResponse(resp *http.Response) (LocalUs
 //   - options - LocalUsersClientListKeysOptions contains the optional parameters for the LocalUsersClient.ListKeys method.
 func (client *LocalUsersClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, username string, options *LocalUsersClientListKeysOptions) (LocalUsersClientListKeysResponse, error) {
 	var err error
-	const operationName = "LocalUsersClient.ListKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, accountName, username, options)
 	if err != nil {
 		return LocalUsersClientListKeysResponse{}, err
@@ -373,7 +355,7 @@ func (client *LocalUsersClient) listKeysCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -391,7 +373,7 @@ func (client *LocalUsersClient) listKeysHandleResponse(resp *http.Response) (Loc
 // RegeneratePassword - Regenerate the local user SSH password.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -401,10 +383,6 @@ func (client *LocalUsersClient) listKeysHandleResponse(resp *http.Response) (Loc
 //     method.
 func (client *LocalUsersClient) RegeneratePassword(ctx context.Context, resourceGroupName string, accountName string, username string, options *LocalUsersClientRegeneratePasswordOptions) (LocalUsersClientRegeneratePasswordResponse, error) {
 	var err error
-	const operationName = "LocalUsersClient.RegeneratePassword"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.regeneratePasswordCreateRequest(ctx, resourceGroupName, accountName, username, options)
 	if err != nil {
 		return LocalUsersClientRegeneratePasswordResponse{}, err
@@ -445,7 +423,7 @@ func (client *LocalUsersClient) regeneratePasswordCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

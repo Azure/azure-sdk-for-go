@@ -46,7 +46,7 @@ func NewObjectReplicationPoliciesClient(subscriptionID string, credential azcore
 // CreateOrUpdate - Create or update the object replication policy of the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -58,10 +58,6 @@ func NewObjectReplicationPoliciesClient(subscriptionID string, credential azcore
 //     method.
 func (client *ObjectReplicationPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyID string, properties ObjectReplicationPolicy, options *ObjectReplicationPoliciesClientCreateOrUpdateOptions) (ObjectReplicationPoliciesClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "ObjectReplicationPoliciesClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyID, properties, options)
 	if err != nil {
 		return ObjectReplicationPoliciesClientCreateOrUpdateResponse{}, err
@@ -102,7 +98,7 @@ func (client *ObjectReplicationPoliciesClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -123,7 +119,7 @@ func (client *ObjectReplicationPoliciesClient) createOrUpdateHandleResponse(resp
 // Delete - Deletes the object replication policy associated with the specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -134,10 +130,6 @@ func (client *ObjectReplicationPoliciesClient) createOrUpdateHandleResponse(resp
 //     method.
 func (client *ObjectReplicationPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyID string, options *ObjectReplicationPoliciesClientDeleteOptions) (ObjectReplicationPoliciesClientDeleteResponse, error) {
 	var err error
-	const operationName = "ObjectReplicationPoliciesClient.Delete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyID, options)
 	if err != nil {
 		return ObjectReplicationPoliciesClientDeleteResponse{}, err
@@ -177,7 +169,7 @@ func (client *ObjectReplicationPoliciesClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -186,7 +178,7 @@ func (client *ObjectReplicationPoliciesClient) deleteCreateRequest(ctx context.C
 // Get - Get the object replication policy of the storage account by policy ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -197,10 +189,6 @@ func (client *ObjectReplicationPoliciesClient) deleteCreateRequest(ctx context.C
 //     method.
 func (client *ObjectReplicationPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyID string, options *ObjectReplicationPoliciesClientGetOptions) (ObjectReplicationPoliciesClientGetResponse, error) {
 	var err error
-	const operationName = "ObjectReplicationPoliciesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyID, options)
 	if err != nil {
 		return ObjectReplicationPoliciesClientGetResponse{}, err
@@ -241,7 +229,7 @@ func (client *ObjectReplicationPoliciesClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -258,7 +246,7 @@ func (client *ObjectReplicationPoliciesClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - List the object replication policies associated with the storage account.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -270,7 +258,6 @@ func (client *ObjectReplicationPoliciesClient) NewListPager(resourceGroupName st
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ObjectReplicationPoliciesClientListResponse) (ObjectReplicationPoliciesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ObjectReplicationPoliciesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 			if err != nil {
 				return ObjectReplicationPoliciesClientListResponse{}, err
@@ -284,7 +271,6 @@ func (client *ObjectReplicationPoliciesClient) NewListPager(resourceGroupName st
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -308,7 +294,7 @@ func (client *ObjectReplicationPoliciesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

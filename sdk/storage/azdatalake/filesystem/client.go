@@ -55,6 +55,11 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
+	if options.ClientOptions.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	}
+	options.ClientOptions.PerCallPolicies = perCallPolicies
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -82,6 +87,11 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
+	if options.ClientOptions.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	}
+	options.ClientOptions.PerCallPolicies = perCallPolicies
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -112,6 +122,11 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
+	if options.ClientOptions.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	}
+	options.ClientOptions.PerCallPolicies = perCallPolicies
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}

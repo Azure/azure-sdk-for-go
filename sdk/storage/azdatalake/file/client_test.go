@@ -11,6 +11,7 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -3883,6 +3884,82 @@ func (s *RecordedTestSuite) TestFileDownloadSmallBufferWithAccessConditions() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
+}
+
+func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, dirName+"/"+fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err = fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	// This tests file.NewClient
+	var respFromCtxFile *http.Response
+	ctxWithRespFile := runtime.WithCaptureResponse(context.Background(), &respFromCtxFile)
+	resp2, err := fClient.GetProperties(ctxWithRespFile, nil)
+	_require.Nil(err)
+	_require.NotNil(resp2)
+	_require.NotNil(respFromCtxFile) // validate that the respFromCtx is actually populated
+	_require.Equal("file", respFromCtxFile.Header.Get("x-ms-resource-type"))
+
+	// This tests filesystem.NewClient
+	fClient = fsClient.NewFileClient(dirName + "/" + fileName)
+	var respFromCtxFs *http.Response
+	ctxWithRespFs := runtime.WithCaptureResponse(context.Background(), &respFromCtxFs)
+	resp2, err = fClient.GetProperties(ctxWithRespFs, nil)
+	_require.Nil(err)
+	_require.NotNil(resp2)
+	_require.NotNil(respFromCtxFs) // validate that the respFromCtx is actually populated
+	_require.Equal("file", respFromCtxFs.Header.Get("x-ms-resource-type"))
+
+	// This tests service.NewClient
+	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.Nil(err)
+	fsClient = serviceClient.NewFileSystemClient(filesystemName)
+	dirClient = fsClient.NewDirectoryClient(dirName)
+	fClient, err = dirClient.NewFileClient(fileName)
+	_require.Nil(err)
+	var respFromCtxService *http.Response
+	ctxWithRespService := runtime.WithCaptureResponse(context.Background(), &respFromCtxService)
+	resp2, err = fClient.GetProperties(ctxWithRespService, nil)
+	_require.Nil(err)
+	_require.NotNil(resp2)
+	_require.NotNil(respFromCtxService) // validate that the respFromCtx is actually populated
+	_require.Equal("file", respFromCtxService.Header.Get("x-ms-resource-type"))
+
+	// This tests directory.NewClient
+	var respFromCtxDir *http.Response
+	ctxWithRespDir := runtime.WithCaptureResponse(context.Background(), &respFromCtxDir)
+	dirClient, err = testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.Nil(err)
+	fClient, err = dirClient.NewFileClient(fileName)
+	_require.Nil(err)
+	resp2, err = fClient.GetProperties(ctxWithRespDir, nil)
+	_require.Nil(err)
+	_require.NotNil(resp2)
+	_require.NotNil(respFromCtxDir) // validate that the respFromCtx is actually populated
+	_require.Equal("file", respFromCtxDir.Header.Get("x-ms-resource-type"))
 }
 
 // TODO tests all uploads/downloads with other opts

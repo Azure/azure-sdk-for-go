@@ -18,7 +18,96 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/CreateAccountManagedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccountEncryption.json
+func ExampleAccountsClient_CreateOrUpdate_createAccountWithEncryption() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmaps.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().CreateOrUpdate(ctx, "myResourceGroup", "myMapsAccount", armmaps.Account{
+		Location: to.Ptr("eastus"),
+		Identity: &armmaps.ManagedServiceIdentity{
+			Type: to.Ptr(armmaps.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmaps.UserAssignedIdentity{
+				"/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName": {},
+			},
+		},
+		Kind: to.Ptr(armmaps.KindGen2),
+		Properties: &armmaps.AccountProperties{
+			Encryption: &armmaps.Encryption{
+				CustomerManagedKeyEncryption: &armmaps.CustomerManagedKeyEncryption{
+					KeyEncryptionKeyIdentity: &armmaps.CustomerManagedKeyEncryptionKeyIdentity{
+						IdentityType:                   to.Ptr(armmaps.IdentityTypeUserAssignedIdentity),
+						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName"),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://contosovault.vault.azure.net/keys/contosokek"),
+				},
+			},
+		},
+		SKU: &armmaps.SKU{
+			Name: to.Ptr(armmaps.NameG2),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Account = armmaps.Account{
+	// 	Name: to.Ptr("myMapsAccount"),
+	// 	Type: to.Ptr("Microsoft.Maps/accounts"),
+	// 	ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"test": to.Ptr("true"),
+	// 	},
+	// 	Identity: &armmaps.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armmaps.ManagedServiceIdentityTypeUserAssigned),
+	// 		PrincipalID: to.Ptr("77f72dac-e0aa-484e-9acd-e5e7075310ef"),
+	// 		TenantID: to.Ptr("06006684-60c1-4954-a20c-ffd8fbea7276"),
+	// 		UserAssignedIdentities: map[string]*armmaps.UserAssignedIdentity{
+	// 			"/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName": &armmaps.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("b602d315-01b5-4265-af23-859edc4f2431"),
+	// 				PrincipalID: to.Ptr("ac287332-364a-41d9-a567-9ad86b9fc299"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Kind: to.Ptr(armmaps.KindGen2),
+	// 	Properties: &armmaps.AccountProperties{
+	// 		Encryption: &armmaps.Encryption{
+	// 			CustomerManagedKeyEncryption: &armmaps.CustomerManagedKeyEncryption{
+	// 				KeyEncryptionKeyIdentity: &armmaps.CustomerManagedKeyEncryptionKeyIdentity{
+	// 					IdentityType: to.Ptr(armmaps.IdentityTypeUserAssignedIdentity),
+	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName"),
+	// 				},
+	// 				KeyEncryptionKeyURL: to.Ptr("https://contosovault.vault.azure.net/keys/contosokek"),
+	// 			},
+	// 		},
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		UniqueID: to.Ptr("b2e763e6-d6f3-4858-9e2b-7cf8df85c593"),
+	// 	},
+	// 	SKU: &armmaps.SKU{
+	// 		Name: to.Ptr(armmaps.NameG2),
+	// 		Tier: to.Ptr("Standard"),
+	// 	},
+	// 	SystemData: &armmaps.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-02T01:01:01.1075056Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armmaps.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-02T01:01:01.1075056Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armmaps.CreatedByTypeApplication),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccountManagedIdentity.json
 func ExampleAccountsClient_CreateOrUpdate_createAccountWithManagedIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,8 +124,8 @@ func ExampleAccountsClient_CreateOrUpdate_createAccountWithManagedIdentities() {
 			"test": to.Ptr("true"),
 		},
 		Identity: &armmaps.ManagedServiceIdentity{
-			Type: to.Ptr(armmaps.ResourceIdentityTypeSystemAssignedUserAssigned),
-			UserAssignedIdentities: map[string]*armmaps.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+			Type: to.Ptr(armmaps.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+			UserAssignedIdentities: map[string]*armmaps.UserAssignedIdentity{
 				"/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName": {},
 			},
 		},
@@ -72,11 +161,11 @@ func ExampleAccountsClient_CreateOrUpdate_createAccountWithManagedIdentities() {
 	// 		"test": to.Ptr("true"),
 	// 	},
 	// 	Identity: &armmaps.ManagedServiceIdentity{
-	// 		Type: to.Ptr(armmaps.ResourceIdentityTypeSystemAssignedUserAssigned),
+	// 		Type: to.Ptr(armmaps.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
 	// 		PrincipalID: to.Ptr("77f72dac-e0aa-484e-9acd-e5e7075310ef"),
 	// 		TenantID: to.Ptr("06006684-60c1-4954-a20c-ffd8fbea7276"),
-	// 		UserAssignedIdentities: map[string]*armmaps.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
-	// 			"/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName": &armmaps.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+	// 		UserAssignedIdentities: map[string]*armmaps.UserAssignedIdentity{
+	// 			"/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName": &armmaps.UserAssignedIdentity{
 	// 				ClientID: to.Ptr("b602d315-01b5-4265-af23-859edc4f2431"),
 	// 				PrincipalID: to.Ptr("ac287332-364a-41d9-a567-9ad86b9fc299"),
 	// 			},
@@ -112,7 +201,7 @@ func ExampleAccountsClient_CreateOrUpdate_createAccountWithManagedIdentities() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/CreateAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccount.json
 func ExampleAccountsClient_CreateOrUpdate_createGen1Account() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +276,7 @@ func ExampleAccountsClient_CreateOrUpdate_createGen1Account() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/CreateAccountGen2.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccountGen2.json
 func ExampleAccountsClient_CreateOrUpdate_createGen2Account() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +351,86 @@ func ExampleAccountsClient_CreateOrUpdate_createGen2Account() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/UpdateAccountManagedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccountEncryption.json
+func ExampleAccountsClient_Update_updateAccountEncryption() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmaps.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().Update(ctx, "myResourceGroup", "myMapsAccount", armmaps.AccountUpdateParameters{
+		Identity: &armmaps.ManagedServiceIdentity{
+			Type: to.Ptr(armmaps.ManagedServiceIdentityTypeSystemAssigned),
+			UserAssignedIdentities: map[string]*armmaps.UserAssignedIdentity{
+				"/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName": nil,
+			},
+		},
+		Properties: &armmaps.AccountProperties{
+			Encryption: &armmaps.Encryption{
+				CustomerManagedKeyEncryption: &armmaps.CustomerManagedKeyEncryption{
+					KeyEncryptionKeyIdentity: &armmaps.CustomerManagedKeyEncryptionKeyIdentity{
+						IdentityType: to.Ptr(armmaps.IdentityTypeSystemAssignedIdentity),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://contosovault.vault.azure.net/keys/contosokek"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Account = armmaps.Account{
+	// 	Name: to.Ptr("myMapsAccount"),
+	// 	Type: to.Ptr("Microsoft.Maps/accounts"),
+	// 	ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Identity: &armmaps.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armmaps.ManagedServiceIdentityTypeSystemAssigned),
+	// 		PrincipalID: to.Ptr("77f72dac-e0aa-484e-9acd-e5e7075310ef"),
+	// 		TenantID: to.Ptr("06006684-60c1-4954-a20c-ffd8fbea7276"),
+	// 		UserAssignedIdentities: map[string]*armmaps.UserAssignedIdentity{
+	// 			"/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName": &armmaps.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("b602d315-01b5-4265-af23-859edc4f2431"),
+	// 				PrincipalID: to.Ptr("ac287332-364a-41d9-a567-9ad86b9fc299"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Kind: to.Ptr(armmaps.KindGen2),
+	// 	Properties: &armmaps.AccountProperties{
+	// 		Encryption: &armmaps.Encryption{
+	// 			CustomerManagedKeyEncryption: &armmaps.CustomerManagedKeyEncryption{
+	// 				KeyEncryptionKeyIdentity: &armmaps.CustomerManagedKeyEncryptionKeyIdentity{
+	// 					IdentityType: to.Ptr(armmaps.IdentityTypeSystemAssignedIdentity),
+	// 				},
+	// 				KeyEncryptionKeyURL: to.Ptr("https://contosovault.vault.azure.net/keys/contosokek"),
+	// 			},
+	// 		},
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		UniqueID: to.Ptr("b2e763e6-d6f3-4858-9e2b-7cf8df85c593"),
+	// 	},
+	// 	SKU: &armmaps.SKU{
+	// 		Name: to.Ptr(armmaps.NameG2),
+	// 		Tier: to.Ptr("Standard"),
+	// 	},
+	// 	SystemData: &armmaps.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-02T01:01:01.1075056Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armmaps.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-02T01:01:01.1075056Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armmaps.CreatedByTypeApplication),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccountManagedIdentity.json
 func ExampleAccountsClient_Update_updateAccountManagedIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,8 +443,8 @@ func ExampleAccountsClient_Update_updateAccountManagedIdentities() {
 	}
 	res, err := clientFactory.NewAccountsClient().Update(ctx, "myResourceGroup", "myMapsAccount", armmaps.AccountUpdateParameters{
 		Identity: &armmaps.ManagedServiceIdentity{
-			Type: to.Ptr(armmaps.ResourceIdentityTypeSystemAssignedUserAssigned),
-			UserAssignedIdentities: map[string]*armmaps.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+			Type: to.Ptr(armmaps.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+			UserAssignedIdentities: map[string]*armmaps.UserAssignedIdentity{
 				"/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName": {},
 			},
 		},
@@ -304,11 +472,11 @@ func ExampleAccountsClient_Update_updateAccountManagedIdentities() {
 	// 	ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Identity: &armmaps.ManagedServiceIdentity{
-	// 		Type: to.Ptr(armmaps.ResourceIdentityTypeSystemAssignedUserAssigned),
+	// 		Type: to.Ptr(armmaps.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
 	// 		PrincipalID: to.Ptr("77f72dac-e0aa-484e-9acd-e5e7075310ef"),
 	// 		TenantID: to.Ptr("06006684-60c1-4954-a20c-ffd8fbea7276"),
-	// 		UserAssignedIdentities: map[string]*armmaps.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
-	// 			"/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName": &armmaps.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+	// 		UserAssignedIdentities: map[string]*armmaps.UserAssignedIdentity{
+	// 			"/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName": &armmaps.UserAssignedIdentity{
 	// 				ClientID: to.Ptr("b602d315-01b5-4265-af23-859edc4f2431"),
 	// 				PrincipalID: to.Ptr("ac287332-364a-41d9-a567-9ad86b9fc299"),
 	// 			},
@@ -340,7 +508,7 @@ func ExampleAccountsClient_Update_updateAccountManagedIdentities() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/UpdateAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccount.json
 func ExampleAccountsClient_Update_updateAccountTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +534,7 @@ func ExampleAccountsClient_Update_updateAccountTags() {
 	// 	Name: to.Ptr("myMapsAccount"),
 	// 	Type: to.Ptr("Microsoft.Maps/accounts"),
 	// 	ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
-	// 	Location: to.Ptr("global"),
+	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
 	// 		"specialTag": to.Ptr("true"),
 	// 	},
@@ -391,7 +559,7 @@ func ExampleAccountsClient_Update_updateAccountTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/UpdateAccountGen1.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccountGen1.json
 func ExampleAccountsClient_Update_updateToGen1Account() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -418,7 +586,7 @@ func ExampleAccountsClient_Update_updateToGen1Account() {
 	// 	Name: to.Ptr("myMapsAccount"),
 	// 	Type: to.Ptr("Microsoft.Maps/accounts"),
 	// 	ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
-	// 	Location: to.Ptr("global"),
+	// 	Location: to.Ptr("eastus"),
 	// 	Kind: to.Ptr(armmaps.KindGen1),
 	// 	Properties: &armmaps.AccountProperties{
 	// 		DisableLocalAuth: to.Ptr(false),
@@ -442,7 +610,7 @@ func ExampleAccountsClient_Update_updateToGen1Account() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/UpdateAccountGen2.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccountGen2.json
 func ExampleAccountsClient_Update_updateToGen2Account() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -469,7 +637,7 @@ func ExampleAccountsClient_Update_updateToGen2Account() {
 	// 	Name: to.Ptr("myMapsAccount"),
 	// 	Type: to.Ptr("Microsoft.Maps/accounts"),
 	// 	ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
-	// 	Location: to.Ptr("global"),
+	// 	Location: to.Ptr("eastus"),
 	// 	Kind: to.Ptr(armmaps.KindGen2),
 	// 	Properties: &armmaps.AccountProperties{
 	// 		DisableLocalAuth: to.Ptr(false),
@@ -493,7 +661,7 @@ func ExampleAccountsClient_Update_updateToGen2Account() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/DeleteAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/DeleteAccount.json
 func ExampleAccountsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -510,7 +678,7 @@ func ExampleAccountsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/GetAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/GetAccount.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -532,7 +700,7 @@ func ExampleAccountsClient_Get() {
 	// 	Name: to.Ptr("myMapsAccount"),
 	// 	Type: to.Ptr("Microsoft.Maps/accounts"),
 	// 	ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
-	// 	Location: to.Ptr("global"),
+	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
 	// 		"test": to.Ptr("true"),
 	// 	},
@@ -559,7 +727,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/ListAccountsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/ListAccountsByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -587,7 +755,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 		// 			Name: to.Ptr("myMapsAccount2"),
 		// 			Type: to.Ptr("Microsoft.Maps/accounts"),
 		// 			ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount2"),
-		// 			Location: to.Ptr("global"),
+		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
 		// 				"test": to.Ptr("true"),
 		// 			},
@@ -606,7 +774,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 		// 			Name: to.Ptr("myMapsAccount"),
 		// 			Type: to.Ptr("Microsoft.Maps/accounts"),
 		// 			ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
-		// 			Location: to.Ptr("global"),
+		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
 		// 				"test": to.Ptr("true"),
 		// 			},
@@ -625,7 +793,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/ListAccountsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/ListAccountsBySubscription.json
 func ExampleAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -653,7 +821,7 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 		// 			Name: to.Ptr("myMapsAccount2"),
 		// 			Type: to.Ptr("Microsoft.Maps/accounts"),
 		// 			ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount2"),
-		// 			Location: to.Ptr("global"),
+		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
 		// 				"test": to.Ptr("true"),
 		// 			},
@@ -672,7 +840,7 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 		// 			Name: to.Ptr("myMapsAccount"),
 		// 			Type: to.Ptr("Microsoft.Maps/accounts"),
 		// 			ID: to.Ptr("/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Maps/accounts/myMapsAccount"),
-		// 			Location: to.Ptr("global"),
+		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
 		// 				"test": to.Ptr("true"),
 		// 			},
@@ -691,7 +859,7 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/AccountListSAS.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/AccountListSAS.json
 func ExampleAccountsClient_ListSas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -722,7 +890,7 @@ func ExampleAccountsClient_ListSas() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/ListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/ListKeys.json
 func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -748,7 +916,7 @@ func ExampleAccountsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/RegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/RegenerateKey.json
 func ExampleAccountsClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

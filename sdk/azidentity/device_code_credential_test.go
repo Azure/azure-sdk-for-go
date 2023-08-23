@@ -33,7 +33,7 @@ func TestDeviceCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	cred.client = fakePublicClient{err: errors.New("invalid credentials")}
+	cred.client.noCAE = fakePublicClient{err: errors.New("invalid credentials")}
 	_, err = cred.GetToken(context.Background(), testTRO)
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
@@ -67,7 +67,7 @@ func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential: %v", err)
 	}
-	cred.client = fakePublicClient{
+	cred.client.noCAE = fakePublicClient{
 		dc: public.DeviceCode{
 			Result: public.DeviceCodeResult{
 				Message:         expected.Message,

@@ -1,5 +1,12 @@
 # Release History
 
+## 1.3.0 (2023-08-25)
+### Features Added
+
+- New enum type `OutboundType` with values `OutboundTypeLoadbalancer`, `OutboundTypeUserDefinedRouting`
+- New field `OutboundType` in struct `NetworkProfile`
+
+
 ## 1.2.0 (2023-03-31)
 ### Features Added
 

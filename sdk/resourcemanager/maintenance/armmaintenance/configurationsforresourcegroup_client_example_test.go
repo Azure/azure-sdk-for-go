@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/MaintenanceConfigurationsResourceGroup_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/MaintenanceConfigurationsResourceGroup_List.json
 func ExampleConfigurationsForResourceGroupClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleConfigurationsForResourceGroupClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 		// 			Location: to.Ptr("westus2"),
 		// 			Properties: &armmaintenance.ConfigurationProperties{
-		// 				MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeHost),
+		// 				MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeOSImage),
 		// 				MaintenanceWindow: &armmaintenance.Window{
 		// 					Duration: to.Ptr("05:00"),
 		// 					ExpirationDateTime: to.Ptr("9999-12-31 00:00"),

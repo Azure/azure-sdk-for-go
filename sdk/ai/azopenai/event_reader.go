@@ -47,12 +47,19 @@ func (er *EventReader[T]) Read() (T, error) {
 				err := json.Unmarshal([]byte(tokens[1]), &data)
 				return data, err
 			default: // Any other event type is an unexpected
-				return data, errors.New("Unexpected event type: " + tokens[0])
+				return data, errors.New("unexpected event type: " + tokens[0])
 			}
 			// Unreachable
 		}
 	}
-	return *new(T), er.scanner.Err()
+
+	scannerErr := er.scanner.Err()
+
+	if scannerErr == nil {
+		return *new(T), errors.New("incomplete stream")
+	}
+
+	return *new(T), scannerErr
 }
 
 // Close closes the EventReader and any applicable inner stream state.

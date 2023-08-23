@@ -227,4 +227,18 @@ directive:
   - from: models.go
     where: $
     transform: return $.replace(/(KID \*)string(\s+.*)/g, "$1ID$2")
+
+  # edit doc comments to not contain DeletedKeyBundle
+  - from: 
+      - models.go
+      - response_types.go
+    where: $
+    transform: return $.replace(/DeletedKeyBundle/g, "DeletedKey")
+
+  # remove redundant section of doc comment
+  - from:
+      - models.go
+      - constants.go
+    where: $
+    transform: return $.replace(/(For valid values, (.*)\.)|(For more information .*\.)|(For more information on possible algorithm\n\/\/ types, see JsonWebKeySignatureAlgorithm.)/g, "");
 ```

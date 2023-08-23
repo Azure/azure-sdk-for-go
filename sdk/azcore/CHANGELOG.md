@@ -1,24 +1,48 @@
 # Release History
 
-## 1.8.0-beta.2 (Unreleased)
+## 1.8.0-beta.3 (Unreleased)
+
+### Features Added
+
+* Added function `FetcherForNextLink` to the `runtime` package to centralize creation of `Pager[T].Fetcher` from a next link URL.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+* Suppress creating spans for nested SDK API calls. The HTTP span will be a child of the outer API span.
+
+### Other Changes
+
+* The following functions in the `runtime` package are now exposed from the `policy` package, and the `runtime` versions have been deprecated.
+  * `WithCaptureResponse`
+  * `WithHTTPHeader`
+  * `WithRetryOptions`
+
+## 1.8.0-beta.2 (2023-08-14)
 
 ### Features Added
 
 * Added function `SanitizePagerPollerPath` to the `server` package to centralize sanitization and formalize the contract.
+* Added `TokenRequestOptions.EnableCAE` to indicate whether to request a CAE token.
 
 ### Breaking Changes
 
+> This change affects only code written against beta version `v1.8.0-beta.1`.
 * `messaging.CloudEvent` deserializes JSON objects as `[]byte`, instead of `json.RawMessage`. See the documentation for CloudEvent.Data for more information.
 
-> These changes affect only code written against beta versions `v1.7.0-beta.2` and `v1.8.0-beta.1`.
+> This change affects only code written against beta versions `v1.7.0-beta.2` and `v1.8.0-beta.1`.
 * Removed parameter from method `Span.End()` and its type `tracing.SpanEndOptions`. This API GA'ed in `v1.2.0` so we cannot change it.
 
 ### Bugs Fixed
 
-* Enable TLS renegotiation in the default transport policy.
 * Propagate any query parameters when constructing a fake poller and/or injecting next links.
 
-### Other Changes
+## 1.7.1 (2023-08-14)
+
+## Bugs Fixed
+
+* Enable TLS renegotiation in the default transport policy.
 
 ## 1.8.0-beta.1 (2023-07-12)
 

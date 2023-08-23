@@ -87,6 +87,7 @@ client, err := armresources.NewClient("subscriptionID", azfake.NewTokenCredentia
 
 ## More sample code
 
+- [Creating a Fake](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/resources/armresources/fake_example_test.go)
 - [Deployment](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/resource/deployment)
 - [Provider](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/resource/provider)
 - [Resource Group](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/resource/resourcegroups)

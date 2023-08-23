@@ -18,8 +18,6 @@ import (
 )
 
 func TestOnBehalfOfCredential(t *testing.T) {
-	realGetClient := getConfidentialClient
-	t.Cleanup(func() { getConfidentialClient = realGetClient })
 	expectedAssertion := "user-assertion"
 	certs, key := allCertTests[0].certs, allCertTests[0].key
 	for _, test := range []struct {

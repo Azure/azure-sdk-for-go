@@ -33,6 +33,10 @@
             "CoverageGoal": 0.60
         },
         {
+            "Name": "azdatalake",
+            "CoverageGoal": 0.60
+        },
+        {
             "Name": "azfile",
             "CoverageGoal": 0.75
         },

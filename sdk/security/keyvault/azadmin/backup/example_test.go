@@ -93,7 +93,7 @@ func ExampleClient_BeginSelectiveKeyRestore() {
 	// first, create a key to backup
 	params := azkeys.CreateKeyParameters{
 		KeySize: to.Ptr(int32(2048)),
-		Kty:     to.Ptr(azkeys.JSONWebKeyTypeRSA),
+		Kty:     to.Ptr(azkeys.KeyTypeRSA),
 	}
 	_, err := keyClient.CreateKey(context.TODO(), "<key-name>", params, nil)
 	if err != nil {

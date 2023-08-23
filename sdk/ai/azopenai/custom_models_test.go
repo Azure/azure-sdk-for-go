@@ -55,7 +55,7 @@ func TestParseResponseError(t *testing.T) {
 
 	contentFilterResults := contentFilterErr.ContentFilterResults
 
-	// thsi comment was considered violent, so it was filtered.
+	// this comment was considered violent, so it was filtered.
 	require.Equal(t, &ContentFilterResultsViolence{
 		Filtered: to.Ptr(true),
 		Severity: to.Ptr(ContentFilterSeverityMedium)}, contentFilterResults.Violence)

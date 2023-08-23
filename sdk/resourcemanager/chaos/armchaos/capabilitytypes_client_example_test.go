@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListCapabilityTypes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/ListCapabilityTypes.json
 func ExampleCapabilityTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,8 +48,12 @@ func ExampleCapabilityTypesClient_NewListPager() {
 		// 			Properties: &armchaos.CapabilityTypeProperties{
 		// 				Description: to.Ptr("Shutdown an Azure Virtual Machine for a defined period of time."),
 		// 				DisplayName: to.Ptr("Shutdown VM"),
+		// 				Kind: to.Ptr("fault"),
 		// 				ParametersSchema: to.Ptr("https://schema.centralus.chaos-prod.azure.com/targets/Microsoft-VirtualMachine/capabilities/Shutdown-1.0.json"),
 		// 				Publisher: to.Ptr("Microsoft"),
+		// 				RuntimeProperties: &armchaos.CapabilityTypePropertiesRuntimeProperties{
+		// 					Kind: to.Ptr("continuous"),
+		// 				},
 		// 				TargetType: to.Ptr("VirtualMachine"),
 		// 				Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 		// 			},
@@ -58,7 +62,7 @@ func ExampleCapabilityTypesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/GetACapabilityType.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/GetACapabilityType.json
 func ExampleCapabilityTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,8 +87,12 @@ func ExampleCapabilityTypesClient_Get() {
 	// 	Properties: &armchaos.CapabilityTypeProperties{
 	// 		Description: to.Ptr("Shutdown an Azure Virtual Machine for a defined period of time."),
 	// 		DisplayName: to.Ptr("Shutdown VM"),
+	// 		Kind: to.Ptr("fault"),
 	// 		ParametersSchema: to.Ptr("https://schema.centralus.chaos-prod.azure.com/targets/Microsoft-VirtualMachine/capabilities/Shutdown-1.0.json"),
 	// 		Publisher: to.Ptr("Microsoft"),
+	// 		RuntimeProperties: &armchaos.CapabilityTypePropertiesRuntimeProperties{
+	// 			Kind: to.Ptr("continuous"),
+	// 		},
 	// 		TargetType: to.Ptr("VirtualMachine"),
 	// 		Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 	// 	},

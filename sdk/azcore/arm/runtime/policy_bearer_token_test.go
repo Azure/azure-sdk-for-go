@@ -34,6 +34,9 @@ type mockCredential struct {
 }
 
 func (mc mockCredential) GetToken(ctx context.Context, options azpolicy.TokenRequestOptions) (azcore.AccessToken, error) {
+	if !options.EnableCAE {
+		return azcore.AccessToken{}, errors.New("ARM clients should set EnableCAE to true")
+	}
 	if mc.getTokenImpl != nil {
 		return mc.getTokenImpl(ctx, options)
 	}

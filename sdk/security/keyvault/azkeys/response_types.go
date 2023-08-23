@@ -28,7 +28,7 @@ type DecryptResponse struct {
 
 // DeleteKeyResponse contains the response from method Client.DeleteKey.
 type DeleteKeyResponse struct {
-	// A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
+	// A DeletedKey consisting of a WebKey plus its Attributes and deletion info
 	DeletedKey
 }
 
@@ -40,7 +40,7 @@ type EncryptResponse struct {
 
 // GetDeletedKeyResponse contains the response from method Client.GetDeletedKey.
 type GetDeletedKeyResponse struct {
-	// A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
+	// A DeletedKey consisting of a WebKey plus its Attributes and deletion info
 	DeletedKey
 }
 

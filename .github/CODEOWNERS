@@ -16,7 +16,10 @@
 /sdk/azcore/                  @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
 
 # PRLabel: %Azure.Identity
-/sdk/azidentity/              @chlowell @jhendrixMSFT @rickwinter
+/sdk/azidentity/              @chlowell @jhendrixMSFT @rickwinter @Azure/azure-sdk-write-identity
+
+# PRLable: %OpenAI
+/sdk/ai                       @richardpark-msft @jhendrixMSFT 
 
 # PRLabel: %Internal
 /sdk/internal/                @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
@@ -36,11 +39,14 @@
 # PRLabel: %Service Bus
 /sdk/messaging/azservicebus/  @richardpark-msft @jhendrixMSFT
 
+# PRLabel: %Event Grid
+/sdk/messaging/azeventgrid/   @richardpark-msft @jhendrixMSFT
+
 # PRLabel: %Event Hubs
 /sdk/messaging/azeventhubs/   @richardpark-msft @jhendrixMSFT
 
 # PRLabel: %Monitor
-/sdk/monitor/                 @gracewilcox @chlowell @jhendrixMSFT
+/sdk/monitor/                 @gracewilcox @chlowell @jhendrixMSFT @Azure/azure-sdk-write-monitor-data-plane
 
 # PRLabel: %Mgmt
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh

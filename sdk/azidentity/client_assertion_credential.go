@@ -24,8 +24,7 @@ const credNameAssertion = "ClientAssertionCredential"
 //
 // [Azure AD documentation]: https://docs.microsoft.com/azure/active-directory/develop/active-directory-certificate-credentials#assertion-format
 type ClientAssertionCredential struct {
-	client confidentialClient
-	s      *syncer
+	client *confidentialClient
 }
 
 // ClientAssertionCredentialOptions contains optional parameters for ClientAssertionCredential.
@@ -56,38 +55,21 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 			return getAssertion(ctx)
 		},
 	)
-	msalOpts := msalClientOptions{
-		ClientOptions:            options.ClientOptions,
-		DisableInstanceDiscovery: options.DisableInstanceDiscovery,
+	msalOpts := confidentialClientOptions{
+		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+		ClientOptions:              options.ClientOptions,
+		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
-	c, err := getConfidentialClient(clientID, tenantID, cred, msalOpts)
+	c, err := newConfidentialClient(tenantID, clientID, credNameAssertion, cred, msalOpts)
 	if err != nil {
 		return nil, err
 	}
-	cac := ClientAssertionCredential{client: c}
-	cac.s = newSyncer(
-		credNameAssertion,
-		tenantID,
-		cac.requestToken,
-		cac.silentAuth,
-		syncerOptions{AdditionallyAllowedTenants: options.AdditionallyAllowedTenants},
-	)
-	return &cac, nil
+	return &ClientAssertionCredential{client: c}, nil
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 func (c *ClientAssertionCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return c.s.GetToken(ctx, opts)
-}
-
-func (c *ClientAssertionCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, confidential.WithClaims(opts.Claims), confidential.WithTenantID(opts.TenantID))
-	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
-}
-
-func (c *ClientAssertionCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	ar, err := c.client.AcquireTokenByCredential(ctx, opts.Scopes, confidential.WithClaims(opts.Claims), confidential.WithTenantID(opts.TenantID))
-	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+	return c.client.GetToken(ctx, opts)
 }
 
 var _ azcore.TokenCredential = (*ClientAssertionCredential)(nil)

@@ -246,4 +246,11 @@ directive:
   - from: swagger-document
     where: $.definitions.X509CertificateProperties.properties.key_usage.items
     transform: $["description"] = "Defines how the certificate's key may be used."
+
+  # remove redundant section of doc comment
+  - from:
+      - models.go
+      - constants.go
+    where: $
+    transform: return $.replace(/For valid values, see JsonWebKeyCurveName./g, "");
 ```

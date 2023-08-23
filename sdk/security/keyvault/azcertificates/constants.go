@@ -25,7 +25,7 @@ func PossibleCertificatePolicyActionValues() []CertificatePolicyAction {
 	}
 }
 
-// CurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+// CurveName - Elliptic curve name.
 type CurveName string
 
 const (

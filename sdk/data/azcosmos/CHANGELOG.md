@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.6 (Unreleased)
+## 0.3.7 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.3.6 (2023-08-18)
+
+### Bugs Fixed
+* Fixed PatchItem function to respect EnableContentResponseOnWrite
 
 ## 0.3.5 (2023-05-09)
 

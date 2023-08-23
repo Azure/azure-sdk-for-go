@@ -16,6 +16,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -115,7 +116,7 @@ func calcMD5(data []byte) string {
 
 // used to track proper acquisition and closing of buffers
 type bufMgrTracker struct {
-	inner bufferManager[mmb]
+	inner shared.BufferManager[shared.Mmb]
 
 	Count int  // total count of allocated buffers
 	Freed bool // buffers were freed
@@ -123,11 +124,11 @@ type bufMgrTracker struct {
 
 func newBufMgrTracker(maxBuffers int, bufferSize int64) *bufMgrTracker {
 	return &bufMgrTracker{
-		inner: newMMBPool(maxBuffers, bufferSize),
+		inner: shared.NewMMBPool(maxBuffers, bufferSize),
 	}
 }
 
-func (pool *bufMgrTracker) Acquire() <-chan mmb {
+func (pool *bufMgrTracker) Acquire() <-chan shared.Mmb {
 	return pool.inner.Acquire()
 }
 
@@ -140,7 +141,7 @@ func (pool *bufMgrTracker) Grow() (int, error) {
 	return n, nil
 }
 
-func (pool *bufMgrTracker) Release(buffer mmb) {
+func (pool *bufMgrTracker) Release(buffer shared.Mmb) {
 	pool.inner.Release(buffer)
 }
 
@@ -161,7 +162,7 @@ func TestSlowDestCopyFrom(t *testing.T) {
 
 	errs := make(chan error, 1)
 	go func() {
-		_, err := copyFromReader(context.Background(), bytes.NewReader(bigSrc), fakeBB, UploadStreamOptions{}, func(maxBuffers int, bufferSize int64) bufferManager[mmb] {
+		_, err := copyFromReader(context.Background(), bytes.NewReader(bigSrc), fakeBB, UploadStreamOptions{}, func(maxBuffers int, bufferSize int64) shared.BufferManager[shared.Mmb] {
 			tracker = newBufMgrTracker(maxBuffers, bufferSize)
 			return tracker
 		})
@@ -270,7 +271,7 @@ func TestCopyFromReader(t *testing.T) {
 
 		var tracker *bufMgrTracker
 
-		_, err := copyFromReader(test.ctx, bytes.NewReader(from), fakeBB, test.o, func(maxBuffers int, bufferSize int64) bufferManager[mmb] {
+		_, err := copyFromReader(test.ctx, bytes.NewReader(from), fakeBB, test.o, func(maxBuffers int, bufferSize int64) shared.BufferManager[shared.Mmb] {
 			tracker = newBufMgrTracker(maxBuffers, bufferSize)
 			return tracker
 		})
@@ -322,7 +323,7 @@ func TestCopyFromReaderReadError(t *testing.T) {
 		reader: bytes.NewReader(make([]byte, 5*_1MiB)),
 		failOn: 2,
 	}
-	_, err := copyFromReader(context.Background(), &rf, fakeBB, UploadStreamOptions{}, func(maxBuffers int, bufferSize int64) bufferManager[mmb] {
+	_, err := copyFromReader(context.Background(), &rf, fakeBB, UploadStreamOptions{}, func(maxBuffers int, bufferSize int64) shared.BufferManager[shared.Mmb] {
 		tracker = newBufMgrTracker(maxBuffers, bufferSize)
 		return tracker
 	})

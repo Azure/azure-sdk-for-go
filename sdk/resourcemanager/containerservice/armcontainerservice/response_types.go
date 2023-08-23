@@ -79,6 +79,41 @@ type MaintenanceConfigurationsClientListByManagedClusterResponse struct {
 	MaintenanceConfigurationListResult
 }
 
+// ManagedClusterSnapshotsClientCreateOrUpdateResponse contains the response from method ManagedClusterSnapshotsClient.CreateOrUpdate.
+type ManagedClusterSnapshotsClientCreateOrUpdateResponse struct {
+	// A managed cluster snapshot resource.
+	ManagedClusterSnapshot
+}
+
+// ManagedClusterSnapshotsClientDeleteResponse contains the response from method ManagedClusterSnapshotsClient.Delete.
+type ManagedClusterSnapshotsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ManagedClusterSnapshotsClientGetResponse contains the response from method ManagedClusterSnapshotsClient.Get.
+type ManagedClusterSnapshotsClientGetResponse struct {
+	// A managed cluster snapshot resource.
+	ManagedClusterSnapshot
+}
+
+// ManagedClusterSnapshotsClientListByResourceGroupResponse contains the response from method ManagedClusterSnapshotsClient.NewListByResourceGroupPager.
+type ManagedClusterSnapshotsClientListByResourceGroupResponse struct {
+	// The response from the List Managed Cluster Snapshots operation.
+	ManagedClusterSnapshotListResult
+}
+
+// ManagedClusterSnapshotsClientListResponse contains the response from method ManagedClusterSnapshotsClient.NewListPager.
+type ManagedClusterSnapshotsClientListResponse struct {
+	// The response from the List Managed Cluster Snapshots operation.
+	ManagedClusterSnapshotListResult
+}
+
+// ManagedClusterSnapshotsClientUpdateTagsResponse contains the response from method ManagedClusterSnapshotsClient.UpdateTags.
+type ManagedClusterSnapshotsClientUpdateTagsResponse struct {
+	// A managed cluster snapshot resource.
+	ManagedClusterSnapshot
+}
+
 // ManagedClustersClientAbortLatestOperationResponse contains the response from method ManagedClustersClient.BeginAbortLatestOperation.
 type ManagedClustersClientAbortLatestOperationResponse struct {
 	// placeholder for future response values
@@ -108,6 +143,18 @@ type ManagedClustersClientGetCommandResultResponse struct {
 
 	// Location contains the information returned from the Location header response.
 	Location *string
+}
+
+// ManagedClustersClientGetMeshRevisionProfileResponse contains the response from method ManagedClustersClient.GetMeshRevisionProfile.
+type ManagedClustersClientGetMeshRevisionProfileResponse struct {
+	// Mesh revision profile for a mesh.
+	MeshRevisionProfile
+}
+
+// ManagedClustersClientGetMeshUpgradeProfileResponse contains the response from method ManagedClustersClient.GetMeshUpgradeProfile.
+type ManagedClustersClientGetMeshUpgradeProfileResponse struct {
+	// Upgrade profile for given mesh.
+	MeshUpgradeProfile
 }
 
 // ManagedClustersClientGetOSOptionsResponse contains the response from method ManagedClustersClient.GetOSOptions.
@@ -156,6 +203,18 @@ type ManagedClustersClientListClusterUserCredentialsResponse struct {
 type ManagedClustersClientListKubernetesVersionsResponse struct {
 	// Hold values properties, which is array of KubernetesVersion
 	KubernetesVersionListResult
+}
+
+// ManagedClustersClientListMeshRevisionProfilesResponse contains the response from method ManagedClustersClient.NewListMeshRevisionProfilesPager.
+type ManagedClustersClientListMeshRevisionProfilesResponse struct {
+	// Holds an array of MeshRevisionsProfiles
+	MeshRevisionProfileList
+}
+
+// ManagedClustersClientListMeshUpgradeProfilesResponse contains the response from method ManagedClustersClient.NewListMeshUpgradeProfilesPager.
+type ManagedClustersClientListMeshUpgradeProfilesResponse struct {
+	// Holds an array of MeshUpgradeProfiles
+	MeshUpgradeProfileList
 }
 
 // ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager.
@@ -286,4 +345,33 @@ type SnapshotsClientListResponse struct {
 type SnapshotsClientUpdateTagsResponse struct {
 	// A node pool snapshot resource.
 	Snapshot
+}
+
+// TrustedAccessRoleBindingsClientCreateOrUpdateResponse contains the response from method TrustedAccessRoleBindingsClient.CreateOrUpdate.
+type TrustedAccessRoleBindingsClientCreateOrUpdateResponse struct {
+	// Defines binding between a resource and role
+	TrustedAccessRoleBinding
+}
+
+// TrustedAccessRoleBindingsClientDeleteResponse contains the response from method TrustedAccessRoleBindingsClient.Delete.
+type TrustedAccessRoleBindingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TrustedAccessRoleBindingsClientGetResponse contains the response from method TrustedAccessRoleBindingsClient.Get.
+type TrustedAccessRoleBindingsClientGetResponse struct {
+	// Defines binding between a resource and role
+	TrustedAccessRoleBinding
+}
+
+// TrustedAccessRoleBindingsClientListResponse contains the response from method TrustedAccessRoleBindingsClient.NewListPager.
+type TrustedAccessRoleBindingsClientListResponse struct {
+	// List of trusted access role bindings
+	TrustedAccessRoleBindingListResult
+}
+
+// TrustedAccessRolesClientListResponse contains the response from method TrustedAccessRolesClient.NewListPager.
+type TrustedAccessRolesClientListResponse struct {
+	// List of trusted access roles
+	TrustedAccessRoleListResult
 }

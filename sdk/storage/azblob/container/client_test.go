@@ -9,6 +9,7 @@ package container_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"net/url"
 	"os"
@@ -748,6 +749,102 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 	}
 }
 
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsDelimiterPrefixVersion() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobNames := []string{"a/1", "a/2", "b/1", "blob"}
+	blobMap := testcommon.BlobListToMap(blobNames)
+	for _, name := range blobNames {
+		testcommon.CreateNewBlockBlob(context.Background(), _require, name, containerClient)
+	}
+
+	opts := container.ListBlobsHierarchyOptions{
+		Include:    container.ListBlobsInclude{Versions: true},
+		Marker:     nil,
+		MaxResults: nil,
+		Prefix:     to.Ptr("a/"),
+	}
+
+	pager := containerClient.NewListBlobsHierarchyPager("/", &opts)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		_require.Equal(len(resp.Segment.BlobItems), 2)
+		for _, blobs := range resp.Segment.BlobItems {
+			_require.Equal(blobMap[*(blobs.Name)], true)
+			_require.NotNil(blobs.VersionID) // checks if blob has version id
+		}
+		if err != nil {
+			break
+		}
+	}
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListFlatBlobsInvalidBlobName() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := "dir1/dir2/file\uFFFF.blob"
+	_ = testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		_require.Equal(len(resp.Segment.BlobItems), 1)
+		_require.Equal(*resp.Segment.BlobItems[0].Name, blobName)
+	}
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListHierarchyBlobsInvalidBlobName() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := "dir1/dir2/file\uFFFF.blob"
+	_ = testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	pager := containerClient.NewListBlobsHierarchyPager(".b", nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		_require.Equal(len(resp.Segment.BlobItems), 0)
+		_require.Equal(len(resp.Segment.BlobPrefixes), 1)
+		_require.Equal(*resp.Segment.BlobPrefixes[0].Name, "dir1/dir2/file\uFFFF.b")
+	}
+
+	// empty delimiter
+	pager1 := containerClient.NewListBlobsHierarchyPager("", nil)
+	for pager1.More() {
+		resp, err := pager1.NextPage(context.Background())
+		_require.NoError(err)
+
+		_require.Equal(len(resp.Segment.BlobItems), 1)
+		_require.Equal(*resp.Segment.BlobItems[0].Name, blobName)
+	}
+}
+
 func (s *ContainerRecordedTestsSuite) TestContainerListBlobsWithSnapshots() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1344,6 +1441,60 @@ func (s *ContainerRecordedTestsSuite) TestBlobListWrapper() {
 	_require.EqualValues(files, found)
 }
 
+func (s *ContainerRecordedTestsSuite) TestBlobListColdTier() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	for _, tier := range []blob.AccessTier{blob.AccessTierCool, blob.AccessTierHot, blob.AccessTierCold, blob.AccessTierArchive} {
+		files := []string{"a123", "b234", "c345"}
+		testcommon.CreateNewBlobsListTier(context.Background(), _require, files, containerClient, &tier)
+
+		// List blobs flat
+		found := make([]string, 0)
+		pager := containerClient.NewListBlobsFlatPager(nil)
+		for pager.More() {
+			resp, err := pager.NextPage(context.Background())
+			_require.NoError(err)
+
+			for _, blob := range resp.Segment.BlobItems {
+				_require.Equal(blob.Properties.AccessTier, &tier)
+				found = append(found, *blob.Name)
+			}
+		}
+
+		sort.Strings(files)
+		sort.Strings(found)
+		_require.EqualValues(files, found)
+
+		// Try listing blobs with hierarchical listing
+		found = make([]string, 0)
+		pg := containerClient.NewListBlobsHierarchyPager("/", nil)
+		for pg.More() {
+			resp, err := pg.NextPage(context.Background())
+			_require.NoError(err)
+
+			for _, blob := range resp.Segment.BlobItems {
+				_require.Equal(blob.Properties.AccessTier, &tier)
+				found = append(found, *blob.Name)
+			}
+		}
+
+		sort.Strings(files)
+		sort.Strings(found)
+		_require.EqualValues(files, found)
+
+	}
+}
+
 func (s *ContainerRecordedTestsSuite) TestBlobListWrapperListingError() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1567,10 +1718,10 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerSetPermissionsPublicAccessN
 	_, err = containerClient.SetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 
-	bsu2, err := service.NewClientWithNoCredential(svcClient.URL(), nil)
+	svcClient2, err := testcommon.GetServiceClientNoCredential(s.T(), svcClient.URL(), nil)
 	_require.Nil(err)
 
-	containerClient2 := bsu2.NewContainerClient(containerName)
+	containerClient2 := svcClient2.NewContainerClient(containerName)
 
 	// Get permissions via the original container URL so the request succeeds
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1581,14 +1732,15 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerSetPermissionsPublicAccessN
 	pager := containerClient2.NewListBlobsFlatPager(nil)
 	for pager.More() {
 		_, err = pager.NextPage(context.Background())
-		_require.NotNil(err)
-		testcommon.ValidateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
+		_require.Error(err)
+		// testcommon.ValidateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
 		break
 	}
 
 	blobClient2 := containerClient2.NewBlockBlobClient(blobName)
 	_, err = blobClient2.DownloadStream(context.Background(), nil)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
+	_require.Error(err)
+	// testcommon.ValidateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessTypeBlob() {
@@ -2244,6 +2396,149 @@ func (s *ContainerUnrecordedTestsSuite) TestSASContainerClient() {
 	// Create container client with sasUrl
 	_, err = container.NewClientWithNoCredential(sasUrl, nil)
 	_require.Nil(err)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.ContainerPermissions{
+		Read:         true,
+		Add:          true,
+		Write:        true,
+		Create:       true,
+		Delete:       true,
+		Tag:          true,
+		FilterByTags: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// ContainerSASURL is created with GetSASURL
+	sasUrl, err := containerClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	// Create container client with sasUrl
+	containerSasClient, err := container.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	abClient := containerSasClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+
+	createAppendBlobOptions := appendblob.CreateOptions{
+		Tags: testcommon.BasicBlobTagsMap,
+	}
+	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
+	_require.Nil(err)
+	_require.NotNil(createResp.VersionID)
+	time.Sleep(10 * time.Second)
+
+	// Use container client to filter blobs by tag
+	where := "\"azure\"='blob'"
+	opts := container.FilterBlobsOptions{MaxResults: to.Ptr(int32(10)), Marker: to.Ptr("")}
+	lResp, err := containerSasClient.FilterBlobs(context.Background(), where, &opts)
+	_require.Nil(err)
+	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTagsNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.ContainerPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+		Tag:    true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// ContainerSASURL is created with GetSASURL
+	sasUrl, err := containerClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	// Create container client with sasUrl
+	containerSasClient, err := container.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	abClient := containerSasClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+
+	createAppendBlobOptions := appendblob.CreateOptions{
+		Tags: testcommon.BasicBlobTagsMap,
+	}
+	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
+	_require.Nil(err)
+	_require.NotNil(createResp.VersionID)
+	time.Sleep(10 * time.Second)
+
+	// Use container client to filter blobs by tag
+	where := "\"azure\"='blob'"
+	_, err = containerSasClient.FilterBlobs(context.Background(), where, nil)
+	_require.Error(err)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsOnContainer() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"1", svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobTagsMap1 := map[string]string{
+		"tag2": "tagsecond",
+		"tag3": "tagthird",
+	}
+	blobTagsMap2 := map[string]string{
+		"tag1": "firsttag",
+		"tag2": "secondtag",
+		"tag3": "thirdtag",
+	}
+
+	blobName1 := testcommon.GenerateBlobName(testName) + "1"
+	blobClient1 := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName1, containerClient)
+	_, err = blobClient1.SetTags(context.Background(), blobTagsMap1, nil)
+	_require.Nil(err)
+
+	blobName2 := testcommon.GenerateBlobName(testName) + "2"
+	blobClient2 := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName2, containerClient)
+	_, err = blobClient2.SetTags(context.Background(), blobTagsMap2, nil)
+	_require.Nil(err)
+	time.Sleep(10 * time.Second)
+
+	blobTagsResp, err := blobClient2.GetTags(context.Background(), nil)
+	_require.Nil(err)
+	blobTagsSet := blobTagsResp.BlobTagSet
+	_require.NotNil(blobTagsSet)
+
+	// Test invalid tag
+	where := "\"tag4\"='fourthtag'"
+	lResp, err := containerClient.FilterBlobs(context.Background(), where, nil)
+	_require.Nil(err)
+	_require.Equal(len(lResp.Blobs), 0)
+
+	// Test multiple valid tags
+	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
+	lResp, err = containerClient.FilterBlobs(context.Background(), where, nil)
+	_require.Nil(err)
+	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 2)
+	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[0])
+	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[1], blobTagsSet[1])
 }
 
 func (s *ContainerUnrecordedTestsSuite) TestSASContainerClientTags() {

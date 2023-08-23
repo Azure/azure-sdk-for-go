@@ -21,7 +21,7 @@ func TestIncludeResponse(t *testing.T) {
 	var respFromCtx *http.Response
 	ctx := WithCaptureResponse(context.Background(), &respFromCtx)
 	require.NotNil(t, ctx)
-	raw := ctx.Value(shared.CtxIncludeResponseKey{})
+	raw := ctx.Value(shared.CtxWithCaptureResponse{})
 	_, ok := raw.(**http.Response)
 	require.Truef(t, ok, "unexpected type %T", raw)
 	require.Nil(t, respFromCtx)

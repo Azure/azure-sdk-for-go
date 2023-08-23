@@ -1,5 +1,13 @@
 # Release History
 
+## 1.3.0 (2023-08-25)
+
+### Features Added
+
+- New field `ExtendedNetworkBlocks` in struct `PrivateCloudProperties`
+- New field `ExtendedNetworkBlocks` in struct `PrivateCloudUpdateProperties`
+
+
 ## 1.2.1 (2023-04-14)
 ### Bug Fixes
 

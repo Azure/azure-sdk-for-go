@@ -8,8 +8,12 @@ package azblob_test
 
 import (
 	"context"
+	"crypto/md5"
+	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
+	"hash/crc64"
 	"io"
 	"os"
 	"sync/atomic"
@@ -75,6 +79,60 @@ func generateFile(fileName string, fileSize int) []byte {
 	// write to file and return the data
 	_ = os.WriteFile(fileName, bigBuff, 0666)
 	return bigBuff
+}
+
+func performUploadStreamToBlockBlobTestWithChecksums(t *testing.T, _require *require.Assertions, testName string, blobSize, bufferSize, maxBuffers int) {
+	client, err := testcommon.GetClient(t, testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	_, err = client.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+	defer func() {
+		_, err := client.DeleteContainer(context.Background(), containerName, nil)
+		_require.NoError(err)
+	}()
+
+	// Set up test blob
+	blobName := testcommon.GenerateBlobName(testName)
+
+	// Create some data to test the upload stream
+	blobContentReader, blobData := testcommon.GenerateData(blobSize)
+	crc64Value := crc64.Checksum(blobData, shared.CRC64Table)
+	crc := make([]byte, 8)
+	binary.LittleEndian.PutUint64(crc, crc64Value)
+
+	// Perform UploadStream
+	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
+		&blockblob.UploadStreamOptions{BlockSize: int64(bufferSize), Concurrency: maxBuffers, TransactionalValidation: blob.TransferValidationTypeComputeCRC64()})
+	_require.NoError(err)
+
+	// TODO: UploadResponse does not return ContentCRC64
+	// // Assert that upload was successful
+	// _require.Equal(uploadResp.ContentCRC64, crc)
+
+	// UploadStream does not accept user generated checksum, should return UnsupportedChecksum
+	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
+		&blockblob.UploadStreamOptions{BlockSize: int64(bufferSize), Concurrency: maxBuffers, TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value)})
+	_require.NotNil(err)
+	_require.Error(err, bloberror.UnsupportedChecksum)
+
+	md5Value := md5.Sum(blobData)
+	contentMD5 := md5Value[:]
+
+	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
+		&blockblob.UploadStreamOptions{BlockSize: int64(bufferSize), Concurrency: maxBuffers, TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5)})
+	_require.NotNil(err)
+	_require.Error(err, bloberror.UnsupportedChecksum)
+}
+
+func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlockBlobInChunksChecksums() {
+	blobSize := 8 * 1024
+	bufferSize := 1024
+	maxBuffers := 3
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	performUploadStreamToBlockBlobTestWithChecksums(s.T(), _require, testName, blobSize, bufferSize, maxBuffers)
 }
 
 func performUploadStreamToBlockBlobTest(t *testing.T, _require *require.Assertions, testName string, blobSize, bufferSize, maxBuffers int) {
@@ -157,6 +215,102 @@ func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlockBlobEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	performUploadStreamToBlockBlobTest(s.T(), _require, testName, blobSize, bufferSize, maxBuffers)
+}
+
+func performUploadAndDownloadFileTestWithChecksums(t *testing.T, _require *require.Assertions, testName string, fileSize, blockSize, concurrency, downloadOffset, downloadCount int) {
+	// Set up file to upload
+	fileName := "BigFile.bin"
+	fileData := generateFile(fileName, fileSize)
+
+	// Open the file to upload
+	file, err := os.Open(fileName)
+	_require.NoError(err)
+	defer func(file *os.File) {
+		_ = file.Close()
+	}(file)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(fileName)
+
+	//body := bytes.NewReader(fileData)
+	crc64Value := crc64.Checksum(fileData, shared.CRC64Table)
+	crc := make([]byte, 8)
+	binary.LittleEndian.PutUint64(crc, crc64Value)
+
+	client, err := testcommon.GetClient(t, testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	_, err = client.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+	defer func() {
+		_, err := client.DeleteContainer(context.Background(), containerName, nil)
+		_require.NoError(err)
+	}()
+
+	// Set up test blob
+	blobName := testcommon.GenerateBlobName(testName)
+
+	// Upload the file to a block blob
+	var errTransferred error
+	_, err = client.UploadFile(context.Background(), containerName, blobName, file,
+		&blockblob.UploadFileOptions{
+			BlockSize:               int64(blockSize),
+			Concurrency:             uint16(concurrency),
+			TransactionalValidation: blob.TransferValidationTypeComputeCRC64(),
+			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
+			Progress: func(bytesTransferred int64) {
+				if bytesTransferred <= 0 || bytesTransferred > int64(fileSize) {
+					errTransferred = fmt.Errorf("invalid bytes transferred %d", bytesTransferred)
+				}
+			},
+		})
+	assert.NoError(t, errTransferred)
+	_require.NoError(err)
+
+	// UploadFile does not accept user generated checksum, should return UnsupportedChecksum
+	_, err = client.UploadFile(context.Background(), containerName, blobName, file,
+		&blockblob.UploadFileOptions{
+			BlockSize:               int64(blockSize),
+			Concurrency:             uint16(concurrency),
+			TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value),
+			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
+			Progress: func(bytesTransferred int64) {
+				if bytesTransferred <= 0 || bytesTransferred > int64(fileSize) {
+					errTransferred = fmt.Errorf("invalid bytes transferred %d", bytesTransferred)
+				}
+			},
+		})
+	_require.NotNil(err)
+	_require.Error(err, bloberror.UnsupportedChecksum)
+
+	md5Value := md5.Sum(fileData)
+	contentMD5 := md5Value[:]
+
+	// UploadFile does not accept user generated checksum, should return UnsupportedChecksum
+	_, err = client.UploadFile(context.Background(), containerName, blobName, file,
+		&blockblob.UploadFileOptions{
+			BlockSize:               int64(blockSize),
+			Concurrency:             uint16(concurrency),
+			TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5),
+			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
+			Progress: func(bytesTransferred int64) {
+				if bytesTransferred <= 0 || bytesTransferred > int64(fileSize) {
+					errTransferred = fmt.Errorf("invalid bytes transferred %d", bytesTransferred)
+				}
+			},
+		})
+	_require.NotNil(err)
+	_require.Error(err, bloberror.UnsupportedChecksum)
+}
+
+func (s *AZBlobUnrecordedTestsSuite) TestUploadFileInChunksChecksum() {
+	fileSize := 8 * 1024
+	blockSize := 1024
+	concurrency := 3
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	performUploadAndDownloadFileTestWithChecksums(s.T(), _require, testName, fileSize, blockSize, concurrency, 0, 0)
 }
 
 func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions, testName string, fileSize, blockSize, concurrency, downloadOffset, downloadCount int) {
@@ -250,6 +404,8 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 		destBuffer = make([]byte, downloadCount)
 	}
 
+	_, err = destFile.Seek(0, 0)
+	_require.NoError(err)
 	n, err := destFile.Read(destBuffer)
 	_require.NoError(err)
 
@@ -508,9 +664,15 @@ func (s *AZBlobUnrecordedTestsSuite) TestBasicDoBatchTransfer() {
 		totalSizeCount := int64(0)
 		runCount := int64(0)
 
+		numChunks := uint16(0)
+		if test.chunkSize != 0 {
+			numChunks = uint16(((test.transferSize - 1) / test.chunkSize) + 1)
+		}
+
 		err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 			TransferSize: test.transferSize,
 			ChunkSize:    test.chunkSize,
+			NumChunks:    numChunks,
 			Concurrency:  test.concurrency,
 			Operation: func(ctx context.Context, offset int64, chunkSize int64) error {
 				atomic.AddInt64(&totalSizeCount, chunkSize)
@@ -553,6 +715,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestDoBatchTransferWithError() {
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 		TransferSize: 5,
 		ChunkSize:    1,
+		NumChunks:    5,
 		Concurrency:  5,
 		Operation: func(ctx context.Context, offset int64, chunkSize int64) error {
 			// simulate doing some work (HTTP call in real scenarios)

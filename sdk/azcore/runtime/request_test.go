@@ -740,3 +740,22 @@ func TestSetMultipartFormData(t *testing.T) {
 	require.Equal(t, "second part", string(second))
 	require.Equal(t, "third part", string(third))
 }
+
+func TestEncodeQueryParams(t *testing.T) {
+	const testURL = "https://contoso.com/"
+	nextLink, err := EncodeQueryParams(testURL + "query?$skip=5&$filter='foo eq bar'")
+	require.NoError(t, err)
+	require.EqualValues(t, testURL+"query?%24filter=%27foo+eq+bar%27&%24skip=5", nextLink)
+	nextLink, err = EncodeQueryParams(testURL + "query?%24filter=%27foo+eq+bar%27&%24skip=5")
+	require.NoError(t, err)
+	require.EqualValues(t, testURL+"query?%24filter=%27foo+eq+bar%27&%24skip=5", nextLink)
+	nextLink, err = EncodeQueryParams(testURL + "query?foo=bar&one=two")
+	require.NoError(t, err)
+	require.EqualValues(t, testURL+"query?foo=bar&one=two", nextLink)
+	nextLink, err = EncodeQueryParams(testURL)
+	require.NoError(t, err)
+	require.EqualValues(t, testURL, nextLink)
+	nextLink, err = EncodeQueryParams(testURL + "query?invalid=;semicolon")
+	require.Error(t, err)
+	require.Empty(t, nextLink)
+}

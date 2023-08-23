@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/MaintenanceConfigurations_GetForResource.json
-func ExampleConfigurationsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/MaintenanceConfigurations_GetForResource.json
+func ExampleConfigurationsClient_Get_maintenanceConfigurationsGetForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -41,7 +41,7 @@ func ExampleConfigurationsClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 	// 	Location: to.Ptr("westus2"),
 	// 	Properties: &armmaintenance.ConfigurationProperties{
-	// 		MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeHost),
+	// 		MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeOSImage),
 	// 		MaintenanceWindow: &armmaintenance.Window{
 	// 			Duration: to.Ptr("05:00"),
 	// 			ExpirationDateTime: to.Ptr("9999-12-31 00:00"),
@@ -55,7 +55,106 @@ func ExampleConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/MaintenanceConfigurations_CreateOrUpdateForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/MaintenanceConfigurations_GetForResource_GuestOSPatchLinux.json
+func ExampleConfigurationsClient_Get_maintenanceConfigurationsGetForResourceGuestOsPatchLinux() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmaintenance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewConfigurationsClient().Get(ctx, "examplerg", "configuration1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Configuration = armmaintenance.Configuration{
+	// 	Name: to.Ptr("configuration1"),
+	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
+	// 	Location: to.Ptr("westus2"),
+	// 	Properties: &armmaintenance.ConfigurationProperties{
+	// 		InstallPatches: &armmaintenance.InputPatchConfiguration{
+	// 			LinuxParameters: &armmaintenance.InputLinuxParameters{
+	// 				ClassificationsToInclude: []*string{
+	// 					to.Ptr("Critical")},
+	// 					PackageNameMasksToExclude: []*string{
+	// 						to.Ptr("apt"),
+	// 						to.Ptr("http")},
+	// 						PackageNameMasksToInclude: []*string{
+	// 							to.Ptr("binutils"),
+	// 							to.Ptr("bin")},
+	// 						},
+	// 						RebootSetting: to.Ptr(armmaintenance.RebootOptionsAlways),
+	// 					},
+	// 					MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeInGuestPatch),
+	// 					MaintenanceWindow: &armmaintenance.Window{
+	// 						Duration: to.Ptr("05:00"),
+	// 						ExpirationDateTime: to.Ptr("9999-12-31 00:00"),
+	// 						RecurEvery: to.Ptr("5Days"),
+	// 						StartDateTime: to.Ptr("2020-04-30 08:00"),
+	// 						TimeZone: to.Ptr("Pacific Standard Time"),
+	// 					},
+	// 					Namespace: to.Ptr("Microsoft.Maintenance"),
+	// 					Visibility: to.Ptr(armmaintenance.VisibilityCustom),
+	// 				},
+	// 			}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/MaintenanceConfigurations_GetForResource_GuestOSPatchWindows.json
+func ExampleConfigurationsClient_Get_maintenanceConfigurationsGetForResourceGuestOsPatchWindows() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmaintenance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewConfigurationsClient().Get(ctx, "examplerg", "configuration1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Configuration = armmaintenance.Configuration{
+	// 	Name: to.Ptr("configuration1"),
+	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
+	// 	Location: to.Ptr("westus2"),
+	// 	Properties: &armmaintenance.ConfigurationProperties{
+	// 		InstallPatches: &armmaintenance.InputPatchConfiguration{
+	// 			RebootSetting: to.Ptr(armmaintenance.RebootOptionsAlways),
+	// 			WindowsParameters: &armmaintenance.InputWindowsParameters{
+	// 				ClassificationsToInclude: []*string{
+	// 					to.Ptr("Security")},
+	// 					ExcludeKbsRequiringReboot: to.Ptr(false),
+	// 					KbNumbersToExclude: []*string{
+	// 						to.Ptr("KB234567")},
+	// 						KbNumbersToInclude: []*string{
+	// 							to.Ptr("KB123456")},
+	// 						},
+	// 					},
+	// 					MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeInGuestPatch),
+	// 					MaintenanceWindow: &armmaintenance.Window{
+	// 						Duration: to.Ptr("05:00"),
+	// 						ExpirationDateTime: to.Ptr("9999-12-31 00:00"),
+	// 						RecurEvery: to.Ptr("5Days"),
+	// 						StartDateTime: to.Ptr("2020-04-30 08:00"),
+	// 						TimeZone: to.Ptr("Pacific Standard Time"),
+	// 					},
+	// 					Namespace: to.Ptr("Microsoft.Maintenance"),
+	// 					Visibility: to.Ptr(armmaintenance.VisibilityCustom),
+	// 				},
+	// 			}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/MaintenanceConfigurations_CreateOrUpdateForResource.json
 func ExampleConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +168,7 @@ func ExampleConfigurationsClient_CreateOrUpdate() {
 	res, err := clientFactory.NewConfigurationsClient().CreateOrUpdate(ctx, "examplerg", "configuration1", armmaintenance.Configuration{
 		Location: to.Ptr("westus2"),
 		Properties: &armmaintenance.ConfigurationProperties{
-			MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeHost),
+			MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeOSImage),
 			MaintenanceWindow: &armmaintenance.Window{
 				Duration:           to.Ptr("05:00"),
 				ExpirationDateTime: to.Ptr("9999-12-31 00:00"),
@@ -92,7 +191,7 @@ func ExampleConfigurationsClient_CreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 	// 	Location: to.Ptr("westus2"),
 	// 	Properties: &armmaintenance.ConfigurationProperties{
-	// 		MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeHost),
+	// 		MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeOSImage),
 	// 		MaintenanceWindow: &armmaintenance.Window{
 	// 			Duration: to.Ptr("05:00"),
 	// 			ExpirationDateTime: to.Ptr("9999-12-31 00:00"),
@@ -106,7 +205,7 @@ func ExampleConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/MaintenanceConfigurations_DeleteForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/MaintenanceConfigurations_DeleteForResource.json
 func ExampleConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +233,7 @@ func ExampleConfigurationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/MaintenanceConfigurations_UpdateForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/MaintenanceConfigurations_UpdateForResource.json
 func ExampleConfigurationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +247,7 @@ func ExampleConfigurationsClient_Update() {
 	res, err := clientFactory.NewConfigurationsClient().Update(ctx, "examplerg", "configuration1", armmaintenance.Configuration{
 		Location: to.Ptr("westus2"),
 		Properties: &armmaintenance.ConfigurationProperties{
-			MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeHost),
+			MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeOSImage),
 			MaintenanceWindow: &armmaintenance.Window{
 				Duration:           to.Ptr("05:00"),
 				ExpirationDateTime: to.Ptr("9999-12-31 00:00"),
@@ -171,7 +270,7 @@ func ExampleConfigurationsClient_Update() {
 	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 	// 	Location: to.Ptr("westus2"),
 	// 	Properties: &armmaintenance.ConfigurationProperties{
-	// 		MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeHost),
+	// 		MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeOSImage),
 	// 		MaintenanceWindow: &armmaintenance.Window{
 	// 			Duration: to.Ptr("05:00"),
 	// 			ExpirationDateTime: to.Ptr("9999-12-31 00:00"),
@@ -185,7 +284,7 @@ func ExampleConfigurationsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/MaintenanceConfigurations_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/MaintenanceConfigurations_List.json
 func ExampleConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +313,7 @@ func ExampleConfigurationsClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 		// 			Location: to.Ptr("westus2"),
 		// 			Properties: &armmaintenance.ConfigurationProperties{
-		// 				MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeHost),
+		// 				MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeOSImage),
 		// 				MaintenanceWindow: &armmaintenance.Window{
 		// 					Duration: to.Ptr("05:00"),
 		// 					ExpirationDateTime: to.Ptr("9999-12-31 00:00"),

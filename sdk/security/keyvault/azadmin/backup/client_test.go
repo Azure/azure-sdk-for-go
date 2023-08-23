@@ -119,7 +119,7 @@ func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
 		require.NoError(t, err)
 		params := azkeys.CreateKeyParameters{
 			KeySize: to.Ptr(int32(2048)),
-			Kty:     to.Ptr(azkeys.JSONWebKeyTypeRSA),
+			Kty:     to.Ptr(azkeys.KeyTypeRSA),
 		}
 		_, err = keyClient.CreateKey(context.TODO(), "selective-restore-test-key", params, nil)
 		require.NoError(t, err)

@@ -97,6 +97,7 @@ client, err := armcompute.VirtualMachinesClient("subscriptionID", azfake.NewToke
 ## More sample code
 
 - [Availability Set](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/availabilityset)
+- [Creating a Fake](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/compute/armcompute/fake_example_test.go)
 - [Virtual Machine](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/create_vm)
 - [Dedicated Host](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/dedicated_host)
 - [Disk](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/disk)

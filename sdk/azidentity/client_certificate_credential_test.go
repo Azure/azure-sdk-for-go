@@ -81,7 +81,7 @@ func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
 			if err != nil {
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
-			cred.client = fakeConfidentialClient{}
+			cred.client.noCAE = fakeConfidentialClient{}
 			_, err = cred.GetToken(context.Background(), testTRO)
 			if err != nil {
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
@@ -98,7 +98,7 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 			if err != nil {
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
-			cred.client = fakeConfidentialClient{}
+			cred.client.noCAE = fakeConfidentialClient{}
 			_, err = cred.GetToken(context.Background(), testTRO)
 			if err != nil {
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
@@ -132,7 +132,7 @@ func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
-	cred.client = fakeConfidentialClient{}
+	cred.client.noCAE = fakeConfidentialClient{}
 	_, err = cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
@@ -297,12 +297,6 @@ func TestClientCertificateCredential_Regional(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// regional STS returns an error for CP1
-	before := disableCP1
-	defer func() { disableCP1 = before }()
-	disableCP1 = true
-
 	cred, err := NewClientCertificateCredential(
 		liveSP.tenantID, liveSP.clientID, cert, key, &ClientCertificateCredentialOptions{SendCertificateChain: true, ClientOptions: opts},
 	)

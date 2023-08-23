@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
@@ -34,6 +35,8 @@ type testVars struct {
 	ChatCompletions string // env: AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT, OPENAI_CHAT_COMPLETIONS_MODEL
 	Embeddings      string // env: AOAI_EMBEDDINGS_MODEL_DEPLOYMENT, OPENAI_EMBEDDINGS_MODEL
 	Azure           bool
+
+	Cognitive azopenai.AzureCognitiveSearchChatExtensionConfiguration
 }
 
 func newTestVars(prefix string, isCanary bool) testVars {
@@ -73,6 +76,12 @@ func newTestVars(prefix string, isCanary bool) testVars {
 		Embeddings: getRequired(prefix + "_EMBEDDINGS_MODEL" + deplSuffix + canarySuffix),
 
 		Azure: azure,
+
+		Cognitive: azopenai.AzureCognitiveSearchChatExtensionConfiguration{
+			Endpoint:  to.Ptr(getRequired("COGNITIVE_SEARCH_API_ENDPOINT")),
+			IndexName: to.Ptr(getRequired("COGNITIVE_SEARCH_API_INDEX")),
+			Key:       to.Ptr(getRequired("COGNITIVE_SEARCH_API_KEY")),
+		},
 	}
 
 	if tv.Endpoint != "" && !strings.HasSuffix(tv.Endpoint, "/") {
@@ -83,8 +92,10 @@ func newTestVars(prefix string, isCanary bool) testVars {
 	return tv
 }
 
-const fakeEndpoint = "https://recordedhost/"
+const fakeEndpoint = "https://fake-recorded-host.microsoft.com/"
 const fakeAPIKey = "redacted"
+const fakeCognitiveEndpoint = "https://fake-cognitive-endpoint.microsoft.com"
+const fakeCognitiveIndexName = "index"
 
 func initEnvVars() {
 	if recording.GetRecordMode() == recording.PlaybackMode {
@@ -107,7 +118,13 @@ func initEnvVars() {
 		openAI.ChatCompletions = "gpt-4-0613"
 
 		openAI.Embeddings = "text-embedding-ada-002"
-		azureOpenAI.Embeddings = "embedding"
+		azureOpenAI.Embeddings = "text-embedding-ada-002"
+
+		azureOpenAI.Cognitive = azopenai.AzureCognitiveSearchChatExtensionConfiguration{
+			Endpoint:  to.Ptr(fakeCognitiveEndpoint),
+			IndexName: to.Ptr(fakeCognitiveIndexName),
+			Key:       to.Ptr(fakeAPIKey),
+		}
 	} else {
 		if err := godotenv.Load(); err != nil {
 			fmt.Printf("Failed to load .env file: %s\n", err)
@@ -147,6 +164,21 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(openAI.Endpoint), nil)
 			require.NoError(t, err)
 		}
+
+		err = recording.AddGeneralRegexSanitizer(
+			fmt.Sprintf(`"endpoint": "%s"`, fakeCognitiveEndpoint),
+			fmt.Sprintf(`"endpoint":\s*"%s"`, *azureOpenAI.Cognitive.Endpoint), nil)
+		require.NoError(t, err)
+
+		err = recording.AddGeneralRegexSanitizer(
+			fmt.Sprintf(`"indexName": "%s"`, fakeCognitiveIndexName),
+			fmt.Sprintf(`"indexName":\s*"%s"`, *azureOpenAI.Cognitive.IndexName), nil)
+		require.NoError(t, err)
+
+		err = recording.AddGeneralRegexSanitizer(
+			fmt.Sprintf(`"key": "%s"`, fakeAPIKey),
+			fmt.Sprintf(`"key":\s*"%s"`, *azureOpenAI.Cognitive.Key), nil)
+		require.NoError(t, err)
 	}
 
 	t.Cleanup(func() {

@@ -4,6 +4,8 @@
 package azopenai_test
 
 import (
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
@@ -12,7 +14,8 @@ func ExampleNewClientForOpenAI() {
 	keyCredential, err := azopenai.NewKeyCredential("<OpenAI-APIKey>")
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// NOTE: this constructor creates a client that connects to the public OpenAI endpoint.
@@ -20,7 +23,8 @@ func ExampleNewClientForOpenAI() {
 	client, err := azopenai.NewClientForOpenAI("https://api.openai.com/v1", keyCredential, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	_ = client
@@ -30,7 +34,8 @@ func ExampleNewClient() {
 	dac, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
@@ -38,7 +43,8 @@ func ExampleNewClient() {
 	client, err := azopenai.NewClient("https://<your-azure-openai-host>.openai.azure.com", dac, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	_ = client
@@ -48,7 +54,8 @@ func ExampleNewClientWithKeyCredential() {
 	keyCredential, err := azopenai.NewKeyCredential("<Azure-OpenAI-APIKey>")
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
@@ -56,7 +63,8 @@ func ExampleNewClientWithKeyCredential() {
 	client, err := azopenai.NewClientWithKeyCredential("https://<your-azure-openai-host>.openai.azure.com", keyCredential, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	_ = client

@@ -6,6 +6,7 @@ package azopenai_test
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
@@ -26,7 +27,8 @@ func ExampleClient_GetEmbeddings() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
@@ -34,7 +36,8 @@ func ExampleClient_GetEmbeddings() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	resp, err := client.GetEmbeddings(context.TODO(), azopenai.EmbeddingsOptions{
@@ -43,7 +46,8 @@ func ExampleClient_GetEmbeddings() {
 	}, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	for _, embed := range resp.Data {

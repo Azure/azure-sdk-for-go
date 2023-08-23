@@ -8,6 +8,60 @@
 
 package azopenai
 
+// AzureChatExtensionType - A representation of configuration data for a single Azure OpenAI chat extension. This will be
+// used by a chat completions request that should use Azure OpenAI chat extensions to augment the response
+// behavior. The use of this configuration is compatible only with Azure OpenAI.
+type AzureChatExtensionType string
+
+const (
+	AzureChatExtensionTypeAzureCognitiveSearch AzureChatExtensionType = "AzureCognitiveSearch"
+)
+
+// PossibleAzureChatExtensionTypeValues returns the possible values for the AzureChatExtensionType const type.
+func PossibleAzureChatExtensionTypeValues() []AzureChatExtensionType {
+	return []AzureChatExtensionType{
+		AzureChatExtensionTypeAzureCognitiveSearch,
+	}
+}
+
+// AzureCognitiveSearchChatExtensionConfigurationType - The type label to use when configuring Azure OpenAI chat extensions.
+// This should typically not be changed from its default value for Azure Cognitive Search.
+type AzureCognitiveSearchChatExtensionConfigurationType string
+
+const (
+	AzureCognitiveSearchChatExtensionConfigurationTypeAzureCognitiveSearch AzureCognitiveSearchChatExtensionConfigurationType = "AzureCognitiveSearch"
+)
+
+// PossibleAzureCognitiveSearchChatExtensionConfigurationTypeValues returns the possible values for the AzureCognitiveSearchChatExtensionConfigurationType const type.
+func PossibleAzureCognitiveSearchChatExtensionConfigurationTypeValues() []AzureCognitiveSearchChatExtensionConfigurationType {
+	return []AzureCognitiveSearchChatExtensionConfigurationType{
+		AzureCognitiveSearchChatExtensionConfigurationTypeAzureCognitiveSearch,
+	}
+}
+
+// AzureCognitiveSearchQueryType - The type of Azure Cognitive Search retrieval query that should be executed when using it
+// as an Azure OpenAI chat extension.
+type AzureCognitiveSearchQueryType string
+
+const (
+	AzureCognitiveSearchQueryTypeSemantic             AzureCognitiveSearchQueryType = "semantic"
+	AzureCognitiveSearchQueryTypeSimple               AzureCognitiveSearchQueryType = "simple"
+	AzureCognitiveSearchQueryTypeVector               AzureCognitiveSearchQueryType = "vector"
+	AzureCognitiveSearchQueryTypeVectorSemanticHybrid AzureCognitiveSearchQueryType = "vectorSemanticHybrid"
+	AzureCognitiveSearchQueryTypeVectorSimpleHybrid   AzureCognitiveSearchQueryType = "vectorSimpleHybrid"
+)
+
+// PossibleAzureCognitiveSearchQueryTypeValues returns the possible values for the AzureCognitiveSearchQueryType const type.
+func PossibleAzureCognitiveSearchQueryTypeValues() []AzureCognitiveSearchQueryType {
+	return []AzureCognitiveSearchQueryType{
+		AzureCognitiveSearchQueryTypeSemantic,
+		AzureCognitiveSearchQueryTypeSimple,
+		AzureCognitiveSearchQueryTypeVector,
+		AzureCognitiveSearchQueryTypeVectorSemanticHybrid,
+		AzureCognitiveSearchQueryTypeVectorSimpleHybrid,
+	}
+}
+
 // azureOpenAIOperationState - The state of a job or item.
 type azureOpenAIOperationState string
 
@@ -26,6 +80,7 @@ const (
 	ChatRoleAssistant ChatRole = "assistant"
 	ChatRoleFunction  ChatRole = "function"
 	ChatRoleSystem    ChatRole = "system"
+	ChatRoleTool      ChatRole = "tool"
 	ChatRoleUser      ChatRole = "user"
 )
 
@@ -35,6 +90,7 @@ func PossibleChatRoleValues() []ChatRole {
 		ChatRoleAssistant,
 		ChatRoleFunction,
 		ChatRoleSystem,
+		ChatRoleTool,
 		ChatRoleUser,
 	}
 }

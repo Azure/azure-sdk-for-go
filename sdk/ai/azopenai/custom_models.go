@@ -95,3 +95,9 @@ func newContentFilterResponseError(resp *http.Response) error {
 		ContentFilterResults: envelope.Error.InnerError.FilterResult,
 	}
 }
+
+// AzureChatExtensionOptions provides Azure specific options to extend ChatCompletions.
+type AzureChatExtensionOptions struct {
+	// Extensions is a slice of extensions to the chat completions endpoint, like Azure Cognitive Search.
+	Extensions []AzureChatExtensionConfiguration
+}

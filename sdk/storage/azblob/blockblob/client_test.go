@@ -5498,7 +5498,7 @@ func newServiceVersionTestPolicy() policy.Policy {
 func (m serviceVersionTest) Do(req *policy.Request) (*http.Response, error) {
 	const versionHeader = "x-ms-version"
 
-	currentVersion := req.Raw().Header[versionHeader]
+	currentVersion := map[string][]string(req.Raw().Header)[versionHeader]
 	if currentVersion[0] != generated.ServiceVersion {
 		return nil, fmt.Errorf(currentVersion[0] + " service version doesn't match expected version: " + generated.ServiceVersion)
 	}

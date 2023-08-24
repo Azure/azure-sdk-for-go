@@ -155,6 +155,12 @@ type AzureKeyVaultKms struct {
 	KeyVaultResourceID *string
 }
 
+// ClusterUpgradeSettings - Settings for upgrading a cluster.
+type ClusterUpgradeSettings struct {
+	// Settings for overrides.
+	OverrideSettings *UpgradeOverrideSettings
+}
+
 // CommandResultProperties - The results of a run command
 type CommandResultProperties struct {
 	// READ-ONLY; The exit code of the command
@@ -1236,6 +1242,9 @@ type ManagedClusterProperties struct {
 	// The support plan for the Managed Cluster. If unspecified, the default is 'KubernetesOfficial'.
 	SupportPlan *KubernetesSupportPlan
 
+	// Settings for upgrading a cluster.
+	UpgradeSettings *ClusterUpgradeSettings
+
 	// The profile for Windows VMs in the Managed Cluster.
 	WindowsProfile *ManagedClusterWindowsProfile
 
@@ -2003,6 +2012,18 @@ type TimeSpan struct {
 
 	// The start of a time span
 	Start *time.Time
+}
+
+// UpgradeOverrideSettings - Settings for overrides when upgrading a cluster.
+type UpgradeOverrideSettings struct {
+	// Whether to force upgrade the cluster. Note that this option instructs upgrade operation to bypass upgrade protections such
+	// as checking for deprecated API usage. Enable this option only with caution.
+	ForceUpgrade *bool
+
+	// Until when the overrides are effective. Note that this only matches the start time of an upgrade, and the effectiveness
+	// won't change once an upgrade starts even if the until expires as upgrade
+	// proceeds. This field is not set by default. It must be set for the overrides to take effect.
+	Until *time.Time
 }
 
 // UserAssignedIdentity - Details about a user assigned identity.

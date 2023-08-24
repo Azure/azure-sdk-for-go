@@ -424,6 +424,33 @@ func (a *AzureKeyVaultKms) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ClusterUpgradeSettings.
+func (c ClusterUpgradeSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "overrideSettings", c.OverrideSettings)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ClusterUpgradeSettings.
+func (c *ClusterUpgradeSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "overrideSettings":
+			err = unpopulate(val, "OverrideSettings", &c.OverrideSettings)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type CommandResultProperties.
 func (c CommandResultProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2606,6 +2633,7 @@ func (m ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "servicePrincipalProfile", m.ServicePrincipalProfile)
 	populate(objectMap, "storageProfile", m.StorageProfile)
 	populate(objectMap, "supportPlan", m.SupportPlan)
+	populate(objectMap, "upgradeSettings", m.UpgradeSettings)
 	populate(objectMap, "windowsProfile", m.WindowsProfile)
 	populate(objectMap, "workloadAutoScalerProfile", m.WorkloadAutoScalerProfile)
 	return json.Marshal(objectMap)
@@ -2721,6 +2749,9 @@ func (m *ManagedClusterProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "supportPlan":
 			err = unpopulate(val, "SupportPlan", &m.SupportPlan)
+			delete(rawMsg, key)
+		case "upgradeSettings":
+			err = unpopulate(val, "UpgradeSettings", &m.UpgradeSettings)
 			delete(rawMsg, key)
 		case "windowsProfile":
 			err = unpopulate(val, "WindowsProfile", &m.WindowsProfile)
@@ -4647,6 +4678,37 @@ func (t *TimeSpan) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", t, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type UpgradeOverrideSettings.
+func (u UpgradeOverrideSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "forceUpgrade", u.ForceUpgrade)
+	populateTimeRFC3339(objectMap, "until", u.Until)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UpgradeOverrideSettings.
+func (u *UpgradeOverrideSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", u, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "forceUpgrade":
+			err = unpopulate(val, "ForceUpgrade", &u.ForceUpgrade)
+			delete(rawMsg, key)
+		case "until":
+			err = unpopulateTimeRFC3339(val, "Until", &u.Until)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", u, err)
 		}
 	}
 	return nil

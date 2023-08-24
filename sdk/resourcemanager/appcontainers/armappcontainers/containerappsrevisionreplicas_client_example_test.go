@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/Replicas_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/Replicas_Get.json
 func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,14 +48,20 @@ func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	// 				LogStreamEndpoint: to.Ptr("testLogStreamEndpoint"),
 	// 				Ready: to.Ptr(true),
 	// 				RestartCount: to.Ptr[int32](0),
+	// 				RunningState: to.Ptr(armappcontainers.ContainerAppContainerRunningStateRunning),
+	// 				RunningStateDetails: to.Ptr("testDetail"),
 	// 				Started: to.Ptr(true),
 	// 		}},
 	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-25T19:42:45Z"); return t}()),
+	// 		InitContainers: []*armappcontainers.ReplicaContainer{
+	// 		},
+	// 		RunningState: to.Ptr(armappcontainers.ContainerAppReplicaRunningStateRunning),
+	// 		RunningStateDetails: to.Ptr("testDetail"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/Replicas_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/Replicas_List.json
 func ExampleContainerAppsRevisionReplicasClient_ListReplicas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,9 +94,15 @@ func ExampleContainerAppsRevisionReplicasClient_ListReplicas() {
 	// 						LogStreamEndpoint: to.Ptr("testLogStreamEndpoint"),
 	// 						Ready: to.Ptr(true),
 	// 						RestartCount: to.Ptr[int32](0),
+	// 						RunningState: to.Ptr(armappcontainers.ContainerAppContainerRunningStateRunning),
+	// 						RunningStateDetails: to.Ptr("testDetail"),
 	// 						Started: to.Ptr(true),
 	// 				}},
 	// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-25T19:42:45Z"); return t}()),
+	// 				InitContainers: []*armappcontainers.ReplicaContainer{
+	// 				},
+	// 				RunningState: to.Ptr(armappcontainers.ContainerAppReplicaRunningStateRunning),
+	// 				RunningStateDetails: to.Ptr("testDetail"),
 	// 			},
 	// 	}},
 	// }

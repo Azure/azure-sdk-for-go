@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/SourceControls_ListByContainer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/SourceControls_ListByContainer.json
 func ExampleContainerAppsSourceControlsClient_NewListByContainerAppPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleContainerAppsSourceControlsClient_NewListByContainerAppPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/SourceControls_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/SourceControls_Get.json
 func ExampleContainerAppsSourceControlsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleContainerAppsSourceControlsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/SourceControls_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/SourceControls_CreateOrUpdate.json
 func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,14 +118,16 @@ func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 				AzureCredentials: &armappcontainers.AzureCredentials{
 					ClientID:     to.Ptr("<clientid>"),
 					ClientSecret: to.Ptr("<clientsecret>"),
+					Kind:         to.Ptr("feaderated"),
 					TenantID:     to.Ptr("<tenantid>"),
 				},
-				ContextPath: to.Ptr("./"),
-				Image:       to.Ptr("image/tag"),
+				ContextPath:               to.Ptr("./"),
+				GithubPersonalAccessToken: to.Ptr("test"),
+				Image:                     to.Ptr("image/tag"),
 				RegistryInfo: &armappcontainers.RegistryInfo{
 					RegistryPassword: to.Ptr("<registrypassword>"),
-					RegistryURL:      to.Ptr("xwang971reg.azurecr.io"),
-					RegistryUserName: to.Ptr("xwang971reg"),
+					RegistryURL:      to.Ptr("test-registry.azurecr.io"),
+					RegistryUserName: to.Ptr("test-registry"),
 				},
 			},
 			RepoURL: to.Ptr("https://github.com/xwang971/ghatest"),
@@ -151,8 +153,8 @@ func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 	// 			ContextPath: to.Ptr("./"),
 	// 			Image: to.Ptr("image/tag"),
 	// 			RegistryInfo: &armappcontainers.RegistryInfo{
-	// 				RegistryURL: to.Ptr("xwang971reg.azurecr.io"),
-	// 				RegistryUserName: to.Ptr("xwang971reg"),
+	// 				RegistryURL: to.Ptr("test-registry.azurecr.io"),
+	// 				RegistryUserName: to.Ptr("testreg"),
 	// 			},
 	// 		},
 	// 		OperationState: to.Ptr(armappcontainers.SourceControlOperationStateInProgress),
@@ -161,7 +163,7 @@ func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/SourceControls_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/58be094c6b365f8d4d73a91e293dfb4818e57cf6/specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/SourceControls_Delete.json
 func ExampleContainerAppsSourceControlsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

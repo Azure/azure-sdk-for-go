@@ -190,7 +190,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 			// Docker Desktop runs a proxy that responds 403 to IMDS token requests. If we got that response,
 			// we return credentialUnavailableError so credential chains continue to their next credential
 			body, err := runtime.Payload(resp)
-			if err == nil && strings.HasSuffix(string(body), "connectex: A socket operation was attempted to an unreachable network.") {
+			if err == nil && strings.Contains(string(body), "A socket operation was attempted to an unreachable network") {
 				return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, fmt.Sprintf("unexpected response %q", string(body)))
 			}
 		}

@@ -855,12 +855,12 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		result.NextAllowedQuotaDowngradeTime = &nextAllowedQuotaDowngradeTime
 	}
 	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
-		provisionedBandwidthMibps32, err := strconv.ParseInt(val, 10, 32)
-		provisionedBandwidthMibps := int32(provisionedBandwidthMibps32)
+		provisionedBandwidthMiBps32, err := strconv.ParseInt(val, 10, 32)
+		provisionedBandwidthMiBps := int32(provisionedBandwidthMiBps32)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
-		result.ProvisionedBandwidthMibps = &provisionedBandwidthMibps
+		result.ProvisionedBandwidthMiBps = &provisionedBandwidthMiBps
 	}
 	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
 		result.LeaseDuration = (*LeaseDurationType)(&val)

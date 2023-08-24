@@ -99,7 +99,7 @@ const (
 	UnsupportedHeader                     Code = "UnsupportedHeader"
 	UnsupportedQueryParameter             Code = "UnsupportedQueryParameter"
 	UnsupportedXMLNode                    Code = "UnsupportedXmlNode"
-	FileOAuthManagementApiRestrictedToSrp Code = "FileOAuthManagementApiRestrictedToSrp"
+	FileOAuthManagementAPIRestrictedToSRP Code = "FileOAuthManagementApiRestrictedToSrp"
 )
 
 var (

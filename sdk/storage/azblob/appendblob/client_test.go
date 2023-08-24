@@ -125,7 +125,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlock() {
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(2))
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestAppendBlockHighThroughput() {
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockHighThroughput() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

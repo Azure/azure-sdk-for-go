@@ -9,6 +9,7 @@
 * Added `System` option to `ListContainersInclude` to allow listing of system containers (i.e, $web).
 * Updated the SAS Version to `2021-12-02` and added `Encryption Scope` to Account SAS, Service SAS, and User Delegation SAS
 * Added `ArchiveStatusRehydratePendingToCold` value to `ArchiveStatus` enum.
+* Content length limit for `AppendBlob.AppendBlock()` and `AppendBlob.AppendBlockFromURL()` raised from 4 MB to 100 MB.
 
 ### Breaking Changes
 

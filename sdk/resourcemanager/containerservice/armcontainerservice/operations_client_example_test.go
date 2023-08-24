@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad6484fee29013ab0b3619217970b106a1f44cf0/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/Operation_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2b8c05b55be5dd98ce94c835d7e96ee1ea7f5d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-07-01/examples/Operation_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

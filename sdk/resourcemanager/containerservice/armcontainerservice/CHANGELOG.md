@@ -1,5 +1,13 @@
 # Release History
 
+## 4.3.0 (2023-08-25)
+### Features Added
+
+- New struct `ClusterUpgradeSettings`
+- New struct `UpgradeOverrideSettings`
+- New field `UpgradeSettings` in struct `ManagedClusterProperties`
+
+
 ## 4.2.0 (2023-08-25)
 ### Features Added
 

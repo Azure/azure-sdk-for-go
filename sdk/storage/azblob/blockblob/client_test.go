@@ -2736,6 +2736,7 @@ func (s *BlockBlobRecordedTestsSuite) TestRehydrateStatus() {
 
 	blobName1 := "rehydration_test_blob_1"
 	blobName2 := "rehydration_test_blob_2"
+	blobName3 := "rehydration_test_blob_3"
 
 	bbClient1 := testcommon.GetBlockBlobClient(blobName1, containerClient)
 	reader1, _ := testcommon.GenerateData(1024)
@@ -2780,6 +2781,22 @@ func (s *BlockBlobRecordedTestsSuite) TestRehydrateStatus() {
 	_require.Nil(err)
 	_require.Equal(*getResp2.AccessTier, string(blob.AccessTierArchive))
 	_require.Equal(*getResp2.ArchiveStatus, string(blob.ArchiveStatusRehydratePendingToHot))
+
+	// ------------------------------------------
+
+	bbClient3 := testcommon.GetBlockBlobClient(blobName3, containerClient)
+	reader3, _ := testcommon.GenerateData(1024)
+	_, err = bbClient3.Upload(context.Background(), reader3, nil)
+	_require.Nil(err)
+	_, err = bbClient3.SetTier(context.Background(), blob.AccessTierArchive, nil)
+	_require.Nil(err)
+	_, err = bbClient3.SetTier(context.Background(), blob.AccessTierCold, nil)
+	_require.Nil(err)
+
+	getResp3, err := bbClient3.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(*getResp3.AccessTier, string(blob.AccessTierArchive))
+	_require.Equal(*getResp3.ArchiveStatus, string(blob.ArchiveStatusRehydratePendingToCold))
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestCopyBlobWithRehydratePriority() {

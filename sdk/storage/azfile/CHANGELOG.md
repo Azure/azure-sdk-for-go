@@ -24,7 +24,7 @@
 
 ### Other Changes
 
-* Updated version of azcore to 1.7.0 and azidentity to 1.3.0.
+* Updated version of azcore to 1.7.1 and azidentity to 1.3.1.
 
 ## 1.0.1 (Unreleased)
 

@@ -50,7 +50,7 @@ func ExampleClient_GetChatCompletions_bringYourOwnDataWithCognitiveSearch() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
+	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatMessage{
 			{Content: to.Ptr("What are the differences between Azure Machine Learning and Azure AI services?"), Role: to.Ptr(azopenai.ChatRoleUser)},
 		},

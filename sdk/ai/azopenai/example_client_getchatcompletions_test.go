@@ -116,7 +116,7 @@ func ExampleClient_GetChatCompletions_functions() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
+	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
 		Deployment: modelDeploymentID,
 		Messages: []azopenai.ChatMessage{
 			{

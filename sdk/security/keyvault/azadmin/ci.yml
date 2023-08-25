@@ -26,11 +26,12 @@ stages:
   parameters:
     TimeoutInMinutes: 120
     ServiceDirectory: 'security/keyvault/azadmin'
-    RunLiveTests: true
-    Public:
-      ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
-        MatrixFilters:
-          - ArmTemplateParameters=^(?!.*enableHsm.*true)
+    SupportedClouds: 'Public'
+    CloudConfig:
+      Public:
+        ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
+          MatrixFilters:
+            - ArmTemplateParameters=^(?!.*enableHsm.*true)
     MatrixConfigs:
       - Name: keyvault_test_matrix_addons
         Path: sdk/security/keyvault/azadmin/platform-matrix.json

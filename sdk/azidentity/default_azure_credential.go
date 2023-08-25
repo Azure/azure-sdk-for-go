@@ -49,6 +49,7 @@ type DefaultAzureCredentialOptions struct {
 //     more control over its configuration.
 //   - [ManagedIdentityCredential]
 //   - [AzureCLICredential]
+//   - [AzureDeveloperCLICredential]
 //
 // Consult the documentation for these credential types for more information on how they authenticate.
 // Once a credential has successfully authenticated, DefaultAzureCredential will use that credential for
@@ -115,6 +116,17 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	} else {
 		errorMessages = append(errorMessages, credNameAzureCLI+": "+err.Error())
 		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameAzureCLI, err: err})
+	}
+
+	azdCred, err := NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
+		AdditionallyAllowedTenants: additionalTenants,
+		TenantID:                   options.TenantID,
+	})
+	if err == nil {
+		creds = append(creds, azdCred)
+	} else {
+		errorMessages = append(errorMessages, credNameAzureDeveloperCLI+": "+err.Error())
+		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameAzureDeveloperCLI, err: err})
 	}
 
 	if len(errorMessages) > 0 {

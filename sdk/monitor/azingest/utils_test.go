@@ -8,6 +8,7 @@ package azingest_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"testing"
@@ -75,6 +76,22 @@ func startTest(t *testing.T) *azingest.Client {
 	if err != nil {
 		panic(err)
 	}
+
+	// verify live resources are ready
+	if recording.GetRecordMode() == recording.LiveMode {
+		var err error
+		for i := 0; i < 12; i++ {
+			_, err = client.Upload(context.Background(), ruleID, streamName, []byte{}, nil)
+			var respErr *azcore.ResponseError
+			if !(errors.As(err, &respErr) && respErr.StatusCode != 403) {
+				break
+			}
+			if i < 11 {
+				recording.Sleep(10 * time.Second)
+			}
+		}
+	}
+
 	return client
 }
 

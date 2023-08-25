@@ -14,7 +14,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"regexp"
 	"runtime"
 	"strings"
 	"sync"
@@ -25,13 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-const (
-	credNameAzureCLI  = "AzureCLICredential"
-	timeoutCLIRequest = 10 * time.Second
-)
-
-// used by tests to fake invoking the CLI
-type azureCLITokenProvider func(ctx context.Context, resource string, tenantID string) ([]byte, error)
+const credNameAzureCLI = "AzureCLICredential"
 
 // AzureCLICredentialOptions contains optional parameters for AzureCLICredential.
 type AzureCLICredentialOptions struct {
@@ -43,13 +36,13 @@ type AzureCLICredentialOptions struct {
 	// Defaults to the CLI's default tenant, which is typically the home tenant of the logged in user.
 	TenantID string
 
-	tokenProvider azureCLITokenProvider
+	tokenProvider cliTokenProvider
 }
 
 // init returns an instance of AzureCLICredentialOptions initialized with default values.
 func (o *AzureCLICredentialOptions) init() {
 	if o.tokenProvider == nil {
-		o.tokenProvider = defaultTokenProvider
+		o.tokenProvider = defaultAzTokenProvider
 	}
 }
 
@@ -80,11 +73,9 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
-	// pass the CLI an AAD v1 resource because we don't know which CLI version is installed and older ones don't support v2 scopes
-	opts.Scopes = []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	b, err := c.opts.tokenProvider(ctx, opts.Scopes[0], tenant)
+	b, err := c.opts.tokenProvider(ctx, opts.Scopes, tenant)
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
@@ -97,22 +88,18 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 	return at, nil
 }
 
-var defaultTokenProvider azureCLITokenProvider = func(ctx context.Context, resource string, tenantID string) ([]byte, error) {
-	match, err := regexp.MatchString("^[0-9a-zA-Z-.:/]+$", resource)
-	if err != nil {
-		return nil, err
+var defaultAzTokenProvider cliTokenProvider = func(ctx context.Context, scopes []string, tenantID string) ([]byte, error) {
+	// pass the CLI an AAD v1 resource because we don't know which CLI version is installed and older ones don't support v2 scopes
+	if !validScope(scopes[0]) {
+		return nil, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzureCLI, scopes[0])
 	}
-	if !match {
-		return nil, fmt.Errorf(`%s: unexpected scope "%s". Only alphanumeric characters and ".", ";", "-", and "/" are allowed`, credNameAzureCLI, resource)
-	}
-
+	resource := strings.TrimSuffix(scopes[0], defaultSuffix)
 	// set a default timeout for this authentication iff the application hasn't done so already
 	var cancel context.CancelFunc
 	if _, hasDeadline := ctx.Deadline(); !hasDeadline {
-		ctx, cancel = context.WithTimeout(ctx, timeoutCLIRequest)
+		ctx, cancel = context.WithTimeout(ctx, cliTimeout)
 		defer cancel()
 	}
-
 	commandLine := "az account get-access-token -o json --resource " + resource
 	if tenantID != "" {
 		commandLine += " --tenant " + tenantID

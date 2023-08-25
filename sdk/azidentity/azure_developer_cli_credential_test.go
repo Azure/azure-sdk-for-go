@@ -14,14 +14,14 @@ import (
 )
 
 var (
-	mockAzdCLITokenProviderSuccess = func(ctx context.Context, scope []string, tenantID string) ([]byte, error) {
+	mockAzdTokenProviderSuccess = func(context.Context, []string, string) ([]byte, error) {
 		return []byte(`{
   "token": "mocktoken",
   "expiresOn": "2001-02-03T04:05:06Z"
 }
 `), nil
 	}
-	mockAzdCLITokenProviderFailure = func(ctx context.Context, scope []string, tenantID string) ([]byte, error) {
+	mockAzdTokenProviderFailure = func(context.Context, []string, string) ([]byte, error) {
 		return nil, errors.New("provider failure message")
 	}
 )
@@ -53,9 +53,9 @@ func TestAzureDeveloperCLICredential_Error(t *testing.T) {
 }
 
 func TestAzureDeveloperCLICredential_GetTokenSuccess(t *testing.T) {
-	options := AzureDeveloperCLICredentialOptions{}
-	options.tokenProvider = mockAzdCLITokenProviderSuccess
-	cred, err := NewAzureDeveloperCLICredential(&options)
+	cred, err := NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
+		tokenProvider: mockAzdTokenProviderSuccess,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -74,7 +74,7 @@ func TestAzureDeveloperCLICredential_GetTokenSuccess(t *testing.T) {
 
 func TestAzureDeveloperCLICredential_GetTokenInvalidToken(t *testing.T) {
 	options := AzureDeveloperCLICredentialOptions{}
-	options.tokenProvider = mockAzdCLITokenProviderFailure
+	options.tokenProvider = mockAzdTokenProviderFailure
 	cred, err := NewAzureDeveloperCLICredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -90,12 +90,12 @@ func TestAzureDeveloperCLICredential_TenantID(t *testing.T) {
 	called := false
 	options := AzureDeveloperCLICredentialOptions{
 		TenantID: expected,
-		tokenProvider: func(ctx context.Context, scope []string, tenantID string) ([]byte, error) {
+		tokenProvider: func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
 			called = true
-			if tenantID != expected {
-				t.Fatal("Unexpected tenant ID: " + tenantID)
+			if tenant != expected {
+				t.Fatalf("unexpected tenant %q", tenant)
 			}
-			return mockAzdCLITokenProviderSuccess(ctx, scope, tenantID)
+			return mockAzdTokenProviderSuccess(ctx, scopes, tenant)
 		},
 	}
 	cred, err := NewAzureDeveloperCLICredential(&options)

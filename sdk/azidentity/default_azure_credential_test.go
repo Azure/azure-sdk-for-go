@@ -90,15 +90,15 @@ func TestDefaultAzureCredential_TenantID(t *testing.T) {
 			name = "TenantID set"
 		}
 		t.Run(fmt.Sprintf("%s_%s", credNameAzureCLI, name), func(t *testing.T) {
-			realTokenProvider := defaultTokenProvider
-			t.Cleanup(func() { defaultTokenProvider = realTokenProvider })
+			realTokenProvider := defaultAzTokenProvider
+			t.Cleanup(func() { defaultAzTokenProvider = realTokenProvider })
 			called := false
-			defaultTokenProvider = func(ctx context.Context, resource, tenantID string) ([]byte, error) {
+			defaultAzTokenProvider = func(ctx context.Context, scopes []string, tenantID string) ([]byte, error) {
 				called = true
 				if (override && tenantID != expected) || (!override && tenantID != "") {
 					t.Fatalf("unexpected tenantID %q", tenantID)
 				}
-				return mockCLITokenProviderSuccess(ctx, resource, tenantID)
+				return mockAzTokenProviderSuccess(ctx, scopes, tenantID)
 			}
 			// mock IMDS failure because managed identity precedes CLI in the chain
 			srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())

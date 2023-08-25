@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	mockCLITokenProviderSuccess = func(ctx context.Context, resource string, tenantID string) ([]byte, error) {
+	mockAzTokenProviderSuccess = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
 		return []byte(`{
   "accessToken": "mocktoken",
   "expiresOn": "2001-02-03 04:05:06.000007",
@@ -24,7 +24,7 @@ var (
 }
 `), nil
 	}
-	mockCLITokenProviderFailure = func(ctx context.Context, resource string, tenantID string) ([]byte, error) {
+	mockAzTokenProviderFailure = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
 		return nil, errors.New("provider failure message")
 	}
 )
@@ -34,7 +34,7 @@ func TestAzureCLICredential_Error(t *testing.T) {
 	authNs := 0
 	expected := newCredentialUnavailableError(credNameAzureCLI, "it didn't work")
 	o := AzureCLICredentialOptions{
-		tokenProvider: func(context.Context, string, string) ([]byte, error) {
+		tokenProvider: func(context.Context, []string, string) ([]byte, error) {
 			authNs++
 			return nil, expected
 		},
@@ -57,7 +57,7 @@ func TestAzureCLICredential_Error(t *testing.T) {
 
 func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 	options := AzureCLICredentialOptions{}
-	options.tokenProvider = mockCLITokenProviderSuccess
+	options.tokenProvider = mockAzTokenProviderSuccess
 	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
 		t.Fatal(err)
@@ -77,7 +77,7 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 
 func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
 	options := AzureCLICredentialOptions{}
-	options.tokenProvider = mockCLITokenProviderFailure
+	options.tokenProvider = mockAzTokenProviderFailure
 	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -93,12 +93,12 @@ func TestAzureCLICredential_TenantID(t *testing.T) {
 	called := false
 	options := AzureCLICredentialOptions{
 		TenantID: expected,
-		tokenProvider: func(ctx context.Context, resource, tenantID string) ([]byte, error) {
+		tokenProvider: func(ctx context.Context, scopes []string, tenantID string) ([]byte, error) {
 			called = true
 			if tenantID != expected {
 				t.Fatal("Unexpected tenant ID: " + tenantID)
 			}
-			return mockCLITokenProviderSuccess(ctx, resource, tenantID)
+			return mockAzTokenProviderSuccess(ctx, scopes, tenantID)
 		},
 	}
 	cred, err := NewAzureCLICredential(&options)

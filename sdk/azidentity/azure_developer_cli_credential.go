@@ -24,13 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-const (
-	credNameAzureDeveloperCLI = "AzureDeveloperCLICredential"
-	timeoutAzdRequest         = 10 * time.Second
-)
-
-// used by tests to fake invoking the CLI
-type azureDeveloperCLITokenProvider func(ctx context.Context, scope []string, tenantID string) ([]byte, error)
+const credNameAzureDeveloperCLI = "AzureDeveloperCLICredential"
 
 // AzureDeveloperCLICredentialOptions contains optional parameters for AzureDeveloperCLICredential.
 type AzureDeveloperCLICredentialOptions struct {
@@ -43,7 +37,7 @@ type AzureDeveloperCLICredentialOptions struct {
 	// which is the tenant of the selected Azure subscription.
 	TenantID string
 
-	tokenProvider azureDeveloperCLITokenProvider
+	tokenProvider cliTokenProvider
 }
 
 // AzureDeveloperCLICredential authenticates as the identity logged in to the [Azure Developer CLI].
@@ -79,10 +73,9 @@ func (c *AzureDeveloperCLICredential) GetToken(ctx context.Context, opts policy.
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
-	opts.TenantID = tenant
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	b, err := c.opts.tokenProvider(ctx, opts.Scopes, opts.TenantID)
+	b, err := c.opts.tokenProvider(ctx, opts.Scopes, tenant)
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
@@ -95,19 +88,21 @@ func (c *AzureDeveloperCLICredential) GetToken(ctx context.Context, opts policy.
 	return at, nil
 }
 
-var defaultAzdTokenProvider azureDeveloperCLITokenProvider = func(ctx context.Context, scopes []string, tenantID string) ([]byte, error) {
+var defaultAzdTokenProvider cliTokenProvider = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
 	// set a default timeout for this authentication iff the application hasn't done so already
 	var cancel context.CancelFunc
 	if _, hasDeadline := ctx.Deadline(); !hasDeadline {
-		ctx, cancel = context.WithTimeout(ctx, timeoutAzdRequest)
+		ctx, cancel = context.WithTimeout(ctx, cliTimeout)
 		defer cancel()
 	}
 	commandLine := "azd auth token -o json"
-	if tenantID != "" {
-		commandLine += " --tenant-id " + tenantID
+	if tenant != "" {
+		commandLine += " --tenant-id " + tenant
 	}
-
 	for _, scope := range scopes {
+		if !validScope(scope) {
+			return nil, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzureDeveloperCLI, scope)
+		}
 		commandLine += " --scope " + scope
 	}
 	var cliCmd *exec.Cmd

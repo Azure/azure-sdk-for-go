@@ -304,15 +304,8 @@ directive:
         .replace(/populate\(objectMap, "model", (c|e).Model\)/g, 'populate(objectMap, "model", &$1.Deployment)')
         .replace(/err = unpopulate\(val, "Model", &(c|e).Model\)/g, 'err = unpopulate(val, "Model", &$1.Deployment)');
 
-  # - from: client.go
-  #   where: $
-  #   transform: |
-  #     return $
-  #       .replace(/GetChatCompletionsWithAzureExtensionsResponse/g, "GetChatCompletionsResponse")
-  #       .replace(/GetChatCompletionsWithAzureExtensionsOptions/g, "GetChatCompletionsOptions")
-  #       .replace(/GetChatCompletionsWithAzureExtensions([ (])/g, "getChatCompletionsWithAzureExtensions$1")
-  #       .replace(/GetChatCompletions([ (])/g, "getChatCompletions$1");
-
+  # Make the Azure extensions internal - we expose these through the GetChatCompletions*() functions
+  # and just treat which endpoint we use as an implementation detail.
   - from: client.go
     where: $
     transform: |

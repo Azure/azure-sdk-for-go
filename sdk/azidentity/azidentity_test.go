@@ -418,14 +418,29 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				ctor: func(azcore.ClientOptions) (azcore.TokenCredential, error) {
 					o := AzureCLICredentialOptions{
 						AdditionallyAllowedTenants: test.allowed,
-						tokenProvider: func(ctx context.Context, resource, tenantID string) ([]byte, error) {
-							if tenantID != test.expected {
-								t.Errorf(`unexpected tenantID "%s"`, tenantID)
+						tokenProvider: func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+							if tenant != test.expected {
+								t.Errorf(`unexpected tenantID "%s"`, tenant)
 							}
-							return mockCLITokenProviderSuccess(ctx, resource, tenantID)
+							return mockAzTokenProviderSuccess(ctx, scopes, tenant)
 						},
 					}
 					return NewAzureCLICredential(&o)
+				},
+			},
+			{
+				name: credNameAzureDeveloperCLI,
+				ctor: func(azcore.ClientOptions) (azcore.TokenCredential, error) {
+					o := AzureDeveloperCLICredentialOptions{
+						AdditionallyAllowedTenants: test.allowed,
+						tokenProvider: func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+							if tenant != test.expected {
+								t.Errorf("unexpected tenantID %q", tenant)
+							}
+							return mockAzdTokenProviderSuccess(ctx, scopes, tenant)
+						},
+					}
+					return NewAzureDeveloperCLICredential(&o)
 				},
 			},
 			{
@@ -599,44 +614,61 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				}
 			})
 		}
-		t.Run(fmt.Sprintf("DefaultAzureCredential/%s/%s", credNameAzureCLI, test.desc), func(t *testing.T) {
-			// mock IMDS failure because managed identity precedes CLI in the chain
-			srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer close()
-			srv.SetResponse(mock.WithStatusCode(400))
-			o := DefaultAzureCredentialOptions{
-				AdditionallyAllowedTenants: test.allowed,
-				ClientOptions:              policy.ClientOptions{Transport: srv},
-			}
-			c, err := NewDefaultAzureCredential(&o)
-			if err != nil {
-				t.Fatal(err)
-			}
-			called := false
-			for _, source := range c.chain.sources {
-				if cli, ok := source.(*AzureCLICredential); ok {
-					cli.opts.tokenProvider = func(ctx context.Context, resource, tenantID string) ([]byte, error) {
-						called = true
-						if tenantID != test.expected {
-							t.Fatalf(`unexpected tenantID "%s"`, tenantID)
+		for _, credName := range []string{credNameAzureCLI, credNameAzureDeveloperCLI} {
+			t.Run(fmt.Sprintf("DefaultAzureCredential/%s/%s", credName, test.desc), func(t *testing.T) {
+				typeName := fmt.Sprintf("%T", &AzureCLICredential{})
+				mockSuccess := mockAzTokenProviderSuccess
+				if credName == credNameAzureDeveloperCLI {
+					typeName = fmt.Sprintf("%T", &AzureDeveloperCLICredential{})
+					mockSuccess = mockAzdTokenProviderSuccess
+				}
+				called := false
+				validateTenant := func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+					called = true
+					if tenant != test.expected {
+						t.Fatalf("unexpected tenant %q", tenant)
+					}
+					return mockSuccess(ctx, scopes, tenant)
+				}
+
+				// mock IMDS failure because managed identity precedes CLI in the chain
+				srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
+				defer close()
+				srv.SetResponse(mock.WithStatusCode(400))
+				o := DefaultAzureCredentialOptions{
+					AdditionallyAllowedTenants: test.allowed,
+					ClientOptions:              policy.ClientOptions{Transport: srv},
+				}
+
+				c, err := NewDefaultAzureCredential(&o)
+				if err != nil {
+					t.Fatal(err)
+				}
+				for _, source := range c.chain.sources {
+					if fmt.Sprintf("%T", source) != typeName {
+						continue
+					}
+					switch c := source.(type) {
+					case *AzureCLICredential:
+						c.opts.tokenProvider = validateTenant
+					case *AzureDeveloperCLICredential:
+						c.opts.tokenProvider = validateTenant
+					}
+					if _, err := c.GetToken(context.Background(), tro); err != nil {
+						if test.err {
+							return
 						}
-						return mockCLITokenProviderSuccess(ctx, resource, tenantID)
+						t.Fatal(err)
+					} else if test.err {
+						t.Fatal("expected an error")
+					}
+					if !called {
+						t.Fatalf("%s wasn't invoked", credName)
 					}
 					break
 				}
-			}
-			if _, err := c.GetToken(context.Background(), tro); err != nil {
-				if test.err {
-					return
-				}
-				t.Fatal(err)
-			} else if test.err {
-				t.Fatal("expected an error")
-			}
-			if !called {
-				t.Fatal("AzureCLICredential wasn't invoked")
-			}
-		})
+			})
+		}
 	}
 }
 
@@ -749,6 +781,56 @@ func TestClaims(t *testing.T) {
 				}
 			})
 		}
+	}
+}
+
+func TestCLIArgumentValidation(t *testing.T) {
+	invalidRunes := "|';&"
+	for _, test := range []struct {
+		ctor func() (azcore.TokenCredential, error)
+		name string
+	}{
+		{
+			ctor: func() (azcore.TokenCredential, error) {
+				return NewAzureCLICredential(nil)
+			},
+			name: credNameAzureCLI,
+		},
+		{
+			ctor: func() (azcore.TokenCredential, error) {
+				return NewAzureDeveloperCLICredential(nil)
+			},
+			name: credNameAzureDeveloperCLI,
+		},
+	} {
+		t.Run(fmt.Sprintf("%s/scope", test.name), func(t *testing.T) {
+			cred, err := test.ctor()
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, r := range invalidRunes {
+				_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{
+					Scopes: []string{liveTestScope + string(r)},
+				})
+				if err == nil {
+					t.Fatalf("expected an error for a scope containing %q", r)
+				}
+			}
+		})
+		t.Run(fmt.Sprintf("%s/tenant", test.name), func(t *testing.T) {
+			cred, err := test.ctor()
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, r := range invalidRunes {
+				_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{
+					TenantID: fakeTenantID + string(r),
+				})
+				if err == nil {
+					t.Fatalf("expected an error for a tenant containing %q", r)
+				}
+			}
+		})
 	}
 }
 

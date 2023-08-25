@@ -53,6 +53,24 @@ func TestMain(m *testing.M) {
 	ruleID = getEnvVar("AZURE_MONITOR_DCR_ID", fakeRuleID)
 	streamName = getEnvVar("AZURE_MONITOR_STREAM_NAME", fakeStreamName)
 
+	// verify live resources are ready
+	if recording.GetRecordMode() == recording.LiveMode {
+		client, err := azingest.NewClient(endpoint, credential, nil)
+		if err != nil {
+			panic(err)
+		}
+		for i := 0; i < 12; i++ {
+			_, err := client.Upload(context.Background(), ruleID, streamName, []byte("test"), nil)
+			var respErr *azcore.ResponseError
+			if !(errors.As(err, &respErr) && respErr.StatusCode == 403) {
+				break
+			}
+			if i < 11 {
+				recording.Sleep(10 * time.Second)
+			}
+		}
+	}
+
 	code := m.Run()
 	os.Exit(code)
 }
@@ -75,21 +93,6 @@ func startTest(t *testing.T) *azingest.Client {
 	client, err := azingest.NewClient(endpoint, credential, opts)
 	if err != nil {
 		panic(err)
-	}
-
-	// verify live resources are ready
-	if recording.GetRecordMode() == recording.LiveMode {
-		var err error
-		for i := 0; i < 12; i++ {
-			_, err = client.Upload(context.Background(), ruleID, streamName, []byte{}, nil)
-			var respErr *azcore.ResponseError
-			if !(errors.As(err, &respErr) && respErr.StatusCode != 403) {
-				break
-			}
-			if i < 11 {
-				recording.Sleep(10 * time.Second)
-			}
-		}
 	}
 
 	return client

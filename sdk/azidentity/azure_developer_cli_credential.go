@@ -16,10 +16,12 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const (
@@ -36,26 +38,20 @@ type AzureDeveloperCLICredentialOptions struct {
 	// to TenantID. Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the
 	// logged in account can access.
 	AdditionallyAllowedTenants []string
-	// TenantID identifies the tenant the credential should authenticate in.
-	// Defaults to the azd environment, which is the tenant where selected Azure subscription is.
+
+	// TenantID identifies the tenant the credential should authenticate in. Defaults to the azd environment,
+	// which is the tenant of the selected Azure subscription.
 	TenantID string
 
 	tokenProvider azureDeveloperCLITokenProvider
-}
-
-// init returns an instance of AzureDeveloperCLICredentialOptions initialized with default values.
-func (o *AzureDeveloperCLICredentialOptions) init() {
-	if o.tokenProvider == nil {
-		o.tokenProvider = defaultAzdTokenProvider
-	}
 }
 
 // AzureDeveloperCLICredential authenticates as the identity logged in to the [Azure Developer CLI].
 //
 // [Azure Developer CLI]: https://learn.microsoft.com/azure/developer/azure-developer-cli/overview
 type AzureDeveloperCLICredential struct {
-	s             *syncer
-	tokenProvider azureDeveloperCLITokenProvider
+	mu   *sync.Mutex
+	opts AzureDeveloperCLICredentialOptions
 }
 
 // NewAzureDeveloperCLICredential constructs an AzureDeveloperCLICredential. Pass nil to accept default options.
@@ -64,26 +60,29 @@ func NewAzureDeveloperCLICredential(options *AzureDeveloperCLICredentialOptions)
 	if options != nil {
 		cp = *options
 	}
-	cp.init()
-	c := AzureDeveloperCLICredential{tokenProvider: cp.tokenProvider}
-	c.s = newSyncer(
-		credNameAzureDeveloperCLI,
-		cp.TenantID,
-		c.requestToken,
-		nil, // this credential doesn't have a silent auth method because the CLI handles caching
-		syncerOptions{AdditionallyAllowedTenants: cp.AdditionallyAllowedTenants},
-	)
-	return &c, nil
+	if cp.TenantID != "" && !validTenantID(cp.TenantID) {
+		return nil, errInvalidTenantID
+	}
+	if cp.tokenProvider == nil {
+		cp.tokenProvider = defaultAzdTokenProvider
+	}
+	return &AzureDeveloperCLICredential{mu: &sync.Mutex{}, opts: cp}, nil
 }
 
-// GetToken requests a token from the Azure Developer CLI. This credential doesn't cache tokens, so every call invokes the CLI.
+// GetToken requests a token from the Azure Developer CLI. This credential doesn't cache tokens, so every call invokes azd.
 // This method is called automatically by Azure SDK clients.
 func (c *AzureDeveloperCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return c.s.GetToken(ctx, opts)
-}
-
-func (c *AzureDeveloperCLICredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	b, err := c.tokenProvider(ctx, opts.Scopes, opts.TenantID)
+	if len(opts.Scopes) == 0 {
+		return azcore.AccessToken{}, errors.New(credNameAzureDeveloperCLI + ": GetToken() requires at least one scope")
+	}
+	tenant, err := resolveTenant(c.opts.TenantID, opts.TenantID, credNameAzureDeveloperCLI, c.opts.AdditionallyAllowedTenants)
+	if err != nil {
+		return azcore.AccessToken{}, err
+	}
+	opts.TenantID = tenant
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	b, err := c.opts.tokenProvider(ctx, opts.Scopes, opts.TenantID)
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
@@ -91,26 +90,26 @@ func (c *AzureDeveloperCLICredential) requestToken(ctx context.Context, opts pol
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
+	msg := fmt.Sprintf("%s.GetToken() acquired a token for scope %q", credNameAzureDeveloperCLI, strings.Join(opts.Scopes, ", "))
+	log.Write(EventAuthentication, msg)
 	return at, nil
 }
 
-var defaultAzdTokenProvider azureDeveloperCLITokenProvider = func(ctx context.Context, scope []string, tenantID string) ([]byte, error) {
+var defaultAzdTokenProvider azureDeveloperCLITokenProvider = func(ctx context.Context, scopes []string, tenantID string) ([]byte, error) {
 	// set a default timeout for this authentication iff the application hasn't done so already
 	var cancel context.CancelFunc
 	if _, hasDeadline := ctx.Deadline(); !hasDeadline {
 		ctx, cancel = context.WithTimeout(ctx, timeoutAzdRequest)
 		defer cancel()
 	}
-
 	commandLine := "azd auth token -o json"
 	if tenantID != "" {
 		commandLine += " --tenant-id " + tenantID
 	}
 
-	for _, scopeName := range scope {
-		commandLine += " --scope " + scopeName
+	for _, scope := range scopes {
+		commandLine += " --scope " + scope
 	}
-
 	var cliCmd *exec.Cmd
 	if runtime.GOOS == "windows" {
 		dir := os.Getenv("SYSTEMROOT")
@@ -126,20 +125,20 @@ var defaultAzdTokenProvider azureDeveloperCLITokenProvider = func(ctx context.Co
 	cliCmd.Env = os.Environ()
 	var stderr bytes.Buffer
 	cliCmd.Stderr = &stderr
-
 	output, err := cliCmd.Output()
 	if err != nil {
 		msg := stderr.String()
 		var exErr *exec.ExitError
 		if errors.As(err, &exErr) && exErr.ExitCode() == 127 || strings.HasPrefix(msg, "'azd' is not recognized") {
 			msg = "Azure Developer CLI not found on path"
+		} else if strings.Contains(msg, "azd auth login") {
+			msg = `please run "azd auth login" from a command prompt to authenticate before using this credential`
 		}
 		if msg == "" {
 			msg = err.Error()
 		}
 		return nil, newCredentialUnavailableError(credNameAzureDeveloperCLI, msg)
 	}
-
 	return output, nil
 }
 
@@ -152,17 +151,14 @@ func (c *AzureDeveloperCLICredential) createAccessToken(tk []byte) (azcore.Acces
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
-
 	exp, err := time.Parse("2006-01-02T15:04:05Z", t.ExpiresOn)
 	if err != nil {
-		return azcore.AccessToken{}, fmt.Errorf("Error parsing token expiration time %q: %v", t.ExpiresOn, err)
+		return azcore.AccessToken{}, fmt.Errorf("error parsing token expiration time %q: %v", t.ExpiresOn, err)
 	}
-
-	converted := azcore.AccessToken{
-		Token:     t.AccessToken,
+	return azcore.AccessToken{
 		ExpiresOn: exp.UTC(),
-	}
-	return converted, nil
+		Token:     t.AccessToken,
+	}, nil
 }
 
 var _ azcore.TokenCredential = (*AzureDeveloperCLICredential)(nil)

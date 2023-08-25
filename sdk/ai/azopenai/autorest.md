@@ -324,4 +324,24 @@ directive:
         .replace(/populate\(objectMap, "dataSources", c.DataSources\)/, 'if c.AzureExtensionsOptions != nil { populate(objectMap, "dataSources", c.AzureExtensionsOptions.Extensions) }')
         // technically not used, but let's be completionists...
         .replace(/err = unpopulate\(val, "DataSources", &c.DataSources\)/, 'c.AzureExtensionsOptions = &AzureChatExtensionOptions{}; err = unpopulate(val, "DataSources", &c.AzureExtensionsOptions.Extensions)')
+
+  # try to fix some of the generated types.
+
+  # swap the `Parameters` and `Type` fields (Type really drives what's in Parameters)
+  - from: models.go
+    where: $
+    transform: |
+      let typeRE = /(\/\/ REQUIRED; The label for the type of an Azure chat extension.*?Type \*AzureChatExtensionType)/s;
+      let paramsRE = /(\/\/ REQUIRED; The configuration payload used for the Azure chat extension.*?Parameters any)/s;
+
+      return $
+        .replace(paramsRE, "")
+        .replace(typeRE, $.match(typeRE)[1] + "\n\n" + $.match(paramsRE)[1]);
+
+  - from: constants.go
+    where: $
+    transform: |
+      return $.replace(
+        /(AzureChatExtensionTypeAzureCognitiveSearch AzureChatExtensionType)/, 
+        "// AzureChatExtensionTypeAzureCognitiveSearch enables the use of an Azure Cognitive Search index with chat completions.\n// [AzureChatExtensionConfiguration.Parameter] should be of type [AzureCognitiveSearchChatExtensionConfiguration].\n$1");
 ```

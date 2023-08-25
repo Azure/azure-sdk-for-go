@@ -14,13 +14,14 @@ import "time"
 // will be used by a chat completions request that should use Azure OpenAI chat extensions to augment the response
 // behavior. The use of this configuration is compatible only with Azure OpenAI.
 type AzureChatExtensionConfiguration struct {
-	// REQUIRED; The configuration payload used for the Azure chat extension. The structure payload details are specific to the
-	// extension being configured. Azure chat extensions are only compatible with Azure OpenAI.
-	Parameters any
 
 	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
 	// chat extensions are only compatible with Azure OpenAI.
 	Type *AzureChatExtensionType
+
+	// REQUIRED; The configuration payload used for the Azure chat extension. The structure payload details are specific to the
+	// extension being configured. Azure chat extensions are only compatible with Azure OpenAI.
+	Parameters any
 }
 
 // AzureChatExtensionsMessageContext - A representation of the additional context information available when Azure OpenAI

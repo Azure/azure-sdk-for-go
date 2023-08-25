@@ -106,11 +106,11 @@ stages:
           Linux_Go121:
             pool.name: azsdk-pool-mms-ubuntu-2004-general
             image.name: MMSUbuntu20.04
-            go.version: '1.21'
+            go.version: '1.21.0'
           Windows_Go121:
             pool.name: azsdk-pool-mms-win-2022-general
             image.name: MMS2022
-            go.version: '1.21'
+            go.version: '1.21.0'
             generate.bom: true
       pool:
         name: $(pool.name)
@@ -156,7 +156,7 @@ stages:
 
       - task: GoTool@0
         inputs:
-          version: '1.21'
+          version: '1.21.0'
         displayName: "Select Go Version"
 
       - template: ../steps/create-go-workspace.yml

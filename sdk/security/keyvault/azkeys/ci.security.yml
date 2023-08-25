@@ -26,6 +26,7 @@ stages:
   parameters:
     TimeoutInMinutes: 120
     ServiceDirectory: 'security/keyvault/azkeys'
+    RunLiveTests: true
     SupportedClouds: 'Public'
     CloudConfig:
       Public:

@@ -149,6 +149,7 @@ type ArchiveStatus = generated.ArchiveStatus
 const (
 	ArchiveStatusRehydratePendingToCool ArchiveStatus = generated.ArchiveStatusRehydratePendingToCool
 	ArchiveStatusRehydratePendingToHot  ArchiveStatus = generated.ArchiveStatusRehydratePendingToHot
+	ArchiveStatusRehydratePendingToCold ArchiveStatus = generated.ArchiveStatusRehydratePendingToCold
 )
 
 // PossibleArchiveStatusValues returns the possible values for the ArchiveStatus const type.

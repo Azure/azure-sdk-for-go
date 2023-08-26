@@ -25,9 +25,24 @@ var (
 `), nil
 	}
 	mockAzTokenProviderFailure = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
-		return nil, errors.New("provider failure message")
+		return nil, newAuthenticationFailedError(credNameAzureCLI, "mock provider error", nil, nil)
 	}
 )
+
+func TestAzureCLICredential_DefaultChainError(t *testing.T) {
+	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{
+		inDefaultChain: true,
+		tokenProvider:  mockAzTokenProviderFailure,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = cred.GetToken(context.Background(), testTRO)
+	var ue *credentialUnavailableError
+	if !errors.As(err, &ue) {
+		t.Fatalf("expected credentialUnavailableError, got %T: %q", err, err)
+	}
+}
 
 func TestAzureCLICredential_Error(t *testing.T) {
 	// GetToken shouldn't invoke the CLI a second time after a failure

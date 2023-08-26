@@ -32,10 +32,14 @@ type AzureCLICredentialOptions struct {
 	// to TenantID. Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the
 	// logged in account can access.
 	AdditionallyAllowedTenants []string
+
 	// TenantID identifies the tenant the credential should authenticate in.
 	// Defaults to the CLI's default tenant, which is typically the home tenant of the logged in user.
 	TenantID string
 
+	// inDefaultChain is true when the credential is part of DefaultAzureCredential
+	inDefaultChain bool
+	// tokenProvider is used by tests to fake invoking az
 	tokenProvider cliTokenProvider
 }
 
@@ -66,22 +70,23 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 // GetToken requests a token from the Azure CLI. This credential doesn't cache tokens, so every call invokes the CLI.
 // This method is called automatically by Azure SDK clients.
 func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	at := azcore.AccessToken{}
 	if len(opts.Scopes) != 1 {
-		return azcore.AccessToken{}, errors.New(credNameAzureCLI + ": GetToken() requires exactly one scope")
+		return at, errors.New(credNameAzureCLI + ": GetToken() requires exactly one scope")
 	}
 	tenant, err := resolveTenant(c.opts.TenantID, opts.TenantID, credNameAzureCLI, c.opts.AdditionallyAllowedTenants)
 	if err != nil {
-		return azcore.AccessToken{}, err
+		return at, err
 	}
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	b, err := c.opts.tokenProvider(ctx, opts.Scopes, tenant)
-	if err != nil {
-		return azcore.AccessToken{}, err
+	if err == nil {
+		at, err = c.createAccessToken(b)
 	}
-	at, err := c.createAccessToken(b)
 	if err != nil {
-		return azcore.AccessToken{}, err
+		err = unavailableIfInChain(err, c.opts.inDefaultChain)
+		return at, err
 	}
 	msg := fmt.Sprintf("%s.GetToken() acquired a token for scope %q", credNameAzureCLI, strings.Join(opts.Scopes, ", "))
 	log.Write(EventAuthentication, msg)
@@ -89,10 +94,10 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 }
 
 var defaultAzTokenProvider cliTokenProvider = func(ctx context.Context, scopes []string, tenantID string) ([]byte, error) {
-	// pass the CLI an AAD v1 resource because we don't know which CLI version is installed and older ones don't support v2 scopes
 	if !validScope(scopes[0]) {
 		return nil, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzureCLI, scopes[0])
 	}
+	// pass the CLI an AAD v1 resource because we don't know which CLI version is installed and older ones don't support v2 scopes
 	resource := strings.TrimSuffix(scopes[0], defaultSuffix)
 	// set a default timeout for this authentication iff the application hasn't done so already
 	var cancel context.CancelFunc

@@ -37,6 +37,9 @@ type AzureDeveloperCLICredentialOptions struct {
 	// which is the tenant of the selected Azure subscription.
 	TenantID string
 
+	// inDefaultChain is true when the credential is part of DefaultAzureCredential
+	inDefaultChain bool
+	// tokenProvider is used by tests to fake invoking azd
 	tokenProvider cliTokenProvider
 }
 
@@ -66,22 +69,23 @@ func NewAzureDeveloperCLICredential(options *AzureDeveloperCLICredentialOptions)
 // GetToken requests a token from the Azure Developer CLI. This credential doesn't cache tokens, so every call invokes azd.
 // This method is called automatically by Azure SDK clients.
 func (c *AzureDeveloperCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	at := azcore.AccessToken{}
 	if len(opts.Scopes) == 0 {
-		return azcore.AccessToken{}, errors.New(credNameAzureDeveloperCLI + ": GetToken() requires at least one scope")
+		return at, errors.New(credNameAzureDeveloperCLI + ": GetToken() requires at least one scope")
 	}
 	tenant, err := resolveTenant(c.opts.TenantID, opts.TenantID, credNameAzureDeveloperCLI, c.opts.AdditionallyAllowedTenants)
 	if err != nil {
-		return azcore.AccessToken{}, err
+		return at, err
 	}
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	b, err := c.opts.tokenProvider(ctx, opts.Scopes, tenant)
-	if err != nil {
-		return azcore.AccessToken{}, err
+	if err == nil {
+		at, err = c.createAccessToken(b)
 	}
-	at, err := c.createAccessToken(b)
 	if err != nil {
-		return azcore.AccessToken{}, err
+		err = unavailableIfInChain(err, c.opts.inDefaultChain)
+		return at, err
 	}
 	msg := fmt.Sprintf("%s.GetToken() acquired a token for scope %q", credNameAzureDeveloperCLI, strings.Join(opts.Scopes, ", "))
 	log.Write(EventAuthentication, msg)

@@ -18,8 +18,6 @@
   error if the underlying Body reader was closed or EOF'd before the actual DONE: token arrived. This could result in an
   infinite loop for callers. (PR#21323)
 
-### Other Changes
-
 ## 0.1.1 (2023-07-26)
 
 ### Breaking Changes

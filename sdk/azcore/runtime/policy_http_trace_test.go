@@ -105,9 +105,10 @@ func TestHTTPTracePolicy(t *testing.T) {
 
 func TestStartSpan(t *testing.T) {
 	// tracing disabled
-	ctx, end := StartSpan(context.Background(), "TestStartSpan", tracing.Tracer{}, nil)
+	ctxIn := context.Background()
+	ctx, end := StartSpan(ctxIn, "TestStartSpan", tracing.Tracer{}, nil)
 	end(nil)
-	require.Same(t, context.Background(), ctx)
+	require.Equal(t, ctxIn, ctx)
 
 	// span no error
 	var startCalled bool

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -16,27 +16,14 @@
 * Updated the SAS Version to `2022-11-02` and added `Encryption Scope` to Account SAS.
 * Trailing dot support for files and directories.
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 * Fixed service SAS creation where expiry time or permissions can be omitted when stored access policy is used.
-
-### Other Changes
-
-* Updated version of azcore to 1.7.1 and azidentity to 1.3.1.
-
-## 1.0.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
 * Fixed issue where some requests fail with mismatch in string to sign.
 
 ### Other Changes
 
+* Updated version of azcore to 1.7.1 and azidentity to 1.3.1.
 * Added `dragonfly` and `aix` to build constraints in `mmf_unix.go`.
 
 ## 1.0.0 (2023-07-12)

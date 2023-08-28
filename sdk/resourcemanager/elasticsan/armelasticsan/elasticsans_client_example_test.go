@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/ElasticSans_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/ElasticSans_ListBySubscription_MaximumSet_Gen.json
 func ExampleElasticSansClient_NewListBySubscriptionPager_elasticSansListBySubscriptionMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,43 +43,70 @@ func ExampleElasticSansClient_NewListBySubscriptionPager_elasticSansListBySubscr
 		// page.List = armelasticsan.List{
 		// 	Value: []*armelasticsan.ElasticSan{
 		// 		{
-		// 			Name: to.Ptr("aaaaaaaaaaa"),
-		// 			Type: to.Ptr("aaaaaa"),
-		// 			ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 			Tags: map[string]*string{
-		// 				"key896": to.Ptr("aaaaaaaaaaaaaaaaaa"),
+		// 			Name: to.Ptr("vfoatmakv"),
+		// 			Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
+		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
+		// 			SystemData: &armelasticsan.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 				CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+		// 				CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+		// 				LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 			Location: to.Ptr("France Central"),
+		// 			Tags: map[string]*string{
+		// 				"key5002": to.Ptr("lhag"),
+		// 			},
 		// 			Properties: &armelasticsan.Properties{
 		// 				AvailabilityZones: []*string{
-		// 					to.Ptr("aaaaaaaaaaaaaaaaa")},
-		// 					BaseSizeTiB: to.Ptr[int64](26),
-		// 					ExtendedCapacitySizeTiB: to.Ptr[int64](7),
-		// 					ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
-		// 					SKU: &armelasticsan.SKU{
-		// 						Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
-		// 						Tier: to.Ptr(armelasticsan.SKUTierPremium),
+		// 					to.Ptr("1")},
+		// 					BaseSizeTiB: to.Ptr[int64](15),
+		// 					ExtendedCapacitySizeTiB: to.Ptr[int64](6),
+		// 					PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("{privateEndpointConnectionName}"),
+		// 							Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
+		// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
+		// 							SystemData: &armelasticsan.SystemData{
+		// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 								CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+		// 								CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 								LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+		// 								LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 							},
+		// 							Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+		// 								GroupIDs: []*string{
+		// 									to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}")},
+		// 									PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+		// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}"),
+		// 									},
+		// 									PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+		// 										Description: to.Ptr("Auto-Approved"),
+		// 										ActionsRequired: to.Ptr("None"),
+		// 										Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+		// 									},
+		// 									ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+		// 								},
+		// 						}},
+		// 						ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+		// 						SKU: &armelasticsan.SKU{
+		// 							Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
+		// 							Tier: to.Ptr(armelasticsan.SKUTierPremium),
+		// 						},
+		// 						TotalIops: to.Ptr[int64](22),
+		// 						TotalMBps: to.Ptr[int64](4),
+		// 						TotalSizeTiB: to.Ptr[int64](27),
+		// 						TotalVolumeSizeGiB: to.Ptr[int64](15),
+		// 						VolumeGroupCount: to.Ptr[int64](24),
 		// 					},
-		// 					TotalIops: to.Ptr[int64](13),
-		// 					TotalMBps: to.Ptr[int64](16),
-		// 					TotalSizeTiB: to.Ptr[int64](29),
-		// 					TotalVolumeSizeGiB: to.Ptr[int64](21),
-		// 					VolumeGroupCount: to.Ptr[int64](24),
-		// 				},
-		// 				SystemData: &armelasticsan.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-08T10:39:37.620Z"); return t}()),
-		// 					CreatedBy: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 					CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-08T10:39:37.620Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 					LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-		// 				},
-		// 		}},
-		// 	}
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/ElasticSans_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/ElasticSans_ListBySubscription_MinimumSet_Gen.json
 func ExampleElasticSansClient_NewListBySubscriptionPager_elasticSansListBySubscriptionMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,19 +131,70 @@ func ExampleElasticSansClient_NewListBySubscriptionPager_elasticSansListBySubscr
 		// page.List = armelasticsan.List{
 		// 	Value: []*armelasticsan.ElasticSan{
 		// 		{
-		// 			Properties: &armelasticsan.Properties{
-		// 				BaseSizeTiB: to.Ptr[int64](26),
-		// 				ExtendedCapacitySizeTiB: to.Ptr[int64](7),
-		// 				SKU: &armelasticsan.SKU{
-		// 					Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
-		// 				},
+		// 			Name: to.Ptr("vfoatmakv"),
+		// 			Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
+		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
+		// 			SystemData: &armelasticsan.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 				CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+		// 				CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+		// 				LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 		// 			},
-		// 	}},
-		// }
+		// 			Location: to.Ptr("France Central"),
+		// 			Tags: map[string]*string{
+		// 				"key5002": to.Ptr("lhag"),
+		// 			},
+		// 			Properties: &armelasticsan.Properties{
+		// 				AvailabilityZones: []*string{
+		// 					to.Ptr("1")},
+		// 					BaseSizeTiB: to.Ptr[int64](15),
+		// 					ExtendedCapacitySizeTiB: to.Ptr[int64](6),
+		// 					PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("{privateEndpointConnectionName}"),
+		// 							Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
+		// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
+		// 							SystemData: &armelasticsan.SystemData{
+		// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 								CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+		// 								CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 								LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+		// 								LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 							},
+		// 							Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+		// 								GroupIDs: []*string{
+		// 									to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}")},
+		// 									PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+		// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}"),
+		// 									},
+		// 									PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+		// 										Description: to.Ptr("Auto-Approved"),
+		// 										ActionsRequired: to.Ptr("None"),
+		// 										Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+		// 									},
+		// 									ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+		// 								},
+		// 						}},
+		// 						ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+		// 						SKU: &armelasticsan.SKU{
+		// 							Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
+		// 							Tier: to.Ptr(armelasticsan.SKUTierPremium),
+		// 						},
+		// 						TotalIops: to.Ptr[int64](22),
+		// 						TotalMBps: to.Ptr[int64](4),
+		// 						TotalSizeTiB: to.Ptr[int64](27),
+		// 						TotalVolumeSizeGiB: to.Ptr[int64](15),
+		// 						VolumeGroupCount: to.Ptr[int64](24),
+		// 					},
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/ElasticSans_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/ElasticSans_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleElasticSansClient_NewListByResourceGroupPager_elasticSansListByResourceGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +205,7 @@ func ExampleElasticSansClient_NewListByResourceGroupPager_elasticSansListByResou
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewElasticSansClient().NewListByResourceGroupPager("rgelasticsan", nil)
+	pager := clientFactory.NewElasticSansClient().NewListByResourceGroupPager("resourcegroupname", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -141,43 +219,70 @@ func ExampleElasticSansClient_NewListByResourceGroupPager_elasticSansListByResou
 		// page.List = armelasticsan.List{
 		// 	Value: []*armelasticsan.ElasticSan{
 		// 		{
-		// 			Name: to.Ptr("aaaaaaaaaaa"),
-		// 			Type: to.Ptr("aaaaaa"),
-		// 			ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 			Tags: map[string]*string{
-		// 				"key896": to.Ptr("aaaaaaaaaaaaaaaaaa"),
+		// 			Name: to.Ptr("vfoatmakv"),
+		// 			Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
+		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
+		// 			SystemData: &armelasticsan.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 				CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+		// 				CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+		// 				LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 			Location: to.Ptr("France Central"),
+		// 			Tags: map[string]*string{
+		// 				"key5002": to.Ptr("lhag"),
+		// 			},
 		// 			Properties: &armelasticsan.Properties{
 		// 				AvailabilityZones: []*string{
-		// 					to.Ptr("aaaaaaaaaaaaaaaaa")},
-		// 					BaseSizeTiB: to.Ptr[int64](26),
-		// 					ExtendedCapacitySizeTiB: to.Ptr[int64](7),
-		// 					ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
-		// 					SKU: &armelasticsan.SKU{
-		// 						Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
-		// 						Tier: to.Ptr(armelasticsan.SKUTierPremium),
+		// 					to.Ptr("1")},
+		// 					BaseSizeTiB: to.Ptr[int64](15),
+		// 					ExtendedCapacitySizeTiB: to.Ptr[int64](6),
+		// 					PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("{privateEndpointConnectionName}"),
+		// 							Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
+		// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
+		// 							SystemData: &armelasticsan.SystemData{
+		// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 								CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+		// 								CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 								LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+		// 								LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 							},
+		// 							Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+		// 								GroupIDs: []*string{
+		// 									to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}")},
+		// 									PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+		// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}"),
+		// 									},
+		// 									PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+		// 										Description: to.Ptr("Auto-Approved"),
+		// 										ActionsRequired: to.Ptr("None"),
+		// 										Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+		// 									},
+		// 									ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+		// 								},
+		// 						}},
+		// 						ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+		// 						SKU: &armelasticsan.SKU{
+		// 							Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
+		// 							Tier: to.Ptr(armelasticsan.SKUTierPremium),
+		// 						},
+		// 						TotalIops: to.Ptr[int64](22),
+		// 						TotalMBps: to.Ptr[int64](4),
+		// 						TotalSizeTiB: to.Ptr[int64](27),
+		// 						TotalVolumeSizeGiB: to.Ptr[int64](15),
+		// 						VolumeGroupCount: to.Ptr[int64](24),
 		// 					},
-		// 					TotalIops: to.Ptr[int64](13),
-		// 					TotalMBps: to.Ptr[int64](16),
-		// 					TotalSizeTiB: to.Ptr[int64](29),
-		// 					TotalVolumeSizeGiB: to.Ptr[int64](21),
-		// 					VolumeGroupCount: to.Ptr[int64](24),
-		// 				},
-		// 				SystemData: &armelasticsan.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-08T10:39:37.620Z"); return t}()),
-		// 					CreatedBy: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-		// 					CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-08T10:39:37.620Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 					LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-		// 				},
-		// 		}},
-		// 	}
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/ElasticSans_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/ElasticSans_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleElasticSansClient_NewListByResourceGroupPager_elasticSansListByResourceGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +293,7 @@ func ExampleElasticSansClient_NewListByResourceGroupPager_elasticSansListByResou
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewElasticSansClient().NewListByResourceGroupPager("rgelasticsan", nil)
+	pager := clientFactory.NewElasticSansClient().NewListByResourceGroupPager("resourcegroupname", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -202,19 +307,70 @@ func ExampleElasticSansClient_NewListByResourceGroupPager_elasticSansListByResou
 		// page.List = armelasticsan.List{
 		// 	Value: []*armelasticsan.ElasticSan{
 		// 		{
-		// 			Properties: &armelasticsan.Properties{
-		// 				BaseSizeTiB: to.Ptr[int64](26),
-		// 				ExtendedCapacitySizeTiB: to.Ptr[int64](7),
-		// 				SKU: &armelasticsan.SKU{
-		// 					Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
-		// 				},
+		// 			Name: to.Ptr("vfoatmakv"),
+		// 			Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
+		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
+		// 			SystemData: &armelasticsan.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 				CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+		// 				CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+		// 				LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 		// 			},
-		// 	}},
-		// }
+		// 			Location: to.Ptr("France Central"),
+		// 			Tags: map[string]*string{
+		// 				"key5002": to.Ptr("lhag"),
+		// 			},
+		// 			Properties: &armelasticsan.Properties{
+		// 				AvailabilityZones: []*string{
+		// 					to.Ptr("1")},
+		// 					BaseSizeTiB: to.Ptr[int64](15),
+		// 					ExtendedCapacitySizeTiB: to.Ptr[int64](6),
+		// 					PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("{privateEndpointConnectionName}"),
+		// 							Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
+		// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
+		// 							SystemData: &armelasticsan.SystemData{
+		// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 								CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+		// 								CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+		// 								LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+		// 								LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 							},
+		// 							Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+		// 								GroupIDs: []*string{
+		// 									to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}")},
+		// 									PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+		// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}"),
+		// 									},
+		// 									PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+		// 										Description: to.Ptr("Auto-Approved"),
+		// 										ActionsRequired: to.Ptr("None"),
+		// 										Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+		// 									},
+		// 									ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+		// 								},
+		// 						}},
+		// 						ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+		// 						SKU: &armelasticsan.SKU{
+		// 							Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
+		// 							Tier: to.Ptr(armelasticsan.SKUTierPremium),
+		// 						},
+		// 						TotalIops: to.Ptr[int64](22),
+		// 						TotalMBps: to.Ptr[int64](4),
+		// 						TotalSizeTiB: to.Ptr[int64](27),
+		// 						TotalVolumeSizeGiB: to.Ptr[int64](15),
+		// 						VolumeGroupCount: to.Ptr[int64](24),
+		// 					},
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/ElasticSans_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/ElasticSans_Create_MaximumSet_Gen.json
 func ExampleElasticSansClient_BeginCreate_elasticSansCreateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,16 +381,16 @@ func ExampleElasticSansClient_BeginCreate_elasticSansCreateMaximumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewElasticSansClient().BeginCreate(ctx, "rgelasticsan", "ti7q-k952-1qB3J_5", armelasticsan.ElasticSan{
+	poller, err := clientFactory.NewElasticSansClient().BeginCreate(ctx, "resourcegroupname", "elasticsanname", armelasticsan.ElasticSan{
+		Location: to.Ptr("South Central US"),
 		Tags: map[string]*string{
-			"key896": to.Ptr("aaaaaaaaaaaaaaaaaa"),
+			"key9316": to.Ptr("ihndtieqibtob"),
 		},
-		Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 		Properties: &armelasticsan.Properties{
 			AvailabilityZones: []*string{
-				to.Ptr("aaaaaaaaaaaaaaaaa")},
-			BaseSizeTiB:             to.Ptr[int64](26),
-			ExtendedCapacitySizeTiB: to.Ptr[int64](7),
+				to.Ptr("1")},
+			BaseSizeTiB:             to.Ptr[int64](5),
+			ExtendedCapacitySizeTiB: to.Ptr[int64](25),
 			SKU: &armelasticsan.SKU{
 				Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
 				Tier: to.Ptr(armelasticsan.SKUTierPremium),
@@ -252,41 +408,41 @@ func ExampleElasticSansClient_BeginCreate_elasticSansCreateMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ElasticSan = armelasticsan.ElasticSan{
-	// 	Name: to.Ptr("aaaaaaaaaaa"),
-	// 	Type: to.Ptr("aaaaaa"),
-	// 	ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 	Tags: map[string]*string{
-	// 		"key896": to.Ptr("aaaaaaaaaaaaaaaaaa"),
+	// 	Name: to.Ptr("vfoatmakv"),
+	// 	Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
+	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
+	// 	SystemData: &armelasticsan.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 		CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 	Location: to.Ptr("France Central"),
+	// 	Tags: map[string]*string{
+	// 		"key5002": to.Ptr("lhag"),
+	// 	},
 	// 	Properties: &armelasticsan.Properties{
 	// 		AvailabilityZones: []*string{
-	// 			to.Ptr("aaaaaaaaaaaaaaaaa")},
-	// 			BaseSizeTiB: to.Ptr[int64](26),
-	// 			ExtendedCapacitySizeTiB: to.Ptr[int64](7),
+	// 			to.Ptr("1")},
+	// 			BaseSizeTiB: to.Ptr[int64](15),
+	// 			ExtendedCapacitySizeTiB: to.Ptr[int64](6),
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
 	// 			SKU: &armelasticsan.SKU{
 	// 				Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
 	// 				Tier: to.Ptr(armelasticsan.SKUTierPremium),
 	// 			},
-	// 			TotalIops: to.Ptr[int64](13),
-	// 			TotalMBps: to.Ptr[int64](16),
-	// 			TotalSizeTiB: to.Ptr[int64](29),
-	// 			TotalVolumeSizeGiB: to.Ptr[int64](21),
+	// 			TotalIops: to.Ptr[int64](22),
+	// 			TotalMBps: to.Ptr[int64](4),
+	// 			TotalSizeTiB: to.Ptr[int64](27),
+	// 			TotalVolumeSizeGiB: to.Ptr[int64](15),
 	// 			VolumeGroupCount: to.Ptr[int64](24),
-	// 		},
-	// 		SystemData: &armelasticsan.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-08T10:39:37.620Z"); return t}()),
-	// 			CreatedBy: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-08T10:39:37.620Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/ElasticSans_Create_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/ElasticSans_Create_MinimumSet_Gen.json
 func ExampleElasticSansClient_BeginCreate_elasticSansCreateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,10 +453,11 @@ func ExampleElasticSansClient_BeginCreate_elasticSansCreateMinimumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewElasticSansClient().BeginCreate(ctx, "rgelasticsan", "ti7q-k952-1qB3J_5", armelasticsan.ElasticSan{
+	poller, err := clientFactory.NewElasticSansClient().BeginCreate(ctx, "resourcegroupname", "elasticsanname", armelasticsan.ElasticSan{
+		Location: to.Ptr("South Central US"),
 		Properties: &armelasticsan.Properties{
-			BaseSizeTiB:             to.Ptr[int64](26),
-			ExtendedCapacitySizeTiB: to.Ptr[int64](7),
+			BaseSizeTiB:             to.Ptr[int64](5),
+			ExtendedCapacitySizeTiB: to.Ptr[int64](25),
 			SKU: &armelasticsan.SKU{
 				Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
 			},
@@ -317,17 +474,41 @@ func ExampleElasticSansClient_BeginCreate_elasticSansCreateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ElasticSan = armelasticsan.ElasticSan{
-	// 	Properties: &armelasticsan.Properties{
-	// 		BaseSizeTiB: to.Ptr[int64](26),
-	// 		ExtendedCapacitySizeTiB: to.Ptr[int64](7),
-	// 		SKU: &armelasticsan.SKU{
-	// 			Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
-	// 		},
+	// 	Name: to.Ptr("vfoatmakv"),
+	// 	Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
+	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
+	// 	SystemData: &armelasticsan.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 		CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
-	// }
+	// 	Location: to.Ptr("France Central"),
+	// 	Tags: map[string]*string{
+	// 		"key5002": to.Ptr("lhag"),
+	// 	},
+	// 	Properties: &armelasticsan.Properties{
+	// 		AvailabilityZones: []*string{
+	// 			to.Ptr("1")},
+	// 			BaseSizeTiB: to.Ptr[int64](15),
+	// 			ExtendedCapacitySizeTiB: to.Ptr[int64](6),
+	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 			SKU: &armelasticsan.SKU{
+	// 				Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
+	// 				Tier: to.Ptr(armelasticsan.SKUTierPremium),
+	// 			},
+	// 			TotalIops: to.Ptr[int64](22),
+	// 			TotalMBps: to.Ptr[int64](4),
+	// 			TotalSizeTiB: to.Ptr[int64](27),
+	// 			TotalVolumeSizeGiB: to.Ptr[int64](15),
+	// 			VolumeGroupCount: to.Ptr[int64](24),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/ElasticSans_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/ElasticSans_Update_MaximumSet_Gen.json
 func ExampleElasticSansClient_BeginUpdate_elasticSansUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,13 +519,13 @@ func ExampleElasticSansClient_BeginUpdate_elasticSansUpdateMaximumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewElasticSansClient().BeginUpdate(ctx, "rgelasticsan", "ti7q-k952-1qB3J_5", armelasticsan.Update{
+	poller, err := clientFactory.NewElasticSansClient().BeginUpdate(ctx, "resourcegroupname", "elasticsanname", armelasticsan.Update{
 		Properties: &armelasticsan.UpdateProperties{
-			BaseSizeTiB:             to.Ptr[int64](23),
-			ExtendedCapacitySizeTiB: to.Ptr[int64](4),
+			BaseSizeTiB:             to.Ptr[int64](10),
+			ExtendedCapacitySizeTiB: to.Ptr[int64](22),
 		},
 		Tags: map[string]*string{
-			"key3137": to.Ptr("aaaaaaaaaaaaaaa"),
+			"key4212": to.Ptr("cqvcnwfefljntgeio"),
 		},
 	}, nil)
 	if err != nil {
@@ -358,41 +539,68 @@ func ExampleElasticSansClient_BeginUpdate_elasticSansUpdateMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ElasticSan = armelasticsan.ElasticSan{
-	// 	Name: to.Ptr("aaaaaaaaaaa"),
-	// 	Type: to.Ptr("aaaaaa"),
-	// 	ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 	Tags: map[string]*string{
-	// 		"key896": to.Ptr("aaaaaaaaaaaaaaaaaa"),
+	// 	Name: to.Ptr("vfoatmakv"),
+	// 	Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
+	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
+	// 	SystemData: &armelasticsan.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 		CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 	Location: to.Ptr("France Central"),
+	// 	Tags: map[string]*string{
+	// 		"key5002": to.Ptr("lhag"),
+	// 	},
 	// 	Properties: &armelasticsan.Properties{
 	// 		AvailabilityZones: []*string{
-	// 			to.Ptr("aaaaaaaaaaaaaaaaa")},
-	// 			BaseSizeTiB: to.Ptr[int64](26),
-	// 			ExtendedCapacitySizeTiB: to.Ptr[int64](7),
-	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
-	// 			SKU: &armelasticsan.SKU{
-	// 				Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
-	// 				Tier: to.Ptr(armelasticsan.SKUTierPremium),
+	// 			to.Ptr("1")},
+	// 			BaseSizeTiB: to.Ptr[int64](15),
+	// 			ExtendedCapacitySizeTiB: to.Ptr[int64](6),
+	// 			PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+	// 				{
+	// 					Name: to.Ptr("{privateEndpointConnectionName}"),
+	// 					Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
+	// 					ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
+	// 					SystemData: &armelasticsan.SystemData{
+	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 						CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 						CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 						LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 						LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 					},
+	// 					Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+	// 						GroupIDs: []*string{
+	// 							to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}")},
+	// 							PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+	// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}"),
+	// 							},
+	// 							PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+	// 								Description: to.Ptr("Auto-Approved"),
+	// 								ActionsRequired: to.Ptr("None"),
+	// 								Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+	// 							},
+	// 							ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 						},
+	// 				}},
+	// 				ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 				SKU: &armelasticsan.SKU{
+	// 					Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
+	// 					Tier: to.Ptr(armelasticsan.SKUTierPremium),
+	// 				},
+	// 				TotalIops: to.Ptr[int64](22),
+	// 				TotalMBps: to.Ptr[int64](4),
+	// 				TotalSizeTiB: to.Ptr[int64](27),
+	// 				TotalVolumeSizeGiB: to.Ptr[int64](15),
+	// 				VolumeGroupCount: to.Ptr[int64](24),
 	// 			},
-	// 			TotalIops: to.Ptr[int64](13),
-	// 			TotalMBps: to.Ptr[int64](16),
-	// 			TotalSizeTiB: to.Ptr[int64](29),
-	// 			TotalVolumeSizeGiB: to.Ptr[int64](21),
-	// 			VolumeGroupCount: to.Ptr[int64](24),
-	// 		},
-	// 		SystemData: &armelasticsan.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-08T10:39:37.620Z"); return t}()),
-	// 			CreatedBy: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-08T10:39:37.620Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		},
-	// 	}
+	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/ElasticSans_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/ElasticSans_Update_MinimumSet_Gen.json
 func ExampleElasticSansClient_BeginUpdate_elasticSansUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,7 +611,7 @@ func ExampleElasticSansClient_BeginUpdate_elasticSansUpdateMinimumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewElasticSansClient().BeginUpdate(ctx, "rgelasticsan", "ti7q-k952-1qB3J_5", armelasticsan.Update{}, nil)
+	poller, err := clientFactory.NewElasticSansClient().BeginUpdate(ctx, "resourcegroupname", "elasticsanname", armelasticsan.Update{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -415,17 +623,68 @@ func ExampleElasticSansClient_BeginUpdate_elasticSansUpdateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ElasticSan = armelasticsan.ElasticSan{
-	// 	Properties: &armelasticsan.Properties{
-	// 		BaseSizeTiB: to.Ptr[int64](26),
-	// 		ExtendedCapacitySizeTiB: to.Ptr[int64](7),
-	// 		SKU: &armelasticsan.SKU{
-	// 			Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
-	// 		},
+	// 	Name: to.Ptr("vfoatmakv"),
+	// 	Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
+	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
+	// 	SystemData: &armelasticsan.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 		CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
-	// }
+	// 	Location: to.Ptr("France Central"),
+	// 	Tags: map[string]*string{
+	// 		"key5002": to.Ptr("lhag"),
+	// 	},
+	// 	Properties: &armelasticsan.Properties{
+	// 		AvailabilityZones: []*string{
+	// 			to.Ptr("1")},
+	// 			BaseSizeTiB: to.Ptr[int64](15),
+	// 			ExtendedCapacitySizeTiB: to.Ptr[int64](6),
+	// 			PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+	// 				{
+	// 					Name: to.Ptr("{privateEndpointConnectionName}"),
+	// 					Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
+	// 					ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
+	// 					SystemData: &armelasticsan.SystemData{
+	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 						CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 						CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 						LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 						LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 					},
+	// 					Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+	// 						GroupIDs: []*string{
+	// 							to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}")},
+	// 							PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+	// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}"),
+	// 							},
+	// 							PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+	// 								Description: to.Ptr("Auto-Approved"),
+	// 								ActionsRequired: to.Ptr("None"),
+	// 								Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+	// 							},
+	// 							ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 						},
+	// 				}},
+	// 				ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 				SKU: &armelasticsan.SKU{
+	// 					Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
+	// 					Tier: to.Ptr(armelasticsan.SKUTierPremium),
+	// 				},
+	// 				TotalIops: to.Ptr[int64](22),
+	// 				TotalMBps: to.Ptr[int64](4),
+	// 				TotalSizeTiB: to.Ptr[int64](27),
+	// 				TotalVolumeSizeGiB: to.Ptr[int64](15),
+	// 				VolumeGroupCount: to.Ptr[int64](24),
+	// 			},
+	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/ElasticSans_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/ElasticSans_Delete_MaximumSet_Gen.json
 func ExampleElasticSansClient_BeginDelete_elasticSansDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,7 +695,7 @@ func ExampleElasticSansClient_BeginDelete_elasticSansDeleteMaximumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewElasticSansClient().BeginDelete(ctx, "rgelasticsan", "ti7q-k952-1qB3J_5", nil)
+	poller, err := clientFactory.NewElasticSansClient().BeginDelete(ctx, "resourcegroupname", "elasticsanname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -446,7 +705,7 @@ func ExampleElasticSansClient_BeginDelete_elasticSansDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/ElasticSans_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/ElasticSans_Delete_MinimumSet_Gen.json
 func ExampleElasticSansClient_BeginDelete_elasticSansDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,7 +716,7 @@ func ExampleElasticSansClient_BeginDelete_elasticSansDeleteMinimumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewElasticSansClient().BeginDelete(ctx, "rgelasticsan", "ti7q-k952-1qB3J_5", nil)
+	poller, err := clientFactory.NewElasticSansClient().BeginDelete(ctx, "resourcegroupname", "elasticsanname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -467,7 +726,7 @@ func ExampleElasticSansClient_BeginDelete_elasticSansDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/ElasticSans_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/ElasticSans_Get_MaximumSet_Gen.json
 func ExampleElasticSansClient_Get_elasticSansGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,7 +737,7 @@ func ExampleElasticSansClient_Get_elasticSansGetMaximumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewElasticSansClient().Get(ctx, "rgelasticsan", "ti7q-k952-1qB3J_5", nil)
+	res, err := clientFactory.NewElasticSansClient().Get(ctx, "resourcegroupname", "elasticsanname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -486,41 +745,68 @@ func ExampleElasticSansClient_Get_elasticSansGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ElasticSan = armelasticsan.ElasticSan{
-	// 	Name: to.Ptr("aaaaaaaaaaa"),
-	// 	Type: to.Ptr("aaaaaa"),
-	// 	ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 	Tags: map[string]*string{
-	// 		"key896": to.Ptr("aaaaaaaaaaaaaaaaaa"),
+	// 	Name: to.Ptr("vfoatmakv"),
+	// 	Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
+	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
+	// 	SystemData: &armelasticsan.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 		CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 	Location: to.Ptr("France Central"),
+	// 	Tags: map[string]*string{
+	// 		"key5002": to.Ptr("lhag"),
+	// 	},
 	// 	Properties: &armelasticsan.Properties{
 	// 		AvailabilityZones: []*string{
-	// 			to.Ptr("aaaaaaaaaaaaaaaaa")},
-	// 			BaseSizeTiB: to.Ptr[int64](26),
-	// 			ExtendedCapacitySizeTiB: to.Ptr[int64](7),
-	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
-	// 			SKU: &armelasticsan.SKU{
-	// 				Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
-	// 				Tier: to.Ptr(armelasticsan.SKUTierPremium),
+	// 			to.Ptr("1")},
+	// 			BaseSizeTiB: to.Ptr[int64](15),
+	// 			ExtendedCapacitySizeTiB: to.Ptr[int64](6),
+	// 			PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+	// 				{
+	// 					Name: to.Ptr("{privateEndpointConnectionName}"),
+	// 					Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
+	// 					ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
+	// 					SystemData: &armelasticsan.SystemData{
+	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 						CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 						CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 						LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 						LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 					},
+	// 					Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+	// 						GroupIDs: []*string{
+	// 							to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}")},
+	// 							PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+	// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}"),
+	// 							},
+	// 							PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+	// 								Description: to.Ptr("Auto-Approved"),
+	// 								ActionsRequired: to.Ptr("None"),
+	// 								Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+	// 							},
+	// 							ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 						},
+	// 				}},
+	// 				ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 				SKU: &armelasticsan.SKU{
+	// 					Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
+	// 					Tier: to.Ptr(armelasticsan.SKUTierPremium),
+	// 				},
+	// 				TotalIops: to.Ptr[int64](22),
+	// 				TotalMBps: to.Ptr[int64](4),
+	// 				TotalSizeTiB: to.Ptr[int64](27),
+	// 				TotalVolumeSizeGiB: to.Ptr[int64](15),
+	// 				VolumeGroupCount: to.Ptr[int64](24),
 	// 			},
-	// 			TotalIops: to.Ptr[int64](13),
-	// 			TotalMBps: to.Ptr[int64](16),
-	// 			TotalSizeTiB: to.Ptr[int64](29),
-	// 			TotalVolumeSizeGiB: to.Ptr[int64](21),
-	// 			VolumeGroupCount: to.Ptr[int64](24),
-	// 		},
-	// 		SystemData: &armelasticsan.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-08T10:39:37.620Z"); return t}()),
-	// 			CreatedBy: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-08T10:39:37.620Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		},
-	// 	}
+	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e1da7cbab8d4f554484dedb676ba7bdbdf6cdf78/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/ElasticSans_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/ElasticSans_Get_MinimumSet_Gen.json
 func ExampleElasticSansClient_Get_elasticSansGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -531,7 +817,7 @@ func ExampleElasticSansClient_Get_elasticSansGetMinimumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewElasticSansClient().Get(ctx, "rgelasticsan", "ti7q-k952-1qB3J_5", nil)
+	res, err := clientFactory.NewElasticSansClient().Get(ctx, "resourcegroupname", "elasticsanname", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -539,12 +825,63 @@ func ExampleElasticSansClient_Get_elasticSansGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ElasticSan = armelasticsan.ElasticSan{
-	// 	Properties: &armelasticsan.Properties{
-	// 		BaseSizeTiB: to.Ptr[int64](26),
-	// 		ExtendedCapacitySizeTiB: to.Ptr[int64](7),
-	// 		SKU: &armelasticsan.SKU{
-	// 			Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
-	// 		},
+	// 	Name: to.Ptr("vfoatmakv"),
+	// 	Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
+	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
+	// 	SystemData: &armelasticsan.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 		CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
-	// }
+	// 	Location: to.Ptr("France Central"),
+	// 	Tags: map[string]*string{
+	// 		"key5002": to.Ptr("lhag"),
+	// 	},
+	// 	Properties: &armelasticsan.Properties{
+	// 		AvailabilityZones: []*string{
+	// 			to.Ptr("1")},
+	// 			BaseSizeTiB: to.Ptr[int64](15),
+	// 			ExtendedCapacitySizeTiB: to.Ptr[int64](6),
+	// 			PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+	// 				{
+	// 					Name: to.Ptr("{privateEndpointConnectionName}"),
+	// 					Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
+	// 					ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
+	// 					SystemData: &armelasticsan.SystemData{
+	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 						CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 						CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
+	// 						LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 						LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 					},
+	// 					Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+	// 						GroupIDs: []*string{
+	// 							to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}")},
+	// 							PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+	// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}"),
+	// 							},
+	// 							PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+	// 								Description: to.Ptr("Auto-Approved"),
+	// 								ActionsRequired: to.Ptr("None"),
+	// 								Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+	// 							},
+	// 							ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 						},
+	// 				}},
+	// 				ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 				SKU: &armelasticsan.SKU{
+	// 					Name: to.Ptr(armelasticsan.SKUNamePremiumLRS),
+	// 					Tier: to.Ptr(armelasticsan.SKUTierPremium),
+	// 				},
+	// 				TotalIops: to.Ptr[int64](22),
+	// 				TotalMBps: to.Ptr[int64](4),
+	// 				TotalSizeTiB: to.Ptr[int64](27),
+	// 				TotalVolumeSizeGiB: to.Ptr[int64](15),
+	// 				VolumeGroupCount: to.Ptr[int64](24),
+	// 			},
+	// 		}
 }

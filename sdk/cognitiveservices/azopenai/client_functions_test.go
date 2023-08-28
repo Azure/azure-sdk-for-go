@@ -30,18 +30,18 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 
 	t.Run("OpenAI", func(t *testing.T) {
 		chatClient := newOpenAIClientForTest(t)
-		testChatCompletionsFunctions(t, chatClient)
+		testChatCompletionsFunctions(t, chatClient, openAI)
 	})
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
-		chatClient := newAzureOpenAIClientForTest(t, chatCompletionsModelDeployment, false)
-		testChatCompletionsFunctions(t, chatClient)
+		chatClient := newAzureOpenAIClientForTest(t, azureOpenAI)
+		testChatCompletionsFunctions(t, chatClient, azureOpenAI)
 	})
 }
 
-func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client) {
-	resp, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Model: to.Ptr("gpt-4-0613"),
+func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client, tv testVars) {
+	body := azopenai.ChatCompletionsOptions{
+		DeploymentID: tv.ChatCompletions,
 		Messages: []azopenai.ChatMessage{
 			{
 				Role:    to.Ptr(azopenai.ChatRoleUser),
@@ -72,7 +72,9 @@ func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client) {
 			},
 		},
 		Temperature: to.Ptr[float32](0.0),
-	}, nil)
+	}
+
+	resp, err := chatClient.GetChatCompletions(context.Background(), body, nil)
 	require.NoError(t, err)
 
 	funcCall := resp.ChatCompletions.Choices[0].Message.FunctionCall

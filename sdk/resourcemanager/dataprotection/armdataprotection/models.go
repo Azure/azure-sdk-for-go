@@ -247,6 +247,9 @@ type AzureBackupJob struct {
 	// READ-ONLY; Url which contains job's progress
 	ProgressURL *string
 
+	// READ-ONLY; Priority to be used for rehydration
+	RehydrationPriority *string
+
 	// READ-ONLY; It indicates the sub type of operation i.e. in case of Restore it can be ALR/OLR
 	RestoreType *string
 }
@@ -336,6 +339,9 @@ type AzureBackupRecoveryPointBasedRestoreRequest struct {
 	// REQUIRED; Gets or sets the type of the source data store.
 	SourceDataStoreType *SourceDataStoreType
 
+	// Contains information of the Identity Details for the BI. If it is null, default will be considered as System Assigned.
+	IdentityDetails *IdentityDetails
+
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
 	SourceResourceID *string
 }
@@ -353,6 +359,7 @@ func (a *AzureBackupRecoveryPointBasedRestoreRequest) GetAzureBackupRestoreReque
 		RestoreTargetInfo:   a.RestoreTargetInfo,
 		SourceDataStoreType: a.SourceDataStoreType,
 		SourceResourceID:    a.SourceResourceID,
+		IdentityDetails:     a.IdentityDetails,
 	}
 }
 
@@ -397,6 +404,9 @@ type AzureBackupRecoveryTimeBasedRestoreRequest struct {
 	// REQUIRED; Gets or sets the type of the source data store.
 	SourceDataStoreType *SourceDataStoreType
 
+	// Contains information of the Identity Details for the BI. If it is null, default will be considered as System Assigned.
+	IdentityDetails *IdentityDetails
+
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
 	SourceResourceID *string
 }
@@ -408,6 +418,7 @@ func (a *AzureBackupRecoveryTimeBasedRestoreRequest) GetAzureBackupRestoreReques
 		RestoreTargetInfo:   a.RestoreTargetInfo,
 		SourceDataStoreType: a.SourceDataStoreType,
 		SourceResourceID:    a.SourceResourceID,
+		IdentityDetails:     a.IdentityDetails,
 	}
 }
 
@@ -444,6 +455,9 @@ type AzureBackupRestoreRequest struct {
 	// REQUIRED; Gets or sets the type of the source data store.
 	SourceDataStoreType *SourceDataStoreType
 
+	// Contains information of the Identity Details for the BI. If it is null, default will be considered as System Assigned.
+	IdentityDetails *IdentityDetails
+
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
 	SourceResourceID *string
 }
@@ -473,6 +487,9 @@ type AzureBackupRestoreWithRehydrationRequest struct {
 	// REQUIRED; Gets or sets the type of the source data store.
 	SourceDataStoreType *SourceDataStoreType
 
+	// Contains information of the Identity Details for the BI. If it is null, default will be considered as System Assigned.
+	IdentityDetails *IdentityDetails
+
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
 	SourceResourceID *string
 }
@@ -486,6 +503,7 @@ func (a *AzureBackupRestoreWithRehydrationRequest) GetAzureBackupRecoveryPointBa
 		RestoreTargetInfo:   a.RestoreTargetInfo,
 		SourceDataStoreType: a.SourceDataStoreType,
 		SourceResourceID:    a.SourceResourceID,
+		IdentityDetails:     a.IdentityDetails,
 	}
 }
 
@@ -496,6 +514,7 @@ func (a *AzureBackupRestoreWithRehydrationRequest) GetAzureBackupRestoreRequest(
 		RestoreTargetInfo:   a.RestoreTargetInfo,
 		SourceDataStoreType: a.SourceDataStoreType,
 		SourceResourceID:    a.SourceResourceID,
+		IdentityDetails:     a.IdentityDetails,
 	}
 }
 
@@ -628,6 +647,9 @@ type BackupInstance struct {
 
 	// Gets or sets the Backup Instance friendly name.
 	FriendlyName *string
+
+	// Contains information of the Identity Details for the BI. If it is null, default will be considered as System Assigned.
+	IdentityDetails *IdentityDetails
 
 	// Specifies the type of validation. In case of DeepValidation, all validations from /validateForBackup API will run again.
 	ValidationType *ValidationType
@@ -867,6 +889,9 @@ type BackupVault struct {
 
 	// READ-ONLY; Resource move state for backup vault
 	ResourceMoveState *ResourceMoveState
+
+	// READ-ONLY; Secure Score of Backup Vault
+	SecureScore *SecureScoreLevel
 }
 
 // BackupVaultOperationResultsClientGetOptions contains the optional parameters for the BackupVaultOperationResultsClient.Get
@@ -1025,6 +1050,24 @@ type BasePolicyRule struct {
 // GetBasePolicyRule implements the BasePolicyRuleClassification interface for type BasePolicyRule.
 func (b *BasePolicyRule) GetBasePolicyRule() *BasePolicyRule { return b }
 
+// BaseResourcePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetBaseResourceProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BaseResourceProperties
+type BaseResourcePropertiesClassification interface {
+	// GetBaseResourceProperties returns the BaseResourceProperties content of the underlying type.
+	GetBaseResourceProperties() *BaseResourceProperties
+}
+
+// BaseResourceProperties - Properties which are specific to datasource/datasourceSets
+type BaseResourceProperties struct {
+	// REQUIRED; Type of the specific object - used for deserializing
+	ObjectType *string
+}
+
+// GetBaseResourceProperties implements the BaseResourcePropertiesClassification interface for type BaseResourceProperties.
+func (b *BaseResourceProperties) GetBaseResourceProperties() *BaseResourceProperties { return b }
+
 // BlobBackupDatasourceParameters - Parameters to be used during configuration of backup of blobs
 type BlobBackupDatasourceParameters struct {
 	// REQUIRED; List of containers to be backed up during configuration of backup of blobs
@@ -1164,6 +1207,11 @@ type CopyOption struct {
 // GetCopyOption implements the CopyOptionClassification interface for type CopyOption.
 func (c *CopyOption) GetCopyOption() *CopyOption { return c }
 
+type CrossRegionRestoreSettings struct {
+	// CrossRegionRestore state
+	State *CrossRegionRestoreState
+}
+
 // CrossSubscriptionRestoreSettings - CrossSubscriptionRestore Settings
 type CrossSubscriptionRestoreSettings struct {
 	// CrossSubscriptionRestore state
@@ -1234,6 +1282,9 @@ type Datasource struct {
 	// Unique identifier of the resource in the context of parent.
 	ResourceName *string
 
+	// Properties specific to data source
+	ResourceProperties BaseResourcePropertiesClassification
+
 	// Resource Type of Datasource.
 	ResourceType *string
 
@@ -1258,6 +1309,9 @@ type DatasourceSet struct {
 
 	// Unique identifier of the resource in the context of parent.
 	ResourceName *string
+
+	// Properties specific to data source set
+	ResourceProperties BaseResourcePropertiesClassification
 
 	// Resource Type of Datasource.
 	ResourceType *string
@@ -1315,6 +1369,9 @@ type DeletedBackupInstance struct {
 
 	// Gets or sets the Backup Instance friendly name.
 	FriendlyName *string
+
+	// Contains information of the Identity Details for the BI. If it is null, default will be considered as System Assigned.
+	IdentityDetails *IdentityDetails
 
 	// Specifies the type of validation. In case of DeepValidation, all validations from /validateForBackup API will run again.
 	ValidationType *ValidationType
@@ -1441,8 +1498,11 @@ type DppBaseTrackedResource struct {
 
 // DppIdentityDetails - Identity details
 type DppIdentityDetails struct {
-	// The identityType which can be either SystemAssigned or None
+	// The identityType which can be either SystemAssigned, UserAssigned, 'SystemAssigned,UserAssigned' or None
 	Type *string
+
+	// Gets or sets the user assigned identities.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The object ID of the service principal object for the managed identity that is used to grant role-based access
 	// to an Azure resource.
@@ -1619,6 +1679,8 @@ type ExportJobsResult struct {
 
 // FeatureSettings - Class containing feature settings of vault
 type FeatureSettings struct {
+	CrossRegionRestoreSettings *CrossRegionRestoreSettings
+
 	// CrossSubscriptionRestore Settings
 	CrossSubscriptionRestoreSettings *CrossSubscriptionRestoreSettings
 }
@@ -1699,6 +1761,14 @@ type FeatureValidationResponseBase struct {
 // GetFeatureValidationResponseBase implements the FeatureValidationResponseBaseClassification interface for type FeatureValidationResponseBase.
 func (f *FeatureValidationResponseBase) GetFeatureValidationResponseBase() *FeatureValidationResponseBase {
 	return f
+}
+
+type IdentityDetails struct {
+	// Specifies if the BI is protected by System Identity.
+	UseSystemAssignedIdentity *bool
+
+	// ARM URL for User Assigned Identity.
+	UserAssignedIdentityArmURL *string
 }
 
 // ImmediateCopyOption - Immediate copy Option
@@ -1862,29 +1932,32 @@ type JobsClientListOptions struct {
 // KubernetesClusterBackupDatasourceParameters - Parameters for Kubernetes Cluster Backup Datasource
 type KubernetesClusterBackupDatasourceParameters struct {
 	// REQUIRED; Gets or sets the include cluster resources property. This property if enabled will include cluster scope resources
-	// during restore.
+	// during backup.
 	IncludeClusterScopeResources *bool
 
 	// REQUIRED; Type of the specific object - used for deserializing
 	ObjectType *string
 
-	// REQUIRED; Gets or sets the volume snapshot property. This property if enabled will take volume snapshots during restore.
+	// REQUIRED; Gets or sets the volume snapshot property. This property if enabled will take volume snapshots during backup.
 	SnapshotVolumes *bool
 
-	// Gets or sets the exclude namespaces property. This property sets the namespaces to be excluded during restore.
+	// Gets or sets the backup hook references. This property sets the hook reference to be executed during backup.
+	BackupHookReferences []*NamespacedNameResource
+
+	// Gets or sets the exclude namespaces property. This property sets the namespaces to be excluded during backup.
 	ExcludedNamespaces []*string
 
-	// Gets or sets the exclude resource types property. This property sets the resource types to be excluded during restore.
+	// Gets or sets the exclude resource types property. This property sets the resource types to be excluded during backup.
 	ExcludedResourceTypes []*string
 
-	// Gets or sets the include namespaces property. This property sets the namespaces to be included during restore.
+	// Gets or sets the include namespaces property. This property sets the namespaces to be included during backup.
 	IncludedNamespaces []*string
 
-	// Gets or sets the include resource types property. This property sets the resource types to be included during restore.
+	// Gets or sets the include resource types property. This property sets the resource types to be included during backup.
 	IncludedResourceTypes []*string
 
 	// Gets or sets the LabelSelectors property. This property sets the resource with such label selectors to be included during
-	// restore.
+	// backup.
 	LabelSelectors []*string
 }
 
@@ -1928,6 +2001,9 @@ type KubernetesClusterRestoreCriteria struct {
 
 	// Gets or sets the PV (Persistent Volume) Restore Mode property. This property sets whether volumes needs to be restored.
 	PersistentVolumeRestoreMode *PersistentVolumeRestoreMode
+
+	// Gets or sets the restore hook references. This property sets the hook reference to be executed during restore.
+	RestoreHookReferences []*NamespacedNameResource
 }
 
 // GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type KubernetesClusterRestoreCriteria.
@@ -1979,6 +2055,15 @@ func (k *KubernetesStorageClassRestoreCriteria) GetItemLevelRestoreCriteria() *I
 type MonitoringSettings struct {
 	// Settings for Azure Monitor based alerts
 	AzureMonitorAlertSettings *AzureMonitorAlertSettings
+}
+
+// NamespacedNameResource - Class to refer resources which contains namespace and name
+type NamespacedNameResource struct {
+	// Name of the resource
+	Name *string
+
+	// Namespace in which the resource exists
+	Namespace *string
 }
 
 // OperationExtendedInfoClassification provides polymorphic access to related types.
@@ -2748,6 +2833,15 @@ type UnlockDeleteRequest struct {
 type UnlockDeleteResponse struct {
 	// This is the time when unlock delete privileges will get expired.
 	UnlockDeleteExpiryTime *string
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }
 
 // UserFacingError - Error object used by layers that have access to localized content, and propagate that to user

@@ -29,7 +29,7 @@ type NetworkInterfacesClient struct {
 }
 
 // NewNetworkInterfacesClient creates a new instance of NetworkInterfacesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNetworkInterfacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkInterfacesClient, error) {
@@ -47,10 +47,10 @@ func NewNetworkInterfacesClient(subscriptionID string, credential azcore.TokenCr
 // BeginCreate - Create a Network Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice
-//   - networkInterfaceName - Name of the NetworkInterface
+//   - networkDeviceName - Name of the Network Device.
+//   - networkInterfaceName - Name of the Network Interface.
 //   - body - Request payload.
 //   - options - NetworkInterfacesClientBeginCreateOptions contains the optional parameters for the NetworkInterfacesClient.BeginCreate
 //     method.
@@ -71,7 +71,7 @@ func (client *NetworkInterfacesClient) BeginCreate(ctx context.Context, resource
 // Create - Create a Network Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkInterfacesClient) create(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, body NetworkInterface, options *NetworkInterfacesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, networkDeviceName, networkInterfaceName, body, options)
 	if err != nil {
@@ -90,9 +90,6 @@ func (client *NetworkInterfacesClient) create(ctx context.Context, resourceGroup
 // createCreateRequest creates the Create request.
 func (client *NetworkInterfacesClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, body NetworkInterface, options *NetworkInterfacesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -111,7 +108,7 @@ func (client *NetworkInterfacesClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -120,10 +117,10 @@ func (client *NetworkInterfacesClient) createCreateRequest(ctx context.Context, 
 // BeginDelete - Delete the Network Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice
-//   - networkInterfaceName - Name of the NetworkInterfaceName
+//   - networkDeviceName - Name of the Network Device.
+//   - networkInterfaceName - Name of the Network Interface.
 //   - options - NetworkInterfacesClientBeginDeleteOptions contains the optional parameters for the NetworkInterfacesClient.BeginDelete
 //     method.
 func (client *NetworkInterfacesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, options *NetworkInterfacesClientBeginDeleteOptions) (*runtime.Poller[NetworkInterfacesClientDeleteResponse], error) {
@@ -143,7 +140,7 @@ func (client *NetworkInterfacesClient) BeginDelete(ctx context.Context, resource
 // Delete - Delete the Network Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkInterfacesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, options *NetworkInterfacesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkDeviceName, networkInterfaceName, options)
 	if err != nil {
@@ -153,7 +150,7 @@ func (client *NetworkInterfacesClient) deleteOperation(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -162,9 +159,6 @@ func (client *NetworkInterfacesClient) deleteOperation(ctx context.Context, reso
 // deleteCreateRequest creates the Delete request.
 func (client *NetworkInterfacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, options *NetworkInterfacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -183,7 +177,7 @@ func (client *NetworkInterfacesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -192,10 +186,10 @@ func (client *NetworkInterfacesClient) deleteCreateRequest(ctx context.Context, 
 // Get - Get the Network Interface resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice
-//   - networkInterfaceName - Name of the NetworkInterfaceName
+//   - networkDeviceName - Name of the Network Device.
+//   - networkInterfaceName - Name of the Network Interface.
 //   - options - NetworkInterfacesClientGetOptions contains the optional parameters for the NetworkInterfacesClient.Get method.
 func (client *NetworkInterfacesClient) Get(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, options *NetworkInterfacesClientGetOptions) (NetworkInterfacesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkDeviceName, networkInterfaceName, options)
@@ -215,9 +209,6 @@ func (client *NetworkInterfacesClient) Get(ctx context.Context, resourceGroupNam
 // getCreateRequest creates the Get request.
 func (client *NetworkInterfacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, options *NetworkInterfacesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -236,7 +227,7 @@ func (client *NetworkInterfacesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -251,119 +242,44 @@ func (client *NetworkInterfacesClient) getHandleResponse(resp *http.Response) (N
 	return result, nil
 }
 
-// BeginGetStatus - Get the running status of the Network Interface.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListByNetworkDevicePager - List all the Network Interface resources in a given resource group.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice.
-//   - networkInterfaceName - Name of the NetworkInterface
-//   - options - NetworkInterfacesClientBeginGetStatusOptions contains the optional parameters for the NetworkInterfacesClient.BeginGetStatus
+//   - networkDeviceName - Name of the Network Device.
+//   - options - NetworkInterfacesClientListByNetworkDeviceOptions contains the optional parameters for the NetworkInterfacesClient.NewListByNetworkDevicePager
 //     method.
-func (client *NetworkInterfacesClient) BeginGetStatus(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, options *NetworkInterfacesClientBeginGetStatusOptions) (*runtime.Poller[NetworkInterfacesClientGetStatusResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getStatus(ctx, resourceGroupName, networkDeviceName, networkInterfaceName, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkInterfacesClientGetStatusResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[NetworkInterfacesClientGetStatusResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// GetStatus - Get the running status of the Network Interface.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *NetworkInterfacesClient) getStatus(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, options *NetworkInterfacesClientBeginGetStatusOptions) (*http.Response, error) {
-	req, err := client.getStatusCreateRequest(ctx, resourceGroupName, networkDeviceName, networkInterfaceName, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// getStatusCreateRequest creates the GetStatus request.
-func (client *NetworkInterfacesClient) getStatusCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, options *NetworkInterfacesClientBeginGetStatusOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}/getStatus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkDeviceName == "" {
-		return nil, errors.New("parameter networkDeviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkDeviceName}", url.PathEscape(networkDeviceName))
-	if networkInterfaceName == "" {
-		return nil, errors.New("parameter networkInterfaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkInterfaceName}", url.PathEscape(networkInterfaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// NewListPager - List all the Network Interface resources in a given resource group.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice.
-//   - options - NetworkInterfacesClientListOptions contains the optional parameters for the NetworkInterfacesClient.NewListPager
-//     method.
-func (client *NetworkInterfacesClient) NewListPager(resourceGroupName string, networkDeviceName string, options *NetworkInterfacesClientListOptions) *runtime.Pager[NetworkInterfacesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NetworkInterfacesClientListResponse]{
-		More: func(page NetworkInterfacesClientListResponse) bool {
+func (client *NetworkInterfacesClient) NewListByNetworkDevicePager(resourceGroupName string, networkDeviceName string, options *NetworkInterfacesClientListByNetworkDeviceOptions) *runtime.Pager[NetworkInterfacesClientListByNetworkDeviceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NetworkInterfacesClientListByNetworkDeviceResponse]{
+		More: func(page NetworkInterfacesClientListByNetworkDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *NetworkInterfacesClientListResponse) (NetworkInterfacesClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *NetworkInterfacesClientListByNetworkDeviceResponse) (NetworkInterfacesClientListByNetworkDeviceResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, networkDeviceName, options)
+				req, err = client.listByNetworkDeviceCreateRequest(ctx, resourceGroupName, networkDeviceName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return NetworkInterfacesClientListResponse{}, err
+				return NetworkInterfacesClientListByNetworkDeviceResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return NetworkInterfacesClientListResponse{}, err
+				return NetworkInterfacesClientListByNetworkDeviceResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return NetworkInterfacesClientListResponse{}, runtime.NewResponseError(resp)
+				return NetworkInterfacesClientListByNetworkDeviceResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.listHandleResponse(resp)
+			return client.listByNetworkDeviceHandleResponse(resp)
 		},
 	})
 }
 
-// listCreateRequest creates the List request.
-func (client *NetworkInterfacesClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkInterfacesClientListOptions) (*policy.Request, error) {
+// listByNetworkDeviceCreateRequest creates the ListByNetworkDevice request.
+func (client *NetworkInterfacesClient) listByNetworkDeviceCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkInterfacesClientListByNetworkDeviceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -378,17 +294,17 @@ func (client *NetworkInterfacesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *NetworkInterfacesClient) listHandleResponse(resp *http.Response) (NetworkInterfacesClientListResponse, error) {
-	result := NetworkInterfacesClientListResponse{}
+// listByNetworkDeviceHandleResponse handles the ListByNetworkDevice response.
+func (client *NetworkInterfacesClient) listByNetworkDeviceHandleResponse(resp *http.Response) (NetworkInterfacesClientListByNetworkDeviceResponse, error) {
+	result := NetworkInterfacesClientListByNetworkDeviceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfacesList); err != nil {
-		return NetworkInterfacesClientListResponse{}, err
+		return NetworkInterfacesClientListByNetworkDeviceResponse{}, err
 	}
 	return result, nil
 }
@@ -396,10 +312,10 @@ func (client *NetworkInterfacesClient) listHandleResponse(resp *http.Response) (
 // BeginUpdate - Update certain properties of the Network Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice
-//   - networkInterfaceName - Name of the NetworkInterfaceName
+//   - networkDeviceName - Name of the Network Device.
+//   - networkInterfaceName - Name of the Network Interface.
 //   - body - NetworkInterface properties to update. Only tags are supported.
 //   - options - NetworkInterfacesClientBeginUpdateOptions contains the optional parameters for the NetworkInterfacesClient.BeginUpdate
 //     method.
@@ -410,7 +326,7 @@ func (client *NetworkInterfacesClient) BeginUpdate(ctx context.Context, resource
 			return nil, err
 		}
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkInterfacesClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
 		return runtime.NewPollerFromResumeToken[NetworkInterfacesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
@@ -420,7 +336,7 @@ func (client *NetworkInterfacesClient) BeginUpdate(ctx context.Context, resource
 // Update - Update certain properties of the Network Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkInterfacesClient) update(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, body NetworkInterfacePatch, options *NetworkInterfacesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkDeviceName, networkInterfaceName, body, options)
 	if err != nil {
@@ -439,9 +355,6 @@ func (client *NetworkInterfacesClient) update(ctx context.Context, resourceGroup
 // updateCreateRequest creates the Update request.
 func (client *NetworkInterfacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, body NetworkInterfacePatch, options *NetworkInterfacesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -460,7 +373,7 @@ func (client *NetworkInterfacesClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -469,10 +382,10 @@ func (client *NetworkInterfacesClient) updateCreateRequest(ctx context.Context, 
 // BeginUpdateAdministrativeState - Update the admin state of the Network Interface.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkDeviceName - Name of the NetworkDevice.
-//   - networkInterfaceName - Name of the NetworkInterface
+//   - networkDeviceName - Name of the Network Device.
+//   - networkInterfaceName - Name of the Network Interface.
 //   - body - Request payload.
 //   - options - NetworkInterfacesClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the NetworkInterfacesClient.BeginUpdateAdministrativeState
 //     method.
@@ -493,7 +406,7 @@ func (client *NetworkInterfacesClient) BeginUpdateAdministrativeState(ctx contex
 // UpdateAdministrativeState - Update the admin state of the Network Interface.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkInterfacesClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, body UpdateAdministrativeState, options *NetworkInterfacesClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, networkDeviceName, networkInterfaceName, body, options)
 	if err != nil {
@@ -503,7 +416,7 @@ func (client *NetworkInterfacesClient) updateAdministrativeState(ctx context.Con
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -512,9 +425,6 @@ func (client *NetworkInterfacesClient) updateAdministrativeState(ctx context.Con
 // updateAdministrativeStateCreateRequest creates the UpdateAdministrativeState request.
 func (client *NetworkInterfacesClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, body UpdateAdministrativeState, options *NetworkInterfacesClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}/updateAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -533,7 +443,7 @@ func (client *NetworkInterfacesClient) updateAdministrativeStateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

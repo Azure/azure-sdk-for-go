@@ -46,7 +46,7 @@ func NewBgpServiceCommunitiesClient(subscriptionID string, credential azcore.Tok
 
 // NewListPager - Gets all the available bgp service communities.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-04-01
 //   - options - BgpServiceCommunitiesClientListOptions contains the optional parameters for the BgpServiceCommunitiesClient.NewListPager
 //     method.
 func (client *BgpServiceCommunitiesClient) NewListPager(options *BgpServiceCommunitiesClientListOptions) *runtime.Pager[BgpServiceCommunitiesClientListResponse] {
@@ -55,7 +55,6 @@ func (client *BgpServiceCommunitiesClient) NewListPager(options *BgpServiceCommu
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *BgpServiceCommunitiesClientListResponse) (BgpServiceCommunitiesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BgpServiceCommunitiesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -75,7 +74,6 @@ func (client *BgpServiceCommunitiesClient) NewListPager(options *BgpServiceCommu
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -91,7 +89,7 @@ func (client *BgpServiceCommunitiesClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

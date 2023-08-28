@@ -29,7 +29,7 @@ type NetworkFabricControllersClient struct {
 }
 
 // NewNetworkFabricControllersClient creates a new instance of NetworkFabricControllersClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNetworkFabricControllersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkFabricControllersClient, error) {
@@ -47,9 +47,9 @@ func NewNetworkFabricControllersClient(subscriptionID string, credential azcore.
 // BeginCreate - Creates a Network Fabric Controller.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricControllerName - Name of the Network Fabric Controller
+//   - networkFabricControllerName - Name of the Network Fabric Controller.
 //   - body - Request payload.
 //   - options - NetworkFabricControllersClientBeginCreateOptions contains the optional parameters for the NetworkFabricControllersClient.BeginCreate
 //     method.
@@ -70,7 +70,7 @@ func (client *NetworkFabricControllersClient) BeginCreate(ctx context.Context, r
 // Create - Creates a Network Fabric Controller.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkFabricControllersClient) create(ctx context.Context, resourceGroupName string, networkFabricControllerName string, body NetworkFabricController, options *NetworkFabricControllersClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, networkFabricControllerName, body, options)
 	if err != nil {
@@ -89,9 +89,6 @@ func (client *NetworkFabricControllersClient) create(ctx context.Context, resour
 // createCreateRequest creates the Create request.
 func (client *NetworkFabricControllersClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkFabricControllerName string, body NetworkFabricController, options *NetworkFabricControllersClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -106,7 +103,7 @@ func (client *NetworkFabricControllersClient) createCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -115,9 +112,9 @@ func (client *NetworkFabricControllersClient) createCreateRequest(ctx context.Co
 // BeginDelete - Deletes the Network Fabric Controller resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricControllerName - Name of the Network Fabric Controller
+//   - networkFabricControllerName - Name of the Network Fabric Controller.
 //   - options - NetworkFabricControllersClientBeginDeleteOptions contains the optional parameters for the NetworkFabricControllersClient.BeginDelete
 //     method.
 func (client *NetworkFabricControllersClient) BeginDelete(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *NetworkFabricControllersClientBeginDeleteOptions) (*runtime.Poller[NetworkFabricControllersClientDeleteResponse], error) {
@@ -137,7 +134,7 @@ func (client *NetworkFabricControllersClient) BeginDelete(ctx context.Context, r
 // Delete - Deletes the Network Fabric Controller resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkFabricControllersClient) deleteOperation(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *NetworkFabricControllersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkFabricControllerName, options)
 	if err != nil {
@@ -147,7 +144,7 @@ func (client *NetworkFabricControllersClient) deleteOperation(ctx context.Contex
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -156,9 +153,6 @@ func (client *NetworkFabricControllersClient) deleteOperation(ctx context.Contex
 // deleteCreateRequest creates the Delete request.
 func (client *NetworkFabricControllersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *NetworkFabricControllersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -173,141 +167,7 @@ func (client *NetworkFabricControllersClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginDisableWorkloadManagementNetwork - Disables the workloadManagementNetwork (Tenant Network).
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricControllerName - Name of the networkFabricController.
-//   - options - NetworkFabricControllersClientBeginDisableWorkloadManagementNetworkOptions contains the optional parameters for
-//     the NetworkFabricControllersClient.BeginDisableWorkloadManagementNetwork method.
-func (client *NetworkFabricControllersClient) BeginDisableWorkloadManagementNetwork(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *NetworkFabricControllersClientBeginDisableWorkloadManagementNetworkOptions) (*runtime.Poller[NetworkFabricControllersClientDisableWorkloadManagementNetworkResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.disableWorkloadManagementNetwork(ctx, resourceGroupName, networkFabricControllerName, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricControllersClientDisableWorkloadManagementNetworkResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[NetworkFabricControllersClientDisableWorkloadManagementNetworkResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// DisableWorkloadManagementNetwork - Disables the workloadManagementNetwork (Tenant Network).
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *NetworkFabricControllersClient) disableWorkloadManagementNetwork(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *NetworkFabricControllersClientBeginDisableWorkloadManagementNetworkOptions) (*http.Response, error) {
-	req, err := client.disableWorkloadManagementNetworkCreateRequest(ctx, resourceGroupName, networkFabricControllerName, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// disableWorkloadManagementNetworkCreateRequest creates the DisableWorkloadManagementNetwork request.
-func (client *NetworkFabricControllersClient) disableWorkloadManagementNetworkCreateRequest(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *NetworkFabricControllersClientBeginDisableWorkloadManagementNetworkOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}/disableWorkloadManagementNetwork"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricControllerName == "" {
-		return nil, errors.New("parameter networkFabricControllerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricControllerName}", url.PathEscape(networkFabricControllerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginEnableWorkloadManagementNetwork - Enables the workloadManagementNetwork (Tenant Network).
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricControllerName - Name of the networkFabricController.
-//   - options - NetworkFabricControllersClientBeginEnableWorkloadManagementNetworkOptions contains the optional parameters for
-//     the NetworkFabricControllersClient.BeginEnableWorkloadManagementNetwork method.
-func (client *NetworkFabricControllersClient) BeginEnableWorkloadManagementNetwork(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *NetworkFabricControllersClientBeginEnableWorkloadManagementNetworkOptions) (*runtime.Poller[NetworkFabricControllersClientEnableWorkloadManagementNetworkResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.enableWorkloadManagementNetwork(ctx, resourceGroupName, networkFabricControllerName, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricControllersClientEnableWorkloadManagementNetworkResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[NetworkFabricControllersClientEnableWorkloadManagementNetworkResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// EnableWorkloadManagementNetwork - Enables the workloadManagementNetwork (Tenant Network).
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *NetworkFabricControllersClient) enableWorkloadManagementNetwork(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *NetworkFabricControllersClientBeginEnableWorkloadManagementNetworkOptions) (*http.Response, error) {
-	req, err := client.enableWorkloadManagementNetworkCreateRequest(ctx, resourceGroupName, networkFabricControllerName, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// enableWorkloadManagementNetworkCreateRequest creates the EnableWorkloadManagementNetwork request.
-func (client *NetworkFabricControllersClient) enableWorkloadManagementNetworkCreateRequest(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *NetworkFabricControllersClientBeginEnableWorkloadManagementNetworkOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}/enableWorkloadManagementNetwork"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkFabricControllerName == "" {
-		return nil, errors.New("parameter networkFabricControllerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkFabricControllerName}", url.PathEscape(networkFabricControllerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -316,9 +176,9 @@ func (client *NetworkFabricControllersClient) enableWorkloadManagementNetworkCre
 // Get - Shows the provisioning status of Network Fabric Controller.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricControllerName - Name of the Network Fabric Controller
+//   - networkFabricControllerName - Name of the Network Fabric Controller.
 //   - options - NetworkFabricControllersClientGetOptions contains the optional parameters for the NetworkFabricControllersClient.Get
 //     method.
 func (client *NetworkFabricControllersClient) Get(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *NetworkFabricControllersClientGetOptions) (NetworkFabricControllersClientGetResponse, error) {
@@ -339,9 +199,6 @@ func (client *NetworkFabricControllersClient) Get(ctx context.Context, resourceG
 // getCreateRequest creates the Get request.
 func (client *NetworkFabricControllersClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *NetworkFabricControllersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -356,7 +213,7 @@ func (client *NetworkFabricControllersClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -373,7 +230,7 @@ func (client *NetworkFabricControllersClient) getHandleResponse(resp *http.Respo
 
 // NewListByResourceGroupPager - Lists all the NetworkFabricControllers thats available in the resource group.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkFabricControllersClientListByResourceGroupOptions contains the optional parameters for the NetworkFabricControllersClient.NewListByResourceGroupPager
 //     method.
@@ -408,9 +265,6 @@ func (client *NetworkFabricControllersClient) NewListByResourceGroupPager(resour
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *NetworkFabricControllersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *NetworkFabricControllersClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -421,7 +275,7 @@ func (client *NetworkFabricControllersClient) listByResourceGroupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -438,7 +292,7 @@ func (client *NetworkFabricControllersClient) listByResourceGroupHandleResponse(
 
 // NewListBySubscriptionPager - Lists all the NetworkFabricControllers by subscription.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - options - NetworkFabricControllersClientListBySubscriptionOptions contains the optional parameters for the NetworkFabricControllersClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkFabricControllersClient) NewListBySubscriptionPager(options *NetworkFabricControllersClientListBySubscriptionOptions) *runtime.Pager[NetworkFabricControllersClientListBySubscriptionResponse] {
@@ -472,16 +326,13 @@ func (client *NetworkFabricControllersClient) NewListBySubscriptionPager(options
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *NetworkFabricControllersClient) listBySubscriptionCreateRequest(ctx context.Context, options *NetworkFabricControllersClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -499,9 +350,9 @@ func (client *NetworkFabricControllersClient) listBySubscriptionHandleResponse(r
 // BeginUpdate - Updates are currently not supported for the Network Fabric Controller resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricControllerName - Name of the Network Fabric Controller
+//   - networkFabricControllerName - Name of the Network Fabric Controller.
 //   - body - Network Fabric Controller properties to update.
 //   - options - NetworkFabricControllersClientBeginUpdateOptions contains the optional parameters for the NetworkFabricControllersClient.BeginUpdate
 //     method.
@@ -522,7 +373,7 @@ func (client *NetworkFabricControllersClient) BeginUpdate(ctx context.Context, r
 // Update - Updates are currently not supported for the Network Fabric Controller resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkFabricControllersClient) update(ctx context.Context, resourceGroupName string, networkFabricControllerName string, body NetworkFabricControllerPatch, options *NetworkFabricControllersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkFabricControllerName, body, options)
 	if err != nil {
@@ -541,9 +392,6 @@ func (client *NetworkFabricControllersClient) update(ctx context.Context, resour
 // updateCreateRequest creates the Update request.
 func (client *NetworkFabricControllersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricControllerName string, body NetworkFabricControllerPatch, options *NetworkFabricControllersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -558,7 +406,7 @@ func (client *NetworkFabricControllersClient) updateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

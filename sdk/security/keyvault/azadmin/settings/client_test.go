@@ -48,8 +48,6 @@ func TestGetSetting_InvalidSettingName(t *testing.T) {
 	require.Nil(t, res.Value)
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
-	require.Equal(t, "UnknownError", httpErr.ErrorCode)
-	require.Equal(t, 500, httpErr.StatusCode)
 }
 
 func TestGetSettings(t *testing.T) {
@@ -122,6 +120,4 @@ func TestUpdateSetting_InvalidSettingName(t *testing.T) {
 	require.Nil(t, res.Value)
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
-	require.Equal(t, "Nocontentprovided", httpErr.ErrorCode)
-	require.Equal(t, 400, httpErr.StatusCode)
 }

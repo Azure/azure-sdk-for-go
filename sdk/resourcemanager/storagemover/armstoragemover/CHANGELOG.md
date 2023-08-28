@@ -1,5 +1,32 @@
 # Release History
 
+## 2.0.0-beta.1 (2023-07-28)
+### Breaking Changes
+
+- Type of `EndpointBaseUpdateParameters.Properties` has been changed from `*EndpointBaseUpdateProperties` to `EndpointBaseUpdatePropertiesClassification`
+
+### Features Added
+
+- New value `EndpointTypeAzureStorageSmbFileShare`, `EndpointTypeSmbMount` added to enum type `EndpointType`
+- New enum type `CredentialType` with values `CredentialTypeAzureKeyVaultSmb`
+- New function `*AzureKeyVaultSmbCredentials.GetCredentials() *Credentials`
+- New function `*AzureStorageBlobContainerEndpointUpdateProperties.GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties`
+- New function `*AzureStorageSmbFileShareEndpointProperties.GetEndpointBaseProperties() *EndpointBaseProperties`
+- New function `*AzureStorageSmbFileShareEndpointUpdateProperties.GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties`
+- New function `*Credentials.GetCredentials() *Credentials`
+- New function `*EndpointBaseUpdateProperties.GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties`
+- New function `*SmbMountEndpointProperties.GetEndpointBaseProperties() *EndpointBaseProperties`
+- New function `*SmbMountEndpointUpdateProperties.GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties`
+- New function `*NfsMountEndpointUpdateProperties.GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties`
+- New struct `AzureKeyVaultSmbCredentials`
+- New struct `AzureStorageBlobContainerEndpointUpdateProperties`
+- New struct `AzureStorageSmbFileShareEndpointProperties`
+- New struct `AzureStorageSmbFileShareEndpointUpdateProperties`
+- New struct `NfsMountEndpointUpdateProperties`
+- New struct `SmbMountEndpointProperties`
+- New struct `SmbMountEndpointUpdateProperties`
+
+
 ## 1.1.1 (2023-04-14)
 ### Bug Fixes
 

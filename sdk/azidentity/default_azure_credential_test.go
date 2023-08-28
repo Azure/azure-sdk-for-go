@@ -32,53 +32,24 @@ func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 	c := cred.chain.sources[0].(*EnvironmentCredential)
-	c.cred.(*ClientSecretCredential).client = fakeConfidentialClient{}
+	c.cred.(*ClientSecretCredential).client.noCAE = fakeConfidentialClient{}
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"scope"}})
 	if err != nil {
 		t.Fatalf("GetToken error: %v", err)
 	}
 }
 
-func TestDefaultAzureCredential_ConstructorErrorHandler(t *testing.T) {
-	setEnvironmentVariables(t, map[string]string{"AZURE_SDK_GO_LOGGING": "all"})
-	errorMessages := []string{
-		"<credential-name>: <error-message>",
-		"<credential-name>: <error-message>",
-	}
-	err := defaultAzureCredentialConstructorErrorHandler(0, errorMessages)
-	if err == nil {
-		t.Fatalf("Expected an error, but received none.")
-	}
-	expectedError := `<credential-name>: <error-message>
-	<credential-name>: <error-message>`
-	if err.Error() != expectedError {
-		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
-	}
-
-	logMessages := []string{}
-	log.SetListener(func(event log.Event, message string) {
-		logMessages = append(logMessages, message)
-	})
-
-	err = defaultAzureCredentialConstructorErrorHandler(1, errorMessages)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expectedLogs := `NewDefaultAzureCredential failed to initialize some credentials:
-	<credential-name>: <error-message>
-	<credential-name>: <error-message>`
-	if len(logMessages) == 0 {
-		t.Fatal("error handler logged no messages")
-	}
-	if logMessages[0] != expectedLogs {
-		t.Fatalf("Did not receive the expected logs.\n\nReceived:\n%s\n\nExpected:\n%s", logMessages[0], expectedLogs)
-	}
-}
-
 func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 	// ensure NewEnvironmentCredential returns an error
 	t.Setenv(azureTenantID, "")
+
+	logMsgs := []string{}
+	log.SetListener(func(e log.Event, s string) {
+		if e == EventAuthentication {
+			logMsgs = append(logMsgs, s)
+		}
+	})
+
 	cred, err := NewDefaultAzureCredential(nil)
 	if err != nil {
 		t.Fatal(err)
@@ -92,6 +63,7 @@ func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 	}
 	// these credentials' constructors returned errors because their configuration is absent;
 	// those errors should be represented in the error returned by DefaultAzureCredential.GetToken()
+	// and NewDefaultAzureCredential should have logged them
 	for _, name := range []string{"EnvironmentCredential", credNameWorkloadIdentity} {
 		matched, err := regexp.MatchString(name+`: .+\n`, err.Error())
 		if err != nil {
@@ -101,6 +73,13 @@ func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 			t.Errorf("expected an error message from %s", name)
 		}
 	}
+	r := regexp.MustCompile(fmt.Sprintf(`(?m)NewDefaultAzureCredential failed to initialize some credentials:\n.*EnvironmentCredential:.+\n.*%s:`, credNameWorkloadIdentity))
+	for _, msg := range logMsgs {
+		if r.MatchString(msg) {
+			return
+		}
+	}
+	t.Fatalf("expected a log message about the constructor errors, got %s", strings.Join(logMsgs, "\n"))
 }
 
 func TestDefaultAzureCredential_TenantID(t *testing.T) {
@@ -159,10 +138,11 @@ func TestDefaultAzureCredential_TenantID(t *testing.T) {
 				ClientOptions: policy.ClientOptions{
 					Transport: &mockSTS{
 						tenant: expected,
-						tokenRequestCallback: func(r *http.Request) {
+						tokenRequestCallback: func(r *http.Request) *http.Response {
 							if actual := strings.Split(r.URL.Path, "/")[1]; actual != expected {
 								t.Fatalf("expected tenant %q, got %q", expected, actual)
 							}
+							return nil
 						},
 					},
 				},
@@ -211,7 +191,7 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 	if err := os.WriteFile(tempFile, []byte(expectedAssertion), os.ModePerm); err != nil {
 		t.Fatalf(`failed to write temporary file "%s": %v`, tempFile, err)
 	}
-	pred := func(req *http.Request) bool {
+	sts := mockSTS{tokenRequestCallback: func(req *http.Request) *http.Response {
 		if err := req.ParseForm(); err != nil {
 			t.Fatal(err)
 		}
@@ -224,14 +204,8 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 		if actual := strings.Split(req.URL.Path, "/")[1]; actual != fakeTenantID {
 			t.Fatalf(`unexpected tenant "%s"`, actual)
 		}
-		return true
-	}
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
-	srv.AppendResponse(mock.WithPredicate(pred), mock.WithBody(accessTokenRespSuccess))
-	srv.AppendResponse()
+		return nil
+	}}
 	for k, v := range map[string]string{
 		azureAuthorityHost:      cloud.AzurePublic.ActiveDirectoryAuthorityHost,
 		azureClientID:           fakeClientID,
@@ -240,7 +214,7 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 	} {
 		t.Setenv(k, v)
 	}
-	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ClientOptions: policy.ClientOptions{Transport: srv}})
+	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ClientOptions: policy.ClientOptions{Transport: &sts}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -265,17 +239,13 @@ func (p *delayPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 }
 
 func TestDefaultAzureCredential_timeoutWrapper(t *testing.T) {
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.SetResponse(mock.WithBody(accessTokenRespSuccess))
-
 	timeout := 100 * time.Millisecond
 	dp := delayPolicy{2 * timeout}
 	mic, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
 		ClientOptions: policy.ClientOptions{
 			PerCallPolicies: []policy.Policy{&dp},
 			Retry:           policy.RetryOptions{MaxRetries: -1},
-			Transport:       srv,
+			Transport:       &mockSTS{},
 		},
 	})
 	if err != nil {

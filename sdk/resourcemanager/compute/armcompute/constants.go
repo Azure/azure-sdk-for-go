@@ -10,7 +10,7 @@ package armcompute
 
 const (
 	moduleName    = "armcompute"
-	moduleVersion = "v5.1.0-beta.2"
+	moduleVersion = "v5.2.0-beta.1"
 )
 
 type AccessLevel string
@@ -781,6 +781,24 @@ const (
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	return []ExtendedLocationTypes{
 		ExtendedLocationTypesEdgeZone,
+	}
+}
+
+// FileFormat - Used to specify the file format when making request for SAS on a VHDX file format snapshot
+type FileFormat string
+
+const (
+	// FileFormatVHD - A VHD file is a disk image file in the Virtual Hard Disk file format.
+	FileFormatVHD FileFormat = "VHD"
+	// FileFormatVHDX - A VHDX file is a disk image file in the Virtual Hard Disk v2 file format.
+	FileFormatVHDX FileFormat = "VHDX"
+)
+
+// PossibleFileFormatValues returns the possible values for the FileFormat const type.
+func PossibleFileFormatValues() []FileFormat {
+	return []FileFormat{
+		FileFormatVHD,
+		FileFormatVHDX,
 	}
 }
 

@@ -10,9 +10,9 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"crypto/rand"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"io"
 	"net/url"
 	"os"
@@ -20,6 +20,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -250,6 +252,73 @@ func (s *BlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5() {
 		SourceContentMD5: badMD5,
 	})
 	_require.NotNil(err)
+}
+
+// This test simulates DownloadFile/Buffer methods,
+// and verifies length and content of file
+func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	const MiB = 1024 * 1024
+	testUploadDownload := func(contentSize int) {
+		content := make([]byte, contentSize)
+		_, _ = rand.Read(content)
+		contentMD5 := md5.Sum(content)
+		body := streaming.NopCloser(bytes.NewReader(content))
+
+		srcBlob := containerClient.NewBlockBlobClient("srcblob")
+
+		// Prepare source bbClient for copy.
+		_, err = srcBlob.Upload(context.Background(), body, nil)
+		_require.Nil(err)
+
+		// downlod to a temp file and verify contents
+		tmp, err := os.CreateTemp("", "")
+		_require.Nil(err)
+		defer tmp.Close()
+
+		f := blob.DownloadFileOptions{BlockSize: 2 * MiB}
+		n, err := srcBlob.DownloadFile(context.Background(), tmp, &f)
+		_require.Nil(err)
+		_require.Equal(int64(contentSize), n)
+
+		// Compute md5 of file, and verify it against stored value.
+		_, _ = tmp.Seek(0, io.SeekStart)
+		buff := make([]byte, contentSize)
+		_, err = io.ReadFull(tmp, buff)
+		_require.Nil(err)
+		_require.Equal(contentMD5, md5.Sum(buff))
+
+		// Download to a buffer and verify contents
+		buff = make([]byte, contentSize)
+		b := blob.DownloadBufferOptions{BlockSize: 2 * MiB}
+		n, err = srcBlob.DownloadBuffer(context.Background(), buff, &b)
+		_require.Nil(err)
+		_require.Equal(int64(contentSize), n)
+		_require.Equal(contentMD5, md5.Sum(buff[:]))
+	}
+
+	testUploadDownload(0)         // zero byte blob.
+	testUploadDownload(16 * 1024) // 16Kb file will be downloaded in a single chunk
+
+	// Downloading with default concurrency of 5, and blocksize = 2MiB
+	// 6MB file has fewer blocks than number of threads.
+	testUploadDownload(5 * MiB)
+
+	// 10MB file, same blocks as number of threads
+	testUploadDownload(10 * MiB)
+
+	// 199 MB file, more blocks than threads
+	testUploadDownload(199 * MiB)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestEmpty() {
@@ -3274,95 +3343,32 @@ func (s *BlobRecordedTestsSuite) TestPermanentDeleteWithoutPermission() {
 	return nil
 }*/
 
-//
-////func (s *BlobRecordedTestsSuite) TestBlobTierInferred() {
-////	svcClient, err := getPremiumserviceClient()
-////	if err != nil {
-////		c.Skip(err.Error())
-////	}
-////
-////	containerClient, _ := testcommon.CreateNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	bbClient, _ := createNewPageBlob(c, containerClient)
-////
-////	resp, err := bbClient.GetProperties(context.Background(), nil)
-////	_require.Nil(err)
-////	_assert(resp.AccessTierInferred(), chk.Equals, "true")
-////
-////	resp2, err := containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{})
-////	_require.Nil(err)
-////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.NotNil)
-////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTier, chk.Not(chk.Equals), "")
-////
-////	_, err = bbClient.SetTier(ctx, AccessTierP4, LeaseAccessConditions{})
-////	_require.Nil(err)
-////
-////	resp, err = bbClient.GetProperties(context.Background(), nil)
-////	_require.Nil(err)
-////	_assert(resp.AccessTierInferred(), chk.Equals, "")
-////
-////	resp2, err = containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{})
-////	_require.Nil(err)
-////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.IsNil) // AccessTierInferred never returned if false
-////}
-////
-////func (s *BlobRecordedTestsSuite) TestBlobArchiveStatus() {
-////	svcClient, err := getBlobStorageserviceClient()
-////	if err != nil {
-////		c.Skip(err.Error())
-////	}
-////
-////	containerClient, _ := testcommon.CreateNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	bbClient, _ := createNewBlockBlob(c, containerClient)
-////
-////	_, err = bbClient.SetTier(ctx, AccessTierArchive, LeaseAccessConditions{})
-////	_require.Nil(err)
-////	_, err = bbClient.SetTier(ctx, AccessTierCool, LeaseAccessConditions{})
-////	_require.Nil(err)
-////
-////	resp, err := bbClient.GetProperties(context.Background(), nil)
-////	_require.Nil(err)
-////	_assert(resp.ArchiveStatus(), chk.Equals, string(ArchiveStatusRehydratePendingToCool))
-////
-////	resp2, err := containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{})
-////	_require.Nil(err)
-////	_assert(resp2.Segment.BlobItems[0].Properties.ArchiveStatus, chk.Equals, ArchiveStatusRehydratePendingToCool)
-////
-////	// delete first blob
-////	_, err = bbClient.Delete(context.Background(), DeleteSnapshotsOptionNone, nil)
-////	_require.Nil(err)
-////
-////	bbClient, _ = createNewBlockBlob(c, containerClient)
-////
-////	_, err = bbClient.SetTier(ctx, AccessTierArchive, LeaseAccessConditions{})
-////	_require.Nil(err)
-////	_, err = bbClient.SetTier(ctx, AccessTierHot, LeaseAccessConditions{})
-////	_require.Nil(err)
-////
-////	resp, err = bbClient.GetProperties(context.Background(), nil)
-////	_require.Nil(err)
-////	_assert(resp.ArchiveStatus(), chk.Equals, string(ArchiveStatusRehydratePendingToHot))
-////
-////	resp2, err = containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{})
-////	_require.Nil(err)
-////	_assert(resp2.Segment.BlobItems[0].Properties.ArchiveStatus, chk.Equals, ArchiveStatusRehydratePendingToHot)
-////}
-////
-////func (s *BlobRecordedTestsSuite) TestBlobTierInvalidValue() {
-////	svcClient, err := getBlobStorageserviceClient()
-////	if err != nil {
-////		c.Skip(err.Error())
-////	}
-////
-////	containerClient, _ := testcommon.CreateNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	bbClient, _ := createNewBlockBlob(c, containerClient)
-////
-////	_, err = bbClient.SetTier(ctx, AccessTierType("garbage"), LeaseAccessConditions{})
-////	testcommon.ValidateBlobErrorCode(c, err, bloberror.InvalidHeaderValue)
-////}
-////
+func (s *BlobRecordedTestsSuite) TestBlobSetTierInvalidAndValid() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	_, err = bbClient.SetTier(context.Background(), blob.AccessTier("nothing"), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
+
+	for _, tier := range []blob.AccessTier{blob.AccessTierCool, blob.AccessTierHot, blob.AccessTierCold, blob.AccessTierArchive} {
+		_, err = bbClient.SetTier(context.Background(), tier, nil)
+		_require.NoError(err)
+
+		getResp, err := bbClient.GetProperties(context.Background(), nil)
+		_require.NoError(err)
+		_require.Equal(*getResp.AccessTier, string(tier))
+	}
+}
 
 func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 	_require := require.New(s.T())

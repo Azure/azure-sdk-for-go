@@ -7,8 +7,11 @@
 package sas
 
 import (
+	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/stretchr/testify/require"
 	"testing"
+	"time"
 )
 
 func TestContainerPermissions_String(t *testing.T) {
@@ -255,5 +258,47 @@ func TestGetDirectoryDepth(t *testing.T) {
 	}
 	for _, c := range testdata {
 		require.Equal(t, c.expected, getDirectoryDepth(c.input))
+	}
+}
+
+func TestBlobSignatureValues_SignWithSharedKey(t *testing.T) {
+	cred, err := exported.NewSharedKeyCredential("fakeaccountname", "AKIAIOSFODNN7EXAMPLE")
+	require.Nil(t, err, "error creating valid shared key credentials.")
+
+	expiryDate, err := time.Parse("2006-01-02", "2023-07-20")
+	require.Nil(t, err, "error creating valid expiry date.")
+
+	testdata := []struct {
+		object        BlobSignatureValues
+		expected      QueryParameters
+		expectedError error
+	}{
+		{
+			object:        BlobSignatureValues{ContainerName: "fakestoragecontainer", Permissions: "a", ExpiryTime: expiryDate},
+			expected:      QueryParameters{version: Version, permissions: "a", expiryTime: expiryDate, resource: "c"},
+			expectedError: nil,
+		},
+		{
+			object:        BlobSignatureValues{ContainerName: "fakestoragecontainer", Permissions: "", ExpiryTime: expiryDate},
+			expected:      QueryParameters{},
+			expectedError: errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions"),
+		},
+		{
+			object:        BlobSignatureValues{ContainerName: "fakestoragecontainer", Permissions: "a", ExpiryTime: *new(time.Time)},
+			expected:      QueryParameters{},
+			expectedError: errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions"),
+		},
+		{
+			object:        BlobSignatureValues{ContainerName: "fakestoragecontainer", Permissions: "", ExpiryTime: *new(time.Time), Identifier: "fakepolicyname"},
+			expected:      QueryParameters{version: Version, resource: "c", identifier: "fakepolicyname"},
+			expectedError: nil,
+		},
+	}
+	for _, c := range testdata {
+		act, err := c.object.SignWithSharedKey(cred)
+		// ignore signature value
+		act.signature = ""
+		require.Equal(t, c.expected, act)
+		require.Equal(t, c.expectedError, err)
 	}
 }

@@ -31,15 +31,15 @@ func ExampleClient_GetEmbeddings() {
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
 	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
 		// TODO: handle error
 	}
 
 	resp, err := client.GetEmbeddings(context.TODO(), azopenai.EmbeddingsOptions{
-		Input: []string{"The food was delicious and the waiter..."},
-		Model: &modelDeploymentID,
+		Input:        []string{"The food was delicious and the waiter..."},
+		DeploymentID: modelDeploymentID,
 	}, nil)
 
 	if err != nil {

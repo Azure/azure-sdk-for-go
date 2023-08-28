@@ -33,7 +33,7 @@ func TestDeviceCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	cred.client = fakePublicClient{err: errors.New("invalid credentials")}
+	cred.client.noCAE = fakePublicClient{err: errors.New("invalid credentials")}
 	_, err = cred.GetToken(context.Background(), testTRO)
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
@@ -67,7 +67,7 @@ func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential: %v", err)
 	}
-	cred.client = fakePublicClient{
+	cred.client.noCAE = fakePublicClient{
 		dc: public.DeviceCode{
 			Result: public.DeviceCodeResult{
 				Message:         expected.Message,
@@ -87,7 +87,7 @@ func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
 
 func TestDeviceCodeCredential_Live(t *testing.T) {
 	if recording.GetRecordMode() != recording.PlaybackMode && !runManualTests {
-		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
+		t.Skipf("set %s to run this test", azidentityRunManualTests)
 	}
 	for _, test := range []struct {
 		clientID, desc, tenantID string
@@ -123,7 +123,7 @@ func TestDeviceCodeCredential_Live(t *testing.T) {
 
 func TestDeviceCodeCredentialADFS_Live(t *testing.T) {
 	if recording.GetRecordMode() != recording.PlaybackMode && !runManualTests {
-		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
+		t.Skipf("set %s to run this test", azidentityRunManualTests)
 	}
 	if adfsLiveSP.clientID == "" {
 		t.Skip("set ADFS_SP_* environment variables to run this test")

@@ -33,6 +33,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed issue where some requests fail with mismatch in string to sign.
 
 ### Other Changes
 

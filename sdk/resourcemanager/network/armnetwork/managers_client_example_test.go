@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkManagerGet.json
 func ExampleManagersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,6 +51,7 @@ func ExampleManagersClient_Get() {
 	// 					to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000")},
 	// 				},
 	// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 				ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			},
 	// 			SystemData: &armnetwork.SystemData{
 	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
@@ -63,7 +64,7 @@ func ExampleManagersClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkManagerPut.json
 func ExampleManagersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,6 +110,7 @@ func ExampleManagersClient_CreateOrUpdate() {
 	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000")},
 	// 					},
 	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 				},
 	// 				SystemData: &armnetwork.SystemData{
 	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
@@ -121,7 +123,7 @@ func ExampleManagersClient_CreateOrUpdate() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkManagerDelete.json
 func ExampleManagersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +144,7 @@ func ExampleManagersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkManagerPatch.json
 func ExampleManagersClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,6 +188,7 @@ func ExampleManagersClient_Patch() {
 	// 					to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001")},
 	// 				},
 	// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 				ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			},
 	// 			SystemData: &armnetwork.SystemData{
 	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
@@ -198,7 +201,7 @@ func ExampleManagersClient_Patch() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkManagerListAll.json
 func ExampleManagersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,6 +243,7 @@ func ExampleManagersClient_NewListBySubscriptionPager() {
 		// 							to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000")},
 		// 						},
 		// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 						ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					},
 		// 					SystemData: &armnetwork.SystemData{
 		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
@@ -254,7 +258,7 @@ func ExampleManagersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkManagerList.json
 func ExampleManagersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,6 +300,7 @@ func ExampleManagersClient_NewListPager() {
 		// 							to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000")},
 		// 						},
 		// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 						ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					},
 		// 					SystemData: &armnetwork.SystemData{
 		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),

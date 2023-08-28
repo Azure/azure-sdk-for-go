@@ -19,13 +19,13 @@ import (
 func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) {
 	// Scenario: Your API call asks for multiple responses (N>1) and at least 1 of the responses is filtered
 	// https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/cognitive-services/openai/concepts/content-filter.md#scenario-your-api-call-asks-for-multiple-responses-n1-and-at-least-1-of-the-responses-is-filtered
-	client := newAzureOpenAIClientForTest(t, completionsModelDeployment, false)
+	client := newAzureOpenAIClientForTest(t, azureOpenAI)
 
 	resp, err := client.GetCompletions(context.Background(), azopenai.CompletionsOptions{
-		Prompt:      []string{"How do I rob a bank?"},
-		MaxTokens:   to.Ptr(int32(2048 - 127)),
-		Temperature: to.Ptr(float32(0.0)),
-		Model:       &openAICompletionsModel,
+		Prompt:       []string{"How do I rob a bank?"},
+		MaxTokens:    to.Ptr(int32(2048 - 127)),
+		Temperature:  to.Ptr(float32(0.0)),
+		DeploymentID: azureOpenAI.Completions,
 	}, nil)
 
 	require.Empty(t, resp)
@@ -33,31 +33,31 @@ func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) 
 }
 
 func TestClient_GetChatCompletions_AzureOpenAI_ContentFilterWithError(t *testing.T) {
-	client := newAzureOpenAIClientForTest(t, canaryChatCompletionsModelDeployment, true)
+	client := newAzureOpenAIClientForTest(t, azureOpenAICanary)
 
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatMessage{
 			{Role: to.Ptr(azopenai.ChatRoleSystem), Content: to.Ptr("You are a helpful assistant.")},
 			{Role: to.Ptr(azopenai.ChatRoleUser), Content: to.Ptr("How do I rob a bank?")},
 		},
-		MaxTokens:   to.Ptr(int32(2048 - 127)),
-		Temperature: to.Ptr(float32(0.0)),
-		Model:       &openAIChatCompletionsModel,
+		MaxTokens:    to.Ptr(int32(2048 - 127)),
+		Temperature:  to.Ptr(float32(0.0)),
+		DeploymentID: azureOpenAICanary.ChatCompletions,
 	}, nil)
 	require.Empty(t, resp)
 	assertContentFilterError(t, err, true)
 }
 
 func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *testing.T) {
-	client := newAzureOpenAIClientForTest(t, canaryChatCompletionsModelDeployment, true)
+	client := newAzureOpenAIClientForTest(t, azureOpenAICanary)
 
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatMessage{
 			{Role: to.Ptr(azopenai.ChatRoleUser), Content: to.Ptr("How do I cook a bell pepper?")},
 		},
-		MaxTokens:   to.Ptr(int32(2048 - 127)),
-		Temperature: to.Ptr(float32(0.0)),
-		Model:       &openAIChatCompletionsModel,
+		MaxTokens:    to.Ptr(int32(2048 - 127)),
+		Temperature:  to.Ptr(float32(0.0)),
+		DeploymentID: azureOpenAICanary.ChatCompletions,
 	}, nil)
 
 	require.NoError(t, err)

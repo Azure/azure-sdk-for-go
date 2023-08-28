@@ -25,18 +25,6 @@ func TestUsernamePasswordCredential_InvalidTenantID(t *testing.T) {
 	}
 }
 
-func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
-	cred, err := NewUsernamePasswordCredential(fakeTenantID, fakeClientID, "username", "password", nil)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-	cred.client = fakePublicClient{}
-	_, err = cred.GetToken(context.Background(), testTRO)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
-}
-
 func TestUsernamePasswordCredential_Live(t *testing.T) {
 	for _, disabledID := range []bool{true, false} {
 		name := "default options"

@@ -47,7 +47,7 @@ func NewVipSwapClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginCreate - Performs vip swap operation on swappable cloud services.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-04-01
 //   - groupName - The name of the resource group.
 //   - resourceName - The name of the cloud service.
 //   - parameters - SwapResource object where slot type should be the target slot after vip swap for the specified cloud service.
@@ -68,13 +68,9 @@ func (client *VipSwapClient) BeginCreate(ctx context.Context, groupName string, 
 // Create - Performs vip swap operation on swappable cloud services.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-04-01
 func (client *VipSwapClient) create(ctx context.Context, groupName string, resourceName string, parameters SwapResource, options *VipSwapClientBeginCreateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "VipSwapClient.BeginCreate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, groupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -111,7 +107,7 @@ func (client *VipSwapClient) createCreateRequest(ctx context.Context, groupName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -124,16 +120,12 @@ func (client *VipSwapClient) createCreateRequest(ctx context.Context, groupName 
 // can either be Staging or Production
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-04-01
 //   - groupName - The name of the resource group.
 //   - resourceName - The name of the cloud service.
 //   - options - VipSwapClientGetOptions contains the optional parameters for the VipSwapClient.Get method.
 func (client *VipSwapClient) Get(ctx context.Context, groupName string, resourceName string, options *VipSwapClientGetOptions) (VipSwapClientGetResponse, error) {
 	var err error
-	const operationName = "VipSwapClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, groupName, resourceName, options)
 	if err != nil {
 		return VipSwapClientGetResponse{}, err
@@ -171,7 +163,7 @@ func (client *VipSwapClient) getCreateRequest(ctx context.Context, groupName str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -190,16 +182,12 @@ func (client *VipSwapClient) getHandleResponse(resp *http.Response) (VipSwapClie
 // cloud service can either be Staging or Production
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-04-01
 //   - groupName - The name of the resource group.
 //   - resourceName - The name of the cloud service.
 //   - options - VipSwapClientListOptions contains the optional parameters for the VipSwapClient.List method.
 func (client *VipSwapClient) List(ctx context.Context, groupName string, resourceName string, options *VipSwapClientListOptions) (VipSwapClientListResponse, error) {
 	var err error
-	const operationName = "VipSwapClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, groupName, resourceName, options)
 	if err != nil {
 		return VipSwapClientListResponse{}, err
@@ -236,7 +224,7 @@ func (client *VipSwapClient) listCreateRequest(ctx context.Context, groupName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

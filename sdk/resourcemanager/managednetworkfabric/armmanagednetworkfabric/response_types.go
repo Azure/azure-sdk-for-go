@@ -9,14 +9,12 @@
 
 package armmanagednetworkfabric
 
-import "encoding/json"
-
-// AccessControlListsClientCreateResponse contains the response from method AccessControlListsClient.Create.
+// AccessControlListsClientCreateResponse contains the response from method AccessControlListsClient.BeginCreate.
 type AccessControlListsClientCreateResponse struct {
 	AccessControlList
 }
 
-// AccessControlListsClientDeleteResponse contains the response from method AccessControlListsClient.Delete.
+// AccessControlListsClientDeleteResponse contains the response from method AccessControlListsClient.BeginDelete.
 type AccessControlListsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -36,19 +34,24 @@ type AccessControlListsClientListBySubscriptionResponse struct {
 	AccessControlListsListResult
 }
 
-// AccessControlListsClientUpdateResponse contains the response from method AccessControlListsClient.Update.
+// AccessControlListsClientResyncResponse contains the response from method AccessControlListsClient.BeginResync.
+type AccessControlListsClientResyncResponse struct {
+	CommonPostActionResponseForStateUpdate
+}
+
+// AccessControlListsClientUpdateAdministrativeStateResponse contains the response from method AccessControlListsClient.BeginUpdateAdministrativeState.
+type AccessControlListsClientUpdateAdministrativeStateResponse struct {
+	CommonPostActionResponseForStateUpdate
+}
+
+// AccessControlListsClientUpdateResponse contains the response from method AccessControlListsClient.BeginUpdate.
 type AccessControlListsClientUpdateResponse struct {
 	AccessControlList
 }
 
-// ExternalNetworksClientClearArpEntriesResponse contains the response from method ExternalNetworksClient.BeginClearArpEntries.
-type ExternalNetworksClientClearArpEntriesResponse struct {
-	// placeholder for future response values
-}
-
-// ExternalNetworksClientClearIPv6NeighborsResponse contains the response from method ExternalNetworksClient.BeginClearIPv6Neighbors.
-type ExternalNetworksClientClearIPv6NeighborsResponse struct {
-	// placeholder for future response values
+// AccessControlListsClientValidateConfigurationResponse contains the response from method AccessControlListsClient.BeginValidateConfiguration.
+type AccessControlListsClientValidateConfigurationResponse struct {
+	ValidateConfigurationResponse
 }
 
 // ExternalNetworksClientCreateResponse contains the response from method ExternalNetworksClient.BeginCreate.
@@ -66,29 +69,24 @@ type ExternalNetworksClientGetResponse struct {
 	ExternalNetwork
 }
 
-// ExternalNetworksClientListResponse contains the response from method ExternalNetworksClient.NewListPager.
-type ExternalNetworksClientListResponse struct {
+// ExternalNetworksClientListByL3IsolationDomainResponse contains the response from method ExternalNetworksClient.NewListByL3IsolationDomainPager.
+type ExternalNetworksClientListByL3IsolationDomainResponse struct {
 	ExternalNetworksList
 }
 
 // ExternalNetworksClientUpdateAdministrativeStateResponse contains the response from method ExternalNetworksClient.BeginUpdateAdministrativeState.
 type ExternalNetworksClientUpdateAdministrativeStateResponse struct {
-	// placeholder for future response values
-}
-
-// ExternalNetworksClientUpdateBfdForBgpAdministrativeStateResponse contains the response from method ExternalNetworksClient.BeginUpdateBfdForBgpAdministrativeState.
-type ExternalNetworksClientUpdateBfdForBgpAdministrativeStateResponse struct {
-	// placeholder for future response values
-}
-
-// ExternalNetworksClientUpdateBgpAdministrativeStateResponse contains the response from method ExternalNetworksClient.BeginUpdateBgpAdministrativeState.
-type ExternalNetworksClientUpdateBgpAdministrativeStateResponse struct {
-	// placeholder for future response values
+	CommonPostActionResponseForStateUpdate
 }
 
 // ExternalNetworksClientUpdateResponse contains the response from method ExternalNetworksClient.BeginUpdate.
 type ExternalNetworksClientUpdateResponse struct {
 	ExternalNetwork
+}
+
+// ExternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse contains the response from method ExternalNetworksClient.BeginUpdateStaticRouteBfdAdministrativeState.
+type ExternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse struct {
+	CommonPostActionResponseForStateUpdate
 }
 
 // IPCommunitiesClientCreateResponse contains the response from method IPCommunitiesClient.BeginCreate.
@@ -181,16 +179,6 @@ type IPPrefixesClientUpdateResponse struct {
 	IPPrefix
 }
 
-// InternalNetworksClientClearArpEntriesResponse contains the response from method InternalNetworksClient.BeginClearArpEntries.
-type InternalNetworksClientClearArpEntriesResponse struct {
-	// placeholder for future response values
-}
-
-// InternalNetworksClientClearIPv6NeighborsResponse contains the response from method InternalNetworksClient.BeginClearIPv6Neighbors.
-type InternalNetworksClientClearIPv6NeighborsResponse struct {
-	// placeholder for future response values
-}
-
 // InternalNetworksClientCreateResponse contains the response from method InternalNetworksClient.BeginCreate.
 type InternalNetworksClientCreateResponse struct {
 	InternalNetwork
@@ -206,29 +194,19 @@ type InternalNetworksClientGetResponse struct {
 	InternalNetwork
 }
 
-// InternalNetworksClientListResponse contains the response from method InternalNetworksClient.NewListPager.
-type InternalNetworksClientListResponse struct {
+// InternalNetworksClientListByL3IsolationDomainResponse contains the response from method InternalNetworksClient.NewListByL3IsolationDomainPager.
+type InternalNetworksClientListByL3IsolationDomainResponse struct {
 	InternalNetworksList
 }
 
 // InternalNetworksClientUpdateAdministrativeStateResponse contains the response from method InternalNetworksClient.BeginUpdateAdministrativeState.
 type InternalNetworksClientUpdateAdministrativeStateResponse struct {
-	// placeholder for future response values
-}
-
-// InternalNetworksClientUpdateBfdForBgpAdministrativeStateResponse contains the response from method InternalNetworksClient.BeginUpdateBfdForBgpAdministrativeState.
-type InternalNetworksClientUpdateBfdForBgpAdministrativeStateResponse struct {
-	// placeholder for future response values
-}
-
-// InternalNetworksClientUpdateBfdForStaticRouteAdministrativeStateResponse contains the response from method InternalNetworksClient.BeginUpdateBfdForStaticRouteAdministrativeState.
-type InternalNetworksClientUpdateBfdForStaticRouteAdministrativeStateResponse struct {
-	// placeholder for future response values
+	CommonPostActionResponseForStateUpdate
 }
 
 // InternalNetworksClientUpdateBgpAdministrativeStateResponse contains the response from method InternalNetworksClient.BeginUpdateBgpAdministrativeState.
 type InternalNetworksClientUpdateBgpAdministrativeStateResponse struct {
-	// placeholder for future response values
+	CommonPostActionResponseForStateUpdate
 }
 
 // InternalNetworksClientUpdateResponse contains the response from method InternalNetworksClient.BeginUpdate.
@@ -236,14 +214,74 @@ type InternalNetworksClientUpdateResponse struct {
 	InternalNetwork
 }
 
-// L2IsolationDomainsClientClearArpTableResponse contains the response from method L2IsolationDomainsClient.BeginClearArpTable.
-type L2IsolationDomainsClientClearArpTableResponse struct {
+// InternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse contains the response from method InternalNetworksClient.BeginUpdateStaticRouteBfdAdministrativeState.
+type InternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse struct {
+	CommonPostActionResponseForStateUpdate
+}
+
+// InternetGatewayRulesClientCreateResponse contains the response from method InternetGatewayRulesClient.BeginCreate.
+type InternetGatewayRulesClientCreateResponse struct {
+	InternetGatewayRule
+}
+
+// InternetGatewayRulesClientDeleteResponse contains the response from method InternetGatewayRulesClient.BeginDelete.
+type InternetGatewayRulesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// L2IsolationDomainsClientClearNeighborTableResponse contains the response from method L2IsolationDomainsClient.BeginClearNeighborTable.
-type L2IsolationDomainsClientClearNeighborTableResponse struct {
+// InternetGatewayRulesClientGetResponse contains the response from method InternetGatewayRulesClient.Get.
+type InternetGatewayRulesClientGetResponse struct {
+	InternetGatewayRule
+}
+
+// InternetGatewayRulesClientListByResourceGroupResponse contains the response from method InternetGatewayRulesClient.NewListByResourceGroupPager.
+type InternetGatewayRulesClientListByResourceGroupResponse struct {
+	InternetGatewayRulesListResult
+}
+
+// InternetGatewayRulesClientListBySubscriptionResponse contains the response from method InternetGatewayRulesClient.NewListBySubscriptionPager.
+type InternetGatewayRulesClientListBySubscriptionResponse struct {
+	InternetGatewayRulesListResult
+}
+
+// InternetGatewayRulesClientUpdateResponse contains the response from method InternetGatewayRulesClient.BeginUpdate.
+type InternetGatewayRulesClientUpdateResponse struct {
+	InternetGatewayRule
+}
+
+// InternetGatewaysClientCreateResponse contains the response from method InternetGatewaysClient.BeginCreate.
+type InternetGatewaysClientCreateResponse struct {
+	InternetGateway
+}
+
+// InternetGatewaysClientDeleteResponse contains the response from method InternetGatewaysClient.BeginDelete.
+type InternetGatewaysClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// InternetGatewaysClientGetResponse contains the response from method InternetGatewaysClient.Get.
+type InternetGatewaysClientGetResponse struct {
+	InternetGateway
+}
+
+// InternetGatewaysClientListByResourceGroupResponse contains the response from method InternetGatewaysClient.NewListByResourceGroupPager.
+type InternetGatewaysClientListByResourceGroupResponse struct {
+	InternetGatewaysListResult
+}
+
+// InternetGatewaysClientListBySubscriptionResponse contains the response from method InternetGatewaysClient.NewListBySubscriptionPager.
+type InternetGatewaysClientListBySubscriptionResponse struct {
+	InternetGatewaysListResult
+}
+
+// InternetGatewaysClientUpdateResponse contains the response from method InternetGatewaysClient.BeginUpdate.
+type InternetGatewaysClientUpdateResponse struct {
+	InternetGateway
+}
+
+// L2IsolationDomainsClientCommitConfigurationResponse contains the response from method L2IsolationDomainsClient.BeginCommitConfiguration.
+type L2IsolationDomainsClientCommitConfigurationResponse struct {
+	CommonPostActionResponseForStateUpdate
 }
 
 // L2IsolationDomainsClientCreateResponse contains the response from method L2IsolationDomainsClient.BeginCreate.
@@ -254,17 +292,6 @@ type L2IsolationDomainsClientCreateResponse struct {
 // L2IsolationDomainsClientDeleteResponse contains the response from method L2IsolationDomainsClient.BeginDelete.
 type L2IsolationDomainsClientDeleteResponse struct {
 	// placeholder for future response values
-}
-
-// L2IsolationDomainsClientGetArpEntriesResponse contains the response from method L2IsolationDomainsClient.BeginGetArpEntries.
-type L2IsolationDomainsClientGetArpEntriesResponse struct {
-	// Show ARP entries response per network device
-	Value map[string]*ARPProperties
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type L2IsolationDomainsClientGetArpEntriesResponse.
-func (l *L2IsolationDomainsClientGetArpEntriesResponse) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &l.Value)
 }
 
 // L2IsolationDomainsClientGetResponse contains the response from method L2IsolationDomainsClient.Get.
@@ -284,7 +311,7 @@ type L2IsolationDomainsClientListBySubscriptionResponse struct {
 
 // L2IsolationDomainsClientUpdateAdministrativeStateResponse contains the response from method L2IsolationDomainsClient.BeginUpdateAdministrativeState.
 type L2IsolationDomainsClientUpdateAdministrativeStateResponse struct {
-	// placeholder for future response values
+	CommonPostActionResponseForDeviceUpdate
 }
 
 // L2IsolationDomainsClientUpdateResponse contains the response from method L2IsolationDomainsClient.BeginUpdate.
@@ -292,14 +319,14 @@ type L2IsolationDomainsClientUpdateResponse struct {
 	L2IsolationDomain
 }
 
-// L3IsolationDomainsClientClearArpTableResponse contains the response from method L3IsolationDomainsClient.BeginClearArpTable.
-type L3IsolationDomainsClientClearArpTableResponse struct {
-	// placeholder for future response values
+// L2IsolationDomainsClientValidateConfigurationResponse contains the response from method L2IsolationDomainsClient.BeginValidateConfiguration.
+type L2IsolationDomainsClientValidateConfigurationResponse struct {
+	ValidateConfigurationResponse
 }
 
-// L3IsolationDomainsClientClearNeighborTableResponse contains the response from method L3IsolationDomainsClient.BeginClearNeighborTable.
-type L3IsolationDomainsClientClearNeighborTableResponse struct {
-	// placeholder for future response values
+// L3IsolationDomainsClientCommitConfigurationResponse contains the response from method L3IsolationDomainsClient.BeginCommitConfiguration.
+type L3IsolationDomainsClientCommitConfigurationResponse struct {
+	CommonPostActionResponseForStateUpdate
 }
 
 // L3IsolationDomainsClientCreateResponse contains the response from method L3IsolationDomainsClient.BeginCreate.
@@ -329,17 +356,47 @@ type L3IsolationDomainsClientListBySubscriptionResponse struct {
 
 // L3IsolationDomainsClientUpdateAdministrativeStateResponse contains the response from method L3IsolationDomainsClient.BeginUpdateAdministrativeState.
 type L3IsolationDomainsClientUpdateAdministrativeStateResponse struct {
-	// placeholder for future response values
-}
-
-// L3IsolationDomainsClientUpdateOptionBAdministrativeStateResponse contains the response from method L3IsolationDomainsClient.BeginUpdateOptionBAdministrativeState.
-type L3IsolationDomainsClientUpdateOptionBAdministrativeStateResponse struct {
-	// placeholder for future response values
+	CommonPostActionResponseForDeviceUpdate
 }
 
 // L3IsolationDomainsClientUpdateResponse contains the response from method L3IsolationDomainsClient.BeginUpdate.
 type L3IsolationDomainsClientUpdateResponse struct {
 	L3IsolationDomain
+}
+
+// L3IsolationDomainsClientValidateConfigurationResponse contains the response from method L3IsolationDomainsClient.BeginValidateConfiguration.
+type L3IsolationDomainsClientValidateConfigurationResponse struct {
+	ValidateConfigurationResponse
+}
+
+// NeighborGroupsClientCreateResponse contains the response from method NeighborGroupsClient.BeginCreate.
+type NeighborGroupsClientCreateResponse struct {
+	NeighborGroup
+}
+
+// NeighborGroupsClientDeleteResponse contains the response from method NeighborGroupsClient.BeginDelete.
+type NeighborGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NeighborGroupsClientGetResponse contains the response from method NeighborGroupsClient.Get.
+type NeighborGroupsClientGetResponse struct {
+	NeighborGroup
+}
+
+// NeighborGroupsClientListByResourceGroupResponse contains the response from method NeighborGroupsClient.NewListByResourceGroupPager.
+type NeighborGroupsClientListByResourceGroupResponse struct {
+	NeighborGroupsListResult
+}
+
+// NeighborGroupsClientListBySubscriptionResponse contains the response from method NeighborGroupsClient.NewListBySubscriptionPager.
+type NeighborGroupsClientListBySubscriptionResponse struct {
+	NeighborGroupsListResult
+}
+
+// NeighborGroupsClientUpdateResponse contains the response from method NeighborGroupsClient.BeginUpdate.
+type NeighborGroupsClientUpdateResponse struct {
+	NeighborGroup
 }
 
 // NetworkDeviceSKUsClientGetResponse contains the response from method NetworkDeviceSKUsClient.Get.
@@ -362,41 +419,9 @@ type NetworkDevicesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// NetworkDevicesClientGenerateSupportPackageResponse contains the response from method NetworkDevicesClient.BeginGenerateSupportPackage.
-type NetworkDevicesClientGenerateSupportPackageResponse struct {
-	SupportPackageProperties
-}
-
-// NetworkDevicesClientGetDynamicInterfaceMapsResponse contains the response from method NetworkDevicesClient.BeginGetDynamicInterfaceMaps.
-type NetworkDevicesClientGetDynamicInterfaceMapsResponse struct {
-	// Layer 2 Network interfaces status
-	GetDynamicInterfaceMapsPropertiesItemArray []*GetDynamicInterfaceMapsPropertiesItem
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkDevicesClientGetDynamicInterfaceMapsResponse.
-func (n *NetworkDevicesClientGetDynamicInterfaceMapsResponse) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &n.GetDynamicInterfaceMapsPropertiesItemArray)
-}
-
 // NetworkDevicesClientGetResponse contains the response from method NetworkDevicesClient.Get.
 type NetworkDevicesClientGetResponse struct {
 	NetworkDevice
-}
-
-// NetworkDevicesClientGetStaticInterfaceMapsResponse contains the response from method NetworkDevicesClient.BeginGetStaticInterfaceMaps.
-type NetworkDevicesClientGetStaticInterfaceMapsResponse struct {
-	// Layer 2 Network interfaces status
-	GetStaticInterfaceMapsPropertiesItemArray []*GetStaticInterfaceMapsPropertiesItem
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkDevicesClientGetStaticInterfaceMapsResponse.
-func (n *NetworkDevicesClientGetStaticInterfaceMapsResponse) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &n.GetStaticInterfaceMapsPropertiesItemArray)
-}
-
-// NetworkDevicesClientGetStatusResponse contains the response from method NetworkDevicesClient.BeginGetStatus.
-type NetworkDevicesClientGetStatusResponse struct {
-	GetDeviceStatusProperties
 }
 
 // NetworkDevicesClientListByResourceGroupResponse contains the response from method NetworkDevicesClient.NewListByResourceGroupPager.
@@ -411,17 +436,17 @@ type NetworkDevicesClientListBySubscriptionResponse struct {
 
 // NetworkDevicesClientRebootResponse contains the response from method NetworkDevicesClient.BeginReboot.
 type NetworkDevicesClientRebootResponse struct {
-	// placeholder for future response values
+	CommonPostActionResponseForStateUpdate
 }
 
-// NetworkDevicesClientRestoreConfigResponse contains the response from method NetworkDevicesClient.BeginRestoreConfig.
-type NetworkDevicesClientRestoreConfigResponse struct {
-	// placeholder for future response values
+// NetworkDevicesClientRefreshConfigurationResponse contains the response from method NetworkDevicesClient.BeginRefreshConfiguration.
+type NetworkDevicesClientRefreshConfigurationResponse struct {
+	CommonPostActionResponseForStateUpdate
 }
 
-// NetworkDevicesClientUpdatePowerCycleResponse contains the response from method NetworkDevicesClient.BeginUpdatePowerCycle.
-type NetworkDevicesClientUpdatePowerCycleResponse struct {
-	// placeholder for future response values
+// NetworkDevicesClientUpdateAdministrativeStateResponse contains the response from method NetworkDevicesClient.BeginUpdateAdministrativeState.
+type NetworkDevicesClientUpdateAdministrativeStateResponse struct {
+	CommonPostActionResponseForStateUpdate
 }
 
 // NetworkDevicesClientUpdateResponse contains the response from method NetworkDevicesClient.BeginUpdate.
@@ -429,9 +454,9 @@ type NetworkDevicesClientUpdateResponse struct {
 	NetworkDevice
 }
 
-// NetworkDevicesClientUpdateVersionResponse contains the response from method NetworkDevicesClient.BeginUpdateVersion.
-type NetworkDevicesClientUpdateVersionResponse struct {
-	// placeholder for future response values
+// NetworkDevicesClientUpgradeResponse contains the response from method NetworkDevicesClient.BeginUpgrade.
+type NetworkDevicesClientUpgradeResponse struct {
+	CommonPostActionResponseForStateUpdate
 }
 
 // NetworkFabricControllersClientCreateResponse contains the response from method NetworkFabricControllersClient.BeginCreate.
@@ -441,16 +466,6 @@ type NetworkFabricControllersClientCreateResponse struct {
 
 // NetworkFabricControllersClientDeleteResponse contains the response from method NetworkFabricControllersClient.BeginDelete.
 type NetworkFabricControllersClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// NetworkFabricControllersClientDisableWorkloadManagementNetworkResponse contains the response from method NetworkFabricControllersClient.BeginDisableWorkloadManagementNetwork.
-type NetworkFabricControllersClientDisableWorkloadManagementNetworkResponse struct {
-	// placeholder for future response values
-}
-
-// NetworkFabricControllersClientEnableWorkloadManagementNetworkResponse contains the response from method NetworkFabricControllersClient.BeginEnableWorkloadManagementNetwork.
-type NetworkFabricControllersClientEnableWorkloadManagementNetworkResponse struct {
 	// placeholder for future response values
 }
 
@@ -484,6 +499,11 @@ type NetworkFabricSKUsClientListBySubscriptionResponse struct {
 	NetworkFabricSKUsListResult
 }
 
+// NetworkFabricsClientCommitConfigurationResponse contains the response from method NetworkFabricsClient.BeginCommitConfiguration.
+type NetworkFabricsClientCommitConfigurationResponse struct {
+	CommonPostActionResponseForStateUpdate
+}
+
 // NetworkFabricsClientCreateResponse contains the response from method NetworkFabricsClient.BeginCreate.
 type NetworkFabricsClientCreateResponse struct {
 	NetworkFabric
@@ -496,12 +516,17 @@ type NetworkFabricsClientDeleteResponse struct {
 
 // NetworkFabricsClientDeprovisionResponse contains the response from method NetworkFabricsClient.BeginDeprovision.
 type NetworkFabricsClientDeprovisionResponse struct {
-	// placeholder for future response values
+	CommonPostActionResponseForDeviceUpdate
 }
 
 // NetworkFabricsClientGetResponse contains the response from method NetworkFabricsClient.Get.
 type NetworkFabricsClientGetResponse struct {
 	NetworkFabric
+}
+
+// NetworkFabricsClientGetTopologyResponse contains the response from method NetworkFabricsClient.BeginGetTopology.
+type NetworkFabricsClientGetTopologyResponse struct {
+	ValidateConfigurationResponse
 }
 
 // NetworkFabricsClientListByResourceGroupResponse contains the response from method NetworkFabricsClient.NewListByResourceGroupPager.
@@ -516,12 +541,37 @@ type NetworkFabricsClientListBySubscriptionResponse struct {
 
 // NetworkFabricsClientProvisionResponse contains the response from method NetworkFabricsClient.BeginProvision.
 type NetworkFabricsClientProvisionResponse struct {
-	// placeholder for future response values
+	CommonPostActionResponseForDeviceUpdate
+}
+
+// NetworkFabricsClientRefreshConfigurationResponse contains the response from method NetworkFabricsClient.BeginRefreshConfiguration.
+type NetworkFabricsClientRefreshConfigurationResponse struct {
+	CommonPostActionResponseForStateUpdate
+}
+
+// NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse contains the response from method NetworkFabricsClient.BeginUpdateInfraManagementBfdConfiguration.
+type NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse struct {
+	CommonPostActionResponseForStateUpdate
 }
 
 // NetworkFabricsClientUpdateResponse contains the response from method NetworkFabricsClient.BeginUpdate.
 type NetworkFabricsClientUpdateResponse struct {
 	NetworkFabric
+}
+
+// NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse contains the response from method NetworkFabricsClient.BeginUpdateWorkloadManagementBfdConfiguration.
+type NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse struct {
+	CommonPostActionResponseForStateUpdate
+}
+
+// NetworkFabricsClientUpgradeResponse contains the response from method NetworkFabricsClient.BeginUpgrade.
+type NetworkFabricsClientUpgradeResponse struct {
+	CommonPostActionResponseForStateUpdate
+}
+
+// NetworkFabricsClientValidateConfigurationResponse contains the response from method NetworkFabricsClient.BeginValidateConfiguration.
+type NetworkFabricsClientValidateConfigurationResponse struct {
+	ValidateConfigurationResponse
 }
 
 // NetworkInterfacesClientCreateResponse contains the response from method NetworkInterfacesClient.BeginCreate.
@@ -539,19 +589,14 @@ type NetworkInterfacesClientGetResponse struct {
 	NetworkInterface
 }
 
-// NetworkInterfacesClientGetStatusResponse contains the response from method NetworkInterfacesClient.BeginGetStatus.
-type NetworkInterfacesClientGetStatusResponse struct {
-	InterfaceStatus
-}
-
-// NetworkInterfacesClientListResponse contains the response from method NetworkInterfacesClient.NewListPager.
-type NetworkInterfacesClientListResponse struct {
+// NetworkInterfacesClientListByNetworkDeviceResponse contains the response from method NetworkInterfacesClient.NewListByNetworkDevicePager.
+type NetworkInterfacesClientListByNetworkDeviceResponse struct {
 	NetworkInterfacesList
 }
 
 // NetworkInterfacesClientUpdateAdministrativeStateResponse contains the response from method NetworkInterfacesClient.BeginUpdateAdministrativeState.
 type NetworkInterfacesClientUpdateAdministrativeStateResponse struct {
-	// placeholder for future response values
+	CommonPostActionResponseForStateUpdate
 }
 
 // NetworkInterfacesClientUpdateResponse contains the response from method NetworkInterfacesClient.BeginUpdate.
@@ -559,14 +604,34 @@ type NetworkInterfacesClientUpdateResponse struct {
 	NetworkInterface
 }
 
-// NetworkRackSKUsClientGetResponse contains the response from method NetworkRackSKUsClient.Get.
-type NetworkRackSKUsClientGetResponse struct {
-	NetworkRackSKU
+// NetworkPacketBrokersClientCreateResponse contains the response from method NetworkPacketBrokersClient.BeginCreate.
+type NetworkPacketBrokersClientCreateResponse struct {
+	NetworkPacketBroker
 }
 
-// NetworkRackSKUsClientListBySubscriptionResponse contains the response from method NetworkRackSKUsClient.NewListBySubscriptionPager.
-type NetworkRackSKUsClientListBySubscriptionResponse struct {
-	NetworkRackSKUsListResult
+// NetworkPacketBrokersClientDeleteResponse contains the response from method NetworkPacketBrokersClient.BeginDelete.
+type NetworkPacketBrokersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NetworkPacketBrokersClientGetResponse contains the response from method NetworkPacketBrokersClient.Get.
+type NetworkPacketBrokersClientGetResponse struct {
+	NetworkPacketBroker
+}
+
+// NetworkPacketBrokersClientListByResourceGroupResponse contains the response from method NetworkPacketBrokersClient.NewListByResourceGroupPager.
+type NetworkPacketBrokersClientListByResourceGroupResponse struct {
+	NetworkPacketBrokersListResult
+}
+
+// NetworkPacketBrokersClientListBySubscriptionResponse contains the response from method NetworkPacketBrokersClient.NewListBySubscriptionPager.
+type NetworkPacketBrokersClientListBySubscriptionResponse struct {
+	NetworkPacketBrokersListResult
+}
+
+// NetworkPacketBrokersClientUpdateResponse contains the response from method NetworkPacketBrokersClient.BeginUpdate.
+type NetworkPacketBrokersClientUpdateResponse struct {
+	NetworkPacketBroker
 }
 
 // NetworkRacksClientCreateResponse contains the response from method NetworkRacksClient.BeginCreate.
@@ -599,6 +664,91 @@ type NetworkRacksClientUpdateResponse struct {
 	NetworkRack
 }
 
+// NetworkTapRulesClientCreateResponse contains the response from method NetworkTapRulesClient.BeginCreate.
+type NetworkTapRulesClientCreateResponse struct {
+	NetworkTapRule
+}
+
+// NetworkTapRulesClientDeleteResponse contains the response from method NetworkTapRulesClient.BeginDelete.
+type NetworkTapRulesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NetworkTapRulesClientGetResponse contains the response from method NetworkTapRulesClient.Get.
+type NetworkTapRulesClientGetResponse struct {
+	NetworkTapRule
+}
+
+// NetworkTapRulesClientListByResourceGroupResponse contains the response from method NetworkTapRulesClient.NewListByResourceGroupPager.
+type NetworkTapRulesClientListByResourceGroupResponse struct {
+	NetworkTapRulesListResult
+}
+
+// NetworkTapRulesClientListBySubscriptionResponse contains the response from method NetworkTapRulesClient.NewListBySubscriptionPager.
+type NetworkTapRulesClientListBySubscriptionResponse struct {
+	NetworkTapRulesListResult
+}
+
+// NetworkTapRulesClientResyncResponse contains the response from method NetworkTapRulesClient.BeginResync.
+type NetworkTapRulesClientResyncResponse struct {
+	CommonPostActionResponseForStateUpdate
+}
+
+// NetworkTapRulesClientUpdateAdministrativeStateResponse contains the response from method NetworkTapRulesClient.BeginUpdateAdministrativeState.
+type NetworkTapRulesClientUpdateAdministrativeStateResponse struct {
+	CommonPostActionResponseForStateUpdate
+}
+
+// NetworkTapRulesClientUpdateResponse contains the response from method NetworkTapRulesClient.BeginUpdate.
+type NetworkTapRulesClientUpdateResponse struct {
+	NetworkTapRule
+}
+
+// NetworkTapRulesClientValidateConfigurationResponse contains the response from method NetworkTapRulesClient.BeginValidateConfiguration.
+type NetworkTapRulesClientValidateConfigurationResponse struct {
+	ValidateConfigurationResponse
+}
+
+// NetworkTapsClientCreateResponse contains the response from method NetworkTapsClient.BeginCreate.
+type NetworkTapsClientCreateResponse struct {
+	NetworkTap
+}
+
+// NetworkTapsClientDeleteResponse contains the response from method NetworkTapsClient.BeginDelete.
+type NetworkTapsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NetworkTapsClientGetResponse contains the response from method NetworkTapsClient.Get.
+type NetworkTapsClientGetResponse struct {
+	NetworkTap
+}
+
+// NetworkTapsClientListByResourceGroupResponse contains the response from method NetworkTapsClient.NewListByResourceGroupPager.
+type NetworkTapsClientListByResourceGroupResponse struct {
+	NetworkTapsListResult
+}
+
+// NetworkTapsClientListBySubscriptionResponse contains the response from method NetworkTapsClient.NewListBySubscriptionPager.
+type NetworkTapsClientListBySubscriptionResponse struct {
+	NetworkTapsListResult
+}
+
+// NetworkTapsClientResyncResponse contains the response from method NetworkTapsClient.BeginResync.
+type NetworkTapsClientResyncResponse struct {
+	CommonPostActionResponseForStateUpdate
+}
+
+// NetworkTapsClientUpdateAdministrativeStateResponse contains the response from method NetworkTapsClient.BeginUpdateAdministrativeState.
+type NetworkTapsClientUpdateAdministrativeStateResponse struct {
+	CommonPostActionResponseForDeviceUpdate
+}
+
+// NetworkTapsClientUpdateResponse contains the response from method NetworkTapsClient.BeginUpdate.
+type NetworkTapsClientUpdateResponse struct {
+	NetworkTap
+}
+
 // NetworkToNetworkInterconnectsClientCreateResponse contains the response from method NetworkToNetworkInterconnectsClient.BeginCreate.
 type NetworkToNetworkInterconnectsClientCreateResponse struct {
 	NetworkToNetworkInterconnect
@@ -614,14 +764,35 @@ type NetworkToNetworkInterconnectsClientGetResponse struct {
 	NetworkToNetworkInterconnect
 }
 
-// NetworkToNetworkInterconnectsClientListResponse contains the response from method NetworkToNetworkInterconnectsClient.NewListPager.
-type NetworkToNetworkInterconnectsClientListResponse struct {
+// NetworkToNetworkInterconnectsClientListByNetworkFabricResponse contains the response from method NetworkToNetworkInterconnectsClient.NewListByNetworkFabricPager.
+type NetworkToNetworkInterconnectsClientListByNetworkFabricResponse struct {
 	NetworkToNetworkInterconnectsList
+}
+
+// NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse contains the response from method NetworkToNetworkInterconnectsClient.BeginUpdateAdministrativeState.
+type NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse struct {
+	CommonPostActionResponseForStateUpdate
+}
+
+// NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse contains the response from method
+// NetworkToNetworkInterconnectsClient.BeginUpdateNpbStaticRouteBfdAdministrativeState.
+type NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse struct {
+	CommonPostActionResponseForStateUpdate
+}
+
+// NetworkToNetworkInterconnectsClientUpdateResponse contains the response from method NetworkToNetworkInterconnectsClient.BeginUpdate.
+type NetworkToNetworkInterconnectsClientUpdateResponse struct {
+	NetworkToNetworkInterconnect
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
+}
+
+// RoutePoliciesClientCommitConfigurationResponse contains the response from method RoutePoliciesClient.BeginCommitConfiguration.
+type RoutePoliciesClientCommitConfigurationResponse struct {
+	CommonPostActionResponseForStateUpdate
 }
 
 // RoutePoliciesClientCreateResponse contains the response from method RoutePoliciesClient.BeginCreate.
@@ -649,7 +820,17 @@ type RoutePoliciesClientListBySubscriptionResponse struct {
 	RoutePoliciesListResult
 }
 
+// RoutePoliciesClientUpdateAdministrativeStateResponse contains the response from method RoutePoliciesClient.BeginUpdateAdministrativeState.
+type RoutePoliciesClientUpdateAdministrativeStateResponse struct {
+	CommonPostActionResponseForDeviceUpdate
+}
+
 // RoutePoliciesClientUpdateResponse contains the response from method RoutePoliciesClient.BeginUpdate.
 type RoutePoliciesClientUpdateResponse struct {
 	RoutePolicy
+}
+
+// RoutePoliciesClientValidateConfigurationResponse contains the response from method RoutePoliciesClient.BeginValidateConfiguration.
+type RoutePoliciesClientValidateConfigurationResponse struct {
+	ValidateConfigurationResponse
 }

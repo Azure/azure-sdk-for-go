@@ -29,7 +29,7 @@ type NetworkRacksClient struct {
 }
 
 // NewNetworkRacksClient creates a new instance of NetworkRacksClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNetworkRacksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkRacksClient, error) {
@@ -47,9 +47,9 @@ func NewNetworkRacksClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreate - Create Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkRackName - Name of the Network Rack
+//   - networkRackName - Name of the Network Rack.
 //   - body - Request payload.
 //   - options - NetworkRacksClientBeginCreateOptions contains the optional parameters for the NetworkRacksClient.BeginCreate
 //     method.
@@ -70,7 +70,7 @@ func (client *NetworkRacksClient) BeginCreate(ctx context.Context, resourceGroup
 // Create - Create Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkRacksClient) create(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRack, options *NetworkRacksClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, networkRackName, body, options)
 	if err != nil {
@@ -89,9 +89,6 @@ func (client *NetworkRacksClient) create(ctx context.Context, resourceGroupName 
 // createCreateRequest creates the Create request.
 func (client *NetworkRacksClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRack, options *NetworkRacksClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks/{networkRackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -106,7 +103,7 @@ func (client *NetworkRacksClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -115,9 +112,9 @@ func (client *NetworkRacksClient) createCreateRequest(ctx context.Context, resou
 // BeginDelete - Delete Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkRackName - Name of the Network Rack
+//   - networkRackName - Name of the Network Rack.
 //   - options - NetworkRacksClientBeginDeleteOptions contains the optional parameters for the NetworkRacksClient.BeginDelete
 //     method.
 func (client *NetworkRacksClient) BeginDelete(ctx context.Context, resourceGroupName string, networkRackName string, options *NetworkRacksClientBeginDeleteOptions) (*runtime.Poller[NetworkRacksClientDeleteResponse], error) {
@@ -137,7 +134,7 @@ func (client *NetworkRacksClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Delete Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkRacksClient) deleteOperation(ctx context.Context, resourceGroupName string, networkRackName string, options *NetworkRacksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkRackName, options)
 	if err != nil {
@@ -156,9 +153,6 @@ func (client *NetworkRacksClient) deleteOperation(ctx context.Context, resourceG
 // deleteCreateRequest creates the Delete request.
 func (client *NetworkRacksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkRackName string, options *NetworkRacksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks/{networkRackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -173,7 +167,7 @@ func (client *NetworkRacksClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -182,9 +176,9 @@ func (client *NetworkRacksClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Get Network Rack resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkRackName - Name of the Network Rack
+//   - networkRackName - Name of the Network Rack.
 //   - options - NetworkRacksClientGetOptions contains the optional parameters for the NetworkRacksClient.Get method.
 func (client *NetworkRacksClient) Get(ctx context.Context, resourceGroupName string, networkRackName string, options *NetworkRacksClientGetOptions) (NetworkRacksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkRackName, options)
@@ -204,9 +198,6 @@ func (client *NetworkRacksClient) Get(ctx context.Context, resourceGroupName str
 // getCreateRequest creates the Get request.
 func (client *NetworkRacksClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkRackName string, options *NetworkRacksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks/{networkRackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -221,7 +212,7 @@ func (client *NetworkRacksClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -238,7 +229,7 @@ func (client *NetworkRacksClient) getHandleResponse(resp *http.Response) (Networ
 
 // NewListByResourceGroupPager - List all Network Rack resources in the given resource group.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkRacksClientListByResourceGroupOptions contains the optional parameters for the NetworkRacksClient.NewListByResourceGroupPager
 //     method.
@@ -273,9 +264,6 @@ func (client *NetworkRacksClient) NewListByResourceGroupPager(resourceGroupName 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *NetworkRacksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *NetworkRacksClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -286,7 +274,7 @@ func (client *NetworkRacksClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -303,7 +291,7 @@ func (client *NetworkRacksClient) listByResourceGroupHandleResponse(resp *http.R
 
 // NewListBySubscriptionPager - List all Network Rack resources in the given subscription
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - options - NetworkRacksClientListBySubscriptionOptions contains the optional parameters for the NetworkRacksClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkRacksClient) NewListBySubscriptionPager(options *NetworkRacksClientListBySubscriptionOptions) *runtime.Pager[NetworkRacksClientListBySubscriptionResponse] {
@@ -337,16 +325,13 @@ func (client *NetworkRacksClient) NewListBySubscriptionPager(options *NetworkRac
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *NetworkRacksClient) listBySubscriptionCreateRequest(ctx context.Context, options *NetworkRacksClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkRacks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -364,13 +349,13 @@ func (client *NetworkRacksClient) listBySubscriptionHandleResponse(resp *http.Re
 // BeginUpdate - Update certain properties of the Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkRackName - Name of the Network Rack
+//   - networkRackName - Name of the Network Rack.
 //   - body - Network Rack properties to update.
 //   - options - NetworkRacksClientBeginUpdateOptions contains the optional parameters for the NetworkRacksClient.BeginUpdate
 //     method.
-func (client *NetworkRacksClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRackPatch, options *NetworkRacksClientBeginUpdateOptions) (*runtime.Poller[NetworkRacksClientUpdateResponse], error) {
+func (client *NetworkRacksClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkRackName string, body TagsUpdate, options *NetworkRacksClientBeginUpdateOptions) (*runtime.Poller[NetworkRacksClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, networkRackName, body, options)
 		if err != nil {
@@ -387,8 +372,8 @@ func (client *NetworkRacksClient) BeginUpdate(ctx context.Context, resourceGroup
 // Update - Update certain properties of the Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-func (client *NetworkRacksClient) update(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRackPatch, options *NetworkRacksClientBeginUpdateOptions) (*http.Response, error) {
+// Generated from API version 2023-06-15
+func (client *NetworkRacksClient) update(ctx context.Context, resourceGroupName string, networkRackName string, body TagsUpdate, options *NetworkRacksClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkRackName, body, options)
 	if err != nil {
 		return nil, err
@@ -404,11 +389,8 @@ func (client *NetworkRacksClient) update(ctx context.Context, resourceGroupName 
 }
 
 // updateCreateRequest creates the Update request.
-func (client *NetworkRacksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRackPatch, options *NetworkRacksClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *NetworkRacksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkRackName string, body TagsUpdate, options *NetworkRacksClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks/{networkRackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -423,7 +405,7 @@ func (client *NetworkRacksClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

@@ -14,6 +14,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -255,4 +256,77 @@ func TestPagerResponderError(t *testing.T) {
 	page, err := pager.NextPage(context.Background())
 	require.Error(t, err)
 	require.Empty(t, page)
+}
+
+func TestFetcherForNextLink(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	pl := exported.NewPipeline(srv)
+
+	srv.AppendResponse()
+	firstReqCalled := false
+	resp, err := FetcherForNextLink(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
+		firstReqCalled = true
+		return NewRequest(ctx, http.MethodGet, srv.URL())
+	}, nil)
+	require.NoError(t, err)
+	require.True(t, firstReqCalled)
+	require.NotNil(t, resp)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+
+	srv.AppendResponse()
+	firstReqCalled = false
+	nextReqCalled := false
+	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
+		firstReqCalled = true
+		return NewRequest(ctx, http.MethodGet, srv.URL())
+	}, &FetcherForNextLinkOptions{
+		NextReq: func(ctx context.Context, s string) (*policy.Request, error) {
+			nextReqCalled = true
+			return NewRequest(ctx, http.MethodGet, srv.URL())
+		},
+	})
+	require.NoError(t, err)
+	require.False(t, firstReqCalled)
+	require.True(t, nextReqCalled)
+	require.NotNil(t, resp)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+
+	resp, err = FetcherForNextLink(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
+		return nil, errors.New("failed")
+	}, &FetcherForNextLinkOptions{})
+	require.Error(t, err)
+	require.Nil(t, resp)
+
+	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
+		return nil, nil
+	}, &FetcherForNextLinkOptions{
+		NextReq: func(ctx context.Context, s string) (*policy.Request, error) {
+			return nil, errors.New("failed")
+		},
+	})
+	require.Error(t, err)
+	require.Nil(t, resp)
+
+	srv.AppendError(errors.New("failed"))
+	resp, err = FetcherForNextLink(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
+		firstReqCalled = true
+		return NewRequest(ctx, http.MethodGet, srv.URL())
+	}, &FetcherForNextLinkOptions{})
+	require.Error(t, err)
+	require.True(t, firstReqCalled)
+	require.Nil(t, resp)
+
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest), mock.WithBody([]byte(`{ "error": { "code": "InvalidResource", "message": "doesn't exist" } }`)))
+	firstReqCalled = false
+	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
+		firstReqCalled = true
+		return NewRequest(ctx, http.MethodGet, srv.URL())
+	}, nil)
+	require.Error(t, err)
+	var respErr *exported.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.EqualValues(t, "InvalidResource", respErr.ErrorCode)
+	require.False(t, firstReqCalled)
+	require.Nil(t, resp)
 }

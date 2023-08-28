@@ -25,6 +25,11 @@ type AccountsClientCreateResponse struct {
 	Account
 }
 
+// AccountsClientCustomerInitiatedMigrationResponse contains the response from method AccountsClient.BeginCustomerInitiatedMigration.
+type AccountsClientCustomerInitiatedMigrationResponse struct {
+	// placeholder for future response values
+}
+
 // AccountsClientDeleteResponse contains the response from method AccountsClient.Delete.
 type AccountsClientDeleteResponse struct {
 	// placeholder for future response values
@@ -33,6 +38,13 @@ type AccountsClientDeleteResponse struct {
 // AccountsClientFailoverResponse contains the response from method AccountsClient.BeginFailover.
 type AccountsClientFailoverResponse struct {
 	// placeholder for future response values
+}
+
+// AccountsClientGetCustomerInitiatedMigrationResponse contains the response from method AccountsClient.GetCustomerInitiatedMigration.
+type AccountsClientGetCustomerInitiatedMigrationResponse struct {
+	// The parameters or status associated with an ongoing or enqueued storage account migration in order to update its current
+	// SKU or region.
+	AccountMigration
 }
 
 // AccountsClientGetPropertiesResponse contains the response from method AccountsClient.GetProperties.

@@ -4,7 +4,7 @@ The Azure Monitor Ingestion client module is used to send custom logs to [Azure 
 
 This library allows you to send data from virtually any source to supported built-in tables or to custom tables that you create in Log Analytics workspaces. You can even extend the schema of built-in tables with custom columns.
 
-Source code | Package (pkg.go.dev) | [Product documentation][azure_monitor_overview] | Samples
+[Source code][azingest_repo] | [Package (pkg.go.dev)][azingest_pkg_go] | [Product documentation][azure_monitor_overview] | [Samples][azingest_pkg_go_samples]
 
 ## Getting started
 
@@ -101,6 +101,9 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
+[azingest_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azingest
+[azingest_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest
+[azingest_pkg_go_samples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest#pkg-examples
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_monitor_create_using_portal]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/

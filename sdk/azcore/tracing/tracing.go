@@ -149,7 +149,7 @@ type Span struct {
 
 // End terminates the span and MUST be called before the span leaves scope.
 // Any further updates to the span will be ignored after End is called.
-func (s Span) End(opts *SpanEndOptions) {
+func (s Span) End() {
 	if s.impl.End != nil {
 		s.impl.End()
 	}
@@ -175,11 +175,6 @@ func (s Span) SetStatus(code SpanStatus, desc string) {
 	if s.impl.SetStatus != nil {
 		s.impl.SetStatus(code, desc)
 	}
-}
-
-// SpanEndOptions contains the optional values for the Span.End() method.
-type SpanEndOptions struct {
-	// for future expansion
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

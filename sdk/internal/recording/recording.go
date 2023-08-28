@@ -524,6 +524,7 @@ var client = http.Client{
 
 type RecordingOptions struct {
 	UseHTTPS        bool
+	ProxyPort       int
 	GroupForReplace string
 	Variables       map[string]interface{}
 	TestInstance    *testing.T
@@ -531,7 +532,8 @@ type RecordingOptions struct {
 
 func defaultOptions() *RecordingOptions {
 	return &RecordingOptions{
-		UseHTTPS: true,
+		UseHTTPS:  true,
+		ProxyPort: os.Getpid()%10000 + 20000,
 	}
 }
 
@@ -558,6 +560,10 @@ func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) *
 }
 
 func (r RecordingOptions) host() string {
+	if r.ProxyPort != 0 {
+		return fmt.Sprintf("localhost:%d", r.ProxyPort)
+	}
+
 	if r.UseHTTPS {
 		return "localhost:5001"
 	}
@@ -589,7 +595,7 @@ func getGitRoot(fromPath string) (string, error) {
 
 	root, err := cmd.CombinedOutput()
 	if err != nil {
-		return "", fmt.Errorf("Unable to find git root for path '%s'", absPath)
+		return "", fmt.Errorf("unable to find git root for path '%s'", absPath)
 	}
 
 	// Wrap with Abs() to get os-specific path separators to support sub-path matching
@@ -667,7 +673,6 @@ func requestStart(url string, testId string, assetConfigLocation string) (*http.
 	return client.Do(req)
 }
 
-// Start tells the test proxy to begin accepting requests for a given test
 func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
@@ -789,6 +794,9 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	req.Header.Set(IDHeader, recTest.recordingId)
 	testSuite.Remove(t.Name())
 	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
 	if resp.StatusCode != 200 {
 		b, err := io.ReadAll(resp.Body)
 		defer resp.Body.Close()
@@ -940,7 +948,7 @@ func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
 // NewRecordingHTTPClient returns a type that implements `azcore.Transporter`. This will automatically route tests on the `Do` call.
 func NewRecordingHTTPClient(t *testing.T, options *RecordingOptions) (*RecordingHTTPClient, error) {
 	if options == nil {
-		options = &RecordingOptions{UseHTTPS: true}
+		options = defaultOptions()
 	}
 	c, err := GetHTTPClient(t)
 	if err != nil {

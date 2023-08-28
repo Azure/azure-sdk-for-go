@@ -13,11 +13,12 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListContentTypes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListContentTypes.json
 func ExampleContentTypeClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +101,7 @@ func ExampleContentTypeClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetContentType.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetContentType.json
 func ExampleContentTypeClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +176,7 @@ func ExampleContentTypeClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateContentType.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateContentType.json
 func ExampleContentTypeClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +187,58 @@ func ExampleContentTypeClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContentTypeClient().CreateOrUpdate(ctx, "rg1", "apimService1", "page", &armapimanagement.ContentTypeClientCreateOrUpdateOptions{IfMatch: nil})
+	res, err := clientFactory.NewContentTypeClient().CreateOrUpdate(ctx, "rg1", "apimService1", "page", armapimanagement.ContentTypeContract{
+		Properties: &armapimanagement.ContentTypeContractProperties{
+			Name: to.Ptr("Page"),
+			Schema: map[string]any{
+				"additionalProperties": false,
+				"properties": map[string]any{
+					"en_us": map[string]any{
+						"type":                 "object",
+						"additionalProperties": false,
+						"properties": map[string]any{
+							"description": map[string]any{
+								"type":        "string",
+								"description": "Page description. This property gets included in SEO attributes.",
+								"indexed":     true,
+								"title":       "Description",
+							},
+							"documentId": map[string]any{
+								"type":        "string",
+								"description": "Reference to page content document.",
+								"title":       "Document ID",
+							},
+							"keywords": map[string]any{
+								"type":        "string",
+								"description": "Page keywords. This property gets included in SEO attributes.",
+								"indexed":     true,
+								"title":       "Keywords",
+							},
+							"permalink": map[string]any{
+								"type":        "string",
+								"description": "Page permalink, e.g. '/about'.",
+								"indexed":     true,
+								"title":       "Permalink",
+							},
+							"title": map[string]any{
+								"type":        "string",
+								"description": "Page title. This property gets included in SEO attributes.",
+								"indexed":     true,
+								"title":       "Title",
+							},
+						},
+						"required": []any{
+							"title",
+							"permalink",
+							"documentId",
+						},
+					},
+				},
+			},
+			Description: to.Ptr("A regular page"),
+			Version:     to.Ptr("1.0.0"),
+		},
+	}, &armapimanagement.ContentTypeClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -250,7 +302,7 @@ func ExampleContentTypeClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteContentType.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteContentType.json
 func ExampleContentTypeClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

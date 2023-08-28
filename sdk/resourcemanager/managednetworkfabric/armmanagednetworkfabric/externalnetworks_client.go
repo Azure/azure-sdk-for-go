@@ -29,7 +29,7 @@ type ExternalNetworksClient struct {
 }
 
 // NewExternalNetworksClient creates a new instance of ExternalNetworksClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewExternalNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExternalNetworksClient, error) {
@@ -44,159 +44,13 @@ func NewExternalNetworksClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// BeginClearArpEntries - clearArpEntries for externalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - externalNetworkName - Name of the ExternalNetwork.
-//   - body - Request payload.
-//   - options - ExternalNetworksClientBeginClearArpEntriesOptions contains the optional parameters for the ExternalNetworksClient.BeginClearArpEntries
-//     method.
-func (client *ExternalNetworksClient) BeginClearArpEntries(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body EnableDisableOnResources, options *ExternalNetworksClientBeginClearArpEntriesOptions) (*runtime.Poller[ExternalNetworksClientClearArpEntriesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.clearArpEntries(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalNetworksClientClearArpEntriesResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[ExternalNetworksClientClearArpEntriesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// ClearArpEntries - clearArpEntries for externalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *ExternalNetworksClient) clearArpEntries(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body EnableDisableOnResources, options *ExternalNetworksClientBeginClearArpEntriesOptions) (*http.Response, error) {
-	req, err := client.clearArpEntriesCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// clearArpEntriesCreateRequest creates the ClearArpEntries request.
-func (client *ExternalNetworksClient) clearArpEntriesCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body EnableDisableOnResources, options *ExternalNetworksClientBeginClearArpEntriesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}/clearArpEntries"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if l3IsolationDomainName == "" {
-		return nil, errors.New("parameter l3IsolationDomainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{l3IsolationDomainName}", url.PathEscape(l3IsolationDomainName))
-	if externalNetworkName == "" {
-		return nil, errors.New("parameter externalNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{externalNetworkName}", url.PathEscape(externalNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, body)
-}
-
-// BeginClearIPv6Neighbors - clearIpv6Neighbors for externalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - externalNetworkName - Name of the ExternalNetwork.
-//   - body - Request payload.
-//   - options - ExternalNetworksClientBeginClearIPv6NeighborsOptions contains the optional parameters for the ExternalNetworksClient.BeginClearIPv6Neighbors
-//     method.
-func (client *ExternalNetworksClient) BeginClearIPv6Neighbors(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body EnableDisableOnResources, options *ExternalNetworksClientBeginClearIPv6NeighborsOptions) (*runtime.Poller[ExternalNetworksClientClearIPv6NeighborsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.clearIPv6Neighbors(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalNetworksClientClearIPv6NeighborsResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[ExternalNetworksClientClearIPv6NeighborsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// ClearIPv6Neighbors - clearIpv6Neighbors for externalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *ExternalNetworksClient) clearIPv6Neighbors(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body EnableDisableOnResources, options *ExternalNetworksClientBeginClearIPv6NeighborsOptions) (*http.Response, error) {
-	req, err := client.clearIPv6NeighborsCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// clearIPv6NeighborsCreateRequest creates the ClearIPv6Neighbors request.
-func (client *ExternalNetworksClient) clearIPv6NeighborsCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body EnableDisableOnResources, options *ExternalNetworksClientBeginClearIPv6NeighborsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}/clearIpv6Neighbors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if l3IsolationDomainName == "" {
-		return nil, errors.New("parameter l3IsolationDomainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{l3IsolationDomainName}", url.PathEscape(l3IsolationDomainName))
-	if externalNetworkName == "" {
-		return nil, errors.New("parameter externalNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{externalNetworkName}", url.PathEscape(externalNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, body)
-}
-
 // BeginCreate - Creates ExternalNetwork PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain
-//   - externalNetworkName - Name of the ExternalNetwork
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - externalNetworkName - Name of the External Network.
 //   - body - Request payload.
 //   - options - ExternalNetworksClientBeginCreateOptions contains the optional parameters for the ExternalNetworksClient.BeginCreate
 //     method.
@@ -217,7 +71,7 @@ func (client *ExternalNetworksClient) BeginCreate(ctx context.Context, resourceG
 // Create - Creates ExternalNetwork PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *ExternalNetworksClient) create(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body ExternalNetwork, options *ExternalNetworksClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
 	if err != nil {
@@ -236,9 +90,6 @@ func (client *ExternalNetworksClient) create(ctx context.Context, resourceGroupN
 // createCreateRequest creates the Create request.
 func (client *ExternalNetworksClient) createCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body ExternalNetwork, options *ExternalNetworksClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -257,7 +108,7 @@ func (client *ExternalNetworksClient) createCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -266,10 +117,10 @@ func (client *ExternalNetworksClient) createCreateRequest(ctx context.Context, r
 // BeginDelete - Implements ExternalNetworks DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain
-//   - externalNetworkName - Name of the ExternalNetwork
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - externalNetworkName - Name of the External Network.
 //   - options - ExternalNetworksClientBeginDeleteOptions contains the optional parameters for the ExternalNetworksClient.BeginDelete
 //     method.
 func (client *ExternalNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, options *ExternalNetworksClientBeginDeleteOptions) (*runtime.Poller[ExternalNetworksClientDeleteResponse], error) {
@@ -289,7 +140,7 @@ func (client *ExternalNetworksClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Implements ExternalNetworks DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *ExternalNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, options *ExternalNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, options)
 	if err != nil {
@@ -299,7 +150,7 @@ func (client *ExternalNetworksClient) deleteOperation(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -308,9 +159,6 @@ func (client *ExternalNetworksClient) deleteOperation(ctx context.Context, resou
 // deleteCreateRequest creates the Delete request.
 func (client *ExternalNetworksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, options *ExternalNetworksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -329,7 +177,7 @@ func (client *ExternalNetworksClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -338,10 +186,10 @@ func (client *ExternalNetworksClient) deleteCreateRequest(ctx context.Context, r
 // Get - Implements ExternalNetworks GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain
-//   - externalNetworkName - Name of the ExternalNetwork
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - externalNetworkName - Name of the External Network.
 //   - options - ExternalNetworksClientGetOptions contains the optional parameters for the ExternalNetworksClient.Get method.
 func (client *ExternalNetworksClient) Get(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, options *ExternalNetworksClientGetOptions) (ExternalNetworksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, options)
@@ -361,9 +209,6 @@ func (client *ExternalNetworksClient) Get(ctx context.Context, resourceGroupName
 // getCreateRequest creates the Get request.
 func (client *ExternalNetworksClient) getCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, options *ExternalNetworksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -382,7 +227,7 @@ func (client *ExternalNetworksClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -397,47 +242,44 @@ func (client *ExternalNetworksClient) getHandleResponse(resp *http.Response) (Ex
 	return result, nil
 }
 
-// NewListPager - Implements External Networks list by resource group GET method.
+// NewListByL3IsolationDomainPager - Implements External Networks list by resource group GET method.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain
-//   - options - ExternalNetworksClientListOptions contains the optional parameters for the ExternalNetworksClient.NewListPager
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - options - ExternalNetworksClientListByL3IsolationDomainOptions contains the optional parameters for the ExternalNetworksClient.NewListByL3IsolationDomainPager
 //     method.
-func (client *ExternalNetworksClient) NewListPager(resourceGroupName string, l3IsolationDomainName string, options *ExternalNetworksClientListOptions) *runtime.Pager[ExternalNetworksClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ExternalNetworksClientListResponse]{
-		More: func(page ExternalNetworksClientListResponse) bool {
+func (client *ExternalNetworksClient) NewListByL3IsolationDomainPager(resourceGroupName string, l3IsolationDomainName string, options *ExternalNetworksClientListByL3IsolationDomainOptions) *runtime.Pager[ExternalNetworksClientListByL3IsolationDomainResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ExternalNetworksClientListByL3IsolationDomainResponse]{
+		More: func(page ExternalNetworksClientListByL3IsolationDomainResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ExternalNetworksClientListResponse) (ExternalNetworksClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *ExternalNetworksClientListByL3IsolationDomainResponse) (ExternalNetworksClientListByL3IsolationDomainResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, options)
+				req, err = client.listByL3IsolationDomainCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ExternalNetworksClientListResponse{}, err
+				return ExternalNetworksClientListByL3IsolationDomainResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ExternalNetworksClientListResponse{}, err
+				return ExternalNetworksClientListByL3IsolationDomainResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ExternalNetworksClientListResponse{}, runtime.NewResponseError(resp)
+				return ExternalNetworksClientListByL3IsolationDomainResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.listHandleResponse(resp)
+			return client.listByL3IsolationDomainHandleResponse(resp)
 		},
 	})
 }
 
-// listCreateRequest creates the List request.
-func (client *ExternalNetworksClient) listCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *ExternalNetworksClientListOptions) (*policy.Request, error) {
+// listByL3IsolationDomainCreateRequest creates the ListByL3IsolationDomain request.
+func (client *ExternalNetworksClient) listByL3IsolationDomainCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, options *ExternalNetworksClientListByL3IsolationDomainOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -452,17 +294,17 @@ func (client *ExternalNetworksClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *ExternalNetworksClient) listHandleResponse(resp *http.Response) (ExternalNetworksClientListResponse, error) {
-	result := ExternalNetworksClientListResponse{}
+// listByL3IsolationDomainHandleResponse handles the ListByL3IsolationDomain response.
+func (client *ExternalNetworksClient) listByL3IsolationDomainHandleResponse(resp *http.Response) (ExternalNetworksClientListByL3IsolationDomainResponse, error) {
+	result := ExternalNetworksClientListByL3IsolationDomainResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalNetworksList); err != nil {
-		return ExternalNetworksClientListResponse{}, err
+		return ExternalNetworksClientListByL3IsolationDomainResponse{}, err
 	}
 	return result, nil
 }
@@ -470,10 +312,10 @@ func (client *ExternalNetworksClient) listHandleResponse(resp *http.Response) (E
 // BeginUpdate - API to update certain properties of the ExternalNetworks resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain
-//   - externalNetworkName - Name of the ExternalNetwork
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - externalNetworkName - Name of the External Network.
 //   - body - ExternalNetwork properties to update. Only annotations are supported.
 //   - options - ExternalNetworksClientBeginUpdateOptions contains the optional parameters for the ExternalNetworksClient.BeginUpdate
 //     method.
@@ -484,7 +326,7 @@ func (client *ExternalNetworksClient) BeginUpdate(ctx context.Context, resourceG
 			return nil, err
 		}
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalNetworksClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
 		return runtime.NewPollerFromResumeToken[ExternalNetworksClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
@@ -494,7 +336,7 @@ func (client *ExternalNetworksClient) BeginUpdate(ctx context.Context, resourceG
 // Update - API to update certain properties of the ExternalNetworks resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *ExternalNetworksClient) update(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body ExternalNetworkPatch, options *ExternalNetworksClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
 	if err != nil {
@@ -513,9 +355,6 @@ func (client *ExternalNetworksClient) update(ctx context.Context, resourceGroupN
 // updateCreateRequest creates the Update request.
 func (client *ExternalNetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body ExternalNetworkPatch, options *ExternalNetworksClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -534,7 +373,7 @@ func (client *ExternalNetworksClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -543,10 +382,10 @@ func (client *ExternalNetworksClient) updateCreateRequest(ctx context.Context, r
 // BeginUpdateAdministrativeState - Executes update operation to enable or disable administrative State for externalNetwork.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - externalNetworkName - Name of the ExternalNetwork.
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - externalNetworkName - Name of the External Network.
 //   - body - Request payload.
 //   - options - ExternalNetworksClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the ExternalNetworksClient.BeginUpdateAdministrativeState
 //     method.
@@ -567,7 +406,7 @@ func (client *ExternalNetworksClient) BeginUpdateAdministrativeState(ctx context
 // UpdateAdministrativeState - Executes update operation to enable or disable administrative State for externalNetwork.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *ExternalNetworksClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
 	if err != nil {
@@ -577,7 +416,7 @@ func (client *ExternalNetworksClient) updateAdministrativeState(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -586,9 +425,6 @@ func (client *ExternalNetworksClient) updateAdministrativeState(ctx context.Cont
 // updateAdministrativeStateCreateRequest creates the UpdateAdministrativeState request.
 func (client *ExternalNetworksClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}/updateAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -607,42 +443,42 @@ func (client *ExternalNetworksClient) updateAdministrativeStateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// BeginUpdateBfdForBgpAdministrativeState - Update BfdForBgp for externalNetwork.
+// BeginUpdateStaticRouteBfdAdministrativeState - Update Static Route BFD for external Network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - externalNetworkName - Name of the ExternalNetwork.
+//   - l3IsolationDomainName - Name of the L3 Isolation Domain.
+//   - externalNetworkName - Name of the External Network.
 //   - body - Request payload.
-//   - options - ExternalNetworksClientBeginUpdateBfdForBgpAdministrativeStateOptions contains the optional parameters for the
-//     ExternalNetworksClient.BeginUpdateBfdForBgpAdministrativeState method.
-func (client *ExternalNetworksClient) BeginUpdateBfdForBgpAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateBfdForBgpAdministrativeStateOptions) (*runtime.Poller[ExternalNetworksClientUpdateBfdForBgpAdministrativeStateResponse], error) {
+//   - options - ExternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions contains the optional parameters for
+//     the ExternalNetworksClient.BeginUpdateStaticRouteBfdAdministrativeState method.
+func (client *ExternalNetworksClient) BeginUpdateStaticRouteBfdAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions) (*runtime.Poller[ExternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateBfdForBgpAdministrativeState(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
+		resp, err := client.updateStaticRouteBfdAdministrativeState(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalNetworksClientUpdateBfdForBgpAdministrativeStateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ExternalNetworksClientUpdateBfdForBgpAdministrativeStateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[ExternalNetworksClientUpdateStaticRouteBfdAdministrativeStateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// UpdateBfdForBgpAdministrativeState - Update BfdForBgp for externalNetwork.
+// UpdateStaticRouteBfdAdministrativeState - Update Static Route BFD for external Network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-func (client *ExternalNetworksClient) updateBfdForBgpAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateBfdForBgpAdministrativeStateOptions) (*http.Response, error) {
-	req, err := client.updateBfdForBgpAdministrativeStateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
+// Generated from API version 2023-06-15
+func (client *ExternalNetworksClient) updateStaticRouteBfdAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions) (*http.Response, error) {
+	req, err := client.updateStaticRouteBfdAdministrativeStateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -650,18 +486,15 @@ func (client *ExternalNetworksClient) updateBfdForBgpAdministrativeState(ctx con
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
-// updateBfdForBgpAdministrativeStateCreateRequest creates the UpdateBfdForBgpAdministrativeState request.
-func (client *ExternalNetworksClient) updateBfdForBgpAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateBfdForBgpAdministrativeStateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}/updateBfdForBgpAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
+// updateStaticRouteBfdAdministrativeStateCreateRequest creates the UpdateStaticRouteBfdAdministrativeState request.
+func (client *ExternalNetworksClient) updateStaticRouteBfdAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}/updateStaticRouteBfdAdministrativeState"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -680,80 +513,7 @@ func (client *ExternalNetworksClient) updateBfdForBgpAdministrativeStateCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, body)
-}
-
-// BeginUpdateBgpAdministrativeState - Update BGP for externalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - l3IsolationDomainName - Name of the L3IsolationDomain.
-//   - externalNetworkName - Name of the ExternalNetwork.
-//   - body - Request payload.
-//   - options - ExternalNetworksClientBeginUpdateBgpAdministrativeStateOptions contains the optional parameters for the ExternalNetworksClient.BeginUpdateBgpAdministrativeState
-//     method.
-func (client *ExternalNetworksClient) BeginUpdateBgpAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateBgpAdministrativeStateOptions) (*runtime.Poller[ExternalNetworksClientUpdateBgpAdministrativeStateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateBgpAdministrativeState(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExternalNetworksClientUpdateBgpAdministrativeStateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[ExternalNetworksClientUpdateBgpAdministrativeStateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
-}
-
-// UpdateBgpAdministrativeState - Update BGP for externalNetwork.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-02-01-preview
-func (client *ExternalNetworksClient) updateBgpAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateBgpAdministrativeStateOptions) (*http.Response, error) {
-	req, err := client.updateBgpAdministrativeStateCreateRequest(ctx, resourceGroupName, l3IsolationDomainName, externalNetworkName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// updateBgpAdministrativeStateCreateRequest creates the UpdateBgpAdministrativeState request.
-func (client *ExternalNetworksClient) updateBgpAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateBgpAdministrativeStateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/externalNetworks/{externalNetworkName}/updateBgpAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if l3IsolationDomainName == "" {
-		return nil, errors.New("parameter l3IsolationDomainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{l3IsolationDomainName}", url.PathEscape(l3IsolationDomainName))
-	if externalNetworkName == "" {
-		return nil, errors.New("parameter externalNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{externalNetworkName}", url.PathEscape(externalNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

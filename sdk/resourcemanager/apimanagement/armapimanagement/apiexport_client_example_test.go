@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetApiExportInOpenApi2dot0.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetApiExportInOpenApi2dot0.json
 func ExampleAPIExportClient_Get_apiManagementGetApiExportInOpenApi2Dot0() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleAPIExportClient_Get_apiManagementGetApiExportInOpenApi2Dot0() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetApiExportInOpenApi3dot0.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetApiExportInOpenApi3dot0.json
 func ExampleAPIExportClient_Get_apiManagementGetApiExportInOpenApi3Dot0() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleAPIExportClient_Get_apiManagementGetApiExportInOpenApi3Dot0() {
 	// 	ExportResultFormat: to.Ptr(armapimanagement.ExportResultFormatOpenAPI),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/aid9676"),
 	// 	Value: &armapimanagement.APIExportResultValue{
-	// 		Link: to.Ptr("https: //apimgmtstkjpszxxxxxxx.blob.core.windows.net/api-export/Swagger Petstore.yaml?sv=2015-07-08&sr=b&sig=qqtR1y5iTbz5P7USBduqB5vriIU4gmiGqe0lKVV8j9k%3D&se=2019-04-10T22:40:57Z&sp=r"),
+	// 		Link: to.Ptr("https: //apimgmtstkjpszxxxxxxx.blob.core.windows.net/api-export/Swagger Petstore.yaml?storage-sas-signature"),
 	// 	},
 	// }
 }

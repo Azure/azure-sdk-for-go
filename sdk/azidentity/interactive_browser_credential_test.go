@@ -8,6 +8,7 @@ package azidentity
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 	"testing"
@@ -35,7 +36,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	cred.client = fakePublicClient{
+	cred.client.noCAE = fakePublicClient{
 		ar: public.AuthResult{
 			AccessToken: tokenValue,
 			ExpiresOn:   time.Now().Add(1 * time.Hour),
@@ -47,19 +48,6 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	}
 	if tk.Token != tokenValue {
 		t.Fatal("Received unexpected token")
-	}
-}
-
-func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
-	cred, err := NewInteractiveBrowserCredential(nil)
-	if err != nil {
-		t.Fatalf("Failed to create interactive browser credential: %v", err)
-	}
-	if cred.options.ClientID != developerSignOnClientID {
-		t.Fatalf("Wrong clientID set. Expected: %s, Received: %s", developerSignOnClientID, cred.options.ClientID)
-	}
-	if cred.options.TenantID != organizationsTenantID {
-		t.Fatalf("Wrong tenantID set. Expected: %s, Received: %s", organizationsTenantID, cred.options.TenantID)
 	}
 }
 
@@ -77,7 +65,7 @@ func (p *instanceDiscoveryPolicy) Do(req *policy.Request) (resp *http.Response, 
 
 func TestInteractiveBrowserCredential_Live(t *testing.T) {
 	if !runManualTests {
-		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
+		t.Skipf("set %s to run this test", azidentityRunManualTests)
 	}
 	t.Run("defaults", func(t *testing.T) {
 		cred, err := NewInteractiveBrowserCredential(nil)
@@ -88,7 +76,7 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 	})
 	t.Run("LoginHint", func(t *testing.T) {
 		upn := "test@pass"
-		t.Logf("consider this test passing when %q appears in the login prompt", upn)
+		fmt.Printf("\t%s: consider this test passing when %q appears in the login prompt\n", t.Name(), upn)
 		cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{LoginHint: upn})
 		if err != nil {
 			t.Fatal(err)
@@ -97,7 +85,7 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 	})
 	t.Run("RedirectURL", func(t *testing.T) {
 		url := "http://localhost:8180"
-		t.Logf("consider this test passing when AAD redirects to %s", url)
+		fmt.Printf("\t%s: consider this test passing when AAD redirects to %s\n", t.Name(), url)
 		cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{RedirectURL: url})
 		if err != nil {
 			t.Fatal(err)
@@ -122,7 +110,7 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 
 func TestInteractiveBrowserCredentialADFS_Live(t *testing.T) {
 	if !runManualTests {
-		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
+		t.Skipf("set %s to run this test", azidentityRunManualTests)
 	}
 	if adfsLiveUser.clientID == fakeClientID {
 		t.Skip("set ADFS_IDENTITY_TEST_CLIENT_ID environment variables to run this test live")

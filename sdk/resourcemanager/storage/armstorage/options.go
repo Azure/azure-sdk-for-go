@@ -21,6 +21,13 @@ type AccountsClientBeginCreateOptions struct {
 	ResumeToken string
 }
 
+// AccountsClientBeginCustomerInitiatedMigrationOptions contains the optional parameters for the AccountsClient.BeginCustomerInitiatedMigration
+// method.
+type AccountsClientBeginCustomerInitiatedMigrationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // AccountsClientBeginFailoverOptions contains the optional parameters for the AccountsClient.BeginFailover method.
 type AccountsClientBeginFailoverOptions struct {
 	// The parameter is set to 'Planned' to indicate whether a Planned failover is requested.. Specifying any value will set the
@@ -53,6 +60,12 @@ type AccountsClientCheckNameAvailabilityOptions struct {
 
 // AccountsClientDeleteOptions contains the optional parameters for the AccountsClient.Delete method.
 type AccountsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountsClientGetCustomerInitiatedMigrationOptions contains the optional parameters for the AccountsClient.GetCustomerInitiatedMigration
+// method.
+type AccountsClientGetCustomerInitiatedMigrationOptions struct {
 	// placeholder for future optional parameters
 }
 

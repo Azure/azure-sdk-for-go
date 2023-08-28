@@ -35,7 +35,7 @@ func ExampleClient_GetChatCompletions() {
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
 	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
 		// TODO: handle error
@@ -64,7 +64,8 @@ func ExampleClient_GetChatCompletions() {
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
 		// This is a conversation in progress.
 		// NOTE: all messages count against token usage for this API.
-		Messages: messages,
+		Messages:     messages,
+		DeploymentID: modelDeploymentID,
 	}, nil)
 
 	if err != nil {
@@ -103,21 +104,14 @@ func ExampleClient_GetChatCompletions_functions() {
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
 	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
 		// TODO: handle error
 	}
 
-	// some JSON schema keys
-	const jsonSchemaType = "type"
-	const jsonSchemaDesc = "description"
-	const jsonSchemaEnum = "enum"
-	const jsonSchemaRequired = "required"
-	const jsonSchemaProps = "properties"
-
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Model: &modelDeploymentID,
+		DeploymentID: modelDeploymentID,
 		Messages: []azopenai.ChatMessage{
 			{
 				Role:    to.Ptr(azopenai.ChatRoleUser),
@@ -133,16 +127,16 @@ func ExampleClient_GetChatCompletions_functions() {
 				Description: to.Ptr("Get the current weather in a given location"),
 
 				Parameters: map[string]any{
-					jsonSchemaRequired: []string{"location"},
-					jsonSchemaType:     "object",
-					jsonSchemaProps: map[string]any{
+					"required": []string{"location"},
+					"type":     "object",
+					"properties": map[string]any{
 						"location": map[string]any{
-							jsonSchemaType: "string",
-							jsonSchemaDesc: "The city and state, e.g. San Francisco, CA",
+							"type":        "string",
+							"description": "The city and state, e.g. San Francisco, CA",
 						},
 						"unit": map[string]any{
-							jsonSchemaType: "string",
-							jsonSchemaEnum: []string{"celsius", "fahrenheit"},
+							"type": "string",
+							"enum": []string{"celsius", "fahrenheit"},
 						},
 					},
 				},
@@ -199,7 +193,7 @@ func ExampleClient_GetChatCompletionsStream() {
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
 	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
 		// TODO: handle error
@@ -226,8 +220,9 @@ func ExampleClient_GetChatCompletionsStream() {
 	resp, err := client.GetChatCompletionsStream(context.TODO(), azopenai.ChatCompletionsOptions{
 		// This is a conversation in progress.
 		// NOTE: all messages count against token usage for this API.
-		Messages: messages,
-		N:        to.Ptr[int32](1),
+		Messages:     messages,
+		N:            to.Ptr[int32](1),
+		DeploymentID: modelDeploymentID,
 	}, nil)
 
 	if err != nil {

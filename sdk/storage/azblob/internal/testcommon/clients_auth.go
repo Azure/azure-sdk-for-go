@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"strings"
 	"testing"
@@ -236,6 +237,14 @@ func CreateNewBlobs(ctx context.Context, _require *require.Assertions, blobNames
 	}
 }
 
+func CreateNewBlobsListTier(ctx context.Context, _require *require.Assertions, blobNames []string, containerClient *container.Client, tier *blob.AccessTier) {
+	for _, blobName := range blobNames {
+		bbClient := CreateNewBlockBlob(ctx, _require, blobName, containerClient)
+		_, err := bbClient.SetTier(ctx, *tier, nil)
+		_require.NoError(err)
+	}
+}
+
 func GetBlockBlobClient(blockBlobName string, containerClient *container.Client) *blockblob.Client {
 	return containerClient.NewBlockBlobClient(blockBlobName)
 }
@@ -267,6 +276,18 @@ func CreateNewBlockBlobWithCPK(ctx context.Context, _require *require.Assertions
 		_require.EqualValues(cResp.EncryptionScope, cpkScopeInfo.EncryptionScope)
 	}
 	return
+}
+
+func GetAppendBlobClient(appendBlobName string, containerClient *container.Client) *appendblob.Client {
+	return containerClient.NewAppendBlobClient(appendBlobName)
+}
+
+func CreateNewAppendBlob(ctx context.Context, _require *require.Assertions, appendBlobName string, containerClient *container.Client) *appendblob.Client {
+	abClient := GetAppendBlobClient(appendBlobName, containerClient)
+
+	_, err := abClient.Create(ctx, nil)
+	_require.Nil(err)
+	return abClient
 }
 
 // Some tests require setting service properties. It can take up to 30 seconds for the new properties to be reflected across all FEs.

@@ -22,19 +22,26 @@ type ServiceClient struct {
 	client  *generated.TableClient
 	service *generated.ServiceClient
 	cred    *SharedKeyCredential
-	con     *generated.Connection
 }
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
-	con := generated.NewConnection(serviceURL, conOptions)
+	plOpts := runtime.PipelineOptions{
+		PerRetry: []policy.Policy{runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil)},
+	}
+	serviceClient, err := generated.NewServiceClient(serviceURL, plOpts, conOptions)
+	if err != nil {
+		return nil, err
+	}
+	tableClient, err := generated.NewTableClient(serviceURL, plOpts, conOptions)
+	if err != nil {
+		return nil, err
+	}
 	return &ServiceClient{
-		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
-		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
-		con:     con,
+		client:  tableClient,
+		service: serviceClient,
 	}, nil
 }
 
@@ -43,11 +50,17 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
-	con := generated.NewConnection(serviceURL, conOptions)
+	serviceClient, err := generated.NewServiceClient(serviceURL, runtime.PipelineOptions{}, conOptions)
+	if err != nil {
+		return nil, err
+	}
+	tableClient, err := generated.NewTableClient(serviceURL, runtime.PipelineOptions{}, conOptions)
+	if err != nil {
+		return nil, err
+	}
 	return &ServiceClient{
-		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
-		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
-		con:     con,
+		client:  tableClient,
+		service: serviceClient,
 	}, nil
 }
 
@@ -55,14 +68,21 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred))
-
-	con := generated.NewConnection(serviceURL, conOptions)
+	plOpts := runtime.PipelineOptions{
+		PerRetry: []policy.Policy{newSharedKeyCredPolicy(cred)},
+	}
+	serviceClient, err := generated.NewServiceClient(serviceURL, plOpts, conOptions)
+	if err != nil {
+		return nil, err
+	}
+	tableClient, err := generated.NewTableClient(serviceURL, plOpts, conOptions)
+	if err != nil {
+		return nil, err
+	}
 	return &ServiceClient{
-		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
-		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		client:  tableClient,
+		service: serviceClient,
 		cred:    cred,
-		con:     con,
 	}, nil
 }
 
@@ -83,7 +103,6 @@ func (t *ServiceClient) NewClient(tableName string) *Client {
 		client:  t.client,
 		name:    tableName,
 		service: t,
-		con:     t.con,
 		cred:    t.cred,
 	}
 }
@@ -103,7 +122,7 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
-	resp, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
+	resp, err := t.client.Create(ctx, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
 	if err != nil {
 		return CreateTableResponse{}, err
 	}
@@ -242,7 +261,6 @@ func (t *ServiceClient) NewListTablesPager(listOptions *ListTablesOptions) *runt
 			}
 			resp, err := t.client.Query(
 				ctx,
-				generated.Enum1Three0,
 				&generated.TableClientQueryOptions{NextTableName: tableName},
 				listOptions.toQueryOptions())
 			if err != nil {
@@ -279,7 +297,7 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 	if options == nil {
 		options = &GetStatisticsOptions{}
 	}
-	resp, err := t.service.GetStatistics(ctx, generated.Enum5Service, generated.Enum7Stats, options.toGenerated())
+	resp, err := t.service.GetStatistics(ctx, options.toGenerated())
 	if err != nil {
 		return GetStatisticsResponse{}, err
 	}
@@ -322,7 +340,7 @@ func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertie
 	if options == nil {
 		options = &GetPropertiesOptions{}
 	}
-	resp, err := t.service.GetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, options.toGenerated())
+	resp, err := t.service.GetProperties(ctx, options.toGenerated())
 	if err != nil {
 		return GetPropertiesResponse{}, err
 	}
@@ -362,7 +380,7 @@ func (t *ServiceClient) SetProperties(ctx context.Context, properties ServicePro
 	if options == nil {
 		options = &SetPropertiesOptions{}
 	}
-	resp, err := t.service.SetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, *properties.toGenerated(), options.toGenerated())
+	resp, err := t.service.SetProperties(ctx, *properties.toGenerated(), options.toGenerated())
 	if err != nil {
 		return SetPropertiesResponse{}, err
 	}
@@ -387,7 +405,7 @@ func (t ServiceClient) GetAccountSASURL(resources AccountSASResourceTypes, permi
 	if err != nil {
 		return "", err
 	}
-	endpoint := t.con.Endpoint()
+	endpoint := t.service.Endpoint()
 	if !strings.HasSuffix(endpoint, "/") {
 		endpoint += "/"
 	}

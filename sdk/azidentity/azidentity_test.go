@@ -35,10 +35,8 @@ const (
 )
 
 var (
-	accessTokenRespSuccess    = []byte(fmt.Sprintf(`{"access_token": "%s", "expires_in": %d}`, tokenValue, tokenExpiresIn))
-	instanceDiscoveryResponse = getInstanceDiscoveryResponse(fakeTenantID)
-	tenantDiscoveryResponse   = getTenantDiscoveryResponse(fakeTenantID)
-	testTRO                   = policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
+	accessTokenRespSuccess = []byte(fmt.Sprintf(`{"access_token": "%s", "expires_in": %d}`, tokenValue, tokenExpiresIn))
+	testTRO                = policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
 )
 
 // constants for this file
@@ -46,97 +44,8 @@ const (
 	testHost = "https://localhost"
 )
 
-func getInstanceDiscoveryResponse(tenant string) []byte {
-	return []byte(strings.ReplaceAll(`{
-		"tenant_discovery_endpoint": "https://login.microsoftonline.com/{tenant}/v2.0/.well-known/openid-configuration",
-		"api-version": "1.1",
-		"metadata": [
-			{
-				"preferred_network": "login.microsoftonline.com",
-				"preferred_cache": "login.windows.net",
-				"aliases": [
-					"login.microsoftonline.com",
-					"login.windows.net",
-					"login.microsoft.com",
-					"sts.windows.net"
-				]
-			}
-		]
-	}`, "{tenant}", tenant))
-}
-
-func getTenantDiscoveryResponse(tenant string) []byte {
-	return []byte(strings.ReplaceAll(`{
-		"token_endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token",
-		"token_endpoint_auth_methods_supported": [
-			"client_secret_post",
-			"private_key_jwt",
-			"client_secret_basic"
-		],
-		"jwks_uri": "https://login.microsoftonline.com/{tenant}/discovery/v2.0/keys",
-		"response_modes_supported": [
-			"query",
-			"fragment",
-			"form_post"
-		],
-		"subject_types_supported": [
-			"pairwise"
-		],
-		"id_token_signing_alg_values_supported": [
-			"RS256"
-		],
-		"response_types_supported": [
-			"code",
-			"id_token",
-			"code id_token",
-			"id_token token"
-		],
-		"scopes_supported": [
-			"openid",
-			"profile",
-			"email",
-			"offline_access"
-		],
-		"issuer": "https://login.microsoftonline.com/{tenant}/v2.0",
-		"request_uri_parameter_supported": false,
-		"userinfo_endpoint": "https://graph.microsoft.com/oidc/userinfo",
-		"authorization_endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize",
-		"device_authorization_endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/devicecode",
-		"http_logout_supported": true,
-		"frontchannel_logout_supported": true,
-		"end_session_endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/logout",
-		"claims_supported": [
-			"sub",
-			"iss",
-			"cloud_instance_name",
-			"cloud_instance_host_name",
-			"cloud_graph_host_name",
-			"msgraph_host",
-			"aud",
-			"exp",
-			"iat",
-			"auth_time",
-			"acr",
-			"nonce",
-			"preferred_username",
-			"name",
-			"tid",
-			"ver",
-			"at_hash",
-			"c_hash",
-			"email"
-		],
-		"kerberos_endpoint": "https://login.microsoftonline.com/{tenant}/kerberos",
-		"tenant_region_scope": "NA",
-		"cloud_instance_name": "microsoftonline.com",
-		"cloud_graph_host_name": "graph.windows.net",
-		"msgraph_host": "graph.microsoft.com",
-		"rbac_url": "https://pas.windows.net"
-	}`, "{tenant}", tenant))
-}
-
-func validateX5C(t *testing.T, certs []*x509.Certificate) mock.ResponsePredicate {
-	return func(req *http.Request) bool {
+func validateX5C(t *testing.T, certs []*x509.Certificate) func(*http.Request) *http.Response {
+	return func(req *http.Request) *http.Response {
 		err := req.ParseForm()
 		if err != nil {
 			t.Fatal("expected a form body")
@@ -157,7 +66,7 @@ func validateX5C(t *testing.T, certs []*x509.Certificate) mock.ResponsePredicate
 		} else if actual := len(v); actual != len(certs) {
 			t.Fatalf("expected %d certs, got %d", len(certs), actual)
 		}
-		return true
+		return nil
 	}
 }
 
@@ -462,10 +371,11 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				}
 				sts := mockSTS{
 					tenant: test.tenant,
-					tokenRequestCallback: func(r *http.Request) {
+					tokenRequestCallback: func(r *http.Request) *http.Response {
 						if actual := strings.Split(r.URL.Path, "/")[1]; actual != test.expected {
 							t.Fatalf("expected tenant %q, got %q", test.expected, actual)
 						}
+						return nil
 					},
 				}
 				c, err := subtest.ctor(policy.ClientOptions{Transport: &sts})
@@ -510,7 +420,7 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 			called := false
 			for _, source := range c.chain.sources {
 				if cli, ok := source.(*AzureCLICredential); ok {
-					cli.tokenProvider = func(ctx context.Context, resource, tenantID string) ([]byte, error) {
+					cli.opts.tokenProvider = func(ctx context.Context, resource, tenantID string) ([]byte, error) {
 						called = true
 						if tenantID != test.expected {
 							t.Fatalf(`unexpected tenantID "%s"`, tenantID)
@@ -536,8 +446,6 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 }
 
 func TestClaims(t *testing.T) {
-	realCP1 := disableCP1
-	t.Cleanup(func() { disableCP1 = realCP1 })
 	claim := `"test":"pass"`
 	for _, test := range []struct {
 		ctor func(azcore.ClientOptions) (azcore.TokenCredential, error)
@@ -588,33 +496,44 @@ func TestClaims(t *testing.T) {
 				return NewUsernamePasswordCredential(fakeTenantID, fakeClientID, fakeUsername, "password", &o)
 			},
 		},
+		{
+			name: credNameWorkloadIdentity,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				tokenFile := filepath.Join(t.TempDir(), "token")
+				if err := os.WriteFile(tokenFile, []byte(tokenValue), os.ModePerm); err != nil {
+					t.Fatalf("failed to write token file: %v", err)
+				}
+				o := WorkloadIdentityCredentialOptions{ClientID: fakeClientID, ClientOptions: co, TenantID: fakeTenantID, TokenFilePath: tokenFile}
+				return NewWorkloadIdentityCredential(&o)
+			},
+		},
 	} {
-		for _, d := range []bool{true, false} {
+		for _, enableCAE := range []bool{true, false} {
 			name := test.name
-			if d {
-				name += " disableCP1"
+			if enableCAE {
+				name += " CAE"
 			}
 			t.Run(name, func(t *testing.T) {
-				disableCP1 = d
 				reqs := 0
 				sts := mockSTS{
-					tokenRequestCallback: func(r *http.Request) {
+					tokenRequestCallback: func(r *http.Request) *http.Response {
 						if err := r.ParseForm(); err != nil {
 							t.Error(err)
 						}
 						reqs++
-						// If the disableCP1 flag isn't set, both requests should specify CP1. The second
-						// GetToken call specifies claims we should find in the following token request.
+						// Both requests should specify CP1 when CAE is enabled for the token.
 						// We check only for substrings because MSAL is responsible for formatting claims.
 						actual := fmt.Sprint(r.Form["claims"])
-						if strings.Contains(actual, "CP1") == disableCP1 {
+						if strings.Contains(actual, "CP1") != enableCAE {
 							t.Fatalf(`unexpected claims "%v"`, actual)
 						}
 						if reqs == 2 {
+							// the second GetToken call specifies claims we should find in the following token request
 							if !strings.Contains(strings.ReplaceAll(actual, " ", ""), claim) {
 								t.Fatalf(`unexpected claims "%v"`, actual)
 							}
 						}
+						return nil
 					},
 				}
 				o := azcore.ClientOptions{Transport: &sts}
@@ -622,10 +541,12 @@ func TestClaims(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"A"}}); err != nil {
+				tro := policy.TokenRequestOptions{EnableCAE: enableCAE, Scopes: []string{"A"}}
+				if _, err = cred.GetToken(context.Background(), tro); err != nil {
 					t.Fatal(err)
 				}
-				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
+				tro = policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), EnableCAE: enableCAE, Scopes: []string{"B"}}
+				if _, err = cred.GetToken(context.Background(), tro); err != nil {
 					t.Fatal(err)
 				}
 				if reqs != 2 {
@@ -633,6 +554,59 @@ func TestClaims(t *testing.T) {
 				}
 			})
 		}
+	}
+}
+
+func TestResolveTenant(t *testing.T) {
+	credName := "testcred"
+	defaultTenant := "default-tenant"
+	otherTenant := "other-tenant"
+	for _, test := range []struct {
+		allowed          []string
+		expected, tenant string
+		expectError      bool
+	}{
+		// no alternate tenant specified -> should get default
+		{expected: defaultTenant},
+		{allowed: []string{""}, expected: defaultTenant},
+		{allowed: []string{"*"}, expected: defaultTenant},
+		{allowed: []string{otherTenant}, expected: defaultTenant},
+
+		// alternate tenant specified and allowed -> should get that tenant
+		{allowed: []string{"*"}, expected: otherTenant, tenant: otherTenant},
+		{allowed: []string{otherTenant}, expected: otherTenant, tenant: otherTenant},
+		{allowed: []string{"not-" + otherTenant, otherTenant}, expected: otherTenant, tenant: otherTenant},
+		{allowed: []string{"not-" + otherTenant, "*"}, expected: otherTenant, tenant: otherTenant},
+
+		// invalid or not allowed tenant -> should get an error
+		{tenant: otherTenant, expectError: true},
+		{allowed: []string{""}, tenant: otherTenant, expectError: true},
+		{allowed: []string{defaultTenant}, tenant: otherTenant, expectError: true},
+		{tenant: badTenantID, expectError: true},
+		{allowed: []string{""}, tenant: badTenantID, expectError: true},
+		{allowed: []string{"*", badTenantID}, tenant: badTenantID, expectError: true},
+		{tenant: "invalid@tenant", expectError: true},
+		{tenant: "invalid/tenant", expectError: true},
+		{tenant: "invalid(tenant", expectError: true},
+		{tenant: "invalid:tenant", expectError: true},
+	} {
+		t.Run("", func(t *testing.T) {
+			tenant, err := resolveTenant(defaultTenant, test.tenant, credName, test.allowed)
+			if err != nil {
+				if test.expectError {
+					if validTenantID(test.tenant) && !strings.Contains(err.Error(), credName) {
+						t.Fatalf("expected error to contain %q, got %q", credName, err.Error())
+					}
+					return
+				}
+				t.Fatal(err)
+			} else if test.expectError {
+				t.Fatal("expected an error")
+			}
+			if tenant != test.expected {
+				t.Fatalf(`expected "%s", got "%s"`, test.expected, tenant)
+			}
+		})
 	}
 }
 
@@ -681,7 +655,7 @@ func (f fakeConfidentialClient) AcquireTokenOnBehalfOf(ctx context.Context, user
 	return f.returnResult()
 }
 
-var _ confidentialClient = (*fakeConfidentialClient)(nil)
+var _ msalConfidentialClient = (*fakeConfidentialClient)(nil)
 
 // ==================================================================================================================================
 
@@ -732,4 +706,4 @@ func (f fakePublicClient) AcquireTokenInteractive(ctx context.Context, scopes []
 	return f.returnResult()
 }
 
-var _ publicClient = (*fakePublicClient)(nil)
+var _ msalPublicClient = (*fakePublicClient)(nil)

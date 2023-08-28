@@ -117,9 +117,8 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameAzureCLI, err: err})
 	}
 
-	err = defaultAzureCredentialConstructorErrorHandler(len(creds), errorMessages)
-	if err != nil {
-		return nil, err
+	if len(errorMessages) > 0 {
+		log.Writef(EventAuthentication, "NewDefaultAzureCredential failed to initialize some credentials:\n\t%s", strings.Join(errorMessages, "\n\t"))
 	}
 
 	chain, err := NewChainedTokenCredential(creds, nil)
@@ -136,20 +135,6 @@ func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.Token
 }
 
 var _ azcore.TokenCredential = (*DefaultAzureCredential)(nil)
-
-func defaultAzureCredentialConstructorErrorHandler(numberOfSuccessfulCredentials int, errorMessages []string) (err error) {
-	errorMessage := strings.Join(errorMessages, "\n\t")
-
-	if numberOfSuccessfulCredentials == 0 {
-		return errors.New(errorMessage)
-	}
-
-	if len(errorMessages) != 0 {
-		log.Writef(EventAuthentication, "NewDefaultAzureCredential failed to initialize some credentials:\n\t%s", errorMessage)
-	}
-
-	return nil
-}
 
 // defaultCredentialErrorReporter is a substitute for credentials that couldn't be constructed.
 // Its GetToken method always returns a credentialUnavailableError having the same message as

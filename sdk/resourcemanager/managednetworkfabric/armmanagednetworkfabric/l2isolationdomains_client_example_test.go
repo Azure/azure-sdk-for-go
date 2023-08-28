@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L2IsolationDomains_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L2IsolationDomains_Create_MaximumSet_Gen.json
 func ExampleL2IsolationDomainsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,11 +29,15 @@ func ExampleL2IsolationDomainsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginCreate(ctx, "resourceGroupName", "example-l2domain", armmanagednetworkfabric.L2IsolationDomain{
+	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginCreate(ctx, "example-rg", "example-l2domain", armmanagednetworkfabric.L2IsolationDomain{
 		Location: to.Ptr("eastus"),
+		Tags: map[string]*string{
+			"keyID": to.Ptr("keyValue"),
+		},
 		Properties: &armmanagednetworkfabric.L2IsolationDomainProperties{
+			Annotation:      to.Ptr("annotation"),
 			Mtu:             to.Ptr[int32](1500),
-			NetworkFabricID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName"),
+			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
 			VlanID:          to.Ptr[int32](501),
 		},
 	}, nil)
@@ -48,29 +52,34 @@ func ExampleL2IsolationDomainsClient_BeginCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.L2IsolationDomain = armmanagednetworkfabric.L2IsolationDomain{
-	// 	Name: to.Ptr("wcpalyqmig"),
-	// 	Type: to.Ptr("vvl"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain"),
+	// 	Name: to.Ptr("example-l2domain"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/l2IsolationDomains"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-21T01:57:02.777Z"); return t}()),
-	// 		CreatedBy: to.Ptr("email@address.com"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T17:42:03.977Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@mail.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T06:25:58.985Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("UserID"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T17:42:03.978Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@mail.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
 	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"keyID": to.Ptr("keyValue"),
+	// 	},
 	// 	Properties: &armmanagednetworkfabric.L2IsolationDomainProperties{
-	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
+	// 		Annotation: to.Ptr("annotation"),
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 		Mtu: to.Ptr[int32](1500),
-	// 		NetworkFabricID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName"),
+	// 		NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
 	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 		VlanID: to.Ptr[int32](501),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L2IsolationDomains_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L2IsolationDomains_Get_MaximumSet_Gen.json
 func ExampleL2IsolationDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +90,7 @@ func ExampleL2IsolationDomainsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewL2IsolationDomainsClient().Get(ctx, "resourceGroupName", "l2IsolationDomainName", nil)
+	res, err := clientFactory.NewL2IsolationDomainsClient().Get(ctx, "example-rg", "example-l2Domain", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -89,29 +98,34 @@ func ExampleL2IsolationDomainsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.L2IsolationDomain = armmanagednetworkfabric.L2IsolationDomain{
-	// 	Name: to.Ptr("wcpalyqmig"),
-	// 	Type: to.Ptr("vvl"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain"),
+	// 	Name: to.Ptr("example-l2domain"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/l2IsolationDomains"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-21T01:57:02.777Z"); return t}()),
-	// 		CreatedBy: to.Ptr("email@address.com"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T17:42:03.977Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@mail.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T06:25:58.985Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("UserID"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T17:42:03.978Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@mail.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
 	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"keyID": to.Ptr("keyValue"),
+	// 	},
 	// 	Properties: &armmanagednetworkfabric.L2IsolationDomainProperties{
-	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
+	// 		Annotation: to.Ptr("annotation"),
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 		Mtu: to.Ptr[int32](1500),
-	// 		NetworkFabricID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName"),
+	// 		NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
 	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 		VlanID: to.Ptr[int32](501),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L2IsolationDomains_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L2IsolationDomains_Update_MaximumSet_Gen.json
 func ExampleL2IsolationDomainsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,9 +136,13 @@ func ExampleL2IsolationDomainsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginUpdate(ctx, "resourceGroupName", "l2IsolationDomainName", armmanagednetworkfabric.L2IsolationDomainPatch{
+	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginUpdate(ctx, "example-rg", "example-l2Domain", armmanagednetworkfabric.L2IsolationDomainPatch{
+		Tags: map[string]*string{
+			"keyID": to.Ptr("keyValue"),
+		},
 		Properties: &armmanagednetworkfabric.L2IsolationDomainPatchProperties{
-			Mtu: to.Ptr[int32](9000),
+			Annotation: to.Ptr("annotation1"),
+			Mtu:        to.Ptr[int32](6000),
 		},
 	}, nil)
 	if err != nil {
@@ -138,29 +156,34 @@ func ExampleL2IsolationDomainsClient_BeginUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.L2IsolationDomain = armmanagednetworkfabric.L2IsolationDomain{
-	// 	Name: to.Ptr("wcpalyqmig"),
-	// 	Type: to.Ptr("vvl"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain"),
+	// 	Name: to.Ptr("example-l2domain"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/l2IsolationDomains"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-21T01:57:02.777Z"); return t}()),
-	// 		CreatedBy: to.Ptr("email@address.com"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T17:42:03.977Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@mail.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T06:25:58.985Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("UserID"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T17:42:03.978Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@mail.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
 	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"keyID": to.Ptr("keyValue"),
+	// 	},
 	// 	Properties: &armmanagednetworkfabric.L2IsolationDomainProperties{
-	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 		Mtu: to.Ptr[int32](9000),
-	// 		NetworkFabricID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName"),
+	// 		Annotation: to.Ptr("annotation1"),
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		Mtu: to.Ptr[int32](1500),
+	// 		NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
 	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 		VlanID: to.Ptr[int32](501),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L2IsolationDomains_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L2IsolationDomains_Delete_MaximumSet_Gen.json
 func ExampleL2IsolationDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +194,7 @@ func ExampleL2IsolationDomainsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginDelete(ctx, "resourceGroupName", "example-l2domain", nil)
+	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginDelete(ctx, "example-rg", "example-l2Domain", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -181,7 +204,7 @@ func ExampleL2IsolationDomainsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L2IsolationDomains_updateAdministrativeState_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L2IsolationDomains_updateAdministrativeState_MaximumSet_Gen.json
 func ExampleL2IsolationDomainsClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,22 +215,45 @@ func ExampleL2IsolationDomainsClient_BeginUpdateAdministrativeState() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginUpdateAdministrativeState(ctx, "resourceGroupName", "l2IsolationDomainName", armmanagednetworkfabric.UpdateAdministrativeState{
+	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginUpdateAdministrativeState(ctx, "example-rg", "example-l2Domain", armmanagednetworkfabric.UpdateAdministrativeState{
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain")},
-		State: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnable),
+			to.Ptr("")},
+		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CommonPostActionResponseForDeviceUpdate = armmanagednetworkfabric.CommonPostActionResponseForDeviceUpdate{
+	// 	Error: &armmanagednetworkfabric.ErrorDetail{
+	// 		AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 			{
+	// 				Info: map[string]any{
+	// 				},
+	// 				Type: to.Ptr(""),
+	// 		}},
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 		Target: to.Ptr(""),
+	// 		Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 		},
+	// 	},
+	// 	ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 	FailedDevices: []*string{
+	// 		to.Ptr("")},
+	// 		SuccessfulDevices: []*string{
+	// 			to.Ptr("")},
+	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L2IsolationDomains_clearArpTable_MaximumSet_Gen.json
-func ExampleL2IsolationDomainsClient_BeginClearArpTable() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L2IsolationDomains_ValidateConfiguration_MaximumSet_Gen.json
+func ExampleL2IsolationDomainsClient_BeginValidateConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -217,21 +263,38 @@ func ExampleL2IsolationDomainsClient_BeginClearArpTable() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginClearArpTable(ctx, "resourceGroupName", "example-l2domain", armmanagednetworkfabric.EnableDisableOnResources{
-		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain")},
-	}, nil)
+	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginValidateConfiguration(ctx, "example-rg", "example-l2domain", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ValidateConfigurationResponse = armmanagednetworkfabric.ValidateConfigurationResponse{
+	// 	Error: &armmanagednetworkfabric.ErrorDetail{
+	// 		AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 			{
+	// 				Info: map[string]any{
+	// 				},
+	// 				Type: to.Ptr(""),
+	// 		}},
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 		Target: to.Ptr(""),
+	// 		Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 		},
+	// 	},
+	// 	ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 	URL: to.Ptr("https://ActionDetails"),
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L2IsolationDomains_clearNeighborTable_MaximumSet_Gen.json
-func ExampleL2IsolationDomainsClient_BeginClearNeighborTable() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L2IsolationDomains_CommitConfiguration_MaximumSet_Gen.json
+func ExampleL2IsolationDomainsClient_BeginCommitConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -241,41 +304,36 @@ func ExampleL2IsolationDomainsClient_BeginClearNeighborTable() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginClearNeighborTable(ctx, "rgL2IsolationDomains", "oz", armmanagednetworkfabric.EnableDisableOnResources{
-		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain")},
-	}, nil)
+	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginCommitConfiguration(ctx, "example-rg", "example-l2domain", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CommonPostActionResponseForStateUpdate = armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	Error: &armmanagednetworkfabric.ErrorDetail{
+	// 		AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 			{
+	// 				Info: map[string]any{
+	// 				},
+	// 				Type: to.Ptr(""),
+	// 		}},
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 		Target: to.Ptr(""),
+	// 		Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 		},
+	// 	},
+	// 	ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L2IsolationDomains_getArpEntries_MaximumSet_Gen.json
-func ExampleL2IsolationDomainsClient_BeginGetArpEntries() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewL2IsolationDomainsClient().BeginGetArpEntries(ctx, "resourceGroupName", "l2IsolationDomainName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L2IsolationDomains_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L2IsolationDomains_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleL2IsolationDomainsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,7 +344,7 @@ func ExampleL2IsolationDomainsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewL2IsolationDomainsClient().NewListByResourceGroupPager("resourceGroupName", nil)
+	pager := clientFactory.NewL2IsolationDomainsClient().NewListByResourceGroupPager("example-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -300,22 +358,27 @@ func ExampleL2IsolationDomainsClient_NewListByResourceGroupPager() {
 		// page.L2IsolationDomainsListResult = armmanagednetworkfabric.L2IsolationDomainsListResult{
 		// 	Value: []*armmanagednetworkfabric.L2IsolationDomain{
 		// 		{
-		// 			Name: to.Ptr("wcpalyqmig"),
-		// 			Type: to.Ptr("vvl"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain"),
+		// 			Name: to.Ptr("example-l2domain"),
+		// 			Type: to.Ptr("microsoft.managednetworkfabric/l2IsolationDomains"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-21T01:57:02.777Z"); return t}()),
-		// 				CreatedBy: to.Ptr("email@address.com"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T17:42:03.977Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@mail.com"),
 		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T06:25:58.985Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("UserID"),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T17:42:03.978Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@mail.com"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
 		// 			Location: to.Ptr("eastus"),
+		// 			Tags: map[string]*string{
+		// 				"keyID": to.Ptr("keyValue"),
+		// 			},
 		// 			Properties: &armmanagednetworkfabric.L2IsolationDomainProperties{
-		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
+		// 				Annotation: to.Ptr("annotation"),
+		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 				ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 		// 				Mtu: to.Ptr[int32](1500),
-		// 				NetworkFabricID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName"),
+		// 				NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
 		// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 		// 				VlanID: to.Ptr[int32](501),
 		// 			},
@@ -324,7 +387,7 @@ func ExampleL2IsolationDomainsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L2IsolationDomains_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L2IsolationDomains_ListBySubscription_MaximumSet_Gen.json
 func ExampleL2IsolationDomainsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,32 +412,31 @@ func ExampleL2IsolationDomainsClient_NewListBySubscriptionPager() {
 		// page.L2IsolationDomainsListResult = armmanagednetworkfabric.L2IsolationDomainsListResult{
 		// 	Value: []*armmanagednetworkfabric.L2IsolationDomain{
 		// 		{
-		// 			Name: to.Ptr("c"),
-		// 			Type: to.Ptr("itmwcuyyfszkpdlothpvaapua"),
-		// 			ID: to.Ptr("unraggwhhbsxgdpgpvcmhjmilsoueg"),
+		// 			Name: to.Ptr("example-l2domain"),
+		// 			Type: to.Ptr("microsoft.managednetworkfabric/l2IsolationDomains"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/example-l2domain"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T06:25:58.985Z"); return t}()),
-		// 				CreatedBy: to.Ptr("ctnmjhhireuhzyyswimpgepwoozsjj"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T17:42:03.977Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@mail.com"),
 		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-14T06:25:58.985Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("mqwaqcbithfotieyfedyyqbp"),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T17:42:03.978Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@mail.com"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("uyucxonjxcdvkryhqmyopvqlwueu"),
+		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
-		// 				"key4169": to.Ptr("hqxdrtnvspqpqpskanhyesj"),
+		// 				"keyID": to.Ptr("keyValue"),
 		// 			},
 		// 			Properties: &armmanagednetworkfabric.L2IsolationDomainProperties{
-		// 				Annotation: to.Ptr("agtpcaqqboaiztvbjsxdpmw"),
-		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-		// 				DisabledOnResources: []*string{
-		// 					to.Ptr("vbynlxy")},
-		// 					Mtu: to.Ptr[int32](5),
-		// 					NetworkFabricID: to.Ptr("gbfqosedebmtcyueqjbxa"),
-		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-		// 					VlanID: to.Ptr[int32](2),
-		// 				},
-		// 		}},
-		// 	}
+		// 				Annotation: to.Ptr("annotation"),
+		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 				ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 				Mtu: to.Ptr[int32](1500),
+		// 				NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+		// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
+		// 				VlanID: to.Ptr[int32](501),
+		// 			},
+		// 	}},
+		// }
 	}
 }

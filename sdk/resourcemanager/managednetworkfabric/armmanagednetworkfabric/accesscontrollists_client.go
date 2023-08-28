@@ -29,7 +29,7 @@ type AccessControlListsClient struct {
 }
 
 // NewAccessControlListsClient creates a new instance of AccessControlListsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAccessControlListsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessControlListsClient, error) {
@@ -44,36 +44,51 @@ func NewAccessControlListsClient(subscriptionID string, credential azcore.TokenC
 	return client, nil
 }
 
+// BeginCreate - Implements Access Control List PUT method.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accessControlListName - Name of the Access Control List.
+//   - body - Request payload.
+//   - options - AccessControlListsClientBeginCreateOptions contains the optional parameters for the AccessControlListsClient.BeginCreate
+//     method.
+func (client *AccessControlListsClient) BeginCreate(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlList, options *AccessControlListsClientBeginCreateOptions) (*runtime.Poller[AccessControlListsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, accessControlListName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessControlListsClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[AccessControlListsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
 // Create - Implements Access Control List PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accessControlListName - Name of the Access Control List
-//   - body - Request payload.
-//   - options - AccessControlListsClientCreateOptions contains the optional parameters for the AccessControlListsClient.Create
-//     method.
-func (client *AccessControlListsClient) Create(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlList, options *AccessControlListsClientCreateOptions) (AccessControlListsClientCreateResponse, error) {
+// Generated from API version 2023-06-15
+func (client *AccessControlListsClient) create(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlList, options *AccessControlListsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accessControlListName, body, options)
 	if err != nil {
-		return AccessControlListsClientCreateResponse{}, err
+		return nil, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AccessControlListsClientCreateResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccessControlListsClientCreateResponse{}, runtime.NewResponseError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(resp)
 	}
-	return client.createHandleResponse(resp)
+	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *AccessControlListsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlList, options *AccessControlListsClientCreateOptions) (*policy.Request, error) {
+func (client *AccessControlListsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlList, options *AccessControlListsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -88,50 +103,56 @@ func (client *AccessControlListsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// createHandleResponse handles the Create response.
-func (client *AccessControlListsClient) createHandleResponse(resp *http.Response) (AccessControlListsClientCreateResponse, error) {
-	result := AccessControlListsClientCreateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccessControlList); err != nil {
-		return AccessControlListsClientCreateResponse{}, err
+// BeginDelete - Implements Access Control List DELETE method.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accessControlListName - Name of the Access Control List.
+//   - options - AccessControlListsClientBeginDeleteOptions contains the optional parameters for the AccessControlListsClient.BeginDelete
+//     method.
+func (client *AccessControlListsClient) BeginDelete(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientBeginDeleteOptions) (*runtime.Poller[AccessControlListsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accessControlListName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessControlListsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[AccessControlListsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
-	return result, nil
 }
 
 // Delete - Implements Access Control List DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accessControlListName - Name of the Access Control List
-//   - options - AccessControlListsClientDeleteOptions contains the optional parameters for the AccessControlListsClient.Delete
-//     method.
-func (client *AccessControlListsClient) Delete(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientDeleteOptions) (AccessControlListsClientDeleteResponse, error) {
+// Generated from API version 2023-06-15
+func (client *AccessControlListsClient) deleteOperation(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accessControlListName, options)
 	if err != nil {
-		return AccessControlListsClientDeleteResponse{}, err
+		return nil, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AccessControlListsClientDeleteResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return AccessControlListsClientDeleteResponse{}, runtime.NewResponseError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(resp)
 	}
-	return AccessControlListsClientDeleteResponse{}, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AccessControlListsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientDeleteOptions) (*policy.Request, error) {
+func (client *AccessControlListsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -146,7 +167,7 @@ func (client *AccessControlListsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -155,9 +176,9 @@ func (client *AccessControlListsClient) deleteCreateRequest(ctx context.Context,
 // Get - Implements Access Control List GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accessControlListName - Name of the Access Control List
+//   - accessControlListName - Name of the Access Control List.
 //   - options - AccessControlListsClientGetOptions contains the optional parameters for the AccessControlListsClient.Get method.
 func (client *AccessControlListsClient) Get(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientGetOptions) (AccessControlListsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accessControlListName, options)
@@ -177,9 +198,6 @@ func (client *AccessControlListsClient) Get(ctx context.Context, resourceGroupNa
 // getCreateRequest creates the Get request.
 func (client *AccessControlListsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -194,7 +212,7 @@ func (client *AccessControlListsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +229,7 @@ func (client *AccessControlListsClient) getHandleResponse(resp *http.Response) (
 
 // NewListByResourceGroupPager - Implements AccessControlLists list by resource group GET method.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AccessControlListsClientListByResourceGroupOptions contains the optional parameters for the AccessControlListsClient.NewListByResourceGroupPager
 //     method.
@@ -246,9 +264,6 @@ func (client *AccessControlListsClient) NewListByResourceGroupPager(resourceGrou
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *AccessControlListsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AccessControlListsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -259,7 +274,7 @@ func (client *AccessControlListsClient) listByResourceGroupCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +291,7 @@ func (client *AccessControlListsClient) listByResourceGroupHandleResponse(resp *
 
 // NewListBySubscriptionPager - Implements AccessControlLists list by subscription GET method.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - options - AccessControlListsClientListBySubscriptionOptions contains the optional parameters for the AccessControlListsClient.NewListBySubscriptionPager
 //     method.
 func (client *AccessControlListsClient) NewListBySubscriptionPager(options *AccessControlListsClientListBySubscriptionOptions) *runtime.Pager[AccessControlListsClientListBySubscriptionResponse] {
@@ -310,16 +325,13 @@ func (client *AccessControlListsClient) NewListBySubscriptionPager(options *Acce
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *AccessControlListsClient) listBySubscriptionCreateRequest(ctx context.Context, options *AccessControlListsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/accessControlLists"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -334,36 +346,115 @@ func (client *AccessControlListsClient) listBySubscriptionHandleResponse(resp *h
 	return result, nil
 }
 
-// Update - API to update certain properties of the Access Control List resource.
+// BeginResync - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accessControlListName - Name of the Access Control List
-//   - body - Access Control List properties to update.
-//   - options - AccessControlListsClientUpdateOptions contains the optional parameters for the AccessControlListsClient.Update
+//   - accessControlListName - Name of the Access Control List.
+//   - options - AccessControlListsClientBeginResyncOptions contains the optional parameters for the AccessControlListsClient.BeginResync
 //     method.
-func (client *AccessControlListsClient) Update(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlListPatch, options *AccessControlListsClientUpdateOptions) (AccessControlListsClientUpdateResponse, error) {
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accessControlListName, body, options)
+func (client *AccessControlListsClient) BeginResync(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientBeginResyncOptions) (*runtime.Poller[AccessControlListsClientResyncResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resync(ctx, resourceGroupName, accessControlListName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessControlListsClientResyncResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[AccessControlListsClientResyncResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// Resync - Implements the operation to the underlying resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+func (client *AccessControlListsClient) resync(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientBeginResyncOptions) (*http.Response, error) {
+	req, err := client.resyncCreateRequest(ctx, resourceGroupName, accessControlListName, options)
 	if err != nil {
-		return AccessControlListsClientUpdateResponse{}, err
+		return nil, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AccessControlListsClientUpdateResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccessControlListsClientUpdateResponse{}, runtime.NewResponseError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
 	}
-	return client.updateHandleResponse(resp)
+	return resp, nil
+}
+
+// resyncCreateRequest creates the Resync request.
+func (client *AccessControlListsClient) resyncCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientBeginResyncOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}/resync"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accessControlListName == "" {
+		return nil, errors.New("parameter accessControlListName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accessControlListName}", url.PathEscape(accessControlListName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - API to update certain properties of the Access Control List resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accessControlListName - Name of the Access Control List.
+//   - body - Access Control List properties to update.
+//   - options - AccessControlListsClientBeginUpdateOptions contains the optional parameters for the AccessControlListsClient.BeginUpdate
+//     method.
+func (client *AccessControlListsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlListPatch, options *AccessControlListsClientBeginUpdateOptions) (*runtime.Poller[AccessControlListsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accessControlListName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessControlListsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[AccessControlListsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// Update - API to update certain properties of the Access Control List resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+func (client *AccessControlListsClient) update(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlListPatch, options *AccessControlListsClientBeginUpdateOptions) (*http.Response, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accessControlListName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AccessControlListsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlListPatch, options *AccessControlListsClientUpdateOptions) (*policy.Request, error) {
+func (client *AccessControlListsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlListPatch, options *AccessControlListsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -378,17 +469,137 @@ func (client *AccessControlListsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// updateHandleResponse handles the Update response.
-func (client *AccessControlListsClient) updateHandleResponse(resp *http.Response) (AccessControlListsClientUpdateResponse, error) {
-	result := AccessControlListsClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccessControlList); err != nil {
-		return AccessControlListsClientUpdateResponse{}, err
+// BeginUpdateAdministrativeState - Implements the operation to the underlying resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accessControlListName - Name of the Access Control List.
+//   - body - Request payload.
+//   - options - AccessControlListsClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the AccessControlListsClient.BeginUpdateAdministrativeState
+//     method.
+func (client *AccessControlListsClient) BeginUpdateAdministrativeState(ctx context.Context, resourceGroupName string, accessControlListName string, body UpdateAdministrativeState, options *AccessControlListsClientBeginUpdateAdministrativeStateOptions) (*runtime.Poller[AccessControlListsClientUpdateAdministrativeStateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateAdministrativeState(ctx, resourceGroupName, accessControlListName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessControlListsClientUpdateAdministrativeStateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[AccessControlListsClientUpdateAdministrativeStateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
-	return result, nil
+}
+
+// UpdateAdministrativeState - Implements the operation to the underlying resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+func (client *AccessControlListsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, accessControlListName string, body UpdateAdministrativeState, options *AccessControlListsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
+	req, err := client.updateAdministrativeStateCreateRequest(ctx, resourceGroupName, accessControlListName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// updateAdministrativeStateCreateRequest creates the UpdateAdministrativeState request.
+func (client *AccessControlListsClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, body UpdateAdministrativeState, options *AccessControlListsClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}/updateAdministrativeState"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accessControlListName == "" {
+		return nil, errors.New("parameter accessControlListName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accessControlListName}", url.PathEscape(accessControlListName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, body)
+}
+
+// BeginValidateConfiguration - Implements the operation to the underlying resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accessControlListName - Name of the Access Control List.
+//   - options - AccessControlListsClientBeginValidateConfigurationOptions contains the optional parameters for the AccessControlListsClient.BeginValidateConfiguration
+//     method.
+func (client *AccessControlListsClient) BeginValidateConfiguration(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientBeginValidateConfigurationOptions) (*runtime.Poller[AccessControlListsClientValidateConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateConfiguration(ctx, resourceGroupName, accessControlListName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessControlListsClientValidateConfigurationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[AccessControlListsClientValidateConfigurationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// ValidateConfiguration - Implements the operation to the underlying resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+func (client *AccessControlListsClient) validateConfiguration(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientBeginValidateConfigurationOptions) (*http.Response, error) {
+	req, err := client.validateConfigurationCreateRequest(ctx, resourceGroupName, accessControlListName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// validateConfigurationCreateRequest creates the ValidateConfiguration request.
+func (client *AccessControlListsClient) validateConfigurationCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientBeginValidateConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}/validateConfiguration"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accessControlListName == "" {
+		return nil, errors.New("parameter accessControlListName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accessControlListName}", url.PathEscape(accessControlListName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
 }

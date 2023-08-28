@@ -46,7 +46,7 @@ func NewQueueClient(subscriptionID string, credential azcore.TokenCredential, op
 // Create - Creates a new queue with the specified queue name, under the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -57,10 +57,6 @@ func NewQueueClient(subscriptionID string, credential azcore.TokenCredential, op
 //   - options - QueueClientCreateOptions contains the optional parameters for the QueueClient.Create method.
 func (client *QueueClient) Create(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue Queue, options *QueueClientCreateOptions) (QueueClientCreateResponse, error) {
 	var err error
-	const operationName = "QueueClient.Create"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, queueName, queue, options)
 	if err != nil {
 		return QueueClientCreateResponse{}, err
@@ -101,7 +97,7 @@ func (client *QueueClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, queue); err != nil {
@@ -122,7 +118,7 @@ func (client *QueueClient) createHandleResponse(resp *http.Response) (QueueClien
 // Delete - Deletes the queue with the specified queue name, under the specified account if it exists.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -132,10 +128,6 @@ func (client *QueueClient) createHandleResponse(resp *http.Response) (QueueClien
 //   - options - QueueClientDeleteOptions contains the optional parameters for the QueueClient.Delete method.
 func (client *QueueClient) Delete(ctx context.Context, resourceGroupName string, accountName string, queueName string, options *QueueClientDeleteOptions) (QueueClientDeleteResponse, error) {
 	var err error
-	const operationName = "QueueClient.Delete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, queueName, options)
 	if err != nil {
 		return QueueClientDeleteResponse{}, err
@@ -175,7 +167,7 @@ func (client *QueueClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -184,7 +176,7 @@ func (client *QueueClient) deleteCreateRequest(ctx context.Context, resourceGrou
 // Get - Gets the queue with the specified queue name, under the specified account if it exists.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -194,10 +186,6 @@ func (client *QueueClient) deleteCreateRequest(ctx context.Context, resourceGrou
 //   - options - QueueClientGetOptions contains the optional parameters for the QueueClient.Get method.
 func (client *QueueClient) Get(ctx context.Context, resourceGroupName string, accountName string, queueName string, options *QueueClientGetOptions) (QueueClientGetResponse, error) {
 	var err error
-	const operationName = "QueueClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, queueName, options)
 	if err != nil {
 		return QueueClientGetResponse{}, err
@@ -238,7 +226,7 @@ func (client *QueueClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -255,7 +243,7 @@ func (client *QueueClient) getHandleResponse(resp *http.Response) (QueueClientGe
 
 // NewListPager - Gets a list of all the queues under the specified storage account
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -266,7 +254,6 @@ func (client *QueueClient) NewListPager(resourceGroupName string, accountName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *QueueClientListResponse) (QueueClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "QueueClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -286,7 +273,6 @@ func (client *QueueClient) NewListPager(resourceGroupName string, accountName st
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -310,7 +296,7 @@ func (client *QueueClient) listCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", *options.Maxpagesize)
 	}
@@ -334,7 +320,7 @@ func (client *QueueClient) listHandleResponse(resp *http.Response) (QueueClientL
 // Update - Creates a new queue with the specified queue name, under the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -345,10 +331,6 @@ func (client *QueueClient) listHandleResponse(resp *http.Response) (QueueClientL
 //   - options - QueueClientUpdateOptions contains the optional parameters for the QueueClient.Update method.
 func (client *QueueClient) Update(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue Queue, options *QueueClientUpdateOptions) (QueueClientUpdateResponse, error) {
 	var err error
-	const operationName = "QueueClient.Update"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, queueName, queue, options)
 	if err != nil {
 		return QueueClientUpdateResponse{}, err
@@ -389,7 +371,7 @@ func (client *QueueClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, queue); err != nil {

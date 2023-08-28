@@ -10,7 +10,7 @@ package armnetwork
 
 const (
 	moduleName    = "armnetwork"
-	moduleVersion = "v3.1.0-beta.2"
+	moduleVersion = "v4.1.0"
 )
 
 // Access - Access to be allowed or denied.
@@ -81,6 +81,23 @@ func PossibleAdminRuleKindValues() []AdminRuleKind {
 	}
 }
 
+// AdminState - Property to indicate if the Express Route Gateway serves traffic when there are multiple Express Route Gateways
+// in the vnet
+type AdminState string
+
+const (
+	AdminStateDisabled AdminState = "Disabled"
+	AdminStateEnabled  AdminState = "Enabled"
+)
+
+// PossibleAdminStateValues returns the possible values for the AdminState const type.
+func PossibleAdminStateValues() []AdminState {
+	return []AdminState{
+		AdminStateDisabled,
+		AdminStateEnabled,
+	}
+}
+
 // ApplicationGatewayBackendHealthServerHealth - Health of backend server.
 type ApplicationGatewayBackendHealthServerHealth string
 
@@ -144,7 +161,6 @@ const (
 	ApplicationGatewayCustomErrorStatusCodeHTTPStatus404 ApplicationGatewayCustomErrorStatusCode = "HttpStatus404"
 	ApplicationGatewayCustomErrorStatusCodeHTTPStatus405 ApplicationGatewayCustomErrorStatusCode = "HttpStatus405"
 	ApplicationGatewayCustomErrorStatusCodeHTTPStatus408 ApplicationGatewayCustomErrorStatusCode = "HttpStatus408"
-	ApplicationGatewayCustomErrorStatusCodeHTTPStatus499 ApplicationGatewayCustomErrorStatusCode = "HttpStatus499"
 	ApplicationGatewayCustomErrorStatusCodeHTTPStatus500 ApplicationGatewayCustomErrorStatusCode = "HttpStatus500"
 	ApplicationGatewayCustomErrorStatusCodeHTTPStatus502 ApplicationGatewayCustomErrorStatusCode = "HttpStatus502"
 	ApplicationGatewayCustomErrorStatusCodeHTTPStatus503 ApplicationGatewayCustomErrorStatusCode = "HttpStatus503"
@@ -159,7 +175,6 @@ func PossibleApplicationGatewayCustomErrorStatusCodeValues() []ApplicationGatewa
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus404,
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus405,
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus408,
-		ApplicationGatewayCustomErrorStatusCodeHTTPStatus499,
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus500,
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus502,
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus503,
@@ -336,6 +351,7 @@ func PossibleApplicationGatewayRuleSetStatusOptionsValues() []ApplicationGateway
 type ApplicationGatewaySKUName string
 
 const (
+	ApplicationGatewaySKUNameBasic          ApplicationGatewaySKUName = "Basic"
 	ApplicationGatewaySKUNameStandardLarge  ApplicationGatewaySKUName = "Standard_Large"
 	ApplicationGatewaySKUNameStandardMedium ApplicationGatewaySKUName = "Standard_Medium"
 	ApplicationGatewaySKUNameStandardSmall  ApplicationGatewaySKUName = "Standard_Small"
@@ -348,6 +364,7 @@ const (
 // PossibleApplicationGatewaySKUNameValues returns the possible values for the ApplicationGatewaySKUName const type.
 func PossibleApplicationGatewaySKUNameValues() []ApplicationGatewaySKUName {
 	return []ApplicationGatewaySKUName{
+		ApplicationGatewaySKUNameBasic,
 		ApplicationGatewaySKUNameStandardLarge,
 		ApplicationGatewaySKUNameStandardMedium,
 		ApplicationGatewaySKUNameStandardSmall,
@@ -490,6 +507,7 @@ func PossibleApplicationGatewaySSLProtocolValues() []ApplicationGatewaySSLProtoc
 type ApplicationGatewayTier string
 
 const (
+	ApplicationGatewayTierBasic      ApplicationGatewayTier = "Basic"
 	ApplicationGatewayTierStandard   ApplicationGatewayTier = "Standard"
 	ApplicationGatewayTierStandardV2 ApplicationGatewayTier = "Standard_v2"
 	ApplicationGatewayTierWAF        ApplicationGatewayTier = "WAF"
@@ -499,6 +517,7 @@ const (
 // PossibleApplicationGatewayTierValues returns the possible values for the ApplicationGatewayTier const type.
 func PossibleApplicationGatewayTierValues() []ApplicationGatewayTier {
 	return []ApplicationGatewayTier{
+		ApplicationGatewayTierBasic,
 		ApplicationGatewayTierStandard,
 		ApplicationGatewayTierStandardV2,
 		ApplicationGatewayTierWAF,
@@ -3367,6 +3386,22 @@ func PossibleSlotTypeValues() []SlotType {
 	return []SlotType{
 		SlotTypeProduction,
 		SlotTypeStaging,
+	}
+}
+
+// SyncMode - Backend address synchronous mode for the backend pool
+type SyncMode string
+
+const (
+	SyncModeAutomatic SyncMode = "Automatic"
+	SyncModeManual    SyncMode = "Manual"
+)
+
+// PossibleSyncModeValues returns the possible values for the SyncMode const type.
+func PossibleSyncModeValues() []SyncMode {
+	return []SyncMode{
+		SyncModeAutomatic,
+		SyncModeManual,
 	}
 }
 

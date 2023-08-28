@@ -26,10 +26,14 @@
         },
         {
             "Name": "azidentity",
-            "CoverageGoal": 0.68
+            "CoverageGoal": 0.87
         },
         {
             "Name": "azqueue",
+            "CoverageGoal": 0.60
+        },
+        {
+            "Name": "azdatalake",
             "CoverageGoal": 0.60
         },
         {

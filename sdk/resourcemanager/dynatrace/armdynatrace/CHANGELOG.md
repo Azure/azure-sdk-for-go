@@ -1,5 +1,24 @@
 # Release History
 
+## 2.0.0 (2023-08-25)
+### Breaking Changes
+
+- Function `*MonitorsClient.GetAccountCredentials` has been removed
+- Function `*TagRulesClient.Update` has been removed
+- Struct `AccountInfoSecure` has been removed
+- Struct `TagRuleUpdate` has been removed
+- Field `DynatraceEnvironmentProperties`, `MarketplaceSubscriptionStatus`, `MonitoringStatus`, `PlanData`, `UserInfo` of struct `MonitorResourceUpdate` has been removed
+
+### Features Added
+
+- New function `*MonitorsClient.GetMarketplaceSaaSResourceDetails(context.Context, MarketplaceSaaSResourceDetailsRequest, *MonitorsClientGetMarketplaceSaaSResourceDetailsOptions) (MonitorsClientGetMarketplaceSaaSResourceDetailsResponse, error)`
+- New function `*MonitorsClient.GetMetricStatus(context.Context, string, string, *MonitorsClientGetMetricStatusOptions) (MonitorsClientGetMetricStatusResponse, error)`
+- New struct `MarketplaceSaaSResourceDetailsRequest`
+- New struct `MarketplaceSaaSResourceDetailsResponse`
+- New struct `MetricsStatusResponse`
+- New field `SendingMetrics` in struct `MetricRules`
+
+
 ## 1.1.0 (2023-03-28)
 ### Features Added
 

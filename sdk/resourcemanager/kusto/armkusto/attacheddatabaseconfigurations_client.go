@@ -29,8 +29,7 @@ type AttachedDatabaseConfigurationsClient struct {
 }
 
 // NewAttachedDatabaseConfigurationsClient creates a new instance of AttachedDatabaseConfigurationsClient with the specified values.
-//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAttachedDatabaseConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedDatabaseConfigurationsClient, error) {
@@ -48,8 +47,8 @@ func NewAttachedDatabaseConfigurationsClient(subscriptionID string, credential a
 // CheckNameAvailability - Checks that the attached database configuration resource name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - resourceName - The name of the resource.
 //   - options - AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.CheckNameAvailability
@@ -89,7 +88,7 @@ func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resourceName)
@@ -107,8 +106,8 @@ func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityHandleR
 // BeginCreateOrUpdate - Creates or updates an attached database configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - attachedDatabaseConfigurationName - The name of the attached database configuration.
 //   - parameters - The database parameters supplied to the CreateOrUpdate operation.
@@ -120,7 +119,9 @@ func (client *AttachedDatabaseConfigurationsClient) BeginCreateOrUpdate(ctx cont
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
@@ -129,7 +130,7 @@ func (client *AttachedDatabaseConfigurationsClient) BeginCreateOrUpdate(ctx cont
 // CreateOrUpdate - Creates or updates an attached database configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
+// Generated from API version 2023-05-02
 func (client *AttachedDatabaseConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, options)
 	if err != nil {
@@ -169,7 +170,7 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -178,8 +179,8 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(
 // BeginDelete - Deletes the attached database configuration with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - attachedDatabaseConfigurationName - The name of the attached database configuration.
 //   - options - AttachedDatabaseConfigurationsClientBeginDeleteOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginDelete
@@ -190,7 +191,9 @@ func (client *AttachedDatabaseConfigurationsClient) BeginDelete(ctx context.Cont
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AttachedDatabaseConfigurationsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AttachedDatabaseConfigurationsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[AttachedDatabaseConfigurationsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
@@ -199,7 +202,7 @@ func (client *AttachedDatabaseConfigurationsClient) BeginDelete(ctx context.Cont
 // Delete - Deletes the attached database configuration with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
+// Generated from API version 2023-05-02
 func (client *AttachedDatabaseConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, options)
 	if err != nil {
@@ -239,7 +242,7 @@ func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -248,8 +251,8 @@ func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx cont
 // Get - Returns an attached database configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - attachedDatabaseConfigurationName - The name of the attached database configuration.
 //   - options - AttachedDatabaseConfigurationsClientGetOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.Get
@@ -293,7 +296,7 @@ func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,8 +313,8 @@ func (client *AttachedDatabaseConfigurationsClient) getHandleResponse(resp *http
 
 // NewListByClusterPager - Returns the list of attached database configurations of the given Kusto cluster.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - options - AttachedDatabaseConfigurationsClientListByClusterOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.NewListByClusterPager
 //     method.
@@ -357,7 +360,7 @@ func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

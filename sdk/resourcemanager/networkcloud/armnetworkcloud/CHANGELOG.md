@@ -1,5 +1,44 @@
 # Release History
 
+## 1.0.0 (2023-08-25)
+### Breaking Changes
+
+- Enum `BareMetalMachineHardwareValidationCategory` has been removed
+- Function `*BareMetalMachinesClient.BeginValidateHardware` has been removed
+- Function `*StorageAppliancesClient.BeginRunReadCommands` has been removed
+- Function `*VirtualMachinesClient.BeginAttachVolume` has been removed
+- Function `*VirtualMachinesClient.BeginDetachVolume` has been removed
+- Struct `BareMetalMachineValidateHardwareParameters` has been removed
+- Struct `StorageApplianceCommandSpecification` has been removed
+- Struct `StorageApplianceRunReadCommandsParameters` has been removed
+- Struct `VirtualMachineVolumeParameters` has been removed
+
+### Features Added
+
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `OperationStatusResult`
+- New anonymous field `OperationStatusResult` in struct `BareMetalMachinesClientCordonResponse`
+- New anonymous field `OperationStatusResult` in struct `BareMetalMachinesClientPowerOffResponse`
+- New anonymous field `OperationStatusResult` in struct `BareMetalMachinesClientReimageResponse`
+- New anonymous field `OperationStatusResult` in struct `BareMetalMachinesClientReplaceResponse`
+- New anonymous field `OperationStatusResult` in struct `BareMetalMachinesClientRestartResponse`
+- New anonymous field `OperationStatusResult` in struct `BareMetalMachinesClientRunCommandResponse`
+- New anonymous field `OperationStatusResult` in struct `BareMetalMachinesClientRunDataExtractsResponse`
+- New anonymous field `OperationStatusResult` in struct `BareMetalMachinesClientRunReadCommandsResponse`
+- New anonymous field `OperationStatusResult` in struct `BareMetalMachinesClientStartResponse`
+- New anonymous field `OperationStatusResult` in struct `BareMetalMachinesClientUncordonResponse`
+- New anonymous field `OperationStatusResult` in struct `ClustersClientDeployResponse`
+- New anonymous field `OperationStatusResult` in struct `ClustersClientUpdateVersionResponse`
+- New anonymous field `OperationStatusResult` in struct `KubernetesClustersClientRestartNodeResponse`
+- New anonymous field `OperationStatusResult` in struct `StorageAppliancesClientDisableRemoteVendorManagementResponse`
+- New anonymous field `OperationStatusResult` in struct `StorageAppliancesClientEnableRemoteVendorManagementResponse`
+- New anonymous field `OperationStatusResult` in struct `VirtualMachinesClientPowerOffResponse`
+- New anonymous field `OperationStatusResult` in struct `VirtualMachinesClientReimageResponse`
+- New anonymous field `OperationStatusResult` in struct `VirtualMachinesClientRestartResponse`
+- New anonymous field `OperationStatusResult` in struct `VirtualMachinesClientStartResponse`
+
+
 ## 0.2.0 (2023-07-28)
 ### Breaking Changes
 

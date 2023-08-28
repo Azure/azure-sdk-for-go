@@ -475,6 +475,8 @@ func (c *ContainerClient) PatchItem(
 
 	if o == nil {
 		o = &ItemOptions{}
+	} else {
+		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
 	}
 
 	operationContext := pipelineRequestOptions{

@@ -9,6 +9,7 @@ package azopenai_test
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
@@ -30,13 +31,15 @@ func ExampleClient_CreateImage() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	resp, err := client.CreateImage(context.TODO(), azopenai.ImageGenerationOptions{
@@ -45,7 +48,8 @@ func ExampleClient_CreateImage() {
 	}, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	for _, generatedImage := range resp.Data {
@@ -57,6 +61,7 @@ func ExampleClient_CreateImage() {
 
 		if err != nil {
 			// TODO: handle error
+			log.Fatalf("ERROR: %s", err)
 		}
 
 		fmt.Fprintf(os.Stderr, "Image generated, HEAD request on URL returned %d\n", resp.StatusCode)

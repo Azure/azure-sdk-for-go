@@ -1,8 +1,11 @@
 # Release History
 
-## 0.1.2 (Unreleased)
+## 0.2.0 (2023-08-28)
 
 ### Features Added
+
+- ChatCompletions supports Azure OpenAI's newest feature to use Azure OpenAI with your own data. See `example_client_getchatcompletions_extensions_test.go`
+  for a working example. (PR#21426)
 
 ### Breaking Changes
 
@@ -13,9 +16,7 @@
 
 - EventReader, used by GetChatCompletionsStream and GetCompletionsStream for streaming results, would not return an 
   error if the underlying Body reader was closed or EOF'd before the actual DONE: token arrived. This could result in an
-  infinite loop for callers. (PR#)
-
-### Other Changes
+  infinite loop for callers. (PR#21323)
 
 ## 0.1.1 (2023-07-26)
 

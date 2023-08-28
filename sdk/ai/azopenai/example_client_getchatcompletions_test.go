@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
@@ -30,7 +31,8 @@ func ExampleClient_GetChatCompletions() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
@@ -38,7 +40,8 @@ func ExampleClient_GetChatCompletions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// This is a conversation in progress.
@@ -69,7 +72,8 @@ func ExampleClient_GetChatCompletions() {
 	}, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	for _, choice := range resp.Choices {
@@ -99,7 +103,8 @@ func ExampleClient_GetChatCompletions_functions() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
@@ -107,10 +112,11 @@ func ExampleClient_GetChatCompletions_functions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
-	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
+	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
 		Deployment: modelDeploymentID,
 		Messages: []azopenai.ChatMessage{
 			{
@@ -146,7 +152,8 @@ func ExampleClient_GetChatCompletions_functions() {
 	}, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	funcCall := resp.ChatCompletions.Choices[0].Message.FunctionCall
@@ -163,7 +170,8 @@ func ExampleClient_GetChatCompletions_functions() {
 	err = json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// Prints:
@@ -188,7 +196,8 @@ func ExampleClient_GetChatCompletionsStream() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
@@ -196,7 +205,8 @@ func ExampleClient_GetChatCompletionsStream() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// This is a conversation in progress.
@@ -226,7 +236,8 @@ func ExampleClient_GetChatCompletionsStream() {
 	}, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	defer resp.ChatCompletionsStream.Close()
@@ -242,6 +253,7 @@ func ExampleClient_GetChatCompletionsStream() {
 
 		if err != nil {
 			// TODO: handle error
+			log.Fatalf("ERROR: %s", err)
 		}
 
 		for _, choice := range chatCompletions.Choices {

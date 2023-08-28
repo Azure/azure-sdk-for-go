@@ -22,6 +22,14 @@ type GetChatCompletionsResponse struct {
 	ChatCompletions
 }
 
+// GetChatCompletionsWithAzureExtensionsResponse contains the response from method Client.GetChatCompletionsWithAzureExtensions.
+type GetChatCompletionsWithAzureExtensionsResponse struct {
+	// Representation of the response data from a chat completions request.
+	// Completions support a wide variety of tasks and generate text that continues from or "completes"
+	// provided prompt data.
+	ChatCompletions
+}
+
 // GetCompletionsResponse contains the response from method Client.GetCompletions.
 type GetCompletionsResponse struct {
 	// Representation of the response data from a completions request.

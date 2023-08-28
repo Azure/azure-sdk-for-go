@@ -8,6 +8,115 @@
 
 package azopenai
 
+import "time"
+
+// AzureChatExtensionConfiguration - A representation of configuration data for a single Azure OpenAI chat extension. This
+// will be used by a chat completions request that should use Azure OpenAI chat extensions to augment the response
+// behavior. The use of this configuration is compatible only with Azure OpenAI.
+type AzureChatExtensionConfiguration struct {
+
+	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
+	// chat extensions are only compatible with Azure OpenAI.
+	Type *AzureChatExtensionType
+
+	// REQUIRED; The configuration payload used for the Azure chat extension. The structure payload details are specific to the
+	// extension being configured. Azure chat extensions are only compatible with Azure OpenAI.
+	Parameters any
+}
+
+// AzureChatExtensionsMessageContext - A representation of the additional context information available when Azure OpenAI
+// chat extensions are involved in the generation of a corresponding chat completions response. This context information
+// is only populated when using an Azure OpenAI request configured to use a matching extension.
+type AzureChatExtensionsMessageContext struct {
+	// The contextual message payload associated with the Azure chat extensions used for a chat completions request. These messages
+	// describe the data source retrievals, plugin invocations, and other
+	// intermediate steps taken in the course of generating a chat completions response that was augmented by capabilities from
+	// Azure OpenAI chat extensions.
+	Messages []ChatMessage
+}
+
+// AzureCognitiveSearchChatExtensionConfiguration - A specific representation of configurable options for Azure Cognitive
+// Search when using it as an Azure OpenAI chat extension.
+type AzureCognitiveSearchChatExtensionConfiguration struct {
+	// REQUIRED; The absolute endpoint path for the Azure Cognitive Search resource to use.
+	Endpoint *string
+
+	// REQUIRED; The name of the index to use as available in the referenced Azure Cognitive Search resource.
+	IndexName *string
+
+	// REQUIRED; The API admin key to use with the specified Azure Cognitive Search endpoint.
+	Key *string
+
+	// REQUIRED; The type label to use when configuring Azure OpenAI chat extensions. This should typically not be changed from
+	// its default value for Azure Cognitive Search.
+	Type *AzureCognitiveSearchChatExtensionConfigurationType
+
+	// When using embeddings for search, specifies the resource URL from which embeddings should be retrieved.
+	EmbeddingEndpoint *string
+
+	// When using embeddings, specifies the API key to use with the provided embeddings endpoint.
+	EmbeddingKey *string
+
+	// Customized field mapping behavior to use when interacting with the search index.
+	FieldsMapping *AzureCognitiveSearchChatExtensionConfigurationFieldsMapping
+
+	// Whether queries should be restricted to use of indexed data.
+	InScope *bool
+
+	// The query type to use with Azure Cognitive Search.
+	QueryType *AzureCognitiveSearchQueryType
+
+	// The additional semantic configuration for the query.
+	SemanticConfiguration *string
+
+	// The configured top number of documents to feature for the configured query.
+	TopNDocuments *int32
+}
+
+// AzureCognitiveSearchChatExtensionConfigurationFieldsMapping - Customized field mapping behavior to use when interacting
+// with the search index.
+type AzureCognitiveSearchChatExtensionConfigurationFieldsMapping struct {
+	// The names of index fields that should be treated as content.
+	ContentFieldNames []string
+
+	// The separator pattern that content fields should use.
+	ContentFieldSeparator *string
+
+	// The name of the index field to use as a filepath.
+	FilepathField *string
+
+	// The name of the index field to use as a title.
+	TitleField *string
+
+	// The name of the index field to use as a URL.
+	URLField *string
+
+	// The names of fields that represent vector data.
+	VectorFields []string
+}
+
+// AzureCognitiveSearchIndexFieldMappingOptions - Optional settings to control how fields are processed when using a configured
+// Azure Cognitive Search resource.
+type AzureCognitiveSearchIndexFieldMappingOptions struct {
+	// The names of index fields that should be treated as content.
+	ContentFieldNames []string
+
+	// The separator pattern that content fields should use.
+	ContentFieldSeparator *string
+
+	// The name of the index field to use as a filepath.
+	FilepathField *string
+
+	// The name of the index field to use as a title.
+	TitleField *string
+
+	// The name of the index field to use as a URL.
+	URLField *string
+
+	// The names of fields that represent vector data.
+	VectorFields []string
+}
+
 // azureCoreFoundationsError - The error object.
 type azureCoreFoundationsError struct {
 	// REQUIRED; One of a server-defined set of error codes.
@@ -83,7 +192,7 @@ type azureCoreFoundationsInnerErrorInnererror struct {
 // batchImageGenerationOperationResponse - A polling status update or final response payload for an image operation.
 type batchImageGenerationOperationResponse struct {
 	// REQUIRED; A timestamp when this job or item was created (in unix epochs).
-	Created *int64
+	Created *time.Time
 
 	// REQUIRED; The ID of the operation.
 	ID *string
@@ -127,33 +236,38 @@ type ChatChoice struct {
 // it has been detected, as well as the severity level (verylow, low, medium, high-scale that determines the
 // intensity and risk level of harmful content) and if it has been filtered or not.
 type ChatChoiceContentFilterResults struct {
-	// REQUIRED; Describes language attacks or uses that include pejorative or discriminatory language with reference to a person
-	// or identity group on the basis of certain differentiating attributes of these groups
+	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
+	// group on the basis of certain differentiating attributes of these groups
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
 	// immigration status, ability status, personal appearance, and body size.
 	Hate *ContentFilterResultsHate
 
-	// REQUIRED; Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill
-	// oneself.
+	// Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill oneself.
 	SelfHarm *ContentFilterResultsSelfHarm
 
-	// REQUIRED; Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic
-	// or affectionate terms, physical sexual acts, including those portrayed as an assault or a
+	// Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic or affectionate
+	// terms, physical sexual acts, including those portrayed as an assault or a
 	// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
 	Sexual *ContentFilterResultsSexual
 
-	// REQUIRED; Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something;
-	// describes weapons, etc.
+	// Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes
+	// weapons, etc.
 	Violence *ContentFilterResultsViolence
 }
 
 // ChatChoiceDelta - The delta message content for a streaming response.
 type ChatChoiceDelta struct {
+	// REQUIRED; The text associated with this message payload.
+	Content *string
+
 	// REQUIRED; The role associated with this message payload.
 	Role *ChatRole
 
-	// The text associated with this message payload.
-	Content *string
+	// Additional context data associated with a chat message when requesting chat completions using compatible Azure OpenAI chat
+	// extensions. This includes information like the intermediate data source
+	// retrievals used to service a request. This context information is only populated when using Azure OpenAI with chat extensions
+	// capabilities configured.
+	Context *ChatMessageContext
 
 	// The name and arguments of a function that should be called, as generated by the model.
 	FunctionCall *ChatMessageFunctionCall
@@ -166,11 +280,17 @@ type ChatChoiceDelta struct {
 
 // ChatChoiceMessage - The chat message for a given chat completions prompt.
 type ChatChoiceMessage struct {
+	// REQUIRED; The text associated with this message payload.
+	Content *string
+
 	// REQUIRED; The role associated with this message payload.
 	Role *ChatRole
 
-	// The text associated with this message payload.
-	Content *string
+	// Additional context data associated with a chat message when requesting chat completions using compatible Azure OpenAI chat
+	// extensions. This includes information like the intermediate data source
+	// retrievals used to service a request. This context information is only populated when using Azure OpenAI with chat extensions
+	// capabilities configured.
+	Context *ChatMessageContext
 
 	// The name and arguments of a function that should be called, as generated by the model.
 	FunctionCall *ChatMessageFunctionCall
@@ -191,7 +311,7 @@ type ChatCompletions struct {
 
 	// REQUIRED; The first timestamp associated with generation activity for this completions response, represented as seconds
 	// since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
-	Created *int32
+	Created *time.Time
 
 	// REQUIRED; A unique identifier associated with this chat completions response.
 	ID *string
@@ -211,6 +331,10 @@ type ChatCompletionsOptions struct {
 	// chat message for the System role that provides instructions for the behavior of the
 	// assistant, followed by alternating messages between the User and Assistant roles.
 	Messages []ChatMessage
+
+	// The configuration entries for Azure OpenAI chat extensions that use them. This additional specification is only compatible
+	// with Azure OpenAI.
+	AzureExtensionsOptions *AzureChatExtensionOptions
 
 	// A value that influences the probability of generated tokens appearing based on their cumulative frequency in generated
 	// text. Positive values will make tokens less likely to appear as their frequency
@@ -272,11 +396,17 @@ type ChatCompletionsOptions struct {
 
 // ChatMessage - A single, role-attributed message within a chat completion interaction.
 type ChatMessage struct {
+	// REQUIRED; The text associated with this message payload.
+	Content *string
+
 	// REQUIRED; The role associated with this message payload.
 	Role *ChatRole
 
-	// The text associated with this message payload.
-	Content *string
+	// Additional context data associated with a chat message when requesting chat completions using compatible Azure OpenAI chat
+	// extensions. This includes information like the intermediate data source
+	// retrievals used to service a request. This context information is only populated when using Azure OpenAI with chat extensions
+	// capabilities configured.
+	Context *ChatMessageContext
 
 	// The name and arguments of a function that should be called, as generated by the model.
 	FunctionCall *ChatMessageFunctionCall
@@ -285,6 +415,18 @@ type ChatMessage struct {
 	// whose response is in the content. May contain a-z, A-Z, 0-9, and underscores,
 	// with a maximum length of 64 characters.
 	Name *string
+}
+
+// ChatMessageContext - Additional context data associated with a chat message when requesting chat completions using compatible
+// Azure OpenAI chat extensions. This includes information like the intermediate data source
+// retrievals used to service a request. This context information is only populated when using Azure OpenAI with chat extensions
+// capabilities configured.
+type ChatMessageContext struct {
+	// The contextual message payload associated with the Azure chat extensions used for a chat completions request. These messages
+	// describe the data source retrievals, plugin invocations, and other
+	// intermediate steps taken in the course of generating a chat completions response that was augmented by capabilities from
+	// Azure OpenAI chat extensions.
+	Messages []ChatMessage
 }
 
 // ChatMessageFunctionCall - The name and arguments of a function that should be called, as generated by the model.
@@ -324,23 +466,22 @@ type Choice struct {
 // has been detected, as well as the severity level (verylow, low, medium, high-scale that determines the
 // intensity and risk level of harmful content) and if it has been filtered or not.
 type ChoiceContentFilterResults struct {
-	// REQUIRED; Describes language attacks or uses that include pejorative or discriminatory language with reference to a person
-	// or identity group on the basis of certain differentiating attributes of these groups
+	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
+	// group on the basis of certain differentiating attributes of these groups
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
 	// immigration status, ability status, personal appearance, and body size.
 	Hate *ContentFilterResultsHate
 
-	// REQUIRED; Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill
-	// oneself.
+	// Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill oneself.
 	SelfHarm *ContentFilterResultsSelfHarm
 
-	// REQUIRED; Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic
-	// or affectionate terms, physical sexual acts, including those portrayed as an assault or a
+	// Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic or affectionate
+	// terms, physical sexual acts, including those portrayed as an assault or a
 	// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
 	Sexual *ContentFilterResultsSexual
 
-	// REQUIRED; Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something;
-	// describes weapons, etc.
+	// Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes
+	// weapons, etc.
 	Violence *ContentFilterResultsViolence
 }
 
@@ -369,7 +510,7 @@ type Completions struct {
 
 	// REQUIRED; The first timestamp associated with generation activity for this completions response, represented as seconds
 	// since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
-	Created *int32
+	Created *time.Time
 
 	// REQUIRED; A unique identifier associated with this completions response.
 	ID *string
@@ -479,23 +620,22 @@ type CompletionsUsage struct {
 
 // ContentFilterResults - Information about the content filtering category, if it has been detected.
 type ContentFilterResults struct {
-	// REQUIRED; Describes language attacks or uses that include pejorative or discriminatory language with reference to a person
-	// or identity group on the basis of certain differentiating attributes of these groups
+	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
+	// group on the basis of certain differentiating attributes of these groups
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
 	// immigration status, ability status, personal appearance, and body size.
 	Hate *ContentFilterResultsHate
 
-	// REQUIRED; Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill
-	// oneself.
+	// Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill oneself.
 	SelfHarm *ContentFilterResultsSelfHarm
 
-	// REQUIRED; Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic
-	// or affectionate terms, physical sexual acts, including those portrayed as an assault or a
+	// Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic or affectionate
+	// terms, physical sexual acts, including those portrayed as an assault or a
 	// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
 	Sexual *ContentFilterResultsSexual
 
-	// REQUIRED; Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something;
-	// describes weapons, etc.
+	// Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes
+	// weapons, etc.
 	Violence *ContentFilterResultsViolence
 }
 
@@ -657,7 +797,7 @@ type ImageGenerationOptions struct {
 // ImageGenerations - The result of the operation if the operation succeeded.
 type ImageGenerations struct {
 	// REQUIRED; A timestamp when this job or item was created (in unix epochs).
-	Created *int64
+	Created *time.Time
 
 	// REQUIRED; The images generated by the operator.
 	Data []ImageGenerationsDataItem
@@ -686,22 +826,21 @@ type PromptFilterResult struct {
 
 // PromptFilterResultContentFilterResults - Content filtering results for this prompt
 type PromptFilterResultContentFilterResults struct {
-	// REQUIRED; Describes language attacks or uses that include pejorative or discriminatory language with reference to a person
-	// or identity group on the basis of certain differentiating attributes of these groups
+	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
+	// group on the basis of certain differentiating attributes of these groups
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
 	// immigration status, ability status, personal appearance, and body size.
 	Hate *ContentFilterResultsHate
 
-	// REQUIRED; Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill
-	// oneself.
+	// Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill oneself.
 	SelfHarm *ContentFilterResultsSelfHarm
 
-	// REQUIRED; Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic
-	// or affectionate terms, physical sexual acts, including those portrayed as an assault or a
+	// Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic or affectionate
+	// terms, physical sexual acts, including those portrayed as an assault or a
 	// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
 	Sexual *ContentFilterResultsSexual
 
-	// REQUIRED; Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something;
-	// describes weapons, etc.
+	// Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes
+	// weapons, etc.
 	Violence *ContentFilterResultsViolence
 }

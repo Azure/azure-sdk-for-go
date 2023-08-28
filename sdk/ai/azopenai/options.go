@@ -20,6 +20,12 @@ type GetChatCompletionsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// GetChatCompletionsWithAzureExtensionsOptions contains the optional parameters for the Client.GetChatCompletionsWithAzureExtensions
+// method.
+type GetChatCompletionsWithAzureExtensionsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
 type GetCompletionsOptions struct {
 	// placeholder for future optional parameters

@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
@@ -29,7 +30,8 @@ func ExampleClient_GetCompletions() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
@@ -37,7 +39,8 @@ func ExampleClient_GetCompletions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	resp, err := client.GetCompletions(context.TODO(), azopenai.CompletionsOptions{
@@ -48,7 +51,8 @@ func ExampleClient_GetCompletions() {
 	}, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	for _, choice := range resp.Choices {
@@ -73,7 +77,8 @@ func ExampleClient_GetCompletionsStream() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
@@ -81,7 +86,8 @@ func ExampleClient_GetCompletionsStream() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	resp, err := client.GetCompletionsStream(context.TODO(), azopenai.CompletionsOptions{
@@ -92,7 +98,8 @@ func ExampleClient_GetCompletionsStream() {
 	}, nil)
 
 	if err != nil {
-		// TODO: handle error
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
 	defer resp.CompletionsStream.Close()
@@ -107,6 +114,7 @@ func ExampleClient_GetCompletionsStream() {
 
 		if err != nil {
 			// TODO: handle error
+			log.Fatalf("ERROR: %s", err)
 		}
 
 		for _, choice := range entry.Choices {

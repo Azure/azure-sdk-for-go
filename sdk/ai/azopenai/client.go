@@ -27,7 +27,7 @@ type Client struct {
 // beginAzureBatchImageGeneration - Starts the generation of a batch of images from a text caption
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01-preview
+// Generated from API version 2023-08-01-preview
 //   - options - beginAzureBatchImageGenerationOptions contains the optional parameters for the Client.beginAzureBatchImageGeneration
 //     method.
 func (client *Client) beginAzureBatchImageGeneration(ctx context.Context, body ImageGenerationOptions, options *beginAzureBatchImageGenerationOptions) (*runtime.Poller[azureBatchImageGenerationInternalResponse], error) {
@@ -46,7 +46,7 @@ func (client *Client) beginAzureBatchImageGeneration(ctx context.Context, body I
 // AzureBatchImageGenerationInternal - Starts the generation of a batch of images from a text caption
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01-preview
+// Generated from API version 2023-08-01-preview
 func (client *Client) azureBatchImageGenerationInternal(ctx context.Context, body ImageGenerationOptions, options *beginAzureBatchImageGenerationOptions) (*http.Response, error) {
 	var err error
 	req, err := client.azureBatchImageGenerationInternalCreateRequest(ctx, body, options)
@@ -72,7 +72,7 @@ func (client *Client) azureBatchImageGenerationInternalCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -81,13 +81,13 @@ func (client *Client) azureBatchImageGenerationInternalCreateRequest(ctx context
 	return req, nil
 }
 
-// GetChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
+// getChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
 // and generate text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01-preview
-//   - options - GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
-func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
+// Generated from API version 2023-08-01-preview
+//   - options - GetChatCompletionsOptions contains the optional parameters for the Client.getChatCompletions method.
+func (client *Client) getChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
 	var err error
 	req, err := client.getChatCompletionsCreateRequest(ctx, body, options)
 	if err != nil {
@@ -105,7 +105,7 @@ func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletio
 	return resp, err
 }
 
-// getChatCompletionsCreateRequest creates the GetChatCompletions request.
+// getChatCompletionsCreateRequest creates the getChatCompletions request.
 func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (*policy.Request, error) {
 	urlPath := "chat/completions"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
@@ -113,7 +113,7 @@ func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,7 +122,7 @@ func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body 
 	return req, nil
 }
 
-// getChatCompletionsHandleResponse handles the GetChatCompletions response.
+// getChatCompletionsHandleResponse handles the getChatCompletions response.
 func (client *Client) getChatCompletionsHandleResponse(resp *http.Response) (GetChatCompletionsResponse, error) {
 	result := GetChatCompletionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChatCompletions); err != nil {
@@ -131,11 +131,63 @@ func (client *Client) getChatCompletionsHandleResponse(resp *http.Response) (Get
 	return result, nil
 }
 
+// getChatCompletionsWithAzureExtensions - Gets chat completions for the provided chat messages. This is an Azure-specific
+// version of chat completions that supports integration with configured data sources and other augmentations to the base
+// chat completions capabilities.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-08-01-preview
+//   - options - GetChatCompletionsWithAzureExtensionsOptions contains the optional parameters for the Client.GetChatCompletionsWithAzureExtensions
+//     method.
+func (client *Client) getChatCompletionsWithAzureExtensions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsWithAzureExtensionsOptions) (GetChatCompletionsWithAzureExtensionsResponse, error) {
+	var err error
+	req, err := client.getChatCompletionsWithAzureExtensionsCreateRequest(ctx, body, options)
+	if err != nil {
+		return GetChatCompletionsWithAzureExtensionsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GetChatCompletionsWithAzureExtensionsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return GetChatCompletionsWithAzureExtensionsResponse{}, err
+	}
+	resp, err := client.getChatCompletionsWithAzureExtensionsHandleResponse(httpResp)
+	return resp, err
+}
+
+// getChatCompletionsWithAzureExtensionsCreateRequest creates the getChatCompletionsWithAzureExtensions request.
+func (client *Client) getChatCompletionsWithAzureExtensionsCreateRequest(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsWithAzureExtensionsOptions) (*policy.Request, error) {
+	urlPath := "extensions/chat/completions"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// getChatCompletionsWithAzureExtensionsHandleResponse handles the getChatCompletionsWithAzureExtensions response.
+func (client *Client) getChatCompletionsWithAzureExtensionsHandleResponse(resp *http.Response) (GetChatCompletionsWithAzureExtensionsResponse, error) {
+	result := GetChatCompletionsWithAzureExtensionsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ChatCompletions); err != nil {
+		return GetChatCompletionsWithAzureExtensionsResponse{}, err
+	}
+	return result, nil
+}
+
 // GetCompletions - Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate
 // text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01-preview
+// Generated from API version 2023-08-01-preview
 //   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
 func (client *Client) GetCompletions(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (GetCompletionsResponse, error) {
 	var err error
@@ -163,7 +215,7 @@ func (client *Client) getCompletionsCreateRequest(ctx context.Context, body Comp
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -184,7 +236,7 @@ func (client *Client) getCompletionsHandleResponse(resp *http.Response) (GetComp
 // GetEmbeddings - Return the embeddings for a given prompt.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01-preview
+// Generated from API version 2023-08-01-preview
 //   - options - GetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
 func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions, options *GetEmbeddingsOptions) (GetEmbeddingsResponse, error) {
 	var err error
@@ -212,7 +264,7 @@ func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body Embed
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

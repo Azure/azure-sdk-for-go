@@ -175,15 +175,25 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		return c.createAccessToken(resp)
 	}
 
-	if c.msiType == msiTypeIMDS && resp.StatusCode == 400 {
-		if id != nil {
-			return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "the requested identity isn't assigned to this resource", resp, nil)
+	if c.msiType == msiTypeIMDS {
+		switch resp.StatusCode {
+		case http.StatusBadRequest:
+			if id != nil {
+				return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "the requested identity isn't assigned to this resource", resp, nil)
+			}
+			msg := "failed to authenticate a system assigned identity"
+			if body, err := runtime.Payload(resp); err == nil && len(body) > 0 {
+				msg += fmt.Sprintf(". The endpoint responded with %s", body)
+			}
+			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, msg)
+		case http.StatusForbidden:
+			// Docker Desktop runs a proxy that responds 403 to IMDS token requests. If we get that response,
+			// we return credentialUnavailableError so credential chains continue to their next credential
+			body, err := runtime.Payload(resp)
+			if err == nil && strings.Contains(string(body), "A socket operation was attempted to an unreachable network") {
+				return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, fmt.Sprintf("unexpected response %q", string(body)))
+			}
 		}
-		msg := "failed to authenticate a system assigned identity"
-		if body, err := runtime.Payload(resp); err == nil && len(body) > 0 {
-			msg += fmt.Sprintf(". The endpoint responded with %s", body)
-		}
-		return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, msg)
 	}
 
 	return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "authentication failed", resp, nil)

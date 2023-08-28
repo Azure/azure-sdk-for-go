@@ -12,6 +12,9 @@
   tokens by default or observe the environment variable "AZURE_IDENTITY_DISABLE_CP1".
 
 ### Bugs Fixed
+* Credential chains such as `DefaultAzureCredential` now try their next credential, if any, when
+  managed identity authentication fails in a Docker Desktop container
+  ([#21417](https://github.com/Azure/azure-sdk-for-go/issues/21417))
 
 ### Other Changes
 

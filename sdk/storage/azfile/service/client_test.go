@@ -229,7 +229,8 @@ func (s *ServiceRecordedTestsSuite) TestAccountListSharesNonDefault() {
 func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientRestoreShare() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	cred, _ := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.file.core.windows.net/", cred.AccountName()), cred, nil)
 	_require.NoError(err)
@@ -451,4 +452,171 @@ func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteRestoreShare() {
 		sharesCnt += len(resp.Shares)
 	}
 	_require.Equal(sharesCnt, 1)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceOAuthNegative() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{FileRequestIntent: to.Ptr(service.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".file.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	// service-level operations are not supported using token credential authentication.
+	_, err = svcClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
+
+	_, err = svcClient.SetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
+
+	pager := svcClient.NewListSharesPager(nil)
+	_, err = pager.NextPage(context.Background())
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteDirOAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	// create service client using token credential
+	options := &service.ClientOptions{FileRequestIntent: to.Ptr(service.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClientOAuth, err := service.NewClient("https://"+accountName+".file.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	dirClient := svcClientOAuth.NewShareClient(shareName).NewDirectoryClient(testcommon.GenerateDirectoryName(testName))
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = dirClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestAccountSASEncryptionScope() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	_require.NoError(err)
+
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:   true,
+		Write:  true,
+		Delete: true,
+		List:   true,
+		Create: true,
+	}
+	expiry := time.Now().Add(1 * time.Hour)
+
+	qps, err := sas.AccountSignatureValues{
+		Permissions:     permissions.String(),
+		ResourceTypes:   resources.String(),
+		ExpiryTime:      expiry.UTC(),
+		EncryptionScope: encryptionScope,
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	svcSAS := fmt.Sprintf("https://%s.file.core.windows.net/?%s", cred.AccountName(), qps.Encode())
+	svcClient, err := service.NewClientWithNoCredential(svcSAS, nil)
+	_require.NoError(err)
+
+	_, err = svcClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	_, err = svcClient.CreateShare(context.Background(), shareName, nil)
+	_require.NoError(err)
+	defer func() {
+		_, err = svcClient.DeleteShare(context.Background(), shareName, nil)
+		_require.NoError(err)
+	}()
+
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Prefix: &shareName,
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(resp.Shares, 1)
+		_require.NotNil(resp.Shares[0].Name)
+		_require.Equal(*resp.Shares[0].Name, shareName)
+	}
+
+	shareClient := svcClient.NewShareClient(shareName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+
+	_, err = fileClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+
+	_, err = fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestPremiumAccountListShares() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
+	_require.NoError(err)
+
+	mySharePrefix := testcommon.GenerateEntityName(testName)
+	shareClients := map[string]*share.Client{}
+	for i := 0; i < 4; i++ {
+		shareName := mySharePrefix + "share" + strconv.Itoa(i)
+		shareClients[shareName] = testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+		defer testcommon.DeleteShare(context.Background(), _require, shareClients[shareName])
+	}
+
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Prefix: to.Ptr(mySharePrefix),
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(resp.Shares, 4)
+		for _, shareItem := range resp.Shares {
+			_require.NotNil(shareItem.Properties)
+			_require.NotNil(shareItem.Properties.ProvisionedBandwidthMiBps)
+			_require.NotNil(shareItem.Properties.ProvisionedIngressMBps)
+			_require.NotNil(shareItem.Properties.ProvisionedEgressMBps)
+			_require.NotNil(shareItem.Properties.ProvisionedIops)
+			_require.NotNil(shareItem.Properties.NextAllowedQuotaDowngradeTime)
+			_require.Greater(*shareItem.Properties.ProvisionedBandwidthMiBps, (int32)(0))
+		}
+	}
 }

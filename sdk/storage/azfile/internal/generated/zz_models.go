@@ -34,11 +34,14 @@ type ClearRange struct {
 	Start *int64 `xml:"Start"`
 }
 
-// CopyFileSMBInfo contains a group of parameters for the FileClient.StartCopy method.
+// CopyFileSMBInfo contains a group of parameters for the DirectoryClient.Rename method.
 type CopyFileSMBInfo struct {
 	// Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes
 	// to set on a target file.
 	FileAttributes *string
+	// Specifies either the option to copy file last write time from a source file(source) to a target file or a time value in
+	// ISO 8601 format to set as last write time on a target file.
+	FileChangeTime *string
 	// Specifies either the option to copy file creation time from a source file(source) to a target file or a time value in ISO
 	// 8601 format to set as creation time on a target file.
 	FileCreationTime *string
@@ -80,6 +83,16 @@ type CORSRule struct {
 	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
 }
 
+// DestinationLeaseAccessConditions contains a group of parameters for the DirectoryClient.Rename method.
+type DestinationLeaseAccessConditions struct {
+	// Required if the destination file has an active infinite lease. The lease ID specified for this header must match the lease
+	// ID of the destination file. If the request does not include the lease ID or
+	// it is not valid, the operation fails with status code 412 (Precondition Failed). If this header is specified and the destination
+	// file does not currently have an active lease, the operation will also
+	// fail with status code 412 (Precondition Failed).
+	DestinationLeaseID *string
+}
+
 // Directory - A listed directory item.
 type Directory struct {
 	// REQUIRED
@@ -94,6 +107,15 @@ type Directory struct {
 
 // DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
 type DirectoryClientCreateOptions struct {
+	// If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory.
+	// ‘None’ can also be specified as default.
+	FileAttributes *string
+	// Change time for the file/directory. Default value: Now.
+	FileChangeTime *string
+	// Creation time for the file/directory. Default value: Now.
+	FileCreationTime *string
+	// Last write time for the file/directory. Default value: Now.
+	FileLastWriteTime *string
 	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
 	// size is <= 8KB, else x-ms-file-permission-key header shall be used. Default
 	// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
@@ -184,6 +206,33 @@ type DirectoryClientListHandlesOptions struct {
 	Timeout *int32
 }
 
+// DirectoryClientRenameOptions contains the optional parameters for the DirectoryClient.Rename method.
+type DirectoryClientRenameOptions struct {
+	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
+	// size is <= 8KB, else x-ms-file-permission-key header shall be used. Default
+	// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
+	// or x-ms-file-permission-key should be specified.
+	FilePermission *string
+	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
+	// should be specified.
+	FilePermissionKey *string
+	// Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting destination file should be respected.
+	// If true, the rename will succeed, otherwise, a previous file at the
+	// destination with the ReadOnly attribute set will cause the rename to fail.
+	IgnoreReadOnly *bool
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]*string
+	// Optional. A boolean value for if the destination file already exists, whether this request will overwrite the file or not.
+	// If true, the rename will succeed and will overwrite the destination file. If
+	// not provided or if false and the destination file does exist, the request will not overwrite the destination file. If provided
+	// and the destination file doesn’t exist, the rename will succeed. Note:
+	// This value does not override the x-ms-file-copy-ignore-read-only header value.
+	ReplaceIfExists *bool
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
 // DirectoryClientSetMetadataOptions contains the optional parameters for the DirectoryClient.SetMetadata method.
 type DirectoryClientSetMetadataOptions struct {
 	// A name-value pair to associate with a file storage object.
@@ -195,6 +244,15 @@ type DirectoryClientSetMetadataOptions struct {
 
 // DirectoryClientSetPropertiesOptions contains the optional parameters for the DirectoryClient.SetProperties method.
 type DirectoryClientSetPropertiesOptions struct {
+	// If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory.
+	// ‘None’ can also be specified as default.
+	FileAttributes *string
+	// Change time for the file/directory. Default value: Now.
+	FileChangeTime *string
+	// Creation time for the file/directory. Default value: Now.
+	FileCreationTime *string
+	// Last write time for the file/directory. Default value: Now.
+	FileLastWriteTime *string
 	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
 	// size is <= 8KB, else x-ms-file-permission-key header shall be used. Default
 	// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
@@ -267,6 +325,15 @@ type FileClientChangeLeaseOptions struct {
 
 // FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
 type FileClientCreateOptions struct {
+	// If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory.
+	// ‘None’ can also be specified as default.
+	FileAttributes *string
+	// Change time for the file/directory. Default value: Now.
+	FileChangeTime *string
+	// Creation time for the file/directory. Default value: Now.
+	FileCreationTime *string
+	// Last write time for the file/directory. Default value: Now.
+	FileLastWriteTime *string
 	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
 	// size is <= 8KB, else x-ms-file-permission-key header shall be used. Default
 	// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
@@ -364,11 +431,47 @@ type FileClientReleaseLeaseOptions struct {
 	Timeout *int32
 }
 
+// FileClientRenameOptions contains the optional parameters for the FileClient.Rename method.
+type FileClientRenameOptions struct {
+	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
+	// size is <= 8KB, else x-ms-file-permission-key header shall be used. Default
+	// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
+	// or x-ms-file-permission-key should be specified.
+	FilePermission *string
+	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
+	// should be specified.
+	FilePermissionKey *string
+	// Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting destination file should be respected.
+	// If true, the rename will succeed, otherwise, a previous file at the
+	// destination with the ReadOnly attribute set will cause the rename to fail.
+	IgnoreReadOnly *bool
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]*string
+	// Optional. A boolean value for if the destination file already exists, whether this request will overwrite the file or not.
+	// If true, the rename will succeed and will overwrite the destination file. If
+	// not provided or if false and the destination file does exist, the request will not overwrite the destination file. If provided
+	// and the destination file doesn’t exist, the rename will succeed. Note:
+	// This value does not override the x-ms-file-copy-ignore-read-only header value.
+	ReplaceIfExists *bool
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	Timeout *int32
+}
+
 // FileClientSetHTTPHeadersOptions contains the optional parameters for the FileClient.SetHTTPHeaders method.
 type FileClientSetHTTPHeadersOptions struct {
+	// If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory.
+	// ‘None’ can also be specified as default.
+	FileAttributes *string
+	// Change time for the file/directory. Default value: Now.
+	FileChangeTime *string
 	// Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges
 	// above the specified byte value are cleared.
 	FileContentLength *int64
+	// Creation time for the file/directory. Default value: Now.
+	FileCreationTime *string
+	// Last write time for the file/directory. Default value: Now.
+	FileLastWriteTime *string
 	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
 	// size is <= 8KB, else x-ms-file-permission-key header shall be used. Default
 	// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
@@ -412,6 +515,8 @@ type FileClientStartCopyOptions struct {
 type FileClientUploadRangeFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
+	// If the file last write time should be preserved or overwritten
+	FileLastWrittenMode *FileLastWrittenMode
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
 	SourceContentCRC64 []byte
 	// Bytes of source data in the specified range.
@@ -428,6 +533,8 @@ type FileClientUploadRangeOptions struct {
 	// arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error code 400
 	// (Bad Request).
 	ContentMD5 []byte
+	// If the file last write time should be preserved or overwritten
+	FileLastWrittenMode *FileLastWrittenMode
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
 	Timeout *int32
@@ -479,7 +586,7 @@ type Handle struct {
 	// REQUIRED; Time when the session that previously opened the handle has last been reconnected. (UTC)
 	OpenTime *time.Time `xml:"OpenTime"`
 
-	// REQUIRED; File or directory name including full path starting from share root
+	// REQUIRED
 	Path *string `xml:"Path"`
 
 	// REQUIRED; SMB session ID in context of which the file handle was opened
@@ -518,6 +625,7 @@ type ListFilesAndDirectoriesSegmentResponse struct {
 	// REQUIRED
 	ShareName     *string `xml:"ShareName,attr"`
 	DirectoryID   *string `xml:"DirectoryId"`
+	Encoded       *bool   `xml:"Encoded,attr"`
 	Marker        *string `xml:"Marker"`
 	MaxResults    *int32  `xml:"MaxResults"`
 	ShareSnapshot *string `xml:"ShareSnapshot,attr"`
@@ -847,7 +955,7 @@ type ShareFileRangeList struct {
 // SharePermission - A permission (a security descriptor) at the share level.
 type SharePermission struct {
 	// REQUIRED; The permission in the Security Descriptor Definition Language (SDDL).
-	Permission *string `json:"permission,omitempty"`
+	Permission *string
 }
 
 // ShareProperties - Properties of a share.
@@ -875,6 +983,7 @@ type ShareProperties struct {
 	// The current lease status of the share.
 	LeaseStatus                   *LeaseStatusType `xml:"LeaseStatus"`
 	NextAllowedQuotaDowngradeTime *time.Time       `xml:"NextAllowedQuotaDowngradeTime"`
+	ProvisionedBandwidthMiBps     *int32           `xml:"ProvisionedBandwidthMiBps"`
 	ProvisionedEgressMBps         *int32           `xml:"ProvisionedEgressMBps"`
 	ProvisionedIngressMBps        *int32           `xml:"ProvisionedIngressMBps"`
 	ProvisionedIops               *int32           `xml:"ProvisionedIops"`
@@ -904,6 +1013,12 @@ type SMBMultichannel struct {
 	Enabled *bool `xml:"Enabled"`
 }
 
+// SourceLeaseAccessConditions contains a group of parameters for the DirectoryClient.Rename method.
+type SourceLeaseAccessConditions struct {
+	// Required if the source file has an active infinite lease.
+	SourceLeaseID *string
+}
+
 // SourceModifiedAccessConditions contains a group of parameters for the FileClient.UploadRangeFromURL method.
 type SourceModifiedAccessConditions struct {
 	// Specify the crc64 value to operate only on range with a matching crc64 checksum.
@@ -913,7 +1028,7 @@ type SourceModifiedAccessConditions struct {
 }
 
 type StorageError struct {
-	Message *string `json:"Message,omitempty"`
+	Message *string
 }
 
 // StorageServiceProperties - Storage service properties.
@@ -929,4 +1044,9 @@ type StorageServiceProperties struct {
 
 	// Protocol settings
 	Protocol *ProtocolSettings `xml:"ProtocolSettings"`
+}
+
+type StringEncoded struct {
+	Content *string `xml:",chardata"`
+	Encoded *bool   `xml:"Encoded,attr"`
 }

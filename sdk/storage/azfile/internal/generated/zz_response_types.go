@@ -167,6 +167,48 @@ type DirectoryClientListHandlesResponse struct {
 	Version *string `xml:"Version"`
 }
 
+// DirectoryClientRenameResponse contains the response from method DirectoryClient.Rename.
+type DirectoryClientRenameResponse struct {
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *azcore.ETag
+
+	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
+	FileAttributes *string
+
+	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
+	FileChangeTime *time.Time
+
+	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
+	FileCreationTime *time.Time
+
+	// ID contains the information returned from the x-ms-file-id header response.
+	ID *string
+
+	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
+	FileLastWriteTime *time.Time
+
+	// ParentID contains the information returned from the x-ms-file-parent-id header response.
+	ParentID *string
+
+	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
+	FilePermissionKey *string
+
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	IsServerEncrypted *bool
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
 // DirectoryClientSetMetadataResponse contains the response from method DirectoryClient.SetMetadata.
 type DirectoryClientSetMetadataResponse struct {
 	// Date contains the information returned from the Date header response.
@@ -646,6 +688,48 @@ type FileClientReleaseLeaseResponse struct {
 	Version *string
 }
 
+// FileClientRenameResponse contains the response from method FileClient.Rename.
+type FileClientRenameResponse struct {
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *azcore.ETag
+
+	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
+	FileAttributes *string
+
+	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
+	FileChangeTime *time.Time
+
+	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
+	FileCreationTime *time.Time
+
+	// ID contains the information returned from the x-ms-file-id header response.
+	ID *string
+
+	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
+	FileLastWriteTime *time.Time
+
+	// ParentID contains the information returned from the x-ms-file-parent-id header response.
+	ParentID *string
+
+	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
+	FilePermissionKey *string
+
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	IsServerEncrypted *bool
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
 // FileClientSetHTTPHeadersResponse contains the response from method FileClient.SetHTTPHeaders.
 type FileClientSetHTTPHeadersResponse struct {
 	// Date contains the information returned from the Date header response.
@@ -744,6 +828,9 @@ type FileClientUploadRangeFromURLResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
+	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
+	FileLastWriteTime *time.Time
+
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
 
@@ -770,6 +857,9 @@ type FileClientUploadRangeResponse struct {
 
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
+
+	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
+	FileLastWriteTime *time.Time
 
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
@@ -1026,6 +1116,9 @@ type ShareClientGetPropertiesResponse struct {
 	// NextAllowedQuotaDowngradeTime contains the information returned from the x-ms-share-next-allowed-quota-downgrade-time header
 	// response.
 	NextAllowedQuotaDowngradeTime *time.Time
+
+	// ProvisionedBandwidthMiBps contains the information returned from the x-ms-share-provisioned-bandwidth-mibps header response.
+	ProvisionedBandwidthMiBps *int32
 
 	// ProvisionedEgressMBps contains the information returned from the x-ms-share-provisioned-egress-mbps header response.
 	ProvisionedEgressMBps *int32

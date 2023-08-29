@@ -76,3 +76,28 @@ type TransferValidationType = exported.TransferValidationType
 
 // TransferValidationTypeMD5 is a TransferValidationType used to provide a precomputed MD5.
 type TransferValidationTypeMD5 = exported.TransferValidationTypeMD5
+
+// ShareTokenIntent is required if authorization header specifies an OAuth token.
+type ShareTokenIntent = generated.ShareTokenIntent
+
+const (
+	ShareTokenIntentBackup ShareTokenIntent = generated.ShareTokenIntentBackup
+)
+
+// PossibleShareTokenIntentValues returns the possible values for the ShareTokenIntent const type.
+func PossibleShareTokenIntentValues() []ShareTokenIntent {
+	return generated.PossibleShareTokenIntentValues()
+}
+
+// LastWrittenMode specifies if the file last write time should be preserved or overwritten
+type LastWrittenMode = generated.FileLastWrittenMode
+
+const (
+	LastWrittenModeNow      LastWrittenMode = generated.FileLastWrittenModeNow
+	LastWrittenModePreserve LastWrittenMode = generated.FileLastWrittenModePreserve
+)
+
+// PossibleLastWrittenModeValues returns the possible values for the LastWrittenMode const type.
+func PossibleLastWrittenModeValues() []LastWrittenMode {
+	return generated.PossibleFileLastWrittenModeValues()
+}

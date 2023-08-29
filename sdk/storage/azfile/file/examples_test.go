@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
@@ -647,4 +648,171 @@ func Example_fileClient_UploadRangeFromURL() {
 
 	_, err = destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), nil)
 	handleError(err)
+}
+
+func Example_fileClient_OAuth() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	shareName := "testShare"
+	fileName := "testFile"
+	fileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + fileName
+
+	fileClient, err := file.NewClient(fileURL, cred, &file.ClientOptions{FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup)})
+	handleError(err)
+
+	_, err = fileClient.Create(context.TODO(), 2048, nil)
+	handleError(err)
+	fmt.Println("File created")
+
+	_, err = fileClient.GetProperties(context.TODO(), nil)
+	handleError(err)
+	fmt.Println("File properties retrieved")
+
+	_, err = fileClient.Delete(context.TODO(), nil)
+	handleError(err)
+	fmt.Println("File deleted")
+}
+
+func Example_fileClient_TrailingDot() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	shareName := "testShare"
+	fileName := "testFile.." // file name with trailing dot
+	fileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + fileName
+
+	fileClient, err := file.NewClient(fileURL, cred, &file.ClientOptions{
+		FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup),
+		AllowTrailingDot:  to.Ptr(true),
+	})
+	handleError(err)
+
+	_, err = fileClient.Create(context.TODO(), 2048, nil)
+	handleError(err)
+	fmt.Println("File created")
+
+	_, err = fileClient.GetProperties(context.TODO(), nil)
+	handleError(err)
+	fmt.Println("File properties retrieved")
+
+	_, err = fileClient.Delete(context.TODO(), nil)
+	handleError(err)
+	fmt.Println("File deleted")
+}
+
+func Example_fileClient_Rename() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	shareName := "testShare"
+	srcFileName := "testFile"
+	destFileName := "newFile"
+	srcFileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + srcFileName
+
+	srcFileClient, err := file.NewClient(srcFileURL, cred, &file.ClientOptions{FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup)})
+	handleError(err)
+
+	_, err = srcFileClient.Rename(context.TODO(), destFileName, nil)
+	handleError(err)
+	fmt.Println("File renamed")
+}
+
+func Example_fileClient_CopyFileUsingSourceProperties() {
+	// Your connection string can be obtained from the Azure Portal.
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+	shareName := "testShare"
+	srcFileName := "testFile"
+	dstFileName := "testFile2"
+	fileSize := int64(5)
+
+	shareClient, err := share.NewClientFromConnectionString(connectionString, shareName, nil)
+	handleError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	handleError(err)
+
+	srcFileClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	dstFileClient := shareClient.NewRootDirectoryClient().NewFileClient(dstFileName)
+
+	contentR, _ := generateData(int(fileSize))
+
+	_, err = srcFileClient.UploadRange(context.Background(), 0, contentR, nil)
+	handleError(err)
+
+	_, err = dstFileClient.StartCopyFromURL(context.Background(), srcFileClient.URL(), &file.StartCopyFromURLOptions{
+		CopyFileSMBInfo: &file.CopyFileSMBInfo{
+			CreationTime:       file.SourceCopyFileCreationTime{},
+			LastWriteTime:      file.SourceCopyFileLastWriteTime{},
+			ChangeTime:         file.SourceCopyFileChangeTime{},
+			Attributes:         file.SourceCopyFileAttributes{},
+			PermissionCopyMode: to.Ptr(file.PermissionCopyModeTypeSource),
+		},
+	})
+	handleError(err)
+	fmt.Println("File copied")
+}
+
+func Example_fileClient_CopyFileUsingDestinationProperties() {
+	// Your connection string can be obtained from the Azure Portal.
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+	shareName := "testShare"
+	srcFileName := "testFile"
+	dstFileName := "testFile2"
+	fileSize := int64(5)
+
+	shareClient, err := share.NewClientFromConnectionString(connectionString, shareName, nil)
+	handleError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	handleError(err)
+
+	srcFileClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	dstFileClient := shareClient.NewRootDirectoryClient().NewFileClient(dstFileName)
+
+	contentR, _ := generateData(int(fileSize))
+
+	_, err = srcFileClient.UploadRange(context.Background(), 0, contentR, nil)
+	handleError(err)
+
+	destCreationTime := time.Now().Add(5 * time.Minute)
+	destLastWriteTIme := time.Now().Add(6 * time.Minute)
+	destChangeTime := time.Now().Add(7 * time.Minute)
+	_, err = dstFileClient.StartCopyFromURL(context.Background(), srcFileClient.URL(), &file.StartCopyFromURLOptions{
+		CopyFileSMBInfo: &file.CopyFileSMBInfo{
+			CreationTime:  file.DestinationCopyFileCreationTime(destCreationTime),
+			LastWriteTime: file.DestinationCopyFileLastWriteTime(destLastWriteTIme),
+			ChangeTime:    file.DestinationCopyFileChangeTime(destChangeTime),
+			Attributes:    file.DestinationCopyFileAttributes{ReadOnly: true},
+		},
+	})
+	handleError(err)
+	fmt.Println("File copied")
 }

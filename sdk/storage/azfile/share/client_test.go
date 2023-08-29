@@ -1458,3 +1458,163 @@ func (s *ShareRecordedTestsSuite) TestSASShareClientSignNegative() {
 	_, err = shareClient.GetSASURL(sas.SharePermissions{}, expiry, nil)
 	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }
+
+func (s *ShareRecordedTestsSuite) TestShareOAuthNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	options := &share.ClientOptions{FileRequestIntent: to.Ptr(share.TokenIntentBackup)}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClient, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
+	_require.NoError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
+
+	_, err = shareClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
+
+	_, err = shareClient.SetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
+
+	_, err = shareClient.Delete(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
+}
+
+func (s *ShareRecordedTestsSuite) TestShareCreateAndGetPermissionOAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	options := &share.ClientOptions{FileRequestIntent: to.Ptr(share.TokenIntentBackup)}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClientOAuth, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
+	_require.NoError(err)
+
+	// Create a permission and check that it's not empty.
+	createResp, err := shareClientOAuth.CreatePermission(context.Background(), testcommon.SampleSDDL, nil)
+	_require.NoError(err)
+	_require.NotNil(createResp.FilePermissionKey)
+	_require.NotEmpty(*createResp.FilePermissionKey)
+
+	getResp, err := shareClientOAuth.GetPermission(context.Background(), *createResp.FilePermissionKey, nil)
+	_require.NoError(err)
+	_require.NotNil(getResp.Permission)
+	_require.NotEmpty(*getResp.Permission)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareSASUsingAccessPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	id := "testAccessPolicy"
+	ps := share.AccessPolicyPermission{
+		Read:   true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+		List:   true,
+	}
+	signedIdentifiers := make([]*share.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &share.SignedIdentifier{
+		AccessPolicy: &share.AccessPolicy{
+			Expiry:     to.Ptr(time.Now().Add(1 * time.Hour)),
+			Start:      to.Ptr(time.Now()),
+			Permission: to.Ptr(ps.String()),
+		},
+		ID: &id,
+	})
+
+	_, err = shareClient.SetAccessPolicy(context.Background(), &share.SetAccessPolicyOptions{
+		ShareACL: signedIdentifiers,
+	})
+	_require.NoError(err)
+
+	gResp, err := shareClient.GetAccessPolicy(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(gResp.SignedIdentifiers, 1)
+
+	time.Sleep(30 * time.Second)
+
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:   sas.ProtocolHTTPS,
+		Identifier: id,
+		ShareName:  shareName,
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	shareSAS := shareClient.URL() + "?" + sasQueryParams.Encode()
+	shareClientSAS, err := share.NewClientWithNoCredential(shareSAS, nil)
+	_require.NoError(err)
+
+	dirClient := testcommon.CreateNewDirectory(context.Background(), _require, testcommon.GenerateDirectoryName(testName), shareClientSAS)
+	fileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, testcommon.GenerateFileName(testName), 2048, shareClientSAS)
+
+	_, err = dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = dirClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = fileClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *ShareRecordedTestsSuite) TestPremiumShareBandwidth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := svcClient.NewShareClient(shareName)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+	_require.NoError(err)
+
+	response, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response.ProvisionedBandwidthMiBps)
+	_require.NotNil(response.ProvisionedIngressMBps)
+	_require.NotNil(response.ProvisionedEgressMBps)
+	_require.NotNil(response.ProvisionedIops)
+	_require.NotNil(response.NextAllowedQuotaDowngradeTime)
+	_require.Greater(*response.ProvisionedBandwidthMiBps, (int32)(0))
+}

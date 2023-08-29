@@ -18,6 +18,11 @@ type CreateResponse = generated.FileClientCreateResponse
 // DeleteResponse contains the response from method Client.Delete.
 type DeleteResponse = generated.FileClientDeleteResponse
 
+// RenameResponse contains the response from method Client.Rename.
+type RenameResponse struct {
+	generated.FileClientRenameResponse
+}
+
 // GetPropertiesResponse contains the response from method Client.GetProperties.
 type GetPropertiesResponse = generated.FileClientGetPropertiesResponse
 

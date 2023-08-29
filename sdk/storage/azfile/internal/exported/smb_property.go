@@ -8,6 +8,7 @@ package exported
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"strings"
 	"time"
@@ -22,33 +23,44 @@ type SMBProperties struct {
 	CreationTime *time.Time
 	// The Coordinated Universal Time (UTC) last write time for the file/directory. Default value is 'now'.
 	LastWriteTime *time.Time
+	// The Coordinated Universal Time (UTC) change time for the file/directory. Default value is 'now'.
+	ChangeTime *time.Time
 }
 
+// Deprecated: Internal implementation; use FormatSMBProperties instead.
 // Format returns file attributes, creation time and last write time.
 func (sp *SMBProperties) Format(isDir bool, defaultFileAttributes string, defaultCurrentTimeString string) (fileAttributes string, creationTime string, lastWriteTime string) {
+	return
+}
+
+// FormatSMBProperties returns file attributes, creation time, last write time and change time.
+func FormatSMBProperties(sp *SMBProperties, isDir bool) (fileAttributes *string, creationTime *string, lastWriteTime *string, changeTime *string) {
 	if sp == nil {
-		return defaultFileAttributes, defaultCurrentTimeString, defaultCurrentTimeString
+		return nil, nil, nil, nil
 	}
 
-	fileAttributes = defaultFileAttributes
+	fileAttributes = nil
 	if sp.Attributes != nil {
-		fileAttributes = sp.Attributes.String()
-		if fileAttributes == "" {
-			fileAttributes = defaultFileAttributes
-		} else if isDir && strings.ToLower(fileAttributes) != "none" {
+		fileAttributes = to.Ptr(sp.Attributes.String())
+		if isDir && fileAttributes != nil && strings.ToLower(*fileAttributes) != "none" {
 			// Directories need to have this attribute included, if setting any attributes.
-			fileAttributes += "|Directory"
+			*fileAttributes += "|Directory"
 		}
 	}
 
-	creationTime = defaultCurrentTimeString
+	creationTime = nil
 	if sp.CreationTime != nil {
-		creationTime = sp.CreationTime.UTC().Format(generated.ISO8601)
+		creationTime = to.Ptr(sp.CreationTime.UTC().Format(generated.ISO8601))
 	}
 
-	lastWriteTime = defaultCurrentTimeString
+	lastWriteTime = nil
 	if sp.LastWriteTime != nil {
-		lastWriteTime = sp.LastWriteTime.UTC().Format(generated.ISO8601)
+		lastWriteTime = to.Ptr(sp.LastWriteTime.UTC().Format(generated.ISO8601))
+	}
+
+	changeTime = nil
+	if sp.ChangeTime != nil {
+		changeTime = to.Ptr(sp.ChangeTime.UTC().Format(generated.ISO8601))
 	}
 
 	return

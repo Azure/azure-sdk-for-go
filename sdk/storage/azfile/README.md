@@ -1,6 +1,6 @@
 # Azure File Storage SDK for Go
 
-> Service Version: 2020-10-02
+> Service Version: 2022-11-02
 
 Azure File Shares offers fully managed file shares in the cloud that are accessible via the industry standard 
 [Server Message Block (SMB) protocol](https://docs.microsoft.com/windows/desktop/FileIO/microsoft-smb-protocol-and-cifs-protocol-overview). 
@@ -17,6 +17,12 @@ Install the Azure File Storage SDK for Go with [go get][goget]:
 
 ```Powershell
 go get github.com/Azure/azure-sdk-for-go/sdk/storage/azfile
+```
+
+If you plan to authenticate with Azure Active Directory (recommended), also install the [azidentity][azidentity] module.
+
+```Powershell
+go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
 
 ### Prerequisites
@@ -39,17 +45,23 @@ az storage account create --name MyStorageAccount --resource-group MyResourceGro
 The Azure File Storage SDK for Go allows you to interact with four types of resources: the storage
 account itself, file shares, directories, and files. Interaction with these resources starts with an instance of a
 client. To create a client object, you will need the storage account's file service URL and a
-credential that allows you to access the storage account:
+credential that allows you to access the storage account. The [azidentity][azidentity] module makes it easy to add 
+Azure Active Directory support for authenticating Azure SDK clients with their corresponding Azure services.
 
 ```go
-// create a credential for authenticating using shared key
-cred, err := service.NewSharedKeyCredential("<my-storage-account-name>", "<my-storage-account-key>")
+// create a credential for authenticating with Azure Active Directory
+cred, err := azidentity.NewDefaultAzureCredential(nil)
 // TODO: handle err
 
 // create service.Client for the specified storage account that uses the above credential
-client, err := service.NewClientWithSharedKeyCredential("https://<my-storage-account-name>.file.core.windows.net/", cred, nil)
+client, err := service.NewClient("https://<my-storage-account-name>.file.core.windows.net/", cred, &service.ClientOptions{FileRequestIntent: to.Ptr(service.ShareTokenIntentBackup)})
 // TODO: handle err
 ```
+
+Learn more about enabling Azure Active Directory for authentication with Azure Storage: [Authorize access to blobs using Azure Active Directory][storage_ad]
+
+Other options for authentication include connection strings, shared key, and shared access signatures (SAS). 
+Use the appropriate client constructor function for the authentication mechanism you wish to use.
 
 ## Key concepts
 
@@ -264,3 +276,5 @@ additional questions or comments.
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[azidentity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
+[storage_ad]: https://learn.microsoft.com/azure/storage/common/storage-auth-aad

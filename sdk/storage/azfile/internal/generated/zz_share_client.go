@@ -23,28 +23,18 @@ import (
 )
 
 // ShareClient contains the methods for the Share group.
-// Don't use this type directly, use NewShareClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type ShareClient struct {
-	endpoint string
-	pl       runtime.Pipeline
-}
-
-// NewShareClient creates a new instance of ShareClient with the specified values.
-//   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewShareClient(endpoint string, pl runtime.Pipeline) *ShareClient {
-	client := &ShareClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
+	internal          *azcore.Client
+	endpoint          string
+	fileRequestIntent *ShareTokenIntent
 }
 
 // AcquireLease - The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - duration - Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite
 //     lease can be between 15 and 60 seconds. A lease duration cannot be changed using
 //     renew or change.
@@ -54,7 +44,7 @@ func (client *ShareClient) AcquireLease(ctx context.Context, duration int32, opt
 	if err != nil {
 		return ShareClientAcquireLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientAcquireLeaseResponse{}, err
 	}
@@ -85,7 +75,7 @@ func (client *ShareClient) acquireLeaseCreateRequest(ctx context.Context, durati
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -132,7 +122,7 @@ func (client *ShareClient) acquireLeaseHandleResponse(resp *http.Response) (Shar
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - options - ShareClientBreakLeaseOptions contains the optional parameters for the ShareClient.BreakLease method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) BreakLease(ctx context.Context, options *ShareClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientBreakLeaseResponse, error) {
@@ -140,7 +130,7 @@ func (client *ShareClient) BreakLease(ctx context.Context, options *ShareClientB
 	if err != nil {
 		return ShareClientBreakLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientBreakLeaseResponse{}, err
 	}
@@ -173,7 +163,7 @@ func (client *ShareClient) breakLeaseCreateRequest(ctx context.Context, options 
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -228,7 +218,7 @@ func (client *ShareClient) breakLeaseHandleResponse(resp *http.Response) (ShareC
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - leaseID - Specifies the current lease ID on the resource.
 //   - options - ShareClientChangeLeaseOptions contains the optional parameters for the ShareClient.ChangeLease method.
 func (client *ShareClient) ChangeLease(ctx context.Context, leaseID string, options *ShareClientChangeLeaseOptions) (ShareClientChangeLeaseResponse, error) {
@@ -236,7 +226,7 @@ func (client *ShareClient) ChangeLease(ctx context.Context, leaseID string, opti
 	if err != nil {
 		return ShareClientChangeLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientChangeLeaseResponse{}, err
 	}
@@ -267,7 +257,7 @@ func (client *ShareClient) changeLeaseCreateRequest(ctx context.Context, leaseID
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -314,14 +304,14 @@ func (client *ShareClient) changeLeaseHandleResponse(resp *http.Response) (Share
 // fails.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - options - ShareClientCreateOptions contains the optional parameters for the ShareClient.Create method.
 func (client *ShareClient) Create(ctx context.Context, options *ShareClientCreateOptions) (ShareClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, options)
 	if err != nil {
 		return ShareClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientCreateResponse{}, err
 	}
@@ -356,7 +346,7 @@ func (client *ShareClient) createCreateRequest(ctx context.Context, options *Sha
 	if options != nil && options.AccessTier != nil {
 		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.AccessTier)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if options != nil && options.EnabledProtocols != nil {
 		req.Raw().Header["x-ms-enabled-protocols"] = []string{*options.EnabledProtocols}
 	}
@@ -399,7 +389,7 @@ func (client *ShareClient) createHandleResponse(resp *http.Response) (ShareClien
 // CreatePermission - Create a permission (a security descriptor).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - sharePermission - A permission (a security descriptor) at the share level.
 //   - options - ShareClientCreatePermissionOptions contains the optional parameters for the ShareClient.CreatePermission method.
 func (client *ShareClient) CreatePermission(ctx context.Context, sharePermission SharePermission, options *ShareClientCreatePermissionOptions) (ShareClientCreatePermissionResponse, error) {
@@ -407,7 +397,7 @@ func (client *ShareClient) CreatePermission(ctx context.Context, sharePermission
 	if err != nil {
 		return ShareClientCreatePermissionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientCreatePermissionResponse{}, err
 	}
@@ -430,9 +420,15 @@ func (client *ShareClient) createPermissionCreateRequest(ctx context.Context, sh
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, runtime.MarshalAsJSON(req, sharePermission)
+	if err := runtime.MarshalAsJSON(req, sharePermission); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // createPermissionHandleResponse handles the CreatePermission response.
@@ -460,14 +456,14 @@ func (client *ShareClient) createPermissionHandleResponse(resp *http.Response) (
 // CreateSnapshot - Creates a read-only snapshot of a share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - options - ShareClientCreateSnapshotOptions contains the optional parameters for the ShareClient.CreateSnapshot method.
 func (client *ShareClient) CreateSnapshot(ctx context.Context, options *ShareClientCreateSnapshotOptions) (ShareClientCreateSnapshotResponse, error) {
 	req, err := client.createSnapshotCreateRequest(ctx, options)
 	if err != nil {
 		return ShareClientCreateSnapshotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientCreateSnapshotResponse{}, err
 	}
@@ -497,7 +493,7 @@ func (client *ShareClient) createSnapshotCreateRequest(ctx context.Context, opti
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
@@ -538,7 +534,7 @@ func (client *ShareClient) createSnapshotHandleResponse(resp *http.Response) (Sh
 // contained within it are later deleted during garbage collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - options - ShareClientDeleteOptions contains the optional parameters for the ShareClient.Delete method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) Delete(ctx context.Context, options *ShareClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientDeleteResponse, error) {
@@ -546,7 +542,7 @@ func (client *ShareClient) Delete(ctx context.Context, options *ShareClientDelet
 	if err != nil {
 		return ShareClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientDeleteResponse{}, err
 	}
@@ -571,7 +567,7 @@ func (client *ShareClient) deleteCreateRequest(ctx context.Context, options *Sha
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if options != nil && options.DeleteSnapshots != nil {
 		req.Raw().Header["x-ms-delete-snapshots"] = []string{string(*options.DeleteSnapshots)}
 	}
@@ -604,7 +600,7 @@ func (client *ShareClient) deleteHandleResponse(resp *http.Response) (ShareClien
 // GetAccessPolicy - Returns information about stored access policies specified on the share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - options - ShareClientGetAccessPolicyOptions contains the optional parameters for the ShareClient.GetAccessPolicy method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) GetAccessPolicy(ctx context.Context, options *ShareClientGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientGetAccessPolicyResponse, error) {
@@ -612,7 +608,7 @@ func (client *ShareClient) GetAccessPolicy(ctx context.Context, options *ShareCl
 	if err != nil {
 		return ShareClientGetAccessPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientGetAccessPolicyResponse{}, err
 	}
@@ -635,7 +631,7 @@ func (client *ShareClient) getAccessPolicyCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -678,7 +674,7 @@ func (client *ShareClient) getAccessPolicyHandleResponse(resp *http.Response) (S
 // GetPermission - Returns the permission (security descriptor) for a given key
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - filePermissionKey - Key of the permission to be set for the directory/file.
 //   - options - ShareClientGetPermissionOptions contains the optional parameters for the ShareClient.GetPermission method.
 func (client *ShareClient) GetPermission(ctx context.Context, filePermissionKey string, options *ShareClientGetPermissionOptions) (ShareClientGetPermissionResponse, error) {
@@ -686,7 +682,7 @@ func (client *ShareClient) GetPermission(ctx context.Context, filePermissionKey 
 	if err != nil {
 		return ShareClientGetPermissionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientGetPermissionResponse{}, err
 	}
@@ -710,7 +706,10 @@ func (client *ShareClient) getPermissionCreateRequest(ctx context.Context, fileP
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-file-permission-key"] = []string{filePermissionKey}
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -741,7 +740,7 @@ func (client *ShareClient) getPermissionHandleResponse(resp *http.Response) (Sha
 // data returned does not include the share's list of files.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - options - ShareClientGetPropertiesOptions contains the optional parameters for the ShareClient.GetProperties method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) GetProperties(ctx context.Context, options *ShareClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientGetPropertiesResponse, error) {
@@ -749,7 +748,7 @@ func (client *ShareClient) GetProperties(ctx context.Context, options *ShareClie
 	if err != nil {
 		return ShareClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientGetPropertiesResponse{}, err
 	}
@@ -774,7 +773,7 @@ func (client *ShareClient) getPropertiesCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -855,6 +854,14 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.NextAllowedQuotaDowngradeTime = &nextAllowedQuotaDowngradeTime
 	}
+	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
+		provisionedBandwidthMiBps32, err := strconv.ParseInt(val, 10, 32)
+		provisionedBandwidthMiBps := int32(provisionedBandwidthMiBps32)
+		if err != nil {
+			return ShareClientGetPropertiesResponse{}, err
+		}
+		result.ProvisionedBandwidthMiBps = &provisionedBandwidthMiBps
+	}
 	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
 		result.LeaseDuration = (*LeaseDurationType)(&val)
 	}
@@ -889,7 +896,7 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 // GetStatistics - Retrieves statistics related to the share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - options - ShareClientGetStatisticsOptions contains the optional parameters for the ShareClient.GetStatistics method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) GetStatistics(ctx context.Context, options *ShareClientGetStatisticsOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientGetStatisticsResponse, error) {
@@ -897,7 +904,7 @@ func (client *ShareClient) GetStatistics(ctx context.Context, options *ShareClie
 	if err != nil {
 		return ShareClientGetStatisticsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientGetStatisticsResponse{}, err
 	}
@@ -920,7 +927,7 @@ func (client *ShareClient) getStatisticsCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -964,7 +971,7 @@ func (client *ShareClient) getStatisticsHandleResponse(resp *http.Response) (Sha
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - leaseID - Specifies the current lease ID on the resource.
 //   - options - ShareClientReleaseLeaseOptions contains the optional parameters for the ShareClient.ReleaseLease method.
 func (client *ShareClient) ReleaseLease(ctx context.Context, leaseID string, options *ShareClientReleaseLeaseOptions) (ShareClientReleaseLeaseResponse, error) {
@@ -972,7 +979,7 @@ func (client *ShareClient) ReleaseLease(ctx context.Context, leaseID string, opt
 	if err != nil {
 		return ShareClientReleaseLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientReleaseLeaseResponse{}, err
 	}
@@ -1000,7 +1007,7 @@ func (client *ShareClient) releaseLeaseCreateRequest(ctx context.Context, leaseI
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-lease-action"] = []string{"release"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -1044,7 +1051,7 @@ func (client *ShareClient) releaseLeaseHandleResponse(resp *http.Response) (Shar
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - leaseID - Specifies the current lease ID on the resource.
 //   - options - ShareClientRenewLeaseOptions contains the optional parameters for the ShareClient.RenewLease method.
 func (client *ShareClient) RenewLease(ctx context.Context, leaseID string, options *ShareClientRenewLeaseOptions) (ShareClientRenewLeaseResponse, error) {
@@ -1052,7 +1059,7 @@ func (client *ShareClient) RenewLease(ctx context.Context, leaseID string, optio
 	if err != nil {
 		return ShareClientRenewLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientRenewLeaseResponse{}, err
 	}
@@ -1080,7 +1087,7 @@ func (client *ShareClient) renewLeaseCreateRequest(ctx context.Context, leaseID 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-lease-action"] = []string{"renew"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -1126,14 +1133,14 @@ func (client *ShareClient) renewLeaseHandleResponse(resp *http.Response) (ShareC
 // Restore - Restores a previously deleted Share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - options - ShareClientRestoreOptions contains the optional parameters for the ShareClient.Restore method.
 func (client *ShareClient) Restore(ctx context.Context, options *ShareClientRestoreOptions) (ShareClientRestoreResponse, error) {
 	req, err := client.restoreCreateRequest(ctx, options)
 	if err != nil {
 		return ShareClientRestoreResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientRestoreResponse{}, err
 	}
@@ -1156,7 +1163,7 @@ func (client *ShareClient) restoreCreateRequest(ctx context.Context, options *Sh
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -1205,7 +1212,7 @@ func (client *ShareClient) restoreHandleResponse(resp *http.Response) (ShareClie
 // SetAccessPolicy - Sets a stored access policy for use with shared access signatures.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - shareACL - The ACL for the share.
 //   - options - ShareClientSetAccessPolicyOptions contains the optional parameters for the ShareClient.SetAccessPolicy method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
@@ -1214,7 +1221,7 @@ func (client *ShareClient) SetAccessPolicy(ctx context.Context, shareACL []*Sign
 	if err != nil {
 		return ShareClientSetAccessPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientSetAccessPolicyResponse{}, err
 	}
@@ -1237,7 +1244,7 @@ func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, sha
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -1246,7 +1253,10 @@ func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, sha
 		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		ShareACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
-	return req, runtime.MarshalAsXML(req, wrapper{ShareACL: &shareACL})
+	if err := runtime.MarshalAsXML(req, wrapper{ShareACL: &shareACL}); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // setAccessPolicyHandleResponse handles the SetAccessPolicy response.
@@ -1281,7 +1291,7 @@ func (client *ShareClient) setAccessPolicyHandleResponse(resp *http.Response) (S
 // SetMetadata - Sets one or more user-defined name-value pairs for the specified share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - options - ShareClientSetMetadataOptions contains the optional parameters for the ShareClient.SetMetadata method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) SetMetadata(ctx context.Context, options *ShareClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientSetMetadataResponse, error) {
@@ -1289,7 +1299,7 @@ func (client *ShareClient) SetMetadata(ctx context.Context, options *ShareClient
 	if err != nil {
 		return ShareClientSetMetadataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientSetMetadataResponse{}, err
 	}
@@ -1319,7 +1329,7 @@ func (client *ShareClient) setMetadataCreateRequest(ctx context.Context, options
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -1359,7 +1369,7 @@ func (client *ShareClient) setMetadataHandleResponse(resp *http.Response) (Share
 // SetProperties - Sets properties for the specified share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2022-11-02
 //   - options - ShareClientSetPropertiesOptions contains the optional parameters for the ShareClient.SetProperties method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) SetProperties(ctx context.Context, options *ShareClientSetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientSetPropertiesResponse, error) {
@@ -1367,7 +1377,7 @@ func (client *ShareClient) SetProperties(ctx context.Context, options *ShareClie
 	if err != nil {
 		return ShareClientSetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientSetPropertiesResponse{}, err
 	}
@@ -1390,7 +1400,7 @@ func (client *ShareClient) setPropertiesCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	if options != nil && options.Quota != nil {
 		req.Raw().Header["x-ms-share-quota"] = []string{strconv.FormatInt(int64(*options.Quota), 10)}
 	}

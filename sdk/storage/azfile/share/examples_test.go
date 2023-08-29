@@ -10,6 +10,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
@@ -461,4 +462,36 @@ func Example_share_Client_GetSASURL() {
 	for _, f := range files {
 		fmt.Println(f)
 	}
+}
+
+func Example_share_Client_CreateAndGetPermissionOAuth() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	shareName := "testshare"
+	shareURL := fmt.Sprintf("https://%s.file.core.windows.net/%s", accountName, shareName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	// FileRequestintent is required if authorization header specifies an OAuth token.
+	options := &share.ClientOptions{FileRequestIntent: to.Ptr(share.TokenIntentBackup)}
+	shareClient, err := share.NewClient(shareURL, cred, options)
+	handleError(err)
+
+	// Create, Delete, GetProperties, SetProperties, etc. operations does not work when share client is created using OAuth credentials
+	// Operations supported are: CreatePermission and GetPermission
+	// Below GetProperties operation results in an error
+	_, err = shareClient.GetProperties(context.TODO(), nil)
+	fmt.Println(err.Error())
+
+	testSDDL := `O:S-1-5-32-548G:S-1-5-21-397955417-626881126-188441444-512D:(A;;RPWPCCDCLCSWRCWDWOGA;;;S-1-0-0)`
+	createResp, err := shareClient.CreatePermission(context.TODO(), testSDDL, nil)
+	handleError(err)
+
+	getResp, err := shareClient.GetPermission(context.TODO(), *createResp.FilePermissionKey, nil)
+	handleError(err)
+	fmt.Println(*getResp.Permission)
 }

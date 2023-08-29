@@ -9,11 +9,6 @@ require (
 	github.com/stretchr/testify v1.7.0
 )
 
-replace (
-	// temporary until we officially release the next beta.
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.8.0-beta.2 => ../../azcore
-)
-
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dnaeon/go-vcr v1.1.0 // indirect

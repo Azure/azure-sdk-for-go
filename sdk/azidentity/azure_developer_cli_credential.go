@@ -153,7 +153,7 @@ func (c *AzureDeveloperCLICredential) createAccessToken(tk []byte) (azcore.Acces
 		return azcore.AccessToken{}, err
 	}
 
-	exp, err := time.ParseInLocation("2006-01-02T15:04:05Z", t.ExpiresOn, time.Local)
+	exp, err := time.Parse("2006-01-02T15:04:05Z", t.ExpiresOn)
 	if err != nil {
 		return azcore.AccessToken{}, fmt.Errorf("Error parsing token expiration time %q: %v", t.ExpiresOn, err)
 	}

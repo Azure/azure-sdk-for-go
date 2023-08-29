@@ -10,7 +10,7 @@
 ### Features Added
 * Service principal credentials can request CAE tokens
 
-- [[21328]](https://github.com/Azure/azure-dev/pull/21328) Add Azure Developer CLI credential
+- Added Azure Developer CLI credential ([#20610](https://github.com/Azure/azure-sdk-for-go/issues/20610))
 
 ### Breaking Changes
 > These changes affect only code written against a beta version such as v1.4.0-beta.4

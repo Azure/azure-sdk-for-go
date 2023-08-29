@@ -410,6 +410,9 @@ type BlobClientDownloadResponse struct {
 	// CopyStatusDescription contains the information returned from the x-ms-copy-status-description header response.
 	CopyStatusDescription *string
 
+	// CreationTime contains the information returned from the x-ms-creation-time header response.
+	CreationTime *time.Time
+
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 

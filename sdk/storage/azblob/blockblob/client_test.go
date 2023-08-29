@@ -14,6 +14,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -2735,6 +2736,7 @@ func (s *BlockBlobRecordedTestsSuite) TestRehydrateStatus() {
 
 	blobName1 := "rehydration_test_blob_1"
 	blobName2 := "rehydration_test_blob_2"
+	blobName3 := "rehydration_test_blob_3"
 
 	bbClient1 := testcommon.GetBlockBlobClient(blobName1, containerClient)
 	reader1, _ := testcommon.GenerateData(1024)
@@ -2779,6 +2781,22 @@ func (s *BlockBlobRecordedTestsSuite) TestRehydrateStatus() {
 	_require.Nil(err)
 	_require.Equal(*getResp2.AccessTier, string(blob.AccessTierArchive))
 	_require.Equal(*getResp2.ArchiveStatus, string(blob.ArchiveStatusRehydratePendingToHot))
+
+	// ------------------------------------------
+
+	bbClient3 := testcommon.GetBlockBlobClient(blobName3, containerClient)
+	reader3, _ := testcommon.GenerateData(1024)
+	_, err = bbClient3.Upload(context.Background(), reader3, nil)
+	_require.Nil(err)
+	_, err = bbClient3.SetTier(context.Background(), blob.AccessTierArchive, nil)
+	_require.Nil(err)
+	_, err = bbClient3.SetTier(context.Background(), blob.AccessTierCold, nil)
+	_require.Nil(err)
+
+	getResp3, err := bbClient3.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(*getResp3.AccessTier, string(blob.AccessTierArchive))
+	_require.Equal(*getResp3.ArchiveStatus, string(blob.ArchiveStatusRehydratePendingToCold))
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestCopyBlobWithRehydratePriority() {
@@ -5485,4 +5503,47 @@ func TestRequestIDGeneration(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.Equal(t, requestIdMatch, true)
+}
+
+type serviceVersionTest struct{}
+
+// newServiceVersionTestPolicy returns a policy that checks the x-ms-version header
+func newServiceVersionTestPolicy() policy.Policy {
+	return &serviceVersionTest{}
+}
+
+func (m serviceVersionTest) Do(req *policy.Request) (*http.Response, error) {
+	const versionHeader = "x-ms-version"
+
+	currentVersion := map[string][]string(req.Raw().Header)[versionHeader]
+	if currentVersion[0] != generated.ServiceVersion {
+		return nil, fmt.Errorf(currentVersion[0] + " service version doesn't match expected version: " + generated.ServiceVersion)
+	}
+
+	return &http.Response{
+		Request:    req.Raw(),
+		Status:     "Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func TestServiceVersion(t *testing.T) {
+	fbb := &fakeBlockBlob{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport:       fbb,
+			PerCallPolicies: []policy.Policy{newServiceVersionTestPolicy()},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	// Upload some data to source
+	contentSize := 4 * 1024 // 4KB
+	r, _ := testcommon.GetDataAndReader(t.Name(), contentSize)
+
+	_, err = client.Upload(context.Background(), streaming.NopCloser(r), nil)
+	require.NoError(t, err)
 }

@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/080b332b7572514a2e100dd2fa1fb86cb8edcb08/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-12-02/blob.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a32d0b2423d19835246bb2ef92941503bfd5e734/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-12-02/blob.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -20,6 +20,23 @@ modelerfour:
   lenient-model-deduplication: true
 export-clients: true
 use: "@autorest/go@4.0.0-preview.49"
+```
+
+### Updating service version to 2023-08-03
+```yaml
+directive:
+- from: 
+  - zz_appendblob_client.go
+  - zz_blob_client.go
+  - zz_blockblob_client.go
+  - zz_container_client.go
+  - zz_pageblob_client.go
+  - zz_service_client.go
+  where: $
+  transform: >-
+    return $.
+      replaceAll(`[]string{"2021-12-02"}`, `[]string{ServiceVersion}`).
+      replaceAll(`2021-12-02`, `2023-08-03`);
 ```
 
 ### Undo breaking change with BlobName 

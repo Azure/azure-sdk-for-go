@@ -27,6 +27,14 @@ stages:
     TimeoutInMinutes: 120
     ServiceDirectory: 'security/keyvault/azkeys'
     RunLiveTests: true
+    SupportedClouds: 'Public,UsGov,China'
+      CloudConfig:
+        UsGov:
+          MatrixFilters:
+            - ArmTemplateParameters=^(?!.*enableHsm.*true)
+        China:
+          MatrixFilters:
+            - ArmTemplateParameters=^(?!.*enableHsm.*true)
     AdditionalMatrixConfigs:
       - Name: keyvault_test_matrix_addons
         Path: sdk/security/keyvault/azkeys/platform-matrix.json

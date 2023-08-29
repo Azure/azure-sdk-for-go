@@ -28,3 +28,4 @@ stages:
     ServiceDirectory: 'security/keyvault/azcertificates'
     RunLiveTests: true
     TestRunTime: '900s'
+    SupportedClouds: 'Public,UsGov,China'

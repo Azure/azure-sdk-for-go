@@ -1,5 +1,37 @@
 # Release History
 
+## 2.0.0 (2023-08-30)
+### Breaking Changes
+
+- Operation `*ApplicationDefinitionsClient.BeginCreateOrUpdate` has been changed to non-LRO, use `*ApplicationDefinitionsClient.CreateOrUpdate` instead.
+- Operation `*ApplicationDefinitionsClient.BeginDelete` has been changed to non-LRO, use `*ApplicationDefinitionsClient.Delete` instead.
+- Operation `*ApplicationsClient.Update` has been changed to LRO, use `*ApplicationsClient.BeginUpdate` instead.
+- Struct `ApplicationPropertiesPatchable` has been removed
+- Field `ProvisioningState` of struct `ApplicationDefinitionProperties` has been removed
+
+### Features Added
+
+- New enum type `Status` with values `StatusElevate`, `StatusNotSpecified`, `StatusRemove`
+- New enum type `Substatus` with values `SubstatusApproved`, `SubstatusDenied`, `SubstatusExpired`, `SubstatusFailed`, `SubstatusNotSpecified`, `SubstatusTimeout`
+- New function `*ApplicationDefinitionsClient.CreateOrUpdateByID(context.Context, string, string, ApplicationDefinition, *ApplicationDefinitionsClientCreateOrUpdateByIDOptions) (ApplicationDefinitionsClientCreateOrUpdateByIDResponse, error)`
+- New function `*ApplicationDefinitionsClient.DeleteByID(context.Context, string, string, *ApplicationDefinitionsClientDeleteByIDOptions) (ApplicationDefinitionsClientDeleteByIDResponse, error)`
+- New function `*ApplicationDefinitionsClient.GetByID(context.Context, string, string, *ApplicationDefinitionsClientGetByIDOptions) (ApplicationDefinitionsClientGetByIDResponse, error)`
+- New function `*ApplicationDefinitionsClient.UpdateByID(context.Context, string, string, ApplicationDefinitionPatchable, *ApplicationDefinitionsClientUpdateByIDOptions) (ApplicationDefinitionsClientUpdateByIDResponse, error)`
+- New function `*ApplicationsClient.BeginCreateOrUpdateByID(context.Context, string, Application, *ApplicationsClientBeginCreateOrUpdateByIDOptions) (*runtime.Poller[ApplicationsClientCreateOrUpdateByIDResponse], error)`
+- New function `*ApplicationsClient.BeginDeleteByID(context.Context, string, *ApplicationsClientBeginDeleteByIDOptions) (*runtime.Poller[ApplicationsClientDeleteByIDResponse], error)`
+- New function `*ApplicationsClient.GetByID(context.Context, string, *ApplicationsClientGetByIDOptions) (ApplicationsClientGetByIDResponse, error)`
+- New function `*ApplicationsClient.ListTokens(context.Context, string, string, ListTokenRequest, *ApplicationsClientListTokensOptions) (ApplicationsClientListTokensResponse, error)`
+- New function `*ApplicationsClient.BeginUpdateAccess(context.Context, string, string, UpdateAccessDefinition, *ApplicationsClientBeginUpdateAccessOptions) (*runtime.Poller[ApplicationsClientUpdateAccessResponse], error)`
+- New function `*ApplicationsClient.BeginUpdateByID(context.Context, string, *ApplicationsClientBeginUpdateByIDOptions) (*runtime.Poller[ApplicationsClientUpdateByIDResponse], error)`
+- New struct `AllowedUpgradePlansResult`
+- New struct `JitRequestMetadata`
+- New struct `ListTokenRequest`
+- New struct `ManagedIdentityToken`
+- New struct `ManagedIdentityTokenResult`
+- New struct `UpdateAccessDefinition`
+- New anonymous field `AllowedUpgradePlansResult` in struct `ApplicationsClientListAllowedUpgradePlansResponse`
+
+
 ## 1.1.1 (2023-04-14)
 ### Bug Fixes
 

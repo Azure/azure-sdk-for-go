@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/getApplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/getApplication.json
 func ExampleApplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleApplicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/deleteApplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/deleteApplication.json
 func ExampleApplicationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleApplicationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/createOrUpdateApplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/createOrUpdateApplication.json
 func ExampleApplicationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,8 +129,8 @@ func ExampleApplicationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateApplication.json
-func ExampleApplicationsClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateApplication.json
+func ExampleApplicationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -140,7 +140,7 @@ func ExampleApplicationsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewApplicationsClient().Update(ctx, "rg", "myManagedApplication", &armmanagedapplications.ApplicationsClientUpdateOptions{Parameters: &armmanagedapplications.ApplicationPatchable{
+	poller, err := clientFactory.NewApplicationsClient().BeginUpdate(ctx, "rg", "myManagedApplication", &armmanagedapplications.ApplicationsClientBeginUpdateOptions{Parameters: &armmanagedapplications.ApplicationPatchable{
 		Kind: to.Ptr("ServiceCatalog"),
 		Properties: &armmanagedapplications.ApplicationProperties{
 			ApplicationDefinitionID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applicationDefinitions/myAppDef"),
@@ -151,10 +151,14 @@ func ExampleApplicationsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Application = armmanagedapplications.Application{
+	// res.ApplicationPatchable = armmanagedapplications.ApplicationPatchable{
 	// 	Name: to.Ptr("myManagedApplication"),
 	// 	Type: to.Ptr("Microsoft.Solutions/applications"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/myManagedApplication"),
@@ -167,7 +171,7 @@ func ExampleApplicationsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/listApplicationsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/listApplicationsByResourceGroup.json
 func ExampleApplicationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +221,160 @@ func ExampleApplicationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/refreshApplicationPermissions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/getApplicationById.json
+func ExampleApplicationsClient_GetByID() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagedapplications.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewApplicationsClient().GetByID(ctx, "subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/myManagedApplication", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Application = armmanagedapplications.Application{
+	// 	Name: to.Ptr("myManagedApplication"),
+	// 	Type: to.Ptr("Microsoft.Solutions/applications"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/myManagedApplication"),
+	// 	Kind: to.Ptr("ServiceCatalog"),
+	// 	Properties: &armmanagedapplications.ApplicationProperties{
+	// 		ApplicationDefinitionID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/managedApplicationDefinitions/myAppDef"),
+	// 		Artifacts: []*armmanagedapplications.ApplicationArtifact{
+	// 		},
+	// 		Authorizations: []*armmanagedapplications.ApplicationAuthorization{
+	// 			{
+	// 				PrincipalID: to.Ptr("validprincipalguid"),
+	// 				RoleDefinitionID: to.Ptr("validroleguid"),
+	// 		}},
+	// 		CreatedBy: &armmanagedapplications.ApplicationClientDetails{
+	// 			ApplicationID: to.Ptr("ClientApplicationId"),
+	// 			Oid: to.Ptr("ClientOid"),
+	// 			Puid: to.Ptr("ClientPuid"),
+	// 		},
+	// 		ManagedResourceGroupID: to.Ptr("/subscriptions/subid/resourceGroups/myManagedRG"),
+	// 		ManagementMode: to.Ptr(armmanagedapplications.ApplicationManagementModeManaged),
+	// 		ProvisioningState: to.Ptr(armmanagedapplications.ProvisioningStateSucceeded),
+	// 		UpdatedBy: &armmanagedapplications.ApplicationClientDetails{
+	// 			ApplicationID: to.Ptr("ClientApplicationId"),
+	// 			Oid: to.Ptr("ClientOid"),
+	// 			Puid: to.Ptr("ClientPuid"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/deleteApplicationById.json
+func ExampleApplicationsClient_BeginDeleteByID() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagedapplications.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewApplicationsClient().BeginDeleteByID(ctx, "subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/myManagedApplication", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/createOrUpdateApplicationById.json
+func ExampleApplicationsClient_BeginCreateOrUpdateByID() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagedapplications.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewApplicationsClient().BeginCreateOrUpdateByID(ctx, "subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/myManagedApplication", armmanagedapplications.Application{
+		Kind: to.Ptr("ServiceCatalog"),
+		Properties: &armmanagedapplications.ApplicationProperties{
+			ApplicationDefinitionID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applicationDefinitions/myAppDef"),
+			ManagedResourceGroupID:  to.Ptr("/subscriptions/subid/resourceGroups/myManagedRG"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Application = armmanagedapplications.Application{
+	// 	Name: to.Ptr("myManagedApplication"),
+	// 	Type: to.Ptr("Microsoft.Solutions/applications"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/myManagedApplication"),
+	// 	Kind: to.Ptr("ServiceCatalog"),
+	// 	Properties: &armmanagedapplications.ApplicationProperties{
+	// 		ApplicationDefinitionID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applicationDefinitions/myAppDef"),
+	// 		ManagedResourceGroupID: to.Ptr("/subscriptions/subid/resourceGroups/myManagedRG"),
+	// 		ProvisioningState: to.Ptr(armmanagedapplications.ProvisioningStateSucceeded),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateApplicationById.json
+func ExampleApplicationsClient_BeginUpdateByID() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagedapplications.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewApplicationsClient().BeginUpdateByID(ctx, "subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/myManagedApplication", &armmanagedapplications.ApplicationsClientBeginUpdateByIDOptions{Parameters: &armmanagedapplications.ApplicationPatchable{
+		Kind: to.Ptr("ServiceCatalog"),
+		Properties: &armmanagedapplications.ApplicationProperties{
+			ApplicationDefinitionID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applicationDefinitions/myAppDef"),
+			ManagedResourceGroupID:  to.Ptr("/subscriptions/subid/resourceGroups/myManagedRG"),
+		},
+	},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ApplicationPatchable = armmanagedapplications.ApplicationPatchable{
+	// 	Name: to.Ptr("myManagedApplication"),
+	// 	Type: to.Ptr("Microsoft.Solutions/applications"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/myManagedApplication"),
+	// 	Kind: to.Ptr("ServiceCatalog"),
+	// 	Properties: &armmanagedapplications.ApplicationProperties{
+	// 		ApplicationDefinitionID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applicationDefinitions/myAppDef"),
+	// 		ManagedResourceGroupID: to.Ptr("/subscriptions/subid/resourceGroups/myManagedRG"),
+	// 		ProvisioningState: to.Ptr(armmanagedapplications.ProvisioningStateSucceeded),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/refreshApplicationPermissions.json
 func ExampleApplicationsClient_BeginRefreshPermissions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +395,7 @@ func ExampleApplicationsClient_BeginRefreshPermissions() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/listAllowedUpgradePlans.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/listAllowedUpgradePlans.json
 func ExampleApplicationsClient_ListAllowedUpgradePlans() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -249,8 +406,89 @@ func ExampleApplicationsClient_ListAllowedUpgradePlans() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewApplicationsClient().ListAllowedUpgradePlans(ctx, "rg", "myManagedApplication", nil)
+	res, err := clientFactory.NewApplicationsClient().ListAllowedUpgradePlans(ctx, "rg", "myManagedApplication", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AllowedUpgradePlansResult = armmanagedapplications.AllowedUpgradePlansResult{
+	// 	Value: []*armmanagedapplications.Plan{
+	// 		{
+	// 			Name: to.Ptr("name"),
+	// 			Product: to.Ptr("product"),
+	// 			PromotionCode: to.Ptr("promotionCode"),
+	// 			Publisher: to.Ptr("publisher"),
+	// 			Version: to.Ptr("version"),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateAccess.json
+func ExampleApplicationsClient_BeginUpdateAccess() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagedapplications.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewApplicationsClient().BeginUpdateAccess(ctx, "rg", "myManagedApplication", armmanagedapplications.UpdateAccessDefinition{
+		Approver: to.Ptr("amauser"),
+		Metadata: &armmanagedapplications.JitRequestMetadata{
+			OriginRequestID:    to.Ptr("originRequestId"),
+			RequestorID:        to.Ptr("RequestorId"),
+			SubjectDisplayName: to.Ptr("SubjectDisplayName"),
+			TenantDisplayName:  to.Ptr("TenantDisplayName"),
+		},
+		Status:    to.Ptr(armmanagedapplications.StatusElevate),
+		SubStatus: to.Ptr(armmanagedapplications.SubstatusApproved),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5fb045bd44f143bae17da2e01552ae531f77d0ba/specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/listToken.json
+func ExampleApplicationsClient_ListTokens() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagedapplications.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewApplicationsClient().ListTokens(ctx, "rg", "myManagedApplication", armmanagedapplications.ListTokenRequest{
+		AuthorizationAudience: to.Ptr("authorizationAudience"),
+		UserAssignedIdentities: []*string{
+			to.Ptr("IdentityOne"),
+			to.Ptr("IdentityTwo")},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ManagedIdentityTokenResult = armmanagedapplications.ManagedIdentityTokenResult{
+	// 	Value: []*armmanagedapplications.ManagedIdentityToken{
+	// 		{
+	// 			AccessToken: to.Ptr("access_token"),
+	// 			AuthorizationAudience: to.Ptr("authorizationAudience"),
+	// 			ExpiresIn: to.Ptr("1500"),
+	// 			ExpiresOn: to.Ptr("1500"),
+	// 			NotBefore: to.Ptr("1500"),
+	// 			ResourceID: to.Ptr("resourceId"),
+	// 			TokenType: to.Ptr("Bearer"),
+	// 	}},
+	// }
 }

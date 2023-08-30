@@ -12,7 +12,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"hash/crc64"
 	"io"
 	"os"
@@ -23,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
@@ -114,7 +114,7 @@ func performUploadStreamToBlockBlobTestWithChecksums(t *testing.T, _require *req
 	// UploadStream does not accept user generated checksum, should return UnsupportedChecksum
 	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
 		&blockblob.UploadStreamOptions{BlockSize: int64(bufferSize), Concurrency: maxBuffers, TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value)})
-	_require.NotNil(err)
+	_require.Error(err)
 	_require.Error(err, bloberror.UnsupportedChecksum)
 
 	md5Value := md5.Sum(blobData)
@@ -122,7 +122,7 @@ func performUploadStreamToBlockBlobTestWithChecksums(t *testing.T, _require *req
 
 	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
 		&blockblob.UploadStreamOptions{BlockSize: int64(bufferSize), Concurrency: maxBuffers, TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5)})
-	_require.NotNil(err)
+	_require.Error(err)
 	_require.Error(err, bloberror.UnsupportedChecksum)
 }
 
@@ -163,11 +163,11 @@ func performUploadStreamToBlockBlobTest(t *testing.T, _require *require.Assertio
 
 	// Download the blob to verify
 	downloadResponse, err := client.DownloadStream(ctx, containerName, blobName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Assert that the content is correct
 	actualBlobData, err := io.ReadAll(downloadResponse.Body)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(len(actualBlobData), blobSize)
 	_require.EqualValues(actualBlobData, blobData)
 }
@@ -281,7 +281,7 @@ func performUploadAndDownloadFileTestWithChecksums(t *testing.T, _require *requi
 				}
 			},
 		})
-	_require.NotNil(err)
+	_require.Error(err)
 	_require.Error(err, bloberror.UnsupportedChecksum)
 
 	md5Value := md5.Sum(fileData)
@@ -300,7 +300,7 @@ func performUploadAndDownloadFileTestWithChecksums(t *testing.T, _require *requi
 				}
 			},
 		})
-	_require.NotNil(err)
+	_require.Error(err)
 	_require.Error(err, bloberror.UnsupportedChecksum)
 }
 
@@ -683,9 +683,9 @@ func (s *AZBlobUnrecordedTestsSuite) TestBasicDoBatchTransfer() {
 		})
 
 		if test.expectError {
-			_require.NotNil(err)
+			_require.Error(err)
 		} else {
-			_require.Nil(err)
+			_require.NoError(err)
 			_require.Equal(totalSizeCount, test.transferSize)
 			_require.Equal(runCount, ((test.transferSize-1)/test.chunkSize)+1)
 		}

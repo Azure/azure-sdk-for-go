@@ -9,21 +9,21 @@ package service_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"io"
 	"os"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
@@ -77,7 +77,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceGetAccountInfo() {
 
 	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
 	sAccInfo, err := svcClient.GetAccountInfo(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotZero(sAccInfo)
 }
 
@@ -89,14 +89,14 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	connectionString, _ := testcommon.GetGenericConnectionString(testcommon.TestAccountDefault)
 
 	parsedConnStr, err := shared.ParseConnectionString(*connectionString)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(parsedConnStr.ServiceURL, "https://"+accountName+".blob.core.windows.net/")
 
 	sharedKeyCred, err := azblob.NewSharedKeyCredential(parsedConnStr.AccountName, parsedConnStr.AccountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	svcClient, err := service.NewClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 }
@@ -105,7 +105,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	md := map[string]*string{
 		"foo": to.Ptr("foovalue"),
 		"bar": to.Ptr("barvalue"),
@@ -117,10 +117,10 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	defer func(containerClient *container.Client, ctx context.Context, options *container.DeleteOptions) {
 		_, err := containerClient.Delete(ctx, options)
 		if err != nil {
-			_require.Nil(err)
+			_require.NoError(err)
 		}
 	}(containerClient, context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	prefix := testcommon.ContainerPrefix
 	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
@@ -128,7 +128,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		for _, ctnr := range resp.ContainerItems {
 			_require.NotNil(ctnr.Name)
 
@@ -157,14 +157,14 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 		}
 	}
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.GreaterOrEqual(count, 0)
 }
 
 func (s *ServiceRecordedTestsSuite) TestListContainersSystem() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	listOptions := service.ListContainersOptions{Include: service.ListContainersInclude{System: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
@@ -172,7 +172,7 @@ func (s *ServiceRecordedTestsSuite) TestListContainersSystem() {
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		for _, c := range resp.ContainerItems {
 			_require.NotNil(c.Name)
 			if strings.Contains(*c.Name, "$") {
@@ -184,7 +184,7 @@ func (s *ServiceRecordedTestsSuite) TestListContainersSystem() {
 		}
 	}
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.GreaterOrEqual(count, 1) // every account will always have one system container, i.e. '$logs'
 }
 
@@ -202,10 +202,10 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesLogging() {
 	opts := service.SetPropertiesOptions{Logging: &loggingOpts}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	resp1, err := svcClient.GetProperties(context.Background(), nil)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(resp1.Logging.Write, enabled)
 	_require.Equal(resp1.Logging.Read, enabled)
 	_require.Equal(resp1.Logging.Delete, enabled)
@@ -226,10 +226,10 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesHourMetrics() {
 	opts := service.SetPropertiesOptions{HourMetrics: &metricsOpts}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	resp1, err := svcClient.GetProperties(context.Background(), nil)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(resp1.HourMetrics.Enabled, enabled)
 	_require.Equal(resp1.HourMetrics.IncludeAPIs, enabled)
 	_require.Equal(resp1.HourMetrics.RetentionPolicy.Days, days)
@@ -249,10 +249,10 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesMinuteMetrics() {
 	opts := service.SetPropertiesOptions{MinuteMetrics: &metricsOpts}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	resp1, err := svcClient.GetProperties(context.Background(), nil)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(resp1.MinuteMetrics.Enabled, enabled)
 	_require.Equal(resp1.MinuteMetrics.IncludeAPIs, enabled)
 	_require.Equal(resp1.MinuteMetrics.RetentionPolicy.Days, days)
@@ -286,7 +286,7 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCORSMultiple() {
 	opts := service.SetPropertiesOptions{CORS: CORSRules}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	for i := 0; i < len(resp.CORS); i++ {
 		if resp.CORS[i].AllowedOrigins == &allowedOrigins1 {
@@ -302,14 +302,14 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCORSMultiple() {
 			_require.Equal(resp.CORS[i].AllowedHeaders, &allowedHeaders2)
 		}
 	}
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	md := map[string]*string{
 		"foo": to.Ptr("foovalue"),
 		"bar": to.Ptr("barvalue"),
@@ -321,10 +321,10 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 	defer func(containerClient *container.Client, ctx context.Context, options *container.DeleteOptions) {
 		_, err := containerClient.Delete(ctx, options)
 		if err != nil {
-			_require.Nil(err)
+			_require.NoError(err)
 		}
 	}(containerClient, context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	prefix := testcommon.ContainerPrefix
 	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
@@ -332,7 +332,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 
 		for _, ctnr := range resp.ContainerItems {
 			_require.NotNil(ctnr.Name)
@@ -362,7 +362,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 		}
 	}
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.GreaterOrEqual(count, 0)
 }
 
@@ -370,7 +370,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersPaged() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	const numContainers = 6
 	maxResults := int32(2)
 	const pagedContainersPrefix = "azcontainerpaged"
@@ -398,7 +398,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersPaged() {
 
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		for _, ctnr := range resp.ContainerItems {
 			_require.NotNil(ctnr.Name)
 			results = append(results, *ctnr)
@@ -505,7 +505,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountListContainersEmptyPrefix() {
 
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 
 		for _, container := range resp.ContainerItems {
 			count++
@@ -530,7 +530,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountListContainersEmptyPrefix() {
 ////
 ////		// getting the pager should still work
 ////		pager, err := svcClient.NewListContainersPager(context.Background(), 100, time.Hour, &options)
-////		_require.Nil(err)
+////		_require.NoError(err)
 ////
 ////		// getting the next page should fail
 ////
@@ -549,14 +549,14 @@ func (s *ServiceRecordedTestsSuite) TestAccountListContainersEmptyPrefix() {
 ////	maxResults := int32(2)
 ////	options := ServiceListContainersOptions{Prefix: &prefix, MaxResults: &maxResults}
 ////	pager, err := svcClient.NewListContainersPager(&options)
-////	_require.Nil(err)
+////	_require.NoError(err)
 ////
 ////	// getting the next page should work
 ////	hasPage := pager.NextPage(context.Background())
 ////	_require.(hasPage, chk.Equals, true)
 ////
 ////	page := pager.PageResponse()
-////	_require.Nil(err)
+////	_require.NoError(err)
 ////	_require.(*page.EnumerationResults.ContainerItems, chk.HasLen, 2)
 ////	_require.(*(*page.EnumerationResults.ContainerItems)[0].Name, chk.DeepEquals, containerName1)
 ////	_require.(*(*page.EnumerationResults.ContainerItems)[1].Name, chk.DeepEquals, containerName2)
@@ -570,25 +570,25 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
 	days := to.Ptr[int32](5)
 	enabled := to.Ptr(true)
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	disabled := false
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &disabled}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
 	resp, err = svcClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, false)
 	_require.Nil(resp.StorageServiceProperties.DeleteRetentionPolicy.Days)
 }
@@ -601,19 +601,19 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyEmpty() {
 	days := to.Ptr[int32](5)
 	enabled := to.Ptr(true)
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	// Empty retention policy causes an error, this is different from track 1.5
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{}})
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
@@ -624,32 +624,32 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 	days := to.Ptr[int32](5)
 	enabled := to.Ptr(true)
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
 	// If an element of service properties is not passed, the service keeps the current settings.
 	resp, err = svcClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	// Disable for other tests
 	enabled = to.Ptr(false)
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled}})
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooSmall() {
@@ -660,7 +660,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooSmall
 	days := int32(0) // Minimum days is 1. Validated on the client.
 	enabled := true
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled, Days: &days}})
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
@@ -673,12 +673,12 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLar
 		} else {
 			svcClient, err = testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
 		}
-		_require.Nil(err)
+		_require.NoError(err)
 
 		days := int32(366) // Max days is 365. Left to the service for validation.
 		enabled := true
 		_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled, Days: &days}})
-		_require.NotNil(err)
+		_require.Error(err)
 
 		testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
 	}
@@ -692,7 +692,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(
 	// Days is required if enabled is true.
 	enabled := true
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled}})
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
 }
@@ -703,7 +703,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	cred, _ := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", cred.AccountName()), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
 
@@ -729,17 +729,17 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	}
 	expiry := time.Now().Add(time.Hour)
 	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	svcClient, err := testcommon.GetServiceClientNoCredential(s.T(), sasUrl, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// create container using SAS
 	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
@@ -747,7 +747,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 
 	serviceClient, err := service.NewClientWithNoCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	resources := sas.AccountResourceTypes{
 		Object:    true,
 		Service:   true,
@@ -778,10 +778,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientSignNegative() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	resources := sas.AccountResourceTypes{
 		Object:    true,
 		Service:   true,
@@ -812,7 +812,7 @@ func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
 
 	// Creating service client without credentials
 	serviceClient, err := service.NewClientWithNoCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Adding SAS and options
 	resources := sas.AccountResourceTypes{
@@ -844,10 +844,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := serviceClient.NewContainerClient(containerName)
@@ -861,13 +861,13 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
 
 	opts := container.GetSASURLOptions{StartTime: &start}
 	sasUrl, err := containerClient.GetSASURL(permissions, expiry, &opts)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	containerClient2, err := container.NewClientWithNoCredential(sasUrl, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = containerClient2.Create(context.Background(), &container.CreateOptions{Metadata: testcommon.BasicMetadata})
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
 }
 
@@ -877,10 +877,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := serviceClient.NewContainerClient(containerName)
@@ -888,13 +888,13 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	opts := container.GetSASURLOptions{StartTime: &start}
 
 	sasUrlReadAdd, err := containerClient.GetSASURL(sas.ContainerPermissions{Read: true, Add: true}, time.Now().Add(time.Hour), &opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = containerClient.Create(context.Background(), &container.CreateOptions{Metadata: testcommon.BasicMetadata})
-	_require.Nil(err)
+	_require.NoError(err)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	containerClient1, err := container.NewClientWithNoCredential(sasUrlReadAdd, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// container metadata and properties can't be read or written with SAS auth
 	_, err = containerClient1.GetProperties(context.Background(), nil)
@@ -905,10 +905,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	opts = container.GetSASURLOptions{StartTime: &start}
 
 	sasUrlRCWL, err := containerClient.GetSASURL(sas.ContainerPermissions{Add: true, Create: true, Delete: true, List: true}, time.Now().Add(time.Hour), &opts)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	containerClient2, err := container.NewClientWithNoCredential(sasUrlRCWL, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// containers can't be created, deleted, or listed with SAS auth
 	_, err = containerClient2.Create(context.Background(), nil)
@@ -926,10 +926,10 @@ func (s *ServiceRecordedTestsSuite) TestContainerRestore() {
 	containerName := testcommon.GenerateContainerName(testName)
 
 	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// it appears that deleting the container involves acquiring a lease.
 	// since leases can only be 15-60s or infinite, we just wait for 60 seconds.
@@ -941,7 +941,7 @@ func (s *ServiceRecordedTestsSuite) TestContainerRestore() {
 	contRestored := false
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		for _, cont := range resp.ContainerItems {
 			_require.NotNil(cont.Name)
 
@@ -999,10 +999,10 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 	containerName := testcommon.GenerateContainerName(testName)
 
 	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	sasQueryParams, err := sas.BlobSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,
@@ -1011,14 +1011,14 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 		Permissions:   to.Ptr(sas.BlobPermissions{Read: true, Create: true, Write: true, Tag: true}).String(),
 		ContainerName: containerName,
 	}.SignWithSharedKey(credential)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcBlobParts, _ := blob.ParseURL(svcClient.URL())
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
 
 	azClient, err := azblob.NewClientWithNoCredential(srcBlobURLWithSAS, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	const blobData = "test data"
 	blobName := testcommon.GenerateBlobName(testName)
@@ -1030,21 +1030,21 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 			Metadata: testcommon.BasicMetadata,
 			Tags:     map[string]string{"Year": "2022"},
 		})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	blobDownloadResponse, err := azClient.DownloadStream(context.TODO(), containerName, blobName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	reader := blobDownloadResponse.Body
 	downloadData, err := io.ReadAll(reader)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(string(downloadData), blobData)
 
 	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	err = reader.Close()
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *ServiceRecordedTestsSuite) TestAccountGetStatistics() {
@@ -1052,15 +1052,15 @@ func (s *ServiceRecordedTestsSuite) TestAccountGetStatistics() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	options := &service.ClientOptions{}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s-secondary.blob.core.windows.net/", accountName), cred, options)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := serviceClient.GetStatistics(context.Background(), &service.GetStatisticsOptions{})
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp.Version)
 	_require.NotNil(resp.RequestID)
 	_require.NotNil(resp.Date)
@@ -1082,7 +1082,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountFilterBlobs() {
 
 	filter := "\"key\"='value'"
 	resp, err := svcClient.FilterBlobs(context.Background(), filter, &service.FilterBlobsOptions{})
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(resp.FilterBlobSegment.Blobs, 0)
 }
 
@@ -1092,7 +1092,7 @@ func (s *ServiceUnrecordedTestsSuite) TestFilterBlobsTagsWithServiceSAS() {
 	cred, _ := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", cred.AccountName()), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Note: Always set all permissions, services, types to true to ensure order of string formed is correct.
 	resources := sas.AccountResourceTypes{
@@ -1116,10 +1116,10 @@ func (s *ServiceUnrecordedTestsSuite) TestFilterBlobsTagsWithServiceSAS() {
 	}
 	expiry := time.Now().Add(time.Hour)
 	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	svcClient, err := testcommon.GetServiceClientNoCredential(s.T(), sasUrl, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
@@ -1131,15 +1131,15 @@ func (s *ServiceUnrecordedTestsSuite) TestFilterBlobsTagsWithServiceSAS() {
 		Tags: testcommon.SpecialCharBlobTagsMap,
 	}
 	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(createResp.VersionID)
 	time.Sleep(10 * time.Second)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	blobGetTagsResponse, err := abClient.GetTags(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
 	_require.Len(blobTagsSet, len(testcommon.SpecialCharBlobTagsMap))
@@ -1150,12 +1150,12 @@ func (s *ServiceUnrecordedTestsSuite) TestFilterBlobsTagsWithServiceSAS() {
 	// Tags with spaces
 	where := "\"GO \"='.Net'"
 	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
 	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[2])
 
 	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func batchSetup(containerName string, svcClient *service.Client, bb *service.BatchBuilder, operationType exported.BlobBatchOperationType) ([]*container.Client, error) {

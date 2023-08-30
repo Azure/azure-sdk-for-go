@@ -218,7 +218,7 @@ func TestMessageWithIncorrectBody(t *testing.T) {
 }
 
 func TestReceivedMessageToMessage(t *testing.T) {
-	rm := ReceivedMessage{
+	rm := &ReceivedMessage{
 		ApplicationProperties: map[string]any{
 			"hello": "world",
 		},
@@ -250,7 +250,7 @@ func TestReceivedMessageToMessage(t *testing.T) {
 
 	msg := rm.Message()
 
-	expectedMsg := Message{
+	expectedMsg := &Message{
 		ApplicationProperties: map[string]any{
 			"hello": "world",
 		},

@@ -133,8 +133,8 @@ type ReceivedMessage struct {
 }
 
 // Message creates a shallow copy of the attributes from this message to a [Message].
-func (rm ReceivedMessage) Message() Message {
-	return Message{
+func (rm *ReceivedMessage) Message() *Message {
+	return &Message{
 		ApplicationProperties: rm.ApplicationProperties,
 		Body:                  rm.Body,
 		ContentType:           rm.ContentType,

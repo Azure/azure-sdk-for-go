@@ -566,3 +566,28 @@ func replaceModuleImport(path, rpName, namespaceName, previousVersion, currentVe
 		return nil
 	})
 }
+
+func existSuffixFile(path, suffix string) bool {
+
+	existed := false
+	err := filepath.WalkDir(path, func(p string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if d.IsDir() {
+			return nil
+		}
+
+		if strings.HasSuffix(d.Name(), suffix) {
+			existed = true
+			return nil
+		}
+		return nil
+	})
+	if err != nil {
+		return false
+	}
+
+	return existed
+}

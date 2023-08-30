@@ -33,7 +33,7 @@ An authenticated client object is required to upload logs. The examples demonstr
 
 #### Create a client
 
-Example client
+[Example client][azingest_pkg_go_example_client]
 
 ## Key concepts
 
@@ -64,29 +64,11 @@ The logs that were uploaded using this module can be queried using the [azquery]
 
 ## Examples
 
-Get started with our examples.
+Get started with our [examples][azingest_pkg_go_samples].
 
 ## Troubleshooting
 
-### Error Handling
-
-All methods which send HTTP requests return `*azcore.ResponseError` when these requests fail. `ResponseError` has error details and the raw response from Monitor Query.
-
-### Logging
-
-This module uses the logging implementation in `azcore`. To turn on logging for all Azure SDK modules, set `AZURE_SDK_GO_LOGGING` to `all`. By default, the logger writes to stderr. Use the `azcore/log` package to control log output. For example, logging only HTTP request and response events, and printing them to stdout:
-
-```go
-import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-
-// Print log events to stdout
-azlog.SetListener(func(cls azlog.Event, msg string) {
-	fmt.Println(msg)
-})
-
-// Includes only requests and responses in credential logs
-azlog.SetEvents(azlog.EventRequest, azlog.EventResponse)
-```
+See our troubleshooting guide for details on how to diagnose various failure scenarios.
 
 ## Next steps
 
@@ -103,6 +85,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 <!-- LINKS -->
 [azingest_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azingest
 [azingest_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest
+[azingest_pkg_go_example_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest#example-NewClient
 [azingest_pkg_go_samples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest#pkg-examples
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_monitor_create_using_portal]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace

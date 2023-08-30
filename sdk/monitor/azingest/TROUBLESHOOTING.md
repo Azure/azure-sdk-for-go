@@ -45,7 +45,7 @@ If you get an error with HTTP status code 403 (Forbidden), it means the provided
 ```text
 "error": {
 "code": "OperationFailed",
-"message": "The authentication token provided does not have access to ingest data for the data collection rule with immutable Id '***' PipelineAccessResult: AccessGranted: False, IsRbacPresent: False, IsDcrDceBindingValid: , DcrArmId: /subscriptions/***/resourceGroups/***/providers/Microsoft.Insights/dataCollectionRules/az-dcr, Message: Required autorization action was not found for tenantId *** objectId *** on resourceId /subscriptions/***/resourceGroups/***/providers/Microsoft.Insights/dataCollectionRules/az-dcr ConfigurationId: ***.."
+"message": "The authentication token provided does not have access to ingest data for the data collection rule with immutable Id '***' PipelineAccessResult: AccessGranted: False, IsRbacPresent: False, IsDcrDceBindingValid: , DcrArmId: /subscriptions/***/resourceGroups/***/providers/Microsoft.Insights/dataCollectionRules/az-dcr, Message: Required authorization action was not found for tenantId *** objectId *** on resourceId /subscriptions/***/resourceGroups/***/providers/Microsoft.Insights/dataCollectionRules/az-dcr ConfigurationId: ***.."
 }
 ```
 

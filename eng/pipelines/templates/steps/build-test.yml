@@ -20,6 +20,17 @@ parameters:
 
 steps:
   - task: Powershell@2
+    displayName: Use azcore from main
+    condition: eq(variables['Use.AzcoreFromMain'], 'true')
+    env:
+      GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/Replace-azcore.ps1
+      arguments: '${{ parameters.ServiceDirectory }}'
+
+  - task: Powershell@2
     displayName: Build
     env:
       GO111MODULE: 'on'

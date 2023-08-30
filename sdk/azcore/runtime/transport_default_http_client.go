@@ -11,6 +11,8 @@ import (
 	"net"
 	"net/http"
 	"time"
+
+	"golang.org/x/net/http2"
 )
 
 var defaultHTTPClient *http.Client
@@ -31,6 +33,12 @@ func init() {
 			MinVersion:    tls.VersionTLS12,
 			Renegotiation: tls.RenegotiateFreelyAsClient,
 		},
+	}
+	if http2Transport, err := http2.ConfigureTransports(defaultTransport); err == nil {
+		// if the connection has been idle for 10 seconds, send a ping frame for a health check
+		http2Transport.ReadIdleTimeout = 10 * time.Second
+		// if there's no response to the ping within 2 seconds, close the connection
+		http2Transport.PingTimeout = 2 * time.Second
 	}
 	defaultHTTPClient = &http.Client{
 		Transport: defaultTransport,

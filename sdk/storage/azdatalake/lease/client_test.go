@@ -8,12 +8,12 @@ package lease_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/lease"
 	"github.com/stretchr/testify/require"
@@ -78,12 +78,12 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemAcquireLease() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := filesystemLeaseClient.AcquireLease(ctx, int32(60), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(*acquireLeaseResponse.LeaseID, *filesystemLeaseClient.LeaseID())
 
 	_, err = filesystemLeaseClient.ReleaseLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestFilesystemDeleteFilesystemWithoutLeaseId() {
@@ -103,12 +103,12 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemDeleteFilesystemWithoutLeaseId()
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := filesystemLeaseClient.AcquireLease(ctx, int32(60), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(*acquireLeaseResponse.LeaseID, *filesystemLeaseClient.LeaseID())
 
 	_, err = filesystemClient.Delete(ctx, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	leaseID := filesystemLeaseClient.LeaseID()
 	_, err = filesystemClient.Delete(ctx, &filesystem.DeleteOptions{
@@ -118,7 +118,7 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemDeleteFilesystemWithoutLeaseId()
 			},
 		},
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestFilesystemReleaseLease() {
@@ -140,18 +140,18 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemReleaseLease() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := filesystemLeaseClient.AcquireLease(ctx, int32(60), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(*acquireLeaseResponse.LeaseID, *filesystemLeaseClient.LeaseID())
 
 	_, err = filesystemClient.Delete(ctx, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	_, err = filesystemLeaseClient.ReleaseLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = filesystemClient.Delete(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestFilesystemRenewLease() {
@@ -173,15 +173,15 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemRenewLease() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := filesystemLeaseClient.AcquireLease(ctx, int32(15), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(*acquireLeaseResponse.LeaseID, *filesystemLeaseClient.LeaseID())
 
 	_, err = filesystemLeaseClient.RenewLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = filesystemLeaseClient.ReleaseLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestFilesystemChangeLease() {
@@ -203,20 +203,20 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemChangeLease() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := fsLeaseClient.AcquireLease(ctx, int32(15), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(*acquireLeaseResponse.LeaseID, *fsLeaseClient.LeaseID())
 
 	changeLeaseResp, err := fsLeaseClient.ChangeLease(ctx, *proposedLeaseIDs[1], nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(changeLeaseResp.LeaseID, proposedLeaseIDs[1])
 	_require.EqualValues(fsLeaseClient.LeaseID(), proposedLeaseIDs[1])
 
 	_, err = fsLeaseClient.RenewLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = fsLeaseClient.ReleaseLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestFileAcquireLease() {
@@ -241,12 +241,12 @@ func (s *LeaseRecordedTestsSuite) TestFileAcquireLease() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := fileLeaseClient.AcquireLease(ctx, int32(60), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(acquireLeaseResponse.LeaseID, fileLeaseClient.LeaseID())
 
 	_, err = fileLeaseClient.ReleaseLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestDeleteFileWithoutLeaseId() {
@@ -271,12 +271,12 @@ func (s *LeaseRecordedTestsSuite) TestDeleteFileWithoutLeaseId() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := fileLeaseClient.AcquireLease(ctx, int32(60), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(acquireLeaseResponse.LeaseID, fileLeaseClient.LeaseID())
 
 	_, err = fileClient.Delete(ctx, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	leaseID := fileLeaseClient.LeaseID()
 	_, err = fileClient.Delete(ctx, &file.DeleteOptions{
@@ -286,7 +286,7 @@ func (s *LeaseRecordedTestsSuite) TestDeleteFileWithoutLeaseId() {
 			},
 		},
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestFileReleaseLease() {
@@ -310,18 +310,18 @@ func (s *LeaseRecordedTestsSuite) TestFileReleaseLease() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := fileLeaseClient.AcquireLease(ctx, int32(60), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(acquireLeaseResponse.LeaseID, fileLeaseClient.LeaseID())
 
 	_, err = fileClient.Delete(ctx, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	_, err = fileLeaseClient.ReleaseLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = fileClient.Delete(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestFileRenewLease() {
@@ -342,15 +342,15 @@ func (s *LeaseRecordedTestsSuite) TestFileRenewLease() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := fileLeaseClient.AcquireLease(ctx, int32(15), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(acquireLeaseResponse.LeaseID, fileLeaseClient.LeaseID())
 
 	_, err = fileLeaseClient.RenewLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = fileLeaseClient.ReleaseLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestFileChangeLease() {
@@ -374,19 +374,19 @@ func (s *LeaseRecordedTestsSuite) TestFileChangeLease() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := fileLeaseClient.AcquireLease(ctx, int32(15), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.Equal(*acquireLeaseResponse.LeaseID, *proposedLeaseIDs[0])
 
 	changeLeaseResp, err := fileLeaseClient.ChangeLease(ctx, *proposedLeaseIDs[1], nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*changeLeaseResp.LeaseID, *proposedLeaseIDs[1])
 
 	_, err = fileLeaseClient.RenewLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = fileLeaseClient.ReleaseLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestDirAcquireLease() {
@@ -411,12 +411,12 @@ func (s *LeaseRecordedTestsSuite) TestDirAcquireLease() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := dirLeaseClient.AcquireLease(ctx, int32(60), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(acquireLeaseResponse.LeaseID, dirLeaseClient.LeaseID())
 
 	_, err = dirLeaseClient.ReleaseLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestDeleteDirWithoutLeaseId() {
@@ -441,12 +441,12 @@ func (s *LeaseRecordedTestsSuite) TestDeleteDirWithoutLeaseId() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := dirLeaseClient.AcquireLease(ctx, int32(60), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(acquireLeaseResponse.LeaseID, dirLeaseClient.LeaseID())
 
 	_, err = dirClient.Delete(ctx, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	leaseID := dirLeaseClient.LeaseID()
 	_, err = dirClient.Delete(ctx, &file.DeleteOptions{
@@ -456,7 +456,7 @@ func (s *LeaseRecordedTestsSuite) TestDeleteDirWithoutLeaseId() {
 			},
 		},
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestDirReleaseLease() {
@@ -480,18 +480,18 @@ func (s *LeaseRecordedTestsSuite) TestDirReleaseLease() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := DirLeaseClient.AcquireLease(ctx, int32(60), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(acquireLeaseResponse.LeaseID, DirLeaseClient.LeaseID())
 
 	_, err = DirClient.Delete(ctx, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	_, err = DirLeaseClient.ReleaseLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = DirClient.Delete(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestDirRenewLease() {
@@ -512,15 +512,15 @@ func (s *LeaseRecordedTestsSuite) TestDirRenewLease() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := dirLeaseClient.AcquireLease(ctx, int32(15), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(acquireLeaseResponse.LeaseID, dirLeaseClient.LeaseID())
 
 	_, err = dirLeaseClient.RenewLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = dirLeaseClient.ReleaseLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *LeaseRecordedTestsSuite) TestDirChangeLease() {
@@ -544,17 +544,17 @@ func (s *LeaseRecordedTestsSuite) TestDirChangeLease() {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := dirLeaseClient.AcquireLease(ctx, int32(15), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.Equal(*acquireLeaseResponse.LeaseID, *proposedLeaseIDs[0])
 
 	changeLeaseResp, err := dirLeaseClient.ChangeLease(ctx, *proposedLeaseIDs[1], nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*changeLeaseResp.LeaseID, *proposedLeaseIDs[1])
 
 	_, err = dirLeaseClient.RenewLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = dirLeaseClient.ReleaseLease(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }

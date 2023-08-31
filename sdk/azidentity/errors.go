@@ -78,6 +78,8 @@ func (e *AuthenticationFailedError) Error() string {
 	switch e.credType {
 	case credNameAzureCLI:
 		anchor = "azure-cli"
+	case credNameAzureDeveloperCLI:
+		anchor = "azd"
 	case credNameCert:
 		anchor = "client-cert"
 	case credNameSecret:

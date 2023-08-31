@@ -227,9 +227,9 @@ func (d *Client) NewFileClient(fileName string) (*file.Client, error) {
 	return (*file.Client)(base.NewPathClient(fileURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.FileClient), d.sharedKey(), d.identityCredential(), d.getClientOptions())), nil
 }
 
-func (d *Client) NewSubdirectoryClient(subDirectoryName string) (*Client, error) {
-	subDirectoryName = url.PathEscape(strings.TrimRight(subDirectoryName, "/"))
-	subDirectoryURL := runtime.JoinPaths(d.DFSURL(), subDirectoryName)
+func (d *Client) NewSubdirectoryClient(subdirectoryName string) (*Client, error) {
+	subdirectoryName = url.PathEscape(strings.TrimRight(subdirectoryName, "/"))
+	subDirectoryURL := runtime.JoinPaths(d.DFSURL(), subdirectoryName)
 	newBlobURL, subDirectoryURL := shared.GetURLs(subDirectoryURL)
 	var newBlobClient *blockblob.Client
 	clientOptions := &blockblob.ClientOptions{ClientOptions: d.getClientOptions().ClientOptions}

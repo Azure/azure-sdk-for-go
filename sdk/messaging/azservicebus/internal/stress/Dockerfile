@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/oss/go/microsoft/golang:1.18 as build
+FROM mcr.microsoft.com/oss/go/microsoft/golang:1.18-fips-cbl-mariner2.0 as build
 # you'll need to run this build from the root of the azservicebus module
 ENV GOOS=linux 
 ENV GOARCH=amd64 

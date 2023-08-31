@@ -21,7 +21,7 @@ parameters:
 steps:
   - task: Powershell@2
     displayName: Use azcore from main
-    condition: eq($(UseAzcoreFromMain), 'true')
+    condition: eq(variables.UseAzcoreFromMain, 'true')
     env:
       GO111MODULE: 'on'
     inputs:

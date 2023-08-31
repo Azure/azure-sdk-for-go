@@ -122,7 +122,7 @@ func (testsuite *PerformanceRecommendationsTestSuite) TestAdvisors() {
 func (testsuite *PerformanceRecommendationsTestSuite) TestCreateRecommendedActionSession() {
 	var err error
 	// From step CreateRecommendedActionSession
-	fmt.Println("Call operation: MariaDBManagementClient_CreateRecommendedActionSession")
+	fmt.Println("Call operation: CreateRecommendedActionSession")
 	managementClient, err := armmariadb.NewManagementClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	managementClientCreateRecommendedActionSessionResponsePoller, err := managementClient.BeginCreateRecommendedActionSession(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "Index", "someDatabaseName", nil)

@@ -107,7 +107,7 @@ func (testsuite *ServerSecurityAlertPoliciesTestSuite) TestServerSecurityAlertPo
 	testsuite.Require().NoError(err)
 	serverSecurityAlertPoliciesClientCreateOrUpdateResponsePoller, err := serverSecurityAlertPoliciesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armmariadb.SecurityAlertPolicyNameDefault, armmariadb.ServerSecurityAlertPolicy{
 		Properties: &armmariadb.SecurityAlertPolicyProperties{
-			State:  to.Ptr(armmariadb.ServerSecurityAlertPolicyStateEnabled),
+			State: to.Ptr(armmariadb.ServerSecurityAlertPolicyStateEnabled),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)

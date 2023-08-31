@@ -2,7 +2,7 @@
 
 Param(
     [string] $serviceDirectory,
-    [bool] $useAzcoreFromMain = $false
+    [string] $useAzcoreFromMain
 )
 
 Push-Location sdk/$serviceDirectory

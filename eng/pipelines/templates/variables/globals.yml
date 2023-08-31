@@ -8,3 +8,6 @@ variables:
   
   # Disable CodeQL injections except for where we specifically enable it
   Codeql.SkipTaskAutoInjection: true
+
+  # Set the default value so that 'Build Performance Tests' step can resolve it
+  UseAzcoreFromMain: $[eq(variables['Use.AzcoreFromMain'], 'true')]

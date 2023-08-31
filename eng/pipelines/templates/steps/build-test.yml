@@ -86,7 +86,7 @@ steps:
     inputs:
       targetType: 'filePath'
       filePath: ./eng/scripts/Build_Perf.ps1
-      arguments: '${{ parameters.ServiceDirectory }} $$(Use.AzcoreFromMain)'
+      arguments: '${{ parameters.ServiceDirectory }} $[variables.Use.AzcoreFromMain]'
       pwsh: true
 
   - ${{ if eq(parameters.TestProxy, true) }}:

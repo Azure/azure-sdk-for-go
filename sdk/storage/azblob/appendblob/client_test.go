@@ -11,7 +11,9 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"hash/crc64"
 	"io"
@@ -123,6 +125,78 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlock() {
 	_require.Nil(err)
 	_require.Equal(*appendResp.BlobAppendOffset, "1024")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(2))
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	blobName := testName
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	abClient, err := appendblob.NewClient(blobURL, cred, nil)
+	_require.NoError(err)
+
+	resp, err := abClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobClientSharedKey() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	blobName := testName
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	cred, err := blob.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	abClient, err := appendblob.NewClientWithSharedKeyCredential(blobURL, cred, nil)
+	_require.NoError(err)
+
+	resp, err := abClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobClientConnectionString() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testName
+	connectionString, err := testcommon.GetGenericConnectionString(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	abClient, err := appendblob.NewClientFromConnectionString(*connectionString, containerName, blobName, nil)
+	_require.NoError(err)
+
+	resp, err := abClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
 }
 
 func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockHighThroughput() {
@@ -3428,4 +3502,24 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendGetAccountInfo() {
 	bAccInfo, err := abClient.GetAccountInfo(context.Background(), nil)
 	_require.Nil(err)
 	_require.NotZero(bAccInfo)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockSetTier() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abName := testcommon.GenerateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
+	_, err = abClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = abClient.SetTier(context.Background(), blob.AccessTierHot, nil)
+	_require.ErrorContains(err, "operation will not work on this blob type. SetTier only works for page blob in premium storage account and block blob in blob storage account")
 }

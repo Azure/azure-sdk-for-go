@@ -11,6 +11,8 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -96,6 +98,81 @@ func createNewPageBlobWithCPK(ctx context.Context, _require *require.Assertions,
 	_require.Nil(err)
 	// _require.Equal(resp.RawResponse.StatusCode, 201)
 	return
+}
+
+func (s *PageBlobRecordedTestsSuite) TestPageBlobClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	blobName := testName
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	pbClient, err := pageblob.NewClient(blobURL, cred, nil)
+	_require.NoError(err)
+
+	// Create pbClient
+	resp, err := pbClient.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+}
+
+func (s *PageBlobRecordedTestsSuite) TestPageBlobClientSharedKey() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	blobName := testName
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	cred, err := blob.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	pbClient, err := pageblob.NewClientWithSharedKeyCredential(blobURL, cred, nil)
+	_require.NoError(err)
+
+	// Prepare pbClient for copy.
+	resp, err := pbClient.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+}
+
+func (s *PageBlobRecordedTestsSuite) TestPageBlobClientConnectionString() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testName
+	connectionString, err := testcommon.GetGenericConnectionString(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	pbClient, err := pageblob.NewClientFromConnectionString(*connectionString, containerName, blobName, nil)
+	_require.NoError(err)
+
+	// Create pbClient
+	resp, err := pbClient.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
 }
 
 func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {

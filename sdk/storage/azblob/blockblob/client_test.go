@@ -14,6 +14,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"hash/crc64"
 	"io"
@@ -81,6 +82,93 @@ type BlockBlobRecordedTestsSuite struct {
 
 type BlockBlobUnrecordedTestsSuite struct {
 	suite.Suite
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	blobName := testName
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	bbClient, err := blockblob.NewClient(blobURL, cred, nil)
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+
+	// Prepare bbClient for copy.
+	resp, err := bbClient.Upload(context.Background(), rsc, nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClientSharedKey() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	blobName := testName
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	cred, err := blob.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	bbClient, err := blockblob.NewClientWithSharedKeyCredential(blobURL, cred, nil)
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+
+	// Prepare bbClient for copy.
+	resp, err := bbClient.Upload(context.Background(), rsc, nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClientConnectionString() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testName
+	connectionString, err := testcommon.GetGenericConnectionString(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	bbClient, err := blockblob.NewClientFromConnectionString(*connectionString, containerName, blobName, nil)
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+
+	// Prepare bbClient for copy.
+	resp, err := bbClient.Upload(context.Background(), rsc, nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
 }
 
 //	func (s *BlockBlobRecordedTestsSuite) TestStageGetBlocks() {

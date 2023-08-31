@@ -8,6 +8,7 @@ package directory_test
 
 import (
 	"context"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -59,6 +60,30 @@ type RecordedTestSuite struct {
 
 type UnrecordedTestSuite struct {
 	suite.Suite
+}
+
+func (d *UnrecordedTestSuite) TestDirNewSubdirectoryClient() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := svcClient.NewFileSystemClient(fsName)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient := fsClient.NewDirectoryClient(dirName)
+
+	subdirName := "subdir"
+	subdirClient, err := dirClient.NewSubdirectoryClient(subdirName)
+	_require.NoError(err)
+
+	correctDirURL := fmt.Sprintf("https://%s.dfs.core.windows.net/%s/%s/%s/", accountName, fsName, dirName, subdirName)
+	_require.Equal(correctDirURL, subdirClient.DFSURL())
 }
 
 func (s *UnrecordedTestSuite) TestCreateDirAndDeleteWithConnectionString() {

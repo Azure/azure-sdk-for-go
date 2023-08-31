@@ -3,6 +3,7 @@
 ## 0.1.0-beta.2 (Unreleased)
 
 ### Features Added
+* NewSubdirectoryClient is now available on `*directory.Client`, creating a new `*directory.Client` for the specified subdirectory.
 
 ### Breaking Changes
 

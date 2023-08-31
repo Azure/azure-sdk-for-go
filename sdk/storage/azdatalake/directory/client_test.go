@@ -82,12 +82,23 @@ func (d *UnrecordedTestSuite) TestDirNewSubdirectoryClient() {
 	subdirClient, err := dirClient.NewSubdirectoryClient(subdirName)
 	_require.NoError(err)
 
-	correctDirURL := fmt.Sprintf("https://%s.dfs.core.windows.net/%s/%s/%s/", accountName, fsName, dirName, subdirName)
+	correctDirURL := fmt.Sprintf("https://%s.dfs.core.windows.net/%s/%s/%s", accountName, fsName, dirName, subdirName)
 	_require.Equal(correctDirURL, subdirClient.DFSURL())
+
+	perm := "0766"
+
+	_, err = dirClient.Create(context.Background(), &directory.CreateOptions{
+		Permissions: &perm,
+	})
+	_require.NoError(err)
+
+	resp, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.Permissions)
+	_require.Equal(perm, *resp.Permissions)
 }
 
-func (s *UnrecordedTestSuite) TestCreateDirAndDeleteWithConnectionString() {
-
+func (s *RecordedTestSuite) TestCreateDirAndDeleteWithConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

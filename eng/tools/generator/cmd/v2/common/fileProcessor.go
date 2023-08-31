@@ -581,7 +581,6 @@ func existSuffixFile(path, suffix string) bool {
 
 		if strings.HasSuffix(d.Name(), suffix) {
 			existed = true
-			return nil
 		}
 		return nil
 	})

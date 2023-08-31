@@ -17,6 +17,8 @@ if ($perfDirectories.Length -eq 0) {
 
 $failed = $false
 
+Write-Host "##[command] useAzcoreFromMain contains $useAzcoreFromMain"
+
 foreach ($perfDir in $perfDirectories) {
     Push-Location $perfDir
 

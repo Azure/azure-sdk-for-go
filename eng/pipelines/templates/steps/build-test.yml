@@ -83,10 +83,12 @@ steps:
 
   - task: PowerShell@2
     displayName: 'Build Performance Tests'
+    variables:
+      useAzcoreFromMain: eq(variables['Use.AzcoreFromMain'], 'true')
     inputs:
       targetType: 'filePath'
       filePath: ./eng/scripts/Build_Perf.ps1
-      arguments: '${{ parameters.ServiceDirectory }} variables['Use.AzcoreFromMain']'
+      arguments: '${{ parameters.ServiceDirectory }} $(useAzcoreFromMain)'
       pwsh: true
 
   - ${{ if eq(parameters.TestProxy, true) }}:

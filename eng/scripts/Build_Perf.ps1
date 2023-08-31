@@ -11,7 +11,7 @@ Push-Location sdk/$serviceDirectory
 $perfDirectories = Get-ChildItem -Path . -Filter testdata -Recurse
 
 if ($perfDirectories.Length -eq 0) {
-    Write-Host "##[command] Did not find any performance tests in the directory $(pwd)"
+    Write-Host "##[command] Did not find any performance tests in the directory $(Get-Location)"
     exit 0
 }
 

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/GetFluxConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/GetFluxConfiguration.json
 func ExampleFluxConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,18 +57,45 @@ func ExampleFluxConfigurationsClient_Get() {
 	// 				Path: to.Ptr("./test/path"),
 	// 				DependsOn: []*string{
 	// 				},
+	// 				PostBuild: &armkubernetesconfiguration.PostBuildDefinition{
+	// 					Substitute: map[string]*string{
+	// 						"cluster_env": to.Ptr("prod"),
+	// 						"replica_count": to.Ptr("2"),
+	// 					},
+	// 					SubstituteFrom: []*armkubernetesconfiguration.SubstituteFromDefinition{
+	// 						{
+	// 							Name: to.Ptr("cluster-test"),
+	// 							Kind: to.Ptr("ConfigMap"),
+	// 							Optional: to.Ptr(true),
+	// 					}},
+	// 				},
 	// 				SyncIntervalInSeconds: to.Ptr[int64](600),
 	// 				TimeoutInSeconds: to.Ptr[int64](600),
+	// 				Wait: to.Ptr(true),
 	// 			},
 	// 			"srs-kustomization2": &armkubernetesconfiguration.KustomizationDefinition{
 	// 				Name: to.Ptr("srs-kustomization2"),
 	// 				Path: to.Ptr("./other/test/path"),
 	// 				DependsOn: []*string{
 	// 					to.Ptr("srs-kustomization1")},
+	// 					PostBuild: &armkubernetesconfiguration.PostBuildDefinition{
+	// 						SubstituteFrom: []*armkubernetesconfiguration.SubstituteFromDefinition{
+	// 							{
+	// 								Name: to.Ptr("cluster-values"),
+	// 								Kind: to.Ptr("ConfigMap"),
+	// 								Optional: to.Ptr(true),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("secret-name"),
+	// 								Kind: to.Ptr("Secret"),
+	// 								Optional: to.Ptr(false),
+	// 						}},
+	// 					},
 	// 					Prune: to.Ptr(false),
 	// 					RetryIntervalInSeconds: to.Ptr[int64](600),
 	// 					SyncIntervalInSeconds: to.Ptr[int64](600),
 	// 					TimeoutInSeconds: to.Ptr[int64](600),
+	// 					Wait: to.Ptr(false),
 	// 				},
 	// 			},
 	// 			Namespace: to.Ptr("srs-namespace"),
@@ -150,7 +177,7 @@ func ExampleFluxConfigurationsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/CreateFluxConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/CreateFluxConfiguration.json
 func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,25 +201,54 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration
 			},
 			Kustomizations: map[string]*armkubernetesconfiguration.KustomizationDefinition{
 				"srs-kustomization1": {
-					Path:                  to.Ptr("./test/path"),
-					DependsOn:             []*string{},
+					Path:      to.Ptr("./test/path"),
+					DependsOn: []*string{},
+					PostBuild: &armkubernetesconfiguration.PostBuildDefinition{
+						Substitute: map[string]*string{
+							"cluster_env":   to.Ptr("prod"),
+							"replica_count": to.Ptr("2"),
+						},
+						SubstituteFrom: []*armkubernetesconfiguration.SubstituteFromDefinition{
+							{
+								Name:     to.Ptr("cluster-test"),
+								Kind:     to.Ptr("ConfigMap"),
+								Optional: to.Ptr(true),
+							}},
+					},
 					SyncIntervalInSeconds: to.Ptr[int64](600),
 					TimeoutInSeconds:      to.Ptr[int64](600),
+					Wait:                  to.Ptr(true),
 				},
 				"srs-kustomization2": {
 					Path: to.Ptr("./other/test/path"),
 					DependsOn: []*string{
 						to.Ptr("srs-kustomization1")},
+					PostBuild: &armkubernetesconfiguration.PostBuildDefinition{
+						SubstituteFrom: []*armkubernetesconfiguration.SubstituteFromDefinition{
+							{
+								Name:     to.Ptr("cluster-values"),
+								Kind:     to.Ptr("ConfigMap"),
+								Optional: to.Ptr(true),
+							},
+							{
+								Name:     to.Ptr("secret-name"),
+								Kind:     to.Ptr("Secret"),
+								Optional: to.Ptr(false),
+							}},
+					},
 					Prune:                  to.Ptr(false),
 					RetryIntervalInSeconds: to.Ptr[int64](600),
 					SyncIntervalInSeconds:  to.Ptr[int64](600),
 					TimeoutInSeconds:       to.Ptr[int64](600),
+					Wait:                   to.Ptr(false),
 				},
 			},
-			Namespace:  to.Ptr("srs-namespace"),
-			Scope:      to.Ptr(armkubernetesconfiguration.ScopeTypeCluster),
-			SourceKind: to.Ptr(armkubernetesconfiguration.SourceKindTypeGitRepository),
-			Suspend:    to.Ptr(false),
+			Namespace:                  to.Ptr("srs-namespace"),
+			ReconciliationWaitDuration: to.Ptr("PT30M"),
+			Scope:                      to.Ptr(armkubernetesconfiguration.ScopeTypeCluster),
+			SourceKind:                 to.Ptr(armkubernetesconfiguration.SourceKindTypeGitRepository),
+			Suspend:                    to.Ptr(false),
+			WaitForReconciliation:      to.Ptr(true),
 		},
 	}, nil)
 	if err != nil {
@@ -227,18 +283,45 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration
 	// 				Path: to.Ptr("./test/path"),
 	// 				DependsOn: []*string{
 	// 				},
+	// 				PostBuild: &armkubernetesconfiguration.PostBuildDefinition{
+	// 					Substitute: map[string]*string{
+	// 						"cluster_env": to.Ptr("prod"),
+	// 						"replica_count": to.Ptr("2"),
+	// 					},
+	// 					SubstituteFrom: []*armkubernetesconfiguration.SubstituteFromDefinition{
+	// 						{
+	// 							Name: to.Ptr("cluster-test"),
+	// 							Kind: to.Ptr("ConfigMap"),
+	// 							Optional: to.Ptr(true),
+	// 					}},
+	// 				},
 	// 				SyncIntervalInSeconds: to.Ptr[int64](600),
 	// 				TimeoutInSeconds: to.Ptr[int64](600),
+	// 				Wait: to.Ptr(true),
 	// 			},
 	// 			"srs-kustomization2": &armkubernetesconfiguration.KustomizationDefinition{
 	// 				Name: to.Ptr("srs-kustomization2"),
 	// 				Path: to.Ptr("./other/test/path"),
 	// 				DependsOn: []*string{
 	// 					to.Ptr("srs-kustomization1")},
+	// 					PostBuild: &armkubernetesconfiguration.PostBuildDefinition{
+	// 						SubstituteFrom: []*armkubernetesconfiguration.SubstituteFromDefinition{
+	// 							{
+	// 								Name: to.Ptr("cluster-values"),
+	// 								Kind: to.Ptr("ConfigMap"),
+	// 								Optional: to.Ptr(true),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("secret-name"),
+	// 								Kind: to.Ptr("Secret"),
+	// 								Optional: to.Ptr(false),
+	// 						}},
+	// 					},
 	// 					Prune: to.Ptr(false),
 	// 					RetryIntervalInSeconds: to.Ptr[int64](600),
 	// 					SyncIntervalInSeconds: to.Ptr[int64](600),
 	// 					TimeoutInSeconds: to.Ptr[int64](600),
+	// 					Wait: to.Ptr(false),
 	// 				},
 	// 			},
 	// 			Namespace: to.Ptr("srs-namespace"),
@@ -316,7 +399,7 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/CreateFluxConfigurationWithBucket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/CreateFluxConfigurationWithBucket.json
 func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfigurationWithBucketSourceKind() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,7 +561,7 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/PatchFluxConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/PatchFluxConfiguration.json
 func ExampleFluxConfigurationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -612,7 +695,7 @@ func ExampleFluxConfigurationsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/DeleteFluxConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/DeleteFluxConfiguration.json
 func ExampleFluxConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -633,7 +716,7 @@ func ExampleFluxConfigurationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/ListFluxConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/ListFluxConfigurations.json
 func ExampleFluxConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -678,18 +761,45 @@ func ExampleFluxConfigurationsClient_NewListPager() {
 		// 						Path: to.Ptr("./test/path"),
 		// 						DependsOn: []*string{
 		// 						},
+		// 						PostBuild: &armkubernetesconfiguration.PostBuildDefinition{
+		// 							Substitute: map[string]*string{
+		// 								"cluster_env": to.Ptr("prod"),
+		// 								"replica_count": to.Ptr("2"),
+		// 							},
+		// 							SubstituteFrom: []*armkubernetesconfiguration.SubstituteFromDefinition{
+		// 								{
+		// 									Name: to.Ptr("cluster-test"),
+		// 									Kind: to.Ptr("ConfigMap"),
+		// 									Optional: to.Ptr(true),
+		// 							}},
+		// 						},
 		// 						SyncIntervalInSeconds: to.Ptr[int64](600),
 		// 						TimeoutInSeconds: to.Ptr[int64](600),
+		// 						Wait: to.Ptr(true),
 		// 					},
 		// 					"srs-kustomization2": &armkubernetesconfiguration.KustomizationDefinition{
 		// 						Name: to.Ptr("srs-kustomization2"),
 		// 						Path: to.Ptr("./other/test/path"),
 		// 						DependsOn: []*string{
 		// 							to.Ptr("srs-kustomization1")},
+		// 							PostBuild: &armkubernetesconfiguration.PostBuildDefinition{
+		// 								SubstituteFrom: []*armkubernetesconfiguration.SubstituteFromDefinition{
+		// 									{
+		// 										Name: to.Ptr("cluster-values"),
+		// 										Kind: to.Ptr("ConfigMap"),
+		// 										Optional: to.Ptr(true),
+		// 									},
+		// 									{
+		// 										Name: to.Ptr("secret-name"),
+		// 										Kind: to.Ptr("Secret"),
+		// 										Optional: to.Ptr(false),
+		// 								}},
+		// 							},
 		// 							Prune: to.Ptr(false),
 		// 							RetryIntervalInSeconds: to.Ptr[int64](600),
 		// 							SyncIntervalInSeconds: to.Ptr[int64](600),
 		// 							TimeoutInSeconds: to.Ptr[int64](600),
+		// 							Wait: to.Ptr(false),
 		// 						},
 		// 					},
 		// 					Namespace: to.Ptr("srs-namespace"),

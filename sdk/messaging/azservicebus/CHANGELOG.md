@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- `ReceivedMessage` can be converted to a `Message` for easier re-sending, using `ReceivedMessage.Message()`. PR#TBD
+- `ReceivedMessage` can be converted to a `Message` for easier re-sending, using `ReceivedMessage.Message()`. PR#21472
 
 ### Breaking Changes
 

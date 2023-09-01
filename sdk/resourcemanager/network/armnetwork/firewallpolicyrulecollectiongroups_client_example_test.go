@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyRuleCollectionGroupDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyRuleCollectionGroupDelete.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyNatRuleCollectionGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyNatRuleCollectionGroupGet.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyNatRuleCollectionGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyNatRul
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyRuleCollectionGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyRuleCollectionGroupGet.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCollectionGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,11 +142,12 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCo
 	// 										to.Ptr("10.1.25.0/24")},
 	// 								}},
 	// 						}},
+	// 						Size: to.Ptr("1.2MB"),
 	// 					},
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsGet.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCollectionGroupWithIpGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +198,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCo
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesGet.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCollectionGroupWithWebCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +252,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCo
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyNatRuleCollectionGroupPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyNatRuleCollectionGroupPut.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createFirewallPolicyNatRuleCollectionGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,7 +342,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyRuleCollectionGroupPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyRuleCollectionGroupPut.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createFirewallPolicyRuleCollectionGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -418,11 +419,12 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 	// 										to.Ptr("10.1.25.0/24")},
 	// 								}},
 	// 						}},
+	// 						Size: to.Ptr("1.2MB"),
 	// 					},
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createFirewallPolicyRuleCollectionGroupWithIpGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -501,7 +503,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createFirewallPolicyRuleCollectionGroupWithWebCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -586,7 +588,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyRuleCollectionGroupWithHttpHeadersToInsert.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyRuleCollectionGroupWithHttpHeadersToInsert.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createFirewallPolicyRuleCollectionGroupWithHttpHeaderToInsert() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -676,7 +678,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewallPolicyRuleCollectionGroupWithWebCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -738,7 +740,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewal
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyRuleCollectionGroupList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyRuleCollectionGroupList.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewallPolicyRuleCollectionGroupsForAGivenFirewallPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -798,7 +800,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewal
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsList.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewallPolicyRuleCollectionGroupsWithIpGroupsForAGivenFirewallPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

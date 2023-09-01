@@ -47,7 +47,7 @@ func NewRouteFilterRulesClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrUpdate - Creates or updates a route in the specified route filter.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - routeFilterName - The name of the route filter.
 //   - ruleName - The name of the route filter rule.
@@ -72,7 +72,7 @@ func (client *RouteFilterRulesClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Creates or updates a route in the specified route filter.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 func (client *RouteFilterRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule, options *RouteFilterRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters, options)
@@ -114,7 +114,7 @@ func (client *RouteFilterRulesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, routeFilterRuleParameters); err != nil {
@@ -126,7 +126,7 @@ func (client *RouteFilterRulesClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - Deletes the specified rule from a route filter.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - routeFilterName - The name of the route filter.
 //   - ruleName - The name of the rule.
@@ -150,7 +150,7 @@ func (client *RouteFilterRulesClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Deletes the specified rule from a route filter.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 func (client *RouteFilterRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, options *RouteFilterRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, routeFilterName, ruleName, options)
@@ -192,7 +192,7 @@ func (client *RouteFilterRulesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -201,7 +201,7 @@ func (client *RouteFilterRulesClient) deleteCreateRequest(ctx context.Context, r
 // Get - Gets the specified rule from a route filter.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - routeFilterName - The name of the route filter.
 //   - ruleName - The name of the rule.
@@ -248,7 +248,7 @@ func (client *RouteFilterRulesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +265,7 @@ func (client *RouteFilterRulesClient) getHandleResponse(resp *http.Response) (Ro
 
 // NewListByRouteFilterPager - Gets all RouteFilterRules in a route filter.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - routeFilterName - The name of the route filter.
 //   - options - RouteFilterRulesClientListByRouteFilterOptions contains the optional parameters for the RouteFilterRulesClient.NewListByRouteFilterPager
@@ -318,7 +318,7 @@ func (client *RouteFilterRulesClient) listByRouteFilterCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

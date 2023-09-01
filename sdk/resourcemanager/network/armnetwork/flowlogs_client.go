@@ -47,7 +47,7 @@ func NewFlowLogsClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create or update a flow log for the specified network security group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - flowLogName - The name of the flow log.
@@ -72,7 +72,7 @@ func (client *FlowLogsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create or update a flow log for the specified network security group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 func (client *FlowLogsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters FlowLog, options *FlowLogsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkWatcherName, flowLogName, parameters, options)
@@ -114,7 +114,7 @@ func (client *FlowLogsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -126,7 +126,7 @@ func (client *FlowLogsClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Deletes the specified flow log resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - flowLogName - The name of the flow log resource.
@@ -149,7 +149,7 @@ func (client *FlowLogsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Deletes the specified flow log resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 func (client *FlowLogsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, options *FlowLogsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkWatcherName, flowLogName, options)
@@ -191,7 +191,7 @@ func (client *FlowLogsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,7 +200,7 @@ func (client *FlowLogsClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Gets a flow log resource by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - flowLogName - The name of the flow log resource.
@@ -247,7 +247,7 @@ func (client *FlowLogsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -264,7 +264,7 @@ func (client *FlowLogsClient) getHandleResponse(resp *http.Response) (FlowLogsCl
 
 // NewListPager - Lists all flow log resources for the specified Network Watcher.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group containing Network Watcher.
 //   - networkWatcherName - The name of the Network Watcher resource.
 //   - options - FlowLogsClientListOptions contains the optional parameters for the FlowLogsClient.NewListPager method.
@@ -316,7 +316,7 @@ func (client *FlowLogsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -334,7 +334,7 @@ func (client *FlowLogsClient) listHandleResponse(resp *http.Response) (FlowLogsC
 // UpdateTags - Update tags of the specified flow log.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - flowLogName - The name of the flow log.
@@ -382,7 +382,7 @@ func (client *FlowLogsClient) updateTagsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

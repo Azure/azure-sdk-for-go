@@ -47,7 +47,7 @@ func NewExpressRouteCircuitsClient(subscriptionID string, credential azcore.Toke
 // BeginCreateOrUpdate - Creates or updates an express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - circuitName - The name of the circuit.
 //   - parameters - Parameters supplied to the create or update express route circuit operation.
@@ -71,7 +71,7 @@ func (client *ExpressRouteCircuitsClient) BeginCreateOrUpdate(ctx context.Contex
 // CreateOrUpdate - Creates or updates an express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 func (client *ExpressRouteCircuitsClient) createOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, parameters ExpressRouteCircuit, options *ExpressRouteCircuitsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, circuitName, parameters, options)
@@ -109,7 +109,7 @@ func (client *ExpressRouteCircuitsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -121,7 +121,7 @@ func (client *ExpressRouteCircuitsClient) createOrUpdateCreateRequest(ctx contex
 // BeginDelete - Deletes the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - circuitName - The name of the express route circuit.
 //   - options - ExpressRouteCircuitsClientBeginDeleteOptions contains the optional parameters for the ExpressRouteCircuitsClient.BeginDelete
@@ -144,7 +144,7 @@ func (client *ExpressRouteCircuitsClient) BeginDelete(ctx context.Context, resou
 // Delete - Deletes the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 func (client *ExpressRouteCircuitsClient) deleteOperation(ctx context.Context, resourceGroupName string, circuitName string, options *ExpressRouteCircuitsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, circuitName, options)
@@ -182,7 +182,7 @@ func (client *ExpressRouteCircuitsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -191,7 +191,7 @@ func (client *ExpressRouteCircuitsClient) deleteCreateRequest(ctx context.Contex
 // Get - Gets information about the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - circuitName - The name of express route circuit.
 //   - options - ExpressRouteCircuitsClientGetOptions contains the optional parameters for the ExpressRouteCircuitsClient.Get
@@ -234,7 +234,7 @@ func (client *ExpressRouteCircuitsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -252,7 +252,7 @@ func (client *ExpressRouteCircuitsClient) getHandleResponse(resp *http.Response)
 // GetPeeringStats - Gets all stats from an express route circuit in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - circuitName - The name of the express route circuit.
 //   - peeringName - The name of the peering.
@@ -300,7 +300,7 @@ func (client *ExpressRouteCircuitsClient) getPeeringStatsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -318,7 +318,7 @@ func (client *ExpressRouteCircuitsClient) getPeeringStatsHandleResponse(resp *ht
 // GetStats - Gets all the stats from an express route circuit in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - circuitName - The name of the express route circuit.
 //   - options - ExpressRouteCircuitsClientGetStatsOptions contains the optional parameters for the ExpressRouteCircuitsClient.GetStats
@@ -361,7 +361,7 @@ func (client *ExpressRouteCircuitsClient) getStatsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -378,7 +378,7 @@ func (client *ExpressRouteCircuitsClient) getStatsHandleResponse(resp *http.Resp
 
 // NewListPager - Gets all the express route circuits in a resource group.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - ExpressRouteCircuitsClientListOptions contains the optional parameters for the ExpressRouteCircuitsClient.NewListPager
 //     method.
@@ -426,7 +426,7 @@ func (client *ExpressRouteCircuitsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -443,7 +443,7 @@ func (client *ExpressRouteCircuitsClient) listHandleResponse(resp *http.Response
 
 // NewListAllPager - Gets all the express route circuits in a subscription.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - options - ExpressRouteCircuitsClientListAllOptions contains the optional parameters for the ExpressRouteCircuitsClient.NewListAllPager
 //     method.
 func (client *ExpressRouteCircuitsClient) NewListAllPager(options *ExpressRouteCircuitsClientListAllOptions) *runtime.Pager[ExpressRouteCircuitsClientListAllResponse] {
@@ -486,7 +486,7 @@ func (client *ExpressRouteCircuitsClient) listAllCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -504,7 +504,7 @@ func (client *ExpressRouteCircuitsClient) listAllHandleResponse(resp *http.Respo
 // BeginListArpTable - Gets the currently advertised ARP table associated with the express route circuit in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - circuitName - The name of the express route circuit.
 //   - peeringName - The name of the peering.
@@ -529,7 +529,7 @@ func (client *ExpressRouteCircuitsClient) BeginListArpTable(ctx context.Context,
 // ListArpTable - Gets the currently advertised ARP table associated with the express route circuit in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 func (client *ExpressRouteCircuitsClient) listArpTable(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, devicePath string, options *ExpressRouteCircuitsClientBeginListArpTableOptions) (*http.Response, error) {
 	var err error
 	req, err := client.listArpTableCreateRequest(ctx, resourceGroupName, circuitName, peeringName, devicePath, options)
@@ -575,7 +575,7 @@ func (client *ExpressRouteCircuitsClient) listArpTableCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -585,7 +585,7 @@ func (client *ExpressRouteCircuitsClient) listArpTableCreateRequest(ctx context.
 // group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - circuitName - The name of the express route circuit.
 //   - peeringName - The name of the peering.
@@ -610,7 +610,7 @@ func (client *ExpressRouteCircuitsClient) BeginListRoutesTable(ctx context.Conte
 // ListRoutesTable - Gets the currently advertised routes table associated with the express route circuit in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 func (client *ExpressRouteCircuitsClient) listRoutesTable(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, devicePath string, options *ExpressRouteCircuitsClientBeginListRoutesTableOptions) (*http.Response, error) {
 	var err error
 	req, err := client.listRoutesTableCreateRequest(ctx, resourceGroupName, circuitName, peeringName, devicePath, options)
@@ -656,7 +656,7 @@ func (client *ExpressRouteCircuitsClient) listRoutesTableCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -666,7 +666,7 @@ func (client *ExpressRouteCircuitsClient) listRoutesTableCreateRequest(ctx conte
 // in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - circuitName - The name of the express route circuit.
 //   - peeringName - The name of the peering.
@@ -692,7 +692,7 @@ func (client *ExpressRouteCircuitsClient) BeginListRoutesTableSummary(ctx contex
 // a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 func (client *ExpressRouteCircuitsClient) listRoutesTableSummary(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, devicePath string, options *ExpressRouteCircuitsClientBeginListRoutesTableSummaryOptions) (*http.Response, error) {
 	var err error
 	req, err := client.listRoutesTableSummaryCreateRequest(ctx, resourceGroupName, circuitName, peeringName, devicePath, options)
@@ -738,7 +738,7 @@ func (client *ExpressRouteCircuitsClient) listRoutesTableSummaryCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -747,7 +747,7 @@ func (client *ExpressRouteCircuitsClient) listRoutesTableSummaryCreateRequest(ct
 // UpdateTags - Updates an express route circuit tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - circuitName - The name of the circuit.
 //   - parameters - Parameters supplied to update express route circuit tags.
@@ -791,7 +791,7 @@ func (client *ExpressRouteCircuitsClient) updateTagsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

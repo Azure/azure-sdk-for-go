@@ -47,7 +47,7 @@ func NewLoadBalancerLoadBalancingRulesClient(subscriptionID string, credential a
 // Get - Gets the specified load balancer load balancing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - loadBalancingRuleName - The name of the load balancing rule.
@@ -95,7 +95,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,7 +112,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) getHandleResponse(resp *http
 
 // NewListPager - Gets all the load balancing rules in a load balancer.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerLoadBalancingRulesClientListOptions contains the optional parameters for the LoadBalancerLoadBalancingRulesClient.NewListPager
@@ -165,7 +165,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

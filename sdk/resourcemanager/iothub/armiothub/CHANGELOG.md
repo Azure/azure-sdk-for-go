@@ -1,20 +1,10 @@
 # Release History
 
-## 1.2.0-beta.1 (2023-04-28)
+## 1.2.0 (2023-09-22)
 ### Features Added
 
-- New value `RoutingSourceDigitalTwinChangeEvents`, `RoutingSourceMqttBrokerMessages` added to enum type `RoutingSource`
-- New enum type `IPVersion` with values `IPVersionIPv4`, `IPVersionIPv4IPv6`, `IPVersionIPv6`
-- New struct `EncryptionPropertiesDescription`
-- New struct `KeyVaultKeyProperties`
-- New struct `PropertiesDeviceStreams`
-- New struct `RootCertificateProperties`
 - New struct `RoutingCosmosDBSQLAPIProperties`
-- New field `DeviceStreams` in struct `Properties`
-- New field `Encryption` in struct `Properties`
-- New field `IPVersion` in struct `Properties`
-- New field `RootCertificate` in struct `Properties`
-- New field `CosmosDBSQLCollections` in struct `RoutingEndpoints`
+- New field `CosmosDBSQLContainers` in struct `RoutingEndpoints`
 
 
 ## 1.1.1 (2023-04-14)

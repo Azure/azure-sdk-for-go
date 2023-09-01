@@ -132,7 +132,8 @@ type ReceivedMessage struct {
 	deferred bool
 }
 
-// Message creates a shallow copy of the attributes from this message to a [Message].
+// Message creates a shallow copy of the fields from this message to an instance of
+// [Message].
 func (rm *ReceivedMessage) Message() *Message {
 	return &Message{
 		ApplicationProperties: rm.ApplicationProperties,

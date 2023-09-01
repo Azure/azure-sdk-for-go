@@ -75,8 +75,16 @@ func (d *UnrecordedTestSuite) TestDirNewSubdirectoryClient() {
 	fsName := testcommon.GenerateFileSystemName(testName)
 	fsClient := svcClient.NewFileSystemClient(fsName)
 
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient) // clean up
+
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient := fsClient.NewDirectoryClient(dirName)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
 
 	subdirName := "subdir"
 	subdirClient, err := dirClient.NewSubdirectoryClient(subdirName)
@@ -85,17 +93,37 @@ func (d *UnrecordedTestSuite) TestDirNewSubdirectoryClient() {
 	correctDirURL := fmt.Sprintf("https://%s.dfs.core.windows.net/%s/%s/%s", accountName, fsName, dirName, subdirName)
 	_require.Equal(correctDirURL, subdirClient.DFSURL())
 
-	perm := "0766"
+	perm := "r-xr-x---"
 
-	_, err = dirClient.Create(context.Background(), &directory.CreateOptions{
+	_, err = subdirClient.Create(context.Background(), &directory.CreateOptions{
 		Permissions: &perm,
 	})
 	_require.NoError(err)
 
-	resp, err := dirClient.GetProperties(context.Background(), nil)
+	resp, err := subdirClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(resp.Permissions)
 	_require.Equal(perm, *resp.Permissions)
+
+	// Create a file under the new directory just to make sure we're not secretly targeting the parent
+	fileName := "asdf.txt"
+	subdirFileClient, err := subdirClient.NewFileClient(fileName)
+	_require.NoError(err)
+
+	_, err = subdirFileClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileContents := []byte("foobar")
+	err = subdirFileClient.UploadBuffer(context.Background(), fileContents, nil)
+	_require.NoError(err)
+
+	// check for the file at the parent directory
+	dirFileClient, err := dirClient.NewFileClient(fileName)
+	_require.NoError(err)
+
+	_, err = dirFileClient.GetProperties(context.Background(), nil)
+	_require.Error(err) // we should get back a 404
+	_require.True(datalakeerror.HasCode(err, datalakeerror.PathNotFound))
 }
 
 func (s *RecordedTestSuite) TestCreateDirAndDeleteWithConnectionString() {

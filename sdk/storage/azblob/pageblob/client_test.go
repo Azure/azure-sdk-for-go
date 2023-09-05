@@ -100,7 +100,7 @@ func createNewPageBlobWithCPK(ctx context.Context, _require *require.Assertions,
 	return
 }
 
-func (s *PageBlobRecordedTestsSuite) TestPageBlobClient() {
+func (s *PageBlobUnrecordedTestsSuite) TestPageBlobClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -126,7 +126,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlobClient() {
 	_require.NotNil(resp)
 }
 
-func (s *PageBlobRecordedTestsSuite) TestPageBlobClientSharedKey() {
+func (s *PageBlobUnrecordedTestsSuite) TestPageBlobClientSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -152,7 +152,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlobClientSharedKey() {
 	_require.NotNil(resp)
 }
 
-func (s *PageBlobRecordedTestsSuite) TestPageBlobClientConnectionString() {
+func (s *PageBlobUnrecordedTestsSuite) TestPageBlobClientConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

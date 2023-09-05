@@ -84,7 +84,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClient() {
+func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -114,7 +114,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClient() {
 	_require.NotNil(resp)
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClientSharedKey() {
+func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -144,7 +144,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClientSharedKey() {
 	_require.NotNil(resp)
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClientConnectionString() {
+func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

@@ -127,7 +127,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlock() {
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(2))
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestAppendBlobClient() {
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -152,7 +152,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobClient() {
 	_require.NotNil(resp)
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestAppendBlobClientSharedKey() {
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobClientSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -177,7 +177,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobClientSharedKey() {
 	_require.NotNil(resp)
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestAppendBlobClientConnectionString() {
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobClientConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

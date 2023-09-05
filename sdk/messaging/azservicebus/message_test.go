@@ -216,3 +216,67 @@ func TestMessageWithIncorrectBody(t *testing.T) {
 	}, "receiving_link")
 	require.Nil(t, message.Body)
 }
+
+func TestReceivedMessageToMessage(t *testing.T) {
+	rm := &ReceivedMessage{
+		ApplicationProperties: map[string]any{
+			"hello": "world",
+		},
+		Body:                       []byte("body content"),
+		ContentType:                to.Ptr("content type"),
+		CorrelationID:              to.Ptr("correlation ID"),
+		DeadLetterErrorDescription: to.Ptr("dead letter error description"),
+		DeadLetterReason:           to.Ptr("dead letter reason"),
+		DeadLetterSource:           to.Ptr("dead letter source"),
+		DeliveryCount:              9,
+		EnqueuedSequenceNumber:     to.Ptr[int64](101),
+		EnqueuedTime:               mustParseTime("2023-01-01T01:02:03Z"),
+		ExpiresAt:                  mustParseTime("2023-01-02T01:02:03Z"),
+		LockedUntil:                mustParseTime("2023-01-03T01:02:03Z"),
+		LockToken:                  [16]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
+		MessageID:                  "message ID",
+		PartitionKey:               to.Ptr("partition key"),
+		ReplyTo:                    to.Ptr("reply to"),
+		ReplyToSessionID:           to.Ptr("reply to session id"),
+		ScheduledEnqueueTime:       mustParseTime("2023-01-04T01:02:03Z"),
+		SequenceNumber:             to.Ptr[int64](102),
+		SessionID:                  to.Ptr("session id"),
+		State:                      10,
+		Subject:                    to.Ptr("subject"),
+		TimeToLive:                 to.Ptr(time.Second),
+		To:                         to.Ptr("to"),
+		RawAMQPMessage:             &AMQPAnnotatedMessage{}, // doesn't exist on `Message`, ignored.
+	}
+
+	msg := rm.Message()
+
+	expectedMsg := &Message{
+		ApplicationProperties: map[string]any{
+			"hello": "world",
+		},
+		Body:                 []byte("body content"),
+		ContentType:          to.Ptr("content type"),
+		CorrelationID:        to.Ptr("correlation ID"),
+		MessageID:            to.Ptr("message ID"),
+		PartitionKey:         to.Ptr("partition key"),
+		ReplyTo:              to.Ptr("reply to"),
+		ReplyToSessionID:     to.Ptr("reply to session id"),
+		ScheduledEnqueueTime: mustParseTime("2023-01-04T01:02:03Z"),
+		SessionID:            to.Ptr("session id"),
+		Subject:              to.Ptr("subject"),
+		TimeToLive:           to.Ptr(time.Second),
+		To:                   to.Ptr("to"),
+	}
+
+	require.Equal(t, msg, expectedMsg)
+}
+
+func mustParseTime(str string) *time.Time {
+	tm, err := time.Parse(time.RFC3339, str)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return &tm
+}

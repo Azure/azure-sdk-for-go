@@ -58,7 +58,7 @@
 
 * Suppress creating spans for nested SDK API calls. The HTTP span will be a child of the outer API span.
 * Fix default HTTP transport to work in WASM modules.
-* Enable HTTP connection health checks for HTTP/2 connections.
+* Fixed an issue that could cause an HTTP/2 request to hang when the TCP connection becomes unresponsive.
 
 ### Other Changes
 

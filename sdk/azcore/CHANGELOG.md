@@ -1,5 +1,11 @@
 # Release History
 
+## 1.7.2 (Unreleased)
+
+### Bugs Fixed
+
+* Fix default HTTP transport to work in WASM modules.
+
 ## 1.7.1 (2023-08-14)
 
 ## Bugs Fixed

@@ -121,7 +121,7 @@ func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version
 
 // Get performs an HTTP Get for a given entity path, deserializing the returned XML into `respObj`
 func (em *entityManager) Get(ctx context.Context, entityPath string, respObj any) (*http.Response, error) {
-	resp, err := em.execute(ctx, http.MethodGet, entityPath, http.NoBody, nil)
+	resp, err := em.execute(ctx, http.MethodGet, entityPath, nil, nil)
 	defer CloseRes(ctx, resp)
 
 	if err != nil {
@@ -151,7 +151,7 @@ func (em *entityManager) Put(ctx context.Context, entityPath string, body any, r
 
 // Delete performs an HTTP DELETE for a given entity path
 func (em *entityManager) Delete(ctx context.Context, entityPath string) (*http.Response, error) {
-	return em.execute(ctx, http.MethodDelete, entityPath, http.NoBody, nil)
+	return em.execute(ctx, http.MethodDelete, entityPath, nil, nil)
 }
 
 type ExecuteOptions struct {
@@ -159,7 +159,16 @@ type ExecuteOptions struct {
 	ForwardToDeadLetter *string
 }
 
-func (em *entityManager) execute(ctx context.Context, method string, entityPath string, body io.Reader, options *ExecuteOptions) (*http.Response, error) {
+// nopCloser copied from azblob.
+type nopCloser struct {
+	io.ReadSeeker
+}
+
+func (n nopCloser) Close() error {
+	return nil
+}
+
+func (em *entityManager) execute(ctx context.Context, method string, entityPath string, body io.ReadSeeker, options *ExecuteOptions) (*http.Response, error) {
 	url := em.Host + strings.TrimPrefix(entityPath, "/")
 
 	ctx = context.WithValue(ctx, ctxWithAuthKey{}, options)
@@ -174,9 +183,10 @@ func (em *entityManager) execute(ctx context.Context, method string, entityPath 
 	q.Add("api-version", "2021-05")
 	req.Raw().URL.RawQuery = q.Encode()
 
-	if body != nil && body != http.NoBody {
-		req.Raw().Body = io.NopCloser(body)
-		req.Raw().Header.Add("Content-Type", "application/atom+xml;type=entry;charset=utf-8")
+	if body != nil {
+		if err := req.SetBody(nopCloser{ReadSeeker: body}, "application/atom+xml;type=entry;charset=utf-8"); err != nil {
+			return nil, err
+		}
 	}
 
 	resp, err := em.pl.Do(req)

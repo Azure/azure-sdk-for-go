@@ -11,6 +11,7 @@
 ### Bugs Fixed
 
 * Suppress creating spans for nested SDK API calls. The HTTP span will be a child of the outer API span.
+* Fix default HTTP transport to work in WASM modules.
 
 ### Other Changes
 

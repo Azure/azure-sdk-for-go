@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2023-08-30)
+## 2.0.0 (2023-09-22)
 ### Breaking Changes
 
 - Operation `*ApplicationDefinitionsClient.BeginCreateOrUpdate` has been changed to non-LRO, use `*ApplicationDefinitionsClient.CreateOrUpdate` instead.
@@ -11,6 +11,7 @@
 
 ### Features Added
 
+- Function `ApplicationsClient.Get` no longer throws an exception when the response is `http.StatusNotFound`
 - New enum type `Status` with values `StatusElevate`, `StatusNotSpecified`, `StatusRemove`
 - New enum type `Substatus` with values `SubstatusApproved`, `SubstatusDenied`, `SubstatusExpired`, `SubstatusFailed`, `SubstatusNotSpecified`, `SubstatusTimeout`
 - New function `*ApplicationDefinitionsClient.CreateOrUpdateByID(context.Context, string, string, ApplicationDefinition, *ApplicationDefinitionsClientCreateOrUpdateByIDOptions) (ApplicationDefinitionsClientCreateOrUpdateByIDResponse, error)`

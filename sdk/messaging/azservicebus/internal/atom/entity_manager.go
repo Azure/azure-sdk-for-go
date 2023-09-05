@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
@@ -159,15 +160,6 @@ type ExecuteOptions struct {
 	ForwardToDeadLetter *string
 }
 
-// nopCloser copied from azblob.
-type nopCloser struct {
-	io.ReadSeeker
-}
-
-func (n nopCloser) Close() error {
-	return nil
-}
-
 func (em *entityManager) execute(ctx context.Context, method string, entityPath string, body io.ReadSeeker, options *ExecuteOptions) (*http.Response, error) {
 	url := em.Host + strings.TrimPrefix(entityPath, "/")
 
@@ -184,7 +176,7 @@ func (em *entityManager) execute(ctx context.Context, method string, entityPath 
 	req.Raw().URL.RawQuery = q.Encode()
 
 	if body != nil {
-		if err := req.SetBody(nopCloser{ReadSeeker: body}, "application/atom+xml;type=entry;charset=utf-8"); err != nil {
+		if err := req.SetBody(streaming.NopCloser(body), "application/atom+xml;type=entry;charset=utf-8"); err != nil {
 			return nil, err
 		}
 	}

@@ -1,17 +1,14 @@
 # Release History
 
-## 1.8.0-beta.3 (Unreleased)
+## 1.8.0-beta.3 (2023-09-07)
 
 ### Features Added
 
 * Added function `FetcherForNextLink` and `FetcherForNextLinkOptions` to the `runtime` package to centralize creation of `Pager[T].Fetcher` from a next link URL.
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 * Suppress creating spans for nested SDK API calls. The HTTP span will be a child of the outer API span.
-* Fix default HTTP transport to work in WASM modules.
 
 ### Other Changes
 
@@ -19,6 +16,12 @@
   * `WithCaptureResponse`
   * `WithHTTPHeader`
   * `WithRetryOptions`
+
+## 1.7.2 (2023-09-06)
+
+### Bugs Fixed
+
+* Fix default HTTP transport to work in WASM modules.
 
 ## 1.8.0-beta.2 (2023-08-14)
 

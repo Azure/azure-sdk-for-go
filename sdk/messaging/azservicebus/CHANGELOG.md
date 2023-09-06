@@ -11,6 +11,7 @@
 ### Bugs Fixed
 
 - admin.Client properly populates the request body when retrying operations. PR#21496
+- Senders could potentially hang forever on SendMessage() calls due to a race condition. Fixed by upgrading to go-amqp v1.0.2. PR#21465
 
 ### Other Changes
 

@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+- admin.Client properly populates the request body when retrying operations. PR#21496
+
 ### Other Changes
 
 ## 1.4.0 (2023-06-06)

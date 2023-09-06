@@ -11,6 +11,7 @@ param(
     [switch]$alwaysSetBodyParamRequired,
     [switch]$removeUnreferencedTypes,
     [string]$config = "autorest.md",
+    [string]$autorestVersion = "3.9.7",
     [string]$goExtension = "@autorest/go@4.0.0-preview.55",
     [string]$filePrefix,
     [string]$outputFolder
@@ -58,13 +59,13 @@ function Process-Sdk ()
         
         if ($filePrefix)
         {
-            Write-Host "autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix=$filePrefix --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath"
-            autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix=$filePrefix --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath
+            Write-Host "autorest --version=$autorestVersion --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix=$filePrefix --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath"
+            autorest --version=$autorestVersion --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix=$filePrefix --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath
         }
         else
         {
-            Write-Host "autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath"
-            autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath
+            Write-Host "autorest --version=$autorestVersion --use=$goExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath"
+            autorest --version=$autorestVersion --use=$goExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath
         }
         
         if ($LASTEXITCODE)

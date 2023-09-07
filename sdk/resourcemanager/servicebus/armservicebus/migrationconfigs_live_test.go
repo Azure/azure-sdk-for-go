@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
 	"github.com/stretchr/testify/suite"
@@ -28,6 +29,7 @@ type MigrationconfigsTestSuite struct {
 	namespaceName       string
 	namespaceNameSecond string
 	secondNamespaceId   string
+	postMigrationName   string
 	location            string
 	resourceGroupName   string
 	subscriptionId      string
@@ -38,11 +40,12 @@ func (testsuite *MigrationconfigsTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.namespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "namespac", 6)
-	testsuite.namespaceNameSecond = testutil.GenerateAlphaNumericID(testsuite.T(), "namespacsecond", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.namespaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "namespac", 14, false)
+	testsuite.namespaceNameSecond, _ = recording.GenerateAlphaNumericID(testsuite.T(), "namespacsecond", 20, false)
+	testsuite.postMigrationName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "postmigrationna", 21, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -94,7 +97,6 @@ func (testsuite *MigrationconfigsTestSuite) Prepare() {
 
 // Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}
 func (testsuite *MigrationconfigsTestSuite) TestMigrationConfigs() {
-	postMigrationName := testutil.GenerateAlphaNumericID(testsuite.T(), "postmigrationna", 6)
 	var err error
 	// From step MigrationConfigs_CreateAndStartMigration
 	fmt.Println("Call operation: MigrationConfigs_CreateAndStartMigration")
@@ -102,7 +104,7 @@ func (testsuite *MigrationconfigsTestSuite) TestMigrationConfigs() {
 	testsuite.Require().NoError(err)
 	migrationConfigsClientCreateAndStartMigrationResponsePoller, err := migrationConfigsClient.BeginCreateAndStartMigration(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, armservicebus.MigrationConfigProperties{
 		Properties: &armservicebus.MigrationConfigPropertiesProperties{
-			PostMigrationName: to.Ptr(postMigrationName),
+			PostMigrationName: to.Ptr(testsuite.postMigrationName),
 			TargetNamespace:   to.Ptr(testsuite.secondNamespaceId),
 		},
 	}, nil)

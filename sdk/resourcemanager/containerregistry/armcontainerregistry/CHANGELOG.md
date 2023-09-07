@@ -1,5 +1,42 @@
 # Release History
 
+## 1.1.0-beta.4 (2023-09-22)
+### Breaking Changes
+
+- Type of `ErrorResponse.Error` has been changed from `*ErrorResponseBody` to `*ErrorDetail`
+
+### Features Added
+
+- New enum type `PackageSourceType` with values `PackageSourceTypeRemote`
+- New function `NewArchiveVersionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ArchiveVersionsClient, error)`
+- New function `*ArchiveVersionsClient.BeginCreate(context.Context, string, string, string, string, string, *ArchiveVersionsClientBeginCreateOptions) (*runtime.Poller[ArchiveVersionsClientCreateResponse], error)`
+- New function `*ArchiveVersionsClient.BeginDelete(context.Context, string, string, string, string, string, *ArchiveVersionsClientBeginDeleteOptions) (*runtime.Poller[ArchiveVersionsClientDeleteResponse], error)`
+- New function `*ArchiveVersionsClient.Get(context.Context, string, string, string, string, string, *ArchiveVersionsClientGetOptions) (ArchiveVersionsClientGetResponse, error)`
+- New function `*ArchiveVersionsClient.NewListPager(string, string, string, string, *ArchiveVersionsClientListOptions) *runtime.Pager[ArchiveVersionsClientListResponse]`
+- New function `NewArchivesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ArchivesClient, error)`
+- New function `*ArchivesClient.BeginCreate(context.Context, string, string, string, string, Archive, *ArchivesClientBeginCreateOptions) (*runtime.Poller[ArchivesClientCreateResponse], error)`
+- New function `*ArchivesClient.BeginDelete(context.Context, string, string, string, string, *ArchivesClientBeginDeleteOptions) (*runtime.Poller[ArchivesClientDeleteResponse], error)`
+- New function `*ArchivesClient.Get(context.Context, string, string, string, string, *ArchivesClientGetOptions) (ArchivesClientGetResponse, error)`
+- New function `*ArchivesClient.NewListPager(string, string, string, *ArchivesClientListOptions) *runtime.Pager[ArchivesClientListResponse]`
+- New function `*ArchivesClient.Update(context.Context, string, string, string, string, ArchiveUpdateParameters, *ArchivesClientUpdateOptions) (ArchivesClientUpdateResponse, error)`
+- New function `*ClientFactory.NewArchiveVersionsClient() *ArchiveVersionsClient`
+- New function `*ClientFactory.NewArchivesClient() *ArchivesClient`
+- New struct `Archive`
+- New struct `ArchiveListResult`
+- New struct `ArchivePackageSourceProperties`
+- New struct `ArchiveProperties`
+- New struct `ArchiveUpdateParameters`
+- New struct `ArchiveUpdateProperties`
+- New struct `ArchiveVersion`
+- New struct `ArchiveVersionListResult`
+- New struct `ArchiveVersionProperties`
+- New struct `DebianArchivePackageSourceProperties`
+- New struct `DebianArchiveProperties`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponseForContainerRegistry`
+
+
 ## 1.1.0-beta.3 (2023-07-19)
 
 ### Bug Fixes

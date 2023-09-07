@@ -46,6 +46,58 @@ type AgentPoolsClientUpdateResponse struct {
 	AgentPool
 }
 
+// ArchiveVersionsClientCreateResponse contains the response from method ArchiveVersionsClient.BeginCreate.
+type ArchiveVersionsClientCreateResponse struct {
+	// An object that represents an export pipeline for a container registry.
+	ArchiveVersion
+}
+
+// ArchiveVersionsClientDeleteResponse contains the response from method ArchiveVersionsClient.BeginDelete.
+type ArchiveVersionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ArchiveVersionsClientGetResponse contains the response from method ArchiveVersionsClient.Get.
+type ArchiveVersionsClientGetResponse struct {
+	// An object that represents an export pipeline for a container registry.
+	ArchiveVersion
+}
+
+// ArchiveVersionsClientListResponse contains the response from method ArchiveVersionsClient.NewListPager.
+type ArchiveVersionsClientListResponse struct {
+	// The result of a request to list export pipelines for a container registry.
+	ArchiveVersionListResult
+}
+
+// ArchivesClientCreateResponse contains the response from method ArchivesClient.BeginCreate.
+type ArchivesClientCreateResponse struct {
+	// An object that represents a archive for a container registry.
+	Archive
+}
+
+// ArchivesClientDeleteResponse contains the response from method ArchivesClient.BeginDelete.
+type ArchivesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ArchivesClientGetResponse contains the response from method ArchivesClient.Get.
+type ArchivesClientGetResponse struct {
+	// An object that represents a archive for a container registry.
+	Archive
+}
+
+// ArchivesClientListResponse contains the response from method ArchivesClient.NewListPager.
+type ArchivesClientListResponse struct {
+	// The result of a request to list archives for a container registry.
+	ArchiveListResult
+}
+
+// ArchivesClientUpdateResponse contains the response from method ArchivesClient.Update.
+type ArchivesClientUpdateResponse struct {
+	// An object that represents a archive for a container registry.
+	Archive
+}
+
 // CacheRulesClientCreateResponse contains the response from method CacheRulesClient.BeginCreate.
 type CacheRulesClientCreateResponse struct {
 	// An object that represents a cache rule for a container registry.

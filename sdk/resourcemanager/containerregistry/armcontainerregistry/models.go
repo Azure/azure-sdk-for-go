@@ -111,6 +111,108 @@ type AgentProperties struct {
 	CPU *int32
 }
 
+// Archive - An object that represents a archive for a container registry.
+type Archive struct {
+	// The properties of the archive.
+	Properties *ArchiveProperties
+
+	// READ-ONLY; The resource ID.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// ArchiveListResult - The result of a request to list archives for a container registry.
+type ArchiveListResult struct {
+	// The URI that can be used to request the next list of archives.
+	NextLink *string
+
+	// The list of archives. Since this list may be incomplete, the nextLink field should be used to request the next list of
+	// distributions.
+	Value []*Archive
+}
+
+// ArchivePackageSourceProperties - The properties of the archive package source.
+type ArchivePackageSourceProperties struct {
+	// The type of package source for a archive.
+	Type *PackageSourceType
+
+	// The external repository url.
+	URL *string
+}
+
+// ArchiveProperties - The properties of a archive.
+type ArchiveProperties struct {
+	// The package source of the archive.
+	PackageSource *ArchivePackageSourceProperties
+
+	// The published version of the archive.
+	PublishedVersion         *string
+	RepositoryEndpointPrefix *string
+
+	// READ-ONLY; The provisioning state of the archive at the time the operation was called.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY
+	RepositoryEndpoint *string
+}
+
+// ArchiveUpdateParameters - The parameters for updating a archive.
+type ArchiveUpdateParameters struct {
+	// The properties of the connected registry update parameters.
+	Properties *ArchiveUpdateProperties
+}
+
+// ArchiveUpdateProperties - The properties of a archive.
+type ArchiveUpdateProperties struct {
+	// The published version of the archive.
+	PublishedVersion *string
+}
+
+// ArchiveVersion - An object that represents an export pipeline for a container registry.
+type ArchiveVersion struct {
+	// The properties of the archive.
+	Properties *ArchiveVersionProperties
+
+	// READ-ONLY; The resource ID.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// ArchiveVersionListResult - The result of a request to list export pipelines for a container registry.
+type ArchiveVersionListResult struct {
+	// The URI that can be used to request the next list of pipeline runs.
+	NextLink *string
+
+	// The list of export pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
+	// list of export pipelines.
+	Value []*ArchiveVersion
+}
+
+// ArchiveVersionProperties - The properties of an export pipeline.
+type ArchiveVersionProperties struct {
+	// The detailed error message for the archive version in the case of failure.
+	ArchiveVersionErrorMessage *string
+
+	// READ-ONLY; The provisioning state of the archive at the time the operation was called.
+	ProvisioningState *ProvisioningState
+}
+
 // Argument - The properties of a run argument.
 type Argument struct {
 	// REQUIRED; The name of the argument.
@@ -489,6 +591,37 @@ type CustomRegistryCredentials struct {
 	UserName *SecretObject
 }
 
+// DebianArchivePackageSourceProperties - The properties of the archive package source.
+type DebianArchivePackageSourceProperties struct {
+	// Upstream Debian distribution Name.
+	DistributionName *string
+
+	// The type of package source for a archive.
+	Type *PackageSourceType
+
+	// The external repository url.
+	URL *string
+}
+
+// DebianArchiveProperties - The properties of the Debian package Archive.
+type DebianArchiveProperties struct {
+	// Debian distribution Name.
+	DistributionName *string
+
+	// The package source of the archive.
+	PackageSource *ArchivePackageSourceProperties
+
+	// The published version of the archive.
+	PublishedVersion         *string
+	RepositoryEndpointPrefix *string
+
+	// READ-ONLY; The provisioning state of the archive at the time the operation was called.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY
+	RepositoryEndpoint *string
+}
+
 // DockerBuildRequest - The parameters for a docker quick build.
 type DockerBuildRequest struct {
 	// REQUIRED; The Docker file path relative to the source location.
@@ -752,10 +885,38 @@ type EncryptionProperty struct {
 	Status *EncryptionStatus
 }
 
-// ErrorResponse - An error response from the Azure Container Registry service.
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	// Azure container registry build API error body.
-	Error *ErrorResponseBody
+	// The error object.
+	Error *ErrorDetail
 }
 
 // ErrorResponseBody - An error response from the Azure Container Registry service.
@@ -771,6 +932,12 @@ type ErrorResponseBody struct {
 
 	// target of the particular error.
 	Target *string
+}
+
+// ErrorResponseForContainerRegistry - An error response from the Azure Container Registry service.
+type ErrorResponseForContainerRegistry struct {
+	// Azure container registry build API error body.
+	Error *ErrorResponseBody
 }
 
 // Event - The event for a webhook.
@@ -1074,12 +1241,6 @@ type IPRule struct {
 
 // IdentityProperties - Managed identity for the resource.
 type IdentityProperties struct {
-	// The principal ID of resource identity.
-	PrincipalID *string
-
-	// The tenant ID of resource.
-	TenantID *string
-
 	// The identity type.
 	Type *ResourceIdentityType
 
@@ -1087,6 +1248,12 @@ type IdentityProperties struct {
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/ providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserIdentityProperties
+
+	// READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of resource.
+	TenantID *string
 }
 
 // ImageDescriptor - Properties for a registry image.
@@ -2955,10 +3122,10 @@ type TrustPolicy struct {
 }
 
 type UserIdentityProperties struct {
-	// The client id of user assigned identity.
+	// READ-ONLY; The client id of user assigned identity.
 	ClientID *string
 
-	// The principal id of user assigned identity.
+	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string
 }
 

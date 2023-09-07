@@ -110,14 +110,14 @@ func (p *skpolicy) Do(req *policy.Request) (*http.Response, error) {
 	return req.Next()
 }
 
-// PublishCloudEventEvents - Publishes a batch of events to an Azure Event Grid topic.
+// PublishCloudEvents - Publishes a batch of events to an Azure Event Grid topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2018-01-01
 //   - events - An array of events to be published to Event Grid.
-//   - options - ClientPublishCloudEventEventsOptions contains the optional parameters for the Client.PublishCloudEventEvents
+//   - options - ClientPublishCloudEventEventsOptions contains the optional parameters for the Client.PublishCloudEvents
 //     method.
-func (client *Client) PublishCloudEventEvents(ctx context.Context, events []messaging.CloudEvent, options *PublishCloudEventsOptions) (PublishCloudEventsResponse, error) {
+func (client *Client) PublishCloudEvents(ctx context.Context, events []messaging.CloudEvent, options *PublishCloudEventsOptions) (PublishCloudEventsResponse, error) {
 	ctx = runtime.WithHTTPHeader(ctx, http.Header{
 		"Content-type": []string{"application/cloudevents-batch+json; charset=utf-8"},
 	})

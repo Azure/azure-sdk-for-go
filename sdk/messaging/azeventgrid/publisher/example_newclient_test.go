@@ -18,13 +18,16 @@ import (
 
 func ExampleNewClient() {
 	// ex: https://<topic-name>.<region>.eventgrid.azure.net/api/events
-	endpoint := os.Getenv("EVENTGRIDV1_EG_TOPIC_ENDPOINT")
+	endpoint := os.Getenv("EVENTGRID_TOPIC_ENDPOINT")
 
 	if endpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
 
+	// DefaultAzureCredential is a simplified credential type that tries to authenticate via several
+	// different authentication mechanisms. For more control (or more credential types) see the documentation
+	// for the azidentity module: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 	tokenCred, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil {
@@ -46,8 +49,8 @@ func ExampleNewClient() {
 
 func ExampleNewClientWithSAS() {
 	// ex: https://<topic-name>.<region>.eventgrid.azure.net/api/events
-	endpoint := os.Getenv("EVENTGRIDV1_EG_TOPIC_ENDPOINT")
-	key := os.Getenv("EVENTGRIDV1_EG_TOPIC_KEY")
+	endpoint := os.Getenv("EVENTGRID_TOPIC_ENDPOINT")
+	key := os.Getenv("EVENTGRID_TOPIC_KEY")
 
 	if endpoint == "" || key == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -74,8 +77,8 @@ func ExampleNewClientWithSAS() {
 
 func ExampleNewClientWithSharedKeyCredential() {
 	// ex: https://<topic-name>.<region>.eventgrid.azure.net/api/events
-	endpoint := os.Getenv("EVENTGRIDV1_EG_TOPIC_ENDPOINT")
-	key := os.Getenv("EVENTGRIDV1_EG_TOPIC_KEY")
+	endpoint := os.Getenv("EVENTGRID_TOPIC_ENDPOINT")
+	key := os.Getenv("EVENTGRID_TOPIC_KEY")
 
 	if endpoint == "" || key == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")

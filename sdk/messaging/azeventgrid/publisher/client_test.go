@@ -77,7 +77,7 @@ func TestPublishCloudEvent(t *testing.T) {
 		}, nil)
 		require.NoError(t, err)
 
-		_, err = client.PublishCloudEventEvents(context.Background(), []messaging.CloudEvent{ce}, nil)
+		_, err = client.PublishCloudEvents(context.Background(), []messaging.CloudEvent{ce}, nil)
 		require.NoError(t, err)
 	}
 

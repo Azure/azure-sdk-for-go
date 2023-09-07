@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"github.com/stretchr/testify/suite"
@@ -22,13 +23,14 @@ import (
 type ServiceEndpointPolicyTestSuite struct {
 	suite.Suite
 
-	ctx                       context.Context
-	cred                      azcore.TokenCredential
-	options                   *arm.ClientOptions
-	serviceEndpointPolicyName string
-	location                  string
-	resourceGroupName         string
-	subscriptionId            string
+	ctx                                 context.Context
+	cred                                azcore.TokenCredential
+	options                             *arm.ClientOptions
+	serviceEndpointPolicyName           string
+	serviceEndpointPolicyDefinitionName string
+	location                            string
+	resourceGroupName                   string
+	subscriptionId                      string
 }
 
 func (testsuite *ServiceEndpointPolicyTestSuite) SetupSuite() {
@@ -36,10 +38,11 @@ func (testsuite *ServiceEndpointPolicyTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.serviceEndpointPolicyName = testutil.GenerateAlphaNumericID(testsuite.T(), "serviceend", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.serviceEndpointPolicyName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "serviceend", 16, false)
+	testsuite.serviceEndpointPolicyDefinitionName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "serviceenddef", 19, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -112,13 +115,12 @@ func (testsuite *ServiceEndpointPolicyTestSuite) TestServiceEndpointPolicies() {
 
 // Microsoft.Network/serviceEndpointPolicies/{serviceEndpointPolicyName}/serviceEndpointPolicyDefinitions/{serviceEndpointPolicyDefinitionName}
 func (testsuite *ServiceEndpointPolicyTestSuite) TestServiceEndpointPolicyDefinitions() {
-	serviceEndpointPolicyDefinitionName := testutil.GenerateAlphaNumericID(testsuite.T(), "serviceend", 6)
 	var err error
 	// From step ServiceEndpointPolicyDefinitions_CreateOrUpdate
 	fmt.Println("Call operation: ServiceEndpointPolicyDefinitions_CreateOrUpdate")
 	serviceEndpointPolicyDefinitionsClient, err := armnetwork.NewServiceEndpointPolicyDefinitionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	serviceEndpointPolicyDefinitionsClientCreateOrUpdateResponsePoller, err := serviceEndpointPolicyDefinitionsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, armnetwork.ServiceEndpointPolicyDefinition{
+	serviceEndpointPolicyDefinitionsClientCreateOrUpdateResponsePoller, err := serviceEndpointPolicyDefinitionsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceEndpointPolicyName, testsuite.serviceEndpointPolicyDefinitionName, armnetwork.ServiceEndpointPolicyDefinition{
 		Properties: &armnetwork.ServiceEndpointPolicyDefinitionPropertiesFormat{
 			Description: to.Ptr("Storage Service EndpointPolicy Definition"),
 			Service:     to.Ptr("Microsoft.Storage"),
@@ -141,12 +143,12 @@ func (testsuite *ServiceEndpointPolicyTestSuite) TestServiceEndpointPolicyDefini
 
 	// From step ServiceEndpointPolicyDefinitions_Get
 	fmt.Println("Call operation: ServiceEndpointPolicyDefinitions_Get")
-	_, err = serviceEndpointPolicyDefinitionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, nil)
+	_, err = serviceEndpointPolicyDefinitionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceEndpointPolicyName, testsuite.serviceEndpointPolicyDefinitionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ServiceEndpointPolicyDefinitions_Delete
 	fmt.Println("Call operation: ServiceEndpointPolicyDefinitions_Delete")
-	serviceEndpointPolicyDefinitionsClientDeleteResponsePoller, err := serviceEndpointPolicyDefinitionsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, nil)
+	serviceEndpointPolicyDefinitionsClientDeleteResponsePoller, err := serviceEndpointPolicyDefinitionsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceEndpointPolicyName, testsuite.serviceEndpointPolicyDefinitionName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, serviceEndpointPolicyDefinitionsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)

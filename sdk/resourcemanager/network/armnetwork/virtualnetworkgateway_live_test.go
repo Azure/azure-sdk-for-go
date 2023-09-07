@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"github.com/stretchr/testify/suite"
@@ -30,6 +31,7 @@ type VirtualNetworkGatewayTestSuite struct {
 	subnetId                  string
 	virtualNetworkGatewayName string
 	virtualNetworkName        string
+	localNetworkGatewayName   string
 	location                  string
 	resourceGroupName         string
 	subscriptionId            string
@@ -40,12 +42,13 @@ func (testsuite *VirtualNetworkGatewayTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.publicIpAddressName = testutil.GenerateAlphaNumericID(testsuite.T(), "publicipadgateway", 6)
-	testsuite.virtualNetworkGatewayName = testutil.GenerateAlphaNumericID(testsuite.T(), "virtualnetgateway", 6)
-	testsuite.virtualNetworkName = testutil.GenerateAlphaNumericID(testsuite.T(), "virtualnetgateway", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.publicIpAddressName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "publicipadgateway", 23, false)
+	testsuite.virtualNetworkGatewayName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "virtualnetgateway", 23, false)
+	testsuite.virtualNetworkName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "virtualnetgateway", 23, false)
+	testsuite.localNetworkGatewayName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "localnetwo", 16, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -182,13 +185,12 @@ func (testsuite *VirtualNetworkGatewayTestSuite) TestVirtualNetworkGateways() {
 
 // Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}
 func (testsuite *VirtualNetworkGatewayTestSuite) TestLocalNetworkGateways() {
-	localNetworkGatewayName := testutil.GenerateAlphaNumericID(testsuite.T(), "localnetwo", 6)
 	var err error
 	// From step LocalNetworkGateways_CreateOrUpdate
 	fmt.Println("Call operation: LocalNetworkGateways_CreateOrUpdate")
 	localNetworkGatewaysClient, err := armnetwork.NewLocalNetworkGatewaysClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	localNetworkGatewaysClientCreateOrUpdateResponsePoller, err := localNetworkGatewaysClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, localNetworkGatewayName, armnetwork.LocalNetworkGateway{
+	localNetworkGatewaysClientCreateOrUpdateResponsePoller, err := localNetworkGatewaysClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.localNetworkGatewayName, armnetwork.LocalNetworkGateway{
 		Location: to.Ptr(testsuite.location),
 		Properties: &armnetwork.LocalNetworkGatewayPropertiesFormat{
 			GatewayIPAddress: to.Ptr("11.12.13.14"),
@@ -213,12 +215,12 @@ func (testsuite *VirtualNetworkGatewayTestSuite) TestLocalNetworkGateways() {
 
 	// From step LocalNetworkGateways_Get
 	fmt.Println("Call operation: LocalNetworkGateways_Get")
-	_, err = localNetworkGatewaysClient.Get(testsuite.ctx, testsuite.resourceGroupName, localNetworkGatewayName, nil)
+	_, err = localNetworkGatewaysClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.localNetworkGatewayName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step LocalNetworkGateways_UpdateTags
 	fmt.Println("Call operation: LocalNetworkGateways_UpdateTags")
-	_, err = localNetworkGatewaysClient.UpdateTags(testsuite.ctx, testsuite.resourceGroupName, localNetworkGatewayName, armnetwork.TagsObject{
+	_, err = localNetworkGatewaysClient.UpdateTags(testsuite.ctx, testsuite.resourceGroupName, testsuite.localNetworkGatewayName, armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -228,7 +230,7 @@ func (testsuite *VirtualNetworkGatewayTestSuite) TestLocalNetworkGateways() {
 
 	// From step LocalNetworkGateways_Delete
 	fmt.Println("Call operation: LocalNetworkGateways_Delete")
-	localNetworkGatewaysClientDeleteResponsePoller, err := localNetworkGatewaysClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, localNetworkGatewayName, nil)
+	localNetworkGatewaysClientDeleteResponsePoller, err := localNetworkGatewaysClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.localNetworkGatewayName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, localNetworkGatewaysClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)

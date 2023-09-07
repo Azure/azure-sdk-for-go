@@ -37,7 +37,7 @@ function Get-GoModuleVersionInfo($modPath)
 function Get-GoModuleProperties($goModPath)
 {
   $goModPath = $goModPath -replace "\\", "/"
-  # We should keep this regex in sync with what is in the azure-sdk repo at https://github.com/Azure/azure-sdk/blob/main/eng/scripts/Query-Azure-Packages.ps1#L227
+  # We should keep this regex in sync with what is in the azure-sdk repo at https://github.com/Azure/azure-sdk/blob/main/eng/scripts/Query-Azure-Packages.ps1#L238
   # The serviceName named capture group is unused but used in azure-sdk, so it's kept here for parity
   if (!$goModPath.Contains("testdata") -and $goModPath -match "(?<modPath>(sdk|profile)/(?<serviceDir>(.*?(?<serviceName>[^/]+)/)?(?<modName>[^/]+$)))")
   {

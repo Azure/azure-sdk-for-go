@@ -36,7 +36,7 @@ func (testsuite *ApimportalsettingsTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/apimanagement/armapimanagement/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.serviceName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "servicesetting", 20, false)
+	testsuite.serviceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "servicesetting", 20, false)
 	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")

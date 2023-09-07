@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"github.com/stretchr/testify/suite"
@@ -28,6 +29,7 @@ type NetworkManagerGroupTestSuite struct {
 	networkGroupName   string
 	networkManagerName string
 	staticMemberName   string
+	virtualNetworkName string
 	location           string
 	resourceGroupName  string
 	subscriptionId     string
@@ -38,12 +40,13 @@ func (testsuite *NetworkManagerGroupTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.networkGroupName = testutil.GenerateAlphaNumericID(testsuite.T(), "networkgro", 6)
-	testsuite.networkManagerName = testutil.GenerateAlphaNumericID(testsuite.T(), "networkmanagergp", 6)
-	testsuite.staticMemberName = testutil.GenerateAlphaNumericID(testsuite.T(), "staticmemberna", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.networkGroupName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "networkgro", 16, false)
+	testsuite.networkManagerName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "networkmanagergp", 22, false)
+	testsuite.staticMemberName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "staticmemberna", 20, false)
+	testsuite.virtualNetworkName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "networkgrovet", 19, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -117,14 +120,13 @@ func (testsuite *NetworkManagerGroupTestSuite) TestNetworkGroups() {
 
 // Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}/staticMembers/{staticMemberName}
 func (testsuite *NetworkManagerGroupTestSuite) TestStaticMembers() {
-	virtualNetworkName := testutil.GenerateAlphaNumericID(testsuite.T(), "networkgrovet", 6)
 	var virutalNetworkId string
 	var err error
 	// From step VirtualNetworks_CreateOrUpdate
 	fmt.Println("Call operation: VirtualNetworks_CreateOrUpdate")
 	virtualNetworksClient, err := armnetwork.NewVirtualNetworksClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	virtualNetworksClientCreateOrUpdateResponsePoller, err := virtualNetworksClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, virtualNetworkName, armnetwork.VirtualNetwork{
+	virtualNetworksClientCreateOrUpdateResponsePoller, err := virtualNetworksClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, armnetwork.VirtualNetwork{
 		Location: to.Ptr(testsuite.location),
 		Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 			AddressSpace: &armnetwork.AddressSpace{

@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/stretchr/testify/suite"
@@ -45,17 +46,17 @@ func (testsuite *AfdxTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.customDomainName = testutil.GenerateAlphaNumericID(testsuite.T(), "afdcustomdoma", 6)
-	testsuite.endpointName = testutil.GenerateAlphaNumericID(testsuite.T(), "afdendpointna", 6)
-	testsuite.originGroupName = testutil.GenerateAlphaNumericID(testsuite.T(), "afdorigingrou", 6)
-	testsuite.originName = testutil.GenerateAlphaNumericID(testsuite.T(), "afdoriginname", 6)
-	testsuite.profileName = testutil.GenerateAlphaNumericID(testsuite.T(), "afdprofilenam", 6)
-	testsuite.routeName = testutil.GenerateAlphaNumericID(testsuite.T(), "routename", 6)
-	testsuite.ruleName = testutil.GenerateAlphaNumericID(testsuite.T(), "rulename", 6)
-	testsuite.ruleSetName = testutil.GenerateAlphaNumericID(testsuite.T(), "rulesetnam", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.customDomainName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "afdcustomdoma", 19, false)
+	testsuite.endpointName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "afdendpointna", 19, false)
+	testsuite.originGroupName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "afdorigingrou", 19, false)
+	testsuite.originName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "afdoriginname", 19, false)
+	testsuite.profileName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "afdprofilenam", 19, false)
+	testsuite.routeName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "routename", 15, false)
+	testsuite.ruleName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "rulename", 14, false)
+	testsuite.ruleSetName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "rulesetnam", 16, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name

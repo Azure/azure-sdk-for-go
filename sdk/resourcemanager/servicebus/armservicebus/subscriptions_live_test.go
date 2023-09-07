@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
 	"github.com/stretchr/testify/suite"
@@ -27,6 +28,7 @@ type SubscriptionsTestSuite struct {
 	options           *arm.ClientOptions
 	namespaceName     string
 	topicName         string
+	subscriptionName  string
 	location          string
 	resourceGroupName string
 	subscriptionId    string
@@ -37,11 +39,12 @@ func (testsuite *SubscriptionsTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.namespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "namespac", 6)
-	testsuite.topicName = testutil.GenerateAlphaNumericID(testsuite.T(), "topicnam", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.namespaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "namespac", 14, false)
+	testsuite.topicName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "topicnam", 14, false)
+	testsuite.subscriptionName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "subscrip", 14, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -89,13 +92,12 @@ func (testsuite *SubscriptionsTestSuite) Prepare() {
 
 // Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}
 func (testsuite *SubscriptionsTestSuite) TestSubscriptions() {
-	subscriptionName := testutil.GenerateAlphaNumericID(testsuite.T(), "subscrip", 6)
 	var err error
 	// From step Subscriptions_CreateOrUpdate
 	fmt.Println("Call operation: Subscriptions_CreateOrUpdate")
 	subscriptionsClient, err := armservicebus.NewSubscriptionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = subscriptionsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, subscriptionName, armservicebus.SBSubscription{
+	_, err = subscriptionsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, armservicebus.SBSubscription{
 		Properties: &armservicebus.SBSubscriptionProperties{
 			EnableBatchedOperations: to.Ptr(true),
 		},
@@ -115,11 +117,11 @@ func (testsuite *SubscriptionsTestSuite) TestSubscriptions() {
 
 	// From step Subscriptions_Get
 	fmt.Println("Call operation: Subscriptions_Get")
-	_, err = subscriptionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, subscriptionName, nil)
+	_, err = subscriptionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Subscriptions_Delete
 	fmt.Println("Call operation: Subscriptions_Delete")
-	_, err = subscriptionsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, subscriptionName, nil)
+	_, err = subscriptionsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, nil)
 	testsuite.Require().NoError(err)
 }

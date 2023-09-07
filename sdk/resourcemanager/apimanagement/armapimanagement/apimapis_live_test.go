@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/stretchr/testify/suite"
@@ -46,21 +47,21 @@ func (testsuite *ApimapisTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/apimanagement/armapimanagement/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.operationId = testutil.GenerateAlphaNumericID(testsuite.T(), "operationi", 6)
-	testsuite.apiId = testutil.GenerateAlphaNumericID(testsuite.T(), "apiid", 6)
-	testsuite.attachmentId = testutil.GenerateAlphaNumericID(testsuite.T(), "attachment", 6)
-	testsuite.commentId = testutil.GenerateAlphaNumericID(testsuite.T(), "commentid", 6)
-	testsuite.diagnosticId = testutil.GenerateAlphaNumericID(testsuite.T(), "diagnostic", 6)
-	testsuite.issueId = testutil.GenerateAlphaNumericID(testsuite.T(), "issueid", 6)
-	testsuite.releaseId = testutil.GenerateAlphaNumericID(testsuite.T(), "releaseid", 6)
-	testsuite.schemaId = testutil.GenerateAlphaNumericID(testsuite.T(), "schemaid", 6)
-	testsuite.serviceName = testutil.GenerateAlphaNumericID(testsuite.T(), "servicenam", 6)
-	testsuite.tagDescriptionId = testutil.GenerateAlphaNumericID(testsuite.T(), "tagdescrip", 6)
-	testsuite.tagId = testutil.GenerateAlphaNumericID(testsuite.T(), "tagid", 6)
-	testsuite.tagOperationId = testutil.GenerateAlphaNumericID(testsuite.T(), "tagoperation", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.operationId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "operationi", 16, false)
+	testsuite.apiId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "apiid", 10, false)
+	testsuite.attachmentId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "attachment", 16, false)
+	testsuite.commentId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "commentid", 15, false)
+	testsuite.diagnosticId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "diagnostic", 16, false)
+	testsuite.issueId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "issueid", 13, false)
+	testsuite.releaseId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "releaseid", 15, false)
+	testsuite.schemaId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "schemaid", 14, false)
+	testsuite.serviceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "servicenam", 16, false)
+	testsuite.tagDescriptionId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "tagdescrip", 16, false)
+	testsuite.tagId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "tagid", 11, false)
+	testsuite.tagOperationId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "tagoperation", 18, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)

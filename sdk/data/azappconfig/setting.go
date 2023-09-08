@@ -66,6 +66,15 @@ func settingFromGenerated(kv generated.KeyValue) Setting {
 	}
 }
 
+func toGeneratedETagString(etag *azcore.ETag) *string {
+	if etag == nil || *etag == azcore.ETagAny {
+		return (*string)(etag)
+	}
+
+	str := "\"" + (string)(*etag) + "\""
+	return &str
+}
+
 func (cs Setting) toGenerated() generated.KeyValue {
 	tags := make(map[string]*string)
 	for k, v := range cs.Tags {
@@ -86,6 +95,13 @@ func (cs Setting) toGenerated() generated.KeyValue {
 
 func (cs Setting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteLockOptions {
 	return &generated.AzureAppConfigurationClientDeleteLockOptions{
+		IfMatch: toGeneratedETagString(ifMatch),
+		Label:   cs.Label,
+	}
+}
+
+func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteKeyValueOptions {
+	return &generated.AzureAppConfigurationClientDeleteKeyValueOptions{
 		IfMatch: toGeneratedETagString(ifMatch),
 		Label:   cs.Label,
 	}

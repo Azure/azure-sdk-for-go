@@ -8,7 +8,7 @@ package azappconfig
 
 import (
 	"context"
-	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"time"
@@ -32,23 +32,16 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-func getDefaultScope(endpoint string) (string, error) {
-	url, err := url.Parse(endpoint)
-	if err != nil {
-		return "", errors.New("error parsing endpoint url")
-	}
-
-	return url.Scheme + "://" + url.Host + "/.default", nil
-}
-
 // NewClient returns a pointer to a Client object affinitized to an endpoint.
 func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	tokenScope, err := getDefaultScope(endpoint)
+	u, err := url.Parse(endpoint)
 	if err != nil {
 		return nil, err
 	}
 
-	return newClient(endpoint, runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil), options)
+	return newClient(endpoint, runtime.NewBearerTokenPolicy(cred, []string{
+		fmt.Sprintf("%s://%s/.default", u.Scheme, u.Host),
+	}, nil), options)
 }
 
 // NewClientFromConnectionString parses the connection string and returns a pointer to a Client object.
@@ -86,15 +79,6 @@ func (c *Client) UpdateSyncToken(token string) {
 	c.syncTokenPolicy.addToken(token)
 }
 
-func toGeneratedETagString(etag *azcore.ETag) *string {
-	if etag == nil || *etag == azcore.ETagAny {
-		return (*string)(etag)
-	}
-
-	str := "\"" + (string)(*etag) + "\""
-	return &str
-}
-
 // AddSetting creates a configuration setting only if the setting does not already exist in the configuration store.
 func (c *Client) AddSetting(ctx context.Context, key string, value *string, options *AddSettingOptions) (AddSettingResponse, error) {
 	var label *string
@@ -117,13 +101,6 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 		Setting:   settingFromGenerated(resp.KeyValue),
 		SyncToken: resp.SyncToken,
 	}, nil
-}
-
-func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteKeyValueOptions {
-	return &generated.AzureAppConfigurationClientDeleteKeyValueOptions{
-		IfMatch: toGeneratedETagString(ifMatch),
-		Label:   cs.Label,
-	}
 }
 
 // DeleteSetting deletes a configuration setting from the configuration store.

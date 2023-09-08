@@ -16,11 +16,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher"
-	"github.com/stretchr/testify/require"
 )
 
 type topicVars struct {
@@ -43,12 +40,13 @@ var fakeVars topicVars = topicVars{
 }
 
 func newTestVars(t *testing.T) eventGridVars {
-	if recording.GetRecordMode() != recording.LiveMode {
-		return eventGridVars{
-			EG: fakeVars,
-			CE: fakeVars,
-		}
-	}
+	// TODO: will get back to this.
+	// if recording.GetRecordMode() != recording.LiveMode {
+	// 	return eventGridVars{
+	// 		EG: fakeVars,
+	// 		CE: fakeVars,
+	// 	}
+	// }
 
 	egVars := eventGridVars{
 		EG: topicVars{Name: os.Getenv("EVENTGRID_TOPIC_NAME"),
@@ -73,46 +71,16 @@ func newTestVars(t *testing.T) eventGridVars {
 }
 
 func newClientOptionsForTest(t *testing.T, tv topicVars) *publisher.ClientOptions {
-	if recording.GetRecordMode() != recording.LiveMode {
-		return &publisher.ClientOptions{
-			ClientOptions: azcore.ClientOptions{
-				Transport: newRecordingTransporter(t, tv),
-			},
-		}
-	}
+	// TODO: will return to this.
+	// if recording.GetRecordMode() != recording.LiveMode {
+	// 	return &publisher.ClientOptions{
+	// 		ClientOptions: azcore.ClientOptions{
+	// 			Transport: newRecordingTransporter(t, tv),
+	// 		},
+	// 	}
+	// }
 
 	return nil
-}
-
-func newRecordingTransporter(t *testing.T, tv topicVars) policy.Transporter {
-	transport, err := recording.NewRecordingHTTPClient(t, nil)
-	require.NoError(t, err)
-
-	err = recording.Start(t, "sdk/messaging/azeventgrid/testdata", nil)
-	require.NoError(t, err)
-
-	err = recording.AddURISanitizer(fakeVars.Endpoint, tv.Endpoint, nil)
-	require.NoError(t, err)
-
-	err = recording.AddURISanitizer(fakeVars.Name, tv.Name, nil)
-	require.NoError(t, err)
-
-	// there are three possible authentication headers.
-	err = recording.AddHeaderRegexSanitizer("aeg-sas-token", fakeVars.Key, ".+", nil)
-	require.NoError(t, err)
-
-	err = recording.AddHeaderRegexSanitizer("aeg-sas-key", fakeVars.Key, ".+", nil)
-	require.NoError(t, err)
-
-	err = recording.AddHeaderRegexSanitizer("Authentication", fakeVars.Key, ".+", nil)
-	require.NoError(t, err)
-
-	t.Cleanup(func() {
-		err := recording.Stop(t, nil)
-		require.NoError(t, err)
-	})
-
-	return transport
 }
 
 type dumpFullPolicy struct {

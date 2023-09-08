@@ -16,8 +16,6 @@
   managed identity authentication fails in a Docker Desktop container
   ([#21417](https://github.com/Azure/azure-sdk-for-go/issues/21417))
 
-### Other Changes
-
 ## 1.4.0-beta.4 (2023-08-16)
 
 ### Other Changes

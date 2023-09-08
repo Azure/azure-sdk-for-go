@@ -4,7 +4,7 @@
 
 This client module allows you to publish events and receive events using the [Pull delivery](https://learn.microsoft.com/azure/event-grid/pull-delivery-overview) API.
 
-> NOTE: This client does not work with Event Grid topics. Use the Client in the `publisher` sub-package instead.
+> NOTE: This client does not work with Event Grid topics. Use the [publisher.Client][godoc_publisher_client] in the `publisher` sub-package instead.
 
 Key links:
 - [Source code][source]
@@ -26,18 +26,20 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
 
 - Go, version 1.18 or higher
 - An [Azure subscription](https://azure.microsoft.com/free/)
-- An [Event Grid namespace](https://learn.microsoft.com/azure/event-grid/). You can create an Event Grid Namespace 
-  using the [Azure Portal](https://learn.microsoft.com/azure/event-grid/create-view-manage-namespaces).
+- An [Event Grid namespace][ms_namespace]. You can create an Event Grid namespace using the [Azure Portal][ms_create_namespace].
+- An [Event Grid namespace topic][ms_topic]. You can create an Event Grid namespace topic using the [Azure Portal][ms_create_topic].
 
 ### Authenticate the client
 
-Event Grid clients authenticate using a shared key credential. An example of that can be viewed here: [ExampleNewClientWithSharedKeyCredential][godoc_example_newclient].
+Event Grid namespace clients authenticate using a shared key credential. An example of that can be viewed here: [ExampleNewClientWithSharedKeyCredential][godoc_example_newclient].
 
 # Key concepts
 
-An Azure Event Grid [**namespace**](https://learn.microsoft.com/azure/event-grid/mqtt-event-grid-namespace-terminology#namespace) can contain multiple **namespace topics**. Publishers publish events to namespace topics. More on creating namespace topics can be found here: [link](https://learn.microsoft.com/azure/event-grid/create-view-manage-namespace-topics).
+An Event Grid namespace is a container for multiple types of resources, including [**namespace topics**][ms_topic]:
+- A [**namespace topic**][ms_topic] contains CloudEvents that you publish, via [Client.PublishCloudEvents][godoc_client_publish].
+- A [**topic subscription**][ms_subscription], associated with a single topic, can be used to receive events via [Client.ReceiveEvents][godoc_client_receive].
 
-To receive events, you must create an **event subscription**, which is associated with a topic. More on creating topic subscriptions can be found here: [link](https://learn.microsoft.com/azure/event-grid/create-view-manage-event-subscriptions).
+Namespaces also offer access using MQTT, although that is not covered in this package.
 
 # Examples
 
@@ -112,5 +114,16 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [cloud_shell_bash]: https://shell.azure.com/bash
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azeventgrid
 [godoc]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
+[godoc_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/#Client
+[godoc_client_publish]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#Client.PublishCloudEvents
+[godoc_client_receive]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#Client.ReceiveCloudEvents
+[godoc_publisher_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher#Client
 [godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#pkg-examples
 [godoc_example_newclient]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#example-NewClientWithSharedKeyCredential
+[ms_pulldelivery]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery
+[ms_namespace]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery#namespaces
+[ms_topic]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery#namespace-topics
+[ms_subscription]: https://learn.microsoft.com/en-us/azure/event-grid/concepts-pull-delivery#event-subscriptions
+[ms_create_namespace]: https://learn.microsoft.com/azure/event-grid/create-view-manage-namespaces
+[ms_create_topic]: https://learn.microsoft.com/azure/event-grid/create-view-manage-namespace-topics
+

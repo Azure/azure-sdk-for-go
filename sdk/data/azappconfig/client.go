@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
 )
 
@@ -32,20 +31,6 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-func (c *ClientOptions) toConnectionOptions() *policy.ClientOptions {
-	if c == nil {
-		return nil
-	}
-
-	return &policy.ClientOptions{
-		Logging:          c.Logging,
-		Retry:            c.Retry,
-		Telemetry:        c.Telemetry,
-		Transport:        c.Transport,
-		PerCallPolicies:  c.PerCallPolicies,
-		PerRetryPolicies: c.PerRetryPolicies,
-	}
-}
 func getDefaultScope(endpoint string) (string, error) {
 	url, err := url.Parse(endpoint)
 	if err != nil {
@@ -55,56 +40,42 @@ func getDefaultScope(endpoint string) (string, error) {
 	return url.Scheme + "://" + url.Host + "/.default", nil
 }
 
-// NewClient returns a pointer to a Client object affinitized to an endpointUrl.
-func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	if options == nil {
-		options = &ClientOptions{}
-	}
-
-	genOptions := options.toConnectionOptions()
-
-	tokenScope, err := getDefaultScope(endpointUrl)
+// NewClient returns a pointer to a Client object affinitized to an endpoint.
+func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	tokenScope, err := getDefaultScope(endpoint)
 	if err != nil {
 		return nil, err
 	}
 
-	syncTokenPolicy := newSyncTokenPolicy()
-	genOptions.PerRetryPolicies = append(
-		genOptions.PerRetryPolicies,
-		runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil),
-		syncTokenPolicy,
-	)
-
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, genOptions)
-	return &Client{
-		appConfigClient: generated.NewAzureAppConfigurationClient(endpointUrl, nil, pl),
-		syncTokenPolicy: syncTokenPolicy,
-	}, nil
+	return newClient(endpoint, runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil), options)
 }
 
 // NewClientFromConnectionString parses the connection string and returns a pointer to a Client object.
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
-	if options == nil {
-		options = &ClientOptions{}
-	}
-
-	genOptions := options.toConnectionOptions()
-
 	endpoint, credential, secret, err := parseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
 	}
 
-	syncTokenPolicy := newSyncTokenPolicy()
-	genOptions.PerRetryPolicies = append(
-		genOptions.PerRetryPolicies,
-		newHmacAuthenticationPolicy(credential, secret),
-		syncTokenPolicy,
-	)
+	return newClient(endpoint, newHmacAuthenticationPolicy(credential, secret), options)
+}
 
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, genOptions)
+func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &ClientOptions{}
+	}
+
+	syncTokenPolicy := newSyncTokenPolicy()
+
+	client, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy, syncTokenPolicy},
+	}, &options.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Client{
-		appConfigClient: generated.NewAzureAppConfigurationClient(endpoint, nil, pl),
+		appConfigClient: generated.NewAzureAppConfigurationClient(endpoint, client),
 		syncTokenPolicy: syncTokenPolicy,
 	}, nil
 }

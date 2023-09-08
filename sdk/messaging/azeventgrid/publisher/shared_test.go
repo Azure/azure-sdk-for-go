@@ -44,6 +44,14 @@ func newTestVars(t *testing.T) eventGridVars {
 		},
 	}
 
+	for _, v := range []topicVars{egVars.EG, egVars.CE} {
+		if v.Endpoint == "" || v.Key == "" || v.Name == "" {
+			t.Logf("WARNING: not enabling `publisher` integration tests, environment variables not set")
+			t.Skip()
+			break
+		}
+	}
+
 	return egVars
 }
 

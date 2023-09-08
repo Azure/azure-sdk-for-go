@@ -8,6 +8,10 @@ var namespaceName = '${baseName}-2'
 var topicName = 'testtopic1'
 var subscriptionName = 'testsubscription1'
 
+// 
+// Event Grid namespace
+//
+
 resource ns_resource 'Microsoft.EventGrid/namespaces@2023-06-01-preview' = {
   name: namespaceName
   location: location
@@ -49,6 +53,12 @@ resource ns_testtopic1_testsubscription1 'Microsoft.EventGrid/namespaces/topics/
     }
   }
 }
+
+//
+// Event Grid topics (publisher)
+// 
+
+
 
 // https://learn.microsoft.com/en-us/rest/api/eventgrid/controlplane-version2023-06-01-preview/namespaces/list-shared-access-keys?tabs=HTTP
 output EVENTGRID_KEY string = listKeys(resourceId('Microsoft.EventGrid/namespaces', namespaceName), '2023-06-01-preview').key1

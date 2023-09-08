@@ -50,7 +50,6 @@ func newConfidentialClient(tenantID, clientID, name string, cred confidential.Cr
 	if err != nil {
 		return nil, err
 	}
-	region := os.Getenv(azureRegionalAuthorityName)
 	opts.AdditionallyAllowedTenants = resolveAdditionalTenants(opts.AdditionallyAllowedTenants)
 	return &confidentialClient{
 		caeMu:    &sync.Mutex{},
@@ -61,7 +60,7 @@ func newConfidentialClient(tenantID, clientID, name string, cred confidential.Cr
 		name:     name,
 		noCAEMu:  &sync.Mutex{},
 		opts:     opts,
-		region:   region,
+		region:   os.Getenv(azureRegionalAuthorityName),
 		tenantID: tenantID,
 	}, nil
 }

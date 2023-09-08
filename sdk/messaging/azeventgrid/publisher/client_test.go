@@ -45,13 +45,13 @@ func TestPublishEvent(t *testing.T) {
 
 	t.Run("sas", func(t *testing.T) {
 		sas := generateSAS(vars.EG.Endpoint, vars.EG.Key)
-		client, err := publisher.NewClientWithSAS(vars.EG.Endpoint, sas, nil)
+		client, err := publisher.NewClientWithSAS(vars.EG.Endpoint, sas, newClientOptionsForTest(t, vars.EG))
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
 
 	t.Run("sharedkey", func(t *testing.T) {
-		client, err := publisher.NewClientWithSharedKeyCredential(vars.EG.Endpoint, vars.EG.Key, nil)
+		client, err := publisher.NewClientWithSharedKeyCredential(vars.EG.Endpoint, vars.EG.Key, newClientOptionsForTest(t, vars.EG))
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
@@ -61,7 +61,7 @@ func TestPublishEvent(t *testing.T) {
 		cred, err := azidentity.NewDefaultAzureCredential(nil)
 		require.NoError(t, err)
 
-		client, err := publisher.NewClient(vars.EG.Endpoint, cred, nil)
+		client, err := publisher.NewClient(vars.EG.Endpoint, cred, newClientOptionsForTest(t, vars.EG))
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
@@ -83,13 +83,13 @@ func TestPublishCloudEvent(t *testing.T) {
 
 	t.Run("sas", func(t *testing.T) {
 		sas := generateSAS(vars.CE.Endpoint, vars.CE.Key)
-		client, err := publisher.NewClientWithSAS(vars.CE.Endpoint, sas, nil)
+		client, err := publisher.NewClientWithSAS(vars.CE.Endpoint, sas, newClientOptionsForTest(t, vars.CE))
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
 
 	t.Run("sharedkey", func(t *testing.T) {
-		client, err := publisher.NewClientWithSharedKeyCredential(vars.CE.Endpoint, vars.CE.Key, nil)
+		client, err := publisher.NewClientWithSharedKeyCredential(vars.CE.Endpoint, vars.CE.Key, newClientOptionsForTest(t, vars.CE))
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
@@ -98,7 +98,7 @@ func TestPublishCloudEvent(t *testing.T) {
 		tokenCred, err := azidentity.NewDefaultAzureCredential(nil)
 		require.NoError(t, err)
 
-		client, err := publisher.NewClient(vars.CE.Endpoint, tokenCred, nil)
+		client, err := publisher.NewClient(vars.CE.Endpoint, tokenCred, newClientOptionsForTest(t, vars.CE))
 		require.NoError(t, err)
 		testPublish(t, client)
 	})

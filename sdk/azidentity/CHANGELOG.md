@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.5 (Unreleased)
+## 1.4.0-beta.5 (2023-09-12)
 
 ### Features Added
 * Service principal credentials can request CAE tokens

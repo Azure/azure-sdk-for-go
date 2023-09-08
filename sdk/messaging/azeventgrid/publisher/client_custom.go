@@ -21,20 +21,17 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-// NewClientWithSharedKeyCredential creates a [Client] using a shared key.
-func NewClientWithSAS(endpoint string, sas string, options *ClientOptions) (*Client, error) {
-	const sasTokenHeader = "aeg-sas-token"
+var tokenScopes = []string{"https://eventgrid.azure.net/.default"}
 
+// NewClient creates a [Client] that authenticates using a TokenCredential.
+func NewClient(endpoint string, tokenCredential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 
-	// TODO: I believe we're supposed to allow for dynamically updating the key at any time as well.
-	azc, err := azcore.NewClient(internal.ModuleName+".PublisherClient", internal.ModuleVersion, runtime.PipelineOptions{
+	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
-			// TODO: Java has a specific policy for this kind of authentication.
-			// AzureKeyCredentialPolicy
-			&skpolicy{HeaderName: sasTokenHeader, Key: sas},
+			runtime.NewBearerTokenPolicy(tokenCredential, tokenScopes, nil),
 		},
 	}, &options.ClientOptions)
 
@@ -75,17 +72,20 @@ func NewClientWithSharedKeyCredential(endpoint string, key string, options *Clie
 	}, nil
 }
 
-var tokenScopes = []string{"https://eventgrid.azure.net/.default"}
+// NewClientWithSharedKeyCredential creates a [Client] using a shared key.
+func NewClientWithSAS(endpoint string, sas string, options *ClientOptions) (*Client, error) {
+	const sasTokenHeader = "aeg-sas-token"
 
-// NewClient creates a [Client] that authenticates using a TokenCredential.
-func NewClient(endpoint string, tokenCredential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 
-	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
+	// TODO: I believe we're supposed to allow for dynamically updating the key at any time as well.
+	azc, err := azcore.NewClient(internal.ModuleName+".PublisherClient", internal.ModuleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
-			runtime.NewBearerTokenPolicy(tokenCredential, tokenScopes, nil),
+			// TODO: Java has a specific policy for this kind of authentication.
+			// AzureKeyCredentialPolicy
+			&skpolicy{HeaderName: sasTokenHeader, Key: sas},
 		},
 	}, &options.ClientOptions)
 

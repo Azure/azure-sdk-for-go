@@ -10,12 +10,6 @@ package armcontainerregistry
 
 import "time"
 
-// ActivationProperties - The activation properties of the connected registry.
-type ActivationProperties struct {
-	// READ-ONLY; The activation status of the connected registry.
-	Status *ActivationStatus
-}
-
 // ActiveDirectoryObject - The Active Directory Object that will be used for authenticating the token of a container registry.
 type ActiveDirectoryObject struct {
 	// The user/group/application object ID for Active Directory Object that will be used for authenticating the token of a container
@@ -174,12 +168,6 @@ type AuthInfoUpdateParameters struct {
 	TokenType *TokenType
 }
 
-// AzureADAuthenticationAsArmPolicy - The policy for using ARM audience token for a container registry.
-type AzureADAuthenticationAsArmPolicy struct {
-	// The value that indicates whether the policy is enabled or not.
-	Status *AzureADAuthenticationAsArmPolicyStatus
-}
-
 // BaseImageDependency - Properties that describe a base image dependency.
 type BaseImageDependency struct {
 	// The sha256-based digest of the image manifest.
@@ -298,94 +286,6 @@ type CallbackConfig struct {
 
 	// Custom headers that will be added to the webhook notifications.
 	CustomHeaders map[string]*string
-}
-
-// ConnectedRegistry - An object that represents a connected registry for a container registry.
-type ConnectedRegistry struct {
-	// The properties of the connected registry.
-	Properties *ConnectedRegistryProperties
-
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// ConnectedRegistryListResult - The result of a request to list connected registries for a container registry.
-type ConnectedRegistryListResult struct {
-	// The URI that can be used to request the next list of connected registries.
-	NextLink *string
-
-	// The list of connected registries. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of connected registries.
-	Value []*ConnectedRegistry
-}
-
-// ConnectedRegistryProperties - The properties of a connected registry.
-type ConnectedRegistryProperties struct {
-	// REQUIRED; The mode of the connected registry resource that indicates the permissions of the registry.
-	Mode *ConnectedRegistryMode
-
-	// REQUIRED; The parent of the connected registry.
-	Parent *ParentProperties
-
-	// The list of the ACR token resource IDs used to authenticate clients to the connected registry.
-	ClientTokenIDs []*string
-
-	// The logging properties of the connected registry.
-	Logging *LoggingProperties
-
-	// The login server properties of the connected registry.
-	LoginServer *LoginServerProperties
-
-	// The list of notifications subscription information for the connected registry.
-	NotificationsList []*string
-
-	// READ-ONLY; The activation properties of the connected registry.
-	Activation *ActivationProperties
-
-	// READ-ONLY; The current connection state of the connected registry.
-	ConnectionState *ConnectionState
-
-	// READ-ONLY; The last activity time of the connected registry.
-	LastActivityTime *time.Time
-
-	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; The list of current statuses of the connected registry.
-	StatusDetails []*StatusDetailProperties
-
-	// READ-ONLY; The current version of ACR runtime on the connected registry.
-	Version *string
-}
-
-// ConnectedRegistryUpdateParameters - The parameters for updating a connected registry.
-type ConnectedRegistryUpdateParameters struct {
-	// The properties of the connected registry update parameters.
-	Properties *ConnectedRegistryUpdateProperties
-}
-
-// ConnectedRegistryUpdateProperties - The parameters for updating token properties.
-type ConnectedRegistryUpdateProperties struct {
-	// The list of the ACR token resource IDs used to authenticate clients to the connected registry.
-	ClientTokenIDs []*string
-
-	// The logging properties of the connected registry.
-	Logging *LoggingProperties
-
-	// The list of notifications subscription information for the connected registry.
-	NotificationsList []*string
-
-	// The sync properties of the connected registry with its parent.
-	SyncProperties *SyncUpdateProperties
 }
 
 // CredentialHealth - The health of the auth credential.
@@ -752,10 +652,38 @@ type EncryptionProperty struct {
 	Status *EncryptionStatus
 }
 
-// ErrorResponse - An error response from the Azure Container Registry service.
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	// Azure container registry build API error body.
-	Error *ErrorResponseBody
+	// The error object.
+	Error *ErrorDetail
 }
 
 // ErrorResponseBody - An error response from the Azure Container Registry service.
@@ -771,6 +699,12 @@ type ErrorResponseBody struct {
 
 	// target of the particular error.
 	Target *string
+}
+
+// ErrorResponseForContainerRegistry - An error response from the Azure Container Registry service.
+type ErrorResponseForContainerRegistry struct {
+	// Azure container registry build API error body.
+	Error *ErrorResponseBody
 }
 
 // Event - The event for a webhook.
@@ -859,66 +793,6 @@ type EventResponseMessage struct {
 
 	// The HTTP message version.
 	Version *string
-}
-
-// ExportPipeline - An object that represents an export pipeline for a container registry.
-type ExportPipeline struct {
-	// The identity of the export pipeline.
-	Identity *IdentityProperties
-
-	// The location of the export pipeline.
-	Location *string
-
-	// The properties of the export pipeline.
-	Properties *ExportPipelineProperties
-
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// ExportPipelineListResult - The result of a request to list export pipelines for a container registry.
-type ExportPipelineListResult struct {
-	// The URI that can be used to request the next list of pipeline runs.
-	NextLink *string
-
-	// The list of export pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of export pipelines.
-	Value []*ExportPipeline
-}
-
-// ExportPipelineProperties - The properties of an export pipeline.
-type ExportPipelineProperties struct {
-	// REQUIRED; The target properties of the export pipeline.
-	Target *ExportPipelineTargetProperties
-
-	// The list of all options configured for the pipeline.
-	Options []*PipelineOptions
-
-	// READ-ONLY; The provisioning state of the pipeline at the time the operation was called.
-	ProvisioningState *ProvisioningState
-}
-
-// ExportPipelineTargetProperties - The properties of the export pipeline target.
-type ExportPipelineTargetProperties struct {
-	// REQUIRED; They key vault secret uri to obtain the target storage SAS token.
-	KeyVaultURI *string
-
-	// The type of target for the export pipeline.
-	Type *string
-
-	// The target uri of the export pipeline. When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
-	// When 'AzureStorageBlobContainer':
-	// "https://accountName.blob.core.windows.net/containerName"
-	URI *string
 }
 
 // ExportPolicy - The export policy for a container registry.
@@ -1074,12 +948,6 @@ type IPRule struct {
 
 // IdentityProperties - Managed identity for the resource.
 type IdentityProperties struct {
-	// The principal ID of resource identity.
-	PrincipalID *string
-
-	// The tenant ID of resource.
-	TenantID *string
-
 	// The identity type.
 	Type *ResourceIdentityType
 
@@ -1087,6 +955,12 @@ type IdentityProperties struct {
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/ providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserIdentityProperties
+
+	// READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of resource.
+	TenantID *string
 }
 
 // ImageDescriptor - Properties for a registry image.
@@ -1130,69 +1004,6 @@ type ImportImageParameters struct {
 
 	// List of strings of repository names to do a manifest only copy. No tag will be created.
 	UntaggedTargetRepositories []*string
-}
-
-// ImportPipeline - An object that represents an import pipeline for a container registry.
-type ImportPipeline struct {
-	// The identity of the import pipeline.
-	Identity *IdentityProperties
-
-	// The location of the import pipeline.
-	Location *string
-
-	// The properties of the import pipeline.
-	Properties *ImportPipelineProperties
-
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// ImportPipelineListResult - The result of a request to list import pipelines for a container registry.
-type ImportPipelineListResult struct {
-	// The URI that can be used to request the next list of pipeline runs.
-	NextLink *string
-
-	// The list of import pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of import pipelines.
-	Value []*ImportPipeline
-}
-
-// ImportPipelineProperties - The properties of an import pipeline.
-type ImportPipelineProperties struct {
-	// REQUIRED; The source properties of the import pipeline.
-	Source *ImportPipelineSourceProperties
-
-	// The list of all options configured for the pipeline.
-	Options []*PipelineOptions
-
-	// The properties that describe the trigger of the import pipeline.
-	Trigger *PipelineTriggerProperties
-
-	// READ-ONLY; The provisioning state of the pipeline at the time the operation was called.
-	ProvisioningState *ProvisioningState
-}
-
-// ImportPipelineSourceProperties - The properties of the import pipeline source.
-type ImportPipelineSourceProperties struct {
-	// REQUIRED; They key vault secret uri to obtain the source storage SAS token.
-	KeyVaultURI *string
-
-	// The type of source for the import pipeline.
-	Type *PipelineSourceType
-
-	// The source uri of the import pipeline. When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
-	// When 'AzureStorageBlobContainer':
-	// "https://accountName.blob.core.windows.net/containerName"
-	URI *string
 }
 
 type ImportSource struct {
@@ -1246,24 +1057,6 @@ type KeyVaultProperties struct {
 
 	// READ-ONLY; The fully qualified key identifier that includes the version of the key that is actually used for encryption.
 	VersionedKeyIdentifier *string
-}
-
-// LoggingProperties - The logging properties of the connected registry.
-type LoggingProperties struct {
-	// Indicates whether audit logs are enabled on the connected registry.
-	AuditLogStatus *AuditLogStatus
-
-	// The verbosity of logs persisted on the connected registry.
-	LogLevel *LogLevel
-}
-
-// LoginServerProperties - The login server properties of the connected registry.
-type LoginServerProperties struct {
-	// READ-ONLY; The host of the connected registry. Can be FQDN or IP.
-	Host *string
-
-	// READ-ONLY; The TLS properties of the connected registry login server.
-	TLS *TLSProperties
 }
 
 // NetworkRuleSet - The network rule set for a container registry.
@@ -1395,147 +1188,6 @@ type PackageType struct {
 	Endpoint *string
 }
 
-// ParentProperties - The properties of the connected registry parent.
-type ParentProperties struct {
-	// REQUIRED; The sync properties of the connected registry with its parent.
-	SyncProperties *SyncProperties
-
-	// The resource ID of the parent to which the connected registry will be associated.
-	ID *string
-}
-
-// PipelineRun - An object that represents a pipeline run for a container registry.
-type PipelineRun struct {
-	// The properties of a pipeline run.
-	Properties *PipelineRunProperties
-
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// PipelineRunListResult - The result of a request to list pipeline runs for a container registry.
-type PipelineRunListResult struct {
-	// The URI that can be used to request the next list of pipeline runs.
-	NextLink *string
-
-	// The list of pipeline runs. Since this list may be incomplete, the nextLink field should be used to request the next list
-	// of pipeline runs.
-	Value []*PipelineRun
-}
-
-// PipelineRunProperties - The properties of a pipeline run.
-type PipelineRunProperties struct {
-	// How the pipeline run should be forced to recreate even if the pipeline run configuration has not changed.
-	ForceUpdateTag *string
-
-	// The request parameters for a pipeline run.
-	Request *PipelineRunRequest
-
-	// READ-ONLY; The provisioning state of a pipeline run.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; The response of a pipeline run.
-	Response *PipelineRunResponse
-}
-
-// PipelineRunRequest - The request properties provided for a pipeline run.
-type PipelineRunRequest struct {
-	// List of source artifacts to be transferred by the pipeline. Specify an image by repository ('hello-world'). This will use
-	// the 'latest' tag. Specify an image by tag ('hello-world:latest'). Specify an
-	// image by sha256-based manifest digest ('hello-world@sha256:abc123').
-	Artifacts []*string
-
-	// The digest of the tar used to transfer the artifacts.
-	CatalogDigest *string
-
-	// The resource ID of the pipeline to run.
-	PipelineResourceID *string
-
-	// The source properties of the pipeline run.
-	Source *PipelineRunSourceProperties
-
-	// The target properties of the pipeline run.
-	Target *PipelineRunTargetProperties
-}
-
-// PipelineRunResponse - The response properties returned for a pipeline run.
-type PipelineRunResponse struct {
-	// The digest of the tar used to transfer the artifacts.
-	CatalogDigest *string
-
-	// The time the pipeline run finished.
-	FinishTime *time.Time
-
-	// The artifacts imported in the pipeline run.
-	ImportedArtifacts []*string
-
-	// The detailed error message for the pipeline run in the case of failure.
-	PipelineRunErrorMessage *string
-
-	// The current progress of the copy operation.
-	Progress *ProgressProperties
-
-	// The source of the pipeline run.
-	Source *ImportPipelineSourceProperties
-
-	// The time the pipeline run started.
-	StartTime *time.Time
-
-	// The current status of the pipeline run.
-	Status *string
-
-	// The target of the pipeline run.
-	Target *ExportPipelineTargetProperties
-
-	// The trigger that caused the pipeline run.
-	Trigger *PipelineTriggerDescriptor
-}
-
-type PipelineRunSourceProperties struct {
-	// The name of the source.
-	Name *string
-
-	// The type of the source.
-	Type *PipelineRunSourceType
-}
-
-type PipelineRunTargetProperties struct {
-	// The name of the target.
-	Name *string
-
-	// The type of the target.
-	Type *PipelineRunTargetType
-}
-
-type PipelineSourceTriggerDescriptor struct {
-	// The timestamp when the source update happened.
-	Timestamp *time.Time
-}
-
-type PipelineSourceTriggerProperties struct {
-	// REQUIRED; The current status of the source trigger.
-	Status *TriggerStatus
-}
-
-type PipelineTriggerDescriptor struct {
-	// The source trigger that caused the pipeline run.
-	SourceTrigger *PipelineSourceTriggerDescriptor
-}
-
-type PipelineTriggerProperties struct {
-	// The source trigger properties of the pipeline.
-	SourceTrigger *PipelineSourceTriggerProperties
-}
-
 // PlatformProperties - The platform properties against which the run has to happen.
 type PlatformProperties struct {
 	// REQUIRED; The operating system type required for the run.
@@ -1562,9 +1214,6 @@ type PlatformUpdateParameters struct {
 
 // Policies - The policies for a container registry.
 type Policies struct {
-	// The policy for using ARM audience token for a container registry.
-	AzureADAuthenticationAsArmPolicy *AzureADAuthenticationAsArmPolicy
-
 	// The export policy for a container registry.
 	ExportPolicy *ExportPolicy
 
@@ -1573,9 +1222,6 @@ type Policies struct {
 
 	// The retention policy for a container registry.
 	RetentionPolicy *RetentionPolicy
-
-	// The soft delete policy for a container registry.
-	SoftDeletePolicy *SoftDeletePolicy
 
 	// The content trust policy for a container registry.
 	TrustPolicy *TrustPolicy
@@ -1674,11 +1320,6 @@ type PrivateLinkServiceConnectionState struct {
 
 	// The private link service connection status.
 	Status *ConnectionStatus
-}
-
-type ProgressProperties struct {
-	// The percentage complete of the copy operation.
-	Percentage *string
 }
 
 // ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
@@ -1794,9 +1435,6 @@ type RegistryProperties struct {
 	// The value that indicates whether the admin user is enabled.
 	AdminUserEnabled *bool
 
-	// Enables registry-wide pull from unauthenticated clients.
-	AnonymousPullEnabled *bool
-
 	// Enable a single data endpoint per region for serving data.
 	DataEndpointEnabled *bool
 
@@ -1841,9 +1479,6 @@ type RegistryProperties struct {
 type RegistryPropertiesUpdateParameters struct {
 	// The value that indicates whether the admin user is enabled.
 	AdminUserEnabled *bool
-
-	// Enables registry-wide pull from unauthenticated clients.
-	AnonymousPullEnabled *bool
 
 	// Enable a single data endpoint per region for serving data.
 	DataEndpointEnabled *bool
@@ -2271,18 +1906,6 @@ type SetValue struct {
 	IsSecret *bool
 }
 
-// SoftDeletePolicy - The soft delete policy for a container registry
-type SoftDeletePolicy struct {
-	// The number of days after which a soft-deleted item is permanently deleted.
-	RetentionDays *int32
-
-	// The value that indicates whether the policy is enabled or not.
-	Status *PolicyStatus
-
-	// READ-ONLY; The timestamp when the policy was last updated.
-	LastUpdatedTime *time.Time
-}
-
 // Source - The registry node that generated the event. Put differently, while the actor initiates the event, the source generates
 // it.
 type Source struct {
@@ -2407,65 +2030,10 @@ type Status struct {
 	Timestamp *time.Time
 }
 
-// StatusDetailProperties - The status detail properties of the connected registry.
-type StatusDetailProperties struct {
-	// READ-ONLY; The code of the status.
-	Code *string
-
-	// READ-ONLY; The correlation ID of the status.
-	CorrelationID *string
-
-	// READ-ONLY; The description of the status.
-	Description *string
-
-	// READ-ONLY; The timestamp of the status.
-	Timestamp *time.Time
-
-	// READ-ONLY; The component of the connected registry corresponding to the status.
-	Type *string
-}
-
 // StorageAccountProperties - The properties of a storage account for a container registry. Only applicable to Classic SKU.
 type StorageAccountProperties struct {
 	// REQUIRED; The resource ID of the storage account.
 	ID *string
-}
-
-// SyncProperties - The sync properties of the connected registry with its parent.
-type SyncProperties struct {
-	// REQUIRED; The period of time for which a message is available to sync before it is expired. Specify the duration using
-	// the format P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
-	MessageTTL *string
-
-	// REQUIRED; The resource ID of the ACR token used to authenticate the connected registry to its parent during sync.
-	TokenID *string
-
-	// The cron expression indicating the schedule that the connected registry will sync with its parent.
-	Schedule *string
-
-	// The time window during which sync is enabled for each schedule occurrence. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S
-	// as per ISO8601.
-	SyncWindow *string
-
-	// READ-ONLY; The gateway endpoint used by the connected registry to communicate with its parent.
-	GatewayEndpoint *string
-
-	// READ-ONLY; The last time a sync occurred between the connected registry and its parent.
-	LastSyncTime *time.Time
-}
-
-// SyncUpdateProperties - The parameters for updating the sync properties of the connected registry with its parent.
-type SyncUpdateProperties struct {
-	// The period of time for which a message is available to sync before it is expired. Specify the duration using the format
-	// P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
-	MessageTTL *string
-
-	// The cron expression indicating the schedule that the connected registry will sync with its parent.
-	Schedule *string
-
-	// The time window during which sync is enabled for each schedule occurrence. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S
-	// as per ISO8601.
-	SyncWindow *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -2487,24 +2055,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *LastModifiedByType
-}
-
-// TLSCertificateProperties - The TLS certificate properties of the connected registry login server.
-type TLSCertificateProperties struct {
-	// READ-ONLY; Indicates the location of the certificates.
-	Location *string
-
-	// READ-ONLY; The type of certificate location.
-	Type *CertificateType
-}
-
-// TLSProperties - The TLS properties of the connected registry login server.
-type TLSProperties struct {
-	// READ-ONLY; The certificate used to configure HTTPS for the login server.
-	Certificate *TLSCertificateProperties
-
-	// READ-ONLY; Indicates whether HTTPS is enabled for the login server.
-	Status *TLSStatus
 }
 
 // Target - The target of the event.
@@ -2955,10 +2505,10 @@ type TrustPolicy struct {
 }
 
 type UserIdentityProperties struct {
-	// The client id of user assigned identity.
+	// READ-ONLY; The client id of user assigned identity.
 	ClientID *string
 
-	// The principal id of user assigned identity.
+	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string
 }
 

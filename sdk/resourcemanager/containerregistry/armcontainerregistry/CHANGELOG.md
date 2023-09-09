@@ -1,5 +1,94 @@
 # Release History
 
+## 1.1.0-beta.4 (2023-09-22)
+### Breaking Changes
+
+- Type of `ErrorResponse.Error` has been changed from `*ErrorResponseBody` to `*ErrorDetail`
+- Enum `ActivationStatus` has been removed
+- Enum `AuditLogStatus` has been removed
+- Enum `AzureADAuthenticationAsArmPolicyStatus` has been removed
+- Enum `CertificateType` has been removed
+- Enum `ConnectedRegistryMode` has been removed
+- Enum `ConnectionState` has been removed
+- Enum `LogLevel` has been removed
+- Enum `PipelineOptions` has been removed
+- Enum `PipelineRunSourceType` has been removed
+- Enum `PipelineRunTargetType` has been removed
+- Enum `PipelineSourceType` has been removed
+- Enum `TLSStatus` has been removed
+- Function `*ClientFactory.NewConnectedRegistriesClient` has been removed
+- Function `*ClientFactory.NewExportPipelinesClient` has been removed
+- Function `*ClientFactory.NewImportPipelinesClient` has been removed
+- Function `*ClientFactory.NewPipelineRunsClient` has been removed
+- Function `NewConnectedRegistriesClient` has been removed
+- Function `*ConnectedRegistriesClient.BeginCreate` has been removed
+- Function `*ConnectedRegistriesClient.BeginDeactivate` has been removed
+- Function `*ConnectedRegistriesClient.BeginDelete` has been removed
+- Function `*ConnectedRegistriesClient.Get` has been removed
+- Function `*ConnectedRegistriesClient.NewListPager` has been removed
+- Function `*ConnectedRegistriesClient.BeginUpdate` has been removed
+- Function `NewExportPipelinesClient` has been removed
+- Function `*ExportPipelinesClient.BeginCreate` has been removed
+- Function `*ExportPipelinesClient.BeginDelete` has been removed
+- Function `*ExportPipelinesClient.Get` has been removed
+- Function `*ExportPipelinesClient.NewListPager` has been removed
+- Function `NewImportPipelinesClient` has been removed
+- Function `*ImportPipelinesClient.BeginCreate` has been removed
+- Function `*ImportPipelinesClient.BeginDelete` has been removed
+- Function `*ImportPipelinesClient.Get` has been removed
+- Function `*ImportPipelinesClient.NewListPager` has been removed
+- Function `NewPipelineRunsClient` has been removed
+- Function `*PipelineRunsClient.BeginCreate` has been removed
+- Function `*PipelineRunsClient.BeginDelete` has been removed
+- Function `*PipelineRunsClient.Get` has been removed
+- Function `*PipelineRunsClient.NewListPager` has been removed
+- Struct `ActivationProperties` has been removed
+- Struct `AzureADAuthenticationAsArmPolicy` has been removed
+- Struct `ConnectedRegistry` has been removed
+- Struct `ConnectedRegistryListResult` has been removed
+- Struct `ConnectedRegistryProperties` has been removed
+- Struct `ConnectedRegistryUpdateParameters` has been removed
+- Struct `ConnectedRegistryUpdateProperties` has been removed
+- Struct `ExportPipeline` has been removed
+- Struct `ExportPipelineListResult` has been removed
+- Struct `ExportPipelineProperties` has been removed
+- Struct `ExportPipelineTargetProperties` has been removed
+- Struct `ImportPipeline` has been removed
+- Struct `ImportPipelineListResult` has been removed
+- Struct `ImportPipelineProperties` has been removed
+- Struct `ImportPipelineSourceProperties` has been removed
+- Struct `LoggingProperties` has been removed
+- Struct `LoginServerProperties` has been removed
+- Struct `ParentProperties` has been removed
+- Struct `PipelineRun` has been removed
+- Struct `PipelineRunListResult` has been removed
+- Struct `PipelineRunProperties` has been removed
+- Struct `PipelineRunRequest` has been removed
+- Struct `PipelineRunResponse` has been removed
+- Struct `PipelineRunSourceProperties` has been removed
+- Struct `PipelineRunTargetProperties` has been removed
+- Struct `PipelineSourceTriggerDescriptor` has been removed
+- Struct `PipelineSourceTriggerProperties` has been removed
+- Struct `PipelineTriggerDescriptor` has been removed
+- Struct `PipelineTriggerProperties` has been removed
+- Struct `ProgressProperties` has been removed
+- Struct `SoftDeletePolicy` has been removed
+- Struct `StatusDetailProperties` has been removed
+- Struct `SyncProperties` has been removed
+- Struct `SyncUpdateProperties` has been removed
+- Struct `TLSCertificateProperties` has been removed
+- Struct `TLSProperties` has been removed
+- Field `AzureADAuthenticationAsArmPolicy`, `SoftDeletePolicy` of struct `Policies` has been removed
+- Field `AnonymousPullEnabled` of struct `RegistryProperties` has been removed
+- Field `AnonymousPullEnabled` of struct `RegistryPropertiesUpdateParameters` has been removed
+
+### Features Added
+
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponseForContainerRegistry`
+
+
 ## 1.1.0-beta.3 (2023-07-19)
 
 ### Bug Fixes

@@ -10,7 +10,7 @@ package armcontainerregistry
 
 const (
 	moduleName    = "armcontainerregistry"
-	moduleVersion = "v1.1.0-beta.3"
+	moduleVersion = "v1.1.0-beta.4"
 )
 
 // Action - The action of IP ACL rule.
@@ -43,22 +43,6 @@ func PossibleActionsRequiredValues() []ActionsRequired {
 	}
 }
 
-// ActivationStatus - The activation status of the connected registry.
-type ActivationStatus string
-
-const (
-	ActivationStatusActive   ActivationStatus = "Active"
-	ActivationStatusInactive ActivationStatus = "Inactive"
-)
-
-// PossibleActivationStatusValues returns the possible values for the ActivationStatus const type.
-func PossibleActivationStatusValues() []ActivationStatus {
-	return []ActivationStatus{
-		ActivationStatusActive,
-		ActivationStatusInactive,
-	}
-}
-
 // Architecture - The OS architecture.
 type Architecture string
 
@@ -78,38 +62,6 @@ func PossibleArchitectureValues() []Architecture {
 		ArchitectureArm64,
 		ArchitectureThreeHundredEightySix,
 		ArchitectureX86,
-	}
-}
-
-// AuditLogStatus - Indicates whether audit logs are enabled on the connected registry.
-type AuditLogStatus string
-
-const (
-	AuditLogStatusDisabled AuditLogStatus = "Disabled"
-	AuditLogStatusEnabled  AuditLogStatus = "Enabled"
-)
-
-// PossibleAuditLogStatusValues returns the possible values for the AuditLogStatus const type.
-func PossibleAuditLogStatusValues() []AuditLogStatus {
-	return []AuditLogStatus{
-		AuditLogStatusDisabled,
-		AuditLogStatusEnabled,
-	}
-}
-
-// AzureADAuthenticationAsArmPolicyStatus - The value that indicates whether the policy is enabled or not.
-type AzureADAuthenticationAsArmPolicyStatus string
-
-const (
-	AzureADAuthenticationAsArmPolicyStatusDisabled AzureADAuthenticationAsArmPolicyStatus = "disabled"
-	AzureADAuthenticationAsArmPolicyStatusEnabled  AzureADAuthenticationAsArmPolicyStatus = "enabled"
-)
-
-// PossibleAzureADAuthenticationAsArmPolicyStatusValues returns the possible values for the AzureADAuthenticationAsArmPolicyStatus const type.
-func PossibleAzureADAuthenticationAsArmPolicyStatusValues() []AzureADAuthenticationAsArmPolicyStatus {
-	return []AzureADAuthenticationAsArmPolicyStatus{
-		AzureADAuthenticationAsArmPolicyStatusDisabled,
-		AzureADAuthenticationAsArmPolicyStatusEnabled,
 	}
 }
 
@@ -142,60 +94,6 @@ func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
 	return []BaseImageTriggerType{
 		BaseImageTriggerTypeAll,
 		BaseImageTriggerTypeRuntime,
-	}
-}
-
-// CertificateType - The type of certificate location.
-type CertificateType string
-
-const (
-	CertificateTypeLocalDirectory CertificateType = "LocalDirectory"
-)
-
-// PossibleCertificateTypeValues returns the possible values for the CertificateType const type.
-func PossibleCertificateTypeValues() []CertificateType {
-	return []CertificateType{
-		CertificateTypeLocalDirectory,
-	}
-}
-
-// ConnectedRegistryMode - The mode of the connected registry resource that indicates the permissions of the registry.
-type ConnectedRegistryMode string
-
-const (
-	ConnectedRegistryModeMirror    ConnectedRegistryMode = "Mirror"
-	ConnectedRegistryModeReadOnly  ConnectedRegistryMode = "ReadOnly"
-	ConnectedRegistryModeReadWrite ConnectedRegistryMode = "ReadWrite"
-	ConnectedRegistryModeRegistry  ConnectedRegistryMode = "Registry"
-)
-
-// PossibleConnectedRegistryModeValues returns the possible values for the ConnectedRegistryMode const type.
-func PossibleConnectedRegistryModeValues() []ConnectedRegistryMode {
-	return []ConnectedRegistryMode{
-		ConnectedRegistryModeMirror,
-		ConnectedRegistryModeReadOnly,
-		ConnectedRegistryModeReadWrite,
-		ConnectedRegistryModeRegistry,
-	}
-}
-
-// ConnectionState - The current connection state of the connected registry.
-type ConnectionState string
-
-const (
-	ConnectionStateOffline   ConnectionState = "Offline"
-	ConnectionStateOnline    ConnectionState = "Online"
-	ConnectionStateSyncing   ConnectionState = "Syncing"
-	ConnectionStateUnhealthy ConnectionState = "Unhealthy"
-)
-
-// PossibleConnectionStateValues returns the possible values for the ConnectionState const type.
-func PossibleConnectionStateValues() []ConnectionState {
-	return []ConnectionState{
-		ConnectionStateOffline,
-		ConnectionStateOnline,
-		ConnectionStateSyncing,
-		ConnectionStateUnhealthy,
 	}
 }
 
@@ -354,28 +252,6 @@ func PossibleLastModifiedByTypeValues() []LastModifiedByType {
 	}
 }
 
-// LogLevel - The verbosity of logs persisted on the connected registry.
-type LogLevel string
-
-const (
-	LogLevelDebug       LogLevel = "Debug"
-	LogLevelError       LogLevel = "Error"
-	LogLevelInformation LogLevel = "Information"
-	LogLevelNone        LogLevel = "None"
-	LogLevelWarning     LogLevel = "Warning"
-)
-
-// PossibleLogLevelValues returns the possible values for the LogLevel const type.
-func PossibleLogLevelValues() []LogLevel {
-	return []LogLevel{
-		LogLevelDebug,
-		LogLevelError,
-		LogLevelInformation,
-		LogLevelNone,
-		LogLevelWarning,
-	}
-}
-
 // NetworkRuleBypassOptions - Whether to allow trusted Azure services to access a network restricted registry.
 type NetworkRuleBypassOptions string
 
@@ -421,67 +297,6 @@ func PossiblePasswordNameValues() []PasswordName {
 	return []PasswordName{
 		PasswordNamePassword,
 		PasswordNamePassword2,
-	}
-}
-
-type PipelineOptions string
-
-const (
-	PipelineOptionsContinueOnErrors          PipelineOptions = "ContinueOnErrors"
-	PipelineOptionsDeleteSourceBlobOnSuccess PipelineOptions = "DeleteSourceBlobOnSuccess"
-	PipelineOptionsOverwriteBlobs            PipelineOptions = "OverwriteBlobs"
-	PipelineOptionsOverwriteTags             PipelineOptions = "OverwriteTags"
-)
-
-// PossiblePipelineOptionsValues returns the possible values for the PipelineOptions const type.
-func PossiblePipelineOptionsValues() []PipelineOptions {
-	return []PipelineOptions{
-		PipelineOptionsContinueOnErrors,
-		PipelineOptionsDeleteSourceBlobOnSuccess,
-		PipelineOptionsOverwriteBlobs,
-		PipelineOptionsOverwriteTags,
-	}
-}
-
-// PipelineRunSourceType - The type of the source.
-type PipelineRunSourceType string
-
-const (
-	PipelineRunSourceTypeAzureStorageBlob PipelineRunSourceType = "AzureStorageBlob"
-)
-
-// PossiblePipelineRunSourceTypeValues returns the possible values for the PipelineRunSourceType const type.
-func PossiblePipelineRunSourceTypeValues() []PipelineRunSourceType {
-	return []PipelineRunSourceType{
-		PipelineRunSourceTypeAzureStorageBlob,
-	}
-}
-
-// PipelineRunTargetType - The type of the target.
-type PipelineRunTargetType string
-
-const (
-	PipelineRunTargetTypeAzureStorageBlob PipelineRunTargetType = "AzureStorageBlob"
-)
-
-// PossiblePipelineRunTargetTypeValues returns the possible values for the PipelineRunTargetType const type.
-func PossiblePipelineRunTargetTypeValues() []PipelineRunTargetType {
-	return []PipelineRunTargetType{
-		PipelineRunTargetTypeAzureStorageBlob,
-	}
-}
-
-// PipelineSourceType - The type of source for the import pipeline.
-type PipelineSourceType string
-
-const (
-	PipelineSourceTypeAzureStorageBlobContainer PipelineSourceType = "AzureStorageBlobContainer"
-)
-
-// PossiblePipelineSourceTypeValues returns the possible values for the PipelineSourceType const type.
-func PossiblePipelineSourceTypeValues() []PipelineSourceType {
-	return []PipelineSourceType{
-		PipelineSourceTypeAzureStorageBlobContainer,
 	}
 }
 
@@ -745,22 +560,6 @@ func PossibleStepTypeValues() []StepType {
 		StepTypeDocker,
 		StepTypeEncodedTask,
 		StepTypeFileTask,
-	}
-}
-
-// TLSStatus - Indicates whether HTTPS is enabled for the login server.
-type TLSStatus string
-
-const (
-	TLSStatusDisabled TLSStatus = "Disabled"
-	TLSStatusEnabled  TLSStatus = "Enabled"
-)
-
-// PossibleTLSStatusValues returns the possible values for the TLSStatus const type.
-func PossibleTLSStatusValues() []TLSStatus {
-	return []TLSStatus{
-		TLSStatusDisabled,
-		TLSStatusEnabled,
 	}
 }
 

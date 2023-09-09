@@ -69,47 +69,6 @@ type CacheRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectedRegistriesClientBeginCreateOptions contains the optional parameters for the ConnectedRegistriesClient.BeginCreate
-// method.
-type ConnectedRegistriesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ConnectedRegistriesClientBeginDeactivateOptions contains the optional parameters for the ConnectedRegistriesClient.BeginDeactivate
-// method.
-type ConnectedRegistriesClientBeginDeactivateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ConnectedRegistriesClientBeginDeleteOptions contains the optional parameters for the ConnectedRegistriesClient.BeginDelete
-// method.
-type ConnectedRegistriesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ConnectedRegistriesClientBeginUpdateOptions contains the optional parameters for the ConnectedRegistriesClient.BeginUpdate
-// method.
-type ConnectedRegistriesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ConnectedRegistriesClientGetOptions contains the optional parameters for the ConnectedRegistriesClient.Get method.
-type ConnectedRegistriesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectedRegistriesClientListOptions contains the optional parameters for the ConnectedRegistriesClient.NewListPager method.
-type ConnectedRegistriesClientListOptions struct {
-	// An OData filter expression that describes a subset of connectedRegistries to return. The parameters that can be filtered
-	// are parent.id (the resource id of the connectedRegistry parent), mode, and
-	// connectionState. The supported operator is eq.
-	Filter *string
-}
-
 // CredentialSetsClientBeginCreateOptions contains the optional parameters for the CredentialSetsClient.BeginCreate method.
 type CredentialSetsClientBeginCreateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -138,74 +97,8 @@ type CredentialSetsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExportPipelinesClientBeginCreateOptions contains the optional parameters for the ExportPipelinesClient.BeginCreate method.
-type ExportPipelinesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ExportPipelinesClientBeginDeleteOptions contains the optional parameters for the ExportPipelinesClient.BeginDelete method.
-type ExportPipelinesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ExportPipelinesClientGetOptions contains the optional parameters for the ExportPipelinesClient.Get method.
-type ExportPipelinesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExportPipelinesClientListOptions contains the optional parameters for the ExportPipelinesClient.NewListPager method.
-type ExportPipelinesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ImportPipelinesClientBeginCreateOptions contains the optional parameters for the ImportPipelinesClient.BeginCreate method.
-type ImportPipelinesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ImportPipelinesClientBeginDeleteOptions contains the optional parameters for the ImportPipelinesClient.BeginDelete method.
-type ImportPipelinesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ImportPipelinesClientGetOptions contains the optional parameters for the ImportPipelinesClient.Get method.
-type ImportPipelinesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ImportPipelinesClientListOptions contains the optional parameters for the ImportPipelinesClient.NewListPager method.
-type ImportPipelinesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PipelineRunsClientBeginCreateOptions contains the optional parameters for the PipelineRunsClient.BeginCreate method.
-type PipelineRunsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PipelineRunsClientBeginDeleteOptions contains the optional parameters for the PipelineRunsClient.BeginDelete method.
-type PipelineRunsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PipelineRunsClientGetOptions contains the optional parameters for the PipelineRunsClient.Get method.
-type PipelineRunsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PipelineRunsClientListOptions contains the optional parameters for the PipelineRunsClient.NewListPager method.
-type PipelineRunsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -31,9 +31,9 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
 ### Authenticate the client
 
 Event Grid publisher clients authenticate using either:
-- A TokenCredential. An example of that can be viewed here: [ExampleNewClientWithSharedKeyCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher/#example-NewClient).
-- A shared key credential. An example of that can be viewed here: [ExampleNewClientWithSharedKeyCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher/#example-NewClientWithSharedKeyCredential).
-- A Shared Access Signature (SAS). An example of that can be viewed here: [ExampleNewClientWithSharedKeyCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher/#example-NewClientWithSAS).
+- A TokenCredential. An example of that can be viewed here: [ExampleNewClientWithSharedKeyCredential][godoc_example_newclient].
+- A shared key credential. An example of that can be viewed here: [ExampleNewClientWithSharedKeyCredential][godoc_example_newclientsk]
+- A Shared Access Signature (SAS). An example of that can be viewed here: [ExampleNewClientWithSharedKeyCredential][godoc_example_newclientsas].
 
 # Key concepts
 
@@ -42,7 +42,7 @@ you publish to will be configured to accept events of a certain format: EventGri
 
 # Examples
 
-Examples for various scenarios can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher#pkg-examples) or in the example*_test.go files in our GitHub repo for [azeventgrid](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventgrid/publisher).
+Examples for various scenarios can be found on [pkg.go.dev][godoc_examples] or in the example*_test.go files in our GitHub repo for [azeventgrid][gh].
 
 # Troubleshooting
 
@@ -112,8 +112,23 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [cloud_shell]: https://docs.microsoft.com/azure/cloud-shell/overview
 [cloud_shell_bash]: https://shell.azure.com/bash
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azeventgrid
-[godoc]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
-[godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#pkg-examples
-[godoc_example_newclient]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#example-NewClientWithSharedKeyCredential
-[godoc_publisher_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher#Client
 [godoc_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#Client
+
+<!-- Temp links until the PR goes in, replacements are below -->
+[godoc]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/
+[godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/
+[godoc_publisher_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/
+[godoc_example_newclient]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/
+[godoc_example_newclientsk]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/
+[godoc_example_newclientsas]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/
+[gh]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventgrid/
+
+<!-- these links are all broken until I complete a PR
+[godoc]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher
+[godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher/#pkg-examples
+[godoc_publisher_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher#Client
+[godoc_example_newclient]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher/#example-NewClient
+[godoc_example_newclientsk]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher/#example-NewClientWithSharedKeyCredential
+[godoc_example_newclientsas]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher/#example-NewClientWithSAS
+[gh]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventgrid/publisher
+ -->

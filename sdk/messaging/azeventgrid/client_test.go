@@ -84,8 +84,8 @@ func TestFailedAck(t *testing.T) {
 		require.Equal(t, []azeventgrid.FailedLockToken{
 			{
 				LockToken:        recvResp.Value[0].BrokerProperties.LockToken,
-				ErrorCode:        to.Ptr("TokenLost"),
-				ErrorDescription: to.Ptr("Token has expired."),
+				ErrorCode:        to.Ptr("InternalServerError"),
+				ErrorDescription: to.Ptr("No result returned for release request."),
 			},
 		}, resp.FailedLockTokens)
 	})

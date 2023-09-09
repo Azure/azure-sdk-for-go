@@ -123,7 +123,7 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [ms_pulldelivery]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery
 [ms_namespace]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery#namespaces
 [ms_topic]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery#namespace-topics
-[ms_subscription]: https://learn.microsoft.com/en-us/azure/event-grid/concepts-pull-delivery#event-subscriptions
+[ms_subscription]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery#event-subscriptions
 [ms_create_namespace]: https://learn.microsoft.com/azure/event-grid/create-view-manage-namespaces
 [ms_create_topic]: https://learn.microsoft.com/azure/event-grid/create-view-manage-namespace-topics
 

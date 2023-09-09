@@ -33,14 +33,15 @@ type eventGridVars struct {
 	CE topicVars
 }
 
-var fakeVars topicVars = topicVars{
-	Name:     "faketopic",
-	Key:      "fakekey",
-	Endpoint: "https://localhost/fake-endpoint",
-}
+// TODO: will get back to this when adding in recordings.
+// var fakeVars topicVars = topicVars{
+// 	Name:     "faketopic",
+// 	Key:      "fakekey",
+// 	Endpoint: "https://localhost/fake-endpoint",
+// }
 
 func newTestVars(t *testing.T) eventGridVars {
-	// TODO: will get back to this.
+	// TODO: will get back to this when adding in recordings.
 	// if recording.GetRecordMode() != recording.LiveMode {
 	// 	return eventGridVars{
 	// 		EG: fakeVars,
@@ -71,7 +72,7 @@ func newTestVars(t *testing.T) eventGridVars {
 }
 
 func newClientOptionsForTest(t *testing.T, tv topicVars) *publisher.ClientOptions {
-	// TODO: will return to this.
+	// TODO: will get back to this when adding in recordings.
 	// if recording.GetRecordMode() != recording.LiveMode {
 	// 	return &publisher.ClientOptions{
 	// 		ClientOptions: azcore.ClientOptions{

@@ -117,7 +117,6 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [godoc_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/#Client
 [godoc_client_publish]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#Client.PublishCloudEvents
 [godoc_client_receive]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#Client.ReceiveCloudEvents
-[godoc_publisher_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher#Client
 [godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#pkg-examples
 [godoc_example_newclient]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#example-NewClientWithSharedKeyCredential
 [ms_pulldelivery]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery
@@ -127,3 +126,6 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [ms_create_namespace]: https://learn.microsoft.com/azure/event-grid/create-view-manage-namespaces
 [ms_create_topic]: https://learn.microsoft.com/azure/event-grid/create-view-manage-namespace-topics
 
+<!-- Temporary until we get it in main -->
+[godoc_publisher_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/#Client
+<!-- [godoc_publisher_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher#Client -->

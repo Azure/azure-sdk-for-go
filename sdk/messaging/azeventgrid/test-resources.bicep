@@ -78,9 +78,6 @@ output EVENTGRID_SUBSCRIPTION string = nsSubscriptionName
 resource egTopic 'Microsoft.EventGrid/topics@2023-06-01-preview' = {
   name: '${baseName}-eg'
   location: location
-  sku: {
-    name: 'Basic'
-  }
   kind: 'Azure'
   properties: {
     inputSchema: 'EventGridSchema'
@@ -90,12 +87,9 @@ resource egTopic 'Microsoft.EventGrid/topics@2023-06-01-preview' = {
 resource ceTopic 'Microsoft.EventGrid/topics@2023-06-01-preview' = {
   name: '${baseName}-ce'
   location: location
-  sku: {
-    name: 'Basic'
-  }
   kind: 'Azure'
   properties: {
-    inputSchema: 'CustomEventSchema'
+    inputSchema: 'CloudEventSchemaV1_0'
   }
 }
 

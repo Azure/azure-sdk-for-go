@@ -118,9 +118,5 @@ func (p *skpolicy) Do(req *policy.Request) (*http.Response, error) {
 //   - options - ClientPublishCloudEventEventsOptions contains the optional parameters for the Client.PublishCloudEvents
 //     method.
 func (client *Client) PublishCloudEvents(ctx context.Context, events []messaging.CloudEvent, options *PublishCloudEventsOptions) (PublishCloudEventsResponse, error) {
-	ctx = runtime.WithHTTPHeader(ctx, http.Header{
-		"Content-type": []string{"application/cloudevents-batch+json; charset=utf-8"},
-	})
-
 	return client.internalPublishCloudEvents(ctx, events, options)
 }

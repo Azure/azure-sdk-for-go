@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/FailoverGroupList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/FailoverGroupList.json
 func ExampleFailoverGroupsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,6 +58,7 @@ func ExampleFailoverGroupsClient_NewListByServerPager() {
 		// 				}},
 		// 				ReadOnlyEndpoint: &armsql.FailoverGroupReadOnlyEndpoint{
 		// 					FailoverPolicy: to.Ptr(armsql.ReadOnlyEndpointFailoverPolicyDisabled),
+		// 					TargetServer: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failover-group-secondary-server"),
 		// 				},
 		// 				ReadWriteEndpoint: &armsql.FailoverGroupReadWriteEndpoint{
 		// 					FailoverPolicy: to.Ptr(armsql.ReadWriteEndpointFailoverPolicyAutomatic),
@@ -83,6 +84,7 @@ func ExampleFailoverGroupsClient_NewListByServerPager() {
 		// 				}},
 		// 				ReadOnlyEndpoint: &armsql.FailoverGroupReadOnlyEndpoint{
 		// 					FailoverPolicy: to.Ptr(armsql.ReadOnlyEndpointFailoverPolicyDisabled),
+		// 					TargetServer: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failover-group-secondary-server"),
 		// 				},
 		// 				ReadWriteEndpoint: &armsql.FailoverGroupReadWriteEndpoint{
 		// 					FailoverPolicy: to.Ptr(armsql.ReadWriteEndpointFailoverPolicyAutomatic),
@@ -96,7 +98,7 @@ func ExampleFailoverGroupsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/FailoverGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/FailoverGroupGet.json
 func ExampleFailoverGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +109,7 @@ func ExampleFailoverGroupsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewFailoverGroupsClient().Get(ctx, "Default", "failover-group-primary-server", "failover-group-test", nil)
+	res, err := clientFactory.NewFailoverGroupsClient().Get(ctx, "Default", "failovergroupprimaryserver", "failovergrouptest3", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -115,33 +117,35 @@ func ExampleFailoverGroupsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.FailoverGroup = armsql.FailoverGroup{
-	// 	Name: to.Ptr("failover-group-test"),
+	// 	Name: to.Ptr("failovergrouptest3"),
 	// 	Type: to.Ptr("Microsoft.Sql/servers/failoverGroups"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failover-group-primary-server/failoverGroups/failover-group-test"),
-	// 	Location: to.Ptr("Japan East"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failovergroupprimaryserver/failoverGroups/failovergrouptest3"),
+	// 	Location: to.Ptr("Japan West"),
 	// 	Properties: &armsql.FailoverGroupProperties{
 	// 		Databases: []*string{
+	// 			to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failovergroupprimaryserver/databases/testdb1"),
+	// 			to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failovergroupprimaryserver/databases/testdb2")},
+	// 			PartnerServers: []*armsql.PartnerInfo{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failovergroupsecondaryserver"),
+	// 					Location: to.Ptr("Japan East"),
+	// 					ReplicationRole: to.Ptr(armsql.FailoverGroupReplicationRoleSecondary),
+	// 			}},
+	// 			ReadOnlyEndpoint: &armsql.FailoverGroupReadOnlyEndpoint{
+	// 				FailoverPolicy: to.Ptr(armsql.ReadOnlyEndpointFailoverPolicyEnabled),
+	// 				TargetServer: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failovergroupsecondaryserver"),
+	// 			},
+	// 			ReadWriteEndpoint: &armsql.FailoverGroupReadWriteEndpoint{
+	// 				FailoverPolicy: to.Ptr(armsql.ReadWriteEndpointFailoverPolicyAutomatic),
+	// 				FailoverWithDataLossGracePeriodMinutes: to.Ptr[int32](120),
+	// 			},
+	// 			ReplicationRole: to.Ptr(armsql.FailoverGroupReplicationRolePrimary),
+	// 			ReplicationState: to.Ptr("CATCH_UP"),
 	// 		},
-	// 		PartnerServers: []*armsql.PartnerInfo{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failover-group-secondary-server"),
-	// 				Location: to.Ptr("Japan West"),
-	// 				ReplicationRole: to.Ptr(armsql.FailoverGroupReplicationRoleSecondary),
-	// 		}},
-	// 		ReadOnlyEndpoint: &armsql.FailoverGroupReadOnlyEndpoint{
-	// 			FailoverPolicy: to.Ptr(armsql.ReadOnlyEndpointFailoverPolicyDisabled),
-	// 		},
-	// 		ReadWriteEndpoint: &armsql.FailoverGroupReadWriteEndpoint{
-	// 			FailoverPolicy: to.Ptr(armsql.ReadWriteEndpointFailoverPolicyAutomatic),
-	// 			FailoverWithDataLossGracePeriodMinutes: to.Ptr[int32](480),
-	// 		},
-	// 		ReplicationRole: to.Ptr(armsql.FailoverGroupReplicationRolePrimary),
-	// 		ReplicationState: to.Ptr("CATCH_UP"),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/FailoverGroupCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/FailoverGroupCreateOrUpdate.json
 func ExampleFailoverGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,6 +201,7 @@ func ExampleFailoverGroupsClient_BeginCreateOrUpdate() {
 	// 			}},
 	// 			ReadOnlyEndpoint: &armsql.FailoverGroupReadOnlyEndpoint{
 	// 				FailoverPolicy: to.Ptr(armsql.ReadOnlyEndpointFailoverPolicyDisabled),
+	// 				TargetServer: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failover-group-secondary-server"),
 	// 			},
 	// 			ReadWriteEndpoint: &armsql.FailoverGroupReadWriteEndpoint{
 	// 				FailoverPolicy: to.Ptr(armsql.ReadWriteEndpointFailoverPolicyAutomatic),
@@ -208,7 +213,7 @@ func ExampleFailoverGroupsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/FailoverGroupDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/FailoverGroupDelete.json
 func ExampleFailoverGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +234,7 @@ func ExampleFailoverGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/FailoverGroupUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/FailoverGroupUpdate.json
 func ExampleFailoverGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,6 +281,7 @@ func ExampleFailoverGroupsClient_BeginUpdate() {
 	// 			}},
 	// 			ReadOnlyEndpoint: &armsql.FailoverGroupReadOnlyEndpoint{
 	// 				FailoverPolicy: to.Ptr(armsql.ReadOnlyEndpointFailoverPolicyDisabled),
+	// 				TargetServer: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failover-group-secondary-server"),
 	// 			},
 	// 			ReadWriteEndpoint: &armsql.FailoverGroupReadWriteEndpoint{
 	// 				FailoverPolicy: to.Ptr(armsql.ReadWriteEndpointFailoverPolicyAutomatic),
@@ -287,7 +293,7 @@ func ExampleFailoverGroupsClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/FailoverGroupFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/FailoverGroupFailover.json
 func ExampleFailoverGroupsClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,6 +332,7 @@ func ExampleFailoverGroupsClient_BeginFailover() {
 	// 			}},
 	// 			ReadOnlyEndpoint: &armsql.FailoverGroupReadOnlyEndpoint{
 	// 				FailoverPolicy: to.Ptr(armsql.ReadOnlyEndpointFailoverPolicyDisabled),
+	// 				TargetServer: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failover-group-primary-server"),
 	// 			},
 	// 			ReadWriteEndpoint: &armsql.FailoverGroupReadWriteEndpoint{
 	// 				FailoverPolicy: to.Ptr(armsql.ReadWriteEndpointFailoverPolicyAutomatic),
@@ -337,7 +344,7 @@ func ExampleFailoverGroupsClient_BeginFailover() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/FailoverGroupForceFailoverAllowDataLoss.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/FailoverGroupForceFailoverAllowDataLoss.json
 func ExampleFailoverGroupsClient_BeginForceFailoverAllowDataLoss() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,6 +383,7 @@ func ExampleFailoverGroupsClient_BeginForceFailoverAllowDataLoss() {
 	// 			}},
 	// 			ReadOnlyEndpoint: &armsql.FailoverGroupReadOnlyEndpoint{
 	// 				FailoverPolicy: to.Ptr(armsql.ReadOnlyEndpointFailoverPolicyDisabled),
+	// 				TargetServer: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failover-group-primary-server"),
 	// 			},
 	// 			ReadWriteEndpoint: &armsql.FailoverGroupReadWriteEndpoint{
 	// 				FailoverPolicy: to.Ptr(armsql.ReadWriteEndpointFailoverPolicyAutomatic),
@@ -387,7 +395,7 @@ func ExampleFailoverGroupsClient_BeginForceFailoverAllowDataLoss() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/FailoverGroupTryPlannedBeforeForcedFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/FailoverGroupTryPlannedBeforeForcedFailover.json
 func ExampleFailoverGroupsClient_BeginTryPlannedBeforeForcedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -426,6 +434,7 @@ func ExampleFailoverGroupsClient_BeginTryPlannedBeforeForcedFailover() {
 	// 			}},
 	// 			ReadOnlyEndpoint: &armsql.FailoverGroupReadOnlyEndpoint{
 	// 				FailoverPolicy: to.Ptr(armsql.ReadOnlyEndpointFailoverPolicyDisabled),
+	// 				TargetServer: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/failovergroupprimaryserver"),
 	// 			},
 	// 			ReadWriteEndpoint: &armsql.FailoverGroupReadWriteEndpoint{
 	// 				FailoverPolicy: to.Ptr(armsql.ReadWriteEndpointFailoverPolicyAutomatic),

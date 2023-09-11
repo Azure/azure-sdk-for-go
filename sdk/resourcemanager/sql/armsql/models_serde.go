@@ -2071,8 +2071,10 @@ func (d DatabaseProperties) MarshalJSON() ([]byte, error) {
 	populateTimeRFC3339(objectMap, "earliestRestoreDate", d.EarliestRestoreDate)
 	populate(objectMap, "elasticPoolId", d.ElasticPoolID)
 	populate(objectMap, "encryptionProtector", d.EncryptionProtector)
+	populate(objectMap, "encryptionProtectorAutoRotation", d.EncryptionProtectorAutoRotation)
 	populate(objectMap, "failoverGroupId", d.FailoverGroupID)
 	populate(objectMap, "federatedClientId", d.FederatedClientID)
+	populate(objectMap, "freeLimitExhaustionBehavior", d.FreeLimitExhaustionBehavior)
 	populate(objectMap, "highAvailabilityReplicaCount", d.HighAvailabilityReplicaCount)
 	populate(objectMap, "isInfraEncryptionEnabled", d.IsInfraEncryptionEnabled)
 	populate(objectMap, "isLedgerOn", d.IsLedgerOn)
@@ -2101,6 +2103,7 @@ func (d DatabaseProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sourceDatabaseId", d.SourceDatabaseID)
 	populate(objectMap, "sourceResourceId", d.SourceResourceID)
 	populate(objectMap, "status", d.Status)
+	populate(objectMap, "useFreeLimit", d.UseFreeLimit)
 	populate(objectMap, "zoneRedundant", d.ZoneRedundant)
 	return json.Marshal(objectMap)
 }
@@ -2156,11 +2159,17 @@ func (d *DatabaseProperties) UnmarshalJSON(data []byte) error {
 		case "encryptionProtector":
 			err = unpopulate(val, "EncryptionProtector", &d.EncryptionProtector)
 			delete(rawMsg, key)
+		case "encryptionProtectorAutoRotation":
+			err = unpopulate(val, "EncryptionProtectorAutoRotation", &d.EncryptionProtectorAutoRotation)
+			delete(rawMsg, key)
 		case "failoverGroupId":
 			err = unpopulate(val, "FailoverGroupID", &d.FailoverGroupID)
 			delete(rawMsg, key)
 		case "federatedClientId":
 			err = unpopulate(val, "FederatedClientID", &d.FederatedClientID)
+			delete(rawMsg, key)
+		case "freeLimitExhaustionBehavior":
+			err = unpopulate(val, "FreeLimitExhaustionBehavior", &d.FreeLimitExhaustionBehavior)
 			delete(rawMsg, key)
 		case "highAvailabilityReplicaCount":
 			err = unpopulate(val, "HighAvailabilityReplicaCount", &d.HighAvailabilityReplicaCount)
@@ -2245,6 +2254,9 @@ func (d *DatabaseProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &d.Status)
+			delete(rawMsg, key)
+		case "useFreeLimit":
+			err = unpopulate(val, "UseFreeLimit", &d.UseFreeLimit)
 			delete(rawMsg, key)
 		case "zoneRedundant":
 			err = unpopulate(val, "ZoneRedundant", &d.ZoneRedundant)
@@ -2903,8 +2915,10 @@ func (d DatabaseUpdateProperties) MarshalJSON() ([]byte, error) {
 	populateTimeRFC3339(objectMap, "earliestRestoreDate", d.EarliestRestoreDate)
 	populate(objectMap, "elasticPoolId", d.ElasticPoolID)
 	populate(objectMap, "encryptionProtector", d.EncryptionProtector)
+	populate(objectMap, "encryptionProtectorAutoRotation", d.EncryptionProtectorAutoRotation)
 	populate(objectMap, "failoverGroupId", d.FailoverGroupID)
 	populate(objectMap, "federatedClientId", d.FederatedClientID)
+	populate(objectMap, "freeLimitExhaustionBehavior", d.FreeLimitExhaustionBehavior)
 	populate(objectMap, "highAvailabilityReplicaCount", d.HighAvailabilityReplicaCount)
 	populate(objectMap, "isInfraEncryptionEnabled", d.IsInfraEncryptionEnabled)
 	populate(objectMap, "isLedgerOn", d.IsLedgerOn)
@@ -2932,6 +2946,7 @@ func (d DatabaseUpdateProperties) MarshalJSON() ([]byte, error) {
 	populateTimeRFC3339(objectMap, "sourceDatabaseDeletionDate", d.SourceDatabaseDeletionDate)
 	populate(objectMap, "sourceDatabaseId", d.SourceDatabaseID)
 	populate(objectMap, "status", d.Status)
+	populate(objectMap, "useFreeLimit", d.UseFreeLimit)
 	populate(objectMap, "zoneRedundant", d.ZoneRedundant)
 	return json.Marshal(objectMap)
 }
@@ -2984,11 +2999,17 @@ func (d *DatabaseUpdateProperties) UnmarshalJSON(data []byte) error {
 		case "encryptionProtector":
 			err = unpopulate(val, "EncryptionProtector", &d.EncryptionProtector)
 			delete(rawMsg, key)
+		case "encryptionProtectorAutoRotation":
+			err = unpopulate(val, "EncryptionProtectorAutoRotation", &d.EncryptionProtectorAutoRotation)
+			delete(rawMsg, key)
 		case "failoverGroupId":
 			err = unpopulate(val, "FailoverGroupID", &d.FailoverGroupID)
 			delete(rawMsg, key)
 		case "federatedClientId":
 			err = unpopulate(val, "FederatedClientID", &d.FederatedClientID)
+			delete(rawMsg, key)
+		case "freeLimitExhaustionBehavior":
+			err = unpopulate(val, "FreeLimitExhaustionBehavior", &d.FreeLimitExhaustionBehavior)
 			delete(rawMsg, key)
 		case "highAvailabilityReplicaCount":
 			err = unpopulate(val, "HighAvailabilityReplicaCount", &d.HighAvailabilityReplicaCount)
@@ -3070,6 +3091,9 @@ func (d *DatabaseUpdateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &d.Status)
+			delete(rawMsg, key)
+		case "useFreeLimit":
+			err = unpopulate(val, "UseFreeLimit", &d.UseFreeLimit)
 			delete(rawMsg, key)
 		case "zoneRedundant":
 			err = unpopulate(val, "ZoneRedundant", &d.ZoneRedundant)
@@ -5470,6 +5494,7 @@ func (f *FailoverGroupProperties) UnmarshalJSON(data []byte) error {
 func (f FailoverGroupReadOnlyEndpoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "failoverPolicy", f.FailoverPolicy)
+	populate(objectMap, "targetServer", f.TargetServer)
 	return json.Marshal(objectMap)
 }
 
@@ -5484,6 +5509,9 @@ func (f *FailoverGroupReadOnlyEndpoint) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "failoverPolicy":
 			err = unpopulate(val, "FailoverPolicy", &f.FailoverPolicy)
+			delete(rawMsg, key)
+		case "targetServer":
+			err = unpopulate(val, "TargetServer", &f.TargetServer)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5559,6 +5587,7 @@ func (f *FailoverGroupUpdate) UnmarshalJSON(data []byte) error {
 func (f FailoverGroupUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "databases", f.Databases)
+	populate(objectMap, "partnerServers", f.PartnerServers)
 	populate(objectMap, "readOnlyEndpoint", f.ReadOnlyEndpoint)
 	populate(objectMap, "readWriteEndpoint", f.ReadWriteEndpoint)
 	return json.Marshal(objectMap)
@@ -5575,6 +5604,9 @@ func (f *FailoverGroupUpdateProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "databases":
 			err = unpopulate(val, "Databases", &f.Databases)
+			delete(rawMsg, key)
+		case "partnerServers":
+			err = unpopulate(val, "PartnerServers", &f.PartnerServers)
 			delete(rawMsg, key)
 		case "readOnlyEndpoint":
 			err = unpopulate(val, "ReadOnlyEndpoint", &f.ReadOnlyEndpoint)
@@ -16975,6 +17007,7 @@ func (s ServerProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "externalGovernanceStatus", s.ExternalGovernanceStatus)
 	populate(objectMap, "federatedClientId", s.FederatedClientID)
 	populate(objectMap, "fullyQualifiedDomainName", s.FullyQualifiedDomainName)
+	populate(objectMap, "isIPv6Enabled", s.IsIPv6Enabled)
 	populate(objectMap, "keyId", s.KeyID)
 	populate(objectMap, "minimalTlsVersion", s.MinimalTLSVersion)
 	populate(objectMap, "primaryUserAssignedIdentityId", s.PrimaryUserAssignedIdentityID)
@@ -17013,6 +17046,9 @@ func (s *ServerProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "fullyQualifiedDomainName":
 			err = unpopulate(val, "FullyQualifiedDomainName", &s.FullyQualifiedDomainName)
+			delete(rawMsg, key)
+		case "isIPv6Enabled":
+			err = unpopulate(val, "IsIPv6Enabled", &s.IsIPv6Enabled)
 			delete(rawMsg, key)
 		case "keyId":
 			err = unpopulate(val, "KeyID", &s.KeyID)

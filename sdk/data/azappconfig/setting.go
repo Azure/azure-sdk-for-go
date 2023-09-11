@@ -10,8 +10,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
 )
 
 // Setting is a setting, defined by a unique combination of a Key and Label.
@@ -46,7 +44,7 @@ type Setting struct {
 	IsReadOnly *bool
 }
 
-func settingFromGenerated(kv generated.KeyValue) Setting {
+func settingFromGenerated(kv KeyValue) Setting {
 	tags := make(map[string]string)
 	for k, v := range kv.Tags {
 		if v != nil {
@@ -59,26 +57,26 @@ func settingFromGenerated(kv generated.KeyValue) Setting {
 		Value:        kv.Value,
 		Label:        kv.Label,
 		ContentType:  kv.ContentType,
-		ETag:         (*azcore.ETag)(kv.Etag),
+		ETag:         (*azcore.ETag)(kv.ETag),
 		Tags:         tags,
 		LastModified: kv.LastModified,
-		IsReadOnly:   kv.Locked,
+		IsReadOnly:   kv.IsReadOnly,
 	}
 }
 
-func (cs Setting) toGenerated() generated.KeyValue {
+func (cs Setting) toGenerated() KeyValue {
 	tags := make(map[string]*string)
 	for k, v := range cs.Tags {
 		tags[k] = &v
 	}
 
-	return generated.KeyValue{
+	return KeyValue{
 		ContentType:  cs.ContentType,
-		Etag:         (*string)(cs.ETag),
+		ETag:         (*string)(cs.ETag),
 		Key:          cs.Key,
 		Label:        cs.Label,
 		LastModified: cs.LastModified,
-		Locked:       cs.IsReadOnly,
+		IsReadOnly:   cs.IsReadOnly,
 		Tags:         tags,
 		Value:        cs.Value,
 	}

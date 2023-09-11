@@ -48,7 +48,7 @@ func TestHmacAuthParseConnectionStringExtraProperties(t *testing.T) {
 	require.Equal(t, byte('f'), sc[2])
 }
 
-func TestHmacAuthParseConnectionStringMissingEndoint(t *testing.T) {
+func TestHmacAuthParseConnectionStringMissingEndpoint(t *testing.T) {
 	_, _, _, err := parseConnectionString("Id=yY;Secret=ZmZm")
 	require.Error(t, err)
 }
@@ -63,7 +63,7 @@ func TestHmacAuthParseConnectionStringMissingSecret(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestHmacAuthParseConnectionStringDuplicateEndoint(t *testing.T) {
+func TestHmacAuthParseConnectionStringDuplicateEndpoint(t *testing.T) {
 	_, _, _, err := parseConnectionString("Endpoint=xX;Endpoint=xX;Id=yY;Secret=ZmZm")
 	require.Error(t, err)
 }

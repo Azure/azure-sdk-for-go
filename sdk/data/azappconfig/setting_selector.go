@@ -8,37 +8,6 @@ package azappconfig
 
 import (
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
-)
-
-// SettingFields are fields to retrieve from a configuration setting.
-type SettingFields = generated.SettingFields
-
-const (
-	// The primary identifier of a configuration setting.
-	SettingFieldsKey SettingFields = generated.SettingFieldsKey
-
-	// A label used to group configuration settings.
-	SettingFieldsLabel SettingFields = generated.SettingFieldsLabel
-
-	// The value of the configuration setting.
-	SettingFieldsValue SettingFields = generated.SettingFieldsValue
-
-	// The content type of the configuration setting's value.
-	SettingFieldsContentType SettingFields = generated.SettingFieldsContentType
-
-	// An ETag indicating the version of a configuration setting within a configuration store.
-	SettingFieldsETag SettingFields = generated.SettingFieldsEtag
-
-	// The last time a modifying operation was performed on the given configuration setting.
-	SettingFieldsLastModified SettingFields = generated.SettingFieldsLastModified
-
-	// A value indicating whether the configuration setting is read-only.
-	SettingFieldsIsReadOnly SettingFields = generated.SettingFieldsLocked
-
-	// A list of tags that can help identify what a configuration setting may be applicable for.
-	SettingFieldsTags SettingFields = generated.SettingFieldsTags
 )
 
 // SettingSelector is a set of options that allows selecting a filtered set of configuration setting entities
@@ -55,24 +24,25 @@ type SettingSelector struct {
 	AcceptDateTime *time.Time
 
 	// The fields of the configuration setting to retrieve for each setting in the retrieved group.
-	Fields []SettingFields
+	Fields []KeyValueFields
 }
 
 // AllSettingFields returns a collection of all setting fields to use in SettingSelector.
-func AllSettingFields() []SettingFields {
-	return []SettingFields{
-		SettingFieldsKey,
-		SettingFieldsLabel,
-		SettingFieldsValue,
-		SettingFieldsContentType,
-		SettingFieldsETag,
-		SettingFieldsLastModified,
-		SettingFieldsIsReadOnly,
-		SettingFieldsTags,
+func AllSettingFields() []KeyValueFields {
+	return []KeyValueFields{
+		KeyValueFieldsKey,
+		KeyValueFieldsLabel,
+		KeyValueFieldsValue,
+		KeyValueFieldsContentType,
+		KeyValueFieldsETag,
+		KeyValueFieldsLastModified,
+		KeyValueFieldsIsReadOnly,
+		KeyValueFieldsTags,
 	}
 }
 
-func (sc SettingSelector) toGeneratedGetRevisions() *generated.AzureAppConfigurationClientGetRevisionsOptions {
+/*
+func (sc SettingSelector) toGeneratedGetRevisions() *GetRevisionsOptions {
 	var dt *string
 	if sc.AcceptDateTime != nil {
 		str := sc.AcceptDateTime.Format(timeFormat)
@@ -84,7 +54,7 @@ func (sc SettingSelector) toGeneratedGetRevisions() *generated.AzureAppConfigura
 		sf[i] = SettingFields(sc.Fields[i])
 	}
 
-	return &generated.AzureAppConfigurationClientGetRevisionsOptions{
+	return &GetRevisionsOptions{
 		After:  dt,
 		Key:    sc.KeyFilter,
 		Label:  sc.LabelFilter,
@@ -92,7 +62,7 @@ func (sc SettingSelector) toGeneratedGetRevisions() *generated.AzureAppConfigura
 	}
 }
 
-func (sc SettingSelector) toGeneratedGetKeyValues() *generated.AzureAppConfigurationClientGetKeyValuesOptions {
+func (sc SettingSelector) toGeneratedGetKeyValues() *GetKeyValuesOptions {
 	var dt *string
 	if sc.AcceptDateTime != nil {
 		str := sc.AcceptDateTime.Format(timeFormat)
@@ -104,10 +74,11 @@ func (sc SettingSelector) toGeneratedGetKeyValues() *generated.AzureAppConfigura
 		sf[i] = SettingFields(sc.Fields[i])
 	}
 
-	return &generated.AzureAppConfigurationClientGetKeyValuesOptions{
+	return &GetKeyValuesOptions{
 		After:  dt,
 		Key:    sc.KeyFilter,
 		Label:  sc.LabelFilter,
 		Select: sf,
 	}
 }
+*/

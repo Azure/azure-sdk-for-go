@@ -28,11 +28,11 @@ type DeleteSettingResponse struct {
 type GetSettingResponse struct {
 	Setting
 
-	// Sync token for the Azure App Configuration client, corresponding to the current state of the client.
-	SyncToken *string
-
 	// Contains the timestamp of when the configuration setting was last modified.
 	LastModified *time.Time
+
+	// Sync token for the Azure App Configuration client, corresponding to the current state of the client.
+	SyncToken *string
 }
 
 // ListRevisionsPageResponse contains the configuration settings returned by ListRevisionsPager.

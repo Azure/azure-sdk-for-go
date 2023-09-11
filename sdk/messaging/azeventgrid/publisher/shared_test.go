@@ -123,6 +123,10 @@ func (p dumpFullPolicy) Do(req *policy.Request) (*http.Response, error) {
 }
 
 func FormatRequestBytes(req *http.Request) []byte {
+	if req.Body == nil {
+		return nil
+	}
+
 	requestBytes, err := io.ReadAll(req.Body)
 
 	if err != nil {

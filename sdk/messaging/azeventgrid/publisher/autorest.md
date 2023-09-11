@@ -65,4 +65,12 @@ directive:
       - options.go
     where: $
     transform: return $.replace(/EventGridEvent/g, "Event");
+  - from: 
+      - client.go
+    where: $
+    transform: | 
+      return $.replace(
+        /(func \(client \*Client\) publishCloudEventsCreateRequest.+?)return req, nil/s, 
+        '$1\nreq.Raw().Header.Set("Content-type", "application/cloudevents-batch+json; charset=utf-8")\nreturn req, nil');
+
 ```

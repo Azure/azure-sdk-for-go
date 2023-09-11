@@ -64,6 +64,8 @@ func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, event
 	if err := runtime.MarshalAsJSON(req, events); err != nil {
 		return nil, err
 	}
+
+	req.Raw().Header.Set("Content-type", "application/cloudevents-batch+json; charset=utf-8")
 	return req, nil
 }
 

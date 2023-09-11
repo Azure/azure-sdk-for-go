@@ -951,6 +951,9 @@ type CreationData struct {
 	// REQUIRED; This enumerates the possible sources of a disk's creation.
 	CreateOption *DiskCreateOption
 
+	// Required if createOption is CopyFromSanSnapshot. This is the ARM id of the source elastic san volume snapshot.
+	ElasticSanResourceID *string
+
 	// Required if creating from a Gallery Image. The id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference
 	// will be the ARM id of the shared galley image version from which to create a
 	// disk.
@@ -1624,6 +1627,11 @@ type DiskProperties struct {
 
 	// READ-ONLY; The state of the disk.
 	DiskState *DiskState
+
+	// READ-ONLY; The UTC time when the ownership state of the disk was last changed i.e., the time the disk was last attached
+	// or detached from a VM or the time when the VM to which the disk was attached was
+	// deallocated or started.
+	LastOwnershipUpdateTime *time.Time
 
 	// READ-ONLY; Properties of the disk for which update is pending.
 	PropertyUpdatesInProgress *PropertyUpdatesInProgress
@@ -6396,6 +6404,12 @@ type VirtualMachineNetworkInterfaceConfigurationProperties struct {
 	// REQUIRED; Specifies the IP configurations of the network interface.
 	IPConfigurations []*VirtualMachineNetworkInterfaceIPConfiguration
 
+	// Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
+	AuxiliaryMode *NetworkInterfaceAuxiliaryMode
+
+	// Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+	AuxiliarySKU *NetworkInterfaceAuxiliarySKU
+
 	// The dns settings to be applied on the network interfaces.
 	DNSSettings *VirtualMachineNetworkInterfaceDNSSettingsConfiguration
 
@@ -6639,6 +6653,11 @@ type VirtualMachinePublicIPAddressDNSSettingsConfiguration struct {
 	// REQUIRED; The Domain name label prefix of the PublicIPAddress resources that will be created. The generated name label
 	// is the concatenation of the domain name label and vm network profile unique ID.
 	DomainNameLabel *string
+
+	// The Domain name label scope of the PublicIPAddress resources that will be created. The generated name label is the concatenation
+	// of the hashed domain name label with policy according to the domain
+	// name label scope and vm network profile unique ID.
+	DomainNameLabelScope *DomainNameLabelScopeTypes
 }
 
 // VirtualMachineReimageParameters - Parameters for Reimaging Virtual Machine. NOTE: Virtual Machine OS disk will always be
@@ -7163,6 +7182,12 @@ type VirtualMachineScaleSetNetworkConfigurationProperties struct {
 	// REQUIRED; Specifies the IP configurations of the network interface.
 	IPConfigurations []*VirtualMachineScaleSetIPConfiguration
 
+	// Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
+	AuxiliaryMode *NetworkInterfaceAuxiliaryMode
+
+	// Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+	AuxiliarySKU *NetworkInterfaceAuxiliarySKU
+
 	// The dns settings to be applied on the network interfaces.
 	DNSSettings *VirtualMachineScaleSetNetworkConfigurationDNSSettings
 
@@ -7402,6 +7427,11 @@ type VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings struct {
 	// REQUIRED; The Domain name label.The concatenation of the domain name label and vm index will be the domain name labels
 	// of the PublicIPAddress resources that will be created
 	DomainNameLabel *string
+
+	// The Domain name label scope.The concatenation of the hashed domain name label that generated according to the policy from
+	// domain name label scope and vm index will be the domain name labels of the
+	// PublicIPAddress resources that will be created
+	DomainNameLabelScope *DomainNameLabelScopeTypes
 }
 
 // VirtualMachineScaleSetPublicIPAddressConfigurationProperties - Describes a virtual machines scale set IP Configuration's
@@ -7562,6 +7592,12 @@ type VirtualMachineScaleSetUpdateNetworkConfiguration struct {
 // VirtualMachineScaleSetUpdateNetworkConfigurationProperties - Describes a virtual machine scale set updatable network profile's
 // IP configuration.Use this object for updating network profile's IP Configuration.
 type VirtualMachineScaleSetUpdateNetworkConfigurationProperties struct {
+	// Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
+	AuxiliaryMode *NetworkInterfaceAuxiliaryMode
+
+	// Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+	AuxiliarySKU *NetworkInterfaceAuxiliarySKU
+
 	// The dns settings to be applied on the network interfaces.
 	DNSSettings *VirtualMachineScaleSetNetworkConfigurationDNSSettings
 
@@ -8089,6 +8125,10 @@ type VirtualMachineScaleSetVMProperties struct {
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *string
+
+	// READ-ONLY; Specifies the time at which the Virtual Machine resource was created.
+	// Minimum api-version: 2021-11-01.
+	TimeCreated *time.Time
 
 	// READ-ONLY; Azure VM unique ID.
 	VMID *string

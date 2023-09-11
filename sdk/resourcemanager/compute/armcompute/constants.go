@@ -10,7 +10,7 @@ package armcompute
 
 const (
 	moduleName    = "armcompute"
-	moduleVersion = "v5.2.0-beta.1"
+	moduleVersion = "v5.2.0"
 )
 
 type AccessLevel string
@@ -381,6 +381,8 @@ const (
 	DiskCreateOptionAttach DiskCreateOption = "Attach"
 	// DiskCreateOptionCopy - Create a new disk or snapshot by copying from a disk or snapshot specified by the given sourceResourceId.
 	DiskCreateOptionCopy DiskCreateOption = "Copy"
+	// DiskCreateOptionCopyFromSanSnapshot - Create a new disk by exporting from elastic san volume snapshot
+	DiskCreateOptionCopyFromSanSnapshot DiskCreateOption = "CopyFromSanSnapshot"
 	// DiskCreateOptionCopyStart - Create a new disk by using a deep copy process, where the resource creation is considered complete
 	// only after all data has been copied from the source.
 	DiskCreateOptionCopyStart DiskCreateOption = "CopyStart"
@@ -409,6 +411,7 @@ func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	return []DiskCreateOption{
 		DiskCreateOptionAttach,
 		DiskCreateOptionCopy,
+		DiskCreateOptionCopyFromSanSnapshot,
 		DiskCreateOptionCopyStart,
 		DiskCreateOptionEmpty,
 		DiskCreateOptionFromImage,
@@ -629,6 +632,28 @@ func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 		DiskStorageAccountTypesStandardSSDLRS,
 		DiskStorageAccountTypesStandardSSDZRS,
 		DiskStorageAccountTypesUltraSSDLRS,
+	}
+}
+
+// DomainNameLabelScopeTypes - The Domain name label scope.The concatenation of the hashed domain name label that generated
+// according to the policy from domain name label scope and vm index will be the domain name labels of the
+// PublicIPAddress resources that will be created
+type DomainNameLabelScopeTypes string
+
+const (
+	DomainNameLabelScopeTypesNoReuse            DomainNameLabelScopeTypes = "NoReuse"
+	DomainNameLabelScopeTypesResourceGroupReuse DomainNameLabelScopeTypes = "ResourceGroupReuse"
+	DomainNameLabelScopeTypesSubscriptionReuse  DomainNameLabelScopeTypes = "SubscriptionReuse"
+	DomainNameLabelScopeTypesTenantReuse        DomainNameLabelScopeTypes = "TenantReuse"
+)
+
+// PossibleDomainNameLabelScopeTypesValues returns the possible values for the DomainNameLabelScopeTypes const type.
+func PossibleDomainNameLabelScopeTypesValues() []DomainNameLabelScopeTypes {
+	return []DomainNameLabelScopeTypes{
+		DomainNameLabelScopeTypesNoReuse,
+		DomainNameLabelScopeTypesResourceGroupReuse,
+		DomainNameLabelScopeTypesSubscriptionReuse,
+		DomainNameLabelScopeTypesTenantReuse,
 	}
 }
 
@@ -1163,6 +1188,46 @@ func PossibleNetworkAccessPolicyValues() []NetworkAccessPolicy {
 		NetworkAccessPolicyAllowAll,
 		NetworkAccessPolicyAllowPrivate,
 		NetworkAccessPolicyDenyAll,
+	}
+}
+
+// NetworkInterfaceAuxiliaryMode - Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
+type NetworkInterfaceAuxiliaryMode string
+
+const (
+	NetworkInterfaceAuxiliaryModeAcceleratedConnections NetworkInterfaceAuxiliaryMode = "AcceleratedConnections"
+	NetworkInterfaceAuxiliaryModeFloating               NetworkInterfaceAuxiliaryMode = "Floating"
+	NetworkInterfaceAuxiliaryModeNone                   NetworkInterfaceAuxiliaryMode = "None"
+)
+
+// PossibleNetworkInterfaceAuxiliaryModeValues returns the possible values for the NetworkInterfaceAuxiliaryMode const type.
+func PossibleNetworkInterfaceAuxiliaryModeValues() []NetworkInterfaceAuxiliaryMode {
+	return []NetworkInterfaceAuxiliaryMode{
+		NetworkInterfaceAuxiliaryModeAcceleratedConnections,
+		NetworkInterfaceAuxiliaryModeFloating,
+		NetworkInterfaceAuxiliaryModeNone,
+	}
+}
+
+// NetworkInterfaceAuxiliarySKU - Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+type NetworkInterfaceAuxiliarySKU string
+
+const (
+	NetworkInterfaceAuxiliarySKUA1   NetworkInterfaceAuxiliarySKU = "A1"
+	NetworkInterfaceAuxiliarySKUA2   NetworkInterfaceAuxiliarySKU = "A2"
+	NetworkInterfaceAuxiliarySKUA4   NetworkInterfaceAuxiliarySKU = "A4"
+	NetworkInterfaceAuxiliarySKUA8   NetworkInterfaceAuxiliarySKU = "A8"
+	NetworkInterfaceAuxiliarySKUNone NetworkInterfaceAuxiliarySKU = "None"
+)
+
+// PossibleNetworkInterfaceAuxiliarySKUValues returns the possible values for the NetworkInterfaceAuxiliarySKU const type.
+func PossibleNetworkInterfaceAuxiliarySKUValues() []NetworkInterfaceAuxiliarySKU {
+	return []NetworkInterfaceAuxiliarySKU{
+		NetworkInterfaceAuxiliarySKUA1,
+		NetworkInterfaceAuxiliarySKUA2,
+		NetworkInterfaceAuxiliarySKUA4,
+		NetworkInterfaceAuxiliarySKUA8,
+		NetworkInterfaceAuxiliarySKUNone,
 	}
 }
 

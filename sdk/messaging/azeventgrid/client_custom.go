@@ -1,5 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for license information.
 //go:build go1.18
 // +build go1.18
 
@@ -16,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/internal"
 )
 
 // ClientOptions contains optional settings for [Client]
@@ -30,7 +29,7 @@ func NewClientWithSharedKeyCredential(endpoint string, key string, options *Clie
 	}
 
 	// TODO: I believe we're supposed to allow for dynamically updating the key at any time as well.
-	azc, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
+	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
 			&skpolicy{Key: key},
 		},

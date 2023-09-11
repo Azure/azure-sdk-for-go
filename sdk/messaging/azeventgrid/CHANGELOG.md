@@ -1,14 +1,14 @@
 # Release History
 
-## 0.1.1 (Unreleased)
+## 0.2.0 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- The publisher client for Event Grid topics has been added as a sub-package under `publisher`.
 
 ### Other Changes
+
+- Documentation and examples added for Event Grid namespace client.
 
 ## 0.1.0 (2023-07-11)
 

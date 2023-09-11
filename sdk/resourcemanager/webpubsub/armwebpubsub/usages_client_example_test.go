@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/Usages_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/Usages_List.json
 func ExampleUsagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

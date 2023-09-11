@@ -59,14 +59,14 @@ func TestMain(m *testing.M) {
 		if err != nil {
 			panic(err)
 		}
-		for i := 0; i < 12; i++ {
+		for i := 0; i < 5; i++ {
 			_, err = client.Upload(context.Background(), ruleID, streamName, []byte("test"), nil)
 			var respErr *azcore.ResponseError
 			if !(errors.As(err, &respErr) && respErr.StatusCode == 403) {
 				break
 			}
 			if i < 11 {
-				recording.Sleep(10 * time.Second)
+				recording.Sleep(60 * time.Second)
 			}
 		}
 	}

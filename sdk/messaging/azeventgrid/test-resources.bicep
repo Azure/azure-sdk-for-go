@@ -95,26 +95,21 @@ resource ceTopic 'Microsoft.EventGrid/topics@2023-06-01-preview' = {
 
 resource egContributorRole 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = {
   name: guid('egContributorRoleId${baseName}')
+  scope: resourceGroup()
   properties: {
-    roleDefinitionId: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/1e241071-0855-49ea-94dc-649edcd759de'
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '1e241071-0855-49ea-94dc-649edcd759de')
+    //    roleDefinitionId: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/1e241071-0855-49ea-94dc-649edcd759de'
     principalId: testApplicationOid
   }
-  dependsOn: [
-    egTopic
-    ceTopic
-  ]
 }
 
-resource egDataSenderRole 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = {
+resource egDataSenderRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid('egSenderRoleId${baseName}')
+  scope: resourceGroup()
   properties: {
-    roleDefinitionId: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/d5a91429-5739-47e2-a06b-3470a27159e7'
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'd5a91429-5739-47e2-a06b-3470a27159e7')
     principalId: testApplicationOid
   }
-  dependsOn: [
-    egTopic
-    ceTopic
-  ]
 }
 
 output EVENTGRID_TOPIC_NAME string = egTopic.name

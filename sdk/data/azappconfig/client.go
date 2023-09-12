@@ -80,15 +80,16 @@ func (c *Client) UpdateSyncToken(token string) {
 }
 
 // AddSetting creates a configuration setting only if the setting does not already exist in the configuration store.
+//   - ctx controls the lifetime of the HTTP operation
+//   - key is the name of the setting to create
+//   - value is the value for the setting. pass nil if the setting doesn't have a value
+//   - options contains the optional values. can be nil
 func (c *Client) AddSetting(ctx context.Context, key string, value *string, options *AddSettingOptions) (AddSettingResponse, error) {
-	var label *string
-	var contentType *string
-	if options != nil {
-		label = options.Label
-		contentType = options.ContentType
+	if options == nil {
+		options = &AddSettingOptions{}
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: label, ContentType: contentType}
+	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType}
 
 	etagAny := azcore.ETagAny
 	kv, opts := setting.toGeneratedPutOptions(nil, &etagAny)
@@ -105,17 +106,13 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 
 // DeleteSetting deletes a configuration setting from the configuration store.
 func (c *Client) DeleteSetting(ctx context.Context, key string, options *DeleteSettingOptions) (DeleteSettingResponse, error) {
-	var label *string
-	var ifMatch *azcore.ETag
-
-	if options != nil {
-		label = options.Label
-		ifMatch = options.OnlyIfUnchanged
+	if options == nil {
+		options = &DeleteSettingOptions{}
 	}
 
-	setting := Setting{Key: &key, Label: label}
+	setting := Setting{Key: &key, Label: options.Label}
 
-	resp, err := c.appConfigClient.DeleteKeyValue(ctx, *setting.Key, setting.toGeneratedDeleteOptions(ifMatch))
+	resp, err := c.appConfigClient.DeleteKeyValue(ctx, *setting.Key, setting.toGeneratedDeleteOptions(options.OnlyIfUnchanged))
 	if err != nil {
 		return DeleteSettingResponse{}, err
 	}
@@ -128,19 +125,13 @@ func (c *Client) DeleteSetting(ctx context.Context, key string, options *DeleteS
 
 // GetSetting retrieves an existing configuration setting from the configuration store.
 func (c *Client) GetSetting(ctx context.Context, key string, options *GetSettingOptions) (GetSettingResponse, error) {
-	var label *string
-	var ifNoneMatch *azcore.ETag
-	var acceptDateTime *time.Time
-
-	if options != nil {
-		label = options.Label
-		ifNoneMatch = options.OnlyIfChanged
-		acceptDateTime = options.AcceptDateTime
+	if options == nil {
+		options = &GetSettingOptions{}
 	}
 
-	setting := Setting{Key: &key, Label: label}
+	setting := Setting{Key: &key, Label: options.Label}
 
-	resp, err := c.appConfigClient.GetKeyValue(ctx, *setting.Key, setting.toGeneratedGetOptions(ifNoneMatch, acceptDateTime))
+	resp, err := c.appConfigClient.GetKeyValue(ctx, *setting.Key, setting.toGeneratedGetOptions(options.OnlyIfChanged, options.AcceptDateTime))
 	if err != nil {
 		return GetSettingResponse{}, err
 	}
@@ -163,20 +154,16 @@ func (c *Client) GetSetting(ctx context.Context, key string, options *GetSetting
 
 // SetReadOnly sets an existing configuration setting to read only or read write state in the configuration store.
 func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResponse, error) {
-	var label *string
-	var ifMatch *azcore.ETag
-
-	if options != nil {
-		label = options.Label
-		ifMatch = options.OnlyIfUnchanged
+	if options == nil {
+		options = &SetReadOnlyOptions{}
 	}
 
-	setting := Setting{Key: &key, Label: label}
+	setting := Setting{Key: &key, Label: options.Label}
 
 	var err error
 	if isReadOnly {
 		var resp generated.AzureAppConfigurationClientPutLockResponse
-		resp, err = c.appConfigClient.PutLock(ctx, *setting.Key, setting.toGeneratedPutLockOptions(ifMatch))
+		resp, err = c.appConfigClient.PutLock(ctx, *setting.Key, setting.toGeneratedPutLockOptions(options.OnlyIfUnchanged))
 		if err == nil {
 			return SetReadOnlyResponse{
 				Setting:   settingFromGenerated(resp.KeyValue),
@@ -185,7 +172,7 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 		}
 	} else {
 		var resp generated.AzureAppConfigurationClientDeleteLockResponse
-		resp, err = c.appConfigClient.DeleteLock(ctx, *setting.Key, setting.toGeneratedDeleteLockOptions(ifMatch))
+		resp, err = c.appConfigClient.DeleteLock(ctx, *setting.Key, setting.toGeneratedDeleteLockOptions(options.OnlyIfUnchanged))
 		if err == nil {
 			return SetReadOnlyResponse{
 				Setting:   settingFromGenerated(resp.KeyValue),
@@ -198,20 +185,18 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 }
 
 // SetSetting creates a configuration setting if it doesn't exist or overwrites the existing setting in the configuration store.
+//   - ctx controls the lifetime of the HTTP operation
+//   - key is the name of the setting to create
+//   - value is the value for the setting. pass nil if the setting doesn't have a value
+//   - options contains the optional values. can be nil
 func (c *Client) SetSetting(ctx context.Context, key string, value *string, options *SetSettingOptions) (SetSettingResponse, error) {
-	var label *string
-	var contentType *string
-	var ifMatch *azcore.ETag
-
-	if options != nil {
-		label = options.Label
-		contentType = options.ContentType
-		ifMatch = options.OnlyIfUnchanged
+	if options == nil {
+		options = &SetSettingOptions{}
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: label, ContentType: contentType}
+	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType}
 
-	kv, opts := setting.toGeneratedPutOptions(ifMatch, nil)
+	kv, opts := setting.toGeneratedPutOptions(options.OnlyIfUnchanged, nil)
 	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, kv, &opts)
 	if err != nil {
 		return SetSettingResponse{}, err

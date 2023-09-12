@@ -25,7 +25,10 @@ func TestClient(t *testing.T) {
 	value := "value"
 	client := NewClientFromConnectionString(t)
 
-	addResp, err2 := client.AddSetting(context.TODO(), key, &value, &azappconfig.AddSettingOptions{Label: to.Ptr(label), ContentType: &contentType})
+	addResp, err2 := client.AddSetting(context.Background(), key, &value, &azappconfig.AddSettingOptions{
+		Label:       to.Ptr(label),
+		ContentType: &contentType,
+	})
 	require.NoError(t, err2)
 	require.NotEmpty(t, addResp)
 	require.NotNil(t, addResp.Key)
@@ -37,7 +40,9 @@ func TestClient(t *testing.T) {
 	require.Equal(t, contentType, *addResp.ContentType)
 	require.Equal(t, value, *addResp.Value)
 
-	getResp, err3 := client.GetSetting(context.TODO(), key, &azappconfig.GetSettingOptions{Label: to.Ptr(label)})
+	getResp, err3 := client.GetSetting(context.Background(), key, &azappconfig.GetSettingOptions{
+		Label: to.Ptr(label),
+	})
 	require.NoError(t, err3)
 	require.NotEmpty(t, getResp)
 	require.NotNil(t, getResp.Key)
@@ -50,13 +55,19 @@ func TestClient(t *testing.T) {
 	require.Equal(t, value, *getResp.Value)
 
 	etag := getResp.ETag
-	getResp2, err4 := client.GetSetting(context.TODO(), key, &azappconfig.GetSettingOptions{Label: to.Ptr(label), OnlyIfChanged: etag})
+	getResp2, err4 := client.GetSetting(context.Background(), key, &azappconfig.GetSettingOptions{
+		Label:         to.Ptr(label),
+		OnlyIfChanged: etag,
+	})
 	require.Error(t, err4)
 	require.Empty(t, getResp2)
 
 	value = "value2"
 	contentType = "content-type2"
-	setResp, err5 := client.SetSetting(context.TODO(), key, &value, &azappconfig.SetSettingOptions{Label: to.Ptr(label), ContentType: &contentType})
+	setResp, err5 := client.SetSetting(context.Background(), key, &value, &azappconfig.SetSettingOptions{
+		Label:       to.Ptr(label),
+		ContentType: &contentType,
+	})
 	require.NoError(t, err5)
 	require.NotEmpty(t, setResp)
 	require.NotNil(t, setResp.Key)
@@ -72,7 +83,10 @@ func TestClient(t *testing.T) {
 	// after changing the setting, update the sync token so we don't get cached, stale data
 	client.UpdateSyncToken(*setResp.SyncToken)
 
-	getResp3, err6 := client.GetSetting(context.TODO(), key, &azappconfig.GetSettingOptions{Label: to.Ptr(label), OnlyIfChanged: etag})
+	getResp3, err6 := client.GetSetting(context.Background(), key, &azappconfig.GetSettingOptions{
+		Label:         to.Ptr(label),
+		OnlyIfChanged: etag,
+	})
 	require.NoError(t, err6)
 	require.NotEmpty(t, getResp3)
 	require.NotNil(t, getResp3.Key)
@@ -86,7 +100,10 @@ func TestClient(t *testing.T) {
 
 	etag = getResp3.ETag
 	value = "value3"
-	setResp2, err7 := client.SetSetting(context.TODO(), key, &value, &azappconfig.SetSettingOptions{Label: to.Ptr(label), OnlyIfUnchanged: etag})
+	setResp2, err7 := client.SetSetting(context.Background(), key, &value, &azappconfig.SetSettingOptions{
+		Label:           to.Ptr(label),
+		OnlyIfUnchanged: etag,
+	})
 	require.NoError(t, err7)
 	require.NotEmpty(t, setResp2)
 	require.NotNil(t, setResp2.Key)
@@ -101,11 +118,16 @@ func TestClient(t *testing.T) {
 	// after changing the setting, update the sync token so we don't get cached, stale data
 	client.UpdateSyncToken(*setResp.SyncToken)
 
-	setResp3, err8 := client.SetSetting(context.TODO(), key, &value, &azappconfig.SetSettingOptions{Label: to.Ptr(label), OnlyIfUnchanged: etag})
+	setResp3, err8 := client.SetSetting(context.Background(), key, &value, &azappconfig.SetSettingOptions{
+		Label:           to.Ptr(label),
+		OnlyIfUnchanged: etag,
+	})
 	require.Error(t, err8)
 	require.Empty(t, setResp3)
 
-	roResp, err9 := client.SetReadOnly(context.TODO(), key, true, &azappconfig.SetReadOnlyOptions{Label: to.Ptr(label)})
+	roResp, err9 := client.SetReadOnly(context.Background(), key, true, &azappconfig.SetReadOnlyOptions{
+		Label: to.Ptr(label),
+	})
 	require.NoError(t, err9)
 	require.NotEmpty(t, roResp)
 	require.NotNil(t, roResp.Key)
@@ -122,7 +144,9 @@ func TestClient(t *testing.T) {
 	// after changing the setting, update the sync token so we don't get cached, stale data
 	client.UpdateSyncToken(*setResp.SyncToken)
 
-	roResp2, err10 := client.SetReadOnly(context.TODO(), key, false, &azappconfig.SetReadOnlyOptions{Label: to.Ptr(label)})
+	roResp2, err10 := client.SetReadOnly(context.Background(), key, false, &azappconfig.SetReadOnlyOptions{
+		Label: to.Ptr(label),
+	})
 	require.NoError(t, err10)
 	require.NotEmpty(t, roResp2)
 	require.NotNil(t, roResp2.Key)
@@ -139,12 +163,18 @@ func TestClient(t *testing.T) {
 	// after changing the setting, update the sync token so we don't get cached, stale data
 	client.UpdateSyncToken(*setResp.SyncToken)
 
-	roResp3, err11 := client.SetReadOnly(context.TODO(), key, true, &azappconfig.SetReadOnlyOptions{Label: to.Ptr(label), OnlyIfUnchanged: etag})
+	roResp3, err11 := client.SetReadOnly(context.Background(), key, true, &azappconfig.SetReadOnlyOptions{
+		Label:           to.Ptr(label),
+		OnlyIfUnchanged: etag,
+	})
 	require.Error(t, err11)
 	require.Empty(t, roResp3)
 
 	etag = roResp2.ETag
-	roResp4, err12 := client.SetReadOnly(context.TODO(), key, true, &azappconfig.SetReadOnlyOptions{Label: to.Ptr(label), OnlyIfUnchanged: etag})
+	roResp4, err12 := client.SetReadOnly(context.Background(), key, true, &azappconfig.SetReadOnlyOptions{
+		Label:           to.Ptr(label),
+		OnlyIfUnchanged: etag,
+	})
 	require.NoError(t, err12)
 	require.NotEmpty(t, roResp4)
 	require.NotNil(t, roResp4.Key)
@@ -161,12 +191,18 @@ func TestClient(t *testing.T) {
 	// after changing the setting, update the sync token so we don't get cached, stale data
 	client.UpdateSyncToken(*setResp.SyncToken)
 
-	roResp5, err13 := client.SetReadOnly(context.TODO(), key, false, &azappconfig.SetReadOnlyOptions{Label: to.Ptr(label), OnlyIfUnchanged: etag})
+	roResp5, err13 := client.SetReadOnly(context.Background(), key, false, &azappconfig.SetReadOnlyOptions{
+		Label:           to.Ptr(label),
+		OnlyIfUnchanged: etag,
+	})
 	require.Error(t, err13)
 	require.Empty(t, roResp5)
 
 	etag = roResp4.ETag
-	roResp6, err14 := client.SetReadOnly(context.TODO(), key, false, &azappconfig.SetReadOnlyOptions{Label: to.Ptr(label), OnlyIfUnchanged: etag})
+	roResp6, err14 := client.SetReadOnly(context.Background(), key, false, &azappconfig.SetReadOnlyOptions{
+		Label:           to.Ptr(label),
+		OnlyIfUnchanged: etag,
+	})
 	require.NoError(t, err14)
 	require.NotEmpty(t, roResp6)
 	require.NotNil(t, roResp6.Key)
@@ -184,21 +220,29 @@ func TestClient(t *testing.T) {
 	client.UpdateSyncToken(*setResp.SyncToken)
 
 	any := "*"
-	revPgr := client.NewListRevisionsPager(azappconfig.SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: azappconfig.AllSettingFields()}, nil)
+	revPgr := client.NewListRevisionsPager(azappconfig.SettingSelector{
+		KeyFilter:   &any,
+		LabelFilter: &any,
+		Fields:      azappconfig.AllSettingFields(),
+	}, nil)
 	require.NotEmpty(t, revPgr)
 	hasMoreRevs := revPgr.More()
 	require.True(t, hasMoreRevs)
-	revResp, err15 := revPgr.NextPage(context.TODO())
+	revResp, err15 := revPgr.NextPage(context.Background())
 	require.NoError(t, err15)
 	require.NotEmpty(t, revResp)
 	require.Equal(t, key, *revResp.Settings[0].Key)
 	require.Equal(t, label, *revResp.Settings[0].Label)
 
-	settsPgr := client.NewListSettingsPager(azappconfig.SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: azappconfig.AllSettingFields()}, nil)
+	settsPgr := client.NewListSettingsPager(azappconfig.SettingSelector{
+		KeyFilter:   &any,
+		LabelFilter: &any,
+		Fields:      azappconfig.AllSettingFields(),
+	}, nil)
 	require.NotEmpty(t, settsPgr)
 	hasMoreSetts := settsPgr.More()
 	require.True(t, hasMoreSetts)
-	settsResp, err16 := settsPgr.NextPage(context.TODO())
+	settsResp, err16 := settsPgr.NextPage(context.Background())
 	require.NoError(t, err16)
 	require.NotEmpty(t, settsResp)
 	require.Equal(t, key, *settsResp.Settings[0].Key)
@@ -206,7 +250,9 @@ func TestClient(t *testing.T) {
 	require.Equal(t, value, *settsResp.Settings[0].Value)
 	require.False(t, *settsResp.Settings[0].IsReadOnly)
 
-	delResp, err17 := client.DeleteSetting(context.TODO(), key, &azappconfig.DeleteSettingOptions{Label: to.Ptr(label)})
+	delResp, err17 := client.DeleteSetting(context.Background(), key, &azappconfig.DeleteSettingOptions{
+		Label: to.Ptr(label),
+	})
 	require.NoError(t, err17)
 	require.NotEmpty(t, delResp)
 	require.NotNil(t, delResp.Key)
@@ -221,7 +267,10 @@ func TestClient(t *testing.T) {
 	// after changing the setting, update the sync token so we don't get cached, stale data
 	client.UpdateSyncToken(*setResp.SyncToken)
 
-	addResp2, err18 := client.AddSetting(context.TODO(), key, &value, &azappconfig.AddSettingOptions{Label: to.Ptr(label), ContentType: &contentType})
+	addResp2, err18 := client.AddSetting(context.Background(), key, &value, &azappconfig.AddSettingOptions{
+		Label:       to.Ptr(label),
+		ContentType: &contentType,
+	})
 	require.NoError(t, err18)
 	require.NotEmpty(t, addResp2)
 	require.NotNil(t, addResp2.Key)
@@ -233,12 +282,18 @@ func TestClient(t *testing.T) {
 	require.Equal(t, contentType, *addResp2.ContentType)
 	require.Equal(t, value, *addResp2.Value)
 
-	delResp2, err19 := client.DeleteSetting(context.TODO(), key, &azappconfig.DeleteSettingOptions{Label: to.Ptr(label), OnlyIfUnchanged: etag})
+	delResp2, err19 := client.DeleteSetting(context.Background(), key, &azappconfig.DeleteSettingOptions{
+		Label:           to.Ptr(label),
+		OnlyIfUnchanged: etag,
+	})
 	require.Error(t, err19)
 	require.Empty(t, delResp2)
 
 	etag = addResp2.ETag
-	delResp3, err20 := client.DeleteSetting(context.TODO(), key, &azappconfig.DeleteSettingOptions{Label: to.Ptr(label), OnlyIfUnchanged: etag})
+	delResp3, err20 := client.DeleteSetting(context.Background(), key, &azappconfig.DeleteSettingOptions{
+		Label:           to.Ptr(label),
+		OnlyIfUnchanged: etag,
+	})
 	require.NoError(t, err20)
 	require.NotEmpty(t, delResp3)
 	require.NotNil(t, delResp3.Key)
@@ -249,4 +304,23 @@ func TestClient(t *testing.T) {
 	require.Equal(t, label, *delResp3.Label)
 	require.Equal(t, contentType, *delResp3.ContentType)
 	require.Equal(t, value, *delResp3.Value)
+}
+
+func TestSettingNilValue(t *testing.T) {
+	const (
+		key         = "key-TestSettingNilValue"
+		contentType = "content-type"
+	)
+	client := NewClientFromConnectionString(t)
+
+	addResp, err := client.AddSetting(context.Background(), key, nil, &azappconfig.AddSettingOptions{
+		ContentType: to.Ptr(contentType),
+	})
+	require.NoError(t, err)
+	require.NotZero(t, addResp)
+
+	resp, err := client.DeleteSetting(context.Background(), key, nil)
+	require.NoError(t, err)
+	require.NotNil(t, resp.Key)
+	require.EqualValues(t, key, *resp.Key)
 }

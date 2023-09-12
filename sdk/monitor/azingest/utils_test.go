@@ -59,7 +59,7 @@ func TestMain(m *testing.M) {
 		if err != nil {
 			panic(err)
 		}
-		for i := 0; i < 10; i++ {
+		for i := 0; i < 12; i++ {
 			_, err = client.Upload(context.Background(), ruleID, streamName, []byte("test"), nil)
 			var respErr *azcore.ResponseError
 			if !(errors.As(err, &respErr) && respErr.StatusCode == 403) {

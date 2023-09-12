@@ -28,3 +28,4 @@ stages:
     ServiceDirectory: 'monitor/azingest'
     RunLiveTests: true
     SupportedClouds: 'Public,UsGov,China'
+    TimeoutInMinutes: 60

@@ -21,6 +21,10 @@ const (
 )
 
 func TestMain(m *testing.M) {
+	os.Exit(run(m))
+}
+
+func run(m *testing.M) int {
 	err := recording.ResetProxy(nil)
 	if err != nil {
 		panic(err)
@@ -51,7 +55,7 @@ func TestMain(m *testing.M) {
 		}
 	}
 
-	os.Exit(m.Run())
+	return m.Run()
 }
 
 func NewClientFromConnectionString(t *testing.T) *azappconfig.Client {

@@ -23,7 +23,7 @@
 
 ### Other Changes
 
-* Updated version of azcore to 1.7.1 and azidentity to 1.3.1.
+* Updated version of azcore to 1.7.2 and azidentity to 1.3.1.
 * Added `dragonfly` and `aix` to build constraints in `mmf_unix.go`.
 
 ## 1.0.0 (2023-07-12)

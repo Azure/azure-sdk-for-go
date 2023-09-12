@@ -7175,12 +7175,14 @@ func (b *BackupStatusRequest) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type BackupStatusResponse.
 func (b BackupStatusResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "acquireStorageAccountLock", b.AcquireStorageAccountLock)
 	populate(objectMap, "containerName", b.ContainerName)
 	populate(objectMap, "errorCode", b.ErrorCode)
 	populate(objectMap, "errorMessage", b.ErrorMessage)
 	populate(objectMap, "fabricName", b.FabricName)
 	populate(objectMap, "policyName", b.PolicyName)
 	populate(objectMap, "protectedItemName", b.ProtectedItemName)
+	populate(objectMap, "protectedItemsCount", b.ProtectedItemsCount)
 	populate(objectMap, "protectionStatus", b.ProtectionStatus)
 	populate(objectMap, "registrationStatus", b.RegistrationStatus)
 	populate(objectMap, "vaultId", b.VaultID)
@@ -7196,6 +7198,9 @@ func (b *BackupStatusResponse) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "acquireStorageAccountLock":
+			err = unpopulate(val, "AcquireStorageAccountLock", &b.AcquireStorageAccountLock)
+			delete(rawMsg, key)
 		case "containerName":
 			err = unpopulate(val, "ContainerName", &b.ContainerName)
 			delete(rawMsg, key)
@@ -7213,6 +7218,9 @@ func (b *BackupStatusResponse) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "protectedItemName":
 			err = unpopulate(val, "ProtectedItemName", &b.ProtectedItemName)
+			delete(rawMsg, key)
+		case "protectedItemsCount":
+			err = unpopulate(val, "ProtectedItemsCount", &b.ProtectedItemsCount)
 			delete(rawMsg, key)
 		case "protectionStatus":
 			err = unpopulate(val, "ProtectionStatus", &b.ProtectionStatus)

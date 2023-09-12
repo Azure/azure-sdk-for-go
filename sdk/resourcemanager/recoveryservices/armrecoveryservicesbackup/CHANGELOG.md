@@ -47,6 +47,7 @@
 - New field `NodesList`, `SoftDeleteRetentionPeriodInDays` in struct `AzureVMWorkloadSQLDatabaseProtectedItem`
 - New field `IsProtectable` in struct `AzureVMWorkloadSQLInstanceProtectableItem`
 - New field `SoftDeleteRetentionPeriodInDays` in struct `BackupResourceVaultConfig`
+- New field `AcquireStorageAccountLock`, `ProtectedItemsCount` in struct `BackupStatusResponse`
 - New field `SoftDeleteRetentionPeriodInDays` in struct `DPMProtectedItem`
 - New field `SourceResourceID` in struct `DistributedNodesInfo`
 - New field `SoftDeleteRetentionPeriodInDays` in struct `GenericProtectedItem`

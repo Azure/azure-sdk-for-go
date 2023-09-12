@@ -5641,6 +5641,9 @@ type BackupStatusRequest struct {
 
 // BackupStatusResponse - BackupStatus response.
 type BackupStatusResponse struct {
+	// Specifies whether the storage account lock has been acquired or not
+	AcquireStorageAccountLock *AcquireStorageAccountLock
+
 	// Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;csname;vmname.
 	ContainerName *string
 
@@ -5658,6 +5661,9 @@ type BackupStatusResponse struct {
 
 	// Specifies the product specific ds name. E.g. vm;iaasvmcontainer;csname;vmname.
 	ProtectedItemName *string
+
+	// Number of protected items
+	ProtectedItemsCount *int32
 
 	// Specifies whether the container is registered or not
 	ProtectionStatus *ProtectionStatus

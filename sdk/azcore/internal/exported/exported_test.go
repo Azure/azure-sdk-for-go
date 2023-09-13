@@ -7,9 +7,12 @@
 package exported
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestNopCloser(t *testing.T) {
@@ -32,4 +35,54 @@ func TestHasStatusCode(t *testing.T) {
 	if !HasStatusCode(&http.Response{StatusCode: http.StatusOK}, http.StatusAccepted, http.StatusOK, http.StatusNoContent) {
 		t.Fatal("unexpected failure")
 	}
+}
+
+func TestDecodeByteArray(t *testing.T) {
+	out := []byte{}
+	require.NoError(t, DecodeByteArray("", &out, Base64StdFormat))
+	require.Empty(t, out)
+	const (
+		stdEncoding = "VGVzdERlY29kZUJ5dGVBcnJheQ=="
+		urlEncoding = "VGVzdERlY29kZUJ5dGVBcnJheQ"
+		decoded     = "TestDecodeByteArray"
+	)
+	require.NoError(t, DecodeByteArray(stdEncoding, &out, Base64StdFormat))
+	require.EqualValues(t, decoded, string(out))
+	require.NoError(t, DecodeByteArray(urlEncoding, &out, Base64URLFormat))
+	require.EqualValues(t, decoded, string(out))
+	require.NoError(t, DecodeByteArray(fmt.Sprintf("\"%s\"", stdEncoding), &out, Base64StdFormat))
+	require.EqualValues(t, decoded, string(out))
+	require.Error(t, DecodeByteArray(stdEncoding, &out, 123))
+}
+
+func TestNewKeyCredential(t *testing.T) {
+	cred, err := NewKeyCredential("")
+	require.Error(t, err)
+	require.Nil(t, cred)
+	const val1 = "foo"
+	cred, err = NewKeyCredential(val1)
+	require.NoError(t, err)
+	require.NotNil(t, cred)
+	require.EqualValues(t, val1, KeyCredentialGet(cred))
+	require.Error(t, cred.Update(""))
+	require.EqualValues(t, val1, KeyCredentialGet(cred))
+	const val2 = "bar"
+	require.NoError(t, cred.Update(val2))
+	require.EqualValues(t, val2, KeyCredentialGet(cred))
+}
+
+func TestNewSASCredential(t *testing.T) {
+	cred, err := NewSASCredential("")
+	require.Error(t, err)
+	require.Nil(t, cred)
+	const val1 = "foo"
+	cred, err = NewSASCredential(val1)
+	require.NoError(t, err)
+	require.NotNil(t, cred)
+	require.EqualValues(t, val1, SASCredentialGet(cred))
+	require.Error(t, cred.Update(""))
+	require.EqualValues(t, val1, SASCredentialGet(cred))
+	const val2 = "bar"
+	require.NoError(t, cred.Update(val2))
+	require.EqualValues(t, val2, SASCredentialGet(cred))
 }

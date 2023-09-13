@@ -1,6 +1,16 @@
 # Release History
 
-## 1.4.0-beta.5 (Unreleased)
+## 1.4.0-beta.6 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.4.0-beta.5 (2023-09-12)
 
 ### Features Added
 * Service principal credentials can request CAE tokens
@@ -15,8 +25,6 @@
 * Credential chains such as `DefaultAzureCredential` now try their next credential, if any, when
   managed identity authentication fails in a Docker Desktop container
   ([#21417](https://github.com/Azure/azure-sdk-for-go/issues/21417))
-
-### Other Changes
 
 ## 1.4.0-beta.4 (2023-08-16)
 

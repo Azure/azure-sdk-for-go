@@ -8,7 +8,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.4.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.2.0
-	github.com/Azure/go-amqp v1.0.0
+	github.com/Azure/go-amqp v1.0.2
 )
 
 require (
@@ -17,7 +17,7 @@ require (
 
 	// used in stress tests
 	github.com/microsoft/ApplicationInsights-Go v0.4.4
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.8.4
 
 	// used in examples only
 	nhooyr.io/websocket v1.8.7
@@ -40,5 +40,5 @@ require (
 	golang.org/x/net v0.8.0 // indirect
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

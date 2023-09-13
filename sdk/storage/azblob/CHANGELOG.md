@@ -3,6 +3,7 @@
 ## 1.1.1 (Unreleased)
 
 ### Features Added
+* Added support for service version 2020-12-06, 2021-02-12, 2021-04-10, 2021-06-08, 2021-08-06 , 2021-10-04, 2021-12-02, 2022-11-02, 2023-01-03, 2023-05-03, and 2023-08-03
 * Added support for [Cold Tier](https://learn.microsoft.com/azure/storage/blobs/access-tiers-overview?tabs=azure-portal).
 * Added `CopySourceTag` option for `UploadBlobFromURLOptions`
 * Added [FilterBlobs by Tags](https://learn.microsoft.com/rest/api/storageservices/find-blobs-by-tags-container) API for container client.
@@ -11,12 +12,8 @@
 * Added `ArchiveStatusRehydratePendingToCold` value to `ArchiveStatus` enum.
 * Content length limit for `AppendBlob.AppendBlock()` and `AppendBlob.AppendBlockFromURL()` raised from 4 MB to 100 MB.
 
-### Breaking Changes
-
 ### Bugs Fixed
 * Fixed issue where some requests fail with mismatch in string to sign.
-* Fixed service SAS creation where expiry time or permissions can be omitted when stored access policy is used. Fixes [#21229](https://github.com/Azure/azure-sdk-for-go/issues/21229).
-
 * Fixed service SAS creation where expiry time or permissions can be omitted when stored access policy is used. Fixes [#21229](https://github.com/Azure/azure-sdk-for-go/issues/21229).
 
 ### Other Changes

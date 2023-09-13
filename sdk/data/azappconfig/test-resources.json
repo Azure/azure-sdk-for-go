@@ -45,7 +45,7 @@
             "type": "string"
         },
         "azConfigPrefix": {
-            "defaultValue": "azconfig-net",
+            "defaultValue": "azappconfig-go",
             "type": "string"
         },
         "azConfigEndpointSuffix": {

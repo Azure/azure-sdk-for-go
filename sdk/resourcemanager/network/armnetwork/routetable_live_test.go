@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"github.com/stretchr/testify/suite"
@@ -26,6 +27,7 @@ type RouteTableTestSuite struct {
 	cred              azcore.TokenCredential
 	options           *arm.ClientOptions
 	routeTableName    string
+	routeName         string
 	location          string
 	resourceGroupName string
 	subscriptionId    string
@@ -36,10 +38,11 @@ func (testsuite *RouteTableTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.routeTableName = testutil.GenerateAlphaNumericID(testsuite.T(), "routetable", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.routeTableName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "routetable", 16, false)
+	testsuite.routeName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "routename", 15, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -112,13 +115,12 @@ func (testsuite *RouteTableTestSuite) TestRouteTables() {
 
 // Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}
 func (testsuite *RouteTableTestSuite) TestRoutes() {
-	routeName := testutil.GenerateAlphaNumericID(testsuite.T(), "routename", 6)
 	var err error
 	// From step Routes_CreateOrUpdate
 	fmt.Println("Call operation: Routes_CreateOrUpdate")
 	routesClient, err := armnetwork.NewRoutesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	routesClientCreateOrUpdateResponsePoller, err := routesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.routeTableName, routeName, armnetwork.Route{
+	routesClientCreateOrUpdateResponsePoller, err := routesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.routeTableName, testsuite.routeName, armnetwork.Route{
 		Properties: &armnetwork.RoutePropertiesFormat{
 			AddressPrefix: to.Ptr("10.0.3.0/24"),
 			NextHopType:   to.Ptr(armnetwork.RouteNextHopTypeVirtualNetworkGateway),
@@ -139,12 +141,12 @@ func (testsuite *RouteTableTestSuite) TestRoutes() {
 
 	// From step Routes_Get
 	fmt.Println("Call operation: Routes_Get")
-	_, err = routesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.routeTableName, routeName, nil)
+	_, err = routesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.routeTableName, testsuite.routeName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Routes_Delete
 	fmt.Println("Call operation: Routes_Delete")
-	routesClientDeleteResponsePoller, err := routesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.routeTableName, routeName, nil)
+	routesClientDeleteResponsePoller, err := routesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.routeTableName, testsuite.routeName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, routesClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)

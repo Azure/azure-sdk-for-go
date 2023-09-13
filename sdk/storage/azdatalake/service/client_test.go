@@ -9,6 +9,10 @@ package service_test
 import (
 	"context"
 	"fmt"
+	"os"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
@@ -20,9 +24,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"os"
-	"testing"
-	"time"
 )
 
 func Test(t *testing.T) {
@@ -70,14 +71,14 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	connectionString, _ := testcommon.GetGenericConnectionString(testcommon.TestAccountDatalake)
 
 	parsedConnStr, err := shared.ParseConnectionString(*connectionString)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(parsedConnStr.ServiceURL, "https://"+accountName+".blob.core.windows.net/")
 
 	sharedKeyCred, err := azdatalake.NewSharedKeyCredential(parsedConnStr.AccountName, parsedConnStr.AccountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	svcClient, err := service.NewClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, testcommon.GenerateFileSystemName(testName), svcClient)
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 }
@@ -96,10 +97,10 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesLogging() {
 	opts := service.SetPropertiesOptions{Logging: &loggingOpts}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	resp1, err := svcClient.GetProperties(context.Background(), nil)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(resp1.Logging.Write, enabled)
 	_require.Equal(resp1.Logging.Read, enabled)
 	_require.Equal(resp1.Logging.Delete, enabled)
@@ -120,10 +121,10 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesHourMetrics() {
 	opts := service.SetPropertiesOptions{HourMetrics: &metricsOpts}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	resp1, err := svcClient.GetProperties(context.Background(), nil)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(resp1.HourMetrics.Enabled, enabled)
 	_require.Equal(resp1.HourMetrics.IncludeAPIs, enabled)
 	_require.Equal(resp1.HourMetrics.RetentionPolicy.Days, days)
@@ -143,10 +144,10 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesMinuteMetrics() {
 	opts := service.SetPropertiesOptions{MinuteMetrics: &metricsOpts}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	resp1, err := svcClient.GetProperties(context.Background(), nil)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(resp1.MinuteMetrics.Enabled, enabled)
 	_require.Equal(resp1.MinuteMetrics.IncludeAPIs, enabled)
 	_require.Equal(resp1.MinuteMetrics.RetentionPolicy.Days, days)
@@ -180,7 +181,7 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCORSMultiple() {
 	opts := service.SetPropertiesOptions{CORS: CORSRules}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	for i := 0; i < len(resp.CORS); i++ {
@@ -207,25 +208,25 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
 	days := to.Ptr[int32](5)
 	enabled := to.Ptr(true)
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	disabled := false
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &disabled}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
 	resp, err = svcClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, false)
 	_require.Nil(resp.StorageServiceProperties.DeleteRetentionPolicy.Days)
 }
@@ -238,19 +239,19 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyEmpty() {
 	days := to.Ptr[int32](5)
 	enabled := to.Ptr(true)
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	// Empty retention policy causes an error, this is different from track 1.5
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{}})
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
@@ -261,32 +262,32 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 	days := to.Ptr[int32](5)
 	enabled := to.Ptr(true)
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// From FE, 30 seconds is guaranteed to be enough.
 	time.Sleep(time.Second * 30)
 
 	// If an element of service properties is not passed, the service keeps the current settings.
 	resp, err = svcClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	// Disable for other tests
 	enabled = to.Ptr(false)
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled}})
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
@@ -299,12 +300,12 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge
 		} else {
 			svcClient, err = testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDatalake, nil)
 		}
-		_require.Nil(err)
+		_require.NoError(err)
 
 		days := int32(366) // Max days is 365. Left to the service for validation.
 		enabled := true
 		_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled, Days: &days}})
-		_require.NotNil(err)
+		_require.Error(err)
 
 		testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
 	}
@@ -318,7 +319,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(
 	// Days is required if enabled is true.
 	enabled := true
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled}})
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
 }
@@ -329,7 +330,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	cred, _ := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.dfs.core.windows.net/", cred.AccountName()), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fsName := testcommon.GenerateFileSystemName(testName)
 
@@ -355,17 +356,17 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	}
 	expiry := time.Now().Add(time.Hour)
 	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	svcClient, err := testcommon.GetServiceClientNoCredential(s.T(), sasUrl, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// create fs using SAS
 	_, err = svcClient.CreateFileSystem(context.Background(), fsName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = svcClient.DeleteFileSystem(context.Background(), fsName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *ServiceRecordedTestsSuite) TestSASServiceClientNoKey() {
@@ -373,7 +374,7 @@ func (s *ServiceRecordedTestsSuite) TestSASServiceClientNoKey() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 
 	serviceClient, err := service.NewClientWithNoCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	resources := sas.AccountResourceTypes{
 		Object:    true,
 		Service:   true,
@@ -404,10 +405,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientSignNegative() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	cred, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	resources := sas.AccountResourceTypes{
 		Object:    true,
 		Service:   true,
@@ -438,7 +439,7 @@ func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
 
 	// Creating service client without credentials
 	serviceClient, err := service.NewClientWithNoCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Adding SAS and options
 	resources := sas.AccountResourceTypes{
@@ -470,20 +471,20 @@ func (s *ServiceUnrecordedTestsSuite) TestGetFileSystemClient() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	cred, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fsName := testcommon.GenerateFileSystemName(testName + "1")
 	fsClient := serviceClient.NewFileSystemClient(fsName)
 
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = fsClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestSASFileSystemClient() {
@@ -492,10 +493,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASFileSystemClient() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	cred, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fsName := testcommon.GenerateFileSystemName(testName)
 	fsClient := serviceClient.NewFileSystemClient(fsName)
@@ -509,13 +510,13 @@ func (s *ServiceUnrecordedTestsSuite) TestSASFileSystemClient() {
 
 	opts := filesystem.GetSASURLOptions{StartTime: &start}
 	sasUrl, err := fsClient.GetSASURL(permissions, expiry, &opts)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fsClient2, err := filesystem.NewClientWithNoCredential(sasUrl, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = fsClient2.Create(context.Background(), &filesystem.CreateOptions{Metadata: testcommon.BasicMetadata})
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthorizationFailure)
 }
 
@@ -525,10 +526,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASFileSystem2() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	cred, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fsName := testcommon.GenerateFileSystemName(testName)
 	fsClient := serviceClient.NewFileSystemClient(fsName)
@@ -536,13 +537,13 @@ func (s *ServiceUnrecordedTestsSuite) TestSASFileSystem2() {
 	opts := filesystem.GetSASURLOptions{StartTime: &start}
 
 	sasUrlReadAdd, err := fsClient.GetSASURL(sas.FileSystemPermissions{Read: true, Add: true}, time.Now().Add(time.Hour), &opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = fsClient.Create(context.Background(), &filesystem.CreateOptions{Metadata: testcommon.BasicMetadata})
-	_require.Nil(err)
+	_require.NoError(err)
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	fsClient1, err := filesystem.NewClientWithNoCredential(sasUrlReadAdd, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// filesystem metadata and properties can't be read or written with SAS auth
 	_, err = fsClient1.GetProperties(context.Background(), nil)
@@ -553,10 +554,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASFileSystem2() {
 	opts = filesystem.GetSASURLOptions{StartTime: &start}
 
 	sasUrlRCWL, err := fsClient.GetSASURL(sas.FileSystemPermissions{Add: true, Create: true, Delete: true, List: true}, time.Now().Add(time.Hour), &opts)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fsClient2, err := filesystem.NewClientWithNoCredential(sasUrlRCWL, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// filesystems can't be created, deleted, or listed with SAS auth
 	_, err = fsClient2.Create(context.Background(), nil)
@@ -568,7 +569,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	md := map[string]*string{
 		"foo": to.Ptr("foovalue"),
 		"bar": to.Ptr("barvalue"),
@@ -580,10 +581,10 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
 	defer func(fsClient *filesystem.Client, ctx context.Context, options *filesystem.DeleteOptions) {
 		_, err := fsClient.Delete(ctx, options)
 		if err != nil {
-			_require.Nil(err)
+			_require.NoError(err)
 		}
 	}(fsClient, context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	prefix := testcommon.FileSystemPrefix
 	listOptions := service.ListFileSystemsOptions{Prefix: &prefix, Include: service.ListFileSystemsInclude{Metadata: to.Ptr(true)}}
 	pager := svcClient.NewListFileSystemsPager(&listOptions)
@@ -591,7 +592,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		for _, ctnr := range resp.FileSystemItems {
 			_require.NotNil(ctnr.Name)
 
@@ -620,7 +621,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
 		}
 	}
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.GreaterOrEqual(count, 0)
 }
 
@@ -628,7 +629,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	md := map[string]*string{
 		"foo": to.Ptr("foovalue"),
 		"bar": to.Ptr("barvalue"),
@@ -640,10 +641,10 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 	defer func(fsClient *filesystem.Client, ctx context.Context, options *filesystem.DeleteOptions) {
 		_, err := fsClient.Delete(ctx, options)
 		if err != nil {
-			_require.Nil(err)
+			_require.NoError(err)
 		}
 	}(fsClient, context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	prefix := testcommon.FileSystemPrefix
 	listOptions := service.ListFileSystemsOptions{Prefix: &prefix, Include: service.ListFileSystemsInclude{Metadata: to.Ptr(true)}}
 	pager := svcClient.NewListFileSystemsPager(&listOptions)
@@ -651,7 +652,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 
 		for _, ctnr := range resp.FileSystemItems {
 			_require.NotNil(ctnr.Name)
@@ -681,7 +682,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 		}
 	}
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.GreaterOrEqual(count, 0)
 }
 
@@ -689,7 +690,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsPaged() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	const numFileSystems = 6
 	maxResults := int32(2)
 	const pagedFileSystemsPrefix = "azfilesystempaged"
@@ -717,7 +718,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsPaged() {
 
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		for _, ctnr := range resp.FileSystemItems {
 			_require.NotNil(ctnr.Name)
 			results = append(results, *ctnr)
@@ -758,7 +759,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountListFilesystemsEmptyPrefix() {
 
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 
 		for _, container := range resp.FileSystemItems {
 			count++

@@ -1,5 +1,11 @@
 # Release History
 
+## 0.7.0 (Unreleased)
+
+### Breaking Changes
+
+* The `acceptLanguage` parameter has been moved out of client constructors and into each method's options type.
+
 ## 0.6.1 (2023-04-14)
 ### Bug Fixes
 

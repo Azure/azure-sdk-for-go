@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"github.com/stretchr/testify/suite"
@@ -22,13 +23,15 @@ import (
 type VirtualNetworkTestSuite struct {
 	suite.Suite
 
-	ctx                context.Context
-	cred               azcore.TokenCredential
-	options            *arm.ClientOptions
-	virtualNetworkName string
-	location           string
-	resourceGroupName  string
-	subscriptionId     string
+	ctx                       context.Context
+	cred                      azcore.TokenCredential
+	options                   *arm.ClientOptions
+	virtualNetworkName        string
+	virtualNetworkPeeringName string
+	subnetName                string
+	location                  string
+	resourceGroupName         string
+	subscriptionId            string
 }
 
 func (testsuite *VirtualNetworkTestSuite) SetupSuite() {
@@ -36,10 +39,12 @@ func (testsuite *VirtualNetworkTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.virtualNetworkName = testutil.GenerateAlphaNumericID(testsuite.T(), "virtualnet", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.virtualNetworkName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "virtualnet", 16, false)
+	testsuite.virtualNetworkPeeringName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "virtualnetpee", 19, false)
+	testsuite.subnetName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "subnetname", 16, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -142,13 +147,12 @@ func (testsuite *VirtualNetworkTestSuite) TestVirtualNetworks() {
 
 // Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
 func (testsuite *VirtualNetworkTestSuite) TestSubnets() {
-	subnetName := testutil.GenerateAlphaNumericID(testsuite.T(), "subnetname", 6)
 	var err error
 	// From step Subnets_CreateOrUpdate
 	fmt.Println("Call operation: Subnets_CreateOrUpdate")
 	subnetsClient, err := armnetwork.NewSubnetsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	subnetsClientCreateOrUpdateResponsePoller, err := subnetsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, subnetName, armnetwork.Subnet{
+	subnetsClientCreateOrUpdateResponsePoller, err := subnetsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, testsuite.subnetName, armnetwork.Subnet{
 		Properties: &armnetwork.SubnetPropertiesFormat{
 			AddressPrefix: to.Ptr("10.0.0.0/16"),
 		},
@@ -168,12 +172,12 @@ func (testsuite *VirtualNetworkTestSuite) TestSubnets() {
 
 	// From step Subnets_Get
 	fmt.Println("Call operation: Subnets_Get")
-	_, err = subnetsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, subnetName, &armnetwork.SubnetsClientGetOptions{Expand: nil})
+	_, err = subnetsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, testsuite.subnetName, &armnetwork.SubnetsClientGetOptions{Expand: nil})
 	testsuite.Require().NoError(err)
 
 	// From step Subnets_Delete
 	fmt.Println("Call operation: Subnets_Delete")
-	subnetsClientDeleteResponsePoller, err := subnetsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, subnetName, nil)
+	subnetsClientDeleteResponsePoller, err := subnetsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, testsuite.subnetName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, subnetsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
@@ -181,13 +185,12 @@ func (testsuite *VirtualNetworkTestSuite) TestSubnets() {
 
 // Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}
 func (testsuite *VirtualNetworkTestSuite) TestVirtualNetworkPeerings() {
-	virtualNetworkPeeringName := testutil.GenerateAlphaNumericID(testsuite.T(), "virtualnet", 6)
 	var err error
 	// From step VirtualNetworks_CreateOrUpdate
 	fmt.Println("Call operation: VirtualNetworks_CreateOrUpdate")
 	virtualNetworksClient, err := armnetwork.NewVirtualNetworksClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	virtualNetworksClientCreateOrUpdateResponsePoller, err := virtualNetworksClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, virtualNetworkPeeringName, armnetwork.VirtualNetwork{
+	virtualNetworksClientCreateOrUpdateResponsePoller, err := virtualNetworksClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkPeeringName, armnetwork.VirtualNetwork{
 		Location: to.Ptr(testsuite.location),
 		Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 			AddressSpace: &armnetwork.AddressSpace{
@@ -206,7 +209,7 @@ func (testsuite *VirtualNetworkTestSuite) TestVirtualNetworkPeerings() {
 	fmt.Println("Call operation: VirtualNetworkPeerings_CreateOrUpdate")
 	virtualNetworkPeeringsClient, err := armnetwork.NewVirtualNetworkPeeringsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	virtualNetworkPeeringsClientCreateOrUpdateResponsePoller, err := virtualNetworkPeeringsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, virtualNetworkPeeringName, armnetwork.VirtualNetworkPeering{
+	virtualNetworkPeeringsClientCreateOrUpdateResponsePoller, err := virtualNetworkPeeringsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, testsuite.virtualNetworkPeeringName, armnetwork.VirtualNetworkPeering{
 		Properties: &armnetwork.VirtualNetworkPeeringPropertiesFormat{
 			AllowForwardedTraffic:     to.Ptr(true),
 			AllowGatewayTransit:       to.Ptr(false),
@@ -232,12 +235,12 @@ func (testsuite *VirtualNetworkTestSuite) TestVirtualNetworkPeerings() {
 
 	// From step VirtualNetworkPeerings_Get
 	fmt.Println("Call operation: VirtualNetworkPeerings_Get")
-	_, err = virtualNetworkPeeringsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, virtualNetworkPeeringName, nil)
+	_, err = virtualNetworkPeeringsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, testsuite.virtualNetworkPeeringName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step VirtualNetworkPeerings_Delete
 	fmt.Println("Call operation: VirtualNetworkPeerings_Delete")
-	virtualNetworkPeeringsClientDeleteResponsePoller, err := virtualNetworkPeeringsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, virtualNetworkPeeringName, nil)
+	virtualNetworkPeeringsClientDeleteResponsePoller, err := virtualNetworkPeeringsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualNetworkName, testsuite.virtualNetworkPeeringName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, virtualNetworkPeeringsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)

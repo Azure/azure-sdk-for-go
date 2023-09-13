@@ -12,12 +12,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 type TestAccountType string
@@ -121,11 +122,11 @@ func CreateNewQueue(ctx context.Context, _require *require.Assertions, queueName
 	queueClient := GetQueueClient(queueName, serviceClient)
 
 	_, err := queueClient.Create(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	return queueClient
 }
 
 func DeleteQueue(ctx context.Context, _require *require.Assertions, queueClient *azqueue.QueueClient) {
 	_, err := queueClient.Delete(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }

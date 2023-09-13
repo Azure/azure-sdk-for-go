@@ -9,9 +9,11 @@ package exported
 import (
 	"context"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
+	"sync/atomic"
 	"time"
 )
 
@@ -109,4 +111,81 @@ func DecodeByteArray(s string, v *[]byte, format Base64Encoding) error {
 	default:
 		return fmt.Errorf("unrecognized byte array format: %d", format)
 	}
+}
+
+// KeyCredential contains an authentication key used to authenticate to an Azure service.
+// Exported as azcore.KeyCredential.
+type KeyCredential struct {
+	cred *keyCredential
+}
+
+// NewKeyCredential creates a new instance of [KeyCredential] with the specified values.
+//   - key is the authentication key
+func NewKeyCredential(key string) (*KeyCredential, error) {
+	cred, err := newKeyCredential(key)
+	if err != nil {
+		return nil, err
+	}
+	return &KeyCredential{cred: cred}, nil
+}
+
+// Update replaces the existing key with the specified value.
+func (k *KeyCredential) Update(key string) error {
+	return k.cred.Update(key)
+}
+
+// SASCredential contains a shared access signature used to authenticate to an Azure service.
+// Exported as azcore.SASCredential.
+type SASCredential struct {
+	cred *keyCredential
+}
+
+// NewSASCredential creates a new instance of [SASCredential] with the specified values.
+//   - sas is the shared access signature
+func NewSASCredential(sas string) (*SASCredential, error) {
+	cred, err := newKeyCredential(sas)
+	if err != nil {
+		return nil, err
+	}
+	return &SASCredential{cred: cred}, nil
+}
+
+// Update replaces the existing shared access signature with the specified value.
+func (k *SASCredential) Update(sas string) error {
+	return k.cred.Update(sas)
+}
+
+// KeyCredentialGet returns the key for cred.
+func KeyCredentialGet(cred *KeyCredential) string {
+	return cred.cred.Get()
+}
+
+// SASCredentialGet returns the shared access sig for cred.
+func SASCredentialGet(cred *SASCredential) string {
+	return cred.cred.Get()
+}
+
+type keyCredential struct {
+	key atomic.Value // string
+}
+
+func newKeyCredential(key string) (*keyCredential, error) {
+	if key == "" {
+		return nil, errors.New("key cannot be empty")
+	}
+	keyCred := keyCredential{}
+	keyCred.key.Store(key)
+	return &keyCred, nil
+}
+
+func (k *keyCredential) Get() string {
+	return k.key.Load().(string)
+}
+
+func (k *keyCredential) Update(key string) error {
+	if key == "" {
+		return errors.New("key cannot be empty")
+	}
+	k.key.Store(key)
+	return nil
 }

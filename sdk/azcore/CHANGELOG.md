@@ -4,6 +4,11 @@
 
 ### Features Added
 
+* Added types `KeyCredential` and `SASCredential` to the `azcore` package.
+  * Includes their respective constructor functions.
+* Added types `KeyCredentialPolicy` and `SASCredentialPolicy` to the `azcore/runtime` package.
+  * Includes their respective constructor functions and options types.
+
 ### Breaking Changes
 
 ### Bugs Fixed

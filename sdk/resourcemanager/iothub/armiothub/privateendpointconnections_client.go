@@ -46,11 +46,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 // BeginDelete - Delete private endpoint connection with the specified name
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-06-30
-=======
-// Generated from API version 2023-06-30-preview
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - privateEndpointConnectionName - The name of the private endpoint connection
@@ -72,11 +68,7 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 // Delete - Delete private endpoint connection with the specified name
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-06-30
-=======
-// Generated from API version 2023-06-30-preview
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
@@ -118,11 +110,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-<<<<<<< HEAD
 	reqQP.Set("api-version", "2023-06-30")
-=======
-	reqQP.Set("api-version", "2023-06-30-preview")
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -131,11 +119,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 // Get - Get private endpoint connection properties
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-06-30
-=======
-// Generated from API version 2023-06-30-preview
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - privateEndpointConnectionName - The name of the private endpoint connection
@@ -183,11 +167,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-<<<<<<< HEAD
 	reqQP.Set("api-version", "2023-06-30")
-=======
-	reqQP.Set("api-version", "2023-06-30-preview")
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -205,11 +185,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 // List - List private endpoint connection properties
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-06-30
-=======
-// Generated from API version 2023-06-30-preview
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
@@ -252,11 +228,7 @@ func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-<<<<<<< HEAD
 	reqQP.Set("api-version", "2023-06-30")
-=======
-	reqQP.Set("api-version", "2023-06-30-preview")
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -274,11 +246,7 @@ func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Re
 // BeginUpdate - Update the status of a private endpoint connection with the specified name
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-06-30
-=======
-// Generated from API version 2023-06-30-preview
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - privateEndpointConnectionName - The name of the private endpoint connection
@@ -301,11 +269,7 @@ func (client *PrivateEndpointConnectionsClient) BeginUpdate(ctx context.Context,
 // Update - Update the status of a private endpoint connection with the specified name
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-06-30
-=======
-// Generated from API version 2023-06-30-preview
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func (client *PrivateEndpointConnectionsClient) update(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
@@ -347,11 +311,7 @@ func (client *PrivateEndpointConnectionsClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-<<<<<<< HEAD
 	reqQP.Set("api-version", "2023-06-30")
-=======
-	reqQP.Set("api-version", "2023-06-30-preview")
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateEndpointConnection); err != nil {

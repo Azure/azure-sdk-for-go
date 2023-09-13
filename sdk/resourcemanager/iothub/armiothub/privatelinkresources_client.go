@@ -46,11 +46,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // Get - Get the specified private link resource for the given IotHub
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-06-30
-=======
-// Generated from API version 2023-06-30-preview
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - groupID - The name of the private link resource
@@ -98,11 +94,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-<<<<<<< HEAD
 	reqQP.Set("api-version", "2023-06-30")
-=======
-	reqQP.Set("api-version", "2023-06-30-preview")
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -120,11 +112,7 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 // List - List private link resources for the given IotHub
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-06-30
-=======
-// Generated from API version 2023-06-30-preview
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - options - PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List
@@ -167,11 +155,7 @@ func (client *PrivateLinkResourcesClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-<<<<<<< HEAD
 	reqQP.Set("api-version", "2023-06-30")
-=======
-	reqQP.Set("api-version", "2023-06-30-preview")
->>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

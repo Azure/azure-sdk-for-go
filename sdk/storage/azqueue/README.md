@@ -159,7 +159,7 @@ pager := client.NewListQueuesPager(nil)
 // continue fetching pages until no more remain
 for pager.More() {
    resp, err := pager.NextPage(context.Background())
-   _require.Nil(err)
+   _require.NoError(err)
    // print queue name
    for _, queue := range resp.Queues {
 		fmt.Println(*queue.Name)

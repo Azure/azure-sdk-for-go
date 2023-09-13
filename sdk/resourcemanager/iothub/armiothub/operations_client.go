@@ -39,7 +39,11 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // NewListPager - Lists all of the available IoT Hub REST API operations.
 //
+<<<<<<< HEAD
 // Generated from API version 2023-06-30
+=======
+// Generated from API version 2023-06-30-preview
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
@@ -77,7 +81,11 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+<<<<<<< HEAD
 	reqQP.Set("api-version", "2023-06-30")
+=======
+	reqQP.Set("api-version", "2023-06-30-preview")
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

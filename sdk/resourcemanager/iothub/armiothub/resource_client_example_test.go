@@ -18,7 +18,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub"
 )
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_get.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_get.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,8 +157,13 @@ func ExampleResourceClient_Get() {
 	// 		}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_addRoutingCosmosDBEndpoint.json
 func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceAddCosmosDbEndpoint() {
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_createOrUpdate.json
+func ExampleResourceClient_BeginCreateOrUpdate() {
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -596,7 +605,11 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 	// 		}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_patch.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_patch.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -731,7 +744,11 @@ func ExampleResourceClient_BeginUpdate() {
 	// 		}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_delete.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_delete.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -860,7 +877,11 @@ func ExampleResourceClient_BeginDelete() {
 	// 		}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_listbysubscription.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_listbysubscription.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -994,7 +1015,11 @@ func ExampleResourceClient_NewListBySubscriptionPager() {
 	}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_listbyrg.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_listbyrg.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1128,7 +1153,11 @@ func ExampleResourceClient_NewListByResourceGroupPager() {
 	}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_stats.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_stats.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_GetStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1153,7 +1182,11 @@ func ExampleResourceClient_GetStats() {
 	// }
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_getskus.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_getskus.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_NewGetValidSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1218,7 +1251,11 @@ func ExampleResourceClient_NewGetValidSKUsPager() {
 	}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_listehgroups.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_listehgroups.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_NewListEventHubConsumerGroupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1255,7 +1292,11 @@ func ExampleResourceClient_NewListEventHubConsumerGroupsPager() {
 	}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_getconsumergroup.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_getconsumergroup.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_GetEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1284,7 +1325,11 @@ func ExampleResourceClient_GetEventHubConsumerGroup() {
 	// }
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_createconsumergroup.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_createconsumergroup.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_CreateEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1317,7 +1362,11 @@ func ExampleResourceClient_CreateEventHubConsumerGroup() {
 	// }
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_deleteconsumergroup.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_deleteconsumergroup.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_DeleteEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1334,7 +1383,11 @@ func ExampleResourceClient_DeleteEventHubConsumerGroup() {
 	}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_listjobs.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_listjobs.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_NewListJobsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1369,7 +1422,11 @@ func ExampleResourceClient_NewListJobsPager() {
 	}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_getjob.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_getjob.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_GetJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1396,7 +1453,11 @@ func ExampleResourceClient_GetJob() {
 	// }
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_quotametrics.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_quotametrics.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_NewGetQuotaMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1434,7 +1495,11 @@ func ExampleResourceClient_NewGetQuotaMetricsPager() {
 	}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_routingendpointhealth.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_routingendpointhealth.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_NewGetEndpointHealthPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1480,7 +1545,11 @@ func ExampleResourceClient_NewGetEndpointHealthPager() {
 	}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/checkNameAvailability.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/checkNameAvailability.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1507,7 +1576,11 @@ func ExampleResourceClient_CheckNameAvailability() {
 	// }
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_testallroutes.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_testallroutes.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_TestAllRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1550,7 +1623,11 @@ func ExampleResourceClient_TestAllRoutes() {
 	// 	}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_testnewroute.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_testnewroute.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_TestRoute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1607,7 +1684,11 @@ func ExampleResourceClient_TestRoute() {
 	// }
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_listkeys.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_listkeys.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_NewListKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1665,7 +1746,11 @@ func ExampleResourceClient_NewListKeysPager() {
 	}
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_getkey.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_getkey.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_GetKeysForKeyName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1691,7 +1776,11 @@ func ExampleResourceClient_GetKeysForKeyName() {
 	// }
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_exportdevices.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_exportdevices.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_ExportDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1721,7 +1810,11 @@ func ExampleResourceClient_ExportDevices() {
 	// }
 }
 
+<<<<<<< HEAD
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_importdevices.json
+=======
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/iothub/resource-manager/Microsoft.Devices/preview/2023-06-30-preview/examples/iothub_importdevices.json
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 func ExampleResourceClient_ImportDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

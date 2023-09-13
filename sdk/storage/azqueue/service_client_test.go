@@ -9,6 +9,10 @@ package azqueue_test
 import (
 	"context"
 	"fmt"
+	"os"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
@@ -18,9 +22,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"os"
-	"testing"
-	"time"
 )
 
 func Test(t *testing.T) {
@@ -68,17 +69,17 @@ func (s *UnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	connectionString := testcommon.GetConnectionString(testcommon.TestAccountDefault)
 
 	parsedConnStr, err := shared.ParseConnectionString(connectionString)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(parsedConnStr.ServiceURL, "https://"+accountName+".queue.core.windows.net/")
 
 	sharedKeyCred, err := azqueue.NewSharedKeyCredential(parsedConnStr.AccountName, parsedConnStr.AccountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	svcClient, err := azqueue.NewServiceClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	sProps, err := svcClient.GetServiceProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotZero(sProps)
 }
 
@@ -88,10 +89,10 @@ func (s *UnrecordedTestSuite) TestServiceClientFromConnectionString1() {
 	connectionString := testcommon.GetConnectionString(testcommon.TestAccountDefault)
 
 	svcClient, err := azqueue.NewServiceClientFromConnectionString(connectionString, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	sProps, err := svcClient.GetServiceProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotZero(sProps)
 }
 
@@ -109,10 +110,10 @@ func (s *RecordedTestSuite) TestSetPropertiesLogging() {
 	opts := azqueue.SetPropertiesOptions{Logging: &loggingOpts}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	resp1, err := svcClient.GetServiceProperties(context.Background(), nil)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(resp1.Logging.Write, enabled)
 	_require.Equal(resp1.Logging.Read, enabled)
 	_require.Equal(resp1.Logging.Delete, enabled)
@@ -133,10 +134,10 @@ func (s *RecordedTestSuite) TestSetPropertiesHourMetrics() {
 	opts := azqueue.SetPropertiesOptions{HourMetrics: &metricsOpts}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	resp1, err := svcClient.GetServiceProperties(context.Background(), nil)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(resp1.HourMetrics.Enabled, enabled)
 	_require.Equal(resp1.HourMetrics.IncludeAPIs, enabled)
 	_require.Equal(resp1.HourMetrics.RetentionPolicy.Days, days)
@@ -156,10 +157,10 @@ func (s *RecordedTestSuite) TestSetPropertiesMinuteMetrics() {
 	opts := azqueue.SetPropertiesOptions{MinuteMetrics: &metricsOpts}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	resp1, err := svcClient.GetServiceProperties(context.Background(), nil)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(resp1.MinuteMetrics.Enabled, enabled)
 	_require.Equal(resp1.MinuteMetrics.IncludeAPIs, enabled)
 	_require.Equal(resp1.MinuteMetrics.RetentionPolicy.Days, days)
@@ -193,7 +194,7 @@ func (s *RecordedTestSuite) TestSetPropertiesSetQueueCORS() {
 	opts := azqueue.SetPropertiesOptions{CORS: CORSRules}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	resp, err := svcClient.GetServiceProperties(context.Background(), nil)
 	for i := 0; i < len(resp.CORS); i++ {
 		if resp.CORS[i].AllowedOrigins == &allowedOrigins1 {
@@ -219,7 +220,7 @@ func (s *RecordedTestSuite) TestServiceGetProperties() {
 
 	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
 	sProps, err := svcClient.GetServiceProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotZero(sProps)
 }
 
@@ -234,7 +235,7 @@ func (s *RecordedTestSuite) TestServiceCreateQueue() {
 	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
 
 	resp, err := svcClient.CreateQueue(context.Background(), queueName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotZero(resp)
 }
 
@@ -250,7 +251,7 @@ func (s *RecordedTestSuite) TestServiceCreateQueueWithMetadata() {
 	opts := azqueue.CreateOptions{Metadata: testcommon.BasicMetadata}
 
 	resp, err := svcClient.CreateQueue(context.Background(), queueName, &opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotZero(resp)
 }
 
@@ -262,11 +263,11 @@ func (s *RecordedTestSuite) TestServiceDeleteQueue() {
 	testName := s.T().Name()
 	queueName := testcommon.GenerateQueueName(testName)
 	createResp, err := svcClient.CreateQueue(context.Background(), queueName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotZero(createResp)
 
 	delResp, err := svcClient.DeleteQueue(context.Background(), queueName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotZero(delResp)
 }
 
@@ -274,7 +275,7 @@ func (s *RecordedTestSuite) TestServiceListQueuesWithMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	md := map[string]*string{
 		"foo": to.Ptr("foovalue"),
 		"bar": to.Ptr("barvalue"),
@@ -286,17 +287,17 @@ func (s *RecordedTestSuite) TestServiceListQueuesWithMetadata() {
 	defer func(queueClient *azqueue.QueueClient, ctx context.Context, options *azqueue.DeleteOptions) {
 		_, err := queueClient.Delete(ctx, options)
 		if err != nil {
-			_require.Nil(err)
+			_require.NoError(err)
 		}
 	}(queueClient, context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	listOptions := azqueue.ListQueuesOptions{Include: azqueue.ListQueuesInclude{Metadata: true}}
 	pager := svcClient.NewListQueuesPager(&listOptions)
 
 	exists := false
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		for _, queue := range resp.Queues {
 			_require.NotNil(queue.Name)
 			if *queue.Name == queueName {
@@ -316,7 +317,7 @@ func (s *RecordedTestSuite) TestServiceListQueuesWithMetadata() {
 		}
 	}
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.True(exists)
 }
 
@@ -324,7 +325,7 @@ func (s *RecordedTestSuite) TestServiceListQueuesPagination() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	queueName := testcommon.GenerateQueueName(testName)
 	queueNames := []string{queueName + "1", queueName + "2", queueName + "3"}
@@ -332,7 +333,7 @@ func (s *RecordedTestSuite) TestServiceListQueuesPagination() {
 	for i := 0; i < len(queueNames); i++ {
 		_, err := svcClient.CreateQueue(context.Background(), queueNames[i], nil)
 		if err != nil {
-			_require.Nil(err)
+			_require.NoError(err)
 		}
 	}
 	// cleanup created queues
@@ -340,17 +341,17 @@ func (s *RecordedTestSuite) TestServiceListQueuesPagination() {
 		for i := 0; i < len(queueNames); i++ {
 			_, err := svcClient.DeleteQueue(ctx, queueNames[i], nil)
 			if err != nil {
-				_require.Nil(err)
+				_require.NoError(err)
 			}
 		}
 	}(queueNames, context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	pager := svcClient.NewListQueuesPager(&azqueue.ListQueuesOptions{MaxResults: to.Ptr(int32(1))})
 
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		for _, queue := range resp.Queues {
 			_require.NotNil(queue.Name)
 			count += 1
@@ -379,7 +380,7 @@ func (s *RecordedTestSuite) TestServiceListQueuesPaginationEmptyPrefix() {
 
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 
 		for _, queue := range resp.Queues {
 			count++
@@ -396,7 +397,7 @@ func (s *RecordedTestSuite) TestServiceListQueuesPaged() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	const numQueues = 6
 	maxResults := int32(2)
 	const pagedqueuesPrefix = "azqueuepaged"
@@ -424,7 +425,7 @@ func (s *RecordedTestSuite) TestServiceListQueuesPaged() {
 
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		for _, ctnr := range resp.Queues {
 			_require.NotNil(ctnr.Name)
 			results = append(results, *ctnr)
@@ -455,7 +456,7 @@ func (s *UnrecordedTestSuite) TestServiceSignatureValues() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resources := sas.AccountResourceTypes{
 		Object:    true,
@@ -482,7 +483,7 @@ func (s *UnrecordedTestSuite) TestServiceSignatureValues() {
 		Permissions:   permissions.String(),
 	}
 	_, err = qsv.SignWithSharedKey(cred)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *UnrecordedTestSuite) TestSASServiceClient() {
@@ -491,10 +492,10 @@ func (s *UnrecordedTestSuite) TestSASServiceClient() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	queueName := testcommon.GenerateQueueName(testName)
 
@@ -515,17 +516,17 @@ func (s *UnrecordedTestSuite) TestSASServiceClient() {
 	expiry := time.Now().Add(time.Hour)
 
 	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	svcClient, err := azqueue.NewServiceClientWithNoCredential(sasUrl, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// create queue using SAS
 	_, err = svcClient.CreateQueue(context.Background(), queueName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = svcClient.DeleteQueue(context.Background(), queueName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *UnrecordedTestSuite) TestNoSharedKeyCredError() {
@@ -534,7 +535,7 @@ func (s *UnrecordedTestSuite) TestNoSharedKeyCredError() {
 
 	// Creating service client without credentials
 	serviceClient, err := azqueue.NewServiceClientWithNoCredential(fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Adding SAS and options
 	resources := sas.AccountResourceTypes{
@@ -566,10 +567,10 @@ func (s *UnrecordedTestSuite) TestAccountSASEnqueueMessage() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	queueName := testcommon.GenerateQueueName(testName)
 
@@ -590,24 +591,24 @@ func (s *UnrecordedTestSuite) TestAccountSASEnqueueMessage() {
 	expiry := time.Now().Add(time.Hour)
 
 	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	svcClient, err := azqueue.NewServiceClientWithNoCredential(sasUrl, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// create queue using account SAS
 	_, err = svcClient.CreateQueue(context.Background(), queueName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	queueClient := svcClient.NewQueueClient(queueName)
 	// enqueue 4 messages
 	for i := 0; i < 4; i++ {
 		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
-		_require.Nil(err)
+		_require.NoError(err)
 
 	}
 	_, err = svcClient.DeleteQueue(context.Background(), queueName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *UnrecordedTestSuite) TestAccountSASDequeueMessage() {
@@ -616,10 +617,10 @@ func (s *UnrecordedTestSuite) TestAccountSASDequeueMessage() {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	queueName := testcommon.GenerateQueueName(testName)
 
@@ -641,33 +642,33 @@ func (s *UnrecordedTestSuite) TestAccountSASDequeueMessage() {
 	expiry := time.Now().Add(time.Hour)
 
 	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	svcClient, err := azqueue.NewServiceClientWithNoCredential(sasUrl, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// create queue using account SAS
 	_, err = svcClient.CreateQueue(context.Background(), queueName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	queueClient := svcClient.NewQueueClient(queueName)
 	// enqueue 4 messages
 	for i := 0; i < 4; i++ {
 		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
-		_require.Nil(err)
+		_require.NoError(err)
 	}
 
 	// dequeue 4 messages
 	for i := 0; i < 4; i++ {
 		resp, err := queueClient.DequeueMessage(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.Equal(1, len(resp.Messages))
 		_require.NotNil(resp.Messages[0].MessageID)
 	}
 	// should be 0 now
 	resp, err := queueClient.DequeueMessage(context.Background(), nil)
 	_require.Equal(0, len(resp.Messages))
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = svcClient.DeleteQueue(context.Background(), queueName, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }

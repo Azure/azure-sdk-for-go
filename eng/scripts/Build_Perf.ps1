@@ -1,7 +1,8 @@
 #Requires -Version 7.0
 
 Param(
-    [string] $serviceDirectory
+    [string] $serviceDirectory,
+    [bool] $useAzcoreFromMain
 )
 
 Push-Location sdk/$serviceDirectory
@@ -10,7 +11,7 @@ Push-Location sdk/$serviceDirectory
 $perfDirectories = Get-ChildItem -Path . -Filter testdata -Recurse
 
 if ($perfDirectories.Length -eq 0) {
-    Write-Host "Did not find any performance tests in the directory $(pwd)"
+    Write-Host "##[command] Did not find any performance tests in the directory $(Get-Location)"
     exit 0
 }
 
@@ -22,6 +23,15 @@ foreach ($perfDir in $perfDirectories) {
     if (Test-Path -Path perf) {
         Push-Location perf
         Write-Host "##[command] Building and vetting performance tests in $perfDir/perf"
+
+        if ($useAzcoreFromMain) {
+            # using a live azcore might be dragging in updated dependencies
+            Write-Host "##[command] Executing 'go mod tidy' in $perfDir/perf"
+            go mod tidy
+            if ($LASTEXITCODE) {
+                $failed = $true
+            }
+        }
 
         Write-Host "##[command] Executing 'go build .' in $perfDir/perf"
         go build .

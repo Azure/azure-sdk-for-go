@@ -802,6 +802,18 @@ type Resource struct {
 	Type *string
 }
 
+<<<<<<< HEAD
+=======
+// RootCertificateProperties - This property store root certificate related information
+type RootCertificateProperties struct {
+	// This property when set to true, hub will use G2 cert; while it's set to false, hub uses Baltimore Cert.
+	EnableRootCertificateV2 *bool
+
+	// READ-ONLY; the last update time to root certificate flag.
+	LastUpdatedTimeUTC *time.Time
+}
+
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 // RouteCompilationError - Compilation error when evaluating route
 type RouteCompilationError struct {
 	// Location where the route error happened
@@ -873,6 +885,12 @@ type RoutingCosmosDBSQLAPIProperties struct {
 	// Method used to authenticate against the cosmos DB sql container endpoint
 	AuthenticationType *AuthenticationType
 
+<<<<<<< HEAD
+=======
+	// Id of the cosmos DB sql container endpoint
+	ID *string
+
+>>>>>>> 70a663711035cf2dbddf5d65159cf4b40c636f19
 	// Managed identity properties of routing cosmos DB container endpoint.
 	Identity *ManagedIdentity
 

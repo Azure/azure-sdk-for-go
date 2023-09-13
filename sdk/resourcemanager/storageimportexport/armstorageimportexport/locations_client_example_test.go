@@ -24,7 +24,7 @@ func ExampleLocationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armstorageimportexport.NewClientFactory("<subscription-id>", nil, cred, nil)
+	clientFactory, err := armstorageimportexport.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -92,7 +92,7 @@ func ExampleLocationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armstorageimportexport.NewClientFactory("<subscription-id>", nil, cred, nil)
+	clientFactory, err := armstorageimportexport.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

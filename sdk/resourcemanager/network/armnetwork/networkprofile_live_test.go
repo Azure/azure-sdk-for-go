@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"github.com/stretchr/testify/suite"
@@ -38,11 +39,11 @@ func (testsuite *NetworkProfileTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.networkProfileName = testutil.GenerateAlphaNumericID(testsuite.T(), "networkpro", 6)
-	testsuite.virtualNetworkName = testutil.GenerateAlphaNumericID(testsuite.T(), "vnetprofilena", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.networkProfileName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "networkpro", 16, false)
+	testsuite.virtualNetworkName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vnetprofilena", 19, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name

@@ -1,11 +1,12 @@
 # Release History
 
-## 0.5.1 (Unreleased)
+## 0.6.0 (Unreleased)
 
 ### Features Added
 * Handle setting content type in `AddSetting` and `SetSetting` ([#19797](https://github.com/Azure/azure-sdk-for-go/issues/19797))
 
 ### Breaking Changes
+* Response types `ListRevisionsPage` and `ListSettingsPage` now have the suffix `Response` in their names.
 
 ### Bugs Fixed
 

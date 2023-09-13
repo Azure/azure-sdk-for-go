@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/stretchr/testify/suite"
@@ -40,14 +41,14 @@ func (testsuite *CdnTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.customDomainName = testutil.GenerateAlphaNumericID(testsuite.T(), "customdoma", 6)
-	testsuite.endpointName = testutil.GenerateAlphaNumericID(testsuite.T(), "endpointna", 6)
-	testsuite.originGroupName = testutil.GenerateAlphaNumericID(testsuite.T(), "origingrou", 6)
-	testsuite.originName = testutil.GenerateAlphaNumericID(testsuite.T(), "originname", 6)
-	testsuite.profileName = testutil.GenerateAlphaNumericID(testsuite.T(), "profilenam", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.customDomainName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "customdoma", 16, false)
+	testsuite.endpointName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "endpointna", 16, false)
+	testsuite.originGroupName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "origingrou", 16, false)
+	testsuite.originName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "originname", 16, false)
+	testsuite.profileName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "profilenam", 16, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name

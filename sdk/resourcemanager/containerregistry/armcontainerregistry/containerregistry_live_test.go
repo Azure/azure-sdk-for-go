@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/stretchr/testify/suite"
@@ -43,16 +44,16 @@ func (testsuite *ContainerregistryTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/containerregistry/armcontainerregistry/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.exportPipelineName = testutil.GenerateAlphaNumericID(testsuite.T(), "exportpipe", 6)
-	testsuite.importPipelineName = testutil.GenerateAlphaNumericID(testsuite.T(), "importpipe", 6)
-	testsuite.registryName = testutil.GenerateAlphaNumericID(testsuite.T(), "registryna", 6)
-	testsuite.replicationName = testutil.GenerateAlphaNumericID(testsuite.T(), "replicatio", 6)
-	testsuite.scopeMapName = testutil.GenerateAlphaNumericID(testsuite.T(), "scopemapna", 6)
-	testsuite.tokenName = testutil.GenerateAlphaNumericID(testsuite.T(), "tokenname", 6)
-	testsuite.webhookName = testutil.GenerateAlphaNumericID(testsuite.T(), "webhooknam", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.exportPipelineName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "exportpipe", 16, false)
+	testsuite.importPipelineName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "importpipe", 16, false)
+	testsuite.registryName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "registryna", 16, false)
+	testsuite.replicationName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "replicatio", 16, false)
+	testsuite.scopeMapName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "scopemapna", 16, false)
+	testsuite.tokenName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "tokenname", 19, false)
+	testsuite.webhookName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "webhooknam", 16, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)

@@ -11,24 +11,24 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 )
@@ -217,14 +217,14 @@ func CreateNewContainer(ctx context.Context, _require *require.Assertions, conta
 	containerClient := GetContainerClient(containerName, serviceClient)
 
 	_, err := containerClient.Create(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return containerClient
 }
 
 func DeleteContainer(ctx context.Context, _require *require.Assertions, containerClient *container.Client) {
 	_, err := containerClient.Delete(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func GetBlobClient(blockBlobName string, containerClient *container.Client) *blob.Client {
@@ -253,7 +253,7 @@ func CreateNewBlockBlob(ctx context.Context, _require *require.Assertions, block
 	bbClient := GetBlockBlobClient(blockBlobName, containerClient)
 
 	_, err := bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader(BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return bbClient
 }
@@ -266,7 +266,7 @@ func CreateNewBlockBlobWithCPK(ctx context.Context, _require *require.Assertions
 		CPKScopeInfo: cpkScopeInfo,
 	}
 	cResp, err := bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader(BlockBlobDefaultData)), &uploadBlockBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	_require.Equal(*cResp.IsServerEncrypted, true)
 	if cpkInfo != nil {
@@ -286,7 +286,7 @@ func CreateNewAppendBlob(ctx context.Context, _require *require.Assertions, appe
 	abClient := GetAppendBlobClient(appendBlobName, containerClient)
 
 	_, err := abClient.Create(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	return abClient
 }
 
@@ -308,7 +308,7 @@ func RunTestRequiringServiceProperties(ctx context.Context, _require *require.As
 	if err != nil && err.Error() == code {
 		time.Sleep(time.Second * 30)
 		err = testImplFunc(ctx, _require, svcClient)
-		_require.Nil(err)
+		_require.NoError(err)
 	}
 }
 
@@ -316,19 +316,19 @@ func EnableSoftDelete(ctx context.Context, _require *require.Assertions, client 
 	days := int32(1)
 	_, err := client.SetProperties(ctx, &service.SetPropertiesOptions{
 		DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: to.Ptr(true), Days: &days}})
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func DisableSoftDelete(ctx context.Context, _require *require.Assertions, client *service.Client) {
 	_, err := client.SetProperties(ctx, &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: to.Ptr(false)}})
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func ListBlobsCount(ctx context.Context, _require *require.Assertions, listPager *runtime.Pager[container.ListBlobsFlatResponse], ctr int) {
 	found := make([]*container.BlobItem, 0)
 	for listPager.More() {
 		resp, err := listPager.NextPage(ctx)
-		_require.Nil(err)
+		_require.NoError(err)
 		if err != nil {
 			break
 		}

@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 	"github.com/stretchr/testify/suite"
@@ -32,6 +33,7 @@ type VirtualWanTestSuite struct {
 	virtualWanId               string
 	vpnServerConfigurationName string
 	vpnSiteName                string
+	routeMapName               string
 	location                   string
 	resourceGroupName          string
 	subscriptionId             string
@@ -42,14 +44,15 @@ func (testsuite *VirtualWanTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.gatewayName = testutil.GenerateAlphaNumericID(testsuite.T(), "gatewaynam", 6)
-	testsuite.virtualHubName = testutil.GenerateAlphaNumericID(testsuite.T(), "virtualhub", 6)
-	testsuite.virtualWANName = testutil.GenerateAlphaNumericID(testsuite.T(), "virtualwan", 6)
-	testsuite.vpnServerConfigurationName = testutil.GenerateAlphaNumericID(testsuite.T(), "vpnserverc", 6)
-	testsuite.vpnSiteName = testutil.GenerateAlphaNumericID(testsuite.T(), "vpnsitenam", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.gatewayName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "gatewaynam", 16, false)
+	testsuite.virtualHubName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "virtualhub", 16, false)
+	testsuite.virtualWANName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "virtualwan", 16, false)
+	testsuite.vpnServerConfigurationName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vpnserverc", 16, false)
+	testsuite.vpnSiteName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vpnsitenam", 16, false)
+	testsuite.routeMapName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "routemapna", 16, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -297,13 +300,12 @@ func (testsuite *VirtualWanTestSuite) TestVirtualHubs() {
 
 // Microsoft.Network/virtualHubs/{virtualHubName}/routeMaps/{routeMapName}
 func (testsuite *VirtualWanTestSuite) TestRouteMaps() {
-	routeMapName := testutil.GenerateAlphaNumericID(testsuite.T(), "routemapna", 6)
 	var err error
 	// From step RouteMaps_CreateOrUpdate
 	fmt.Println("Call operation: RouteMaps_CreateOrUpdate")
 	routeMapsClient, err := armnetwork.NewRouteMapsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	routeMapsClientCreateOrUpdateResponsePoller, err := routeMapsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualHubName, routeMapName, armnetwork.RouteMap{
+	routeMapsClientCreateOrUpdateResponsePoller, err := routeMapsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualHubName, testsuite.routeMapName, armnetwork.RouteMap{
 		Properties: &armnetwork.RouteMapProperties{
 			AssociatedInboundConnections: []*string{
 				to.Ptr("/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.Network/expressRouteGateways/exrGateway1/expressRouteConnections/exrConn1")},
@@ -349,12 +351,12 @@ func (testsuite *VirtualWanTestSuite) TestRouteMaps() {
 
 	// From step RouteMaps_Get
 	fmt.Println("Call operation: RouteMaps_Get")
-	_, err = routeMapsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualHubName, routeMapName, nil)
+	_, err = routeMapsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualHubName, testsuite.routeMapName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step RouteMaps_Delete
 	fmt.Println("Call operation: RouteMaps_Delete")
-	routeMapsClientDeleteResponsePoller, err := routeMapsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualHubName, routeMapName, nil)
+	routeMapsClientDeleteResponsePoller, err := routeMapsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.virtualHubName, testsuite.routeMapName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, routeMapsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)

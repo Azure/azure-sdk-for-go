@@ -11,7 +11,6 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -21,6 +20,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -74,7 +74,7 @@ type UnrecordedTestSuite struct {
 
 //func validateFileDeleted(_require *require.Assertions, fileClient *file.Client) {
 //	_, err := fileClient.GetAccessControl(context.Background(), nil)
-//	_require.NotNil(err)
+//	_require.Error(err)
 //
 //	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 //}
@@ -92,7 +92,7 @@ func (s *UnrecordedTestSuite) TestCreateFileAndDeleteWithConnectionString() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateDirName(testName)
 	fileClient, err := file.NewClientFromConnectionString(*connectionString, fileName, filesystemName, nil)
@@ -102,7 +102,7 @@ func (s *UnrecordedTestSuite) TestCreateFileAndDeleteWithConnectionString() {
 	defer testcommon.DeleteFile(context.Background(), _require, fileClient)
 
 	resp, err := fileClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -116,7 +116,7 @@ func (s *RecordedTestSuite) TestCreateFileAndDelete() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -125,7 +125,7 @@ func (s *RecordedTestSuite) TestCreateFileAndDelete() {
 	defer testcommon.DeleteFile(context.Background(), _require, fClient)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -139,7 +139,7 @@ func (s *RecordedTestSuite) TestCreateFileWithNilAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -148,7 +148,7 @@ func (s *RecordedTestSuite) TestCreateFileWithNilAccessConditions() {
 	defer testcommon.DeleteFile(context.Background(), _require, fClient)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	createFileOpts := &file.CreateOptions{
@@ -156,7 +156,7 @@ func (s *RecordedTestSuite) TestCreateFileWithNilAccessConditions() {
 	}
 
 	resp, err = fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -170,7 +170,7 @@ func (s *RecordedTestSuite) TestCreateFileIfModifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -179,7 +179,7 @@ func (s *RecordedTestSuite) TestCreateFileIfModifiedSinceTrue() {
 	defer testcommon.DeleteFile(context.Background(), _require, fClient)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -193,7 +193,7 @@ func (s *RecordedTestSuite) TestCreateFileIfModifiedSinceTrue() {
 	}
 
 	resp, err = fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -207,7 +207,7 @@ func (s *RecordedTestSuite) TestCreateFileIfModifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -216,7 +216,7 @@ func (s *RecordedTestSuite) TestCreateFileIfModifiedSinceFalse() {
 	defer testcommon.DeleteFile(context.Background(), _require, fClient)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -230,7 +230,7 @@ func (s *RecordedTestSuite) TestCreateFileIfModifiedSinceFalse() {
 	}
 
 	resp, err = fClient.Create(context.Background(), createFileOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -244,7 +244,7 @@ func (s *RecordedTestSuite) TestCreateFileIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -253,7 +253,7 @@ func (s *RecordedTestSuite) TestCreateFileIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteFile(context.Background(), _require, fClient)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -267,7 +267,7 @@ func (s *RecordedTestSuite) TestCreateFileIfUnmodifiedSinceTrue() {
 	}
 
 	resp, err = fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -281,7 +281,7 @@ func (s *RecordedTestSuite) TestCreateFileIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -290,7 +290,7 @@ func (s *RecordedTestSuite) TestCreateFileIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteFile(context.Background(), _require, fClient)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -304,7 +304,7 @@ func (s *RecordedTestSuite) TestCreateFileIfUnmodifiedSinceFalse() {
 	}
 
 	resp, err = fClient.Create(context.Background(), createFileOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -319,7 +319,7 @@ func (s *RecordedTestSuite) TestCreateFileIfETagMatch() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -328,7 +328,7 @@ func (s *RecordedTestSuite) TestCreateFileIfETagMatch() {
 	defer testcommon.DeleteFile(context.Background(), _require, fClient)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -342,7 +342,7 @@ func (s *RecordedTestSuite) TestCreateFileIfETagMatch() {
 	}
 
 	resp, err = fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -356,7 +356,7 @@ func (s *RecordedTestSuite) TestCreateFileIfETagMatchFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -365,7 +365,7 @@ func (s *RecordedTestSuite) TestCreateFileIfETagMatchFalse() {
 	defer testcommon.DeleteFile(context.Background(), _require, fClient)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -379,7 +379,7 @@ func (s *RecordedTestSuite) TestCreateFileIfETagMatchFalse() {
 	}
 
 	resp, err = fClient.Create(context.Background(), createFileOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -398,7 +398,7 @@ func (s *RecordedTestSuite) TestCreateFileWithNilHTTPHeaders() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -407,7 +407,7 @@ func (s *RecordedTestSuite) TestCreateFileWithNilHTTPHeaders() {
 	defer testcommon.DeleteFile(context.Background(), _require, fClient)
 
 	resp, err := fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -429,7 +429,7 @@ func (s *UnrecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -438,11 +438,11 @@ func (s *UnrecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
 	defer testcommon.DeleteFile(context.Background(), _require, fClient)
 
 	resp, err := fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	resp1, err := fClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp1.ExpiresOn)
 	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*resp1.ExpiresOn).UTC().Format(http.TimeFormat))
 }
@@ -463,18 +463,18 @@ func (s *RecordedTestSuite) TestCreateFileWithExpiryNever() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = fClient.Delete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 }
 
@@ -495,18 +495,18 @@ func (s *RecordedTestSuite) TestCreateFileWithExpiryRelativeToNow() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	resp1, err := fClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp1.ExpiresOn)
 
 	time.Sleep(time.Second * 10)
@@ -530,18 +530,18 @@ func (s *RecordedTestSuite) TestCreateFileWithNeverExpire() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	resp1, err := fClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp1.ExpiresOn)
 }
 
@@ -560,23 +560,23 @@ func (s *RecordedTestSuite) TestCreateFileWithLease() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// should fail since leased
 	_, err = fClient.Create(context.Background(), createFileOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	time.Sleep(time.Second * 15)
 	resp, err = fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -597,18 +597,18 @@ func (s *RecordedTestSuite) TestCreateFileWithPermissions() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	resp2, err := fClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.Equal("rwxrwxrwx", *resp2.Permissions)
 }
@@ -634,14 +634,14 @@ func (s *RecordedTestSuite) TestCreateFileWithOwnerGroupACLUmask() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 }
@@ -656,21 +656,21 @@ func (s *RecordedTestSuite) TestDeleteFileWithNilAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	deleteOpts := &file.DeleteOptions{
 		AccessConditions: nil,
 	}
 
 	resp, err := fClient.Delete(context.Background(), deleteOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -684,14 +684,14 @@ func (s *RecordedTestSuite) TestDeleteFileIfModifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
 
@@ -704,7 +704,7 @@ func (s *RecordedTestSuite) TestDeleteFileIfModifiedSinceTrue() {
 	}
 
 	resp1, err := fClient.Delete(context.Background(), deleteOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp1)
 }
 
@@ -718,14 +718,14 @@ func (s *RecordedTestSuite) TestDeleteFileIfModifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -739,7 +739,7 @@ func (s *RecordedTestSuite) TestDeleteFileIfModifiedSinceFalse() {
 	}
 
 	_, err = fClient.Delete(context.Background(), deleteOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -753,14 +753,14 @@ func (s *RecordedTestSuite) TestDeleteFileIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -774,7 +774,7 @@ func (s *RecordedTestSuite) TestDeleteFileIfUnmodifiedSinceTrue() {
 	}
 
 	_, err = fClient.Delete(context.Background(), deleteOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -788,14 +788,14 @@ func (s *RecordedTestSuite) TestDeleteFileIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -809,7 +809,7 @@ func (s *RecordedTestSuite) TestDeleteFileIfUnmodifiedSinceFalse() {
 	}
 
 	_, err = fClient.Delete(context.Background(), deleteOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -824,14 +824,14 @@ func (s *RecordedTestSuite) TestDeleteFileIfETagMatch() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -845,7 +845,7 @@ func (s *RecordedTestSuite) TestDeleteFileIfETagMatch() {
 	}
 
 	_, err = fClient.Delete(context.Background(), deleteOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -859,14 +859,14 @@ func (s *RecordedTestSuite) TestDeleteFileIfETagMatchFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -880,7 +880,7 @@ func (s *RecordedTestSuite) TestDeleteFileIfETagMatchFalse() {
 	}
 
 	_, err = fClient.Delete(context.Background(), deleteOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -895,18 +895,18 @@ func (s *RecordedTestSuite) TestFileSetAccessControlNil() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = fClient.SetAccessControl(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	_require.Equal(err, datalakeerror.MissingParameters)
 }
@@ -931,18 +931,18 @@ func (s *RecordedTestSuite) TestFileSetAccessControl() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = fClient.SetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestFileSetAccessControlWithNilAccessConditions() {
@@ -965,18 +965,18 @@ func (s *RecordedTestSuite) TestFileSetAccessControlWithNilAccessConditions() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = fClient.SetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestFileSetAccessControlIfModifiedSinceTrue() {
@@ -992,14 +992,14 @@ func (s *RecordedTestSuite) TestFileSetAccessControlIfModifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -1015,7 +1015,7 @@ func (s *RecordedTestSuite) TestFileSetAccessControlIfModifiedSinceTrue() {
 	}
 
 	_, err = fClient.SetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestFileSetAccessControlIfModifiedSinceFalse() {
@@ -1031,14 +1031,14 @@ func (s *RecordedTestSuite) TestFileSetAccessControlIfModifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
 
@@ -1054,7 +1054,7 @@ func (s *RecordedTestSuite) TestFileSetAccessControlIfModifiedSinceFalse() {
 	}
 
 	_, err = fClient.SetAccessControl(context.Background(), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -1071,14 +1071,14 @@ func (s *RecordedTestSuite) TestFileSetAccessControlIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -1093,7 +1093,7 @@ func (s *RecordedTestSuite) TestFileSetAccessControlIfUnmodifiedSinceTrue() {
 		}}
 
 	_, err = fClient.SetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestFileSetAccessControlIfUnmodifiedSinceFalse() {
@@ -1109,14 +1109,14 @@ func (s *RecordedTestSuite) TestFileSetAccessControlIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -1133,7 +1133,7 @@ func (s *RecordedTestSuite) TestFileSetAccessControlIfUnmodifiedSinceFalse() {
 	}
 
 	_, err = fClient.SetAccessControl(context.Background(), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -1151,14 +1151,14 @@ func (s *RecordedTestSuite) TestFileSetAccessControlIfETagMatch() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 	etag := resp.ETag
 
@@ -1174,7 +1174,7 @@ func (s *RecordedTestSuite) TestFileSetAccessControlIfETagMatch() {
 	}
 
 	_, err = fClient.SetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestFileSetAccessControlIfETagMatchFalse() {
@@ -1190,14 +1190,14 @@ func (s *RecordedTestSuite) TestFileSetAccessControlIfETagMatchFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -1212,7 +1212,7 @@ func (s *RecordedTestSuite) TestFileSetAccessControlIfETagMatchFalse() {
 		}}
 
 	_, err = fClient.SetAccessControl(context.Background(), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -1230,18 +1230,18 @@ func (s *RecordedTestSuite) TestFileGetAccessControl() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	getACLResp, err := fClient.GetAccessControl(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1259,14 +1259,14 @@ func (s *UnrecordedTestSuite) TestFileGetAccessControlWithSAS() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// Adding SAS and options
@@ -1280,12 +1280,12 @@ func (s *UnrecordedTestSuite) TestFileGetAccessControlWithSAS() {
 	expiry := time.Now().Add(time.Hour)
 
 	sasURL, err := fClient.GetSASURL(permissions, expiry, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fClient2, _ := file.NewClientWithNoCredential(sasURL, nil)
 
 	getACLResp, err := fClient2.GetAccessControl(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1299,14 +1299,14 @@ func (s *UnrecordedTestSuite) TestFileDeleteWithSAS() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// Adding SAS and options
@@ -1320,12 +1320,12 @@ func (s *UnrecordedTestSuite) TestFileDeleteWithSAS() {
 	expiry := time.Now().Add(time.Hour)
 
 	sasURL, err := fClient.GetSASURL(permissions, expiry, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fClient2, _ := file.NewClientWithNoCredential(sasURL, nil)
 
 	_, err = fClient2.Delete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestFileGetAccessControlWithNilAccessConditions() {
@@ -1342,14 +1342,14 @@ func (s *RecordedTestSuite) TestFileGetAccessControlWithNilAccessConditions() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	opts := &file.GetAccessControlOptions{
@@ -1357,7 +1357,7 @@ func (s *RecordedTestSuite) TestFileGetAccessControlWithNilAccessConditions() {
 	}
 
 	getACLResp, err := fClient.GetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1375,14 +1375,14 @@ func (s *RecordedTestSuite) TestFileGetAccessControlIfModifiedSinceTrue() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -1395,7 +1395,7 @@ func (s *RecordedTestSuite) TestFileGetAccessControlIfModifiedSinceTrue() {
 	}
 
 	getACLResp, err := fClient.GetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1413,14 +1413,14 @@ func (s *RecordedTestSuite) TestFileGetAccessControlIfModifiedSinceFalse() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
 
@@ -1433,7 +1433,7 @@ func (s *RecordedTestSuite) TestFileGetAccessControlIfModifiedSinceFalse() {
 	}
 
 	_, err = fClient.GetAccessControl(context.Background(), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -1451,14 +1451,14 @@ func (s *RecordedTestSuite) TestFileGetAccessControlIfUnmodifiedSinceTrue() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -1470,7 +1470,7 @@ func (s *RecordedTestSuite) TestFileGetAccessControlIfUnmodifiedSinceTrue() {
 		}}
 
 	getACLResp, err := fClient.GetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1488,14 +1488,14 @@ func (s *RecordedTestSuite) TestFileGetAccessControlIfUnmodifiedSinceFalse() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -1509,7 +1509,7 @@ func (s *RecordedTestSuite) TestFileGetAccessControlIfUnmodifiedSinceFalse() {
 	}
 
 	_, err = fClient.GetAccessControl(context.Background(), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -1528,14 +1528,14 @@ func (s *RecordedTestSuite) TestFileGetAccessControlIfETagMatch() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 	etag := resp.ETag
 
@@ -1548,7 +1548,7 @@ func (s *RecordedTestSuite) TestFileGetAccessControlIfETagMatch() {
 	}
 
 	getACLResp, err := fClient.GetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1566,14 +1566,14 @@ func (s *RecordedTestSuite) TestFileGetAccessControlIfETagMatchFalse() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -1585,7 +1585,7 @@ func (s *RecordedTestSuite) TestFileGetAccessControlIfETagMatchFalse() {
 		}}
 
 	_, err = fClient.GetAccessControl(context.Background(), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -1604,21 +1604,21 @@ func (s *RecordedTestSuite) TestFileUpdateAccessControl() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = fClient.UpdateAccessControl(context.Background(), acl1, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getACLResp, err := fClient.GetAccessControl(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl1, *getACLResp.ACL)
 }
 
@@ -1635,18 +1635,18 @@ func (s *RecordedTestSuite) TestFileRemoveAccessControl() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = fClient.RemoveAccessControl(context.Background(), acl, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestFileSetMetadataWithBasicMetadata() {
@@ -1659,7 +1659,7 @@ func (s *RecordedTestSuite) TestFileSetMetadataWithBasicMetadata() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -1668,11 +1668,11 @@ func (s *RecordedTestSuite) TestFileSetMetadataWithBasicMetadata() {
 	defer testcommon.DeleteFile(context.Background(), _require, fClient)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = fClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestFileSetMetadataWithAccessConditions() {
@@ -1685,7 +1685,7 @@ func (s *RecordedTestSuite) TestFileSetMetadataWithAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -1694,7 +1694,7 @@ func (s *RecordedTestSuite) TestFileSetMetadataWithAccessConditions() {
 	defer testcommon.DeleteFile(context.Background(), _require, fClient)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -1707,12 +1707,12 @@ func (s *RecordedTestSuite) TestFileSetMetadataWithAccessConditions() {
 		},
 	}
 	_, err = fClient.SetMetadata(context.Background(), testcommon.BasicMetadata, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func validatePropertiesSet(_require *require.Assertions, fileClient *file.Client, disposition string) {
 	resp, err := fileClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*resp.ContentDisposition, disposition)
 }
 
@@ -1726,18 +1726,18 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeaders() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = fClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	validatePropertiesSet(_require, fClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
@@ -1751,14 +1751,14 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersWithNilAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	opts := &file.SetHTTPHeadersOptions{
@@ -1766,7 +1766,7 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersWithNilAccessConditions() {
 	}
 
 	_, err = fClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	validatePropertiesSet(_require, fClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
@@ -1780,14 +1780,14 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersIfModifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -1800,7 +1800,7 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersIfModifiedSinceTrue() {
 		},
 	}
 	_, err = fClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	validatePropertiesSet(_require, fClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
@@ -1814,14 +1814,14 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersIfModifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -1834,7 +1834,7 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersIfModifiedSinceFalse() {
 		},
 	}
 	_, err = fClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -1848,14 +1848,14 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -1868,7 +1868,7 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersIfUnmodifiedSinceTrue() {
 		},
 	}
 	_, err = fClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	validatePropertiesSet(_require, fClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
@@ -1882,14 +1882,14 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -1902,7 +1902,7 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = fClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -1916,14 +1916,14 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersIfETagMatch() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -1935,7 +1935,7 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersIfETagMatch() {
 			},
 		}}
 	_, err = fClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	validatePropertiesSet(_require, fClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
@@ -1949,14 +1949,14 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersIfETagMatchFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -1969,7 +1969,7 @@ func (s *RecordedTestSuite) TestFileSetHTTPHeadersIfETagMatchFalse() {
 		},
 	}
 	_, err = fClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -1983,19 +1983,19 @@ func (s *RecordedTestSuite) TestRenameNoOptions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
@@ -2010,14 +2010,14 @@ func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	renameFileOpts := &file.RenameOptions{
@@ -2026,7 +2026,7 @@ func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
 
 	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
@@ -2041,14 +2041,14 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -2062,7 +2062,7 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
 	}
 	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
@@ -2077,14 +2077,14 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -2100,7 +2100,7 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
 	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
 
@@ -2114,14 +2114,14 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -2136,7 +2136,7 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
 
 	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
@@ -2151,14 +2151,14 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -2174,7 +2174,7 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
 	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
 
@@ -2188,14 +2188,14 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -2210,7 +2210,7 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
 
 	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
@@ -2225,14 +2225,14 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -2248,7 +2248,7 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
 	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
 
@@ -2262,7 +2262,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStream() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 100 * 1024 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -2270,7 +2270,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStream() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
@@ -2312,7 +2312,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallStream() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -2320,7 +2320,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallStream() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, content := testcommon.GenerateData(int(fileSize))
@@ -2359,7 +2359,7 @@ func (s *RecordedTestSuite) TestFileUploadTinyStream() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 4
 	fileName := testcommon.GenerateFileName(testName)
@@ -2367,7 +2367,7 @@ func (s *RecordedTestSuite) TestFileUploadTinyStream() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, content := testcommon.GenerateData(int(fileSize))
@@ -2406,7 +2406,7 @@ func (s *UnrecordedTestSuite) TestFileUploadFile() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 100 * 1024 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -2414,7 +2414,7 @@ func (s *UnrecordedTestSuite) TestFileUploadFile() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// create local file
@@ -2474,7 +2474,7 @@ func (s *RecordedTestSuite) TestSmallFileUploadFile() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -2482,7 +2482,7 @@ func (s *RecordedTestSuite) TestSmallFileUploadFile() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// create local file
@@ -2541,7 +2541,7 @@ func (s *RecordedTestSuite) TestTinyFileUploadFile() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 10
 	fileName := testcommon.GenerateFileName(testName)
@@ -2549,7 +2549,7 @@ func (s *RecordedTestSuite) TestTinyFileUploadFile() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// create local file
@@ -2607,7 +2607,7 @@ func (s *UnrecordedTestSuite) TestFileUploadBuffer() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 100 * 1024 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -2615,7 +2615,7 @@ func (s *UnrecordedTestSuite) TestFileUploadBuffer() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
@@ -2655,7 +2655,7 @@ func (s *RecordedTestSuite) TestFileUploadSmallBuffer() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -2663,7 +2663,7 @@ func (s *RecordedTestSuite) TestFileUploadSmallBuffer() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, content := testcommon.GenerateData(int(fileSize))
@@ -2701,7 +2701,7 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushData() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -2709,7 +2709,7 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushData() {
 	_require.NoError(err)
 
 	resp, err := srcFClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -2736,7 +2736,7 @@ func (s *UnrecordedTestSuite) TestFileAppendAndFlushDataWithValidation() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -2744,7 +2744,7 @@ func (s *UnrecordedTestSuite) TestFileAppendAndFlushDataWithValidation() {
 	_require.NoError(err)
 
 	resp, err := srcFClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -2757,7 +2757,7 @@ func (s *UnrecordedTestSuite) TestFileAppendAndFlushDataWithValidation() {
 		TransactionalValidation: file.TransferValidationTypeComputeCRC64(),
 	}
 	putResp, err := srcFClient.AppendData(context.Background(), 0, rsc, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(putResp.RawResponse.StatusCode, 201)
 	_require.NotNil(putResp.ContentCRC64)
 	_require.EqualValues(binary.LittleEndian.Uint64(putResp.ContentCRC64), contentCRC64)
@@ -2780,7 +2780,7 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithEmptyOpts() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -2788,7 +2788,7 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithEmptyOpts() {
 	_require.NoError(err)
 
 	resp, err := srcFClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -2818,7 +2818,7 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithLeasedFile() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -2830,7 +2830,7 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithLeasedFile() {
 		LeaseDuration:   to.Ptr(int64(15)),
 	}
 	resp, err := srcFClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -2841,13 +2841,13 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithLeasedFile() {
 	}}
 
 	_, err = srcFClient.AppendData(context.Background(), 0, rsc, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	_, err = rsc.Seek(0, io.SeekStart)
 	_require.NoError(err)
 
 	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	opts1 := &file.FlushDataOptions{AccessConditions: &file.AccessConditions{LeaseAccessConditions: &file.LeaseAccessConditions{
 		LeaseID: proposedLeaseIDs[0],
@@ -2873,7 +2873,7 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushAndDownloadDataWithLeasedFile(
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -2885,7 +2885,7 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushAndDownloadDataWithLeasedFile(
 		LeaseDuration:   to.Ptr(int64(15)),
 	}
 	resp, err := srcFClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -2896,13 +2896,13 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushAndDownloadDataWithLeasedFile(
 	}}
 
 	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = rsc.Seek(0, io.SeekStart)
 	_require.NoError(err)
 
 	_, err = srcFClient.AppendData(context.Background(), int64(contentSize), rsc, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	opts1 := &file.FlushDataOptions{AccessConditions: &file.AccessConditions{LeaseAccessConditions: &file.LeaseAccessConditions{
 		LeaseID: proposedLeaseIDs[0],
@@ -2936,7 +2936,7 @@ func (s *RecordedTestSuite) TestAppendAndFlushFileWithHTTPHeaders() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -2944,7 +2944,7 @@ func (s *RecordedTestSuite) TestAppendAndFlushFileWithHTTPHeaders() {
 	_require.NoError(err)
 
 	resp, err := srcFClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -2974,7 +2974,7 @@ func (s *RecordedTestSuite) TestFlushWithNilAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -2982,7 +2982,7 @@ func (s *RecordedTestSuite) TestFlushWithNilAccessConditions() {
 	_require.NoError(err)
 
 	resp, err := srcFClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -3012,7 +3012,7 @@ func (s *RecordedTestSuite) TestFlushWithEmptyAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -3020,7 +3020,7 @@ func (s *RecordedTestSuite) TestFlushWithEmptyAccessConditions() {
 	_require.NoError(err)
 
 	resp, err := srcFClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -3052,7 +3052,7 @@ func (s *RecordedTestSuite) TestFlushIfModifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -3060,7 +3060,7 @@ func (s *RecordedTestSuite) TestFlushIfModifiedSinceTrue() {
 	_require.NoError(err)
 
 	resp, err := srcFClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -3095,7 +3095,7 @@ func (s *RecordedTestSuite) TestFlushIfModifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -3103,7 +3103,7 @@ func (s *RecordedTestSuite) TestFlushIfModifiedSinceFalse() {
 	_require.NoError(err)
 
 	resp, err := srcFClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -3122,7 +3122,7 @@ func (s *RecordedTestSuite) TestFlushIfModifiedSinceFalse() {
 		},
 	}
 	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *RecordedTestSuite) TestFlushIfUnmodifiedSinceTrue() {
@@ -3135,7 +3135,7 @@ func (s *RecordedTestSuite) TestFlushIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -3143,7 +3143,7 @@ func (s *RecordedTestSuite) TestFlushIfUnmodifiedSinceTrue() {
 	_require.NoError(err)
 
 	resp, err := srcFClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -3179,7 +3179,7 @@ func (s *RecordedTestSuite) TestFlushIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -3187,7 +3187,7 @@ func (s *RecordedTestSuite) TestFlushIfUnmodifiedSinceFalse() {
 	_require.NoError(err)
 
 	resp, err := srcFClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -3206,7 +3206,7 @@ func (s *RecordedTestSuite) TestFlushIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *RecordedTestSuite) TestFlushIfEtagMatch() {
@@ -3219,7 +3219,7 @@ func (s *RecordedTestSuite) TestFlushIfEtagMatch() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -3227,7 +3227,7 @@ func (s *RecordedTestSuite) TestFlushIfEtagMatch() {
 	_require.NoError(err)
 
 	resp, err := srcFClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -3262,7 +3262,7 @@ func (s *RecordedTestSuite) TestFlushIfEtagMatchFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcFileName := "src" + testcommon.GenerateFileName(testName)
 
@@ -3270,7 +3270,7 @@ func (s *RecordedTestSuite) TestFlushIfEtagMatchFalse() {
 	_require.NoError(err)
 
 	resp, err := srcFClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	contentSize := 1024 * 8 // 8KB
@@ -3307,7 +3307,7 @@ func (s *UnrecordedTestSuite) TestFileDownloadFile() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 100 * 1024 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -3315,7 +3315,7 @@ func (s *UnrecordedTestSuite) TestFileDownloadFile() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
@@ -3371,7 +3371,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFile() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -3379,7 +3379,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFile() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// create local file
@@ -3450,7 +3450,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithRange() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -3458,7 +3458,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithRange() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// create local file
@@ -3533,7 +3533,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithAccessConditions(
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -3541,7 +3541,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithAccessConditions(
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
 
@@ -3622,7 +3622,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadWithProgress() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -3630,7 +3630,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadWithProgress() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, content := testcommon.GenerateData(int(fileSize))
@@ -3683,7 +3683,7 @@ func (s *UnrecordedTestSuite) TestFileDownloadBuffer() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 100 * 1024 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -3691,7 +3691,7 @@ func (s *UnrecordedTestSuite) TestFileDownloadBuffer() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
@@ -3734,7 +3734,7 @@ func (s *RecordedTestSuite) TestFileDownloadSmallBuffer() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -3742,7 +3742,7 @@ func (s *RecordedTestSuite) TestFileDownloadSmallBuffer() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, content := testcommon.GenerateData(int(fileSize))
@@ -3783,7 +3783,7 @@ func (s *RecordedTestSuite) TestFileDownloadSmallBufferWithHTTPRange() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -3791,7 +3791,7 @@ func (s *RecordedTestSuite) TestFileDownloadSmallBufferWithHTTPRange() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, content := testcommon.GenerateData(int(fileSize))
@@ -3836,7 +3836,7 @@ func (s *RecordedTestSuite) TestFileDownloadSmallBufferWithAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
@@ -3844,7 +3844,7 @@ func (s *RecordedTestSuite) TestFileDownloadSmallBufferWithAccessConditions() {
 	_require.NoError(err)
 
 	resp, err := fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, content := testcommon.GenerateData(int(fileSize))
@@ -3896,14 +3896,14 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	fileName := testcommon.GenerateFileName(testName)
@@ -3911,14 +3911,14 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	_require.NoError(err)
 
 	resp, err = fClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// This tests file.NewClient
 	var respFromCtxFile *http.Response
 	ctxWithRespFile := runtime.WithCaptureResponse(context.Background(), &respFromCtxFile)
 	resp2, err := fClient.GetProperties(ctxWithRespFile, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxFile) // validate that the respFromCtx is actually populated
 	_require.Equal("file", respFromCtxFile.Header.Get("x-ms-resource-type"))
@@ -3928,22 +3928,22 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	var respFromCtxFs *http.Response
 	ctxWithRespFs := runtime.WithCaptureResponse(context.Background(), &respFromCtxFs)
 	resp2, err = fClient.GetProperties(ctxWithRespFs, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxFs) // validate that the respFromCtx is actually populated
 	_require.Equal("file", respFromCtxFs.Header.Get("x-ms-resource-type"))
 
 	// This tests service.NewClient
 	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	fsClient = serviceClient.NewFileSystemClient(filesystemName)
 	dirClient = fsClient.NewDirectoryClient(dirName)
 	fClient, err = dirClient.NewFileClient(fileName)
-	_require.Nil(err)
+	_require.NoError(err)
 	var respFromCtxService *http.Response
 	ctxWithRespService := runtime.WithCaptureResponse(context.Background(), &respFromCtxService)
 	resp2, err = fClient.GetProperties(ctxWithRespService, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxService) // validate that the respFromCtx is actually populated
 	_require.Equal("file", respFromCtxService.Header.Get("x-ms-resource-type"))
@@ -3952,11 +3952,11 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	var respFromCtxDir *http.Response
 	ctxWithRespDir := runtime.WithCaptureResponse(context.Background(), &respFromCtxDir)
 	dirClient, err = testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	fClient, err = dirClient.NewFileClient(fileName)
-	_require.Nil(err)
+	_require.NoError(err)
 	resp2, err = fClient.GetProperties(ctxWithRespDir, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxDir) // validate that the respFromCtx is actually populated
 	_require.Equal("file", respFromCtxDir.Header.Get("x-ms-resource-type"))

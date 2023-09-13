@@ -39,6 +39,7 @@ type confidentialClient struct {
 	host                     string
 	name                     string
 	opts                     confidentialClientOptions
+	region                   string
 }
 
 func newConfidentialClient(tenantID, clientID, name string, cred confidential.Credential, opts confidentialClientOptions) (*confidentialClient, error) {
@@ -59,6 +60,7 @@ func newConfidentialClient(tenantID, clientID, name string, cred confidential.Cr
 		name:     name,
 		noCAEMu:  &sync.Mutex{},
 		opts:     opts,
+		region:   os.Getenv(azureRegionalAuthorityName),
 		tenantID: tenantID,
 	}, nil
 }
@@ -132,7 +134,7 @@ func (c *confidentialClient) client(ctx context.Context, tro policy.TokenRequest
 func (c *confidentialClient) newMSALClient(enableCAE bool) (msalConfidentialClient, error) {
 	authority := runtime.JoinPaths(c.host, c.tenantID)
 	o := []confidential.Option{
-		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
+		confidential.WithAzureRegion(c.region),
 		confidential.WithHTTPClient(newPipelineAdapter(&c.opts.ClientOptions)),
 	}
 	if enableCAE {

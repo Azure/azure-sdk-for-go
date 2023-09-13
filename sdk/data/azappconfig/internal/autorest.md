@@ -9,12 +9,12 @@ input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/e01d8afe9be7633ed36db014af16d47fec01f737/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/1.0/appconfiguration.json
 - appconfiguration_ext.json
 license-header: MICROSOFT_MIT_NO_VERSION
-clear-output-folder: true
-output-folder: internal/generated
+clear-output-folder: false
+file-prefix: "zz_"
+output-folder: generated
 openapi-type: "data-plane"
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.44"
-export-clients: true
+use: "@autorest/go@4.0.0-preview.51"
 ```
 
 ### Fix up enums

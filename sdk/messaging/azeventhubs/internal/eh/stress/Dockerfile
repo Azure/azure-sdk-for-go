@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/oss/go/microsoft/golang:1.20 as build
+FROM mcr.microsoft.com/oss/go/microsoft/golang:1.20-cbl-mariner2.0 as build
 # you'll need to run this build from the root of the azeventhubs module
 ENV GOOS=linux 
 ENV GOARCH=amd64 

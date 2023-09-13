@@ -23,8 +23,13 @@ pr:
       - sdk/messaging/azeventgrid
 
 stages:
-  - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
-    parameters:
-      ServiceDirectory: "messaging/azeventgrid"
-      RunLiveTests: true
-      Location: westus2
+- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: "messaging/azeventgrid"
+    RunLiveTests: true
+    Location: westus2
+    EnvVars:
+      AZURE_CLIENT_ID: $(AZEVENTGRID_CLIENT_ID)
+      AZURE_TENANT_ID: $(AZEVENTGRID_TENANT_ID)
+      AZURE_CLIENT_SECRET: $(AZEVENTGRID_CLIENT_SECRET)
+      AZURE_SUBSCRIPTION_ID: $(AZEVENTGRID_SUBSCRIPTION_ID)

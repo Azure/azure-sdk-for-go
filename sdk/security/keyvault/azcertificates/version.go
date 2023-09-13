@@ -8,5 +8,5 @@ package azcertificates
 
 const (
 	moduleName = "azcertificates"
-	version    = "v0.11.1"
+	version    = "v1.0.1"
 )

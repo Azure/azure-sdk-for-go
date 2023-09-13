@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de14cb8751b978b1877597b13292818e80f8c661/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_ListByFleet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_ListByFleet.json
 func ExampleUpdateRunsClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,6 +57,9 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 			ETag: to.Ptr("\"EtagValue\""),
 		// 			Properties: &armcontainerservicefleet.UpdateRunProperties{
 		// 				ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
+		// 					NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
+		// 						Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
+		// 					},
 		// 					Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
 		// 						Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
 		// 						KubernetesVersion: to.Ptr("1.26.1"),
@@ -113,7 +116,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de14cb8751b978b1877597b13292818e80f8c661/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_Get.json
 func ExampleUpdateRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,6 +149,9 @@ func ExampleUpdateRunsClient_Get() {
 	// 	ETag: to.Ptr("\"EtagValue\""),
 	// 	Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 		ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
+	// 			NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
+	// 				Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
+	// 			},
 	// 			Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
 	// 				Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
 	// 				KubernetesVersion: to.Ptr("1.26.1"),
@@ -200,7 +206,7 @@ func ExampleUpdateRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de14cb8751b978b1877597b13292818e80f8c661/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_CreateOrUpdate.json
 func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,6 +220,9 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewUpdateRunsClient().BeginCreateOrUpdate(ctx, "rg1", "fleet1", "run1", armcontainerservicefleet.UpdateRun{
 		Properties: &armcontainerservicefleet.UpdateRunProperties{
 			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
+				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
+					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
+				},
 				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
 					Type:              to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
 					KubernetesVersion: to.Ptr("1.26.1"),
@@ -259,6 +268,9 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 	ETag: to.Ptr("\"EtagValue\""),
 	// 	Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 		ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
+	// 			NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
+	// 				Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
+	// 			},
 	// 			Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
 	// 				Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
 	// 				KubernetesVersion: to.Ptr("1.26.1"),
@@ -313,7 +325,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de14cb8751b978b1877597b13292818e80f8c661/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_Delete.json
 func ExampleUpdateRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -334,7 +346,7 @@ func ExampleUpdateRunsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de14cb8751b978b1877597b13292818e80f8c661/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_Start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_Start.json
 func ExampleUpdateRunsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -371,6 +383,9 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 	ETag: to.Ptr("\"EtagValue\""),
 	// 	Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 		ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
+	// 			NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
+	// 				Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
+	// 			},
 	// 			Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
 	// 				Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
 	// 				KubernetesVersion: to.Ptr("1.26.1"),
@@ -428,7 +443,7 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/de14cb8751b978b1877597b13292818e80f8c661/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_Stop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_Stop.json
 func ExampleUpdateRunsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -465,6 +480,9 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 	ETag: to.Ptr("\"EtagValue\""),
 	// 	Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 		ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
+	// 			NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
+	// 				Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
+	// 			},
 	// 			Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
 	// 				Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
 	// 				KubernetesVersion: to.Ptr("1.26.1"),

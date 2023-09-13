@@ -75,6 +75,8 @@ func TestFailedAck(t *testing.T) {
 	})
 
 	t.Run("ReleaseCloudEvents", func(t *testing.T) {
+		t.Skipf("Skipping, server-bug preventing release from working properly. https://github.com/Azure/azure-sdk-for-go/issues/21530")
+
 		resp, err := c.ReleaseCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.ReleaseOptions{
 			LockTokens: []string{*recvResp.Value[0].BrokerProperties.LockToken},
 		}, nil)
@@ -169,6 +171,8 @@ func TestReject(t *testing.T) {
 }
 
 func TestRelease(t *testing.T) {
+	t.Skipf("Skipping, server-bug preventing release from working properly. https://github.com/Azure/azure-sdk-for-go/issues/21530")
+
 	c := newClientWrapper(t, nil)
 
 	ce, err := messaging.NewCloudEvent("TestAbandon", "world", []byte("event one"), nil)
@@ -188,6 +192,14 @@ func TestRelease(t *testing.T) {
 		LockTokens: []string{*events.Value[0].BrokerProperties.LockToken},
 	}, nil)
 	require.NoError(t, err)
+
+	if len(rejectResp.FailedLockTokens) > 0 {
+		for _, flt := range rejectResp.FailedLockTokens {
+			t.Logf("FailedLockToken:\n  ec: %s\n  desc: %s\n  locktoken:%s", *flt.ErrorCode, *flt.ErrorDescription, *flt.LockToken)
+		}
+		require.Fail(t, "Failed to release events")
+	}
+
 	require.Empty(t, rejectResp.FailedLockTokens)
 
 	events, err = c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)

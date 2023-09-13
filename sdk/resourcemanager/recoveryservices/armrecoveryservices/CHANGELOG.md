@@ -1,5 +1,16 @@
 # Release History
 
+## 1.5.0 (2023-09-22)
+### Features Added
+
+- New enum type `MultiUserAuthorization` with values `MultiUserAuthorizationDisabled`, `MultiUserAuthorizationEnabled`, `MultiUserAuthorizationInvalid`
+- New enum type `SecureScoreLevel` with values `SecureScoreLevelAdequate`, `SecureScoreLevelMaximum`, `SecureScoreLevelMinimum`, `SecureScoreLevelNone`
+- New enum type `SoftDeleteState` with values `SoftDeleteStateAlwaysON`, `SoftDeleteStateDisabled`, `SoftDeleteStateEnabled`, `SoftDeleteStateInvalid`
+- New struct `SoftDeleteSettings`
+- New field `MultiUserAuthorization`, `SoftDeleteSettings` in struct `SecuritySettings`
+- New field `SecureScore` in struct `VaultProperties`
+
+
 ## 1.4.0 (2023-06-23)
 ### Features Added
 

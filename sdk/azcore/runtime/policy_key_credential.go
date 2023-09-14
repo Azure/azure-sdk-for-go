@@ -14,14 +14,13 @@ import (
 type KeyCredentialPolicy struct {
 	cred   *exported.KeyCredential
 	header string
-	format func(string) string
+	prefix string
 }
 
 // KeyCredentialPolicyOptions contains the optional values configuring [KeyCredentialPolicy].
 type KeyCredentialPolicyOptions struct {
-	// Format is used if the key needs special formatting (e.g. a prefix) before it's inserted into the HTTP request.
-	// The value passed to the callback is the raw key and the return value is the augmented key.
-	Format func(string) string
+	// Prefix is used if the key requires a prefix before it's inserted into the HTTP request.
+	Prefix string
 }
 
 // NewKeyCredentialPolicy creates a new instance of [KeyCredentialPolicy].
@@ -35,15 +34,15 @@ func NewKeyCredentialPolicy(cred *exported.KeyCredential, header string, options
 	return &KeyCredentialPolicy{
 		cred:   cred,
 		header: header,
-		format: options.Format,
+		prefix: options.Prefix,
 	}
 }
 
 // Do implementes the Do method on the [policy.Polilcy] interface.
 func (k *KeyCredentialPolicy) Do(req *policy.Request) (*http.Response, error) {
 	val := exported.KeyCredentialGet(k.cred)
-	if k.format != nil {
-		val = k.format(val)
+	if k.prefix != "" {
+		val = k.prefix + val
 	}
 	req.Raw().Header.Add(k.header, val)
 	return req.Next()

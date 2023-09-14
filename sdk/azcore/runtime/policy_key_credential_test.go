@@ -34,9 +34,7 @@ func TestKeyCredentialPolicy(t *testing.T) {
 	require.NoError(t, err)
 
 	policy = NewKeyCredentialPolicy(cred, headerName, &KeyCredentialPolicyOptions{
-		Format: func(s string) string {
-			return "Prefix: " + s
-		},
+		Prefix: "Prefix: ",
 	})
 	require.NotNil(t, policy)
 

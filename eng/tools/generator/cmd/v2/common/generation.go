@@ -306,6 +306,15 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 			}
 		}
 
+		// When sdk has major version bump, the live test needs to update the module referenced in the code.
+		if changelog.HasBreakingChanges() && existSuffixFile(packagePath, "_live_test.go") {
+			log.Printf("Replace live test module v2+...")
+			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, previousVersion, version.String(),
+				"", "_live_test.go"); err != nil {
+				return nil, err
+			}
+		}
+
 		// Example generation should be the last step because the package import relay on the new calculated version
 		if !generateParam.SkipGenerateExample {
 			log.Printf("Generate examples...")

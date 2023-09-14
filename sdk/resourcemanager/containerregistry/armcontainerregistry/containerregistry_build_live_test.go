@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/stretchr/testify/suite"
@@ -38,13 +39,13 @@ func (testsuite *ContainerregistryBuildTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/containerregistry/armcontainerregistry/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.agentPoolName = testutil.GenerateAlphaNumericID(testsuite.T(), "agentpooln", 6)
-	testsuite.registryName = testutil.GenerateAlphaNumericID(testsuite.T(), "registryna2", 6)
-	testsuite.taskName = testutil.GenerateAlphaNumericID(testsuite.T(), "taskname", 6)
-	testsuite.taskRunName = testutil.GenerateAlphaNumericID(testsuite.T(), "taskrunnam", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.agentPoolName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "agentpooln", 16, false)
+	testsuite.registryName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "registryna2", 17, false)
+	testsuite.taskName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "taskname", 14, false)
+	testsuite.taskRunName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "taskrunnam", 16, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)

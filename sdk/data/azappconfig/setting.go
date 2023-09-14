@@ -66,6 +66,15 @@ func settingFromGenerated(kv generated.KeyValue) Setting {
 	}
 }
 
+func toGeneratedETagString(etag *azcore.ETag) *string {
+	if etag == nil || *etag == azcore.ETagAny {
+		return (*string)(etag)
+	}
+
+	str := "\"" + (string)(*etag) + "\""
+	return &str
+}
+
 func (cs Setting) toGenerated() generated.KeyValue {
 	tags := make(map[string]*string)
 	for k, v := range cs.Tags {
@@ -81,5 +90,48 @@ func (cs Setting) toGenerated() generated.KeyValue {
 		Locked:       cs.IsReadOnly,
 		Tags:         tags,
 		Value:        cs.Value,
+	}
+}
+
+func (cs Setting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteLockOptions {
+	return &generated.AzureAppConfigurationClientDeleteLockOptions{
+		IfMatch: toGeneratedETagString(ifMatch),
+		Label:   cs.Label,
+	}
+}
+
+func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteKeyValueOptions {
+	return &generated.AzureAppConfigurationClientDeleteKeyValueOptions{
+		IfMatch: toGeneratedETagString(ifMatch),
+		Label:   cs.Label,
+	}
+}
+
+func (cs Setting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime *time.Time) *generated.AzureAppConfigurationClientGetKeyValueOptions {
+	var dt *string
+	if acceptDateTime != nil {
+		str := acceptDateTime.Format(timeFormat)
+		dt = &str
+	}
+
+	return &generated.AzureAppConfigurationClientGetKeyValueOptions{
+		AcceptDatetime: dt,
+		IfNoneMatch:    toGeneratedETagString(ifNoneMatch),
+		Label:          cs.Label,
+	}
+}
+
+func (cs Setting) toGeneratedPutLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientPutLockOptions {
+	return &generated.AzureAppConfigurationClientPutLockOptions{
+		IfMatch: toGeneratedETagString(ifMatch),
+		Label:   cs.Label,
+	}
+}
+
+func (cs Setting) toGeneratedPutOptions(ifMatch *azcore.ETag, ifNoneMatch *azcore.ETag) (generated.KeyValue, generated.AzureAppConfigurationClientPutKeyValueOptions) {
+	return cs.toGenerated(), generated.AzureAppConfigurationClientPutKeyValueOptions{
+		IfMatch:     toGeneratedETagString(ifMatch),
+		IfNoneMatch: toGeneratedETagString(ifNoneMatch),
+		Label:       cs.Label,
 	}
 }

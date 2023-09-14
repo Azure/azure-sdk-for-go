@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
@@ -23,15 +24,16 @@ import (
 type NamespaceTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	namespaceId       string
-	namespaceName     string
-	ruleSubnetId      string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx                   context.Context
+	cred                  azcore.TokenCredential
+	options               *arm.ClientOptions
+	namespaceId           string
+	namespaceName         string
+	ruleSubnetId          string
+	authorizationRuleName string
+	location              string
+	resourceGroupName     string
+	subscriptionId        string
 }
 
 func (testsuite *NamespaceTestSuite) SetupSuite() {
@@ -39,10 +41,11 @@ func (testsuite *NamespaceTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.namespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "namespac", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.namespaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "namespac", 14, false)
+	testsuite.authorizationRuleName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "namespaceauthoriz", 23, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -316,13 +319,12 @@ func (testsuite *NamespaceTestSuite) TestNamespacesNetworkRuleSet() {
 
 // Microsoft.ServiceBus/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}
 func (testsuite *NamespaceTestSuite) TestNamespacesAuthorization() {
-	authorizationRuleName := testutil.GenerateAlphaNumericID(testsuite.T(), "namespaceauthoriz", 6)
 	var err error
 	// From step Namespaces_CreateOrUpdateAuthorizationRule
 	fmt.Println("Call operation: Namespaces_CreateOrUpdateAuthorizationRule")
 	namespacesClient, err := armservicebus.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = namespacesClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, authorizationRuleName, armservicebus.SBAuthorizationRule{
+	_, err = namespacesClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, armservicebus.SBAuthorizationRule{
 		Properties: &armservicebus.SBAuthorizationRuleProperties{
 			Rights: []*armservicebus.AccessRights{
 				to.Ptr(armservicebus.AccessRightsListen),
@@ -342,24 +344,24 @@ func (testsuite *NamespaceTestSuite) TestNamespacesAuthorization() {
 
 	// From step Namespaces_GetAuthorizationRule
 	fmt.Println("Call operation: Namespaces_GetAuthorizationRule")
-	_, err = namespacesClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, authorizationRuleName, nil)
+	_, err = namespacesClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Namespaces_ListKeys
 	fmt.Println("Call operation: Namespaces_ListKeys")
-	_, err = namespacesClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, authorizationRuleName, nil)
+	_, err = namespacesClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Namespaces_RegenerateKeys
 	fmt.Println("Call operation: Namespaces_RegenerateKeys")
-	_, err = namespacesClient.RegenerateKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, authorizationRuleName, armservicebus.RegenerateAccessKeyParameters{
+	_, err = namespacesClient.RegenerateKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, armservicebus.RegenerateAccessKeyParameters{
 		KeyType: to.Ptr(armservicebus.KeyTypePrimaryKey),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Namespaces_DeleteAuthorizationRule
 	fmt.Println("Call operation: Namespaces_DeleteAuthorizationRule")
-	_, err = namespacesClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, authorizationRuleName, nil)
+	_, err = namespacesClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 }
 

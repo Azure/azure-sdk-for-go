@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
 	"github.com/stretchr/testify/suite"
@@ -29,6 +30,7 @@ type DisasterRecoveryConfigTestSuite struct {
 	namespaceName         string
 	primaryNamespaceId    string
 	primaryNamespaceName  string
+	alias                 string
 	location              string
 	resourceGroupName     string
 	subscriptionId        string
@@ -39,12 +41,13 @@ func (testsuite *DisasterRecoveryConfigTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.authorizationRuleName = testutil.GenerateAlphaNumericID(testsuite.T(), "namespaceauthoriz", 6)
-	testsuite.namespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "namespac", 6)
-	testsuite.primaryNamespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "promarynamespac", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.authorizationRuleName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "namespaceauthoriz", 23, false)
+	testsuite.namespaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "namespac", 14, false)
+	testsuite.primaryNamespaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "promarynamespac", 21, false)
+	testsuite.alias, _ = recording.GenerateAlphaNumericID(testsuite.T(), "drcalias", 14, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -107,7 +110,6 @@ func (testsuite *DisasterRecoveryConfigTestSuite) Prepare() {
 
 // Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}
 func (testsuite *DisasterRecoveryConfigTestSuite) TestDisasterRecoveryConfigs() {
-	alias := testutil.GenerateAlphaNumericID(testsuite.T(), "drcalias", 6)
 	var err error
 	// From step DisasterRecoveryConfigs_CheckNameAvailability
 	fmt.Println("Call operation: DisasterRecoveryConfigs_CheckNameAvailability")
@@ -120,7 +122,7 @@ func (testsuite *DisasterRecoveryConfigTestSuite) TestDisasterRecoveryConfigs() 
 
 	// From step DisasterRecoveryConfigs_CreateOrUpdate
 	fmt.Println("Call operation: DisasterRecoveryConfigs_CreateOrUpdate")
-	_, err = disasterRecoveryConfigsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, alias, armservicebus.ArmDisasterRecovery{
+	_, err = disasterRecoveryConfigsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.alias, armservicebus.ArmDisasterRecovery{
 		Properties: &armservicebus.ArmDisasterRecoveryProperties{
 			PartnerNamespace: to.Ptr(testsuite.primaryNamespaceId),
 		},
@@ -138,12 +140,12 @@ func (testsuite *DisasterRecoveryConfigTestSuite) TestDisasterRecoveryConfigs() 
 
 	// From step DisasterRecoveryConfigs_Get
 	fmt.Println("Call operation: DisasterRecoveryConfigs_Get")
-	_, err = disasterRecoveryConfigsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, alias, nil)
+	_, err = disasterRecoveryConfigsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.alias, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DisasterRecoveryConfigs_ListAuthorizationRules
 	fmt.Println("Call operation: DisasterRecoveryConfigs_ListAuthorizationRules")
-	disasterRecoveryConfigsClientNewListAuthorizationRulesPager := disasterRecoveryConfigsClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, alias, nil)
+	disasterRecoveryConfigsClientNewListAuthorizationRulesPager := disasterRecoveryConfigsClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, testsuite.alias, nil)
 	for disasterRecoveryConfigsClientNewListAuthorizationRulesPager.More() {
 		_, err := disasterRecoveryConfigsClientNewListAuthorizationRulesPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
@@ -152,11 +154,11 @@ func (testsuite *DisasterRecoveryConfigTestSuite) TestDisasterRecoveryConfigs() 
 
 	// From step DisasterRecoveryConfigs_GetAuthorizationRule
 	fmt.Println("Call operation: DisasterRecoveryConfigs_GetAuthorizationRule")
-	_, err = disasterRecoveryConfigsClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, alias, testsuite.authorizationRuleName, nil)
+	_, err = disasterRecoveryConfigsClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.alias, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DisasterRecoveryConfigs_ListKeys
 	fmt.Println("Call operation: DisasterRecoveryConfigs_ListKeys")
-	_, err = disasterRecoveryConfigsClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, alias, testsuite.authorizationRuleName, nil)
+	_, err = disasterRecoveryConfigsClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.alias, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 }

@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -49,19 +50,19 @@ func (testsuite *EventGridTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.domainName = testutil.GenerateAlphaNumericID(testsuite.T(), "domainname", 6)
-	testsuite.domainTopicName = testutil.GenerateAlphaNumericID(testsuite.T(), "domaintopi", 6)
-	testsuite.eventSubscriptionName = testutil.GenerateAlphaNumericID(testsuite.T(), "eventsubsc", 6)
-	testsuite.namespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "eventhubna", 6)
-	testsuite.partnerNamespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "partnernam", 6)
-	testsuite.partnerRegistrationName = testutil.GenerateAlphaNumericID(testsuite.T(), "partnerreg", 6)
-	testsuite.privateEndpointName = testutil.GenerateAlphaNumericID(testsuite.T(), "eventgridprivateendpoint", 6)
-	testsuite.systemTopicName = testutil.GenerateAlphaNumericID(testsuite.T(), "systemtopi", 6)
-	testsuite.topicName = testutil.GenerateAlphaNumericID(testsuite.T(), "topicname", 6)
-	testsuite.virtualNetworksName = testutil.GenerateAlphaNumericID(testsuite.T(), "eventgridvnet", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.domainName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "domainname", 16, false)
+	testsuite.domainTopicName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "domaintopi", 16, false)
+	testsuite.eventSubscriptionName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "eventsubsc", 16, false)
+	testsuite.namespaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "eventhubna", 16, false)
+	testsuite.partnerNamespaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "partnernam", 16, false)
+	testsuite.partnerRegistrationName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "partnerreg", 16, false)
+	testsuite.privateEndpointName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "eventgridprivateendpoint", 30, false)
+	testsuite.systemTopicName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "systemtopi", 16, false)
+	testsuite.topicName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "topicname", 15, false)
+	testsuite.virtualNetworksName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "eventgridvnet", 19, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name

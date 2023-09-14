@@ -892,6 +892,55 @@ func TestReceiverUnauthorizedCreds(t *testing.T) {
 	})
 }
 
+func TestReceiveAndSendAndReceive(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	scheduledEnqueuedTime := time.Now()
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("body text"),
+		ApplicationProperties: map[string]any{
+			"hello": "world",
+		},
+		ContentType:          to.Ptr("application/text"),
+		CorrelationID:        to.Ptr("correlation ID"),
+		MessageID:            to.Ptr("message id"),
+		PartitionKey:         to.Ptr("session id"),
+		ReplyTo:              to.Ptr("reply to"),
+		ReplyToSessionID:     to.Ptr("reply to session id"),
+		ScheduledEnqueueTime: &scheduledEnqueuedTime,
+		SessionID:            to.Ptr("session id"),
+		Subject:              to.Ptr("subject"),
+		TimeToLive:           to.Ptr(time.Minute),
+		To:                   to.Ptr("to"),
+	}, nil)
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	msgs, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, "body text", string(msgs[0].Body))
+
+	// re-send
+	err = sender.SendMessage(context.Background(), msgs[0].Message(), nil)
+	require.NoError(t, err)
+
+	// re-receive
+	rereceivedMsgs, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	require.Equal(t, msgs[0].Message(), rereceivedMsgs[0].Message(), "all sendable fields are preserved when resending")
+}
+
 type receivedMessageSlice []*ReceivedMessage
 
 func (messages receivedMessageSlice) Len() int {

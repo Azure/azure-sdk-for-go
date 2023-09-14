@@ -14,7 +14,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -29,12 +28,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
@@ -83,6 +84,93 @@ type BlockBlobUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
+func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	blobName := testName
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	bbClient, err := blockblob.NewClient(blobURL, cred, nil)
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+
+	// Prepare bbClient for copy.
+	resp, err := bbClient.Upload(context.Background(), rsc, nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientSharedKey() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	blobName := testName
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	cred, err := blob.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	bbClient, err := blockblob.NewClientWithSharedKeyCredential(blobURL, cred, nil)
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+
+	// Prepare bbClient for copy.
+	resp, err := bbClient.Upload(context.Background(), rsc, nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientConnectionString() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testName
+	connectionString, err := testcommon.GetGenericConnectionString(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	bbClient, err := blockblob.NewClientFromConnectionString(*connectionString, containerName, blobName, nil)
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+
+	// Prepare bbClient for copy.
+	resp, err := bbClient.Upload(context.Background(), rsc, nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+}
+
 //	func (s *BlockBlobRecordedTestsSuite) TestStageGetBlocks() {
 //		_require := require.New(s.T())
 //		testName := s.T().Name()
@@ -107,7 +195,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //			base64BlockIDs[index] = blockIDIntToBase64(index)
 //			io.NopCloser(strings.NewReader("hello world"))
 //			putResp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], streaming.NopCloser(strings.NewReader(d)), nil)
-//			_require.Nil(err)
+//			_require.NoError(err)
 //			//_require.Equal(putResp.RawResponse.StatusCode, 201)
 //			_require.Nil(putResp.ContentMD5)
 //			_require.NotNil(putResp.RequestID)
@@ -117,7 +205,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //		}
 //
 //		blockList, err := bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		// _require.Equal(blockList.RawResponse.StatusCode, 200)
 //		_require.Nil(blockList.LastModified)
 //		_require.Nil(blockList.ETag)
@@ -133,7 +221,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //		_require.Len(blockList.BlockList.UncommittedBlocks, len(data))
 //
 //		listResp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		// _require.Equal(listResp.RawResponse.StatusCode,  201)
 //		_require.NotNil(listResp.LastModified)
 //		_require.Equal((*listResp.LastModified).IsZero(), false)
@@ -144,7 +232,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //		_require.Equal((*listResp.Date).IsZero(), false)
 //
 //		blockList, err = bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		// _require.Equal(blockList.RawResponse.StatusCode, 200)
 //		_require.NotNil(blockList.LastModified)
 //		_require.Equal((*blockList.LastModified).IsZero(), false)
@@ -185,14 +273,14 @@ type BlockBlobUnrecordedTestsSuite struct {
 //
 //		// Prepare source bbClient for copy.
 //		_, err = srcBlob.Upload(context.Background(), rsc, nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
 //		// Get source blob url with SAS for StageFromURL.
 //		srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 //
 //		credential, err := testcommon.GetGenericSharedKeyCredential(nil, testcommon.TestAccountDefault)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //
 //		srcBlobParts.SAS, err = BlobSASSignatureValues{
 //			Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -201,7 +289,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //			BlobName:      srcBlobParts.BlobName,
 //			Permissions:   BlobSASPermissions{Read: true}.String(),
 //		}.Sign(credential)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //
 //		srcBlobURLWithSAS := srcBlobParts.URL()
 //
@@ -212,7 +300,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //			Offset: to.Ptr[int64](0),
 //			Count:  to.Ptr(int64(contentSize / 2)),
 //		})
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		// _require.Equal(stageResp1.RawResponse.StatusCode, 201)
 //		_require.NotEqual(stageResp1.ContentMD5, "")
 //		_require.NotEqual(stageResp1.RequestID, "")
@@ -223,7 +311,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //			Offset: to.Ptr(int64(contentSize / 2)),
 //			Count:  to.Ptr(int64(CountToEnd)),
 //		})
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		// _require.Equal(stageResp2.RawResponse.StatusCode, 201)
 //		_require.NotEqual(stageResp2.ContentMD5, "")
 //		_require.NotEqual(stageResp2.RequestID, "")
@@ -232,7 +320,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //
 //		// Check block list.
 //		blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		// _require.Equal(blockList.RawResponse.StatusCode, 200)
 //		_require.NotNil(blockList.BlockList)
 //		_require.Nil(blockList.BlockList.CommittedBlocks)
@@ -241,7 +329,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //
 //		// Commit block list.
 //		listResp, err := destBlob.CommitBlockList(context.Background(), blockIDs, nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		// _require.Equal(listResp.RawResponse.StatusCode,  201)
 //		_require.NotNil(listResp.LastModified)
 //		_require.Equal((*listResp.LastModified).IsZero(), false)
@@ -253,9 +341,9 @@ type BlockBlobUnrecordedTestsSuite struct {
 //
 //		// Check data integrity through downloading.
 //		downloadResp, err := destBlob.BlobClient.DownloadStream(context.Background(), nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		destData, err := io.ReadAll(downloadresp.BodyReader(nil))
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		_require.EqualValues(destData, content)
 //	}
 
@@ -279,12 +367,12 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithMD5() {
 
 	// Prepare source bbClient for copy.
 	_, err = srcBlob.Upload(context.Background(), rsc, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	_require.Nil(err)
+	_require.NoError(err)
 	perms := sas.BlobPermissions{Read: true}
 
 	srcBlobParts.SAS, err = sas.BlobSignatureValues{
@@ -306,16 +394,16 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithMD5() {
 	}
 
 	stageResp1, err := destBlob.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, &opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(stageResp1.ContentMD5, contentMD5[:])
 
 	stageResp2, err := destBlob.StageBlockFromURL(context.Background(), blockIDs[1], srcBlobURLWithSAS, &opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(stageResp2.ContentMD5, contentMD5[:])
 
 	// Check block list.
 	blockList, err := destBlob.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(blockList.BlockList)
 	_require.Nil(blockList.BlockList.CommittedBlocks)
 	_require.NotNil(blockList.BlockList.UncommittedBlocks)
@@ -323,13 +411,13 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithMD5() {
 
 	// Commit block list.
 	_, err = destBlob.CommitBlockList(context.Background(), blockIDs, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Check data integrity through downloading.
 	destBuffer := make([]byte, 4*1024)
 	downloadBufferOptions := blob.DownloadBufferOptions{Range: blob.HTTPRange{Offset: 0, Count: 4096}}
 	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
 
 	// Test stage block from URL with bad MD5 value
@@ -339,11 +427,11 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithMD5() {
 		SourceContentValidation: badMD5Validator,
 	}
 	_, err = destBlob.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, &opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
 
 	_, err = destBlob.StageBlockFromURL(context.Background(), blockIDs[1], srcBlobURLWithSAS, &opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
 }
 
@@ -369,12 +457,12 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 
 	// Prepare source bbClient for copy.
 	_, err = srcBlob.Upload(context.Background(), rsc, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	_require.Nil(err)
+	_require.NoError(err)
 	perms := sas.BlobPermissions{Read: true}
 
 	srcBlobParts.SAS, err = sas.BlobSignatureValues{
@@ -396,16 +484,16 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 	}
 
 	stageResp1, err := destBlob.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, &opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(stageResp1.ContentCRC64, crc)
 
 	stageResp2, err := destBlob.StageBlockFromURL(context.Background(), blockIDs[1], srcBlobURLWithSAS, &opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(stageResp2.ContentCRC64, crc)
 
 	// Check block list.
 	blockList, err := destBlob.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(blockList.BlockList)
 	_require.Nil(blockList.BlockList.CommittedBlocks)
 	_require.NotNil(blockList.BlockList.UncommittedBlocks)
@@ -413,13 +501,13 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 
 	// Commit block list.
 	_, err = destBlob.CommitBlockList(context.Background(), blockIDs, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Check data integrity through downloading.
 	destBuffer := make([]byte, 4*1024)
 	downloadBufferOptions := blob.DownloadBufferOptions{Range: blob.HTTPRange{Offset: 0, Count: 4096}}
 	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
 
 	// Test stage block from URL with bad CRC64 value
@@ -431,11 +519,11 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 		SourceContentValidation: blob.SourceContentValidationTypeCRC64(badCRC),
 	}
 	_, err = destBlob.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, &opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CRC64Mismatch)
 
 	_, err = destBlob.StageBlockFromURL(context.Background(), blockIDs[1], srcBlobURLWithSAS, &opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CRC64Mismatch)
 }
 
@@ -463,14 +551,14 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //
 //		// Prepare source bbClient for copy.
 //		_, err = srcBlob.Upload(context.Background(), streaming.NopCloser(body), nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
 //		// Get source blob url with SAS for StageFromURL.
 //		srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 //
 //		credential, err := testcommon.GetGenericSharedKeyCredential(nil, testcommon.TestAccountDefault)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //
 //		srcBlobParts.SAS, err = BlobSASSignatureValues{
 //			Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -491,7 +579,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //			Metadata:         map[string]string{"foo": "bar"},
 //			SourceContentMD5: sourceContentMD5,
 //		})
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		// _require.Equal(resp.RawResponse.StatusCode, 202)
 //		_require.NotNil(resp.ETag)
 //		_require.NotNil(resp.RequestID)
@@ -504,7 +592,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //
 //		// Make sure the metadata got copied over
 //		getPropResp, err := destBlob.GetProperties(context.Background(), nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		metadata := getPropResp.Metadata
 //		_require.NotNil(metadata)
 //		_require.Len(metadata, 1)
@@ -512,9 +600,9 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //
 //		// Check data integrity through downloading.
 //		downloadResp, err := destBlob.DownloadStream(context.Background(), nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		destData, err := io.ReadAll(downloadresp.BodyReader(nil))
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		_require.EqualValues(destData, content)
 //
 //		// Edge case 1: Provide bad MD5 and make sure the copy fails
@@ -523,14 +611,14 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //			SourceContentMD5: badMD5,
 //		}
 //		resp, err = destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
-//		_require.NotNil(err)
+//		_require.Error(err)
 //
 //		// Edge case 2: Not providing any source MD5 should see the CRC getting returned instead
 //		copyBlockBlobFromURLOptions2 := BlockBlobCopyFromURLOptions{
 //			SourceContentMD5: sourceContentMD5,
 //		}
 //		resp, err = destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		// _require.Equal(resp.RawResponse.StatusCode, 202)
 //		_require.EqualValues(*resp.CopyStatus, "success")
 //	}
@@ -557,7 +645,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //		bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
 //
 //		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(body), nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
 //		// Get blob url with SAS.
@@ -570,7 +658,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //		contentTypeVal := "content-type-override"
 //
 //		credential, err := testcommon.GetGenericSharedKeyCredential(nil, testcommon.TestAccountDefault)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		// Append User Delegation SAS token to URL
 //		blobParts.SAS, err = BlobSASSignatureValues{
 //			Protocol:           SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -584,17 +672,17 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 //			ContentLanguage:    contentLanguageVal,
 //			ContentType:        contentTypeVal,
 //		}.Sign(credential)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //
 //		// Generate new bbClient client
 //		blobURLWithSAS := blobParts.URL()
 //		_require.NotNil(blobURLWithSAS)
 //
 //		blobClientWithSAS, err := NewBlockBlobClientWithNoCredential(blobURLWithSAS, nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //
 //		gResp, err := blobClientWithSAS.GetProperties(context.Background(), nil)
-//		_require.Nil(err)
+//		_require.NoError(err)
 //		_require.Equal(*gResp.CacheControl, cacheControlVal)
 //		_require.Equal(*gResp.ContentDisposition, contentDispositionVal)
 //		_require.Equal(*gResp.ContentEncoding, contentEncodingVal)
@@ -627,7 +715,7 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &blockblob.StageBlockOptions{
 		TransactionalValidation: blob.TransferValidationTypeComputeCRC64(),
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(putResp.ContentCRC64)
 	_require.EqualValues(binary.LittleEndian.Uint64(putResp.ContentCRC64), contentCrc64)
 	_require.NotNil(putResp.RequestID)
@@ -660,7 +748,7 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithCRC64() {
 	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &blockblob.StageBlockOptions{
 		TransactionalValidation: blob.TransferValidationTypeCRC64(contentCrc64),
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(binary.LittleEndian.Uint64(putResp.ContentCRC64), contentCrc64)
 
 	// test put block with bad CRC64 value
@@ -670,7 +758,7 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithCRC64() {
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &blockblob.StageBlockOptions{
 		TransactionalValidation: blob.TransferValidationTypeCRC64(badContentCrc64),
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 // nolint
@@ -699,7 +787,7 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithMD5() {
 	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &blockblob.StageBlockOptions{
 		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5),
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(putResp.ContentMD5, contentMD5)
 	_require.NotNil(putResp.RequestID)
 	_require.NotNil(putResp.Version)
@@ -716,7 +804,7 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithMD5() {
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &blockblob.StageBlockOptions{
 		TransactionalValidation: blob.TransferValidationTypeMD5(badContentMD5),
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 	_require.Contains(err.Error(), bloberror.MD5Mismatch)
 }
 
@@ -743,7 +831,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobWithCRC64() {
 
 	blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	_, err = bbClient.StageBlock(context.Background(), blockID, streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = bbClient.Upload(context.Background(), rsc, &blockblob.UploadOptions{
 		TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value),
@@ -771,10 +859,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobHTTPHeaders() {
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(body), &blockblob.UploadOptions{
 		HTTPHeaders: &testcommon.BasicHeaders,
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	h := blob.ParseHTTPHeaders(resp)
 	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
 	_require.EqualValues(h, testcommon.BasicHeaders)
@@ -794,9 +882,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
-	_require.Nil(err)
+	_require.NoError(err)
 	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -808,22 +896,22 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
 		HTTPHeaders:                  &testcommon.BasicHeaders,
 	})
 
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	policy1 := blob.ImmutabilityPolicyMode("unlocked")
 	_require.Equal(resp.ImmutabilityPolicyMode, &policy1)
 
 	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = bbClient.Delete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcClient *service.Client) (*container.Client, *blockblob.Client, *blockblob.Client, string, []byte) {
@@ -840,11 +928,11 @@ func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcC
 	contentSize := 4 * 1024 // 4KB
 	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	_, err := srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Create SAS for source and get SAS URL
 	expiryTime := time.Now().UTC().Add(15 * time.Minute)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.NoError(err)
@@ -855,7 +943,7 @@ func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcC
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, Tag: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcBlobParts, _ := blob.ParseURL(srcBBClient.URL())
 	srcBlobParts.SAS = sasQueryParams
@@ -881,7 +969,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURL() {
 	// Download data from destination
 	destBuffer := make([]byte, 4*1024)
 	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
 }
 
@@ -1072,7 +1160,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlWithCPK() {
 	}
 
 	getResp, err := destBlob.GetProperties(context.Background(), &getBlobPropertiesOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(getResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
 }
 
@@ -1090,7 +1178,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlCPKScope() {
 	bbName := testcommon.GenerateBlobName(testName)
 	srcBlob := testcommon.CreateNewBlockBlobWithCPK(context.Background(), _require, bbName, containerClient, nil, &encryptionScope)
 	expiryTime := time.Now().UTC().Add(15 * time.Minute)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Create SAS credentials to get SAS URL for source
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
@@ -1104,7 +1192,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlCPKScope() {
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
@@ -1121,7 +1209,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlCPKScope() {
 
 	// Compare EncryptionScope info
 	getResp, err := destBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*getResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
 
@@ -1142,7 +1230,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 	}
 
 	resp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotEqual(*resp.ETag, "")
 	_require.NotEqual(*resp.RequestID, "")
 	_require.NotEqual(*resp.Version, "")
@@ -1155,7 +1243,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 		SourceContentMD5: badMD5,
 	}
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options2)
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchTrue() {
@@ -1169,7 +1257,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchTrue() {
 
 	// Get source properties
 	resp, err := srcBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Invoke UploadBlobFromURL
 	options := blockblob.UploadBlobFromURLOptions{
@@ -1179,16 +1267,16 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchTrue() {
 	}
 
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Get dest properties
 	_, err = destBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Download data from destination
 	destBuffer := make([]byte, 4*1024)
 	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
 }
 
@@ -1212,7 +1300,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfMatchFalse() {
 		SourceModifiedAccessConditions: &accessConditions,
 	}
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.SourceConditionNotMet)
 }
 
@@ -1232,12 +1320,12 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchTrue(
 		},
 	}
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Download data from destination
 	destBuffer := make([]byte, 4*1024)
 	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
 }
 
@@ -1252,7 +1340,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchFalse
 
 	// Get source properties
 	resp, err := srcBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Invoke UploadBlobFromURL, should fail and validate error
 	options := blockblob.UploadBlobFromURLOptions{
@@ -1262,7 +1350,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceIfNoneMatchFalse
 	}
 
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CannotVerifyCopySource)
 	_require.ErrorContains(err, "304")
 }
@@ -1277,7 +1365,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceTru
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	cResp, err := srcBlob.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Invoke UploadBlobFromURL
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
@@ -1290,10 +1378,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceTru
 	}
 
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = destBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceFalse() {
@@ -1306,7 +1394,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfModifiedSinceFal
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	cResp, err := srcBlob.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Invoke UploadBlobFromURL, should fail and validate error
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
@@ -1331,7 +1419,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceT
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	cResp, err := srcBlob.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Invoke UploadBlobFromURL
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
@@ -1343,10 +1431,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceT
 		},
 	}
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = destBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceFalse() {
@@ -1359,7 +1447,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceF
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	cResp, err := srcBlob.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Invoke UploadBlobFromURL
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
@@ -1372,7 +1460,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfUnmodifiedSinceF
 	}
 
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromUrlDestIfMatchTrue() {
@@ -1386,7 +1474,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromUrlDestIfMatchTrue() 
 
 	// Get ETag from dest blob
 	resp, err := destBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Invoke UploadBlobFromURL
 	options := blockblob.UploadBlobFromURLOptions{
@@ -1398,10 +1486,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromUrlDestIfMatchTrue() 
 	}
 
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err = destBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfMatchFalse() {
@@ -1415,7 +1503,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfMatchFalse() {
 
 	// Get ETag from dest blob
 	resp, err := destBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Invoke UploadBlobFromURL
 	options := blockblob.UploadBlobFromURLOptions{
@@ -1430,10 +1518,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfMatchFalse() {
 	metadata := make(map[string]*string)
 	metadata["bla"] = to.Ptr("bla")
 	_, err = destBlob.SetMetadata(context.Background(), metadata, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
@@ -1448,7 +1536,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchTrue() 
 
 	// Get Etag from dest blob
 	resp, err := destBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	options := blockblob.UploadBlobFromURLOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -1459,13 +1547,13 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchTrue() 
 	}
 
 	_, err = destBlob.SetMetadata(context.Background(), nil, nil) // SetMetadata changes the blob's etag
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err = destBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchFalse() {
@@ -1479,7 +1567,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchFalse()
 
 	// Get ETag from dest blob
 	resp, err := destBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Invoke PutBlobFromURL, should fail and validate error
 	options := blockblob.UploadBlobFromURLOptions{
@@ -1491,7 +1579,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlDestIfNoneMatchFalse()
 	}
 
 	_, err = destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
@@ -1506,10 +1594,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLCopySourceFalse() {
 
 	// Set tier to Cool and check tier has been set
 	_, err = srcBlob.SetTier(context.Background(), blob.AccessTierCool, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := srcBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(resp.AccessTier, to.Ptr("Cool"))
 
 	// Invoke UploadBlobForURL
@@ -1550,7 +1638,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 	contentSize := 4 * 1024 // 4KB
 	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Getting token
 	token, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
@@ -1567,7 +1655,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 	// Download data from destination
 	destBuffer := make([]byte, 4*1024)
 	_, err = srcBBClient.DownloadBuffer(context.Background(), destBuffer, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
 
 }
@@ -1590,7 +1678,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuthNegative()
 	contentSize := 4 * 1024 // 4KB
 	r, _ := testcommon.GetDataAndReader(testName, contentSize)
 	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	options := blockblob.UploadBlobFromURLOptions{
 		CopySourceAuthorization: to.Ptr("Bearer XXXXXXXXXXXXXX"),
@@ -1616,7 +1704,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithTier() {
 
 	// Create SAS for source and get SAS URL
 	expiryTime := time.Now().UTC().Add(15 * time.Minute)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.NoError(err)
@@ -1627,7 +1715,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithTier() {
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
@@ -1646,7 +1734,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithTier() {
 		_require.NoError(err)
 
 		getResp, err := destBlob.GetProperties(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.Equal(*getResp.AccessTier, string(tier))
 	}
 }
@@ -1665,13 +1753,13 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
-	_require.Nil(err)
+	_require.NoError(err)
 	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	blockIDs := testcommon.GenerateBlockIDsList(1)
 	_, err = bbClient.StageBlock(context.Background(), blockIDs[0], streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	legalHold := true
 	options := blockblob.CommitBlockListOptions{
@@ -1681,10 +1769,10 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
 	}
 
 	_, err = bbClient.CommitBlockList(context.Background(), blockIDs, &options)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	policy1 := blob.ImmutabilityPolicyMode("unlocked")
 	_require.Equal(resp.ImmutabilityPolicyMode, &policy1)
@@ -1692,13 +1780,13 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
 	time.Sleep(time.Second * 7)
 
 	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = bbClient.Delete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobMetadataNotEmpty() {
@@ -1719,10 +1807,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobMetadataNotEmpty() {
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(body), &blockblob.UploadOptions{
 		Metadata: testcommon.BasicMetadata,
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	actualMetadata := resp.Metadata
 	_require.NotNil(actualMetadata)
 	_require.EqualValues(actualMetadata, testcommon.BasicMetadata)
@@ -1746,10 +1834,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobMetadataEmpty() {
 	rsc := streaming.NopCloser(body)
 
 	_, err = bbClient.Upload(context.Background(), rsc, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.Metadata)
 }
 
@@ -1773,7 +1861,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobMetadataInvalid() {
 	_, err = bbClient.Upload(context.Background(), rsc, &blockblob.UploadOptions{
 		Metadata: map[string]*string{"In valid!": to.Ptr("bar")},
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 	_require.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring)
 }
 
@@ -1791,7 +1879,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 	bbClient := testcommon.GetBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
@@ -1809,7 +1897,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 			},
 		},
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 	testcommon.ValidateUpload(context.Background(), _require, bbClient)
 }
 
@@ -1827,7 +1915,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	bbClient := testcommon.GetBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
@@ -1849,7 +1937,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	}
 
 	_, err = bbClient.Upload(context.Background(), rsc, &uploadBlockBlobOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
@@ -1868,7 +1956,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 	bbClient := testcommon.GetBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
@@ -1889,7 +1977,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 		},
 	}
 	_, err = bbClient.Upload(context.Background(), rsc, &uploadBlockBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	testcommon.ValidateUpload(context.Background(), _require, bbClient)
 }
@@ -1908,7 +1996,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 	bbClient := testcommon.GetBlockBlobClient(blockBlobName, containerClient)
 
 	createResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
@@ -1944,7 +2032,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfMatchTrue() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -1957,7 +2045,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfMatchTrue() {
 			},
 		},
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	testcommon.ValidateUpload(context.Background(), _require, bbClient)
 }
@@ -1976,7 +2064,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfMatchFalse() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	_, err = bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -1990,7 +2078,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfMatchFalse() {
 		},
 	}
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(body), &uploadBlockBlobOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
@@ -2008,7 +2096,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfNoneMatchTrue() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	_, err = bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -2024,7 +2112,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfNoneMatchTrue() {
 	}
 
 	_, err = bbClient.Upload(context.Background(), rsc, &uploadBlockBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	testcommon.ValidateUpload(context.Background(), _require, bbClient)
 }
@@ -2043,7 +2131,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfNoneMatchFalse() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -2062,7 +2150,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfNoneMatchFalse() {
 
 func validateBlobCommitted(_require *require.Assertions, bbClient *blockblob.Client) {
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(resp.BlockList.CommittedBlocks, 1)
 }
 
@@ -2078,7 +2166,7 @@ func setupPutBlockListTest(t *testing.T, _require *require.Assertions, testName 
 
 	blockIDs := testcommon.GenerateBlockIDsList(1)
 	_, err = bbClient.StageBlock(context.Background(), blockIDs[0], streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	return containerClient, bbClient, blockIDs
 }
 
@@ -2091,13 +2179,13 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListHTTPHeadersEmpty() {
 	_, err := bbClient.CommitBlockList(context.Background(), blockIDs, &blockblob.CommitBlockListOptions{
 		HTTPHeaders: &blob.HTTPHeaders{BlobContentDisposition: &testcommon.BlobContentDisposition},
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = bbClient.CommitBlockList(context.Background(), blockIDs, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ContentDisposition)
 }
 
@@ -2108,7 +2196,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfModifiedSinceTrue() 
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(context.Background(), blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(commitBlockListResp.Date)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
@@ -2117,7 +2205,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfModifiedSinceTrue() 
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateBlobCommitted(_require, bbClient)
 }
@@ -2129,7 +2217,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfModifiedSinceFalse()
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	getPropertyResp, err := containerClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(getPropertyResp.Date)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(getPropertyResp.Date, 10)
@@ -2150,7 +2238,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue(
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(context.Background(), blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(commitBlockListResp.Date)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(commitBlockListResp.Date, 10)
@@ -2159,7 +2247,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue(
 		AccessConditions: &blob.AccessConditions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
 	}
 	_, err = bbClient.CommitBlockList(context.Background(), blockIDs, &commitBlockListOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateBlobCommitted(_require, bbClient)
 }
@@ -2171,7 +2259,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(context.Background(), blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(commitBlockListResp.Date)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
@@ -2192,13 +2280,13 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfMatchTrue() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	resp, err := bbClient.CommitBlockList(context.Background(), blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = bbClient.CommitBlockList(context.Background(), blockIDs, &blockblob.CommitBlockListOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: resp.ETag}},
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateBlobCommitted(_require, bbClient)
 }
@@ -2210,7 +2298,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfMatchFalse() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	_, err := bbClient.CommitBlockList(context.Background(), blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_require.Nil(err)
+	_require.NoError(err)
 
 	eTag := azcore.ETag("garbage")
 	commitBlockListOptions := blockblob.CommitBlockListOptions{
@@ -2228,14 +2316,14 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfNoneMatchTrue() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	_, err := bbClient.CommitBlockList(context.Background(), blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_require.Nil(err)
+	_require.NoError(err)
 
 	eTag := azcore.ETag("garbage")
 	commitBlockListOptions := blockblob.CommitBlockListOptions{
 		AccessConditions: &blob.AccessConditions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: &eTag}},
 	}
 	_, err = bbClient.CommitBlockList(context.Background(), blockIDs, &commitBlockListOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateBlobCommitted(_require, bbClient)
 }
@@ -2247,7 +2335,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfNoneMatchFalse() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	resp, err := bbClient.CommitBlockList(context.Background(), blockIDs, nil) // The bbClient must actually exist to have a modifed time
-	_require.Nil(err)
+	_require.NoError(err)
 
 	commitBlockListOptions := blockblob.CommitBlockListOptions{
 		AccessConditions: &blob.AccessConditions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: resp.ETag}},
@@ -2264,12 +2352,12 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListValidateData() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	_, err := bbClient.CommitBlockList(context.Background(), blockIDs, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.DownloadStream(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	data, err := io.ReadAll(resp.Body)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(string(data), testcommon.BlockBlobDefaultData)
 }
 
@@ -2280,22 +2368,22 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListModifyBlob() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	_, err := bbClient.CommitBlockList(context.Background(), blockIDs, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = bbClient.StageBlock(context.Background(), "0001", streaming.NopCloser(bytes.NewReader([]byte("new data"))), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = bbClient.StageBlock(context.Background(), "0010", streaming.NopCloser(bytes.NewReader([]byte("new data"))), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = bbClient.StageBlock(context.Background(), "0011", streaming.NopCloser(bytes.NewReader([]byte("new data"))), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = bbClient.StageBlock(context.Background(), "0100", streaming.NopCloser(bytes.NewReader([]byte("new data"))), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = bbClient.CommitBlockList(context.Background(), []string{"0001", "0011"}, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(resp.BlockList.CommittedBlocks, 2)
 	committed := resp.BlockList.CommittedBlocks
 	_require.Equal(*(committed[0].Name), "0001")
@@ -2322,10 +2410,10 @@ func (s *BlockBlobRecordedTestsSuite) TestSetTierOnBlobUpload() {
 			Tier:        &tier,
 		}
 		_, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &uploadBlockBlobOptions)
-		_require.Nil(err)
+		_require.NoError(err)
 
 		resp, err := bbClient.GetProperties(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.Equal(*resp.AccessTier, string(tier))
 	}
 }
@@ -2346,15 +2434,15 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierOnCommit() {
 
 		blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 		_, err := bbClient.StageBlock(context.Background(), blockID, streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 
 		_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
 			Tier: &tier,
 		})
-		_require.Nil(err)
+		_require.NoError(err)
 
 		resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeCommitted, nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.NotNil(resp.BlockList)
 		_require.NotNil(resp.BlockList.CommittedBlocks)
 		_require.Nil(resp.BlockList.UncommittedBlocks)
@@ -2385,7 +2473,7 @@ func (s *BlockBlobRecordedTestsSuite) TestCommitBlockListWithMD5() {
 
 	blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	_, err = bbClient.StageBlock(context.Background(), blockID, streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// CommitBlockList is a multipart upload, user generated checksum cannot be passed
 	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
@@ -2415,7 +2503,7 @@ func (s *BlockBlobRecordedTestsSuite) TestCommitBlockListWithCRC64() {
 
 	blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	_, err = bbClient.StageBlock(context.Background(), blockID, streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// CommitBlockList is a multipart upload, user generated checksum cannot be passed
 	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
@@ -2440,11 +2528,11 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURLWithEncryptionSc
 
 	srcBlob := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
 	_, err = srcBlob.Upload(context.Background(), streaming.NopCloser(contentReader), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Get source blob url with SAS for StageFromURL.
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	sasQueryParams, err := sas.AccountSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,
@@ -2452,7 +2540,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURLWithEncryptionSc
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
@@ -2462,7 +2550,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURLWithEncryptionSc
 	destBlob := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(destBlobName))
 
 	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
-	_require.Nil(err)
+	_require.NoError(err)
 	cpk := blob.CPKScopeInfo{
 		EncryptionScope: to.Ptr(encryptionScope),
 	}
@@ -2470,7 +2558,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURLWithEncryptionSc
 		CPKScopeInfo: &cpk,
 	}
 	resp, err := destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*resp.CopyStatus, "success")
 	_require.Equal(*resp.EncryptionScope, encryptionScope)
 }
@@ -2492,12 +2580,12 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 
 	tier := blob.AccessTierCool
 	_, err = srcBlob.Upload(context.Background(), streaming.NopCloser(contentReader), &blockblob.UploadOptions{Tier: &tier})
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
-	_require.Nil(err)
+	_require.NoError(err)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	if err != nil {
@@ -2509,7 +2597,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
@@ -2524,12 +2612,12 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 			Metadata: testcommon.BasicMetadata,
 		}
 		resp, err := destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
-		_require.Nil(err)
+		_require.NoError(err)
 		// _require.Equal(resp.RawResponse.StatusCode, 202)
 		_require.Equal(*resp.CopyStatus, "success")
 
 		destBlobPropResp, err := destBlob.GetProperties(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.Equal(*destBlobPropResp.AccessTier, string(tier))
 	}
 }
@@ -2553,7 +2641,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5
 
 	// Prepare source bbClient for copy.
 	_, err = srcBlob.Upload(context.Background(), streaming.NopCloser(body), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.NoError(err)
@@ -2565,7 +2653,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
@@ -2576,7 +2664,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5
 	resp, err := destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &blob.CopyFromURLOptions{
 		SourceContentMD5: sourceContentMD5,
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(resp.ContentMD5, sourceContentMD5)
 
 	// Provide bad MD5 and make sure the copy fails
@@ -2584,7 +2672,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5
 	resp, err = destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &blob.CopyFromURLOptions{
 		SourceContentMD5: badMD5,
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 // func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnStageBlockFromURL() {
@@ -2608,13 +2696,13 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5
 //	destBlob := containerClient.NewBlockBlobClient("dst" + testcommon.GenerateBlobName(testName))
 //	tier := AccessTierCool
 //	_, err = srcBlob.Upload(context.Background(), rsc, &blockblob.UploadOptions{Tier: &tier})
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
 //	// Get source blob url with SAS for StageFromURL.
 //	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 //	credential, err := testcommon.GetGenericSharedKeyCredential(nil, testcommon.TestAccountDefault)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	srcBlobParts.SAS, err = blob.SASSignatureValues{
 //		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 //		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
@@ -2636,7 +2724,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5
 //		Count:  &count1,
 //	}
 //	stageResp1, err := destBlob.StageBlockFromURL(context.Background(), blockID1, srcBlobURLWithSAS, 0, &options1)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(stageResp1.RawResponse.StatusCode, 201)
 //	_require.Nil(stageResp1.ContentMD5)
 //	_require.NotEqual(*stageResp1.RequestID, "")
@@ -2650,7 +2738,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5
 //		Count:  &count2,
 //	}
 //	stageResp2, err := destBlob.StageBlockFromURL(context.Background(), blockID2, srcBlobURLWithSAS, 0, &options2)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(stageResp2.RawResponse.StatusCode, 201)
 //	_require.NotEqual(stageResp2.ContentMD5, "")
 //	_require.NotEqual(stageResp2.RequestID, "")
@@ -2659,7 +2747,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5
 //
 //	// Check block list.
 //	blockList, err := destBlob.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(blockList.RawResponse.StatusCode, 200)
 //	_require.NotNil(blockList.BlockList)
 //	_require.Nil(blockList.BlockList.CommittedBlocks)
@@ -2670,7 +2758,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5
 //	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &blockblob.CommitBlockListOptions{
 //		Tier: &tier,
 //	})
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(listResp.RawResponse.StatusCode,  201)
 //	_require.NotNil(listResp.LastModified)
 //	_require.Equal((*listResp.LastModified).IsZero(), false)
@@ -2682,14 +2770,14 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5
 //
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.DownloadStream(context.Background(), nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	_require.EqualValues(destData, content)
 //
 //	// Get properties to validate the tier
 //	destBlobPropResp, err := destBlob.GetProperties(context.Background(), nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	_require.Equal(*destBlobPropResp.AccessTier, string(tier))
 // }
 
@@ -2710,17 +2798,17 @@ func (s *BlockBlobRecordedTestsSuite) TestSetStandardBlobTierWithRehydratePriori
 	_, err = bbClient.SetTier(context.Background(), standardTier, &blob.SetTierOptions{
 		RehydratePriority: &rehydratePriority,
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp1, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*getResp1.AccessTier, string(standardTier))
 
 	_, err = bbClient.SetTier(context.Background(), rehydrateTier, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp2, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*getResp2.ArchiveStatus, string(blob.ArchiveStatusRehydratePendingToCool))
 }
 
@@ -2741,14 +2829,14 @@ func (s *BlockBlobRecordedTestsSuite) TestRehydrateStatus() {
 	bbClient1 := testcommon.GetBlockBlobClient(blobName1, containerClient)
 	reader1, _ := testcommon.GenerateData(1024)
 	_, err = bbClient1.Upload(context.Background(), reader1, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = bbClient1.SetTier(context.Background(), blob.AccessTierArchive, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = bbClient1.SetTier(context.Background(), blob.AccessTierCool, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp1, err := bbClient1.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*getResp1.AccessTier, string(blob.AccessTierArchive))
 	_require.Equal(*getResp1.ArchiveStatus, string(blob.ArchiveStatusRehydratePendingToCool))
 
@@ -2756,7 +2844,7 @@ func (s *BlockBlobRecordedTestsSuite) TestRehydrateStatus() {
 	var blobs []*container.BlobItem
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		blobs = append(blobs, resp.ListBlobsFlatSegmentResponse.Segment.BlobItems...)
 		if err != nil {
 			break
@@ -2771,14 +2859,14 @@ func (s *BlockBlobRecordedTestsSuite) TestRehydrateStatus() {
 	bbClient2 := testcommon.GetBlockBlobClient(blobName2, containerClient)
 	reader2, _ := testcommon.GenerateData(1024)
 	_, err = bbClient2.Upload(context.Background(), reader2, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = bbClient2.SetTier(context.Background(), blob.AccessTierArchive, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = bbClient2.SetTier(context.Background(), blob.AccessTierHot, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp2, err := bbClient2.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*getResp2.AccessTier, string(blob.AccessTierArchive))
 	_require.Equal(*getResp2.ArchiveStatus, string(blob.ArchiveStatusRehydratePendingToHot))
 
@@ -2787,14 +2875,14 @@ func (s *BlockBlobRecordedTestsSuite) TestRehydrateStatus() {
 	bbClient3 := testcommon.GetBlockBlobClient(blobName3, containerClient)
 	reader3, _ := testcommon.GenerateData(1024)
 	_, err = bbClient3.Upload(context.Background(), reader3, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = bbClient3.SetTier(context.Background(), blob.AccessTierArchive, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = bbClient3.SetTier(context.Background(), blob.AccessTierCold, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp3, err := bbClient3.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*getResp3.AccessTier, string(blob.AccessTierArchive))
 	_require.Equal(*getResp3.ArchiveStatus, string(blob.ArchiveStatusRehydratePendingToCold))
 }
@@ -2820,17 +2908,17 @@ func (s *BlockBlobRecordedTestsSuite) TestCopyBlobWithRehydratePriority() {
 		RehydratePriority: &rehydratePriority,
 		Tier:              &blobTier,
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp1, err := destBBClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*getResp1.AccessTier, string(blobTier))
 
 	_, err = destBBClient.SetTier(context.Background(), blob.AccessTierHot, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp2, err := destBBClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*getResp2.ArchiveStatus, string(blob.ArchiveStatusRehydratePendingToHot))
 }
 
@@ -2857,7 +2945,7 @@ func (s *BlockBlobRecordedTestsSuite) TestCopyWithTier() {
 		_require.NoError(err)
 
 		getResp, err := destBlob.GetProperties(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.Equal(*getResp.AccessTier, string(tier))
 	}
 }
@@ -2874,10 +2962,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobServiceClientDelete() {
 
 func setAndCheckBlockBlobTier(_require *require.Assertions, bbClient *blockblob.Client, tier blob.AccessTier) {
 	_, err := bbClient.SetTier(context.Background(), tier, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*resp.AccessTier, string(tier))
 }
 
@@ -2921,7 +3009,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobGetPropertiesUsingVID() {
 		},
 	}
 	uploadResp, err := bbClient.Upload(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), &uploadBlockBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(uploadResp.VersionID)
 	blobProp, _ = bbClient.GetProperties(context.Background(), nil)
 	_require.EqualValues(uploadResp.VersionID, blobProp.VersionID)
@@ -2943,33 +3031,33 @@ func (s *BlockBlobRecordedTestsSuite) TestGetSetBlobMetadataWithCPK() {
 
 	// Set blob metadata without encryption key should fail the request.
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
 		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	resp, err := bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
 
 	// Get blob properties without encryption key should fail the request.
 	_, err = bbClient.GetProperties(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	getBlobPropertiesOptions := blob.GetPropertiesOptions{
 		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	getResp, err := bbClient.GetProperties(context.Background(), &getBlobPropertiesOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(getResp.Metadata)
 	_require.Len(getResp.Metadata, len(testcommon.BasicMetadata))
 	_require.EqualValues(getResp.Metadata, testcommon.BasicMetadata)
 
 	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{}, &setBlobMetadataOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp, err = bbClient.GetProperties(context.Background(), &getBlobPropertiesOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(getResp.Metadata)
 }
 
@@ -2987,26 +3075,26 @@ func (s *BlockBlobRecordedTestsSuite) TestGetSetBlobMetadataWithCPKScope() {
 
 	// Set blob metadata without encryption key should fail the request.
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
 		CPKScopeInfo: &encryptionScope,
 	}
 	resp, err := bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*resp.EncryptionScope, *encryptionScope.EncryptionScope)
 
 	getResp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(getResp.Metadata)
 	_require.Len(getResp.Metadata, len(testcommon.BasicMetadata))
 	_require.EqualValues(getResp.Metadata, testcommon.BasicMetadata)
 
 	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{}, &setBlobMetadataOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp, err = bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(getResp.Metadata)
 }
 
@@ -3023,19 +3111,19 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPK() {
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.
 	_, err = bbClient.CreateSnapshot(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	createBlobSnapshotOptions := blob.CreateSnapshotOptions{
 		CPKInfo: &testcommon.TestInvalidCPKByValue,
 	}
 	_, err = bbClient.CreateSnapshot(context.Background(), &createBlobSnapshotOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	createBlobSnapshotOptions1 := blob.CreateSnapshotOptions{
 		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	resp, err := bbClient.CreateSnapshot(context.Background(), &createBlobSnapshotOptions1)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*resp.IsServerEncrypted, false)
 
 	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
@@ -3043,15 +3131,15 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPK() {
 		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	dResp, err := snapshotURL.DownloadStream(context.Background(), &downloadBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*dResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
 
 	_, err = snapshotURL.Delete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Get blob properties of snapshot without encryption key should fail the request.
 	_, err = snapshotURL.GetProperties(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	// _assert(err.(StorageError).Response().StatusCode, chk.Equals, 404)
 }
@@ -3070,19 +3158,19 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPKScope() {
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.
 	_, err = bbClient.CreateSnapshot(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	createBlobSnapshotOptions := blob.CreateSnapshotOptions{
 		CPKScopeInfo: &testcommon.TestInvalidCPKByScope,
 	}
 	_, err = bbClient.CreateSnapshot(context.Background(), &createBlobSnapshotOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	createBlobSnapshotOptions1 := blob.CreateSnapshotOptions{
 		CPKScopeInfo: &encryptionScope,
 	}
 	resp, err := bbClient.CreateSnapshot(context.Background(), &createBlobSnapshotOptions1)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*resp.IsServerEncrypted, false)
 
 	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
@@ -3090,11 +3178,11 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPKScope() {
 		CPKScopeInfo: &encryptionScope,
 	}
 	dResp, err := snapshotURL.DownloadStream(context.Background(), &downloadBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(*dResp.EncryptionScope, *encryptionScope.EncryptionScope)
 
 	_, err = snapshotURL.Delete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
@@ -3112,15 +3200,15 @@ func (s *BlockBlobRecordedTestsSuite) TestCreateAndDownloadBlobSpecialCharacters
 		blobName := "abc" + string(data[i])
 		blobClient := containerClient.NewBlockBlobClient(blobName)
 		resp, err := blobClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(string(data[i]))), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.NotNil(resp.VersionID)
 
 		blobClientWithVersionID, err := blobClient.WithVersionID(*resp.VersionID)
-		_require.Nil(err)
+		_require.NoError(err)
 		dResp, err := blobClientWithVersionID.DownloadStream(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		d1, err := io.ReadAll(dResp.Body)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.NotEqual(*dResp.Version, "")
 		_require.EqualValues(string(d1), string(data[i]))
 		_require.NotNil(dResp.VersionID)
@@ -3144,7 +3232,7 @@ func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 		uploadResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &blockblob.UploadOptions{
 			Metadata: testcommon.BasicMetadata,
 		})
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.NotNil(uploadResp.VersionID)
 		versions = append(versions, *uploadResp.VersionID)
 	}
@@ -3156,7 +3244,7 @@ func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 	found := make([]*container.BlobItem, 0)
 	for listPager.More() {
 		resp, err := listPager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		if err != nil {
 			break
 		}
@@ -3167,9 +3255,9 @@ func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 	// Deleting the 2nd and 3rd versions
 	for i := 0; i < 3; i++ {
 		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
-		_require.Nil(err)
+		_require.NoError(err)
 		_, err = bbClientWithVersionID.Delete(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		// _require.Equal(deleteResp.RawResponse.StatusCode, 202)
 	}
 
@@ -3180,7 +3268,7 @@ func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 	found = make([]*container.BlobItem, 0)
 	for listPager.More() {
 		resp, err := listPager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		if err != nil {
 			break
 		}
@@ -3190,11 +3278,11 @@ func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 
 	for i := 3; i < 5; i++ {
 		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
-		_require.Nil(err)
+		_require.NoError(err)
 		downloadResp, err := bbClientWithVersionID.DownloadStream(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		destData, err := io.ReadAll(downloadResp.Body)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.EqualValues(destData, "data"+strconv.Itoa(i))
 	}
 }
@@ -3215,7 +3303,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobVersion() {
 		uploadResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &blockblob.UploadOptions{
 			Metadata: testcommon.BasicMetadata,
 		})
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.NotNil(uploadResp.VersionID)
 		versions = append(versions, *uploadResp.VersionID)
 	}
@@ -3228,9 +3316,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobVersion() {
 	// Deleting the 1st, 2nd and 3rd versions
 	for i := 0; i < 3; i++ {
 		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
-		_require.Nil(err)
+		_require.NoError(err)
 		_, err = bbClientWithVersionID.Delete(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 	}
 
 	// adding wait after delete
@@ -3242,7 +3330,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobVersion() {
 	testcommon.ListBlobsCount(context.Background(), _require, listPager, 2)
 
 	_, err = bbClient.Undelete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// adding wait after undelete
 	time.Sleep(time.Second * 10)
@@ -3269,7 +3357,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobSnapshot() {
 	snapshots := make([]string, 0)
 	for i := 0; i < 5; i++ {
 		resp, err := bbClient.CreateSnapshot(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.NotNil(resp.Snapshot)
 		snapshots = append(snapshots, *resp.Snapshot)
 	}
@@ -3282,9 +3370,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobSnapshot() {
 	// Deleting the 1st, 2nd and 3rd snapshots
 	for i := 0; i < 3; i++ {
 		bbClientWithSnapshot, err := bbClient.WithSnapshot(snapshots[i])
-		_require.Nil(err)
+		_require.NoError(err)
 		_, err = bbClientWithSnapshot.Delete(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 	}
 
 	// adding wait after delete
@@ -3296,7 +3384,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobSnapshot() {
 	testcommon.ListBlobsCount(context.Background(), _require, listPager, 3) // 2 snapshots and 1 current version
 
 	_, err = bbClient.Undelete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// adding wait after undelete
 	time.Sleep(time.Second * 10)
@@ -3326,20 +3414,20 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockListReturnsVID() {
 	for index, d := range data {
 		base64BlockIDs[index] = testcommon.BlockIDIntToBase64(index)
 		resp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], streaming.NopCloser(strings.NewReader(d)), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.NotNil(resp.Version)
 		_require.NotEqual(*resp.Version, "")
 	}
 
 	commitResp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(commitResp.VersionID)
 
 	contentResp, err := bbClient.DownloadStream(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	contentData, err := io.ReadAll(contentResp.Body)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
 }
 
@@ -3360,12 +3448,12 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 
 	// Prepare source blob for copy.
 	uploadResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.NotNil(uploadResp.VersionID)
 
 	csResp, err := bbClient.CreateSnapshot(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(csResp.RawResponse.StatusCode, 201)
 	_require.NotNil(csResp.VersionID)
 
@@ -3376,7 +3464,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	found := make([]*container.BlobItem, 0)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		found = append(found, resp.Segment.BlobItems...)
 		if err != nil {
 			break
@@ -3386,7 +3474,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 
 	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
 	_, err = bbClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(deleteResp.RawResponse.StatusCode, 202)
 
 	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
@@ -3396,7 +3484,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	found = make([]*container.BlobItem, 0)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		found = append(found, resp.Segment.BlobItems...)
 		if err != nil {
 			break
@@ -3421,7 +3509,7 @@ func (s *BlockBlobRecordedTestsSuite) TestORSSource() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
 
 	getResp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(getResp.ObjectReplicationRules)
 }
 
@@ -3555,15 +3643,15 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTags() {
 	r, _ := testcommon.GenerateData(contentSize)
 
 	_, err = bbClient.Upload(context.Background(), r, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 
 	_, err = bbClient.SetTags(context.Background(), blobTagsMap, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
 
 	blobGetTagsResponse, err := bbClient.GetTags(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
@@ -3593,30 +3681,30 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 	r, _ := testcommon.GenerateData(contentSize)
 
 	_, err = bbClient.Upload(context.Background(), r, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	blobLeaseClient, err := lease.NewBlobClient(bbClient, &lease.BlobClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 	_require.NoError(err)
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, int32(60), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.LeaseID())
 
 	_, err = bbClient.SetTags(ctx, blobTagsMap, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	_, err = bbClient.SetTags(ctx, blobTagsMap, &blob.SetTagsOptions{AccessConditions: &blob.AccessConditions{
 		LeaseAccessConditions: &blob.LeaseAccessConditions{LeaseID: blobLeaseClient.LeaseID()}}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = bbClient.GetTags(ctx, nil)
 	_require.NoError(err)
 
 	blobGetTagsResponse, err := bbClient.GetTags(ctx, &blob.GetTagsOptions{BlobAccessConditions: &blob.AccessConditions{
 		LeaseAccessConditions: &blob.LeaseAccessConditions{LeaseID: blobLeaseClient.LeaseID()}}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
@@ -3643,12 +3731,12 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithVID() {
 	}
 
 	blockBlobUploadResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("data"))), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 	versionId1 := blockBlobUploadResp.VersionID
 
 	blockBlobUploadResp, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("updated_data"))), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 	versionId2 := blockBlobUploadResp.VersionID
 
@@ -3656,14 +3744,14 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithVID() {
 		VersionID: versionId1,
 	}
 	_, err = bbClient.SetTags(context.Background(), blobTagsMap, &setTagsBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
 
 	getTagsBlobOptions1 := blob.GetTagsOptions{
 		VersionID: versionId1,
 	}
 	blobGetTagsResponse, err := bbClient.GetTags(context.Background(), &getTagsBlobOptions1)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	_require.NotNil(blobGetTagsResponse.BlobTagSet)
 	_require.Len(blobGetTagsResponse.BlobTagSet, 3)
@@ -3675,7 +3763,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithVID() {
 		VersionID: versionId2,
 	}
 	blobGetTagsResponse, err = bbClient.GetTags(context.Background(), &getTagsBlobOptions2)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	_require.Nil(blobGetTagsResponse.BlobTagSet)
 }
@@ -3704,12 +3792,12 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlockBlobWithSpecialCharacters
 		Tags:        blobTagsMap,
 	}
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	// TODO: Check for metadata and header
 	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 
 	blobGetTagsResponse, err := bbClient.GetTags(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	_require.Len(blobGetTagsResponse.BlobTagSet, 3)
 	for _, blobTag := range blobGetTagsResponse.BlobTagSet {
@@ -3736,7 +3824,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 	for index, d := range data {
 		base64BlockIDs[index] = testcommon.BlockIDIntToBase64(index)
 		resp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], streaming.NopCloser(strings.NewReader(d)), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.NotEqual(*resp.Version, "")
 	}
@@ -3751,21 +3839,21 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 		Tags: blobTagsMap,
 	}
 	commitResp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, &commitBlockListOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(commitResp.VersionID)
 	versionId := commitResp.VersionID
 
 	contentResp, err := bbClient.DownloadStream(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	contentData, err := io.ReadAll(contentResp.Body)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
 
 	getTagsBlobOptions := blob.GetTagsOptions{
 		VersionID: versionId,
 	}
 	blobGetTagsResp, err := bbClient.GetTags(context.Background(), &getTagsBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(blobGetTagsResp)
 	_require.Len(blobGetTagsResp.BlobTagSet, 3)
 	for _, blobTag := range blobGetTagsResp.BlobTagSet {
@@ -3773,7 +3861,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 	}
 
 	blobGetTagsResp, err = bbClient.GetTags(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(blobGetTagsResp)
 	_require.Len(blobGetTagsResp.BlobTagSet, 3)
 	for _, blobTag := range blobGetTagsResp.BlobTagSet {
@@ -3812,7 +3900,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //		Tags: blobTagsMap,
 //	}
 //	uploadSrcResp, err := srcBlob.Upload(context.Background(), r, &uploadBlockBlobOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //	uploadDate := uploadSrcResp.Date
 //
@@ -3841,7 +3929,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //		Count:  &count1,
 //	}
 //	stageResp1, err := destBlob.StageBlockFromURL(context.Background(), blockID1, srcBlobURLWithSAS, 0, &options1)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(stageResp1.RawResponse.StatusCode, 201)
 //	_require.NotEqual(*stageResp1.RequestID, "")
 //	_require.NotEqual(*stageResp1.Version, "")
@@ -3854,7 +3942,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //		Count:  &count2,
 //	}
 //	stageResp2, err := destBlob.StageBlockFromURL(context.Background(), blockID2, srcBlobURLWithSAS, 0, &options2)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(stageResp2.RawResponse.StatusCode, 201)
 //	_require.NotEqual(*stageResp2.RequestID, "")
 //	_require.NotEqual(*stageResp2.Version, "")
@@ -3862,7 +3950,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //	_require.Equal((*stageResp2.Date).IsZero(), false)
 //
 //	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(blockList.RawResponse.StatusCode, 200)
 //	_require.Nil(blockList.BlockList.CommittedBlocks)
 //	_require.Len(blockList.BlockList.UncommittedBlocks, 2)
@@ -3871,21 +3959,21 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //		Tags: blobTagsMap,
 //	}
 //	_, err = destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(listResp.RawResponse.StatusCode,  201)
 //	//versionId := listResp.VersionID()
 //
 //	blobGetTagsResp, err := destBlob.GetTags(context.Background(), nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	_require.Len(blobGetTagsResp.BlobTagSet, 3)
 //	for _, blobTag := range blobGetTagsResp.BlobTagSet {
 //		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
 //	}
 //
 //	downloadResp, err := destBlob.DownloadStream(context.Background(), nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	_require.EqualValues(destData, sourceData)
 // }
 
@@ -3920,7 +4008,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //		Tags: blobTagsMap,
 //	}
 //	_, err = srcBlob.Upload(context.Background(), r, &uploadBlockBlobOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
 //	// Get source blob url with SAS for StageFromURL.
@@ -3944,7 +4032,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //		SourceContentMD5: sourceContentMD5,
 //	}
 //	resp, err := destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(resp.RawResponse.StatusCode, 202)
 //	_require.NotEqual(*resp.ETag, "")
 //	_require.NotEqual(*resp.RequestID, "")
@@ -3955,9 +4043,9 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //	_require.EqualValues(*resp.CopyStatus, "success")
 //
 //	downloadResp, err := destBlob.DownloadStream(context.Background(), nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	destData, err := io.ReadAll(downloadresp.BodyReader(nil))
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	_require.EqualValues(destData, sourceData)
 //	_require.Equal(*downloadResp.TagCount, int64(1))
 //
@@ -3967,13 +4055,13 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //		SourceContentMD5: badMD5,
 //	}
 //	_, err = destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
-//	_require.NotNil(err)
+//	_require.Error(err)
 //
 //	copyBlockBlobFromURLOptions3 := BlockBlobCopyFromURLOptions{
 //		Tags: blobTagsMap,
 //	}
 //	resp, err = destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &copyBlockBlobFromURLOptions3)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(resp.RawResponse.StatusCode, 202)
 // }
 
@@ -3994,14 +4082,14 @@ func (s *BlockBlobUnrecordedTestsSuite) TestGetPropertiesReturnsTagsCount() {
 		Metadata:    testcommon.BasicMetadata,
 	}
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getPropertiesResponse, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*getPropertiesResponse.TagCount, int64(3))
 
 	downloadResp, err := bbClient.DownloadStream(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(downloadResp)
 	_require.Equal(*downloadResp.TagCount, int64(3))
 }
@@ -4024,14 +4112,14 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagForSnapshot() {
 		"GO ":             ".Net",
 	}
 	_, err = bbClient.SetTags(context.Background(), blobTagsMap, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.CreateSnapshot(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
 	resp2, err := snapshotURL.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*resp2.TagCount, int64(3))
 }
 
@@ -4054,7 +4142,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 	}
 
 	_, err = blobClient.SetTags(context.Background(), blobTagsMap, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(resp.RawResponse.StatusCode,204)
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
@@ -4064,7 +4152,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 	found := make([]*container.BlobItem, 0)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		found = append(found, resp.Segment.BlobItems...)
 		if err != nil {
 			break
@@ -4101,30 +4189,30 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 	blobName1 := testcommon.GenerateBlobName(testName) + "1"
 	blobClient1 := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName1, containerClient)
 	_, err = blobClient1.SetTags(context.Background(), blobTagsMap1, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	blobName2 := testcommon.GenerateBlobName(testName) + "2"
 	blobClient2 := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName2, containerClient)
 	_, err = blobClient2.SetTags(context.Background(), blobTagsMap2, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	time.Sleep(10 * time.Second)
 
 	blobTagsResp, err := blobClient2.GetTags(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	blobTagsSet := blobTagsResp.BlobTagSet
 	_require.NotNil(blobTagsSet)
 
 	// Test invalid tag
 	where := "\"tag4\"='fourthtag'"
 	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(len(lResp.Blobs), 0)
 
 	// Test multiple valid tags
 	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
 	// where := "foo=\"value 1\""
 	lResp, err = svcClient.FilterBlobs(context.Background(), where, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 2)
 	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[1])
 	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[1], blobTagsSet[2])
@@ -4132,7 +4220,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 	// Test tags with spaces
 	where = "\"tag key\"='tag value'"
 	lResp, err = svcClient.FilterBlobs(context.Background(), where, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
 	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[0])
 
@@ -4176,11 +4264,11 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 //
 //	blobTagsMap := BlobTags{"tag1": "firsttag", "tag2": "secondtag", "tag3": "thirdtag"}
 //	setBlobTagsResp, err := blobClient.SetTags(context.Background(), nil, nil, nil, nil, nil, nil, blobTagsMap)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	_assert(setBlobTagsResp.StatusCode(), chk.Equals, 204)
 //
 //	blobGetTagsResp, err := blobClient.GetTags(context.Background(), nil, nil, nil, nil, nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	_assert(blobGetTagsResp.StatusCode(), chk.Equals, 200)
 //	_assert(blobGetTagsResp.BlobTagSet, chk.HasLen, 3)
 //	for _, blobTag := range blobGetTagsResp.BlobTagSet {
@@ -4190,7 +4278,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 //	time.Sleep(30 * time.Second)
 //	where := "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND@container='" + containerName + "'"
 //	_, err = serviceURL.FindBlobsByTags(context.Background(), nil, nil, &where, Marker{}, nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 // }
 
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPK() {
@@ -4212,14 +4300,14 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPK() {
 			CPKInfo: &testcommon.TestCPKByValue,
 		}
 		_, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], streaming.NopCloser(strings.NewReader(word)), &stageBlockOptions)
-		_require.Nil(err)
+		_require.NoError(err)
 	}
 
 	commitBlockListOptions := blockblob.CommitBlockListOptions{
 		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	resp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, &commitBlockListOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_require.NotNil(resp.ETag)
 	_require.NotNil(resp.LastModified)
@@ -4228,14 +4316,14 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPK() {
 
 	// Get blob content without encryption key should fail the request.
 	_, err = bbClient.DownloadStream(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := blob.DownloadStreamOptions{
 		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	getResp, err := bbClient.DownloadStream(context.Background(), &downloadBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	b := bytes.Buffer{}
 	_, err = b.ReadFrom(getResp.Body)
 	_require.NoError(err)
@@ -4265,14 +4353,14 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 			CPKScopeInfo: &encryptionScope,
 		}
 		_, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], streaming.NopCloser(strings.NewReader(word)), &stageBlockOptions)
-		_require.Nil(err)
+		_require.NoError(err)
 	}
 
 	commitBlockListOptions := blockblob.CommitBlockListOptions{
 		CPKScopeInfo: &encryptionScope,
 	}
 	resp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, &commitBlockListOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp.ETag)
 	_require.NotNil(resp.LastModified)
 	_require.Equal(*resp.IsServerEncrypted, true)
@@ -4282,17 +4370,17 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	_, err = bbClient.DownloadStream(context.Background(), &downloadBlobOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	downloadBlobOptions = blob.DownloadStreamOptions{
 		CPKScopeInfo: &encryptionScope,
 	}
 	getResp, err := bbClient.DownloadStream(context.Background(), &downloadBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	b := bytes.Buffer{}
 	reader := getResp.Body
 	_, err = b.ReadFrom(reader)
-	_require.Nil(err)
+	_require.NoError(err)
 	_ = reader.Close() // The client must close the response body when finished with it
 	_require.Equal(b.String(), "AAA BBB CCC ")
 	_require.EqualValues(*getResp.ETag, *resp.ETag)
@@ -4319,13 +4407,13 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //	srcBlob := containerClient.NewBlockBlobClient("srcblob")
 //	destBlob := containerClient.NewBlockBlobClient("destblob")
 //	_, err = srcBlob.Upload(context.Background(), rsc, nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 //
 //	// Get source blob url with SAS for StageFromURL.
 //	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 //	credential, err := getGenericCredential(nil, testcommon.TestAccountDefault)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	srcBlobParts.SAS, err = BlobSASSignatureValues{
 //		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 //		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
@@ -4348,7 +4436,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	stageResp1, err := destBlob.StageBlockFromURL(context.Background(), blockID1, srcBlobURLWithSAS, 0, &options1)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(stageResp1.RawResponse.StatusCode, 201)
 //	_require.NotEqual(stageResp1.ContentMD5, "")
 //	_require.NotEqual(stageResp1.RequestID, "")
@@ -4363,7 +4451,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	stageResp2, err := destBlob.StageBlockFromURL(context.Background(), blockID2, srcBlobURLWithSAS, 0, &options2)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(stageResp2.RawResponse.StatusCode, 201)
 //	_require.NotEqual(stageResp2.ContentMD5, "")
 //	_require.NotEqual(stageResp2.RequestID, "")
@@ -4372,7 +4460,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //
 //	// Check block list.
 //	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(blockList.RawResponse.StatusCode, 200)
 //	_require.NotNil(blockList.BlockList)
 //	_require.Nil(blockList.BlockList.CommittedBlocks)
@@ -4384,7 +4472,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(listResp.RawResponse.StatusCode,  201)
 //	_require.NotNil(listResp.LastModified)
 //	_require.Equal((*listResp.LastModified).IsZero(), false)
@@ -4396,7 +4484,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //
 //	// Check block list.
 //	blockList, err = destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(blockList.RawResponse.StatusCode, 200)
 //	_require.NotNil(blockList.BlockList)
 //	_require.Nil(blockList.BlockList.UncommittedBlocks)
@@ -4405,15 +4493,15 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //
 //	// Check data integrity through downloading.
 //	_, err = destBlob.BlobClient.DownloadStream(context.Background(), nil)
-//	_require.NotNil(err)
+//	_require.Error(err)
 //
 //	downloadBlobOptions := blob.downloadWriterAtOptions{
 //		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	downloadResp, err := destBlob.BlobClient.DownloadStream(context.Background(), &downloadBlobOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	destData, err := io.ReadAll(downloadResp.Body)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	_require.EqualValues(destData, content)
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
 // }
@@ -4435,13 +4523,13 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //	srcBlob := containerClient.NewBlockBlobClient("srcblob")
 //	destBlob := containerClient.NewBlockBlobClient("destblob")
 //	_, err = srcBlob.Upload(context.Background(), rsc, nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 //
 //	// Get source blob url with SAS for StageFromURL.
 //	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 //	credential, err := getGenericCredential(nil, testcommon.TestAccountDefault)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	srcBlobParts.SAS, err = BlobSASSignatureValues{
 //		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 //		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
@@ -4464,7 +4552,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //		CPKScopeInfo: &testcommon.TestCPKByScope,
 //	}
 //	stageResp1, err := destBlob.StageBlockFromURL(context.Background(), blockID1, srcBlobURLWithSAS, 0, &options1)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(stageResp1.RawResponse.StatusCode, 201)
 //	_require.NotEqual(stageResp1.ContentMD5, "")
 //	_require.NotEqual(stageResp1.RequestID, "")
@@ -4479,7 +4567,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //		CPKScopeInfo: &testcommon.TestCPKByScope,
 //	}
 //	stageResp2, err := destBlob.StageBlockFromURL(context.Background(), blockID2, srcBlobURLWithSAS, 0, &options2)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(stageResp2.RawResponse.StatusCode, 201)
 //	_require.NotEqual(stageResp2.ContentMD5, "")
 //	_require.NotEqual(stageResp2.RequestID, "")
@@ -4488,7 +4576,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //
 //	// Check block list.
 //	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(blockList.RawResponse.StatusCode, 200)
 //	_require.NotNil(blockList.BlockList)
 //	_require.Nil(blockList.BlockList.CommittedBlocks)
@@ -4500,7 +4588,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //		CPKScopeInfo: &testcommon.TestCPKByScope,
 //	}
 //	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(listResp.RawResponse.StatusCode, 201)
 //	_require.NotNil(listResp.LastModified)
 //	_require.Equal((*listResp.LastModified).IsZero(), false)
@@ -4512,7 +4600,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //
 //	// Check block list.
 //	blockList, err = destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(blockList.RawResponse.StatusCode, 200)
 //	_require.NotNil(blockList.BlockList)
 //	_require.Nil(blockList.BlockList.UncommittedBlocks)
@@ -4523,9 +4611,9 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //		CPKScopeInfo: &testcommon.TestCPKByScope,
 //	}
 //	downloadResp, err := destBlob.BlobClient.DownloadStream(context.Background(), &downloadBlobOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	destData, err := io.ReadAll(downloadResp.Body)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	_require.EqualValues(destData, content)
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
 // }
@@ -4548,15 +4636,15 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5() {
 		TransactionalValidation: blob.TransferValidationTypeMD5(md5Val[:]),
 	}
 	uploadResp, err := bbClient.Upload(context.Background(), r, &uploadBlockBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(uploadResp.ContentMD5, md5Val[:])
 
 	// Download blob to do data integrity check.
 	downloadResp, err := bbClient.DownloadStream(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(downloadResp.ContentMD5, md5Val[:])
 	destData, err := io.ReadAll(downloadResp.Body)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(destData, srcData)
 
 	// Test Upload with bad MD5
@@ -4567,7 +4655,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5() {
 		TransactionalValidation: badMD5Validator,
 	}
 	uploadResp, err = bbClient.Upload(context.Background(), r, &uploadBlockBlobOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
@@ -4587,28 +4675,28 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
 		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	uploadResp, err := bbClient.Upload(context.Background(), r, &uploadBlockBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.Equal(*uploadResp.IsServerEncrypted, true)
 	_require.EqualValues(uploadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
 
 	// Get blob content without encryption key should fail the request.
 	_, err = bbClient.DownloadStream(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	_, err = bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
 		CPKInfo: &testcommon.TestInvalidCPKByValue,
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 
 	// Download blob to do data integrity check.
 	downloadResp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
 		CPKInfo: &testcommon.TestCPKByValue,
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(downloadResp.ContentMD5, md5Val[:])
 	destData, err := io.ReadAll(downloadResp.Body)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(destData, srcData)
 	_require.EqualValues(downloadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
 }
@@ -4631,7 +4719,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 		CPKScopeInfo: &encryptionScope,
 	}
 	uploadResp, err := bbClient.Upload(context.Background(), r, &uploadBlockBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.Equal(*uploadResp.IsServerEncrypted, true)
 	_require.EqualValues(*encryptionScope.EncryptionScope, *uploadResp.EncryptionScope)
@@ -4641,7 +4729,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 		CPKScopeInfo: &encryptionScope,
 	}
 	downloadResp, err := bbClient.DownloadStream(context.Background(), &downloadBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(downloadResp.ContentMD5, md5Val[:])
 	destData, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
@@ -4669,7 +4757,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 //	// Set up test blob
 //	blobName := testcommon.GenerateBlobName(testName)
 //	bbClient := getBlockBlobClient(blobName, containerClient)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //
 //	// Create some data to test the upload stream
 //	blobContentReader, blobData := testcommon.GenerateData(blobSize)
@@ -4794,7 +4882,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
 	// Set up test blob
 	blobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
-	_require.Nil(err)
+	_require.NoError(err)
 	// Create some data to test the upload stream
 	blobContentReader, blobData := testcommon.GenerateData(blobSize)
 
@@ -4855,7 +4943,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnVersions() {
 	versions := make([]string, 0)
 	for i := 0; i < 5; i++ {
 		uploadResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.NotNil(uploadResp.VersionID)
 		versions = append(versions, *uploadResp.VersionID)
 	}
@@ -4865,7 +4953,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnVersions() {
 	})
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		for _, b := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
 			_require.Equal(*b.Properties.AccessTier, blob.AccessTierHot)
 		}
@@ -4877,17 +4965,17 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnVersions() {
 	// set tier to archive for first three versions
 	for i := 0; i < 3; i++ {
 		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
-		_require.Nil(err)
+		_require.NoError(err)
 		_, err = bbClientWithVersionID.SetTier(context.Background(), archiveTier, nil)
-		_require.Nil(err)
+		_require.NoError(err)
 	}
 
 	// check access tier of versions
 	for i, v := range versions {
 		bbClientWithVersionID, err := bbClient.WithVersionID(v)
-		_require.Nil(err)
+		_require.NoError(err)
 		resp, err := bbClientWithVersionID.GetProperties(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		if i < 3 {
 			_require.Equal(*resp.AccessTier, string(archiveTier))
 		} else {
@@ -4898,9 +4986,9 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnVersions() {
 	// Versions tiered to archive cannot be rehydrated back to hot/cool tier
 	// For detailed information refer this, https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-tier
 	bbClientWithVersionID, err := bbClient.WithVersionID(versions[0])
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = bbClientWithVersionID.SetTier(context.Background(), rehydrateTier, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnSnapshots() {
@@ -4919,7 +5007,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnSnapshots() {
 	snapshots := make([]string, 0)
 	for i := 0; i < 5; i++ {
 		resp, err := bbClient.CreateSnapshot(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.NotNil(resp.Snapshot)
 		snapshots = append(snapshots, *resp.Snapshot)
 	}
@@ -4929,7 +5017,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnSnapshots() {
 	})
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		for _, b := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
 			_require.Equal(*b.Properties.AccessTier, blob.AccessTierHot)
 		}
@@ -4941,17 +5029,17 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnSnapshots() {
 	// set tier to archive for first three snapshots
 	for i := 0; i < 3; i++ {
 		bbClientWithSnapshot, err := bbClient.WithSnapshot(snapshots[i])
-		_require.Nil(err)
+		_require.NoError(err)
 		_, err = bbClientWithSnapshot.SetTier(context.Background(), archiveTier, nil)
-		_require.Nil(err)
+		_require.NoError(err)
 	}
 
 	// check access tier of snapshots
 	for i, snap := range snapshots {
 		bbClientWithSnapshot, err := bbClient.WithSnapshot(snap)
-		_require.Nil(err)
+		_require.NoError(err)
 		resp, err := bbClientWithSnapshot.GetProperties(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		if i < 3 {
 			_require.Equal(*resp.AccessTier, string(archiveTier))
 		} else {
@@ -4962,9 +5050,9 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnSnapshots() {
 	// Snapshots tiered to archive cannot be rehydrated back to hot/cool tier
 	// For detailed information refer this, https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-tier
 	bbClientWithSnapshot, err := bbClient.WithSnapshot(snapshots[0])
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = bbClientWithSnapshot.SetTier(context.Background(), rehydrateTier, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryOnHnsDisabledAccount() {
@@ -4979,7 +5067,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryOnHnsDisabledAccount
 
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 
 	_, err = bbClient.SetExpiry(context.Background(), nil, nil)
@@ -4998,14 +5086,14 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryToNeverExpire() {
 
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 
 	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeNever{}, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 }
 
@@ -5021,14 +5109,14 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToNow() {
 
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 
 	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeRelativeToNow(8*time.Second), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
 	time.Sleep(time.Second * 10)
@@ -5049,14 +5137,14 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToCreation()
 
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 
 	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeRelativeToCreation(8*time.Second), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
 	time.Sleep(time.Second * 10)
@@ -5077,15 +5165,15 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToAbsolute() {
 
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 
 	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
 	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*resp.ExpiresOn).UTC().Format(http.TimeFormat))
 
@@ -5107,7 +5195,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToPast() {
 
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
 	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 
 	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
@@ -5116,7 +5204,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToPast() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 }
 
@@ -5139,13 +5227,13 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBlobStage() {
 
 	blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	_, err = bbClient.StageBlock(context.Background(), blockID, rsc, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(resp.BlockList.CommittedBlocks, 1)
 	committed := resp.BlockList.CommittedBlocks
 	_require.Equal(*(committed[0].Name), blockID)
@@ -5174,10 +5262,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockStreamUploadWithDifferentB
 		BlockSize:   firstBlockSize,
 		Concurrency: 2,
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(resp.BlockList.CommittedBlocks, 2)
 	_require.Equal(*resp.BlobContentLength, firstBlockSize+secondBlockSize)
 	committed := resp.BlockList.CommittedBlocks
@@ -5204,10 +5292,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallel()
 		BlockSize:   largeBlockSize,
 		Concurrency: 2,
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(resp.BlockList.CommittedBlocks, 2)
 	_require.Equal(*resp.BlobContentLength, numberOfBlocks*largeBlockSize)
 	committed := resp.BlockList.CommittedBlocks
@@ -5278,10 +5366,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallelWi
 		BlockSize:               largeBlockSize,
 		Concurrency:             2,
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(resp.BlockList.CommittedBlocks, 2)
 	_require.Equal(*resp.BlobContentLength, numberOfBlocks*largeBlockSize)
 	committed := resp.BlockList.CommittedBlocks
@@ -5310,13 +5398,13 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBufferWithCRC64OrMD5() {
 	_, err = bbClient.UploadBuffer(context.Background(), content, &blockblob.UploadBufferOptions{
 		TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value),
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 	_require.Error(err, bloberror.UnsupportedChecksum)
 
 	_, err = bbClient.UploadBuffer(context.Background(), content, &blockblob.UploadBufferOptions{
 		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5),
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 	_require.Error(err, bloberror.UnsupportedChecksum)
 }
 
@@ -5335,7 +5423,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockGetAccountInfo() {
 
 	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
 	bAccInfo, err := bbClient.GetAccountInfo(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotZero(bAccInfo)
 }
 

@@ -223,19 +223,9 @@ func TestClientWithClientName(t *testing.T) {
 }
 
 func TestNewKeyCredential(t *testing.T) {
-	cred, err := NewKeyCredential("")
-	require.Error(t, err)
-	require.Nil(t, cred)
-	cred, err = NewKeyCredential("foo")
-	require.NoError(t, err)
-	require.NotNil(t, cred)
+	require.NotNil(t, NewKeyCredential("foo"))
 }
 
 func TestNewSASCredential(t *testing.T) {
-	cred, err := NewSASCredential("")
-	require.Error(t, err)
-	require.Nil(t, cred)
-	cred, err = NewSASCredential("foo")
-	require.NoError(t, err)
-	require.NotNil(t, cred)
+	require.NotNil(t, NewSASCredential("foo"))
 }

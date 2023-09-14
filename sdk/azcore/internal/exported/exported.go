@@ -121,12 +121,8 @@ type KeyCredential struct {
 
 // NewKeyCredential creates a new instance of [KeyCredential] with the specified values.
 //   - key is the authentication key
-func NewKeyCredential(key string) (*KeyCredential, error) {
-	cred, err := newKeyCredential(key)
-	if err != nil {
-		return nil, err
-	}
-	return &KeyCredential{cred: cred}, nil
+func NewKeyCredential(key string) *KeyCredential {
+	return &KeyCredential{cred: newKeyCredential(key)}
 }
 
 // Update replaces the existing key with the specified value.
@@ -142,12 +138,8 @@ type SASCredential struct {
 
 // NewSASCredential creates a new instance of [SASCredential] with the specified values.
 //   - sas is the shared access signature
-func NewSASCredential(sas string) (*SASCredential, error) {
-	cred, err := newKeyCredential(sas)
-	if err != nil {
-		return nil, err
-	}
-	return &SASCredential{cred: cred}, nil
+func NewSASCredential(sas string) *SASCredential {
+	return &SASCredential{cred: newKeyCredential(sas)}
 }
 
 // Update replaces the existing shared access signature with the specified value.
@@ -169,13 +161,10 @@ type keyCredential struct {
 	key atomic.Value // string
 }
 
-func newKeyCredential(key string) (*keyCredential, error) {
-	if key == "" {
-		return nil, errors.New("key cannot be empty")
-	}
+func newKeyCredential(key string) *keyCredential {
 	keyCred := keyCredential{}
 	keyCred.key.Store(key)
-	return &keyCred, nil
+	return &keyCred
 }
 
 func (k *keyCredential) Get() string {

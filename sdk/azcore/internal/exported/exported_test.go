@@ -56,12 +56,8 @@ func TestDecodeByteArray(t *testing.T) {
 }
 
 func TestNewKeyCredential(t *testing.T) {
-	cred, err := NewKeyCredential("")
-	require.Error(t, err)
-	require.Nil(t, cred)
 	const val1 = "foo"
-	cred, err = NewKeyCredential(val1)
-	require.NoError(t, err)
+	cred := NewKeyCredential(val1)
 	require.NotNil(t, cred)
 	require.EqualValues(t, val1, KeyCredentialGet(cred))
 	require.Error(t, cred.Update(""))
@@ -72,12 +68,8 @@ func TestNewKeyCredential(t *testing.T) {
 }
 
 func TestNewSASCredential(t *testing.T) {
-	cred, err := NewSASCredential("")
-	require.Error(t, err)
-	require.Nil(t, cred)
 	const val1 = "foo"
-	cred, err = NewSASCredential(val1)
-	require.NoError(t, err)
+	cred := NewSASCredential(val1)
 	require.NotNil(t, cred)
 	require.EqualValues(t, val1, SASCredentialGet(cred))
 	require.Error(t, cred.Update(""))

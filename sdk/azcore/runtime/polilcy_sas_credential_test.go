@@ -15,8 +15,7 @@ import (
 
 func TestSASCredentialPolicy(t *testing.T) {
 	const key = "foo"
-	cred, err := exported.NewSASCredential(key)
-	require.NoError(t, err)
+	cred := exported.NewSASCredential(key)
 
 	const headerName = "fake-auth"
 	policy := NewSASCredentialPolicy(cred, headerName, nil)

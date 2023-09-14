@@ -27,7 +27,7 @@ type KeyCredential = exported.KeyCredential
 
 // NewKeyCredential creates a new instance of [KeyCredential] with the specified values.
 //   - key is the authentication key
-func NewKeyCredential(key string) (*KeyCredential, error) {
+func NewKeyCredential(key string) *KeyCredential {
 	return exported.NewKeyCredential(key)
 }
 
@@ -36,7 +36,7 @@ type SASCredential = exported.SASCredential
 
 // NewSASCredential creates a new instance of [SASCredential] with the specified values.
 //   - sas is the shared access signature
-func NewSASCredential(sas string) (*SASCredential, error) {
+func NewSASCredential(sas string) *SASCredential {
 	return exported.NewSASCredential(sas)
 }
 

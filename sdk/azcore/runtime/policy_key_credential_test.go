@@ -15,8 +15,7 @@ import (
 
 func TestKeyCredentialPolicy(t *testing.T) {
 	const key = "foo"
-	cred, err := exported.NewKeyCredential(key)
-	require.NoError(t, err)
+	cred := exported.NewKeyCredential(key)
 
 	const headerName = "fake-auth"
 	policy := NewKeyCredentialPolicy(cred, headerName, nil)

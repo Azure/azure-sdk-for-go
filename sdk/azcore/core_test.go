@@ -221,3 +221,11 @@ func TestClientWithClientName(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, "az.namespace:Widget.Factory", attrString)
 }
+
+func TestNewKeyCredential(t *testing.T) {
+	require.NotNil(t, NewKeyCredential("foo"))
+}
+
+func TestNewSASCredential(t *testing.T) {
+	require.NotNil(t, NewSASCredential("foo"))
+}

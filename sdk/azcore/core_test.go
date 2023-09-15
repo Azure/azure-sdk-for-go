@@ -174,3 +174,11 @@ func TestClientWithClientName(t *testing.T) {
 	_, err = newClient.Pipeline().Do(req)
 	require.NoError(t, err)
 }
+
+func TestNewKeyCredential(t *testing.T) {
+	require.NotNil(t, NewKeyCredential("foo"))
+}
+
+func TestNewSASCredential(t *testing.T) {
+	require.NotNil(t, NewSASCredential("foo"))
+}

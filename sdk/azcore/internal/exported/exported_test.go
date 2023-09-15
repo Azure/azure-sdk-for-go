@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestNopCloser(t *testing.T) {
@@ -32,4 +34,24 @@ func TestHasStatusCode(t *testing.T) {
 	if !HasStatusCode(&http.Response{StatusCode: http.StatusOK}, http.StatusAccepted, http.StatusOK, http.StatusNoContent) {
 		t.Fatal("unexpected failure")
 	}
+}
+
+func TestNewKeyCredential(t *testing.T) {
+	const val1 = "foo"
+	cred := NewKeyCredential(val1)
+	require.NotNil(t, cred)
+	require.EqualValues(t, val1, KeyCredentialGet(cred))
+	const val2 = "bar"
+	cred.Update(val2)
+	require.EqualValues(t, val2, KeyCredentialGet(cred))
+}
+
+func TestNewSASCredential(t *testing.T) {
+	const val1 = "foo"
+	cred := NewSASCredential(val1)
+	require.NotNil(t, cred)
+	require.EqualValues(t, val1, SASCredentialGet(cred))
+	const val2 = "bar"
+	cred.Update(val2)
+	require.EqualValues(t, val2, SASCredentialGet(cred))
 }

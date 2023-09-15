@@ -60,10 +60,8 @@ func TestNewKeyCredential(t *testing.T) {
 	cred := NewKeyCredential(val1)
 	require.NotNil(t, cred)
 	require.EqualValues(t, val1, KeyCredentialGet(cred))
-	require.Error(t, cred.Update(""))
-	require.EqualValues(t, val1, KeyCredentialGet(cred))
 	const val2 = "bar"
-	require.NoError(t, cred.Update(val2))
+	cred.Update(val2)
 	require.EqualValues(t, val2, KeyCredentialGet(cred))
 }
 
@@ -72,9 +70,7 @@ func TestNewSASCredential(t *testing.T) {
 	cred := NewSASCredential(val1)
 	require.NotNil(t, cred)
 	require.EqualValues(t, val1, SASCredentialGet(cred))
-	require.Error(t, cred.Update(""))
-	require.EqualValues(t, val1, SASCredentialGet(cred))
 	const val2 = "bar"
-	require.NoError(t, cred.Update(val2))
+	cred.Update(val2)
 	require.EqualValues(t, val2, SASCredentialGet(cred))
 }

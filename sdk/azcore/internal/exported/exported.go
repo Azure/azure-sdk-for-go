@@ -9,7 +9,6 @@ package exported
 import (
 	"context"
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -126,8 +125,8 @@ func NewKeyCredential(key string) *KeyCredential {
 }
 
 // Update replaces the existing key with the specified value.
-func (k *KeyCredential) Update(key string) error {
-	return k.cred.Update(key)
+func (k *KeyCredential) Update(key string) {
+	k.cred.Update(key)
 }
 
 // SASCredential contains a shared access signature used to authenticate to an Azure service.
@@ -143,8 +142,8 @@ func NewSASCredential(sas string) *SASCredential {
 }
 
 // Update replaces the existing shared access signature with the specified value.
-func (k *SASCredential) Update(sas string) error {
-	return k.cred.Update(sas)
+func (k *SASCredential) Update(sas string) {
+	k.cred.Update(sas)
 }
 
 // KeyCredentialGet returns the key for cred.
@@ -171,10 +170,6 @@ func (k *keyCredential) Get() string {
 	return k.key.Load().(string)
 }
 
-func (k *keyCredential) Update(key string) error {
-	if key == "" {
-		return errors.New("key cannot be empty")
-	}
+func (k *keyCredential) Update(key string) {
 	k.key.Store(key)
-	return nil
 }

@@ -13,6 +13,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher"
@@ -33,7 +34,7 @@ func ExampleClient_PublishEvents() {
 	// Other authentication methods:
 	// - publisher.NewClient(): authenticate using a TokenCredential from azidentity.
 	// - publisher.NewClientWithSAS(): authenticate using a SAS token.
-	client, err := publisher.NewClientWithSharedKeyCredential(endpoint, key, nil)
+	client, err := publisher.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(key), nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -76,7 +77,7 @@ func ExampleClient_PublishCloudEvents() {
 	// Other authentication methods:
 	// - publisher.NewClient(): authenticate using a TokenCredential from azidentity.
 	// - publisher.NewClientWithSAS(): authenticate using a SAS token.
-	client, err := publisher.NewClientWithSharedKeyCredential(endpoint, key, nil)
+	client, err := publisher.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(key), nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic

@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Client constructors that take a `key string` parameter for a credential now require an `*azcore.KeyCredential` or `*azcore.SASCredential`.
+
 ### Bugs Fixed
 
 ### Other Changes

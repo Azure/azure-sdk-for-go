@@ -23,15 +23,16 @@ type ClientOptions struct {
 }
 
 // NewClientWithSharedKeyCredential creates a [Client] using a shared key.
-func NewClientWithSharedKeyCredential(endpoint string, key string, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKeyCredential(endpoint string, keyCred *azcore.KeyCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 
-	// TODO: I believe we're supposed to allow for dynamically updating the key at any time as well.
 	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
-			&skpolicy{Key: key},
+			runtime.NewKeyCredentialPolicy(keyCred, "Authorization", &runtime.KeyCredentialPolicyOptions{
+				Prefix: "SharedAccessKey ",
+			}),
 		},
 	}, &options.ClientOptions)
 
@@ -63,14 +64,4 @@ func (client *Client) PublishCloudEvents(ctx context.Context, topicName string, 
 	})
 
 	return client.internalPublishCloudEvents(ctx, topicName, events, options)
-}
-
-// TODO: remove in favor of a common policy instead?
-type skpolicy struct {
-	Key string
-}
-
-func (p *skpolicy) Do(req *policy.Request) (*http.Response, error) {
-	req.Raw().Header.Add("Authorization", "SharedAccessKey "+p.Key)
-	return req.Next()
 }

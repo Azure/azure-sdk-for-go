@@ -324,3 +324,27 @@ func TestSettingNilValue(t *testing.T) {
 	require.NotNil(t, resp.Key)
 	require.EqualValues(t, key, *resp.Key)
 }
+
+func TestSettingWithEscaping(t *testing.T) {
+	const (
+		key         = ".appconfig.featureflag/TestSettingWithEscaping"
+		contentType = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8"
+	)
+	client := NewClientFromConnectionString(t)
+
+	addResp, err := client.AddSetting(context.Background(), key, nil, &azappconfig.AddSettingOptions{
+		ContentType: to.Ptr(contentType),
+	})
+	require.NoError(t, err)
+	require.NotZero(t, addResp)
+
+	getResp, err := client.GetSetting(context.Background(), key, nil)
+	require.NoError(t, err)
+	require.NotNil(t, getResp.Key)
+	require.EqualValues(t, key, *getResp.Key)
+
+	resp, err := client.DeleteSetting(context.Background(), key, nil)
+	require.NoError(t, err)
+	require.NotNil(t, resp.Key)
+	require.EqualValues(t, key, *resp.Key)
+}

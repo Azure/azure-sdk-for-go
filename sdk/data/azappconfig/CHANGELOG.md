@@ -9,6 +9,7 @@
 * Response types `ListRevisionsPage` and `ListSettingsPage` now have the suffix `Response` in their names.
 
 ### Bugs Fixed
+* Fixed an issue that could cause HTTP requests to fail with `http.StatusUnauthorized` in some cases.
 
 ### Other Changes
 

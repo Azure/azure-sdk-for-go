@@ -40,7 +40,7 @@ func (policy *hmacAuthenticationPolicy) Do(request *policy.Request) (*http.Respo
 
 	method := req.Method
 	host := req.URL.Host
-	pathAndQuery := req.URL.Path
+	pathAndQuery := req.URL.EscapedPath()
 	if req.URL.RawQuery != "" {
 		pathAndQuery = pathAndQuery + "?" + req.URL.RawQuery
 	}

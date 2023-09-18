@@ -12,7 +12,7 @@ output-folder: internal
 file-prefix: "zz_"
 tag: package-2019-02
 credential-scope: none
-use: "@autorest/go@4.0.0-preview.53"
+use: "@autorest/go@4.0.0-alpha.20230918.22"
 module-version: 1.0.2
 security: "AADToken"
 security-scopes: "https://storage.azure.com/.default"

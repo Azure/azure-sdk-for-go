@@ -13,7 +13,7 @@ openapi-type: "data-plane"
 output-folder: ../publisher
 override-client-name: Client
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.52"
+use: "@autorest/go@4.0.0-alpha.20230918.22"
 version: "^3.0.0"
 slice-elements-byval: true
 remove-non-reference-schema: true

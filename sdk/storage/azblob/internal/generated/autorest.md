@@ -19,7 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.49"
+use: "@autorest/go@4.0.0-alpha.20230918.22"
 ```
 
 ### Updating service version to 2023-08-03

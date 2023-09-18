@@ -14,7 +14,7 @@ file-prefix: "zz_"
 output-folder: generated
 openapi-type: "data-plane"
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.51"
+use: "@autorest/go@4.0.0-alpha.20230918.22"
 ```
 
 ### Fix up enums

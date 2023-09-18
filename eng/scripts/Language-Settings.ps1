@@ -146,3 +146,32 @@ function Find-Go-Artifacts-For-Apireview($ArtifactPath, $PackageName)
   }
   return $null
 }
+
+function Get-Go-FoldersForGeneration() {
+  # Find directories containing build.go files with "//go:generate" comments
+  Get-ChildItem $RepoRoot -Include "build.go" -Recurse
+    | Where-Object { Get-Content $_.FullName | Select-String -Pattern "//go:generate" }
+    | Select-Object -ExpandProperty Directory
+}
+
+function Update-Go-GeneratedSdks([string]$PackageFoldersFile) {
+  $packageFolders = Get-Content $PackageFoldersFile | ConvertFrom-Json
+
+  foreach ($folder in $packageFolders) {
+    Push-Location $RepoRoot
+    try {
+      Write-Host 'Generating projects under folder ' -ForegroundColor Green -NoNewline
+      Write-Host "$folder" -ForegroundColor Yellow
+
+      Invoke-LoggedCommand "go generate" -GroupOutput
+
+      if ($LastExitCode -ne 0) {
+        Write-Error "Generation error in $folder"
+        exit 1
+      }
+    }
+    finally {
+      Pop-Location
+    }
+  }
+}

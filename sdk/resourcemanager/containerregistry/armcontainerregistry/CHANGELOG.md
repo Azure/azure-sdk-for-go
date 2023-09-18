@@ -1,17 +1,6 @@
 # Release History
 
-## 2.0.0 (2023-09-22)
-### Breaking Changes
-
-- Struct `ActiveDirectoryObject` has been removed
-- Struct `ErrorResponse` has been removed
-- Struct `ErrorResponseBody` has been removed
-- Struct `InnerErrorDescription` has been removed
-- Struct `PackageType` has been removed
-- Struct `ProxyResource` has been removed
-- Struct `Resource` has been removed
-- Struct `StorageAccountProperties` has been removed
-
+## 1.1.0 (2023-09-22)
 ### Features Added
 
 - New enum type `CredentialHealthStatus` with values `CredentialHealthStatusHealthy`, `CredentialHealthStatusUnhealthy`

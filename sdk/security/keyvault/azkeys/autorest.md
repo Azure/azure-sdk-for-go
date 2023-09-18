@@ -12,7 +12,7 @@ output-folder: ../azkeys
 override-client-name: Client
 security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.54"
+use: "@autorest/go@4.0.0-alpha.20230918.23"
 version: "^3.0.0"
 
 directive:

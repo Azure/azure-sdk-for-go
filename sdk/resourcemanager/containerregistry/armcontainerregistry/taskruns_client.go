@@ -71,10 +71,6 @@ func (client *TaskRunsClient) BeginCreate(ctx context.Context, resourceGroupName
 // Generated from API version 2019-06-01-preview
 func (client *TaskRunsClient) create(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun, options *TaskRunsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "TaskRunsClient.BeginCreate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, taskRunName, taskRun, options)
 	if err != nil {
 		return nil, err
@@ -147,10 +143,6 @@ func (client *TaskRunsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2019-06-01-preview
 func (client *TaskRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "TaskRunsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, taskRunName, options)
 	if err != nil {
 		return nil, err
@@ -203,10 +195,6 @@ func (client *TaskRunsClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - TaskRunsClientGetOptions contains the optional parameters for the TaskRunsClient.Get method.
 func (client *TaskRunsClient) Get(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientGetOptions) (TaskRunsClientGetResponse, error) {
 	var err error
-	const operationName = "TaskRunsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, taskRunName, options)
 	if err != nil {
 		return TaskRunsClientGetResponse{}, err
@@ -269,10 +257,6 @@ func (client *TaskRunsClient) getHandleResponse(resp *http.Response) (TaskRunsCl
 //   - options - TaskRunsClientGetDetailsOptions contains the optional parameters for the TaskRunsClient.GetDetails method.
 func (client *TaskRunsClient) GetDetails(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientGetDetailsOptions) (TaskRunsClientGetDetailsResponse, error) {
 	var err error
-	const operationName = "TaskRunsClient.GetDetails"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getDetailsCreateRequest(ctx, resourceGroupName, registryName, taskRunName, options)
 	if err != nil {
 		return TaskRunsClientGetDetailsResponse{}, err
@@ -337,7 +321,6 @@ func (client *TaskRunsClient) NewListPager(resourceGroupName string, registryNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TaskRunsClientListResponse) (TaskRunsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TaskRunsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -357,7 +340,6 @@ func (client *TaskRunsClient) NewListPager(resourceGroupName string, registryNam
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -421,10 +403,6 @@ func (client *TaskRunsClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Generated from API version 2019-06-01-preview
 func (client *TaskRunsClient) update(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters, options *TaskRunsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "TaskRunsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, taskRunName, updateParameters, options)
 	if err != nil {
 		return nil, err

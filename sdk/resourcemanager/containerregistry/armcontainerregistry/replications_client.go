@@ -74,10 +74,6 @@ func (client *ReplicationsClient) BeginCreate(ctx context.Context, resourceGroup
 // Generated from API version 2023-07-01
 func (client *ReplicationsClient) create(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replication Replication, options *ReplicationsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ReplicationsClient.BeginCreate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, replicationName, replication, options)
 	if err != nil {
 		return nil, err
@@ -153,10 +149,6 @@ func (client *ReplicationsClient) BeginDelete(ctx context.Context, resourceGroup
 // Generated from API version 2023-07-01
 func (client *ReplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *ReplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ReplicationsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, replicationName, options)
 	if err != nil {
 		return nil, err
@@ -208,10 +200,6 @@ func (client *ReplicationsClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - ReplicationsClientGetOptions contains the optional parameters for the ReplicationsClient.Get method.
 func (client *ReplicationsClient) Get(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *ReplicationsClientGetOptions) (ReplicationsClientGetResponse, error) {
 	var err error
-	const operationName = "ReplicationsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, replicationName, options)
 	if err != nil {
 		return ReplicationsClientGetResponse{}, err
@@ -276,7 +264,6 @@ func (client *ReplicationsClient) NewListPager(resourceGroupName string, registr
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReplicationsClientListResponse) (ReplicationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -296,7 +283,6 @@ func (client *ReplicationsClient) NewListPager(resourceGroupName string, registr
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -363,10 +349,6 @@ func (client *ReplicationsClient) BeginUpdate(ctx context.Context, resourceGroup
 // Generated from API version 2023-07-01
 func (client *ReplicationsClient) update(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters ReplicationUpdateParameters, options *ReplicationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ReplicationsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, replicationName, replicationUpdateParameters, options)
 	if err != nil {
 		return nil, err

@@ -10,17 +10,6 @@ package armcontainerregistry
 
 import "time"
 
-// ActiveDirectoryObject - The Active Directory Object that will be used for authenticating the token of a container registry.
-type ActiveDirectoryObject struct {
-	// The user/group/application object ID for Active Directory Object that will be used for authenticating the token of a container
-	// registry.
-	ObjectID *string
-
-	// The tenant ID of user/group/application object Active Directory Object that will be used for authenticating the token of
-	// a container registry.
-	TenantID *string
-}
-
 // Actor - The agent that initiated the event. For most situations, this could be from the authorization context of the request.
 type Actor struct {
 	// The subject or username associated with the request context that generated the event.
@@ -652,61 +641,6 @@ type EncryptionProperty struct {
 	Status *EncryptionStatus
 }
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
-
-	// READ-ONLY; The additional info type.
-	Type *string
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
-
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail
-
-	// READ-ONLY; The error message.
-	Message *string
-
-	// READ-ONLY; The error target.
-	Target *string
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail
-}
-
-// ErrorResponseBody - An error response from the Azure Container Registry service.
-type ErrorResponseBody struct {
-	// REQUIRED; error code.
-	Code *string
-
-	// REQUIRED; error message.
-	Message *string
-
-	// an array of additional nested error response info objects, as described by this contract.
-	Details []*InnerErrorDescription
-
-	// target of the particular error.
-	Target *string
-}
-
-// ErrorResponseForContainerRegistry - An error response from the Azure Container Registry service.
-type ErrorResponseForContainerRegistry struct {
-	// Azure container registry build API error body.
-	Error *ErrorResponseBody
-}
-
 // Event - The event for a webhook.
 type Event struct {
 	// The event request message sent to the service URI.
@@ -1030,18 +964,6 @@ type ImportSourceCredentials struct {
 	Username *string
 }
 
-// InnerErrorDescription - inner error.
-type InnerErrorDescription struct {
-	// REQUIRED; error code.
-	Code *string
-
-	// REQUIRED; error message.
-	Message *string
-
-	// target of the particular error.
-	Target *string
-}
-
 type KeyVaultProperties struct {
 	// The client id of the identity which will be used to access key vault.
 	Identity *string
@@ -1179,15 +1101,6 @@ type OverrideTaskStepProperties struct {
 	Values []*SetValue
 }
 
-// PackageType - The properties of a package type.
-type PackageType struct {
-	// The name of the package type.
-	Name *string
-
-	// READ-ONLY; The endpoint of the package type.
-	Endpoint *string
-}
-
 // PlatformProperties - The platform properties against which the run has to happen.
 type PlatformProperties struct {
 	// REQUIRED; The operating system type required for the run.
@@ -1320,22 +1233,6 @@ type PrivateLinkServiceConnectionState struct {
 
 	// The private link service connection status.
 	Status *ConnectionStatus
-}
-
-// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
-// and tags.
-type ProxyResource struct {
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
 }
 
 // QuarantinePolicy - The quarantine policy for a container registry.
@@ -1619,27 +1516,6 @@ type Request struct {
 
 	// The user agent header of the request.
 	Useragent *string
-}
-
-// Resource - An Azure resource.
-type Resource struct {
-	// REQUIRED; The location of the resource. This cannot be changed after the resource is created.
-	Location *string
-
-	// The tags of the resource.
-	Tags map[string]*string
-
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
 }
 
 // RetentionPolicy - The retention policy for a container registry.
@@ -2028,12 +1904,6 @@ type Status struct {
 
 	// READ-ONLY; The timestamp when the status was changed to the current value.
 	Timestamp *time.Time
-}
-
-// StorageAccountProperties - The properties of a storage account for a container registry. Only applicable to Classic SKU.
-type StorageAccountProperties struct {
-	// REQUIRED; The resource ID of the storage account.
-	ID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

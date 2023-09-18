@@ -47,7 +47,6 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *OperationsClientListResponse) (OperationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -67,7 +66,6 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 

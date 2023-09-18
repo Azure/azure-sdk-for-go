@@ -53,10 +53,6 @@ func NewRegistriesClient(subscriptionID string, credential azcore.TokenCredentia
 //     method.
 func (client *RegistriesClient) CheckNameAvailability(ctx context.Context, registryNameCheckRequest RegistryNameCheckRequest, options *RegistriesClientCheckNameAvailabilityOptions) (RegistriesClientCheckNameAvailabilityResponse, error) {
 	var err error
-	const operationName = "RegistriesClient.CheckNameAvailability"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, registryNameCheckRequest, options)
 	if err != nil {
 		return RegistriesClientCheckNameAvailabilityResponse{}, err
@@ -129,10 +125,6 @@ func (client *RegistriesClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Generated from API version 2023-07-01
 func (client *RegistriesClient) create(ctx context.Context, resourceGroupName string, registryName string, registry Registry, options *RegistriesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RegistriesClient.BeginCreate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, registry, options)
 	if err != nil {
 		return nil, err
@@ -202,10 +194,6 @@ func (client *RegistriesClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Generated from API version 2023-07-01
 func (client *RegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RegistriesClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, options)
 	if err != nil {
 		return nil, err
@@ -273,10 +261,6 @@ func (client *RegistriesClient) BeginGenerateCredentials(ctx context.Context, re
 // Generated from API version 2023-07-01
 func (client *RegistriesClient) generateCredentials(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters GenerateCredentialsParameters, options *RegistriesClientBeginGenerateCredentialsOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RegistriesClient.BeginGenerateCredentials"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.generateCredentialsCreateRequest(ctx, resourceGroupName, registryName, generateCredentialsParameters, options)
 	if err != nil {
 		return nil, err
@@ -327,10 +311,6 @@ func (client *RegistriesClient) generateCredentialsCreateRequest(ctx context.Con
 //   - options - RegistriesClientGetOptions contains the optional parameters for the RegistriesClient.Get method.
 func (client *RegistriesClient) Get(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesClientGetOptions) (RegistriesClientGetResponse, error) {
 	var err error
-	const operationName = "RegistriesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, options)
 	if err != nil {
 		return RegistriesClientGetResponse{}, err
@@ -389,10 +369,6 @@ func (client *RegistriesClient) getHandleResponse(resp *http.Response) (Registri
 //     method.
 func (client *RegistriesClient) GetBuildSourceUploadURL(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesClientGetBuildSourceUploadURLOptions) (RegistriesClientGetBuildSourceUploadURLResponse, error) {
 	var err error
-	const operationName = "RegistriesClient.GetBuildSourceUploadURL"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getBuildSourceUploadURLCreateRequest(ctx, resourceGroupName, registryName, options)
 	if err != nil {
 		return RegistriesClientGetBuildSourceUploadURLResponse{}, err
@@ -452,10 +428,6 @@ func (client *RegistriesClient) getBuildSourceUploadURLHandleResponse(resp *http
 //     method.
 func (client *RegistriesClient) GetPrivateLinkResource(ctx context.Context, resourceGroupName string, registryName string, groupName string, options *RegistriesClientGetPrivateLinkResourceOptions) (RegistriesClientGetPrivateLinkResourceResponse, error) {
 	var err error
-	const operationName = "RegistriesClient.GetPrivateLinkResource"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getPrivateLinkResourceCreateRequest(ctx, resourceGroupName, registryName, groupName, options)
 	if err != nil {
 		return RegistriesClientGetPrivateLinkResourceResponse{}, err
@@ -538,10 +510,6 @@ func (client *RegistriesClient) BeginImportImage(ctx context.Context, resourceGr
 // Generated from API version 2023-07-01
 func (client *RegistriesClient) importImage(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters, options *RegistriesClientBeginImportImageOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RegistriesClient.BeginImportImage"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.importImageCreateRequest(ctx, resourceGroupName, registryName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -592,7 +560,6 @@ func (client *RegistriesClient) NewListPager(options *RegistriesClientListOption
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RegistriesClientListResponse) (RegistriesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RegistriesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -612,7 +579,6 @@ func (client *RegistriesClient) NewListPager(options *RegistriesClientListOption
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -652,7 +618,6 @@ func (client *RegistriesClient) NewListByResourceGroupPager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RegistriesClientListByResourceGroupResponse) (RegistriesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RegistriesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -672,7 +637,6 @@ func (client *RegistriesClient) NewListByResourceGroupPager(resourceGroupName st
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -714,10 +678,6 @@ func (client *RegistriesClient) listByResourceGroupHandleResponse(resp *http.Res
 //     method.
 func (client *RegistriesClient) ListCredentials(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesClientListCredentialsOptions) (RegistriesClientListCredentialsResponse, error) {
 	var err error
-	const operationName = "RegistriesClient.ListCredentials"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listCredentialsCreateRequest(ctx, resourceGroupName, registryName, options)
 	if err != nil {
 		return RegistriesClientListCredentialsResponse{}, err
@@ -779,7 +739,6 @@ func (client *RegistriesClient) NewListPrivateLinkResourcesPager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RegistriesClientListPrivateLinkResourcesResponse) (RegistriesClientListPrivateLinkResourcesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RegistriesClient.NewListPrivateLinkResourcesPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -799,7 +758,6 @@ func (client *RegistriesClient) NewListPrivateLinkResourcesPager(resourceGroupNa
 			}
 			return client.listPrivateLinkResourcesHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -844,10 +802,6 @@ func (client *RegistriesClient) listPrivateLinkResourcesHandleResponse(resp *htt
 //   - options - RegistriesClientListUsagesOptions contains the optional parameters for the RegistriesClient.ListUsages method.
 func (client *RegistriesClient) ListUsages(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesClientListUsagesOptions) (RegistriesClientListUsagesResponse, error) {
 	var err error
-	const operationName = "RegistriesClient.ListUsages"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listUsagesCreateRequest(ctx, resourceGroupName, registryName, options)
 	if err != nil {
 		return RegistriesClientListUsagesResponse{}, err
@@ -907,10 +861,6 @@ func (client *RegistriesClient) listUsagesHandleResponse(resp *http.Response) (R
 //     method.
 func (client *RegistriesClient) RegenerateCredential(ctx context.Context, resourceGroupName string, registryName string, regenerateCredentialParameters RegenerateCredentialParameters, options *RegistriesClientRegenerateCredentialOptions) (RegistriesClientRegenerateCredentialResponse, error) {
 	var err error
-	const operationName = "RegistriesClient.RegenerateCredential"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.regenerateCredentialCreateRequest(ctx, resourceGroupName, registryName, regenerateCredentialParameters, options)
 	if err != nil {
 		return RegistriesClientRegenerateCredentialResponse{}, err
@@ -990,10 +940,6 @@ func (client *RegistriesClient) BeginScheduleRun(ctx context.Context, resourceGr
 // Generated from API version 2019-06-01-preview
 func (client *RegistriesClient) scheduleRun(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesClientBeginScheduleRunOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RegistriesClient.BeginScheduleRun"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.scheduleRunCreateRequest(ctx, resourceGroupName, registryName, runRequest, options)
 	if err != nil {
 		return nil, err
@@ -1064,10 +1010,6 @@ func (client *RegistriesClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Generated from API version 2023-07-01
 func (client *RegistriesClient) update(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters RegistryUpdateParameters, options *RegistriesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RegistriesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, registryUpdateParameters, options)
 	if err != nil {
 		return nil, err

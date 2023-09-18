@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2023-09-18)
 
 ### Features Added
 * Added support for service version 2020-12-06, 2021-02-12, 2021-04-10, 2021-06-08, 2021-08-06 , 2021-10-04, 2021-12-02, 2022-11-02, 2023-01-03, 2023-05-03, and 2023-08-03

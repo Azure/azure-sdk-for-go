@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
 )
 
@@ -46,12 +47,12 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 
 // NewClientFromConnectionString parses the connection string and returns a pointer to a Client object.
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
-	endpoint, credential, secret, err := parseConnectionString(connectionString)
+	endpoint, credential, secret, err := auth.ParseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
 	}
 
-	return newClient(endpoint, newHmacAuthenticationPolicy(credential, secret), options)
+	return newClient(endpoint, auth.NewHMACPolicy(credential, secret), options)
 }
 
 func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions) (*Client, error) {

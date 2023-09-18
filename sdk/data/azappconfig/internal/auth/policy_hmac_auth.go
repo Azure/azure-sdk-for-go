@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azappconfig
+package auth
 
 import (
 	"bytes"
@@ -21,19 +21,23 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-type hmacAuthenticationPolicy struct {
+// HMACPolicy is a pipeline policy that implements HMAC authentication.
+// https://learn.microsoft.com/en-us/azure/azure-app-configuration/rest-api-authentication-hmac
+type HMACPolicy struct {
 	credential string
 	secret     []byte
 }
 
-func newHmacAuthenticationPolicy(credential string, secret []byte) *hmacAuthenticationPolicy {
-	return &hmacAuthenticationPolicy{
+// NewHMACPolicy creates a new instance of [HMACPolicy].
+func NewHMACPolicy(credential string, secret []byte) *HMACPolicy {
+	return &HMACPolicy{
 		credential: credential,
 		secret:     secret,
 	}
 }
 
-func (policy *hmacAuthenticationPolicy) Do(request *policy.Request) (*http.Response, error) {
+// Do implements the policy.Policy interface on the [HMACPolicy] type.
+func (policy *HMACPolicy) Do(request *policy.Request) (*http.Response, error) {
 	req := request.Raw()
 	id := policy.credential
 	key := policy.secret
@@ -97,7 +101,8 @@ func getHmac(content string, key []byte) (string, error) {
 	return base64.StdEncoding.EncodeToString(hmac.Sum(nil)), nil
 }
 
-func parseConnectionString(connectionString string) (endpoint string, credential string, secret []byte, err error) {
+// ParseConnectionString parses the provided connection string.
+func ParseConnectionString(connectionString string) (endpoint string, credential string, secret []byte, err error) {
 	const connectionStringEndpointPrefix = "Endpoint="
 	const connectionStringCredentialPrefix = "Id="
 	const connectionStringSecretPrefix = "Secret="

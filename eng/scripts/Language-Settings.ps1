@@ -165,10 +165,9 @@ function Update-Go-GeneratedSdks([string]$PackageFoldersFile) {
       Write-Host "$folder" -ForegroundColor Yellow
 
       ./eng/scripts/build.ps1 -Filter $folder
-
-      if ($LastExitCode -ne 0) {
-        $errors += $folder
-      }
+    }
+    catch {
+      $errors += $folder
     }
     finally {
       Pop-Location

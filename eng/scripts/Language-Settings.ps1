@@ -164,7 +164,7 @@ function Update-Go-GeneratedSdks([string]$PackageFoldersFile) {
       Write-Host 'Generating projects under folder ' -ForegroundColor Green -NoNewline
       Write-Host "$folder" -ForegroundColor Yellow
 
-      Invoke-LoggedCommand "./eng/scripts/build.ps1 -Filter '$folder'" -GroupOutput
+      ./eng/scripts/build.ps1 -Filter $folder
 
       if ($LastExitCode -ne 0) {
         Write-Error "Generation error in $folder"

@@ -1,5 +1,10 @@
 # Release History
 
+## 0.6.2 (2023-09-22)
+
+Please note, this package has been deprecated. The service backing this library is retired on April 28th, 2021. For more details on the Azure Service Fabric Mesh retirement, please visit: https://azure.microsoft.com/updates/azure-service-fabric-mesh-preview-retirement/.
+
+
 ## 0.6.1 (2023-04-14)
 ### Bug Fixes
 

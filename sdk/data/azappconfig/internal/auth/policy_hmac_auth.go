@@ -7,7 +7,6 @@
 package auth
 
 import (
-	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
@@ -39,42 +38,41 @@ func NewHMACPolicy(credential string, secret []byte) *HMACPolicy {
 // Do implements the policy.Policy interface on the [HMACPolicy] type.
 func (policy *HMACPolicy) Do(request *policy.Request) (*http.Response, error) {
 	req := request.Raw()
-	id := policy.credential
-	key := policy.secret
 
-	method := req.Method
-	host := req.URL.Host
 	pathAndQuery := req.URL.EscapedPath()
 	if req.URL.RawQuery != "" {
 		pathAndQuery = pathAndQuery + "?" + req.URL.RawQuery
 	}
 
 	var content []byte
-	if req.Body != nil {
+	if body := request.Body(); body != nil {
 		var err error
-		if content, err = io.ReadAll(req.Body); err != nil {
+		if content, err = io.ReadAll(body); err != nil {
+			return nil, err
+		}
+		// restore the body after reading
+		if err = request.RewindBody(); err != nil {
 			return nil, err
 		}
 	}
-	req.Body = io.NopCloser(bytes.NewBuffer(content))
 
 	timestamp := time.Now().UTC().Format(http.TimeFormat)
 
-	contentHash, err1 := getContentHashBase64(content)
-	if err1 != nil {
-		return nil, err1
+	contentHash, err := getContentHashBase64(content)
+	if err != nil {
+		return nil, err
 	}
 
-	stringToSign := fmt.Sprintf("%s\n%s\n%s;%s;%s", strings.ToUpper(method), pathAndQuery, timestamp, host, contentHash)
+	stringToSign := fmt.Sprintf("%s\n%s\n%s;%s;%s", strings.ToUpper(req.Method), pathAndQuery, timestamp, req.URL.Host, contentHash)
 
-	signature, err2 := getHmac(stringToSign, key)
-	if err2 != nil {
-		return nil, err2
+	signature, err := getHMAC(stringToSign, policy.secret)
+	if err != nil {
+		return nil, err
 	}
 
 	req.Header.Set("x-ms-content-sha256", contentHash)
 	req.Header.Set("Date", timestamp)
-	req.Header.Set("Authorization", "HMAC-SHA256 Credential="+id+", SignedHeaders=date;host;x-ms-content-sha256, Signature="+signature)
+	req.Header.Set("Authorization", "HMAC-SHA256 Credential="+policy.credential+", SignedHeaders=date;host;x-ms-content-sha256, Signature="+signature)
 
 	return request.Next()
 }
@@ -90,7 +88,7 @@ func getContentHashBase64(content []byte) (string, error) {
 	return base64.StdEncoding.EncodeToString(hasher.Sum(nil)), nil
 }
 
-func getHmac(content string, key []byte) (string, error) {
+func getHMAC(content string, key []byte) (string, error) {
 	hmac := hmac.New(sha256.New, key)
 
 	_, err := hmac.Write([]byte(content))

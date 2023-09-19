@@ -11,6 +11,8 @@
 
 ### Bugs Fixed
 * Fixed an issue that could cause HTTP requests to fail with `http.StatusUnauthorized` in some cases.
+* The pipeline policy for setting the `Sync-Token` header in HTTP requests now properly formats the value.
+* The caching mechanism for `Sync-Token` values is now goroutine safe.
 
 ### Other Changes
 * `NewClientFromConnectionString()` will return a more descriptive error message when parsing the connection string fails.

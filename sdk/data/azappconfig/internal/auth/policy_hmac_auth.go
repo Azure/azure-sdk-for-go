@@ -65,7 +65,7 @@ func (policy *HMACPolicy) Do(request *policy.Request) (*http.Response, error) {
 
 	stringToSign := fmt.Sprintf("%s\n%s\n%s;%s;%s", strings.ToUpper(req.Method), pathAndQuery, timestamp, req.URL.Host, contentHash)
 
-	signature, err := getHmac(stringToSign, policy.secret)
+	signature, err := getHMAC(stringToSign, policy.secret)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func getContentHashBase64(content []byte) (string, error) {
 	return base64.StdEncoding.EncodeToString(hasher.Sum(nil)), nil
 }
 
-func getHmac(content string, key []byte) (string, error) {
+func getHMAC(content string, key []byte) (string, error) {
 	hmac := hmac.New(sha256.New, key)
 
 	_, err := hmac.Write([]byte(content))

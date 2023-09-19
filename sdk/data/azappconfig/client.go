@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/synctoken"
 )
 
 const timeFormat = time.RFC3339Nano
@@ -25,7 +26,7 @@ const timeFormat = time.RFC3339Nano
 // Client is the struct for interacting with an Azure App Configuration instance.
 type Client struct {
 	appConfigClient *generated.AzureAppConfigurationClient
-	syncTokenPolicy *syncTokenPolicy
+	cache           *synctoken.Cache
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -60,10 +61,9 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 		options = &ClientOptions{}
 	}
 
-	syncTokenPolicy := newSyncTokenPolicy()
-
+	cache := synctoken.NewCache()
 	client, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
-		PerRetry: []policy.Policy{authPolicy, syncTokenPolicy},
+		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache)},
 	}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
@@ -71,13 +71,15 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 
 	return &Client{
 		appConfigClient: generated.NewAzureAppConfigurationClient(endpoint, client),
-		syncTokenPolicy: syncTokenPolicy,
+		cache:           cache,
 	}, nil
 }
 
-// UpdateSyncToken sets an external synchronization token to ensure service requests receive up-to-date values.
-func (c *Client) UpdateSyncToken(token string) {
-	c.syncTokenPolicy.addToken(token)
+// SetSyncToken is used to set a sync token from an external source.
+// Sync tokens are required to be in the format "<id>=<value>;sn=<sn>".
+// See https://learn.microsoft.com/en-us/azure/azure-app-configuration/rest-api-consistency for more information on sync tokens.
+func (c *Client) SetSyncToken(syncToken string) error {
+	return c.cache.Set(syncToken)
 }
 
 // AddSetting creates a configuration setting only if the setting does not already exist in the configuration store.

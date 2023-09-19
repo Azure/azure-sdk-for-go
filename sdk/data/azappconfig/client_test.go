@@ -80,9 +80,6 @@ func TestClient(t *testing.T) {
 	require.Equal(t, value, *setResp.Value)
 	require.NotNil(t, setResp.SyncToken)
 
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
-
 	getResp3, err6 := client.GetSetting(context.Background(), key, &azappconfig.GetSettingOptions{
 		Label:         to.Ptr(label),
 		OnlyIfChanged: etag,
@@ -115,9 +112,6 @@ func TestClient(t *testing.T) {
 	require.Equal(t, value, *setResp2.Value)
 	require.NotNil(t, setResp.SyncToken)
 
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
-
 	setResp3, err8 := client.SetSetting(context.Background(), key, &value, &azappconfig.SetSettingOptions{
 		Label:           to.Ptr(label),
 		OnlyIfUnchanged: etag,
@@ -141,9 +135,6 @@ func TestClient(t *testing.T) {
 	require.True(t, *roResp.IsReadOnly)
 	require.NotNil(t, setResp.SyncToken)
 
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
-
 	roResp2, err10 := client.SetReadOnly(context.Background(), key, false, &azappconfig.SetReadOnlyOptions{
 		Label: to.Ptr(label),
 	})
@@ -159,9 +150,6 @@ func TestClient(t *testing.T) {
 	require.Equal(t, value, *roResp2.Value)
 	require.False(t, *roResp2.IsReadOnly)
 	require.NotNil(t, setResp.SyncToken)
-
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
 
 	roResp3, err11 := client.SetReadOnly(context.Background(), key, true, &azappconfig.SetReadOnlyOptions{
 		Label:           to.Ptr(label),
@@ -188,9 +176,6 @@ func TestClient(t *testing.T) {
 	require.True(t, *roResp4.IsReadOnly)
 	require.NotNil(t, setResp.SyncToken)
 
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
-
 	roResp5, err13 := client.SetReadOnly(context.Background(), key, false, &azappconfig.SetReadOnlyOptions{
 		Label:           to.Ptr(label),
 		OnlyIfUnchanged: etag,
@@ -215,9 +200,6 @@ func TestClient(t *testing.T) {
 	require.Equal(t, value, *roResp6.Value)
 	require.False(t, *roResp6.IsReadOnly)
 	require.NotNil(t, setResp.SyncToken)
-
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
 
 	any := "*"
 	revPgr := client.NewListRevisionsPager(azappconfig.SettingSelector{
@@ -263,9 +245,6 @@ func TestClient(t *testing.T) {
 	require.Equal(t, label, *delResp.Label)
 	require.Equal(t, value, *delResp.Value)
 	require.NotNil(t, setResp.SyncToken)
-
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
 
 	addResp2, err18 := client.AddSetting(context.Background(), key, &value, &azappconfig.AddSettingOptions{
 		Label:       to.Ptr(label),

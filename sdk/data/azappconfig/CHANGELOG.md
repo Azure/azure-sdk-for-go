@@ -7,6 +7,7 @@
 
 ### Breaking Changes
 * Response types `ListRevisionsPage` and `ListSettingsPage` now have the suffix `Response` in their names.
+* Method `UpdateSyncToken` on type `Client` has been renamed to `SetSyncToken` and now returns an error.
 
 ### Bugs Fixed
 * Fixed an issue that could cause HTTP requests to fail with `http.StatusUnauthorized` in some cases.

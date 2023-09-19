@@ -4,7 +4,6 @@
 package common
 
 import (
-	"bytes"
 	"fmt"
 	"io/fs"
 	"io/ioutil"
@@ -507,7 +506,7 @@ func GetTag(path string) (string, error) {
 	lines := strings.Split(string(b), "\n")
 	for _, line := range lines {
 		if strings.Contains(line, "tag:") {
-			return string(bytes.TrimSpace([]byte(line)[len("tag:"):])), nil
+			return strings.TrimSpace(string([]byte(line)[len("tag:"):])), nil
 		}
 	}
 

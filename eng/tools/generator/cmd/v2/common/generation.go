@@ -195,7 +195,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		return nil, err
 	}
 
-	if !isCurrentPreview && generateParam.ForceStableVersion {
+	if isCurrentPreview && generateParam.ForceStableVersion {
 		tag, err := GetTag(filepath.Join(packagePath, "autorest.md"))
 		if err != nil {
 			return nil, err

@@ -497,6 +497,22 @@ func AddTagSet(path, tag string) error {
 	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
+func GetTag(path string) (string, error) {
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+
+	lines := strings.Split(string(b), "\n")
+	for _, line := range lines {
+		if strings.Contains(line, "tag:") {
+			return strings.TrimSpace(string([]byte(line)[len("tag:"):])), nil
+		}
+	}
+
+	return "", nil
+}
+
 func isGenerateFake(path string) bool {
 	b, _ := os.ReadFile(filepath.Join(path, "autorest.md"))
 	if strings.Contains(string(b), "generate-fakes: true") {

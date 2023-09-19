@@ -157,8 +157,8 @@ function Get-Go-FoldersForGeneration() {
 function Update-Go-GeneratedSdks([string]$PackageFoldersFile) {
   $packageFolders = Get-Content $PackageFoldersFile | ConvertFrom-Json
   
-  $errors = @()
-  foreach ($folder in $packageFolders) {
+  $foldersWithErrors = @()
+  foreach ($foldersWithErrors in $packageFolders) {
     Push-Location $RepoRoot
     try {
       Write-Host 'Generating projects under folder ' -ForegroundColor Green -NoNewline
@@ -167,15 +167,17 @@ function Update-Go-GeneratedSdks([string]$PackageFoldersFile) {
       ./eng/scripts/build.ps1 -Filter $folder
     }
     catch {
-      $errors += $folder
+      $foldersWithErrors += $folder
     }
     finally {
       Pop-Location
     }
   }
 
-  if($errors.Count -gt 0) {
-    $errorText = (@('##[error]Generation errors found in the following folders:') + $errors) -join "`n  "
-    Write-Host $errorText
+  if($foldersWithErrors.Count -gt 0) {
+    Write-Host "##[error]Generation errors found in $($foldersWithErrors.Count) folders:"
+    foreach ($folder in $foldersWithErrors) {
+      Write-Host "  $folder"
+    }
   }
 }

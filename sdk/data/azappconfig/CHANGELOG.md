@@ -12,6 +12,7 @@
 * Fixed an issue that could cause HTTP requests to fail with `http.StatusUnauthorized` in some cases.
 
 ### Other Changes
+* `NewClientFromConnectionString()` will return a more descriptive error message when parsing the connection string fails.
 
 ## 0.5.0 (2022-11-08)
 

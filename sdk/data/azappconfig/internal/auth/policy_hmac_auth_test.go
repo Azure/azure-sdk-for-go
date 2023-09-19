@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestHmacAuthParseConnectionString(t *testing.T) {
+func TestParseConnectionString(t *testing.T) {
 	ep, id, sc, err := ParseConnectionString("Endpoint=xX;Id=yY;Secret=ZmZm")
 	require.NoError(t, err)
 	require.Equal(t, "xX", ep)
@@ -24,7 +24,7 @@ func TestHmacAuthParseConnectionString(t *testing.T) {
 	require.Equal(t, byte('f'), sc[2])
 }
 
-func TestHmacAuthParseConnectionStringMixedOrder(t *testing.T) {
+func TestParseConnectionStringMixedOrder(t *testing.T) {
 	ep, id, sc, err := ParseConnectionString("Id=yY;Secret=ZmZm;Endpoint=xX")
 	require.NoError(t, err)
 	require.Equal(t, "xX", ep)
@@ -36,7 +36,7 @@ func TestHmacAuthParseConnectionStringMixedOrder(t *testing.T) {
 	require.Equal(t, byte('f'), sc[2])
 }
 
-func TestHmacAuthParseConnectionStringExtraProperties(t *testing.T) {
+func TestParseConnectionStringExtraProperties(t *testing.T) {
 	ep, id, sc, err := ParseConnectionString("A=aA;Endpoint=xX;B=bB;Id=yY;C=cC;Secret=ZmZm;D=dD;")
 	require.NoError(t, err)
 	require.Equal(t, "xX", ep)
@@ -48,32 +48,44 @@ func TestHmacAuthParseConnectionStringExtraProperties(t *testing.T) {
 	require.Equal(t, byte('f'), sc[2])
 }
 
-func TestHmacAuthParseConnectionStringMissingEndoint(t *testing.T) {
+func TestParseConnectionStringMissingEndoint(t *testing.T) {
 	_, _, _, err := ParseConnectionString("Id=yY;Secret=ZmZm")
 	require.Error(t, err)
+	require.ErrorContains(t, err, "missing Endpoint")
 }
 
-func TestHmacAuthParseConnectionStringMissingId(t *testing.T) {
+func TestParseConnectionStringMissingId(t *testing.T) {
 	_, _, _, err := ParseConnectionString("Endpoint=xX;Secret=ZmZm")
 	require.Error(t, err)
+	require.ErrorContains(t, err, "missing Id")
 }
 
-func TestHmacAuthParseConnectionStringMissingSecret(t *testing.T) {
+func TestParseConnectionStringMissingSecret(t *testing.T) {
 	_, _, _, err := ParseConnectionString("Endpoint=xX;Id=yY")
 	require.Error(t, err)
+	require.ErrorContains(t, err, "missing Secret")
 }
 
-func TestHmacAuthParseConnectionStringDuplicateEndoint(t *testing.T) {
+func TestParseConnectionStringDuplicateEndoint(t *testing.T) {
 	_, _, _, err := ParseConnectionString("Endpoint=xX;Endpoint=xX;Id=yY;Secret=ZmZm")
 	require.Error(t, err)
+	require.ErrorContains(t, err, "duplicate Endpoint")
 }
 
-func TestHmacAuthParseConnectionStringDuplicateId(t *testing.T) {
+func TestParseConnectionStringDuplicateId(t *testing.T) {
 	_, _, _, err := ParseConnectionString("Endpoint=xX;Id=yY;Id=yY;Secret=ZmZm")
 	require.Error(t, err)
+	require.ErrorContains(t, err, "duplicate Id")
 }
 
-func TestHmacAuthParseConnectionStringDuplicateSecret(t *testing.T) {
+func TestParseConnectionStringDuplicateSecret(t *testing.T) {
 	_, _, _, err := ParseConnectionString("Endpoint=xX;Id=yY;Secret=ZmZm;Secret=zZ")
 	require.Error(t, err)
+	require.ErrorContains(t, err, "duplicate Secret")
+}
+
+func TestParseConnectionStringInvalidEncoding(t *testing.T) {
+	_, _, _, err := ParseConnectionString("Endpoint=xX;Id=yY;Secret=badencoding")
+	require.Error(t, err)
+	require.ErrorContains(t, err, "illegal base64 data")
 }

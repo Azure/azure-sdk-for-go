@@ -10,7 +10,6 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -100,47 +99,64 @@ func getHMAC(content string, key []byte) (string, error) {
 }
 
 // ParseConnectionString parses the provided connection string.
-func ParseConnectionString(connectionString string) (endpoint string, credential string, secret []byte, err error) {
-	const connectionStringEndpointPrefix = "Endpoint="
-	const connectionStringCredentialPrefix = "Id="
-	const connectionStringSecretPrefix = "Secret="
+// Returns endpoint, cred, secret or an error.
+func ParseConnectionString(connectionString string) (string, string, []byte, error) {
+	const (
+		endpointPrefix   = "Endpoint="
+		credentialPrefix = "Id="
+		secretPrefix     = "Secret="
+	)
 
-	var er error = errors.New("error parsing connection string")
-	var ept *string
-	var cred *string
-	var sec *[]byte
+	var (
+		ept  string
+		cred string
+		sec  []byte
+	)
+
+	const duplicateSection = "duplicate %s section"
+
 	for _, seg := range strings.Split(connectionString, ";") {
-		if strings.HasPrefix(seg, connectionStringEndpointPrefix) {
-			if ept != nil {
-				return "", "", []byte{}, er
+		if strings.HasPrefix(seg, endpointPrefix) {
+			if ept != "" {
+				return "", "", nil, fmt.Errorf(duplicateSection, endpointPrefix)
 			}
 
-			ep := strings.TrimPrefix(seg, connectionStringEndpointPrefix)
-			ept = &ep
-		} else if strings.HasPrefix(seg, connectionStringCredentialPrefix) {
-			if cred != nil {
-				return "", "", []byte{}, er
+			ep := strings.TrimPrefix(seg, endpointPrefix)
+			ept = ep
+		} else if strings.HasPrefix(seg, credentialPrefix) {
+			if cred != "" {
+				return "", "", nil, fmt.Errorf(duplicateSection, credentialPrefix)
 			}
 
-			c := strings.TrimPrefix(seg, connectionStringCredentialPrefix)
-			cred = &c
-		} else if strings.HasPrefix(seg, connectionStringSecretPrefix) {
+			c := strings.TrimPrefix(seg, credentialPrefix)
+			cred = c
+		} else if strings.HasPrefix(seg, secretPrefix) {
 			if sec != nil {
-				return "", "", []byte{}, er
+				return "", "", nil, fmt.Errorf(duplicateSection, secretPrefix)
 			}
 
-			s, e := base64.StdEncoding.DecodeString(strings.TrimPrefix(seg, connectionStringSecretPrefix))
-			if e != nil {
-				return "", "", []byte{}, e
+			s, err := base64.StdEncoding.DecodeString(strings.TrimPrefix(seg, secretPrefix))
+			if err != nil {
+				return "", "", nil, err
 			}
 
-			sec = &s
+			sec = s
 		}
 	}
 
-	if ept == nil || cred == nil || sec == nil {
-		return "", "", []byte{}, er
+	const missingSection = "missing %s section"
+
+	if ept == "" {
+		return "", "", nil, fmt.Errorf(missingSection, endpointPrefix)
 	}
 
-	return *ept, *cred, *sec, nil
+	if cred == "" {
+		return "", "", nil, fmt.Errorf(missingSection, credentialPrefix)
+	}
+
+	if sec == nil {
+		return "", "", nil, fmt.Errorf(missingSection, secretPrefix)
+	}
+
+	return ept, cred, sec, nil
 }

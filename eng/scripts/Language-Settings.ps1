@@ -157,7 +157,7 @@ function Get-Go-FoldersForGeneration() {
 function Update-Go-GeneratedSdks([string]$PackageFoldersFile) {
   $packageFolders = Get-Content $PackageFoldersFile | ConvertFrom-Json
   
-  $errors = $false
+  $errors = @()
   foreach ($folder in $packageFolders) {
     Push-Location $RepoRoot
     try {
@@ -167,8 +167,7 @@ function Update-Go-GeneratedSdks([string]$PackageFoldersFile) {
       ./eng/scripts/build.ps1 -Filter $folder
 
       if ($LastExitCode -ne 0) {
-        Write-Error "Generation error in $folder"
-        $errors = $true
+        $errors += $folder
       }
     }
     finally {
@@ -176,5 +175,8 @@ function Update-Go-GeneratedSdks([string]$PackageFoldersFile) {
     }
   }
 
-  exit $errors ? 1 : 0
+  if($errors.Count -gt 0) {
+    $errorText = ('Generation errors found in the following folders:', $errors) -join "`n  "
+    throw $errorText
+  }
 }

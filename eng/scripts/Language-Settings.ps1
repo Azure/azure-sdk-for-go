@@ -175,7 +175,7 @@ function Update-Go-GeneratedSdks([string]$PackageFoldersFile) {
   }
 
   if($errors.Count -gt 0) {
-    $errorText = ('Generation errors found in the following folders:', $errors) -join "`n  "
-    throw $errorText
+    $errorText = (@('##[error]Generation errors found in the following folders:') + $errors) -join "`n  "
+    Write-Host $errorText
   }
 }

@@ -51,6 +51,7 @@ type GenerateParam struct {
 	SkipGenerateExample bool
 	GoVersion           string
 	RemoveTagSet        bool
+	ForceStableVersion  bool
 }
 
 func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
@@ -192,6 +193,18 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	isCurrentPreview, err = ContainsPreviewAPIVersion(packagePath)
 	if err != nil {
 		return nil, err
+	}
+
+	if !isCurrentPreview && generateParam.ForceStableVersion {
+		tag, err := GetTag(filepath.Join(packagePath, "autorest.md"))
+		if err != nil {
+			return nil, err
+		}
+		if tag != "" {
+			if !strings.Contains(tag, "preview") {
+				isCurrentPreview = false
+			}
+		}
 	}
 
 	if !onBoard {

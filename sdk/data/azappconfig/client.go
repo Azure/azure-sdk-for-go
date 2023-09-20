@@ -76,11 +76,9 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 }
 
 // SetSyncToken is used to set a sync token from an external source.
-// Sync tokens are required to be in the format "<id>=<value>;sn=<sn>".
-// See [Azure App Configuration documentation] for more information on sync tokens.
-//
-// [Azure App Configuration documentation]: https://learn.microsoft.com/azure/azure-app-configuration/rest-api-consistency
-func (c *Client) SetSyncToken(syncToken string) error {
+// SyncTokens are required to be in the format "<id>=<value>;sn=<sn>".
+// Multiple SyncTokens must be comma delimited.
+func (c *Client) SetSyncToken(syncToken SyncToken) error {
 	return c.cache.Set(syncToken)
 }
 
@@ -105,7 +103,7 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 
 	return AddSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: resp.SyncToken,
+		SyncToken: SyncToken(*resp.SyncToken),
 	}, nil
 }
 
@@ -124,7 +122,7 @@ func (c *Client) DeleteSetting(ctx context.Context, key string, options *DeleteS
 
 	return DeleteSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: resp.SyncToken,
+		SyncToken: SyncToken(*resp.SyncToken),
 	}, nil
 }
 
@@ -152,7 +150,7 @@ func (c *Client) GetSetting(ctx context.Context, key string, options *GetSetting
 
 	return GetSettingResponse{
 		Setting:      settingFromGenerated(resp.KeyValue),
-		SyncToken:    resp.SyncToken,
+		SyncToken:    SyncToken(*resp.SyncToken),
 		LastModified: lastModified,
 	}, nil
 }
@@ -172,7 +170,7 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 		if err == nil {
 			return SetReadOnlyResponse{
 				Setting:   settingFromGenerated(resp.KeyValue),
-				SyncToken: resp.SyncToken,
+				SyncToken: SyncToken(*resp.SyncToken),
 			}, nil
 		}
 	} else {
@@ -181,7 +179,7 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 		if err == nil {
 			return SetReadOnlyResponse{
 				Setting:   settingFromGenerated(resp.KeyValue),
-				SyncToken: resp.SyncToken,
+				SyncToken: SyncToken(*resp.SyncToken),
 			}, nil
 		}
 	}
@@ -209,7 +207,7 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 
 	return SetSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: resp.SyncToken,
+		SyncToken: SyncToken(*resp.SyncToken),
 	}, nil
 }
 
@@ -235,7 +233,7 @@ func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRe
 
 			return ListRevisionsPageResponse{
 				Settings:  css,
-				SyncToken: page.SyncToken,
+				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
 		},
 	})
@@ -262,7 +260,7 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 
 			return ListSettingsPageResponse{
 				Settings:  css,
-				SyncToken: page.SyncToken,
+				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
 		},
 	})

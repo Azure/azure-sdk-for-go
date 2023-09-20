@@ -10,6 +10,7 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/exported"
 )
 
 // Policy is a pipeline policy for managing Sync-Token
@@ -39,7 +40,7 @@ func (p *Policy) Do(req *policy.Request) (*http.Response, error) {
 	}
 
 	// update the cache from the response
-	if err := p.cache.Set(resp.Header.Get(syncTokenHeader)); err != nil {
+	if err := p.cache.Set(exported.SyncToken(resp.Header.Get(syncTokenHeader))); err != nil {
 		return nil, &nonRetriableError{err}
 	}
 

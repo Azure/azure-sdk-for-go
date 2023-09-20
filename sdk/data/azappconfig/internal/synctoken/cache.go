@@ -7,79 +7,50 @@
 package synctoken
 
 import (
-	"errors"
 	"fmt"
-	"strconv"
 	"strings"
 	"sync"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/exported"
 )
 
 // Cache contains a collection of sync token values.
 // Methods on Cache are safe for concurrent use.
 // Don't use this type directly, use NewCache() instead.
 type Cache struct {
-	tokens   map[string]syncTokenInfo
+	tokens   map[string]exported.SyncTokenValues
 	tokensMu *sync.RWMutex
 }
 
 // NewCache creates a new instance of [Cache].
 func NewCache() *Cache {
 	return &Cache{
-		tokens:   map[string]syncTokenInfo{},
+		tokens:   map[string]exported.SyncTokenValues{},
 		tokensMu: &sync.RWMutex{},
 	}
 }
 
 // Set adds or updates the cache with the provided sync token.
-func (s *Cache) Set(syncToken string) error {
-	tokens := strings.TrimSpace(syncToken)
-	if tokens == "" {
-		return errors.New("syncToken can't be empty")
+func (s *Cache) Set(syncToken exported.SyncToken) error {
+	tokens, err := exported.ParseSyncToken(syncToken)
+	if err != nil {
+		return err
 	}
 
 	s.tokensMu.Lock()
 	defer s.tokensMu.Unlock()
 
-	// token format is "<id>=<value>;sn=<sn>" and can contain multiple, comman-delimited values
-	for _, token := range strings.Split(tokens, ",") {
-		items := strings.Split(token, ";")
-		if len(items) != 2 {
-			return fmt.Errorf("invalid token %s", token)
-		}
-
-		// items[0] contains "<id>=<value>"
-		// note that <value> is a base-64 encoded string, so don't try to split on '='
-		assignmentIndex := strings.Index(items[0], "=")
-		if assignmentIndex < 0 {
-			return fmt.Errorf("unexpected token format %s", items[0])
-		}
-		tokenID := strings.TrimSpace(items[0][:assignmentIndex])
-		tokenValue := strings.TrimSpace(items[0][assignmentIndex+1:])
-
-		// items[1] contains "sn=<sn>"
-		// parse the version number after the equals sign
-		assignmentIndex = strings.Index(items[1], "=")
-		if assignmentIndex < 0 {
-			return fmt.Errorf("unexpected token version format %s", items[1])
-		}
-		tokenVersion, err := strconv.ParseInt(strings.TrimSpace(items[1][assignmentIndex+1:]), 10, 64)
-		if err != nil {
-			return err
-		}
-
-		if tk, ok := s.tokens[tokenID]; ok {
+	for _, token := range tokens {
+		if tk, ok := s.tokens[token.ID]; ok {
 			// we already have a sync token for this ID.
 			// if the current token is already at this version
-			// or newer there's no need to update the map.
-			if tk.Version >= tokenVersion {
+			// or newer don't update the map.
+			if tk.Version >= token.Version {
 				continue
 			}
 		}
 
-		s.tokens[tokenID] = syncTokenInfo{
-			Value:   tokenValue,
-			Version: tokenVersion,
-		}
+		s.tokens[token.ID] = token
 	}
 
 	return nil
@@ -95,13 +66,8 @@ func (s *Cache) Get() string {
 		return ""
 	}
 	tokens := []string{}
-	for k, v := range s.tokens {
-		tokens = append(tokens, fmt.Sprintf("%s=%s", k, v.Value))
+	for _, token := range s.tokens {
+		tokens = append(tokens, fmt.Sprintf("%s=%s", token.ID, token.Value))
 	}
 	return strings.Join(tokens, ",")
-}
-
-type syncTokenInfo struct {
-	Value   string
-	Version int64
 }

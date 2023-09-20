@@ -4,10 +4,12 @@
 
 ### Features Added
 * Handle setting content type in `AddSetting` and `SetSetting` ([#19797](https://github.com/Azure/azure-sdk-for-go/issues/19797))
+* Added type `SyncToken` for better type safety when handling Sync-Token header values.
 
 ### Breaking Changes
 * Response types `ListRevisionsPage` and `ListSettingsPage` now have the suffix `Response` in their names.
-* Method `UpdateSyncToken` on type `Client` has been renamed to `SetSyncToken` and now returns an error.
+* Method `UpdateSyncToken` on type `Client` has been replaced with `SetSyncToken`.
+* Response types' `SyncToken` field type has changed from `*string` to `SyncToken`.
 
 ### Bugs Fixed
 * Fixed an issue that could cause HTTP requests to fail with `http.StatusUnauthorized` in some cases.

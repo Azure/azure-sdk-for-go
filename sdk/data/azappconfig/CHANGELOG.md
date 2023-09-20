@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Check for a `Sync-Token` value before updating the cache.
 
 ### Other Changes
 

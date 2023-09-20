@@ -19,7 +19,6 @@ import (
 
 func TestPolicy(t *testing.T) {
 	srv, close := mock.NewServer()
-	srv.AppendResponse()
 	defer close()
 
 	cache := NewCache()
@@ -36,9 +35,11 @@ func TestPolicy(t *testing.T) {
 
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	require.NoError(t, err)
+
+	srv.AppendResponse()
 	resp, err := pl.Do(req)
-	require.Error(t, err) // missing Sync-Token response header
-	require.Nil(t, resp)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
 
 	srv.AppendResponse(mock.WithHeader(syncTokenHeader, "id=val"))
 	resp, err = pl.Do(req)

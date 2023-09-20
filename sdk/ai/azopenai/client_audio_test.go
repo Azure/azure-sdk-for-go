@@ -18,11 +18,19 @@ import (
 )
 
 func TestClient_GetAudioTranscription_AzureOpenAI(t *testing.T) {
+	if recording.GetRecordMode() != recording.LiveMode {
+		t.Skipf("Recording needs to be revisited for multipart: https://github.com/Azure/azure-sdk-for-go/issues/21598")
+	}
+
 	client := newTestClient(t, azureWhisper)
 	runTranscriptionTests(t, client, azureWhisperModel)
 }
 
 func TestClient_GetAudioTranscription_OpenAI(t *testing.T) {
+	if recording.GetRecordMode() != recording.LiveMode {
+		t.Skipf("Recording needs to be revisited for multipart: https://github.com/Azure/azure-sdk-for-go/issues/21598")
+	}
+
 	client := newOpenAIClientForTest(t)
 
 	mp3Bytes, err := os.ReadFile(`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`)
@@ -42,11 +50,19 @@ func TestClient_GetAudioTranscription_OpenAI(t *testing.T) {
 }
 
 func TestClient_GetAudioTranslation_AzureOpenAI(t *testing.T) {
+	if recording.GetRecordMode() != recording.LiveMode {
+		t.Skipf("Recording needs to be revisited for multipart: https://github.com/Azure/azure-sdk-for-go/issues/21598")
+	}
+
 	client := newTestClient(t, azureWhisper)
 	runTranslationTests(t, client, azureWhisperModel)
 }
 
 func TestClient_GetAudioTranslation_OpenAI(t *testing.T) {
+	if recording.GetRecordMode() != recording.LiveMode {
+		t.Skipf("Recording needs to be revisited for multipart: https://github.com/Azure/azure-sdk-for-go/issues/21598")
+	}
+
 	client := newOpenAIClientForTest(t)
 
 	mp3Bytes, err := os.ReadFile(`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`)
@@ -66,10 +82,6 @@ func TestClient_GetAudioTranslation_OpenAI(t *testing.T) {
 }
 
 func runTranscriptionTests(t *testing.T, client *azopenai.Client, model string) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skipf("Recording needs to be revisited for multipart: https://github.com/Azure/azure-sdk-for-go/issues/21598")
-	}
-
 	mp3Bytes, err := os.ReadFile(`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`)
 	require.NoError(t, err)
 
@@ -129,10 +141,6 @@ func runTranscriptionTests(t *testing.T, client *azopenai.Client, model string) 
 }
 
 func runTranslationTests(t *testing.T, client *azopenai.Client, model string) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skipf("Recording needs to be revisited for multipart: https://github.com/Azure/azure-sdk-for-go/issues/21598")
-	}
-
 	mp3Bytes, err := os.ReadFile(`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`)
 	require.NoError(t, err)
 

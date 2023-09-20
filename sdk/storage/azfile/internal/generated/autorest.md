@@ -19,7 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.49"
+use: "@autorest/go@4.0.0-alpha.20230920.1"
 ```
 
 ### Don't include share name, directory, or file name in path - we have direct URIs

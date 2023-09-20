@@ -14,6 +14,18 @@ type azureBatchImageGenerationInternalResponse struct {
 	batchImageGenerationOperationResponse
 }
 
+// getAudioTranscriptionInternalResponse contains the response from method Client.getAudioTranscriptionInternal.
+type getAudioTranscriptionInternalResponse struct {
+	// Result information for an operation that transcribed spoken audio into written text.
+	AudioTranscription
+}
+
+// getAudioTranslationInternalResponse contains the response from method Client.getAudioTranslationInternal.
+type getAudioTranslationInternalResponse struct {
+	// Result information for an operation that transcribed spoken audio into written text.
+	AudioTranscription
+}
+
 // GetChatCompletionsResponse contains the response from method Client.GetChatCompletions.
 type GetChatCompletionsResponse struct {
 	// Representation of the response data from a chat completions request.

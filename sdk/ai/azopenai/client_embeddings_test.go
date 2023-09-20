@@ -13,13 +13,9 @@ import (
 )
 
 func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
-	require.NoError(t, err)
+	client := newTestClient(t, azureOpenAI.Endpoint)
 
-	chatClient, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
-	_, err = chatClient.GetEmbeddings(context.Background(), azopenai.EmbeddingsOptions{
+	_, err := client.GetEmbeddings(context.Background(), azopenai.EmbeddingsOptions{
 		Deployment: "thisdoesntexist",
 	}, nil)
 
@@ -38,12 +34,7 @@ func TestClient_OpenAI_GetEmbeddings(t *testing.T) {
 }
 
 func TestClient_GetEmbeddings(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
-	require.NoError(t, err)
-
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
+	client := newTestClient(t, azureOpenAI.Endpoint)
 	testGetEmbeddings(t, client, azureOpenAI.Embeddings)
 }
 

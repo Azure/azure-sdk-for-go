@@ -8,6 +8,66 @@
 
 package azopenai
 
+// AudioTaskLabel - Defines the possible descriptors for available audio operation responses.
+type AudioTaskLabel string
+
+const (
+	AudioTaskLabelTranscribe AudioTaskLabel = "transcribe"
+	AudioTaskLabelTranslate  AudioTaskLabel = "translate"
+)
+
+// PossibleAudioTaskLabelValues returns the possible values for the AudioTaskLabel const type.
+func PossibleAudioTaskLabelValues() []AudioTaskLabel {
+	return []AudioTaskLabel{
+		AudioTaskLabelTranscribe,
+		AudioTaskLabelTranslate,
+	}
+}
+
+// AudioTranscriptionFormat - Defines available options for the underlying response format of output transcription information.
+type AudioTranscriptionFormat string
+
+const (
+	AudioTranscriptionFormatJSON        AudioTranscriptionFormat = "json"
+	AudioTranscriptionFormatSrt         AudioTranscriptionFormat = "srt"
+	AudioTranscriptionFormatText        AudioTranscriptionFormat = "text"
+	AudioTranscriptionFormatVerboseJSON AudioTranscriptionFormat = "verbose_json"
+	AudioTranscriptionFormatVtt         AudioTranscriptionFormat = "vtt"
+)
+
+// PossibleAudioTranscriptionFormatValues returns the possible values for the AudioTranscriptionFormat const type.
+func PossibleAudioTranscriptionFormatValues() []AudioTranscriptionFormat {
+	return []AudioTranscriptionFormat{
+		AudioTranscriptionFormatJSON,
+		AudioTranscriptionFormatSrt,
+		AudioTranscriptionFormatText,
+		AudioTranscriptionFormatVerboseJSON,
+		AudioTranscriptionFormatVtt,
+	}
+}
+
+// AudioTranslationFormat - Defines available options for the underlying response format of output translation information.
+type AudioTranslationFormat string
+
+const (
+	AudioTranslationFormatJSON        AudioTranslationFormat = "json"
+	AudioTranslationFormatSrt         AudioTranslationFormat = "srt"
+	AudioTranslationFormatText        AudioTranslationFormat = "text"
+	AudioTranslationFormatVerboseJSON AudioTranslationFormat = "verbose_json"
+	AudioTranslationFormatVtt         AudioTranslationFormat = "vtt"
+)
+
+// PossibleAudioTranslationFormatValues returns the possible values for the AudioTranslationFormat const type.
+func PossibleAudioTranslationFormatValues() []AudioTranslationFormat {
+	return []AudioTranslationFormat{
+		AudioTranslationFormatJSON,
+		AudioTranslationFormatSrt,
+		AudioTranslationFormatText,
+		AudioTranslationFormatVerboseJSON,
+		AudioTranslationFormatVtt,
+	}
+}
+
 // AzureChatExtensionType - A representation of configuration data for a single Azure OpenAI chat extension. This will be
 // used by a chat completions request that should use Azure OpenAI chat extensions to augment the response
 // behavior. The use of this configuration is compatible only with Azure OpenAI.

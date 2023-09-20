@@ -78,16 +78,16 @@ func assertContentFilterError(t *testing.T, err error, requireAnnotations bool) 
 	require.ErrorAs(t, err, &contentFilterErr)
 
 	if requireAnnotations {
-		require.Equal(t, &azopenai.ContentFilterResultsHate{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)}, contentFilterErr.ContentFilterResults.Hate)
-		require.Equal(t, &azopenai.ContentFilterResultsSelfHarm{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)}, contentFilterErr.ContentFilterResults.SelfHarm)
-		require.Equal(t, &azopenai.ContentFilterResultsSexual{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)}, contentFilterErr.ContentFilterResults.Sexual)
-		require.Equal(t, &azopenai.ContentFilterResultsViolence{Filtered: to.Ptr(true), Severity: to.Ptr(azopenai.ContentFilterSeverityMedium)}, contentFilterErr.ContentFilterResults.Violence)
+		require.Equal(t, &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)}, contentFilterErr.ContentFilterResults.Hate)
+		require.Equal(t, &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)}, contentFilterErr.ContentFilterResults.SelfHarm)
+		require.Equal(t, &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)}, contentFilterErr.ContentFilterResults.Sexual)
+		require.Equal(t, &azopenai.ContentFilterResult{Filtered: to.Ptr(true), Severity: to.Ptr(azopenai.ContentFilterSeverityMedium)}, contentFilterErr.ContentFilterResults.Violence)
 	}
 }
 
 var safeContentFilter = &azopenai.ChatChoiceContentFilterResults{
-	Hate:     &azopenai.ContentFilterResultsHate{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
-	SelfHarm: &azopenai.ContentFilterResultsSelfHarm{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
-	Sexual:   &azopenai.ContentFilterResultsSexual{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
-	Violence: &azopenai.ContentFilterResultsViolence{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	Hate:     &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	SelfHarm: &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	Sexual:   &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	Violence: &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
 }

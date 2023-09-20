@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -10,16 +13,18 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
-func ExampleClient_GetEmbeddings() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_EMBEDDINGS_MODEL")
+func ExampleClient_GetAudioTranscription() {
+	azureOpenAIKey := os.Getenv("AOAI_API_KEY_WHISPER")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT_WHISPER")
 
-	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
+	modelDeploymentID := os.Getenv("AOAI_MODEL_WHISPER")
+
+	if azureOpenAIKey == "" || azureOpenAIEndpoint == "" || modelDeploymentID == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
@@ -31,8 +36,6 @@ func ExampleClient_GetEmbeddings() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
-	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
@@ -40,8 +43,20 @@ func ExampleClient_GetEmbeddings() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	resp, err := client.GetEmbeddings(context.TODO(), azopenai.EmbeddingsOptions{
-		Input:      []string{"The food was delicious and the waiter..."},
+	mp3Bytes, err := os.ReadFile("testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3")
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	resp, err := client.GetAudioTranscription(context.TODO(), azopenai.AudioTranscriptionOptions{
+		File: mp3Bytes,
+
+		// this will return _just_ the translated text. Other formats are available, which return
+		// different or additional metadata. See [azopenai.AudioTranscriptionFormat] for more examples.
+		ResponseFormat: to.Ptr(azopenai.AudioTranscriptionFormatText),
+
 		Deployment: modelDeploymentID,
 	}, nil)
 
@@ -50,10 +65,7 @@ func ExampleClient_GetEmbeddings() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	for _, embed := range resp.Data {
-		// embed.Embedding contains the embeddings for this input index.
-		fmt.Fprintf(os.Stderr, "Got embeddings for input %d\n", *embed.Index)
-	}
+	fmt.Fprintf(os.Stderr, "Transcribed text: %s\n", *resp.Text)
 
 	// Output:
 }

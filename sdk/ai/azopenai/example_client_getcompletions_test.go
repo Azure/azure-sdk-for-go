@@ -17,7 +17,7 @@ import (
 
 func ExampleClient_GetCompletions() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeployment := os.Getenv("AOAI_COMPLETIONS_MODEL_DEPLOYMENT")
+	modelDeployment := os.Getenv("AOAI_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
@@ -64,7 +64,7 @@ func ExampleClient_GetCompletions() {
 
 func ExampleClient_GetCompletionsStream() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_COMPLETIONS_MODEL_DEPLOYMENT")
+	modelDeploymentID := os.Getenv("AOAI_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")

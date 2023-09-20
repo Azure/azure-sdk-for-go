@@ -23,57 +23,88 @@ import (
 )
 
 var (
-	azureOpenAI       testVars
-	azureOpenAICanary testVars
-	openAI            testVars
+	azureOpenAI        testVars
+	azureOpenAICanary  testVars
+	openAI             testVars
+	azureWhisper       endpoint
+	azureWhisperModel  string
+	openAIWhisper      endpoint
+	openAIWhisperModel string
 )
 
-type testVars struct {
-	Endpoint        string // env: AOAI_ENDPOINT, OPENAI_ENDPOINT
-	APIKey          string // env: AOAI_API_KEY, OPENAI_API_KEY
-	Completions     string // env: AOAI_COMPLETIONS_MODEL_DEPLOYMENT, OPENAI_COMPLETIONS_MODEL
-	ChatCompletions string // env: AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT, OPENAI_CHAT_COMPLETIONS_MODEL
-	Embeddings      string // env: AOAI_EMBEDDINGS_MODEL_DEPLOYMENT, OPENAI_EMBEDDINGS_MODEL
-	Azure           bool
+type endpoint struct {
+	URL    string
+	APIKey string
+	Azure  bool
+}
 
-	Cognitive azopenai.AzureCognitiveSearchChatExtensionConfiguration
+func newTestClient(t *testing.T, ep endpoint) *azopenai.Client {
+	if ep.Azure {
+		cred, err := azopenai.NewKeyCredential(ep.APIKey)
+		require.NoError(t, err)
+
+		client, err := azopenai.NewClientWithKeyCredential(ep.URL, cred, newClientOptionsForTest(t))
+		require.NoError(t, err)
+
+		return client
+	} else {
+		if ep.APIKey == "" {
+			t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
+		}
+
+		cred, err := azopenai.NewKeyCredential(ep.APIKey)
+		require.NoError(t, err)
+
+		// we get rate limited quite a bit.
+		options := newClientOptionsForTest(t)
+
+		if options == nil {
+			options = &azopenai.ClientOptions{}
+		}
+
+		options.Retry = policy.RetryOptions{
+			MaxRetries:    60,
+			RetryDelay:    time.Second,
+			MaxRetryDelay: time.Second,
+		}
+
+		client, err := azopenai.NewClientForOpenAI(ep.URL, cred, options)
+		require.NoError(t, err)
+
+		return client
+	}
+}
+
+type testVars struct {
+	Endpoint        endpoint
+	Completions     string
+	ChatCompletions string
+	Embeddings      string
+	Cognitive       azopenai.AzureCognitiveSearchChatExtensionConfiguration
+	Azure           bool
 }
 
 func newTestVars(prefix string, isCanary bool) testVars {
-	getRequired := func(name string) string {
-		v := os.Getenv(name)
-
-		if v == "" {
-			panic(fmt.Sprintf("Env variable %s is missing", name))
-		}
-
-		return v
-	}
-
 	azure := prefix == "AOAI"
-
-	canarySuffix := ""
-	deplSuffix := ""
-
-	if azure {
-		deplSuffix += "_DEPLOYMENT"
-	}
+	suffix := ""
 
 	if isCanary {
-		canarySuffix += "_CANARY"
+		suffix += "_CANARY"
 	}
 
 	tv := testVars{
-		Endpoint: getRequired(prefix + "_ENDPOINT" + canarySuffix),
-		APIKey:   getRequired(prefix + "_API_KEY" + canarySuffix),
-
-		Completions: getRequired(prefix + "_COMPLETIONS_MODEL" + deplSuffix + canarySuffix),
+		Endpoint: endpoint{
+			URL:    getRequired(prefix + "_ENDPOINT" + suffix),
+			APIKey: getRequired(prefix + "_API_KEY" + suffix),
+			Azure:  azure,
+		},
+		Completions: getRequired(prefix + "_COMPLETIONS_MODEL" + suffix),
 
 		// ex: gpt-4-0613
-		ChatCompletions: getRequired(prefix + "_CHAT_COMPLETIONS_MODEL" + deplSuffix + canarySuffix),
+		ChatCompletions: getRequired(prefix + "_CHAT_COMPLETIONS_MODEL" + suffix),
 
 		// ex: embedding
-		Embeddings: getRequired(prefix + "_EMBEDDINGS_MODEL" + deplSuffix + canarySuffix),
+		Embeddings: getRequired(prefix + "_EMBEDDINGS_MODEL" + suffix),
 
 		Azure: azure,
 
@@ -84,9 +115,9 @@ func newTestVars(prefix string, isCanary bool) testVars {
 		},
 	}
 
-	if tv.Endpoint != "" && !strings.HasSuffix(tv.Endpoint, "/") {
+	if tv.Endpoint.URL != "" && !strings.HasSuffix(tv.Endpoint.URL, "/") {
 		// (this just makes recording replacement easier)
-		tv.Endpoint += "/"
+		tv.Endpoint.URL += "/"
 	}
 
 	return tv
@@ -100,14 +131,14 @@ const fakeCognitiveIndexName = "index"
 func initEnvVars() {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		azureOpenAI.Azure = true
-		azureOpenAI.Endpoint = fakeEndpoint
-		azureOpenAI.APIKey = fakeAPIKey
-		openAI.APIKey = fakeAPIKey
-		openAI.Endpoint = fakeEndpoint
+		azureOpenAI.Endpoint.URL = fakeEndpoint
+		azureOpenAI.Endpoint.APIKey = fakeAPIKey
+		openAI.Endpoint.APIKey = fakeAPIKey
+		openAI.Endpoint.URL = fakeEndpoint
 
 		azureOpenAICanary.Azure = true
-		azureOpenAICanary.Endpoint = fakeEndpoint
-		azureOpenAICanary.APIKey = fakeAPIKey
+		azureOpenAICanary.Endpoint.URL = fakeEndpoint
+		azureOpenAICanary.Endpoint.APIKey = fakeAPIKey
 		azureOpenAICanary.Completions = ""
 		azureOpenAICanary.ChatCompletions = "gpt-4"
 
@@ -133,6 +164,20 @@ func initEnvVars() {
 		azureOpenAI = newTestVars("AOAI", false)
 		azureOpenAICanary = newTestVars("AOAI", true)
 		openAI = newTestVars("OPENAI", false)
+
+		azureWhisper = endpoint{
+			URL:    getRequired("AOAI_ENDPOINT_WHISPER"),
+			APIKey: getRequired("AOAI_API_KEY_WHISPER"),
+			Azure:  true,
+		}
+		azureWhisperModel = getRequired("AOAI_MODEL_WHISPER")
+
+		openAIWhisper = endpoint{
+			URL:    getRequired("OPENAI_ENDPOINT"),
+			APIKey: getRequired("OPENAI_API_KEY"),
+			Azure:  true,
+		}
+		openAIWhisperModel = "whisper-1"
 	}
 }
 
@@ -151,17 +196,17 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		require.NoError(t, err)
 
 		// "RequestUri": "https://openai-shared.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2023-03-15-preview",
-		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(azureOpenAI.Endpoint), nil)
+		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(azureOpenAI.Endpoint.URL), nil)
 		require.NoError(t, err)
 
-		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(azureOpenAICanary.Endpoint), nil)
+		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(azureOpenAICanary.Endpoint.URL), nil)
 		require.NoError(t, err)
 
 		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", nil)
 		require.NoError(t, err)
 
-		if openAI.Endpoint != "" {
-			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(openAI.Endpoint), nil)
+		if openAI.Endpoint.URL != "" {
+			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(openAI.Endpoint.URL), nil)
 			require.NoError(t, err)
 		}
 
@@ -222,40 +267,11 @@ func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 // newAzureOpenAIClientForTest can create a client pointing to the "canary" endpoint (basically - leading fixes or features)
 // or the current deployed endpoint.
 func newAzureOpenAIClientForTest(t *testing.T, tv testVars) *azopenai.Client {
-	cred, err := azopenai.NewKeyCredential(tv.APIKey)
-	require.NoError(t, err)
-
-	client, err := azopenai.NewClientWithKeyCredential(tv.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
-	return client
+	return newTestClient(t, tv.Endpoint)
 }
 
 func newOpenAIClientForTest(t *testing.T) *azopenai.Client {
-	if openAI.APIKey == "" {
-		t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
-	}
-
-	cred, err := azopenai.NewKeyCredential(openAI.APIKey)
-	require.NoError(t, err)
-
-	// we get rate limited quite a bit.
-	options := newClientOptionsForTest(t)
-
-	if options == nil {
-		options = &azopenai.ClientOptions{}
-	}
-
-	options.Retry = policy.RetryOptions{
-		MaxRetries:    60,
-		RetryDelay:    time.Second,
-		MaxRetryDelay: time.Second,
-	}
-
-	chatClient, err := azopenai.NewClientForOpenAI(openAI.Endpoint, cred, options)
-	require.NoError(t, err)
-
-	return chatClient
+	return newTestClient(t, openAI.Endpoint)
 }
 
 // newBogusAzureOpenAIClient creates a client that uses an invalid key, which will cause Azure OpenAI to return
@@ -264,8 +280,9 @@ func newBogusAzureOpenAIClient(t *testing.T) *azopenai.Client {
 	cred, err := azopenai.NewKeyCredential("bogus-api-key")
 	require.NoError(t, err)
 
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint.URL, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
+
 	return client
 }
 
@@ -275,7 +292,7 @@ func newBogusOpenAIClient(t *testing.T) *azopenai.Client {
 	cred, err := azopenai.NewKeyCredential("bogus-api-key")
 	require.NoError(t, err)
 
-	client, err := azopenai.NewClientForOpenAI(openAI.Endpoint, cred, newClientOptionsForTest(t))
+	client, err := azopenai.NewClientForOpenAI(openAI.Endpoint.URL, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 	return client
 }
@@ -288,4 +305,14 @@ func assertResponseIsError(t *testing.T, err error) {
 
 	// we sometimes get rate limited but (for this kind of test) it's actually okay
 	require.Truef(t, respErr.StatusCode == http.StatusUnauthorized || respErr.StatusCode == http.StatusTooManyRequests, "An acceptable error comes back (actual: %d)", respErr.StatusCode)
+}
+
+func getRequired(name string) string {
+	v := os.Getenv(name)
+
+	if v == "" {
+		panic(fmt.Sprintf("Env variable %s is missing", name))
+	}
+
+	return v
 }

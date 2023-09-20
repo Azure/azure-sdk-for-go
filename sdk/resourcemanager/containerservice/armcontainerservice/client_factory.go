@@ -42,8 +42,18 @@ func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewMachinesClient() *MachinesClient {
+	subClient, _ := NewMachinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewMaintenanceConfigurationsClient() *MaintenanceConfigurationsClient {
 	subClient, _ := NewMaintenanceConfigurationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewManagedClusterSnapshotsClient() *ManagedClusterSnapshotsClient {
+	subClient, _ := NewManagedClusterSnapshotsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -74,5 +84,15 @@ func (c *ClientFactory) NewResolvePrivateLinkServiceIDClient() *ResolvePrivateLi
 
 func (c *ClientFactory) NewSnapshotsClient() *SnapshotsClient {
 	subClient, _ := NewSnapshotsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewTrustedAccessRoleBindingsClient() *TrustedAccessRoleBindingsClient {
+	subClient, _ := NewTrustedAccessRoleBindingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewTrustedAccessRolesClient() *TrustedAccessRolesClient {
+	subClient, _ := NewTrustedAccessRolesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

@@ -458,7 +458,7 @@ type SetImmutabilityPolicyOptions struct {
 
 func (o *SetImmutabilityPolicyOptions) format() (*generated.BlobClientSetImmutabilityPolicyOptions, *ModifiedAccessConditions) {
 	if o == nil {
-		return nil, nil
+		return &generated.BlobClientSetImmutabilityPolicyOptions{}, nil
 	}
 	ac := &exported.BlobAccessConditions{
 		ModifiedAccessConditions: o.ModifiedAccessConditions,

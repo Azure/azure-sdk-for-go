@@ -14,7 +14,7 @@ import (
 	"sync"
 )
 
-// Cache contains a collection sync token values.
+// Cache contains a collection of sync token values.
 // Methods on Cache are safe for concurrent use.
 // Don't use this type directly, use NewCache() instead.
 type Cache struct {

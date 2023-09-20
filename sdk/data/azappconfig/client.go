@@ -77,7 +77,9 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 
 // SetSyncToken is used to set a sync token from an external source.
 // Sync tokens are required to be in the format "<id>=<value>;sn=<sn>".
-// See https://learn.microsoft.com/en-us/azure/azure-app-configuration/rest-api-consistency for more information on sync tokens.
+// See [Azure App Configuration documentation] for more information on sync tokens.
+//
+// [Azure App Configuration documentation]: https://learn.microsoft.com/azure/azure-app-configuration/rest-api-consistency
 func (c *Client) SetSyncToken(syncToken string) error {
 	return c.cache.Set(syncToken)
 }

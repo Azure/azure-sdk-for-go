@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/synctoken"
 )
 
 const timeFormat = time.RFC3339Nano
@@ -25,7 +26,7 @@ const timeFormat = time.RFC3339Nano
 // Client is the struct for interacting with an Azure App Configuration instance.
 type Client struct {
 	appConfigClient *generated.AzureAppConfigurationClient
-	syncTokenPolicy *syncTokenPolicy
+	cache           *synctoken.Cache
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -60,10 +61,9 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 		options = &ClientOptions{}
 	}
 
-	syncTokenPolicy := newSyncTokenPolicy()
-
+	cache := synctoken.NewCache()
 	client, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
-		PerRetry: []policy.Policy{authPolicy, syncTokenPolicy},
+		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache)},
 	}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
@@ -71,13 +71,15 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 
 	return &Client{
 		appConfigClient: generated.NewAzureAppConfigurationClient(endpoint, client),
-		syncTokenPolicy: syncTokenPolicy,
+		cache:           cache,
 	}, nil
 }
 
-// UpdateSyncToken sets an external synchronization token to ensure service requests receive up-to-date values.
-func (c *Client) UpdateSyncToken(token string) {
-	c.syncTokenPolicy.addToken(token)
+// SetSyncToken is used to set a sync token from an external source.
+// SyncTokens are required to be in the format "<id>=<value>;sn=<sn>".
+// Multiple SyncTokens must be comma delimited.
+func (c *Client) SetSyncToken(syncToken SyncToken) error {
+	return c.cache.Set(syncToken)
 }
 
 // AddSetting creates a configuration setting only if the setting does not already exist in the configuration store.
@@ -101,7 +103,7 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 
 	return AddSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: resp.SyncToken,
+		SyncToken: SyncToken(*resp.SyncToken),
 	}, nil
 }
 
@@ -120,7 +122,7 @@ func (c *Client) DeleteSetting(ctx context.Context, key string, options *DeleteS
 
 	return DeleteSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: resp.SyncToken,
+		SyncToken: SyncToken(*resp.SyncToken),
 	}, nil
 }
 
@@ -148,7 +150,7 @@ func (c *Client) GetSetting(ctx context.Context, key string, options *GetSetting
 
 	return GetSettingResponse{
 		Setting:      settingFromGenerated(resp.KeyValue),
-		SyncToken:    resp.SyncToken,
+		SyncToken:    SyncToken(*resp.SyncToken),
 		LastModified: lastModified,
 	}, nil
 }
@@ -168,7 +170,7 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 		if err == nil {
 			return SetReadOnlyResponse{
 				Setting:   settingFromGenerated(resp.KeyValue),
-				SyncToken: resp.SyncToken,
+				SyncToken: SyncToken(*resp.SyncToken),
 			}, nil
 		}
 	} else {
@@ -177,7 +179,7 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 		if err == nil {
 			return SetReadOnlyResponse{
 				Setting:   settingFromGenerated(resp.KeyValue),
-				SyncToken: resp.SyncToken,
+				SyncToken: SyncToken(*resp.SyncToken),
 			}, nil
 		}
 	}
@@ -205,7 +207,7 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 
 	return SetSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: resp.SyncToken,
+		SyncToken: SyncToken(*resp.SyncToken),
 	}, nil
 }
 
@@ -231,7 +233,7 @@ func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRe
 
 			return ListRevisionsPageResponse{
 				Settings:  css,
-				SyncToken: page.SyncToken,
+				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
 		},
 	})
@@ -258,7 +260,7 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 
 			return ListSettingsPageResponse{
 				Settings:  css,
-				SyncToken: page.SyncToken,
+				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
 		},
 	})

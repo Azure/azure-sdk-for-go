@@ -48,7 +48,7 @@ func NewSubscriptionNetworkManagerConnectionsClient(subscriptionID string, crede
 // CreateOrUpdate - Create a network manager connection on this subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - networkManagerConnectionName - Name for the network manager connection.
 //   - parameters - Network manager connection to be created/updated.
 //   - options - SubscriptionNetworkManagerConnectionsClientCreateOrUpdateOptions contains the optional parameters for the SubscriptionNetworkManagerConnectionsClient.CreateOrUpdate
@@ -87,7 +87,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) createOrUpdateCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -108,7 +108,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) createOrUpdateHandleR
 // Delete - Delete specified connection created by this subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - networkManagerConnectionName - Name for the network manager connection.
 //   - options - SubscriptionNetworkManagerConnectionsClientDeleteOptions contains the optional parameters for the SubscriptionNetworkManagerConnectionsClient.Delete
 //     method.
@@ -145,7 +145,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) deleteCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -154,7 +154,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) deleteCreateRequest(c
 // Get - Get a specified connection created by this subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - networkManagerConnectionName - Name for the network manager connection.
 //   - options - SubscriptionNetworkManagerConnectionsClientGetOptions contains the optional parameters for the SubscriptionNetworkManagerConnectionsClient.Get
 //     method.
@@ -192,7 +192,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) getCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) getHandleResponse(res
 
 // NewListPager - List all network manager connections created by this subscription.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-05-01
 //   - options - SubscriptionNetworkManagerConnectionsClientListOptions contains the optional parameters for the SubscriptionNetworkManagerConnectionsClient.NewListPager
 //     method.
 func (client *SubscriptionNetworkManagerConnectionsClient) NewListPager(options *SubscriptionNetworkManagerConnectionsClientListOptions) *runtime.Pager[SubscriptionNetworkManagerConnectionsClientListResponse] {
@@ -252,7 +252,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) listCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-05-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

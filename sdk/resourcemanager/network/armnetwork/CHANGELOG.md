@@ -1,5 +1,19 @@
 # Release History
 
+## 4.2.0 (2023-09-22)
+### Features Added
+
+- New struct `BastionHostPropertiesFormatNetworkACLs`
+- New struct `IPRule`
+- New struct `VirtualNetworkGatewayAutoScaleBounds`
+- New struct `VirtualNetworkGatewayAutoScaleConfiguration`
+- New field `NetworkACLs`, `VirtualNetwork` in struct `BastionHostPropertiesFormat`
+- New field `Size` in struct `FirewallPolicyPropertiesFormat`
+- New field `Size` in struct `FirewallPolicyRuleCollectionGroupProperties`
+- New field `DefaultOutboundAccess` in struct `SubnetPropertiesFormat`
+- New field `AutoScaleConfiguration` in struct `VirtualNetworkGatewayPropertiesFormat`
+
+
 ## 4.1.0 (2023-08-25)
 ### Features Added
 

@@ -39,9 +39,12 @@ func (p *Policy) Do(req *policy.Request) (*http.Response, error) {
 		return nil, err
 	}
 
-	// update the cache from the response
-	if err := p.cache.Set(exported.SyncToken(resp.Header.Get(syncTokenHeader))); err != nil {
-		return nil, &nonRetriableError{err}
+	// update the cache from the response if available.
+	// e.g. a 404 will include a Sync-Token but a 400 will not.
+	if st := resp.Header.Get(syncTokenHeader); st != "" {
+		if err := p.cache.Set(exported.SyncToken(st)); err != nil {
+			return nil, &nonRetriableError{err}
+		}
 	}
 
 	return resp, err

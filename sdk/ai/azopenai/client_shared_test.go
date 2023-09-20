@@ -130,15 +130,33 @@ const fakeCognitiveIndexName = "index"
 
 func initEnvVars() {
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		azureOpenAI.Azure = true
-		azureOpenAI.Endpoint.URL = fakeEndpoint
-		azureOpenAI.Endpoint.APIKey = fakeAPIKey
-		openAI.Endpoint.APIKey = fakeAPIKey
-		openAI.Endpoint.URL = fakeEndpoint
+		azureOpenAI.Endpoint = endpoint{
+			URL:    fakeEndpoint,
+			APIKey: fakeAPIKey,
+			Azure:  true,
+		}
 
-		azureOpenAICanary.Azure = true
-		azureOpenAICanary.Endpoint.URL = fakeEndpoint
-		azureOpenAICanary.Endpoint.APIKey = fakeAPIKey
+		azureOpenAICanary.Endpoint = endpoint{
+			URL:    fakeEndpoint,
+			APIKey: fakeAPIKey,
+			Azure:  true,
+		}
+
+		azureWhisper = endpoint{
+			URL:    fakeEndpoint,
+			APIKey: fakeAPIKey,
+			Azure:  true,
+		}
+
+		azureWhisperModel = "whisper-deployment"
+
+		openAI.Endpoint = endpoint{
+			APIKey: fakeAPIKey,
+			URL:    fakeEndpoint,
+		}
+
+		openAIWhisperModel = "whisper-1"
+
 		azureOpenAICanary.Completions = ""
 		azureOpenAICanary.ChatCompletions = "gpt-4"
 
@@ -200,6 +218,9 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		require.NoError(t, err)
 
 		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(azureOpenAICanary.Endpoint.URL), nil)
+		require.NoError(t, err)
+
+		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(azureWhisper.URL), nil)
 		require.NoError(t, err)
 
 		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", nil)

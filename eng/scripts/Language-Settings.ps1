@@ -149,7 +149,10 @@ function Find-Go-Artifacts-For-Apireview($ArtifactPath, $PackageName)
 
 function Get-Go-FoldersForGeneration() {
   # Find directories containing build.go files with "//go:generate" comments
-  Get-ChildItem $RepoRoot -Include "build.go" -Recurse
+  $resourceManager = "sdk/resourcemanager"
+
+  Get-ChildItem "$RepoRoot/sdk" -Include "build.go" -Recurse
+    | Where-Object { $_.FullName.Replace('\','/') -notmatch '/sdk/resourcemanager/' }
     | Where-Object { Get-Content $_.FullName | Select-String -Pattern "//go:generate" }
     | Select-Object -ExpandProperty Directory
 }
@@ -158,7 +161,7 @@ function Update-Go-GeneratedSdks([string]$PackageFoldersFile) {
   $packageFolders = Get-Content $PackageFoldersFile | ConvertFrom-Json
   
   $foldersWithErrors = @()
-  foreach ($foldersWithErrors in $packageFolders) {
+  foreach ($folders in $packageFolders) {
     Push-Location $RepoRoot
     try {
       Write-Host 'Generating projects under folder ' -ForegroundColor Green -NoNewline

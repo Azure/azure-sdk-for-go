@@ -31,6 +31,17 @@ type GetAudioTranscriptionResponse struct {
 	AudioTranscription
 }
 
+// GetAudioTranscription gets transcribed text and associated metadata from provided spoken audio data. Audio will
+// be transcribed in the written language corresponding to the language it was spoken in. Gets transcribed text
+// and associated metadata from provided spoken audio data. Audio will be transcribed in the written language corresponding
+// to the language it was spoken in.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-09-01-preview
+//   - file - The audio data to transcribe. This must be the binary content of a file in one of the supported media formats: flac,
+//     mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
+//   - options - getAudioTranscriptionInternalOptions contains the optional parameters for the Client.getAudioTranscriptionInternal
+//     method.
 func (client *Client) GetAudioTranscription(ctx context.Context, body AudioTranscriptionOptions, options *GetAudioTranscriptionOptions) (GetAudioTranscriptionResponse, error) {
 	resp, err := client.getAudioTranscriptionInternal(ctx, body.File, &getAudioTranscriptionInternalOptions{
 		Language:       body.Language,
@@ -57,6 +68,15 @@ type GetAudioTranslationResponse struct {
 	AudioTranscription
 }
 
+// GetAudioTranslation gets English language transcribed text and associated metadata from provided spoken audio
+// data. Gets English language transcribed text and associated metadata from provided spoken audio data.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-09-01-preview
+//   - file - The audio data to translate. This must be the binary content of a file in one of the supported media formats: flac,
+//     mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
+//   - options - getAudioTranslationInternalOptions contains the optional parameters for the Client.getAudioTranslationInternal
+//     method.
 func (client *Client) GetAudioTranslation(ctx context.Context, body AudioTranslationOptions, options *GetAudioTranslationOptions) (GetAudioTranslationResponse, error) {
 	resp, err := client.getAudioTranslationInternal(ctx, body.File, &getAudioTranslationInternalOptions{
 		Model:          &body.Deployment,

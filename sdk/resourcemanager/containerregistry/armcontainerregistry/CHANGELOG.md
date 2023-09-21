@@ -3,6 +3,7 @@
 ## 1.2.0-beta.1 (2023-09-22)
 ### Features Added
 
+- Support for test fakes and OpenTelemetry trace spans.
 - New enum type `ActivationStatus` with values `ActivationStatusActive`, `ActivationStatusInactive`
 - New enum type `AuditLogStatus` with values `AuditLogStatusDisabled`, `AuditLogStatusEnabled`
 - New enum type `AzureADAuthenticationAsArmPolicyStatus` with values `AzureADAuthenticationAsArmPolicyStatusDisabled`, `AzureADAuthenticationAsArmPolicyStatusEnabled`

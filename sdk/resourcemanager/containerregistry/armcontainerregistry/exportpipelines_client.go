@@ -74,6 +74,10 @@ func (client *ExportPipelinesClient) BeginCreate(ctx context.Context, resourceGr
 // Generated from API version 2023-08-01-preview
 func (client *ExportPipelinesClient) create(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, exportPipelineCreateParameters ExportPipeline, options *ExportPipelinesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExportPipelinesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, exportPipelineName, exportPipelineCreateParameters, options)
 	if err != nil {
 		return nil, err
@@ -149,6 +153,10 @@ func (client *ExportPipelinesClient) BeginDelete(ctx context.Context, resourceGr
 // Generated from API version 2023-08-01-preview
 func (client *ExportPipelinesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExportPipelinesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, exportPipelineName, options)
 	if err != nil {
 		return nil, err
@@ -201,6 +209,10 @@ func (client *ExportPipelinesClient) deleteCreateRequest(ctx context.Context, re
 //   - options - ExportPipelinesClientGetOptions contains the optional parameters for the ExportPipelinesClient.Get method.
 func (client *ExportPipelinesClient) Get(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesClientGetOptions) (ExportPipelinesClientGetResponse, error) {
 	var err error
+	const operationName = "ExportPipelinesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, exportPipelineName, options)
 	if err != nil {
 		return ExportPipelinesClientGetResponse{}, err
@@ -266,6 +278,7 @@ func (client *ExportPipelinesClient) NewListPager(resourceGroupName string, regi
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExportPipelinesClientListResponse) (ExportPipelinesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExportPipelinesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -285,6 +298,7 @@ func (client *ExportPipelinesClient) NewListPager(resourceGroupName string, regi
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

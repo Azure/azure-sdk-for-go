@@ -74,6 +74,10 @@ func (client *ImportPipelinesClient) BeginCreate(ctx context.Context, resourceGr
 // Generated from API version 2023-08-01-preview
 func (client *ImportPipelinesClient) create(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string, importPipelineCreateParameters ImportPipeline, options *ImportPipelinesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ImportPipelinesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, importPipelineName, importPipelineCreateParameters, options)
 	if err != nil {
 		return nil, err
@@ -149,6 +153,10 @@ func (client *ImportPipelinesClient) BeginDelete(ctx context.Context, resourceGr
 // Generated from API version 2023-08-01-preview
 func (client *ImportPipelinesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string, options *ImportPipelinesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ImportPipelinesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, importPipelineName, options)
 	if err != nil {
 		return nil, err
@@ -201,6 +209,10 @@ func (client *ImportPipelinesClient) deleteCreateRequest(ctx context.Context, re
 //   - options - ImportPipelinesClientGetOptions contains the optional parameters for the ImportPipelinesClient.Get method.
 func (client *ImportPipelinesClient) Get(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string, options *ImportPipelinesClientGetOptions) (ImportPipelinesClientGetResponse, error) {
 	var err error
+	const operationName = "ImportPipelinesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, importPipelineName, options)
 	if err != nil {
 		return ImportPipelinesClientGetResponse{}, err
@@ -266,6 +278,7 @@ func (client *ImportPipelinesClient) NewListPager(resourceGroupName string, regi
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ImportPipelinesClientListResponse) (ImportPipelinesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImportPipelinesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -285,6 +298,7 @@ func (client *ImportPipelinesClient) NewListPager(resourceGroupName string, regi
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

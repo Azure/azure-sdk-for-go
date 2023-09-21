@@ -71,6 +71,10 @@ func (client *AgentPoolsClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Generated from API version 2019-06-01-preview
 func (client *AgentPoolsClient) create(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, agentPool AgentPool, options *AgentPoolsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AgentPoolsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, agentPoolName, agentPool, options)
 	if err != nil {
 		return nil, err
@@ -143,6 +147,10 @@ func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Generated from API version 2019-06-01-preview
 func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AgentPoolsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, agentPoolName, options)
 	if err != nil {
 		return nil, err
@@ -195,6 +203,10 @@ func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - AgentPoolsClientGetOptions contains the optional parameters for the AgentPoolsClient.Get method.
 func (client *AgentPoolsClient) Get(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientGetOptions) (AgentPoolsClientGetResponse, error) {
 	var err error
+	const operationName = "AgentPoolsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, agentPoolName, options)
 	if err != nil {
 		return AgentPoolsClientGetResponse{}, err
@@ -258,6 +270,10 @@ func (client *AgentPoolsClient) getHandleResponse(resp *http.Response) (AgentPoo
 //     method.
 func (client *AgentPoolsClient) GetQueueStatus(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientGetQueueStatusOptions) (AgentPoolsClientGetQueueStatusResponse, error) {
 	var err error
+	const operationName = "AgentPoolsClient.GetQueueStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getQueueStatusCreateRequest(ctx, resourceGroupName, registryName, agentPoolName, options)
 	if err != nil {
 		return AgentPoolsClientGetQueueStatusResponse{}, err
@@ -322,6 +338,7 @@ func (client *AgentPoolsClient) NewListPager(resourceGroupName string, registryN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AgentPoolsClientListResponse) (AgentPoolsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AgentPoolsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -341,6 +358,7 @@ func (client *AgentPoolsClient) NewListPager(resourceGroupName string, registryN
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -404,6 +422,10 @@ func (client *AgentPoolsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Generated from API version 2019-06-01-preview
 func (client *AgentPoolsClient) update(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, updateParameters AgentPoolUpdateParameters, options *AgentPoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AgentPoolsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, agentPoolName, updateParameters, options)
 	if err != nil {
 		return nil, err

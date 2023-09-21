@@ -73,6 +73,10 @@ func (client *CacheRulesClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Generated from API version 2023-08-01-preview
 func (client *CacheRulesClient) create(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, cacheRuleCreateParameters CacheRule, options *CacheRulesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CacheRulesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, cacheRuleName, cacheRuleCreateParameters, options)
 	if err != nil {
 		return nil, err
@@ -147,6 +151,10 @@ func (client *CacheRulesClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Generated from API version 2023-08-01-preview
 func (client *CacheRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, options *CacheRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CacheRulesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, cacheRuleName, options)
 	if err != nil {
 		return nil, err
@@ -199,6 +207,10 @@ func (client *CacheRulesClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - CacheRulesClientGetOptions contains the optional parameters for the CacheRulesClient.Get method.
 func (client *CacheRulesClient) Get(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, options *CacheRulesClientGetOptions) (CacheRulesClientGetResponse, error) {
 	var err error
+	const operationName = "CacheRulesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, cacheRuleName, options)
 	if err != nil {
 		return CacheRulesClientGetResponse{}, err
@@ -263,6 +275,7 @@ func (client *CacheRulesClient) NewListPager(resourceGroupName string, registryN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CacheRulesClientListResponse) (CacheRulesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CacheRulesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -282,6 +295,7 @@ func (client *CacheRulesClient) NewListPager(resourceGroupName string, registryN
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -347,6 +361,10 @@ func (client *CacheRulesClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Generated from API version 2023-08-01-preview
 func (client *CacheRulesClient) update(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, cacheRuleUpdateParameters CacheRuleUpdateParameters, options *CacheRulesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CacheRulesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, cacheRuleName, cacheRuleUpdateParameters, options)
 	if err != nil {
 		return nil, err

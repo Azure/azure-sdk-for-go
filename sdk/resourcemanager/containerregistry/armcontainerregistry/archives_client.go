@@ -74,6 +74,10 @@ func (client *ArchivesClient) BeginCreate(ctx context.Context, resourceGroupName
 // Generated from API version 2023-08-01-preview
 func (client *ArchivesClient) create(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveCreateParameters Archive, options *ArchivesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ArchivesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, packageType, archiveName, archiveCreateParameters, options)
 	if err != nil {
 		return nil, err
@@ -153,6 +157,10 @@ func (client *ArchivesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-08-01-preview
 func (client *ArchivesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, options *ArchivesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ArchivesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, packageType, archiveName, options)
 	if err != nil {
 		return nil, err
@@ -210,6 +218,10 @@ func (client *ArchivesClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - ArchivesClientGetOptions contains the optional parameters for the ArchivesClient.Get method.
 func (client *ArchivesClient) Get(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, options *ArchivesClientGetOptions) (ArchivesClientGetResponse, error) {
 	var err error
+	const operationName = "ArchivesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, packageType, archiveName, options)
 	if err != nil {
 		return ArchivesClientGetResponse{}, err
@@ -279,6 +291,7 @@ func (client *ArchivesClient) NewListPager(resourceGroupName string, registryNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ArchivesClientListResponse) (ArchivesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ArchivesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -298,6 +311,7 @@ func (client *ArchivesClient) NewListPager(resourceGroupName string, registryNam
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -349,6 +363,10 @@ func (client *ArchivesClient) listHandleResponse(resp *http.Response) (ArchivesC
 //   - options - ArchivesClientUpdateOptions contains the optional parameters for the ArchivesClient.Update method.
 func (client *ArchivesClient) Update(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveUpdateParameters ArchiveUpdateParameters, options *ArchivesClientUpdateOptions) (ArchivesClientUpdateResponse, error) {
 	var err error
+	const operationName = "ArchivesClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, packageType, archiveName, archiveUpdateParameters, options)
 	if err != nil {
 		return ArchivesClientUpdateResponse{}, err

@@ -74,6 +74,10 @@ func (client *PipelineRunsClient) BeginCreate(ctx context.Context, resourceGroup
 // Generated from API version 2023-08-01-preview
 func (client *PipelineRunsClient) create(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, pipelineRunCreateParameters PipelineRun, options *PipelineRunsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PipelineRunsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, pipelineRunName, pipelineRunCreateParameters, options)
 	if err != nil {
 		return nil, err
@@ -149,6 +153,10 @@ func (client *PipelineRunsClient) BeginDelete(ctx context.Context, resourceGroup
 // Generated from API version 2023-08-01-preview
 func (client *PipelineRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, options *PipelineRunsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PipelineRunsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, pipelineRunName, options)
 	if err != nil {
 		return nil, err
@@ -201,6 +209,10 @@ func (client *PipelineRunsClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - PipelineRunsClientGetOptions contains the optional parameters for the PipelineRunsClient.Get method.
 func (client *PipelineRunsClient) Get(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, options *PipelineRunsClientGetOptions) (PipelineRunsClientGetResponse, error) {
 	var err error
+	const operationName = "PipelineRunsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, pipelineRunName, options)
 	if err != nil {
 		return PipelineRunsClientGetResponse{}, err
@@ -265,6 +277,7 @@ func (client *PipelineRunsClient) NewListPager(resourceGroupName string, registr
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PipelineRunsClientListResponse) (PipelineRunsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PipelineRunsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -284,6 +297,7 @@ func (client *PipelineRunsClient) NewListPager(resourceGroupName string, registr
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

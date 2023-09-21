@@ -75,6 +75,10 @@ func (client *ArchiveVersionsClient) BeginCreate(ctx context.Context, resourceGr
 // Generated from API version 2023-08-01-preview
 func (client *ArchiveVersionsClient) create(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveVersionName string, options *ArchiveVersionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ArchiveVersionsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, packageType, archiveName, archiveVersionName, options)
 	if err != nil {
 		return nil, err
@@ -157,6 +161,10 @@ func (client *ArchiveVersionsClient) BeginDelete(ctx context.Context, resourceGr
 // Generated from API version 2023-08-01-preview
 func (client *ArchiveVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveVersionName string, options *ArchiveVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ArchiveVersionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, packageType, archiveName, archiveVersionName, options)
 	if err != nil {
 		return nil, err
@@ -219,6 +227,10 @@ func (client *ArchiveVersionsClient) deleteCreateRequest(ctx context.Context, re
 //   - options - ArchiveVersionsClientGetOptions contains the optional parameters for the ArchiveVersionsClient.Get method.
 func (client *ArchiveVersionsClient) Get(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveVersionName string, options *ArchiveVersionsClientGetOptions) (ArchiveVersionsClientGetResponse, error) {
 	var err error
+	const operationName = "ArchiveVersionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, packageType, archiveName, archiveVersionName, options)
 	if err != nil {
 		return ArchiveVersionsClientGetResponse{}, err
@@ -294,6 +306,7 @@ func (client *ArchiveVersionsClient) NewListPager(resourceGroupName string, regi
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ArchiveVersionsClientListResponse) (ArchiveVersionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ArchiveVersionsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -313,6 +326,7 @@ func (client *ArchiveVersionsClient) NewListPager(resourceGroupName string, regi
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

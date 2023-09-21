@@ -74,6 +74,10 @@ func (client *CredentialSetsClient) BeginCreate(ctx context.Context, resourceGro
 // Generated from API version 2023-08-01-preview
 func (client *CredentialSetsClient) create(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetCreateParameters CredentialSet, options *CredentialSetsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CredentialSetsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters, options)
 	if err != nil {
 		return nil, err
@@ -149,6 +153,10 @@ func (client *CredentialSetsClient) BeginDelete(ctx context.Context, resourceGro
 // Generated from API version 2023-08-01-preview
 func (client *CredentialSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, options *CredentialSetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CredentialSetsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, credentialSetName, options)
 	if err != nil {
 		return nil, err
@@ -201,6 +209,10 @@ func (client *CredentialSetsClient) deleteCreateRequest(ctx context.Context, res
 //   - options - CredentialSetsClientGetOptions contains the optional parameters for the CredentialSetsClient.Get method.
 func (client *CredentialSetsClient) Get(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, options *CredentialSetsClientGetOptions) (CredentialSetsClientGetResponse, error) {
 	var err error
+	const operationName = "CredentialSetsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, credentialSetName, options)
 	if err != nil {
 		return CredentialSetsClientGetResponse{}, err
@@ -265,6 +277,7 @@ func (client *CredentialSetsClient) NewListPager(resourceGroupName string, regis
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CredentialSetsClientListResponse) (CredentialSetsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CredentialSetsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -284,6 +297,7 @@ func (client *CredentialSetsClient) NewListPager(resourceGroupName string, regis
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -350,6 +364,10 @@ func (client *CredentialSetsClient) BeginUpdate(ctx context.Context, resourceGro
 // Generated from API version 2023-08-01-preview
 func (client *CredentialSetsClient) update(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetUpdateParameters CredentialSetUpdateParameters, options *CredentialSetsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CredentialSetsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters, options)
 	if err != nil {
 		return nil, err

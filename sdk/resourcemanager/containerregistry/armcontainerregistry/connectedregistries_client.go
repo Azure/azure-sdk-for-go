@@ -74,6 +74,10 @@ func (client *ConnectedRegistriesClient) BeginCreate(ctx context.Context, resour
 // Generated from API version 2023-08-01-preview
 func (client *ConnectedRegistriesClient) create(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, connectedRegistryCreateParameters ConnectedRegistry, options *ConnectedRegistriesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ConnectedRegistriesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, connectedRegistryName, connectedRegistryCreateParameters, options)
 	if err != nil {
 		return nil, err
@@ -149,6 +153,10 @@ func (client *ConnectedRegistriesClient) BeginDeactivate(ctx context.Context, re
 // Generated from API version 2023-08-01-preview
 func (client *ConnectedRegistriesClient) deactivate(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, options *ConnectedRegistriesClientBeginDeactivateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ConnectedRegistriesClient.BeginDeactivate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deactivateCreateRequest(ctx, resourceGroupName, registryName, connectedRegistryName, options)
 	if err != nil {
 		return nil, err
@@ -221,6 +229,10 @@ func (client *ConnectedRegistriesClient) BeginDelete(ctx context.Context, resour
 // Generated from API version 2023-08-01-preview
 func (client *ConnectedRegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, options *ConnectedRegistriesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ConnectedRegistriesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, connectedRegistryName, options)
 	if err != nil {
 		return nil, err
@@ -273,6 +285,10 @@ func (client *ConnectedRegistriesClient) deleteCreateRequest(ctx context.Context
 //   - options - ConnectedRegistriesClientGetOptions contains the optional parameters for the ConnectedRegistriesClient.Get method.
 func (client *ConnectedRegistriesClient) Get(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, options *ConnectedRegistriesClientGetOptions) (ConnectedRegistriesClientGetResponse, error) {
 	var err error
+	const operationName = "ConnectedRegistriesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, connectedRegistryName, options)
 	if err != nil {
 		return ConnectedRegistriesClientGetResponse{}, err
@@ -338,6 +354,7 @@ func (client *ConnectedRegistriesClient) NewListPager(resourceGroupName string, 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ConnectedRegistriesClientListResponse) (ConnectedRegistriesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConnectedRegistriesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -357,6 +374,7 @@ func (client *ConnectedRegistriesClient) NewListPager(resourceGroupName string, 
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -426,6 +444,10 @@ func (client *ConnectedRegistriesClient) BeginUpdate(ctx context.Context, resour
 // Generated from API version 2023-08-01-preview
 func (client *ConnectedRegistriesClient) update(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, connectedRegistryUpdateParameters ConnectedRegistryUpdateParameters, options *ConnectedRegistriesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ConnectedRegistriesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, connectedRegistryName, connectedRegistryUpdateParameters, options)
 	if err != nil {
 		return nil, err

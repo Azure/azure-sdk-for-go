@@ -73,6 +73,10 @@ func (client *WebhooksClient) BeginCreate(ctx context.Context, resourceGroupName
 // Generated from API version 2023-08-01-preview
 func (client *WebhooksClient) create(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters WebhookCreateParameters, options *WebhooksClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WebhooksClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, webhookName, webhookCreateParameters, options)
 	if err != nil {
 		return nil, err
@@ -147,6 +151,10 @@ func (client *WebhooksClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-08-01-preview
 func (client *WebhooksClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WebhooksClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
 		return nil, err
@@ -198,6 +206,10 @@ func (client *WebhooksClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - WebhooksClientGetOptions contains the optional parameters for the WebhooksClient.Get method.
 func (client *WebhooksClient) Get(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientGetOptions) (WebhooksClientGetResponse, error) {
 	var err error
+	const operationName = "WebhooksClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
 		return WebhooksClientGetResponse{}, err
@@ -261,6 +273,10 @@ func (client *WebhooksClient) getHandleResponse(resp *http.Response) (WebhooksCl
 //     method.
 func (client *WebhooksClient) GetCallbackConfig(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientGetCallbackConfigOptions) (WebhooksClientGetCallbackConfigResponse, error) {
 	var err error
+	const operationName = "WebhooksClient.GetCallbackConfig"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCallbackConfigCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
 		return WebhooksClientGetCallbackConfigResponse{}, err
@@ -325,6 +341,7 @@ func (client *WebhooksClient) NewListPager(resourceGroupName string, registryNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WebhooksClientListResponse) (WebhooksClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WebhooksClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -344,6 +361,7 @@ func (client *WebhooksClient) NewListPager(resourceGroupName string, registryNam
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -392,6 +410,7 @@ func (client *WebhooksClient) NewListEventsPager(resourceGroupName string, regis
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WebhooksClientListEventsResponse) (WebhooksClientListEventsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WebhooksClient.NewListEventsPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -411,6 +430,7 @@ func (client *WebhooksClient) NewListEventsPager(resourceGroupName string, regis
 			}
 			return client.listEventsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -460,6 +480,10 @@ func (client *WebhooksClient) listEventsHandleResponse(resp *http.Response) (Web
 //   - options - WebhooksClientPingOptions contains the optional parameters for the WebhooksClient.Ping method.
 func (client *WebhooksClient) Ping(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientPingOptions) (WebhooksClientPingResponse, error) {
 	var err error
+	const operationName = "WebhooksClient.Ping"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.pingCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
 		return WebhooksClientPingResponse{}, err
@@ -542,6 +566,10 @@ func (client *WebhooksClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Generated from API version 2023-08-01-preview
 func (client *WebhooksClient) update(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters WebhookUpdateParameters, options *WebhooksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WebhooksClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, webhookName, webhookUpdateParameters, options)
 	if err != nil {
 		return nil, err

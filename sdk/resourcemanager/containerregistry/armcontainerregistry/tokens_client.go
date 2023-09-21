@@ -73,6 +73,10 @@ func (client *TokensClient) BeginCreate(ctx context.Context, resourceGroupName s
 // Generated from API version 2023-08-01-preview
 func (client *TokensClient) create(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenCreateParameters Token, options *TokensClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "TokensClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, tokenName, tokenCreateParameters, options)
 	if err != nil {
 		return nil, err
@@ -147,6 +151,10 @@ func (client *TokensClient) BeginDelete(ctx context.Context, resourceGroupName s
 // Generated from API version 2023-08-01-preview
 func (client *TokensClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, tokenName string, options *TokensClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "TokensClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, tokenName, options)
 	if err != nil {
 		return nil, err
@@ -199,6 +207,10 @@ func (client *TokensClient) deleteCreateRequest(ctx context.Context, resourceGro
 //   - options - TokensClientGetOptions contains the optional parameters for the TokensClient.Get method.
 func (client *TokensClient) Get(ctx context.Context, resourceGroupName string, registryName string, tokenName string, options *TokensClientGetOptions) (TokensClientGetResponse, error) {
 	var err error
+	const operationName = "TokensClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, tokenName, options)
 	if err != nil {
 		return TokensClientGetResponse{}, err
@@ -263,6 +275,7 @@ func (client *TokensClient) NewListPager(resourceGroupName string, registryName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TokensClientListResponse) (TokensClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TokensClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -282,6 +295,7 @@ func (client *TokensClient) NewListPager(resourceGroupName string, registryName 
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -347,6 +361,10 @@ func (client *TokensClient) BeginUpdate(ctx context.Context, resourceGroupName s
 // Generated from API version 2023-08-01-preview
 func (client *TokensClient) update(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenUpdateParameters TokenUpdateParameters, options *TokensClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "TokensClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, tokenName, tokenUpdateParameters, options)
 	if err != nil {
 		return nil, err

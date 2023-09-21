@@ -73,6 +73,10 @@ func (client *ScopeMapsClient) BeginCreate(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-08-01-preview
 func (client *ScopeMapsClient) create(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters ScopeMap, options *ScopeMapsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ScopeMapsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, scopeMapCreateParameters, options)
 	if err != nil {
 		return nil, err
@@ -147,6 +151,10 @@ func (client *ScopeMapsClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-08-01-preview
 func (client *ScopeMapsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *ScopeMapsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ScopeMapsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, options)
 	if err != nil {
 		return nil, err
@@ -199,6 +207,10 @@ func (client *ScopeMapsClient) deleteCreateRequest(ctx context.Context, resource
 //   - options - ScopeMapsClientGetOptions contains the optional parameters for the ScopeMapsClient.Get method.
 func (client *ScopeMapsClient) Get(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *ScopeMapsClientGetOptions) (ScopeMapsClientGetResponse, error) {
 	var err error
+	const operationName = "ScopeMapsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, options)
 	if err != nil {
 		return ScopeMapsClientGetResponse{}, err
@@ -263,6 +275,7 @@ func (client *ScopeMapsClient) NewListPager(resourceGroupName string, registryNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScopeMapsClientListResponse) (ScopeMapsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeMapsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -282,6 +295,7 @@ func (client *ScopeMapsClient) NewListPager(resourceGroupName string, registryNa
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -347,6 +361,10 @@ func (client *ScopeMapsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-08-01-preview
 func (client *ScopeMapsClient) update(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, options *ScopeMapsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ScopeMapsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters, options)
 	if err != nil {
 		return nil, err

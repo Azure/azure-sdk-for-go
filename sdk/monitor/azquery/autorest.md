@@ -19,7 +19,7 @@ openapi-type: "data-plane"
 output-folder: ../azquery
 override-client-name: LogsClient
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.46"
+use: "@autorest/go@4.0.0-alpha.20230920.2"
 version: "^3.0.0"
 
 directive:

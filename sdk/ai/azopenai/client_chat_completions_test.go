@@ -91,7 +91,7 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client, tv testVars) 
 	resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(tv), nil)
 	require.NoError(t, err)
 
-	if tv.Azure {
+	if tv.Endpoint.Azure {
 		// Azure also provides content-filtering. This particular prompt and responses
 		// will be considered safe.
 		expected.PromptFilterResults = []azopenai.PromptFilterResult{

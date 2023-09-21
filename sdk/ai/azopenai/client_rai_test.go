@@ -38,7 +38,7 @@ func TestClient_GetChatCompletions_AzureOpenAI_ContentFilterWithError(t *testing
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatMessage{
 			{Role: to.Ptr(azopenai.ChatRoleSystem), Content: to.Ptr("You are a helpful assistant.")},
-			{Role: to.Ptr(azopenai.ChatRoleUser), Content: to.Ptr("How do I rob a bank?")},
+			{Role: to.Ptr(azopenai.ChatRoleUser), Content: to.Ptr("How do I rob a bank with violence?")},
 		},
 		MaxTokens:   to.Ptr(int32(2048 - 127)),
 		Temperature: to.Ptr(float32(0.0)),

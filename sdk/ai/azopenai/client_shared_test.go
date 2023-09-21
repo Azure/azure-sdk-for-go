@@ -81,7 +81,6 @@ type testVars struct {
 	ChatCompletions string
 	Embeddings      string
 	Cognitive       azopenai.AzureCognitiveSearchChatExtensionConfiguration
-	Azure           bool
 }
 
 func newTestVars(prefix string, isCanary bool) testVars {
@@ -105,8 +104,6 @@ func newTestVars(prefix string, isCanary bool) testVars {
 
 		// ex: embedding
 		Embeddings: getRequired(prefix + "_EMBEDDINGS_MODEL" + suffix),
-
-		Azure: azure,
 
 		Cognitive: azopenai.AzureCognitiveSearchChatExtensionConfiguration{
 			Endpoint:  to.Ptr(getRequired("COGNITIVE_SEARCH_API_ENDPOINT")),
@@ -174,6 +171,7 @@ func initEnvVars() {
 			IndexName: to.Ptr(fakeCognitiveIndexName),
 			Key:       to.Ptr(fakeAPIKey),
 		}
+		azureOpenAICanary.Cognitive = azureOpenAI.Cognitive
 	} else {
 		if err := godotenv.Load(); err != nil {
 			fmt.Printf("Failed to load .env file: %s\n", err)
@@ -210,7 +208,7 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", nil)
 		require.NoError(t, err)
 
-		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", ".*", nil)
+		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", "", nil)
 		require.NoError(t, err)
 
 		// "RequestUri": "https://openai-shared.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2023-03-15-preview",
@@ -282,6 +280,7 @@ func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 		co.Transport = newRecordingTransporter(t)
 	}
 
+	co.Logging.IncludeBody = true
 	return co
 }
 

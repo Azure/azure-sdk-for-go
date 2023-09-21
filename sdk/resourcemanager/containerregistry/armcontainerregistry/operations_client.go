@@ -39,7 +39,7 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // NewListPager - Lists all of the available Azure Container Registry REST API operations.
 //
-// Generated from API version 2023-07-01
+// Generated from API version 2023-08-01-preview
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
@@ -47,6 +47,7 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *OperationsClientListResponse) (OperationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -66,6 +67,7 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -77,7 +79,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

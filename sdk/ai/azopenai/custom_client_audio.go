@@ -38,10 +38,8 @@ type GetAudioTranscriptionResponse struct {
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - file - The audio data to transcribe. This must be the binary content of a file in one of the supported media formats: flac,
-//     mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
-//   - options - getAudioTranscriptionInternalOptions contains the optional parameters for the Client.getAudioTranscriptionInternal
-//     method.
+//   - body - contains parameters to specify audio data to transcribe and control the transcription.
+//   - options - optional parameters for this method.
 func (client *Client) GetAudioTranscription(ctx context.Context, body AudioTranscriptionOptions, options *GetAudioTranscriptionOptions) (GetAudioTranscriptionResponse, error) {
 	resp, err := client.getAudioTranscriptionInternal(ctx, body.File, &getAudioTranscriptionInternalOptions{
 		Language:       body.Language,
@@ -73,10 +71,8 @@ type GetAudioTranslationResponse struct {
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - file - The audio data to translate. This must be the binary content of a file in one of the supported media formats: flac,
-//     mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
-//   - options - getAudioTranslationInternalOptions contains the optional parameters for the Client.getAudioTranslationInternal
-//     method.
+//   - body - contains parameters to specify audio data to translate and control the translation.
+//   - options - optional parameters for this method.
 func (client *Client) GetAudioTranslation(ctx context.Context, body AudioTranslationOptions, options *GetAudioTranslationOptions) (GetAudioTranslationResponse, error) {
 	resp, err := client.getAudioTranslationInternal(ctx, body.File, &getAudioTranslationInternalOptions{
 		Model:          &body.Deployment,
@@ -160,7 +156,7 @@ func getAudioTranscriptionInternalHandleResponse(resp *http.Response) (getAudioT
 		return getAudioTranscriptionInternalResponse{}, err
 	}
 
-	return getAudioTranscriptionInternalResponse{AudioTranscription: *at}, nil
+	return getAudioTranscriptionInternalResponse{AudioTranscription: at}, nil
 }
 
 func getAudioTranslationInternalHandleResponse(resp *http.Response) (getAudioTranslationInternalResponse, error) {
@@ -170,12 +166,12 @@ func getAudioTranslationInternalHandleResponse(resp *http.Response) (getAudioTra
 		return getAudioTranslationInternalResponse{}, err
 	}
 
-	return getAudioTranslationInternalResponse{AudioTranscription: *at}, nil
+	return getAudioTranslationInternalResponse{AudioTranscription: at}, nil
 }
 
 // deserializeAudioTranscription handles deserializing the content if it's text/plain
 // or a JSON object.
-func deserializeAudioTranscription(resp *http.Response) (*AudioTranscription, error) {
+func deserializeAudioTranscription(resp *http.Response) (AudioTranscription, error) {
 	defer func() {
 		_ = resp.Request.Body.Close()
 	}()
@@ -186,20 +182,20 @@ func deserializeAudioTranscription(resp *http.Response) (*AudioTranscription, er
 		body, err := io.ReadAll(resp.Body)
 
 		if err != nil {
-			return nil, err
+			return AudioTranscription{}, err
 		}
 
-		return &AudioTranscription{
+		return AudioTranscription{
 			Text: to.Ptr(string(body)),
 		}, nil
 	}
 
 	var result *AudioTranscription
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return nil, err
+		return AudioTranscription{}, err
 	}
 
-	return result, nil
+	return *result, nil
 }
 
 func writeField[T interface {

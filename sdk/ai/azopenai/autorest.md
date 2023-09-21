@@ -421,15 +421,7 @@ directive:
       return $.replace(
         /(AzureChatExtensionTypeAzureCognitiveSearch AzureChatExtensionType)/, 
         "// AzureChatExtensionTypeAzureCognitiveSearch enables the use of an Azure Cognitive Search index with chat completions.\n// [AzureChatExtensionConfiguration.Parameter] should be of type [AzureCognitiveSearchChatExtensionConfiguration].\n$1");
-
-  # HACK: temporary rollback of the version as they work out a bug in 2023-09-01 surface.
-  - from: client.go
-    where: $
-    transform: |
-      return $.replace(
-        /(func \(client \*Client\) getChatCompletionsWithAzureExtensionsCreateRequest.+?)reqQP\.Set\("api-version", "2023-09-01-preview"\)/s, 
-        '$1reqQP.Set("api-version", "2023-08-01-preview")');
-
+  
   # HACK: prompt_filter_results <-> prompt_annotations change
   - from: models_serde.go
     where: $

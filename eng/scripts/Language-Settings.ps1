@@ -147,40 +147,44 @@ function Find-Go-Artifacts-For-Apireview($ArtifactPath, $PackageName)
   return $null
 }
 
-function Get-Go-FoldersForGeneration() {
+function Get-Go-DirectoriesForGeneration() {
   # Find directories containing build.go files with "//go:generate" comments
-  $resourceManager = "sdk/resourcemanager"
+  $sdkDirectories = Get-ChildItem -Path "$RepoRoot/sdk" -Directory | Get-ChildItem -Directory
 
-  Get-ChildItem "$RepoRoot/sdk" -Include "build.go" -Recurse
-    | Where-Object { $_.FullName.Replace('\','/') -notmatch '/sdk/resourcemanager/' }
-    | Where-Object { Get-Content $_.FullName | Select-String -Pattern "//go:generate" }
-    | Select-Object -ExpandProperty Directory
+  $sdkDirectories | Where-Object {
+    $goGenerateStrings = $_ 
+      | Get-ChildItem -Include "build.go" -Recurse
+      | Get-Content -Raw
+      | Where-Object { $_.Contains("//go:generate") }
+
+    return $goGenerateStrings.Count -gt 0
+  }
 }
 
-function Update-Go-GeneratedSdks([string]$PackageFoldersFile) {
-  $packageFolders = Get-Content $PackageFoldersFile | ConvertFrom-Json
+function Update-Go-GeneratedSdks([string]$PackageDirectoriesFile) {
+  $packageDirectories = Get-Content $PackageDirectoriesFile | ConvertFrom-Json
   
-  $foldersWithErrors = @()
-  foreach ($folders in $packageFolders) {
+  $directoriesWithErrors = @()
+  foreach ($directory in $packageDirectories) {
     Push-Location $RepoRoot
     try {
-      Write-Host 'Generating projects under folder ' -ForegroundColor Green -NoNewline
-      Write-Host "$folder" -ForegroundColor Yellow
+      Write-Host 'Generating projects under directory ' -ForegroundColor Green -NoNewline
+      Write-Host "$directory" -ForegroundColor Yellow
 
-      ./eng/scripts/build.ps1 -Filter $folder
+      ./eng/scripts/build.ps1 -Filter $directory
     }
     catch {
-      $foldersWithErrors += $folder
+      $directoriesWithErrors += $directory
     }
     finally {
       Pop-Location
     }
   }
 
-  if($foldersWithErrors.Count -gt 0) {
-    Write-Host "##[error]Generation errors found in $($foldersWithErrors.Count) folders:"
-    foreach ($folder in $foldersWithErrors) {
-      Write-Host "  $folder"
+  if($directoriesWithErrors.Count -gt 0) {
+    Write-Host "##[error]Generation errors found in $($directoriesWithErrors.Count) directories:"
+    foreach ($directory in $directoriesWithErrors) {
+      Write-Host "  $directory"
     }
   }
 }

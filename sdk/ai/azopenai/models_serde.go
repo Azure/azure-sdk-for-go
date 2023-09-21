@@ -538,19 +538,19 @@ func (a *AzureCognitiveSearchIndexFieldMappingOptions) UnmarshalJSON(data []byte
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type azureCoreFoundationsError.
-func (a azureCoreFoundationsError) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type Error.
+func (a Error) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", a.Code)
 	populate(objectMap, "details", a.Details)
-	populate(objectMap, "innererror", a.Innererror)
+	populate(objectMap, "innererror", a.InnerError)
 	populate(objectMap, "message", a.Message)
 	populate(objectMap, "target", a.Target)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type azureCoreFoundationsError.
-func (a *azureCoreFoundationsError) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type Error.
+func (a *Error) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -565,7 +565,7 @@ func (a *azureCoreFoundationsError) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Details", &a.Details)
 			delete(rawMsg, key)
 		case "innererror":
-			err = unpopulate(val, "Innererror", &a.Innererror)
+			err = unpopulate(val, "Innererror", &a.InnerError)
 			delete(rawMsg, key)
 		case "message":
 			err = unpopulate(val, "Message", &a.Message)
@@ -581,16 +581,16 @@ func (a *azureCoreFoundationsError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type azureCoreFoundationsErrorInnererror.
-func (a azureCoreFoundationsErrorInnererror) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ErrorInnererror.
+func (a ErrorInnererror) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", a.Code)
-	populate(objectMap, "innererror", a.Innererror)
+	populate(objectMap, "innererror", a.InnerError)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type azureCoreFoundationsErrorInnererror.
-func (a *azureCoreFoundationsErrorInnererror) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorInnererror.
+func (a *ErrorInnererror) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -602,7 +602,7 @@ func (a *azureCoreFoundationsErrorInnererror) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Code", &a.Code)
 			delete(rawMsg, key)
 		case "innererror":
-			err = unpopulate(val, "Innererror", &a.Innererror)
+			err = unpopulate(val, "Innererror", &a.InnerError)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -612,15 +612,15 @@ func (a *azureCoreFoundationsErrorInnererror) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type azureCoreFoundationsErrorResponse.
-func (a azureCoreFoundationsErrorResponse) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
+func (a ErrorResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "error", a.Error)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type azureCoreFoundationsErrorResponse.
-func (a *azureCoreFoundationsErrorResponse) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorResponse.
+func (a *ErrorResponse) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -639,19 +639,19 @@ func (a *azureCoreFoundationsErrorResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type azureCoreFoundationsErrorResponseError.
-func (a azureCoreFoundationsErrorResponseError) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ErrorResponseError.
+func (a ErrorResponseError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", a.Code)
 	populate(objectMap, "details", a.Details)
-	populate(objectMap, "innererror", a.Innererror)
+	populate(objectMap, "innererror", a.InnerError)
 	populate(objectMap, "message", a.Message)
 	populate(objectMap, "target", a.Target)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type azureCoreFoundationsErrorResponseError.
-func (a *azureCoreFoundationsErrorResponseError) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorResponseError.
+func (a *ErrorResponseError) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -666,7 +666,7 @@ func (a *azureCoreFoundationsErrorResponseError) UnmarshalJSON(data []byte) erro
 			err = unpopulate(val, "Details", &a.Details)
 			delete(rawMsg, key)
 		case "innererror":
-			err = unpopulate(val, "Innererror", &a.Innererror)
+			err = unpopulate(val, "Innererror", &a.InnerError)
 			delete(rawMsg, key)
 		case "message":
 			err = unpopulate(val, "Message", &a.Message)
@@ -682,16 +682,16 @@ func (a *azureCoreFoundationsErrorResponseError) UnmarshalJSON(data []byte) erro
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type azureCoreFoundationsInnerError.
-func (a azureCoreFoundationsInnerError) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type InnerError.
+func (a InnerError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", a.Code)
-	populate(objectMap, "innererror", a.Innererror)
+	populate(objectMap, "innererror", a.InnerError)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type azureCoreFoundationsInnerError.
-func (a *azureCoreFoundationsInnerError) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type InnerError.
+func (a *InnerError) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -703,38 +703,7 @@ func (a *azureCoreFoundationsInnerError) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Code", &a.Code)
 			delete(rawMsg, key)
 		case "innererror":
-			err = unpopulate(val, "Innererror", &a.Innererror)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type azureCoreFoundationsInnerErrorInnererror.
-func (a azureCoreFoundationsInnerErrorInnererror) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "code", a.Code)
-	populate(objectMap, "innererror", a.Innererror)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type azureCoreFoundationsInnerErrorInnererror.
-func (a *azureCoreFoundationsInnerErrorInnererror) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, "Code", &a.Code)
-			delete(rawMsg, key)
-		case "innererror":
-			err = unpopulate(val, "Innererror", &a.Innererror)
+			err = unpopulate(val, "Innererror", &a.InnerError)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1593,7 +1562,7 @@ func (c ContentFilterResultsError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", c.Code)
 	populate(objectMap, "details", c.Details)
-	populate(objectMap, "innererror", c.Innererror)
+	populate(objectMap, "innererror", c.InnerError)
 	populate(objectMap, "message", c.Message)
 	populate(objectMap, "target", c.Target)
 	return json.Marshal(objectMap)
@@ -1615,7 +1584,7 @@ func (c *ContentFilterResultsError) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Details", &c.Details)
 			delete(rawMsg, key)
 		case "innererror":
-			err = unpopulate(val, "Innererror", &c.Innererror)
+			err = unpopulate(val, "Innererror", &c.InnerError)
 			delete(rawMsg, key)
 		case "message":
 			err = unpopulate(val, "Message", &c.Message)

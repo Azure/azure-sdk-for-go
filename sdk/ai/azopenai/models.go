@@ -280,8 +280,8 @@ type AzureCognitiveSearchIndexFieldMappingOptions struct {
 	VectorFields []string
 }
 
-// azureCoreFoundationsError - The error object.
-type azureCoreFoundationsError struct {
+// Error - The error object.
+type Error struct {
 	// REQUIRED; One of a server-defined set of error codes.
 	Code *string
 
@@ -289,33 +289,33 @@ type azureCoreFoundationsError struct {
 	Message *string
 
 	// An array of details about specific errors that led to this reported error.
-	Details []azureCoreFoundationsError
+	Details []Error
 
 	// An object containing more specific information than the current object about the error.
-	Innererror *azureCoreFoundationsErrorInnererror
+	InnerError *InnerError
 
 	// The target of the error.
 	Target *string
 }
 
-// azureCoreFoundationsErrorInnererror - An object containing more specific information than the current object about the
+// ErrorInnererror - An object containing more specific information than the current object about the
 // error.
-type azureCoreFoundationsErrorInnererror struct {
+type ErrorInnererror struct {
 	// One of a server-defined set of error codes.
 	Code *string
 
 	// Inner error.
-	Innererror *azureCoreFoundationsInnerErrorInnererror
+	InnerError *InnerError
 }
 
-// azureCoreFoundationsErrorResponse - A response containing error details.
-type azureCoreFoundationsErrorResponse struct {
+// ErrorResponse - A response containing error details.
+type ErrorResponse struct {
 	// REQUIRED; The error object.
-	Error *azureCoreFoundationsErrorResponseError
+	Error *ErrorResponseError
 }
 
-// azureCoreFoundationsErrorResponseError - The error object.
-type azureCoreFoundationsErrorResponseError struct {
+// ErrorResponseError - The error object.
+type ErrorResponseError struct {
 	// REQUIRED; One of a server-defined set of error codes.
 	Code *string
 
@@ -323,33 +323,24 @@ type azureCoreFoundationsErrorResponseError struct {
 	Message *string
 
 	// An array of details about specific errors that led to this reported error.
-	Details []azureCoreFoundationsError
+	Details []Error
 
 	// An object containing more specific information than the current object about the error.
-	Innererror *azureCoreFoundationsErrorInnererror
+	InnerError *InnerError
 
 	// The target of the error.
 	Target *string
 }
 
-// azureCoreFoundationsInnerError - An object containing more specific information about the error. As per Microsoft One API
+// InnerError - An object containing more specific information about the error. As per Microsoft One API
 // guidelines -
 // https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
-type azureCoreFoundationsInnerError struct {
+type InnerError struct {
 	// One of a server-defined set of error codes.
 	Code *string
 
 	// Inner error.
-	Innererror *azureCoreFoundationsInnerErrorInnererror
-}
-
-// azureCoreFoundationsInnerErrorInnererror - Inner error.
-type azureCoreFoundationsInnerErrorInnererror struct {
-	// One of a server-defined set of error codes.
-	Code *string
-
-	// Inner error.
-	Innererror *azureCoreFoundationsInnerErrorInnererror
+	InnerError *InnerError
 }
 
 // batchImageGenerationOperationResponse - A polling status update or final response payload for an image operation.
@@ -364,7 +355,7 @@ type batchImageGenerationOperationResponse struct {
 	Status *azureOpenAIOperationState
 
 	// The error if the operation failed.
-	Error *azureCoreFoundationsError
+	Error *Error
 
 	// A timestamp when this operation and its associated images expire and will be deleted (in unix epochs).
 	Expires *int64
@@ -830,10 +821,10 @@ type ContentFilterResultsError struct {
 	Message *string
 
 	// An array of details about specific errors that led to this reported error.
-	Details []azureCoreFoundationsError
+	Details []Error
 
 	// An object containing more specific information than the current object about the error.
-	Innererror *azureCoreFoundationsErrorInnererror
+	InnerError *InnerError
 
 	// The target of the error.
 	Target *string

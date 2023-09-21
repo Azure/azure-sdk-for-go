@@ -251,13 +251,26 @@ directive:
     - models_serde.go
     - models.go
     where: $
-    transform: return $.replace(/AzureCoreFoundations/g, "azureCoreFoundations");
-  - from: 
-    - models_serde.go
-    - models.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)?func \(\w \*?(?:ErrorResponse|ErrorResponseError|InnerError|InnerErrorInnererror)\).*\{\s(?:.+\s)+\}\s/g, "");
+    transform: | 
+      return $
+        // InnerError is actually a recursive type, no need for this innererrorinnererror type
+        .replace(/\/\/ AzureCoreFoundationsInnerErrorInnererror.+?\n}/s, "")
+        // also, remove its marshalling functions
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?AzureCoreFoundationsInnerErrorInnererror.+?\n}/sg, "")
 
+        // Remove any references to the type and replace them with InnerError.
+        .replace(/Innererror \*(AzureCoreFoundationsInnerErrorInnererror|AzureCoreFoundationsErrorInnererror)/g, "InnerError *InnerError")
+
+        // Fix the marshallers/unmarshallers to use the right case.
+        .replace(/(a|c).Innererror/g, '$1.InnerError')
+
+        // We have two "inner error" types that are identical (ErrorInnerError and InnerError). Let's eliminate the one that's not actually directly referenced.
+        .replace(/\/\/azureCoreFoundationsInnerError.+?\n}/s, "")
+        
+        //
+        // Fix the AzureCoreFoundation naming to match our style.
+        //
+        .replace(/AzureCoreFoundations/g, "")
   - from: constants.go
     where: $
     transform: >-

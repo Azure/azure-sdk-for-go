@@ -149,7 +149,7 @@ func (c *confidentialClient) newMSALClient(enableCAE bool) (msalConfidentialClie
 	return confidential.New(authority, c.clientID, c.cred, o...)
 }
 
-// resolveTenant returns the correct tenant for a token request given the client's
+// resolveTenant returns the correct WithTenantID() argument for a token request given the client's
 // configuration, or an error when that configuration doesn't allow the specified tenant
 func (c *confidentialClient) resolveTenant(specified string) (string, error) {
 	return resolveTenant(c.tenantID, specified, c.name, c.opts.AdditionallyAllowedTenants)

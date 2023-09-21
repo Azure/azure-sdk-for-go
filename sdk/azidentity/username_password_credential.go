@@ -23,6 +23,11 @@ type UsernamePasswordCredentialOptions struct {
 	// Add the wildcard value "*" to allow the credential to acquire tokens for any tenant in which the
 	// application is registered.
 	AdditionallyAllowedTenants []string
+
+	// AuthenticationRecord returned by a call to a credential's Authenticate method. Set this option
+	// to enable the credential to use data from a previous authentication.
+	AuthenticationRecord AuthenticationRecord
+
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
 	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
@@ -56,6 +61,11 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 		return nil, err
 	}
 	return &UsernamePasswordCredential{client: c}, err
+}
+
+// Authenticate the user. Subsequent calls to GetToken will automatically use the returned AuthenticationRecord.
+func (c *UsernamePasswordCredential) Authenticate(ctx context.Context, opts *policy.TokenRequestOptions) (AuthenticationRecord, error) {
+	return c.client.Authenticate(ctx, opts)
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.

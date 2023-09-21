@@ -414,6 +414,7 @@ func TestRPRegistrationPolicyEnvironmentsInSubExceeded(t *testing.T) {
 
 func TestIsUnregisteredRPCode(t *testing.T) {
 	require.True(t, isUnregisteredRPCode("Subscription Not Registered"))
+	require.True(t, isUnregisteredRPCode("SubscriptionNotRegistered"))
 	require.False(t, isUnregisteredRPCode("Your subscription isn't registered"))
 }
 

@@ -44,6 +44,7 @@ type InteractiveBrowserCredentialOptions struct {
 
 	// LoginHint pre-populates the account prompt with a username. Users may choose to authenticate a different account.
 	LoginHint string
+
 	// RedirectURL is the URL Azure Active Directory will redirect to with the access token. This is required
 	// only when setting ClientID, and must match a redirect URI in the application's registration.
 	// Applications which have registered "http://localhost" as a redirect URI need not set this option.
@@ -52,6 +53,9 @@ type InteractiveBrowserCredentialOptions struct {
 	// TenantID is the Azure Active Directory tenant the credential authenticates in. Defaults to the
 	// "organizations" tenant, which can authenticate work and school accounts.
 	TenantID string
+
+	// TokenCachePersistenceOptions enables persistent token caching when not nil.
+	TokenCachePersistenceOptions *TokenCachePersistenceOptions
 }
 
 func (o *InteractiveBrowserCredentialOptions) init() {
@@ -81,6 +85,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		DisableInstanceDiscovery:       cp.DisableInstanceDiscovery,
 		LoginHint:                      cp.LoginHint,
 		RedirectURL:                    cp.RedirectURL,
+		TokenCachePersistenceOptions:   cp.TokenCachePersistenceOptions,
 	}
 	c, err := newPublicClient(cp.TenantID, cp.ClientID, credNameBrowser, msalOpts)
 	if err != nil {

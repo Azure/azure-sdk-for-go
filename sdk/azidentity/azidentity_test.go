@@ -21,8 +21,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 	"github.com/golang-jwt/jwt/v5"
@@ -753,6 +755,110 @@ func TestResolveTenant(t *testing.T) {
 				t.Fatalf(`expected "%s", got "%s"`, test.expected, tenant)
 			}
 		})
+	}
+}
+
+func TestTokenCachePersistenceOptions(t *testing.T) {
+	af := filepath.Join(t.TempDir(), t.Name()+credNameWorkloadIdentity)
+	if err := os.WriteFile(af, []byte("assertion"), os.ModePerm); err != nil {
+		t.Fatal(err)
+	}
+	before := internal.NewCache
+	t.Cleanup(func() { internal.NewCache = before })
+	for _, test := range []struct {
+		desc    string
+		options *TokenCachePersistenceOptions
+		err     error
+	}{
+		{
+			desc: "nil options",
+		},
+		{
+			desc:    "default options",
+			options: &TokenCachePersistenceOptions{},
+		},
+		{
+			desc:    "all options set",
+			options: &TokenCachePersistenceOptions{AllowUnencryptedStorage: true, Name: "name"},
+		},
+	} {
+		internal.NewCache = func(o *internal.TokenCachePersistenceOptions, _ bool) (cache.ExportReplace, error) {
+			if (test.options == nil) != (o == nil) {
+				t.Fatalf("expected %v, got %v", test.options, o)
+			}
+			if test.options != nil {
+				if test.options.AllowUnencryptedStorage != o.AllowUnencryptedStorage {
+					t.Fatalf("expected AllowUnencryptedStorage %v, got %v", test.options.AllowUnencryptedStorage, o.AllowUnencryptedStorage)
+				}
+				if test.options.Name != o.Name {
+					t.Fatalf("expected Name %q, got %q", test.options.Name, o.Name)
+				}
+			}
+			return nil, nil
+		}
+		for _, subtest := range []struct {
+			ctor func(azcore.ClientOptions, *TokenCachePersistenceOptions) (azcore.TokenCredential, error)
+			env  map[string]string
+			name string
+		}{
+			{
+				name: credNameAssertion,
+				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := ClientAssertionCredentialOptions{ClientOptions: co, TokenCachePersistenceOptions: tco}
+					return NewClientAssertionCredential(fakeTenantID, fakeClientID, func(context.Context) (string, error) { return "...", nil }, &o)
+				},
+			},
+			{
+				name: credNameCert,
+				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := ClientCertificateCredentialOptions{ClientOptions: co, TokenCachePersistenceOptions: tco}
+					return NewClientCertificateCredential(fakeTenantID, fakeClientID, allCertTests[0].certs, allCertTests[0].key, &o)
+				},
+			},
+			{
+				name: credNameDeviceCode,
+				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := DeviceCodeCredentialOptions{
+						ClientOptions:                co,
+						TokenCachePersistenceOptions: tco,
+						UserPrompt:                   func(context.Context, DeviceCodeMessage) error { return nil },
+					}
+					return NewDeviceCodeCredential(&o)
+				},
+			},
+			{
+				name: credNameSecret,
+				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := ClientSecretCredentialOptions{ClientOptions: co, TokenCachePersistenceOptions: tco}
+					return NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, &o)
+				},
+			},
+			{
+				name: credNameUserPassword,
+				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := UsernamePasswordCredentialOptions{ClientOptions: co, TokenCachePersistenceOptions: tco}
+					return NewUsernamePasswordCredential(fakeTenantID, fakeClientID, fakeUsername, "password", &o)
+				},
+			},
+		} {
+			t.Run(fmt.Sprintf("%s/%s", subtest.name, test.desc), func(t *testing.T) {
+				for k, v := range subtest.env {
+					t.Setenv(k, v)
+				}
+				c, err := subtest.ctor(policy.ClientOptions{Transport: &mockSTS{}}, test.options)
+				if err != nil {
+					t.Fatal(err)
+				}
+				_, err = c.GetToken(context.Background(), testTRO)
+				if err != nil {
+					if !errors.Is(err, test.err) {
+						t.Fatalf("expected %v, got %v", test.err, err)
+					}
+				} else if test.err != nil {
+					t.Fatal("expected an error")
+				}
+			})
+		}
 	}
 }
 

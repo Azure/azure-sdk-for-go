@@ -33,6 +33,9 @@ type UsernamePasswordCredentialOptions struct {
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
+
+	// TokenCachePersistenceOptions enables persistent token caching when not nil.
+	TokenCachePersistenceOptions *TokenCachePersistenceOptions
 }
 
 // UsernamePasswordCredential authenticates a user with a password. Microsoft doesn't recommend this kind of authentication,
@@ -50,11 +53,12 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 		options = &UsernamePasswordCredentialOptions{}
 	}
 	opts := publicClientOptions{
-		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
-		ClientOptions:              options.ClientOptions,
-		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
-		Password:                   password,
-		Username:                   username,
+		AdditionallyAllowedTenants:   options.AdditionallyAllowedTenants,
+		ClientOptions:                options.ClientOptions,
+		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
+		Password:                     password,
+		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
+		Username:                     username,
 	}
 	c, err := newPublicClient(tenantID, clientID, credNameUserPassword, opts)
 	if err != nil {

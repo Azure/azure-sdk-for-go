@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/redis/armredis",
-  "Tag": "go/resourcemanager/redis/armredis_bd20141886"
+  "Tag": "go/resourcemanager/redis/armredis_6f803a64a3"
 }

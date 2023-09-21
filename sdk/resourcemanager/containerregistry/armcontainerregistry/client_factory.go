@@ -42,8 +42,23 @@ func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewArchiveVersionsClient() *ArchiveVersionsClient {
+	subClient, _ := NewArchiveVersionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewArchivesClient() *ArchivesClient {
+	subClient, _ := NewArchivesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewCacheRulesClient() *CacheRulesClient {
 	subClient, _ := NewCacheRulesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewConnectedRegistriesClient() *ConnectedRegistriesClient {
+	subClient, _ := NewConnectedRegistriesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -52,8 +67,23 @@ func (c *ClientFactory) NewCredentialSetsClient() *CredentialSetsClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewExportPipelinesClient() *ExportPipelinesClient {
+	subClient, _ := NewExportPipelinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewImportPipelinesClient() *ImportPipelinesClient {
+	subClient, _ := NewImportPipelinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewPipelineRunsClient() *PipelineRunsClient {
+	subClient, _ := NewPipelineRunsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

@@ -280,7 +280,8 @@ func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 		co.Transport = newRecordingTransporter(t)
 	}
 
-	co.Logging.IncludeBody = true
+	// Useful when debugging responses.
+	//co.Logging.IncludeBody = true
 	return co
 }
 

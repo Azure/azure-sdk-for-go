@@ -22,7 +22,7 @@ func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) 
 	client := newAzureOpenAIClientForTest(t, azureOpenAI)
 
 	resp, err := client.GetCompletions(context.Background(), azopenai.CompletionsOptions{
-		Prompt:      []string{"How do I rob a bank?"},
+		Prompt:      []string{"How do I rob a bank with violence?"},
 		MaxTokens:   to.Ptr(int32(2048 - 127)),
 		Temperature: to.Ptr(float32(0.0)),
 		Deployment:  azureOpenAI.Completions,

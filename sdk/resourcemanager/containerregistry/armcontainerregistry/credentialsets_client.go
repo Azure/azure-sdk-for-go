@@ -46,7 +46,7 @@ func NewCredentialSetsClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreate - Creates a credential set for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - credentialSetName - The name of the credential set.
@@ -71,13 +71,9 @@ func (client *CredentialSetsClient) BeginCreate(ctx context.Context, resourceGro
 // Create - Creates a credential set for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-07-01
 func (client *CredentialSetsClient) create(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetCreateParameters CredentialSet, options *CredentialSetsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "CredentialSetsClient.BeginCreate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, credentialSetName, credentialSetCreateParameters, options)
 	if err != nil {
 		return nil, err
@@ -114,7 +110,7 @@ func (client *CredentialSetsClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, credentialSetCreateParameters); err != nil {
@@ -126,7 +122,7 @@ func (client *CredentialSetsClient) createCreateRequest(ctx context.Context, res
 // BeginDelete - Deletes a credential set from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - credentialSetName - The name of the credential set.
@@ -150,13 +146,9 @@ func (client *CredentialSetsClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Deletes a credential set from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-07-01
 func (client *CredentialSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, options *CredentialSetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "CredentialSetsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, credentialSetName, options)
 	if err != nil {
 		return nil, err
@@ -165,7 +157,7 @@ func (client *CredentialSetsClient) deleteOperation(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -193,7 +185,7 @@ func (client *CredentialSetsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -202,17 +194,13 @@ func (client *CredentialSetsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Gets the properties of the specified credential set resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - credentialSetName - The name of the credential set.
 //   - options - CredentialSetsClientGetOptions contains the optional parameters for the CredentialSetsClient.Get method.
 func (client *CredentialSetsClient) Get(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, options *CredentialSetsClientGetOptions) (CredentialSetsClientGetResponse, error) {
 	var err error
-	const operationName = "CredentialSetsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, credentialSetName, options)
 	if err != nil {
 		return CredentialSetsClientGetResponse{}, err
@@ -250,7 +238,7 @@ func (client *CredentialSetsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -267,7 +255,7 @@ func (client *CredentialSetsClient) getHandleResponse(resp *http.Response) (Cred
 
 // NewListPager - Lists all credential set resources for the specified container registry.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - CredentialSetsClientListOptions contains the optional parameters for the CredentialSetsClient.NewListPager method.
@@ -277,7 +265,6 @@ func (client *CredentialSetsClient) NewListPager(resourceGroupName string, regis
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CredentialSetsClientListResponse) (CredentialSetsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CredentialSetsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -297,7 +284,6 @@ func (client *CredentialSetsClient) NewListPager(resourceGroupName string, regis
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -318,7 +304,7 @@ func (client *CredentialSetsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -336,7 +322,7 @@ func (client *CredentialSetsClient) listHandleResponse(resp *http.Response) (Cre
 // BeginUpdate - Updates a credential set for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - credentialSetName - The name of the credential set.
@@ -361,13 +347,9 @@ func (client *CredentialSetsClient) BeginUpdate(ctx context.Context, resourceGro
 // Update - Updates a credential set for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-07-01
 func (client *CredentialSetsClient) update(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetUpdateParameters CredentialSetUpdateParameters, options *CredentialSetsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "CredentialSetsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters, options)
 	if err != nil {
 		return nil, err
@@ -404,7 +386,7 @@ func (client *CredentialSetsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, credentialSetUpdateParameters); err != nil {

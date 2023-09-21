@@ -75,40 +75,6 @@ type CacheRulesClientUpdateResponse struct {
 	CacheRule
 }
 
-// ConnectedRegistriesClientCreateResponse contains the response from method ConnectedRegistriesClient.BeginCreate.
-type ConnectedRegistriesClientCreateResponse struct {
-	// An object that represents a connected registry for a container registry.
-	ConnectedRegistry
-}
-
-// ConnectedRegistriesClientDeactivateResponse contains the response from method ConnectedRegistriesClient.BeginDeactivate.
-type ConnectedRegistriesClientDeactivateResponse struct {
-	// placeholder for future response values
-}
-
-// ConnectedRegistriesClientDeleteResponse contains the response from method ConnectedRegistriesClient.BeginDelete.
-type ConnectedRegistriesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ConnectedRegistriesClientGetResponse contains the response from method ConnectedRegistriesClient.Get.
-type ConnectedRegistriesClientGetResponse struct {
-	// An object that represents a connected registry for a container registry.
-	ConnectedRegistry
-}
-
-// ConnectedRegistriesClientListResponse contains the response from method ConnectedRegistriesClient.NewListPager.
-type ConnectedRegistriesClientListResponse struct {
-	// The result of a request to list connected registries for a container registry.
-	ConnectedRegistryListResult
-}
-
-// ConnectedRegistriesClientUpdateResponse contains the response from method ConnectedRegistriesClient.BeginUpdate.
-type ConnectedRegistriesClientUpdateResponse struct {
-	// An object that represents a connected registry for a container registry.
-	ConnectedRegistry
-}
-
 // CredentialSetsClientCreateResponse contains the response from method CredentialSetsClient.BeginCreate.
 type CredentialSetsClientCreateResponse struct {
 	// An object that represents a credential set resource for a container registry.
@@ -138,79 +104,10 @@ type CredentialSetsClientUpdateResponse struct {
 	CredentialSet
 }
 
-// ExportPipelinesClientCreateResponse contains the response from method ExportPipelinesClient.BeginCreate.
-type ExportPipelinesClientCreateResponse struct {
-	// An object that represents an export pipeline for a container registry.
-	ExportPipeline
-}
-
-// ExportPipelinesClientDeleteResponse contains the response from method ExportPipelinesClient.BeginDelete.
-type ExportPipelinesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ExportPipelinesClientGetResponse contains the response from method ExportPipelinesClient.Get.
-type ExportPipelinesClientGetResponse struct {
-	// An object that represents an export pipeline for a container registry.
-	ExportPipeline
-}
-
-// ExportPipelinesClientListResponse contains the response from method ExportPipelinesClient.NewListPager.
-type ExportPipelinesClientListResponse struct {
-	// The result of a request to list export pipelines for a container registry.
-	ExportPipelineListResult
-}
-
-// ImportPipelinesClientCreateResponse contains the response from method ImportPipelinesClient.BeginCreate.
-type ImportPipelinesClientCreateResponse struct {
-	// An object that represents an import pipeline for a container registry.
-	ImportPipeline
-}
-
-// ImportPipelinesClientDeleteResponse contains the response from method ImportPipelinesClient.BeginDelete.
-type ImportPipelinesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ImportPipelinesClientGetResponse contains the response from method ImportPipelinesClient.Get.
-type ImportPipelinesClientGetResponse struct {
-	// An object that represents an import pipeline for a container registry.
-	ImportPipeline
-}
-
-// ImportPipelinesClientListResponse contains the response from method ImportPipelinesClient.NewListPager.
-type ImportPipelinesClientListResponse struct {
-	// The result of a request to list import pipelines for a container registry.
-	ImportPipelineListResult
-}
-
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// The result of a request to list container registry operations.
 	OperationListResult
-}
-
-// PipelineRunsClientCreateResponse contains the response from method PipelineRunsClient.BeginCreate.
-type PipelineRunsClientCreateResponse struct {
-	// An object that represents a pipeline run for a container registry.
-	PipelineRun
-}
-
-// PipelineRunsClientDeleteResponse contains the response from method PipelineRunsClient.BeginDelete.
-type PipelineRunsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// PipelineRunsClientGetResponse contains the response from method PipelineRunsClient.Get.
-type PipelineRunsClientGetResponse struct {
-	// An object that represents a pipeline run for a container registry.
-	PipelineRun
-}
-
-// PipelineRunsClientListResponse contains the response from method PipelineRunsClient.NewListPager.
-type PipelineRunsClientListResponse struct {
-	// The result of a request to list pipeline runs for a container registry.
-	PipelineRunListResult
 }
 
 // PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreateOrUpdate.

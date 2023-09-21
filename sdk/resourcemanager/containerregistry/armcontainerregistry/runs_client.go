@@ -71,10 +71,6 @@ func (client *RunsClient) BeginCancel(ctx context.Context, resourceGroupName str
 // Generated from API version 2019-06-01-preview
 func (client *RunsClient) cancel(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RunsClient.BeginCancel"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, registryName, runID, options)
 	if err != nil {
 		return nil, err
@@ -127,10 +123,6 @@ func (client *RunsClient) cancelCreateRequest(ctx context.Context, resourceGroup
 //   - options - RunsClientGetOptions contains the optional parameters for the RunsClient.Get method.
 func (client *RunsClient) Get(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientGetOptions) (RunsClientGetResponse, error) {
 	var err error
-	const operationName = "RunsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, runID, options)
 	if err != nil {
 		return RunsClientGetResponse{}, err
@@ -193,10 +185,6 @@ func (client *RunsClient) getHandleResponse(resp *http.Response) (RunsClientGetR
 //   - options - RunsClientGetLogSasURLOptions contains the optional parameters for the RunsClient.GetLogSasURL method.
 func (client *RunsClient) GetLogSasURL(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientGetLogSasURLOptions) (RunsClientGetLogSasURLResponse, error) {
 	var err error
-	const operationName = "RunsClient.GetLogSasURL"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getLogSasURLCreateRequest(ctx, resourceGroupName, registryName, runID, options)
 	if err != nil {
 		return RunsClientGetLogSasURLResponse{}, err
@@ -261,7 +249,6 @@ func (client *RunsClient) NewListPager(resourceGroupName string, registryName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RunsClientListResponse) (RunsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RunsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -281,7 +268,6 @@ func (client *RunsClient) NewListPager(resourceGroupName string, registryName st
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -351,10 +337,6 @@ func (client *RunsClient) BeginUpdate(ctx context.Context, resourceGroupName str
 // Generated from API version 2019-06-01-preview
 func (client *RunsClient) update(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, options *RunsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RunsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, runID, runUpdateParameters, options)
 	if err != nil {
 		return nil, err

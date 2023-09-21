@@ -32,6 +32,7 @@ type publicClientOptions struct {
 	DisableAutomaticAuthentication bool
 	DisableInstanceDiscovery       bool
 	LoginHint, RedirectURL         string
+	TokenCachePersistenceOptions   *TokenCachePersistenceOptions
 	Username, Password             string
 }
 

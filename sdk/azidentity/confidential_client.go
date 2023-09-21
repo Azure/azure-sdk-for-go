@@ -28,6 +28,7 @@ type confidentialClientOptions struct {
 	// Assertion for on-behalf-of authentication
 	Assertion                         string
 	DisableInstanceDiscovery, SendX5C bool
+	TokenCachePersistenceOptions      *TokenCachePersistenceOptions
 }
 
 // confidentialClient wraps the MSAL confidential client

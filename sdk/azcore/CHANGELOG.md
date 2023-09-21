@@ -12,6 +12,10 @@
 * Added types `KeyCredentialPolicy` and `SASCredentialPolicy` to the `azcore/runtime` package.
   * Includes their respective constructor functions and options types.
 
+### Bugs Fixed
+
+* Fixed an issue that could cause some ARM RPs to not be automatically registered.
+
 ### Other Changes
 
 * The following functions in the `runtime` package are now exposed from the `policy` package, and the `runtime` versions have been deprecated.

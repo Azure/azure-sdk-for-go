@@ -77,12 +77,7 @@ func TestNewClientWithKeyCredential(t *testing.T) {
 }
 
 func TestGetCompletionsStream_AzureOpenAI(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
-	require.NoError(t, err)
-
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
+	client := newTestClient(t, azureOpenAI.Endpoint)
 	testGetCompletionsStream(t, client, azureOpenAI)
 }
 
@@ -123,10 +118,10 @@ func testGetCompletionsStream(t *testing.T, client *azopenai.Client, tv testVars
 			break
 		}
 
-		if completion.PromptAnnotations != nil {
+		if completion.PromptFilterResults != nil {
 			require.Equal(t, []azopenai.PromptFilterResult{
 				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
-			}, completion.PromptAnnotations)
+			}, completion.PromptFilterResults)
 		}
 
 		eventCount++

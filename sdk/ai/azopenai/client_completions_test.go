@@ -16,12 +16,7 @@ import (
 )
 
 func TestClient_GetCompletions_AzureOpenAI(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
-	require.NoError(t, err)
-
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
+	client := newTestClient(t, azureOpenAI.Endpoint)
 	testGetCompletions(t, client, true)
 }
 
@@ -69,7 +64,7 @@ func testGetCompletions(t *testing.T, client *azopenai.Client, isAzure bool) {
 
 	if isAzure {
 		want.Choices[0].ContentFilterResults = (*azopenai.ChoiceContentFilterResults)(safeContentFilter)
-		want.PromptAnnotations = []azopenai.PromptFilterResult{
+		want.PromptFilterResults = []azopenai.PromptFilterResult{
 			{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
 		}
 	}

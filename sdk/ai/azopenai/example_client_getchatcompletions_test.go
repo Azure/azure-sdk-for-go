@@ -18,7 +18,7 @@ import (
 
 func ExampleClient_GetChatCompletions() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT")
+	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
@@ -90,7 +90,7 @@ func ExampleClient_GetChatCompletions() {
 
 func ExampleClient_GetChatCompletions_functions() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT")
+	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
@@ -183,7 +183,7 @@ func ExampleClient_GetChatCompletions_functions() {
 
 func ExampleClient_GetChatCompletionsStream() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT")
+	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")

@@ -23,7 +23,7 @@ import (
 // ProtectableContainersClient contains the methods for the ProtectableContainers group.
 // Don't use this type directly, use NewProtectableContainersClient() instead.
 type ProtectableContainersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewProtectableContainersClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &ProtectableContainersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewProtectableContainersClient(subscriptionID string, credential azcore.Tok
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - ProtectableContainersClientListOptions contains the optional parameters for the ProtectableContainersClient.NewListPager
 //     method.
-func (client *ProtectableContainersClient) NewListPager(vaultName string, resourceGroupName string, fabricName string, options *ProtectableContainersClientListOptions) *runtime.Pager[ProtectableContainersClientListResponse] {
+func (client *ProtectableContainersClient) NewListPager(vaultName string, resourceGroupName string, fabricName string, options *ProtectableContainersClientListOptions) (*runtime.Pager[ProtectableContainersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProtectableContainersClientListResponse]{
 		More: func(page ProtectableContainersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -119,3 +119,4 @@ func (client *ProtectableContainersClient) listHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

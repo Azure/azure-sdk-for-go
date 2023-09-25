@@ -40,7 +40,7 @@ type AdministratorProperties struct {
 // AdvancedThreatProtectionProperties - Properties of an Advanced Threat Protection state.
 type AdvancedThreatProtectionProperties struct {
 	// REQUIRED; Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled or a state has not been
-	// applied yet on the specific database or server.
+// applied yet on the specific database or server.
 	State *AdvancedThreatProtectionState
 
 	// READ-ONLY; Specifies the UTC creation time of the policy.
@@ -71,24 +71,24 @@ type Advisor struct {
 // AdvisorProperties - Properties for a Database, Server or Elastic Pool Advisor.
 type AdvisorProperties struct {
 	// REQUIRED; Gets the auto-execute status (whether to let the system execute the recommendations) of this advisor. Possible
-	// values are 'Enabled' and 'Disabled'
+// values are 'Enabled' and 'Disabled'
 	AutoExecuteStatus *AutoExecuteStatus
 
 	// READ-ONLY; Gets the status of availability of this advisor to customers. Possible values are 'GA', 'PublicPreview', 'LimitedPublicPreview'
-	// and 'PrivatePreview'.
+// and 'PrivatePreview'.
 	AdvisorStatus *AdvisorStatus
 
 	// READ-ONLY; Gets the resource from which current value of auto-execute status is inherited. Auto-execute status can be set
-	// on (and inherited from) different levels in the resource hierarchy. Possible values are
-	// 'Subscription', 'Server', 'ElasticPool', 'Database' and 'Default' (when status is not explicitly set on any level).
+// on (and inherited from) different levels in the resource hierarchy. Possible values are
+// 'Subscription', 'Server', 'ElasticPool', 'Database' and 'Default' (when status is not explicitly set on any level).
 	AutoExecuteStatusInheritedFrom *AutoExecuteStatusInheritedFrom
 
 	// READ-ONLY; Gets the time when the current resource was analyzed for recommendations by this advisor.
 	LastChecked *time.Time
 
 	// READ-ONLY; Gets that status of recommendations for this advisor and reason for not having any recommendations. Possible
-	// values include, but are not limited to, 'Ok' (Recommendations available),LowActivity (not
-	// enough workload to analyze), 'DbSeemsTuned' (Database is doing well), etc.
+// values include, but are not limited to, 'Ok' (Recommendations available),LowActivity (not
+// enough workload to analyze), 'DbSeemsTuned' (Database is doing well), etc.
 	RecommendationsStatus *string
 
 	// READ-ONLY; Gets the recommended actions for this advisor.
@@ -221,7 +221,7 @@ type BackupShortTermRetentionPolicyListResult struct {
 // BackupShortTermRetentionPolicyProperties - Properties of a short term retention policy
 type BackupShortTermRetentionPolicyProperties struct {
 	// The differential backup interval in hours. This is how many interval hours between each differential backup will be supported.
-	// This is only applicable to live databases but not dropped databases.
+// This is only applicable to live databases but not dropped databases.
 	DiffBackupIntervalInHours *DiffBackupIntervalInHours
 
 	// The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
@@ -366,8 +366,8 @@ type DataMaskingPolicyProperties struct {
 	DataMaskingState *DataMaskingState
 
 	// The list of the exempt principals. Specifies the semicolon-separated list of database users for which the data masking
-	// policy does not apply. The specified users receive data results without masking
-	// for all of the database queries.
+// policy does not apply. The specified users receive data results without masking
+// for all of the database queries.
 	ExemptPrincipals *string
 
 	// READ-ONLY; The list of the application principals. This is a legacy parameter and is no longer used.
@@ -422,28 +422,28 @@ type DataMaskingRuleProperties struct {
 	AliasName *string
 
 	// The numberFrom property of the masking rule. Required if maskingFunction is set to Number, otherwise this parameter will
-	// be ignored.
+// be ignored.
 	NumberFrom *string
 
 	// The numberTo property of the data masking rule. Required if maskingFunction is set to Number, otherwise this parameter
-	// will be ignored.
+// will be ignored.
 	NumberTo *string
 
 	// If maskingFunction is set to Text, the number of characters to show unmasked in the beginning of the string. Otherwise,
-	// this parameter will be ignored.
+// this parameter will be ignored.
 	PrefixSize *string
 
 	// If maskingFunction is set to Text, the character to use for masking the unexposed part of the string. Otherwise, this parameter
-	// will be ignored.
+// will be ignored.
 	ReplacementString *string
 
 	// The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName, columnName, maskingFunction,
-	// and specify ruleState as disabled. However, if the rule doesn't
-	// already exist, the rule will be created with ruleState set to enabled, regardless of the provided value of ruleState.
+// and specify ruleState as disabled. However, if the rule doesn't
+// already exist, the rule will be created with ruleState set to enabled, regardless of the provided value of ruleState.
 	RuleState *DataMaskingRuleState
 
 	// If maskingFunction is set to Text, the number of characters to show unmasked at the end of the string. Otherwise, this
-	// parameter will be ignored.
+// parameter will be ignored.
 	SuffixSize *string
 
 	// READ-ONLY; The rule Id.
@@ -493,13 +493,13 @@ type Database struct {
 	Properties *DatabaseProperties
 
 	// The database SKU.
-	// The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family,
-	// and capacity) that are available to your subscription in an Azure region,
-	// use the Capabilities_ListByLocation REST API or one of the following commands:
-	// az sql db list-editions -l <location> -o table
-	// `
-	// Get-AzSqlServerServiceObjective -Location <location>
-	// `
+// The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family,
+// and capacity) that are available to your subscription in an Azure region,
+// use the Capabilities_ListByLocation REST API or one of the following commands:
+// az sql db list-editions -l <location> -o table
+// `
+// Get-AzSqlServerServiceObjective -Location <location>
+// `
 	SKU *SKU
 
 	// Resource tags.
@@ -608,44 +608,44 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	State *BlobAuditingPolicyState
 
 	// Specifies the Actions-Groups and Actions to audit.
-	// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures
-	// executed against the database, as well as successful and failed logins:
-	// BATCHCOMPLETEDGROUP, SUCCESSFULDATABASEAUTHENTICATIONGROUP, FAILEDDATABASEAUTHENTICATIONGROUP.
-	// This above combination is also the set that is configured by default when enabling auditing from the Azure portal.
-	// The supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary
-	// groups could lead to very large quantities of audit records):
-	// APPLICATIONROLECHANGEPASSWORDGROUP BACKUPRESTOREGROUP DATABASELOGOUTGROUP DATABASEOBJECTCHANGEGROUP DATABASEOBJECTOWNERSHIPCHANGEGROUP
-	// DATABASEOBJECTPERMISSIONCHANGEGROUP DATABASEOPERATIONGROUP
-	// DATABASEPERMISSIONCHANGEGROUP DATABASEPRINCIPALCHANGEGROUP DATABASEPRINCIPALIMPERSONATIONGROUP DATABASEROLEMEMBERCHANGEGROUP
-	// FAILEDDATABASEAUTHENTICATIONGROUP SCHEMAOBJECTACCESSGROUP SCHEMAOBJECT
-	// CHANGEGROUP SCHEMAOBJECTOWNERSHIPCHANGEGROUP SCHEMAOBJECTPERMISSIONCHANGEGROUP SUCCESSFULDATABASEAUTHENTICATIONGROUP USERCHANGEPASSWORDGROUP
-	// BATCHSTARTEDGROUP BATCHCOMPLETEDGROUP DBCCGROUP DATABASE
-	// OWNERSHIPCHANGEGROUP DATABASECHANGEGROUP LEDGEROPERATION_GROUP
-	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used
-	// in combination with other groups as this will result in duplicate audit logs.
-	// For more information, see Database-Level Audit Action Groups
-	// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups].
-	// For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server
-	// auditing policy). The supported actions to audit are: SELECT UPDATE INSERT DELETE
-	// EXECUTE RECEIVE REFERENCES
-	// The general form for defining an action to be audited is: {action} ON {object} BY {principal}
-	// Note that in the above format can refer to an object like a table, view, or stored procedure, or an entire database or
-	// schema. For the latter cases, the forms DATABASE::{dbname} and SCHEMA::{schema
-	// name} are used, respectively.
-	// For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on SCHEMA::mySchema by public
-	// For more information, see Database-Level Audit Actions
-	// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions]
+// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures
+// executed against the database, as well as successful and failed logins:
+// BATCHCOMPLETEDGROUP, SUCCESSFULDATABASEAUTHENTICATIONGROUP, FAILEDDATABASEAUTHENTICATIONGROUP.
+// This above combination is also the set that is configured by default when enabling auditing from the Azure portal.
+// The supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary
+// groups could lead to very large quantities of audit records):
+// APPLICATIONROLECHANGEPASSWORDGROUP BACKUPRESTOREGROUP DATABASELOGOUTGROUP DATABASEOBJECTCHANGEGROUP DATABASEOBJECTOWNERSHIPCHANGEGROUP
+// DATABASEOBJECTPERMISSIONCHANGEGROUP DATABASEOPERATIONGROUP
+// DATABASEPERMISSIONCHANGEGROUP DATABASEPRINCIPALCHANGEGROUP DATABASEPRINCIPALIMPERSONATIONGROUP DATABASEROLEMEMBERCHANGEGROUP
+// FAILEDDATABASEAUTHENTICATIONGROUP SCHEMAOBJECTACCESSGROUP SCHEMAOBJECT
+// CHANGEGROUP SCHEMAOBJECTOWNERSHIPCHANGEGROUP SCHEMAOBJECTPERMISSIONCHANGEGROUP SUCCESSFULDATABASEAUTHENTICATIONGROUP USERCHANGEPASSWORDGROUP
+// BATCHSTARTEDGROUP BATCHCOMPLETEDGROUP DBCCGROUP DATABASE
+// OWNERSHIPCHANGEGROUP DATABASECHANGEGROUP LEDGEROPERATION_GROUP
+// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used
+// in combination with other groups as this will result in duplicate audit logs.
+// For more information, see Database-Level Audit Action Groups
+// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups].
+// For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server
+// auditing policy). The supported actions to audit are: SELECT UPDATE INSERT DELETE
+// EXECUTE RECEIVE REFERENCES
+// The general form for defining an action to be audited is: {action} ON {object} BY {principal}
+// Note that in the above format can refer to an object like a table, view, or stored procedure, or an entire database or
+// schema. For the latter cases, the forms DATABASE::{dbname} and SCHEMA::{schema
+// name} are used, respectively.
+// For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on SCHEMA::mySchema by public
+// For more information, see Database-Level Audit Actions
+// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions]
 	AuditActionsAndGroups []*string
 
 	// Specifies whether audit events are sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State'
-	// as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
-	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on
-	// the database should be also created. Note that for server level audit you
-	// should use the 'master' database as {databaseName}.
-	// Diagnostic Settings URI format: PUT
-	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
-	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
+// as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
+// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on
+// the database should be also created. Note that for server level audit you
+// should use the 'master' database as {databaseName}.
+// Diagnostic Settings URI format: PUT
+// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
+// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
 	IsAzureMonitorTargetEnabled *bool
 
 	// Specifies whether Managed Identity is used to access blob storage
@@ -655,26 +655,26 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	IsStorageSecondaryKeyInUse *bool
 
 	// Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed. The default
-	// minimum value is 1000 (1 second). The maximum is 2,147,483,647.
+// minimum value is 1000 (1 second). The maximum is 2,147,483,647.
 	QueueDelayMs *int32
 
 	// Specifies the number of days to keep in the audit logs in the storage account.
 	RetentionDays *int32
 
 	// Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, not
-	// specifying the storageAccountAccessKey will use SQL server system-assigned
-	// managed identity to access the storage. Prerequisites for using managed identity authentication:
-	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
-	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-	// identity. For more information, see Auditing to storage using Managed
-	// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
+// specifying the storageAccountAccessKey will use SQL server system-assigned
+// managed identity to access the storage. Prerequisites for using managed identity authentication:
+// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
+// identity. For more information, see Auditing to storage using Managed
+// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
 	StorageAccountAccessKey *string
 
 	// Specifies the blob storage subscription Id.
 	StorageAccountSubscriptionID *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint
-	// or isAzureMonitorTargetEnabled is required.
+// or isAzureMonitorTargetEnabled is required.
 	StorageEndpoint *string
 }
 
@@ -867,24 +867,24 @@ type DatabaseProperties struct {
 	Collation *string
 
 	// Specifies the mode of database creation.
-	// Default: regular database creation.
-	// Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID of the
-	// source database.
-	// Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified as the
-	// resource ID of the existing primary database.
-	// PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database. sourceDatabaseId must
-	// be specified as the resource ID of the existing database, and
-	// restorePointInTime must be specified.
-	// Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the recoverable
-	// database resource ID to restore.
-	// Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If sourceDatabaseId
-	// is the database's original resource ID, then sourceDatabaseDeletionDate
-	// must be specified. Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate
-	// is ignored. restorePointInTime may also be specified to restore from an
-	// earlier point in time.
-	// RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault. recoveryServicesRecoveryPointResourceId
-	// must be specified as the recovery point resource ID.
-	// Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
+// Default: regular database creation.
+// Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID of the
+// source database.
+// Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified as the
+// resource ID of the existing primary database.
+// PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database. sourceDatabaseId must
+// be specified as the resource ID of the existing database, and
+// restorePointInTime must be specified.
+// Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the recoverable
+// database resource ID to restore.
+// Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If sourceDatabaseId
+// is the database's original resource ID, then sourceDatabaseDeletionDate
+// must be specified. Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate
+// is ignored. restorePointInTime may also be specified to restore from an
+// earlier point in time.
+// RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault. recoveryServicesRecoveryPointResourceId
+// must be specified as the recovery point resource ID.
+// Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
 	CreateMode *CreateMode
 
 	// The resource identifier of the elastic pool containing this database.
@@ -900,37 +900,37 @@ type DatabaseProperties struct {
 	FederatedClientID *string
 
 	// Specifies the behavior when monthly free limits are exhausted for the free database.
-	// AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
-	// BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be billed.
+// AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
+// BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be billed.
 	FreeLimitExhaustionBehavior *FreeLimitExhaustionBehavior
 
 	// The number of secondary replicas associated with the database that are used to provide high availability. Not applicable
-	// to a Hyperscale database within an elastic pool.
+// to a Hyperscale database within an elastic pool.
 	HighAvailabilityReplicaCount *int32
 
 	// Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the
-	// value of this property cannot be changed after the database has been created.
+// value of this property cannot be changed after the database has been created.
 	IsLedgerOn *bool
 
 	// The resource ids of the user assigned identities to use
 	Keys map[string]*DatabaseKey
 
 	// The license type to apply for this database. LicenseIncluded if you need a license, or BasePrice if you have a license
-	// and are eligible for the Azure Hybrid Benefit.
+// and are eligible for the Azure Hybrid Benefit.
 	LicenseType *DatabaseLicenseType
 
 	// The resource identifier of the long term retention backup associated with create operation of this database.
 	LongTermRetentionBackupResourceID *string
 
 	// Maintenance configuration id assigned to the database. This configuration defines the period when the maintenance updates
-	// will occur.
+// will occur.
 	MaintenanceConfigurationID *string
 
 	// Whether or not customer controlled manual cutover needs to be done during Update Database operation to Hyperscale tier.
-	// This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard tier to
-	// Hyperscale tier.
-	// When manualCutover is specified, the scaling operation will wait for user input to trigger cutover to Hyperscale database.
-	// To trigger cutover, please provide 'performCutover' parameter when the Scaling operation is in Waiting state.
+// This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard tier to
+// Hyperscale tier.
+// When manualCutover is specified, the scaling operation will wait for user input to trigger cutover to Hyperscale database.
+// To trigger cutover, please provide 'performCutover' parameter when the Scaling operation is in Waiting state.
 	ManualCutover *bool
 
 	// The max size of the database expressed in bytes.
@@ -940,18 +940,18 @@ type DatabaseProperties struct {
 	MinCapacity *float64
 
 	// To trigger customer controlled manual cutover during the wait state while Scaling operation is in progress.
-	// This property parameter is only applicable for scaling operations that are initiated along with 'manualCutover' parameter.
-	// This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard tier to
-	// Hyperscale tier is already in progress.
-	// When performCutover is specified, the scaling operation will trigger cutover and perform role-change to Hyperscale database.
+// This property parameter is only applicable for scaling operations that are initiated along with 'manualCutover' parameter.
+// This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard tier to
+// Hyperscale tier is already in progress.
+// When performCutover is specified, the scaling operation will trigger cutover and perform role-change to Hyperscale database.
 	PerformCutover *bool
 
 	// Type of enclave requested on the database i.e. Default or VBS enclaves.
 	PreferredEnclaveType *AlwaysEncryptedEnclaveType
 
 	// The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection
-	// string may be routed to a readonly secondary replica in the same region. Not
-	// applicable to a Hyperscale database within an elastic pool.
+// string may be routed to a readonly secondary replica in the same region. Not
+// applicable to a Hyperscale database within an elastic pool.
 	ReadScale *DatabaseReadScale
 
 	// The resource identifier of the recoverable database associated with create operation of this database.
@@ -982,25 +982,25 @@ type DatabaseProperties struct {
 	SourceDatabaseID *string
 
 	// The resource identifier of the source associated with the create operation of this database.
-	// This property is only supported for DataWarehouse edition and allows to restore across subscriptions.
-	// When sourceResourceId is specified, sourceDatabaseId, recoverableDatabaseId, restorableDroppedDatabaseId and sourceDatabaseDeletionDate
-	// must not be specified and CreateMode must be PointInTimeRestore,
-	// Restore or Recover.
-	// When createMode is PointInTimeRestore, sourceResourceId must be the resource ID of the existing database or existing sql
-	// pool, and restorePointInTime must be specified.
-	// When createMode is Restore, sourceResourceId must be the resource ID of restorable dropped database or restorable dropped
-	// sql pool.
-	// When createMode is Recover, sourceResourceId must be the resource ID of recoverable database or recoverable sql pool.
-	// When source subscription belongs to a different tenant than target subscription, “x-ms-authorization-auxiliary” header
-	// must contain authentication token for the source tenant. For more details about
-	// “x-ms-authorization-auxiliary” header see https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/authenticate-multi-tenant
+// This property is only supported for DataWarehouse edition and allows to restore across subscriptions.
+// When sourceResourceId is specified, sourceDatabaseId, recoverableDatabaseId, restorableDroppedDatabaseId and sourceDatabaseDeletionDate
+// must not be specified and CreateMode must be PointInTimeRestore,
+// Restore or Recover.
+// When createMode is PointInTimeRestore, sourceResourceId must be the resource ID of the existing database or existing sql
+// pool, and restorePointInTime must be specified.
+// When createMode is Restore, sourceResourceId must be the resource ID of restorable dropped database or restorable dropped
+// sql pool.
+// When createMode is Recover, sourceResourceId must be the resource ID of recoverable database or recoverable sql pool.
+// When source subscription belongs to a different tenant than target subscription, “x-ms-authorization-auxiliary” header
+// must contain authentication token for the source tenant. For more details about
+// “x-ms-authorization-auxiliary” header see https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/authenticate-multi-tenant
 	SourceResourceID *string
 
 	// Whether or not the database uses free monthly limits. Allowed on one database in a subscription.
 	UseFreeLimit *bool
 
 	// Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple
-	// availability zones.
+// availability zones.
 	ZoneRedundant *bool
 
 	// READ-ONLY; The creation date of the database (ISO8601 format).
@@ -1040,7 +1040,7 @@ type DatabaseProperties struct {
 	RequestedServiceObjectiveName *string
 
 	// READ-ONLY; The date when database was resumed by user action or database login (ISO8601 format). Null if the database is
-	// paused.
+// paused.
 	ResumedDate *time.Time
 
 	// READ-ONLY; The status of the database.
@@ -1278,24 +1278,24 @@ type DatabaseUpdateProperties struct {
 	Collation *string
 
 	// Specifies the mode of database creation.
-	// Default: regular database creation.
-	// Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID of the
-	// source database.
-	// Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified as the
-	// resource ID of the existing primary database.
-	// PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database. sourceDatabaseId must
-	// be specified as the resource ID of the existing database, and
-	// restorePointInTime must be specified.
-	// Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the recoverable
-	// database resource ID to restore.
-	// Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If sourceDatabaseId
-	// is the database's original resource ID, then sourceDatabaseDeletionDate
-	// must be specified. Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate
-	// is ignored. restorePointInTime may also be specified to restore from an
-	// earlier point in time.
-	// RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault. recoveryServicesRecoveryPointResourceId
-	// must be specified as the recovery point resource ID.
-	// Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
+// Default: regular database creation.
+// Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID of the
+// source database.
+// Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified as the
+// resource ID of the existing primary database.
+// PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database. sourceDatabaseId must
+// be specified as the resource ID of the existing database, and
+// restorePointInTime must be specified.
+// Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the recoverable
+// database resource ID to restore.
+// Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If sourceDatabaseId
+// is the database's original resource ID, then sourceDatabaseDeletionDate
+// must be specified. Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate
+// is ignored. restorePointInTime may also be specified to restore from an
+// earlier point in time.
+// RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault. recoveryServicesRecoveryPointResourceId
+// must be specified as the recovery point resource ID.
+// Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
 	CreateMode *CreateMode
 
 	// The resource identifier of the elastic pool containing this database.
@@ -1311,37 +1311,37 @@ type DatabaseUpdateProperties struct {
 	FederatedClientID *string
 
 	// Specifies the behavior when monthly free limits are exhausted for the free database.
-	// AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
-	// BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be billed.
+// AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
+// BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be billed.
 	FreeLimitExhaustionBehavior *FreeLimitExhaustionBehavior
 
 	// The number of secondary replicas associated with the database that are used to provide high availability. Not applicable
-	// to a Hyperscale database within an elastic pool.
+// to a Hyperscale database within an elastic pool.
 	HighAvailabilityReplicaCount *int32
 
 	// Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the
-	// value of this property cannot be changed after the database has been created.
+// value of this property cannot be changed after the database has been created.
 	IsLedgerOn *bool
 
 	// The resource ids of the user assigned identities to use
 	Keys map[string]*DatabaseKey
 
 	// The license type to apply for this database. LicenseIncluded if you need a license, or BasePrice if you have a license
-	// and are eligible for the Azure Hybrid Benefit.
+// and are eligible for the Azure Hybrid Benefit.
 	LicenseType *DatabaseLicenseType
 
 	// The resource identifier of the long term retention backup associated with create operation of this database.
 	LongTermRetentionBackupResourceID *string
 
 	// Maintenance configuration id assigned to the database. This configuration defines the period when the maintenance updates
-	// will occur.
+// will occur.
 	MaintenanceConfigurationID *string
 
 	// Whether or not customer controlled manual cutover needs to be done during Update Database operation to Hyperscale tier.
-	// This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard tier to
-	// Hyperscale tier.
-	// When manualCutover is specified, the scaling operation will wait for user input to trigger cutover to Hyperscale database.
-	// To trigger cutover, please provide 'performCutover' parameter when the Scaling operation is in Waiting state.
+// This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard tier to
+// Hyperscale tier.
+// When manualCutover is specified, the scaling operation will wait for user input to trigger cutover to Hyperscale database.
+// To trigger cutover, please provide 'performCutover' parameter when the Scaling operation is in Waiting state.
 	ManualCutover *bool
 
 	// The max size of the database expressed in bytes.
@@ -1351,18 +1351,18 @@ type DatabaseUpdateProperties struct {
 	MinCapacity *float64
 
 	// To trigger customer controlled manual cutover during the wait state while Scaling operation is in progress.
-	// This property parameter is only applicable for scaling operations that are initiated along with 'manualCutover' parameter.
-	// This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard tier to
-	// Hyperscale tier is already in progress.
-	// When performCutover is specified, the scaling operation will trigger cutover and perform role-change to Hyperscale database.
+// This property parameter is only applicable for scaling operations that are initiated along with 'manualCutover' parameter.
+// This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard tier to
+// Hyperscale tier is already in progress.
+// When performCutover is specified, the scaling operation will trigger cutover and perform role-change to Hyperscale database.
 	PerformCutover *bool
 
 	// Type of enclave requested on the database i.e. Default or VBS enclaves.
 	PreferredEnclaveType *AlwaysEncryptedEnclaveType
 
 	// The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection
-	// string may be routed to a readonly secondary replica in the same region. Not
-	// applicable to a Hyperscale database within an elastic pool.
+// string may be routed to a readonly secondary replica in the same region. Not
+// applicable to a Hyperscale database within an elastic pool.
 	ReadScale *DatabaseReadScale
 
 	// The resource identifier of the recoverable database associated with create operation of this database.
@@ -1396,7 +1396,7 @@ type DatabaseUpdateProperties struct {
 	UseFreeLimit *bool
 
 	// Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple
-	// availability zones.
+// availability zones.
 	ZoneRedundant *bool
 
 	// READ-ONLY; The creation date of the database (ISO8601 format).
@@ -1436,7 +1436,7 @@ type DatabaseUpdateProperties struct {
 	RequestedServiceObjectiveName *string
 
 	// READ-ONLY; The date when database was resumed by user action or database login (ISO8601 format). Null if the database is
-	// paused.
+// paused.
 	ResumedDate *time.Time
 
 	// READ-ONLY; The status of the database.
@@ -1521,16 +1521,16 @@ type DatabaseVulnerabilityAssessmentProperties struct {
 	RecurringScans *VulnerabilityAssessmentRecurringScansProperties
 
 	// Specifies the identifier key of the storage account for vulnerability assessment scan results. If 'StorageContainerSasKey'
-	// isn't specified, storageAccountAccessKey is required.
+// isn't specified, storageAccountAccessKey is required.
 	StorageAccountAccessKey *string
 
 	// A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/). It is required
-	// if server level vulnerability assessment policy doesn't set
+// if server level vulnerability assessment policy doesn't set
 	StorageContainerPath *string
 
 	// A shared access signature (SAS Key) that has write access to the blob container specified in 'storageContainerPath' parameter.
-	// If 'storageAccountAccessKey' isn't specified, StorageContainerSasKey is
-	// required.
+// If 'storageAccountAccessKey' isn't specified, StorageContainerSasKey is
+// required.
 	StorageContainerSasKey *string
 }
 
@@ -1712,11 +1712,11 @@ type ElasticPool struct {
 	Properties *ElasticPoolProperties
 
 	// The elastic pool SKU.
-	// The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family,
-	// and capacity) that are available to your subscription in an Azure region,
-	// use the Capabilities_ListByLocation REST API or the following command:
-	// az sql elastic-pool list-editions -l <location> -o table
-	// `
+// The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family,
+// and capacity) that are available to your subscription in an Azure region,
+// use the Capabilities_ListByLocation REST API or the following command:
+// az sql elastic-pool list-editions -l <location> -o table
+// `
 	SKU *SKU
 
 	// Resource tags.
@@ -2077,14 +2077,14 @@ type ElasticPoolProperties struct {
 	AvailabilityZone *AvailabilityZoneType
 
 	// The number of secondary replicas associated with the elastic pool that are used to provide high availability. Applicable
-	// only to Hyperscale elastic pools.
+// only to Hyperscale elastic pools.
 	HighAvailabilityReplicaCount *int32
 
 	// The license type to apply for this elastic pool.
 	LicenseType *ElasticPoolLicenseType
 
 	// Maintenance configuration id assigned to the elastic pool. This configuration defines the period when the maintenance updates
-	// will will occur.
+// will will occur.
 	MaintenanceConfigurationID *string
 
 	// The storage limit for the database elastic pool in bytes.
@@ -2100,7 +2100,7 @@ type ElasticPoolProperties struct {
 	PreferredEnclaveType *AlwaysEncryptedEnclaveType
 
 	// Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across
-	// multiple availability zones.
+// multiple availability zones.
 	ZoneRedundant *bool
 
 	// READ-ONLY; The creation date of the elastic pool (ISO8601 format).
@@ -2128,14 +2128,14 @@ type ElasticPoolUpdateProperties struct {
 	AvailabilityZone *AvailabilityZoneType
 
 	// The number of secondary replicas associated with the elastic pool that are used to provide high availability. Applicable
-	// only to Hyperscale elastic pools.
+// only to Hyperscale elastic pools.
 	HighAvailabilityReplicaCount *int32
 
 	// The license type to apply for this elastic pool.
 	LicenseType *ElasticPoolLicenseType
 
 	// Maintenance configuration id assigned to the elastic pool. This configuration defines the period when the maintenance updates
-	// will will occur.
+// will will occur.
 	MaintenanceConfigurationID *string
 
 	// The storage limit for the database elastic pool in bytes.
@@ -2151,7 +2151,7 @@ type ElasticPoolUpdateProperties struct {
 	PreferredEnclaveType *AlwaysEncryptedEnclaveType
 
 	// Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across
-	// multiple availability zones.
+// multiple availability zones.
 	ZoneRedundant *bool
 }
 
@@ -2305,44 +2305,44 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	State *BlobAuditingPolicyState
 
 	// Specifies the Actions-Groups and Actions to audit.
-	// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures
-	// executed against the database, as well as successful and failed logins:
-	// BATCHCOMPLETEDGROUP, SUCCESSFULDATABASEAUTHENTICATIONGROUP, FAILEDDATABASEAUTHENTICATIONGROUP.
-	// This above combination is also the set that is configured by default when enabling auditing from the Azure portal.
-	// The supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary
-	// groups could lead to very large quantities of audit records):
-	// APPLICATIONROLECHANGEPASSWORDGROUP BACKUPRESTOREGROUP DATABASELOGOUTGROUP DATABASEOBJECTCHANGEGROUP DATABASEOBJECTOWNERSHIPCHANGEGROUP
-	// DATABASEOBJECTPERMISSIONCHANGEGROUP DATABASEOPERATIONGROUP
-	// DATABASEPERMISSIONCHANGEGROUP DATABASEPRINCIPALCHANGEGROUP DATABASEPRINCIPALIMPERSONATIONGROUP DATABASEROLEMEMBERCHANGEGROUP
-	// FAILEDDATABASEAUTHENTICATIONGROUP SCHEMAOBJECTACCESSGROUP SCHEMAOBJECT
-	// CHANGEGROUP SCHEMAOBJECTOWNERSHIPCHANGEGROUP SCHEMAOBJECTPERMISSIONCHANGEGROUP SUCCESSFULDATABASEAUTHENTICATIONGROUP USERCHANGEPASSWORDGROUP
-	// BATCHSTARTEDGROUP BATCHCOMPLETEDGROUP DBCCGROUP DATABASE
-	// OWNERSHIPCHANGEGROUP DATABASECHANGEGROUP LEDGEROPERATION_GROUP
-	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used
-	// in combination with other groups as this will result in duplicate audit logs.
-	// For more information, see Database-Level Audit Action Groups
-	// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups].
-	// For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server
-	// auditing policy). The supported actions to audit are: SELECT UPDATE INSERT DELETE
-	// EXECUTE RECEIVE REFERENCES
-	// The general form for defining an action to be audited is: {action} ON {object} BY {principal}
-	// Note that in the above format can refer to an object like a table, view, or stored procedure, or an entire database or
-	// schema. For the latter cases, the forms DATABASE::{dbname} and SCHEMA::{schema
-	// name} are used, respectively.
-	// For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on SCHEMA::mySchema by public
-	// For more information, see Database-Level Audit Actions
-	// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions]
+// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures
+// executed against the database, as well as successful and failed logins:
+// BATCHCOMPLETEDGROUP, SUCCESSFULDATABASEAUTHENTICATIONGROUP, FAILEDDATABASEAUTHENTICATIONGROUP.
+// This above combination is also the set that is configured by default when enabling auditing from the Azure portal.
+// The supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary
+// groups could lead to very large quantities of audit records):
+// APPLICATIONROLECHANGEPASSWORDGROUP BACKUPRESTOREGROUP DATABASELOGOUTGROUP DATABASEOBJECTCHANGEGROUP DATABASEOBJECTOWNERSHIPCHANGEGROUP
+// DATABASEOBJECTPERMISSIONCHANGEGROUP DATABASEOPERATIONGROUP
+// DATABASEPERMISSIONCHANGEGROUP DATABASEPRINCIPALCHANGEGROUP DATABASEPRINCIPALIMPERSONATIONGROUP DATABASEROLEMEMBERCHANGEGROUP
+// FAILEDDATABASEAUTHENTICATIONGROUP SCHEMAOBJECTACCESSGROUP SCHEMAOBJECT
+// CHANGEGROUP SCHEMAOBJECTOWNERSHIPCHANGEGROUP SCHEMAOBJECTPERMISSIONCHANGEGROUP SUCCESSFULDATABASEAUTHENTICATIONGROUP USERCHANGEPASSWORDGROUP
+// BATCHSTARTEDGROUP BATCHCOMPLETEDGROUP DBCCGROUP DATABASE
+// OWNERSHIPCHANGEGROUP DATABASECHANGEGROUP LEDGEROPERATION_GROUP
+// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used
+// in combination with other groups as this will result in duplicate audit logs.
+// For more information, see Database-Level Audit Action Groups
+// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups].
+// For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server
+// auditing policy). The supported actions to audit are: SELECT UPDATE INSERT DELETE
+// EXECUTE RECEIVE REFERENCES
+// The general form for defining an action to be audited is: {action} ON {object} BY {principal}
+// Note that in the above format can refer to an object like a table, view, or stored procedure, or an entire database or
+// schema. For the latter cases, the forms DATABASE::{dbname} and SCHEMA::{schema
+// name} are used, respectively.
+// For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on SCHEMA::mySchema by public
+// For more information, see Database-Level Audit Actions
+// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions]
 	AuditActionsAndGroups []*string
 
 	// Specifies whether audit events are sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State'
-	// as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
-	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on
-	// the database should be also created. Note that for server level audit you
-	// should use the 'master' database as {databaseName}.
-	// Diagnostic Settings URI format: PUT
-	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
-	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
+// as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
+// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on
+// the database should be also created. Note that for server level audit you
+// should use the 'master' database as {databaseName}.
+// Diagnostic Settings URI format: PUT
+// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
+// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
 	IsAzureMonitorTargetEnabled *bool
 
 	// Specifies whether Managed Identity is used to access blob storage
@@ -2355,26 +2355,26 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	PredicateExpression *string
 
 	// Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed. The default
-	// minimum value is 1000 (1 second). The maximum is 2,147,483,647.
+// minimum value is 1000 (1 second). The maximum is 2,147,483,647.
 	QueueDelayMs *int32
 
 	// Specifies the number of days to keep in the audit logs in the storage account.
 	RetentionDays *int32
 
 	// Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, not
-	// specifying the storageAccountAccessKey will use SQL server system-assigned
-	// managed identity to access the storage. Prerequisites for using managed identity authentication:
-	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
-	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-	// identity. For more information, see Auditing to storage using Managed
-	// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
+// specifying the storageAccountAccessKey will use SQL server system-assigned
+// managed identity to access the storage. Prerequisites for using managed identity authentication:
+// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
+// identity. For more information, see Auditing to storage using Managed
+// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
 	StorageAccountAccessKey *string
 
 	// Specifies the blob storage subscription Id.
 	StorageAccountSubscriptionID *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint
-	// or isAzureMonitorTargetEnabled is required.
+// or isAzureMonitorTargetEnabled is required.
 	StorageEndpoint *string
 }
 
@@ -2408,55 +2408,55 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	State *BlobAuditingPolicyState
 
 	// Specifies the Actions-Groups and Actions to audit.
-	// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures
-	// executed against the database, as well as successful and failed logins:
-	// BATCHCOMPLETEDGROUP, SUCCESSFULDATABASEAUTHENTICATIONGROUP, FAILEDDATABASEAUTHENTICATIONGROUP.
-	// This above combination is also the set that is configured by default when enabling auditing from the Azure portal.
-	// The supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary
-	// groups could lead to very large quantities of audit records):
-	// APPLICATIONROLECHANGEPASSWORDGROUP BACKUPRESTOREGROUP DATABASELOGOUTGROUP DATABASEOBJECTCHANGEGROUP DATABASEOBJECTOWNERSHIPCHANGEGROUP
-	// DATABASEOBJECTPERMISSIONCHANGEGROUP DATABASEOPERATIONGROUP
-	// DATABASEPERMISSIONCHANGEGROUP DATABASEPRINCIPALCHANGEGROUP DATABASEPRINCIPALIMPERSONATIONGROUP DATABASEROLEMEMBERCHANGEGROUP
-	// FAILEDDATABASEAUTHENTICATIONGROUP SCHEMAOBJECTACCESSGROUP SCHEMAOBJECT
-	// CHANGEGROUP SCHEMAOBJECTOWNERSHIPCHANGEGROUP SCHEMAOBJECTPERMISSIONCHANGEGROUP SUCCESSFULDATABASEAUTHENTICATIONGROUP USERCHANGEPASSWORDGROUP
-	// BATCHSTARTEDGROUP BATCHCOMPLETEDGROUP DBCCGROUP DATABASE
-	// OWNERSHIPCHANGEGROUP DATABASECHANGEGROUP LEDGEROPERATION_GROUP
-	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used
-	// in combination with other groups as this will result in duplicate audit logs.
-	// For more information, see Database-Level Audit Action Groups
-	// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups].
-	// For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server
-	// auditing policy). The supported actions to audit are: SELECT UPDATE INSERT DELETE
-	// EXECUTE RECEIVE REFERENCES
-	// The general form for defining an action to be audited is: {action} ON {object} BY {principal}
-	// Note that in the above format can refer to an object like a table, view, or stored procedure, or an entire database or
-	// schema. For the latter cases, the forms DATABASE::{dbname} and SCHEMA::{schema
-	// name} are used, respectively.
-	// For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on SCHEMA::mySchema by public
-	// For more information, see Database-Level Audit Actions
-	// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions]
+// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures
+// executed against the database, as well as successful and failed logins:
+// BATCHCOMPLETEDGROUP, SUCCESSFULDATABASEAUTHENTICATIONGROUP, FAILEDDATABASEAUTHENTICATIONGROUP.
+// This above combination is also the set that is configured by default when enabling auditing from the Azure portal.
+// The supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary
+// groups could lead to very large quantities of audit records):
+// APPLICATIONROLECHANGEPASSWORDGROUP BACKUPRESTOREGROUP DATABASELOGOUTGROUP DATABASEOBJECTCHANGEGROUP DATABASEOBJECTOWNERSHIPCHANGEGROUP
+// DATABASEOBJECTPERMISSIONCHANGEGROUP DATABASEOPERATIONGROUP
+// DATABASEPERMISSIONCHANGEGROUP DATABASEPRINCIPALCHANGEGROUP DATABASEPRINCIPALIMPERSONATIONGROUP DATABASEROLEMEMBERCHANGEGROUP
+// FAILEDDATABASEAUTHENTICATIONGROUP SCHEMAOBJECTACCESSGROUP SCHEMAOBJECT
+// CHANGEGROUP SCHEMAOBJECTOWNERSHIPCHANGEGROUP SCHEMAOBJECTPERMISSIONCHANGEGROUP SUCCESSFULDATABASEAUTHENTICATIONGROUP USERCHANGEPASSWORDGROUP
+// BATCHSTARTEDGROUP BATCHCOMPLETEDGROUP DBCCGROUP DATABASE
+// OWNERSHIPCHANGEGROUP DATABASECHANGEGROUP LEDGEROPERATION_GROUP
+// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used
+// in combination with other groups as this will result in duplicate audit logs.
+// For more information, see Database-Level Audit Action Groups
+// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups].
+// For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server
+// auditing policy). The supported actions to audit are: SELECT UPDATE INSERT DELETE
+// EXECUTE RECEIVE REFERENCES
+// The general form for defining an action to be audited is: {action} ON {object} BY {principal}
+// Note that in the above format can refer to an object like a table, view, or stored procedure, or an entire database or
+// schema. For the latter cases, the forms DATABASE::{dbname} and SCHEMA::{schema
+// name} are used, respectively.
+// For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on SCHEMA::mySchema by public
+// For more information, see Database-Level Audit Actions
+// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions]
 	AuditActionsAndGroups []*string
 
 	// Specifies whether audit events are sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State'
-	// as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
-	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on
-	// the database should be also created. Note that for server level audit you
-	// should use the 'master' database as {databaseName}.
-	// Diagnostic Settings URI format: PUT
-	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
-	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
+// as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
+// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on
+// the database should be also created. Note that for server level audit you
+// should use the 'master' database as {databaseName}.
+// Diagnostic Settings URI format: PUT
+// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
+// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
 	IsAzureMonitorTargetEnabled *bool
 
 	// Specifies the state of devops audit. If state is Enabled, devops logs will be sent to Azure Monitor. In order to send the
-	// events to Azure Monitor, specify 'State' as 'Enabled',
-	// 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
-	// When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs category on
-	// the master database should also be created.
-	// Diagnostic Settings URI format: PUT
-	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
-	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
+// events to Azure Monitor, specify 'State' as 'Enabled',
+// 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+// When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs category on
+// the master database should also be created.
+// Diagnostic Settings URI format: PUT
+// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
+// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
 	IsDevopsAuditEnabled *bool
 
 	// Specifies whether Managed Identity is used to access blob storage
@@ -2469,26 +2469,26 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	PredicateExpression *string
 
 	// Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed. The default
-	// minimum value is 1000 (1 second). The maximum is 2,147,483,647.
+// minimum value is 1000 (1 second). The maximum is 2,147,483,647.
 	QueueDelayMs *int32
 
 	// Specifies the number of days to keep in the audit logs in the storage account.
 	RetentionDays *int32
 
 	// Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, not
-	// specifying the storageAccountAccessKey will use SQL server system-assigned
-	// managed identity to access the storage. Prerequisites for using managed identity authentication:
-	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
-	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-	// identity. For more information, see Auditing to storage using Managed
-	// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
+// specifying the storageAccountAccessKey will use SQL server system-assigned
+// managed identity to access the storage. Prerequisites for using managed identity authentication:
+// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
+// identity. For more information, see Auditing to storage using Managed
+// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
 	StorageAccountAccessKey *string
 
 	// Specifies the blob storage subscription Id.
 	StorageAccountSubscriptionID *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint
-	// or isAzureMonitorTargetEnabled is required.
+// or isAzureMonitorTargetEnabled is required.
 	StorageEndpoint *string
 }
 
@@ -2555,11 +2555,11 @@ type FailoverGroupReadOnlyEndpoint struct {
 // FailoverGroupReadWriteEndpoint - Read-write endpoint of the failover group instance.
 type FailoverGroupReadWriteEndpoint struct {
 	// REQUIRED; Failover policy of the read-write endpoint for the failover group. If failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes
-	// is required.
+// is required.
 	FailoverPolicy *ReadWriteEndpointFailoverPolicy
 
 	// Grace period before failover with data loss is attempted for the read-write endpoint. If failoverPolicy is Automatic then
-	// failoverWithDataLossGracePeriodMinutes is required.
+// failoverWithDataLossGracePeriodMinutes is required.
 	FailoverWithDataLossGracePeriodMinutes *int32
 }
 
@@ -2898,11 +2898,11 @@ type InstanceFailoverGroupReadOnlyEndpoint struct {
 // InstanceFailoverGroupReadWriteEndpoint - Read-write endpoint of the failover group instance.
 type InstanceFailoverGroupReadWriteEndpoint struct {
 	// REQUIRED; Failover policy of the read-write endpoint for the failover group. If failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes
-	// is required.
+// is required.
 	FailoverPolicy *ReadWriteEndpointFailoverPolicy
 
 	// Grace period before failover with data loss is attempted for the read-write endpoint. If failoverPolicy is Automatic then
-	// failoverWithDataLossGracePeriodMinutes is required.
+// failoverWithDataLossGracePeriodMinutes is required.
 	FailoverWithDataLossGracePeriodMinutes *int32
 }
 
@@ -2975,7 +2975,7 @@ type InstancePoolListResult struct {
 // InstancePoolProperties - Properties of an instance pool.
 type InstancePoolProperties struct {
 	// REQUIRED; The license type. Possible values are 'LicenseIncluded' (price for SQL license is included) and 'BasePrice' (without
-	// SQL license price).
+// SQL license price).
 	LicenseType *InstancePoolLicenseType
 
 	// REQUIRED; Resource ID of the subnet to place this instance pool in.
@@ -3321,7 +3321,7 @@ type JobStepProperties struct {
 	Output *JobStepOutput
 
 	// The job step's index within the job. If not specified when creating the job step, it will be created as the last step.
-	// If not specified when updating the job step, the step id is not modified.
+// If not specified when updating the job step, the step id is not modified.
 	StepID *int32
 }
 
@@ -3340,7 +3340,7 @@ type JobTarget struct {
 	MembershipType *JobTargetGroupMembershipType
 
 	// The resource ID of the credential that is used during job execution to connect to the target and determine the list of
-	// databases inside the target.
+// databases inside the target.
 	RefreshCredential *string
 
 	// The target server name.
@@ -3895,12 +3895,12 @@ type ManagedDatabaseProperties struct {
 	Collation *string
 
 	// Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing
-	// database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be
-	// specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri
-	// and StorageContainerSasToken must be specified. Recovery: Creates a database
-	// by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
-	// restore. RestoreLongTermRetentionBackup: Create a database by restoring from a
-	// long term retention backup (longTermRetentionBackupResourceId required).
+// database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be
+// specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri
+// and StorageContainerSasToken must be specified. Recovery: Creates a database
+// by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
+// restore. RestoreLongTermRetentionBackup: Create a database by restoring from a
+// long term retention backup (longTermRetentionBackupResourceId required).
 	CreateMode *ManagedDatabaseCreateMode
 
 	// The restorable cross-subscription dropped database resource id to restore when creating this database.
@@ -3913,7 +3913,7 @@ type ManagedDatabaseProperties struct {
 	CrossSubscriptionTargetManagedInstanceID *string
 
 	// Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the
-	// value of this property cannot be changed after the database has been created.
+// value of this property cannot be changed after the database has been created.
 	IsLedgerOn *bool
 
 	// Last backup file name for restore of this managed database.
@@ -3929,23 +3929,23 @@ type ManagedDatabaseProperties struct {
 	RestorableDroppedDatabaseID *string
 
 	// Conditional. If createMode is PointInTimeRestore, this value is required. Specifies the point in time (ISO8601 format)
-	// of the source database that will be restored to create the new database.
+// of the source database that will be restored to create the new database.
 	RestorePointInTime *time.Time
 
 	// The resource identifier of the source database associated with create operation of this database.
 	SourceDatabaseID *string
 
 	// Conditional. If createMode is RestoreExternalBackup, this value is used. Specifies the identity used for storage container
-	// authentication. Can be 'SharedAccessSignature' or 'ManagedIdentity'; if not
-	// specified 'SharedAccessSignature' is assumed.
+// authentication. Can be 'SharedAccessSignature' or 'ManagedIdentity'; if not
+// specified 'SharedAccessSignature' is assumed.
 	StorageContainerIdentity *string
 
 	// Conditional. If createMode is RestoreExternalBackup and storageContainerIdentity is not ManagedIdentity, this value is
-	// required. Specifies the storage container sas token.
+// required. Specifies the storage container sas token.
 	StorageContainerSasToken *string
 
 	// Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the uri of the storage container
-	// where backups for this restore are stored.
+// where backups for this restore are stored.
 	StorageContainerURI *string
 
 	// READ-ONLY; Creation date of the database.
@@ -4758,15 +4758,15 @@ type ManagedInstancePrivateLinkServiceConnectionStateProperty struct {
 // ManagedInstanceProperties - The properties of a managed instance.
 type ManagedInstanceProperties struct {
 	// Administrator username for the managed instance. Can only be specified when the managed instance is being created (and
-	// is required for creation).
+// is required for creation).
 	AdministratorLogin *string
 
 	// The administrator login password (required for managed instance creation).
 	AdministratorLoginPassword *string
 
 	// The Azure Active Directory administrator of the instance. This can only be used at instance create time. If used for instance
-	// update, it will be ignored or it will result in an error. For updates
-	// individual APIs will need to be used.
+// update, it will be ignored or it will result in an error. For updates
+// individual APIs will need to be used.
 	Administrators *ManagedInstanceExternalAdministrator
 
 	// Collation of the managed instance.
@@ -4782,16 +4782,16 @@ type ManagedInstanceProperties struct {
 	KeyID *string
 
 	// The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice'
-	// (discounted AHB price for bringing your own SQL licenses).
+// (discounted AHB price for bringing your own SQL licenses).
 	LicenseType *ManagedInstanceLicenseType
 
 	// Specifies maintenance configuration id to apply to this managed instance.
 	MaintenanceConfigurationID *string
 
 	// Specifies the mode of database creation.
-	// Default: Regular instance creation.
-	// Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId
-	// must be specified.
+// Default: Regular instance creation.
+// Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId
+// must be specified.
 	ManagedInstanceCreateMode *ManagedServerCreateMode
 
 	// Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
@@ -4807,8 +4807,8 @@ type ManagedInstanceProperties struct {
 	PublicDataEndpointEnabled *bool
 
 	// The storage account type to be used to store backups for this instance. The options are Local (LocallyRedundantStorage),
-	// Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage) and
-	// GeoZone(GeoZoneRedundantStorage)
+// Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage) and
+// GeoZone(GeoZoneRedundantStorage)
 	RequestedBackupStorageRedundancy *BackupStorageRedundancy
 
 	// Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.
@@ -4821,18 +4821,18 @@ type ManagedInstanceProperties struct {
 	SourceManagedInstanceID *string
 
 	// Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32 GB allowed only. Maximum value depends on
-	// the selected hardware family and number of vCores.
+// the selected hardware family and number of vCores.
 	StorageSizeInGB *int32
 
 	// Subnet resource ID for the managed instance.
 	SubnetID *string
 
 	// Id of the timezone. Allowed values are timezones supported by Windows. Windows keeps details on supported timezones, including
-	// the id, in registry under KEYLOCALMACHINE\SOFTWARE\Microsoft\Windows
-	// NT\CurrentVersion\Time Zones. You can get those registry values via SQL Server by querying SELECT name AS timezoneid FROM
-	// sys.timezone_info. List of Ids can also be obtained by executing
-	// [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. An example of valid timezone id is "Pacific Standard Time" or
-	// "W. Europe Standard Time".
+// the id, in registry under KEYLOCALMACHINE\SOFTWARE\Microsoft\Windows
+// NT\CurrentVersion\Time Zones. You can get those registry values via SQL Server by querying SELECT name AS timezoneid FROM
+// sys.timezone_info. List of Ids can also be obtained by executing
+// [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. An example of valid timezone id is "Pacific Standard Time" or
+// "W. Europe Standard Time".
 	TimezoneID *string
 
 	// The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
@@ -4842,8 +4842,8 @@ type ManagedInstanceProperties struct {
 	ZoneRedundant *bool
 
 	// READ-ONLY; The storage account type used to store backups for this instance. The options are Local (LocallyRedundantStorage),
-	// Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage) and
-	// GeoZone(GeoZoneRedundantStorage)
+// Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage) and
+// GeoZone(GeoZoneRedundantStorage)
 	CurrentBackupStorageRedundancy *BackupStorageRedundancy
 
 	// READ-ONLY; The Dns Zone that the managed instance is in.
@@ -4982,13 +4982,13 @@ type ManagedInstanceVulnerabilityAssessmentProperties struct {
 	RecurringScans *VulnerabilityAssessmentRecurringScansProperties
 
 	// Specifies the identifier key of the storage account for vulnerability assessment scan results. If 'StorageContainerSasKey'
-	// isn't specified, storageAccountAccessKey is required. Applies only if the
-	// storage account is not behind a Vnet or a firewall
+// isn't specified, storageAccountAccessKey is required. Applies only if the
+// storage account is not behind a Vnet or a firewall
 	StorageAccountAccessKey *string
 
 	// A shared access signature (SAS Key) that has write access to the blob container specified in 'storageContainerPath' parameter.
-	// If 'storageAccountAccessKey' isn't specified, StorageContainerSasKey is
-	// required. Applies only if the storage account is not behind a Vnet or a firewall
+// If 'storageAccountAccessKey' isn't specified, StorageContainerSasKey is
+// required. Applies only if the storage account is not behind a Vnet or a firewall
 	StorageContainerSasKey *string
 }
 
@@ -5271,12 +5271,12 @@ type Name struct {
 // NetworkIsolationSettings - Contains the ARM resources for which to create private endpoint connection.
 type NetworkIsolationSettings struct {
 	// The resource id for the SQL server which is the target of this request. If set, private endpoint connection will be created
-	// for the SQL server. Must match server which is target of the operation.
+// for the SQL server. Must match server which is target of the operation.
 	SQLServerResourceID *string
 
 	// The resource id for the storage account used to store BACPAC file. If set, private endpoint connection will be created
-	// for the storage account. Must match storage account used for StorageUri
-	// parameter.
+// for the storage account. Must match storage account used for StorageUri
+// parameter.
 	StorageAccountResourceID *string
 }
 
@@ -5749,14 +5749,14 @@ type RecommendedActionProperties struct {
 	ExecuteActionInitiatedTime *time.Time
 
 	// READ-ONLY; Gets the time when system started applying this recommended action on the user resource. e.g., index creation
-	// start time
+// start time
 	ExecuteActionStartTime *time.Time
 
 	// READ-ONLY; Gets the implementation details of this recommended action for user to apply it manually.
 	ImplementationDetails *RecommendedActionImplementationInfo
 
 	// READ-ONLY; Gets if this recommended action was suggested some time ago but user chose to ignore this and system added a
-	// new recommended action again.
+// new recommended action again.
 	IsArchivedAction *bool
 
 	// READ-ONLY; Gets if this recommended action is actionable by user
@@ -5778,7 +5778,7 @@ type RecommendedActionProperties struct {
 	RecommendationReason *string
 
 	// READ-ONLY; Gets the time taken for reverting changes of this recommended action on user resource. e.g., time taken for
-	// dropping the created index.
+// dropping the created index.
 	RevertActionDuration *string
 
 	// READ-ONLY; Gets if approval for reverting this recommended action was given by user/system.
@@ -5788,11 +5788,11 @@ type RecommendedActionProperties struct {
 	RevertActionInitiatedTime *time.Time
 
 	// READ-ONLY; Gets the time when system started reverting changes of this recommended action on user resource. e.g., time
-	// when index drop is executed.
+// when index drop is executed.
 	RevertActionStartTime *time.Time
 
 	// READ-ONLY; Gets the impact of this recommended action. Possible values are 1 - Low impact, 2 - Medium Impact and 3 - High
-	// Impact
+// Impact
 	Score *int32
 
 	// READ-ONLY; Gets the time series info of metrics for this recommended action e.g., CPU consumption time series
@@ -5806,19 +5806,19 @@ type RecommendedActionProperties struct {
 // Action.
 type RecommendedActionStateInfo struct {
 	// REQUIRED; Current state the recommended action is in. Some commonly used states are: Active -> recommended action is active
-	// and no action has been taken yet. Pending -> recommended action is approved for and is
-	// awaiting execution. Executing -> recommended action is being applied on the user database. Verifying -> recommended action
-	// was applied and is being verified of its usefulness by the system. Success ->
-	// recommended action was applied and improvement found during verification. Pending Revert -> verification found little or
-	// no improvement so recommended action is queued for revert or user has manually
-	// reverted. Reverting -> changes made while applying recommended action are being reverted on the user database. Reverted
-	// -> successfully reverted the changes made by recommended action on user
-	// database. Ignored -> user explicitly ignored/discarded the recommended action.
+// and no action has been taken yet. Pending -> recommended action is approved for and is
+// awaiting execution. Executing -> recommended action is being applied on the user database. Verifying -> recommended action
+// was applied and is being verified of its usefulness by the system. Success ->
+// recommended action was applied and improvement found during verification. Pending Revert -> verification found little or
+// no improvement so recommended action is queued for revert or user has manually
+// reverted. Reverting -> changes made while applying recommended action are being reverted on the user database. Reverted
+// -> successfully reverted the changes made by recommended action on user
+// database. Ignored -> user explicitly ignored/discarded the recommended action.
 	CurrentValue *RecommendedActionCurrentState
 
 	// READ-ONLY; Gets who initiated the execution of this recommended action. Possible Value are: User -> When user explicity
-	// notified system to apply the recommended action. System -> When auto-execute status of this
-	// advisor was set to 'Enabled', in which case the system applied it.
+// notified system to apply the recommended action. System -> When auto-execute status of this
+// advisor was set to 'Enabled', in which case the system applied it.
 	ActionInitiatedBy *RecommendedActionInitiatedBy
 
 	// READ-ONLY; Gets the time when the state was last modified
@@ -6059,7 +6059,7 @@ type Resource struct {
 // ResourceIdentity - Azure Active Directory identity configuration for a resource.
 type ResourceIdentity struct {
 	// The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal
-	// for the resource.
+// for the resource.
 	Type *IdentityType
 
 	// The resource ids of the user assigned identities to use
@@ -6270,11 +6270,11 @@ type ScheduleItem struct {
 // SecurityAlertPolicyProperties - Properties of a security alert policy.
 type SecurityAlertPolicyProperties struct {
 	// REQUIRED; Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on
-	// the specific database.
+// the specific database.
 	State *SecurityAlertPolicyState
 
 	// Specifies an array of alerts that are disabled. Allowed values are: SqlInjection, SqlInjectionVulnerability, AccessAnomaly,
-	// DataExfiltration, UnsafeAction, Brute_Force
+// DataExfiltration, UnsafeAction, Brute_Force
 	DisabledAlerts []*string
 
 	// Specifies that the alert is sent to the account administrators.
@@ -6290,7 +6290,7 @@ type SecurityAlertPolicyProperties struct {
 	StorageAccountAccessKey *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat
-	// Detection audit logs.
+// Detection audit logs.
 	StorageEndpoint *string
 
 	// READ-ONLY; Specifies the UTC creation time of the policy.
@@ -6300,11 +6300,11 @@ type SecurityAlertPolicyProperties struct {
 // SecurityAlertsPolicyProperties - Properties of a security alert policy.
 type SecurityAlertsPolicyProperties struct {
 	// REQUIRED; Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on
-	// the specific database.
+// the specific database.
 	State *SecurityAlertsPolicyState
 
 	// Specifies an array of alerts that are disabled. Allowed values are: SqlInjection, SqlInjectionVulnerability, AccessAnomaly,
-	// DataExfiltration, UnsafeAction, Brute_Force
+// DataExfiltration, UnsafeAction, Brute_Force
 	DisabledAlerts []*string
 
 	// Specifies that the alert is sent to the account administrators.
@@ -6320,7 +6320,7 @@ type SecurityAlertsPolicyProperties struct {
 	StorageAccountAccessKey *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat
-	// Detection audit logs.
+// Detection audit logs.
 	StorageEndpoint *string
 
 	// READ-ONLY; Specifies the UTC creation time of the policy.
@@ -6454,13 +6454,13 @@ type SensitivityLabelProperties struct {
 
 	// The label name.
 	LabelName *string
-	Rank      *SensitivityLabelRank
+	Rank *SensitivityLabelRank
 
 	// READ-ONLY; The column name.
 	ColumnName *string
 
 	// READ-ONLY; Is sensitivity recommendation disabled. Applicable for recommended sensitivity label only. Specifies whether
-	// the sensitivity recommendation on this column is disabled (dismissed) or not.
+// the sensitivity recommendation on this column is disabled (dismissed) or not.
 	IsDisabled *bool
 
 	// READ-ONLY; The schema name.
@@ -6628,55 +6628,55 @@ type ServerBlobAuditingPolicyProperties struct {
 	State *BlobAuditingPolicyState
 
 	// Specifies the Actions-Groups and Actions to audit.
-	// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures
-	// executed against the database, as well as successful and failed logins:
-	// BATCHCOMPLETEDGROUP, SUCCESSFULDATABASEAUTHENTICATIONGROUP, FAILEDDATABASEAUTHENTICATIONGROUP.
-	// This above combination is also the set that is configured by default when enabling auditing from the Azure portal.
-	// The supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary
-	// groups could lead to very large quantities of audit records):
-	// APPLICATIONROLECHANGEPASSWORDGROUP BACKUPRESTOREGROUP DATABASELOGOUTGROUP DATABASEOBJECTCHANGEGROUP DATABASEOBJECTOWNERSHIPCHANGEGROUP
-	// DATABASEOBJECTPERMISSIONCHANGEGROUP DATABASEOPERATIONGROUP
-	// DATABASEPERMISSIONCHANGEGROUP DATABASEPRINCIPALCHANGEGROUP DATABASEPRINCIPALIMPERSONATIONGROUP DATABASEROLEMEMBERCHANGEGROUP
-	// FAILEDDATABASEAUTHENTICATIONGROUP SCHEMAOBJECTACCESSGROUP SCHEMAOBJECT
-	// CHANGEGROUP SCHEMAOBJECTOWNERSHIPCHANGEGROUP SCHEMAOBJECTPERMISSIONCHANGEGROUP SUCCESSFULDATABASEAUTHENTICATIONGROUP USERCHANGEPASSWORDGROUP
-	// BATCHSTARTEDGROUP BATCHCOMPLETEDGROUP DBCCGROUP DATABASE
-	// OWNERSHIPCHANGEGROUP DATABASECHANGEGROUP LEDGEROPERATION_GROUP
-	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used
-	// in combination with other groups as this will result in duplicate audit logs.
-	// For more information, see Database-Level Audit Action Groups
-	// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups].
-	// For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server
-	// auditing policy). The supported actions to audit are: SELECT UPDATE INSERT DELETE
-	// EXECUTE RECEIVE REFERENCES
-	// The general form for defining an action to be audited is: {action} ON {object} BY {principal}
-	// Note that in the above format can refer to an object like a table, view, or stored procedure, or an entire database or
-	// schema. For the latter cases, the forms DATABASE::{dbname} and SCHEMA::{schema
-	// name} are used, respectively.
-	// For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on SCHEMA::mySchema by public
-	// For more information, see Database-Level Audit Actions
-	// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions]
+// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures
+// executed against the database, as well as successful and failed logins:
+// BATCHCOMPLETEDGROUP, SUCCESSFULDATABASEAUTHENTICATIONGROUP, FAILEDDATABASEAUTHENTICATIONGROUP.
+// This above combination is also the set that is configured by default when enabling auditing from the Azure portal.
+// The supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary
+// groups could lead to very large quantities of audit records):
+// APPLICATIONROLECHANGEPASSWORDGROUP BACKUPRESTOREGROUP DATABASELOGOUTGROUP DATABASEOBJECTCHANGEGROUP DATABASEOBJECTOWNERSHIPCHANGEGROUP
+// DATABASEOBJECTPERMISSIONCHANGEGROUP DATABASEOPERATIONGROUP
+// DATABASEPERMISSIONCHANGEGROUP DATABASEPRINCIPALCHANGEGROUP DATABASEPRINCIPALIMPERSONATIONGROUP DATABASEROLEMEMBERCHANGEGROUP
+// FAILEDDATABASEAUTHENTICATIONGROUP SCHEMAOBJECTACCESSGROUP SCHEMAOBJECT
+// CHANGEGROUP SCHEMAOBJECTOWNERSHIPCHANGEGROUP SCHEMAOBJECTPERMISSIONCHANGEGROUP SUCCESSFULDATABASEAUTHENTICATIONGROUP USERCHANGEPASSWORDGROUP
+// BATCHSTARTEDGROUP BATCHCOMPLETEDGROUP DBCCGROUP DATABASE
+// OWNERSHIPCHANGEGROUP DATABASECHANGEGROUP LEDGEROPERATION_GROUP
+// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used
+// in combination with other groups as this will result in duplicate audit logs.
+// For more information, see Database-Level Audit Action Groups
+// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups].
+// For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server
+// auditing policy). The supported actions to audit are: SELECT UPDATE INSERT DELETE
+// EXECUTE RECEIVE REFERENCES
+// The general form for defining an action to be audited is: {action} ON {object} BY {principal}
+// Note that in the above format can refer to an object like a table, view, or stored procedure, or an entire database or
+// schema. For the latter cases, the forms DATABASE::{dbname} and SCHEMA::{schema
+// name} are used, respectively.
+// For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on SCHEMA::mySchema by public
+// For more information, see Database-Level Audit Actions
+// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions]
 	AuditActionsAndGroups []*string
 
 	// Specifies whether audit events are sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State'
-	// as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
-	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on
-	// the database should be also created. Note that for server level audit you
-	// should use the 'master' database as {databaseName}.
-	// Diagnostic Settings URI format: PUT
-	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
-	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
+// as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
+// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on
+// the database should be also created. Note that for server level audit you
+// should use the 'master' database as {databaseName}.
+// Diagnostic Settings URI format: PUT
+// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
+// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
 	IsAzureMonitorTargetEnabled *bool
 
 	// Specifies the state of devops audit. If state is Enabled, devops logs will be sent to Azure Monitor. In order to send the
-	// events to Azure Monitor, specify 'State' as 'Enabled',
-	// 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
-	// When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs category on
-	// the master database should also be created.
-	// Diagnostic Settings URI format: PUT
-	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
-	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
+// events to Azure Monitor, specify 'State' as 'Enabled',
+// 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+// When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs category on
+// the master database should also be created.
+// Diagnostic Settings URI format: PUT
+// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
+// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
 	IsDevopsAuditEnabled *bool
 
 	// Specifies whether Managed Identity is used to access blob storage
@@ -6686,26 +6686,26 @@ type ServerBlobAuditingPolicyProperties struct {
 	IsStorageSecondaryKeyInUse *bool
 
 	// Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed. The default
-	// minimum value is 1000 (1 second). The maximum is 2,147,483,647.
+// minimum value is 1000 (1 second). The maximum is 2,147,483,647.
 	QueueDelayMs *int32
 
 	// Specifies the number of days to keep in the audit logs in the storage account.
 	RetentionDays *int32
 
 	// Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, not
-	// specifying the storageAccountAccessKey will use SQL server system-assigned
-	// managed identity to access the storage. Prerequisites for using managed identity authentication:
-	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
-	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-	// identity. For more information, see Auditing to storage using Managed
-	// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
+// specifying the storageAccountAccessKey will use SQL server system-assigned
+// managed identity to access the storage. Prerequisites for using managed identity authentication:
+// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
+// identity. For more information, see Auditing to storage using Managed
+// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
 	StorageAccountAccessKey *string
 
 	// Specifies the blob storage subscription Id.
 	StorageAccountSubscriptionID *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint
-	// or isAzureMonitorTargetEnabled is required.
+// or isAzureMonitorTargetEnabled is required.
 	StorageEndpoint *string
 }
 
@@ -6865,32 +6865,32 @@ type ServerDevOpsAuditSettingsProperties struct {
 	State *BlobAuditingPolicyState
 
 	// Specifies whether DevOps audit events are sent to Azure Monitor. In order to send the events to Azure Monitor, specify
-	// 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
-	// When using REST API to configure DevOps audit, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs category
-	// on the master database should be also created.
-	// Diagnostic Settings URI format: PUT
-	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
-	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
+// 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
+// When using REST API to configure DevOps audit, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs category
+// on the master database should be also created.
+// Diagnostic Settings URI format: PUT
+// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
+// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
 	IsAzureMonitorTargetEnabled *bool
 
 	// Specifies whether Managed Identity is used to access blob storage
 	IsManagedIdentityInUse *bool
 
 	// Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, not
-	// specifying the storageAccountAccessKey will use SQL server system-assigned
-	// managed identity to access the storage. Prerequisites for using managed identity authentication:
-	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
-	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-	// identity. For more information, see Auditing to storage using Managed
-	// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
+// specifying the storageAccountAccessKey will use SQL server system-assigned
+// managed identity to access the storage. Prerequisites for using managed identity authentication:
+// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
+// identity. For more information, see Auditing to storage using Managed
+// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
 	StorageAccountAccessKey *string
 
 	// Specifies the blob storage subscription Id.
 	StorageAccountSubscriptionID *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint
-	// or isAzureMonitorTargetEnabled is required.
+// or isAzureMonitorTargetEnabled is required.
 	StorageEndpoint *string
 }
 
@@ -6936,7 +6936,7 @@ type ServerExternalAdministrator struct {
 // ServerFirewallRuleProperties - The properties of a server firewall rule.
 type ServerFirewallRuleProperties struct {
 	// The end IP address of the firewall rule. Must be IPv4 format. Must be greater than or equal to startIpAddress. Use value
-	// '0.0.0.0' for all Azure-internal IP addresses.
+// '0.0.0.0' for all Azure-internal IP addresses.
 	EndIPAddress *string
 
 	// The start IP address of the firewall rule. Must be IPv4 format. Use value '0.0.0.0' for all Azure-internal IP addresses.
@@ -7093,8 +7093,8 @@ type ServerProperties struct {
 	AdministratorLoginPassword *string
 
 	// The Azure Active Directory administrator of the server. This can only be used at server create time. If used for server
-	// update, it will be ignored or it will result in an error. For updates individual
-	// APIs will need to be used.
+// update, it will be ignored or it will result in an error. For updates individual
+// APIs will need to be used.
 	Administrators *ServerExternalAdministrator
 
 	// The Client id used for cross tenant CMK scenario
@@ -7113,11 +7113,11 @@ type ServerProperties struct {
 	PrimaryUserAssignedIdentityID *string
 
 	// Whether or not public endpoint access is allowed for this server. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled' or 'SecuredByPerimeter'
+// or 'Disabled' or 'SecuredByPerimeter'
 	PublicNetworkAccess *ServerPublicNetworkAccessFlag
 
 	// Whether or not to restrict outbound network access for this server. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'
+// or 'Disabled'
 	RestrictOutboundNetworkAccess *ServerNetworkAccessFlag
 
 	// The version of the server.
@@ -7319,13 +7319,13 @@ type ServerVulnerabilityAssessmentProperties struct {
 	RecurringScans *VulnerabilityAssessmentRecurringScansProperties
 
 	// Specifies the identifier key of the storage account for vulnerability assessment scan results. If 'StorageContainerSasKey'
-	// isn't specified, storageAccountAccessKey is required. Applies only if the
-	// storage account is not behind a Vnet or a firewall
+// isn't specified, storageAccountAccessKey is required. Applies only if the
+// storage account is not behind a Vnet or a firewall
 	StorageAccountAccessKey *string
 
 	// A shared access signature (SAS Key) that has write access to the blob container specified in 'storageContainerPath' parameter.
-	// If 'storageAccountAccessKey' isn't specified, StorageContainerSasKey is
-	// required. Applies only if the storage account is not behind a Vnet or a firewall
+// If 'storageAccountAccessKey' isn't specified, StorageContainerSasKey is
+// required. Applies only if the storage account is not behind a Vnet or a firewall
 	StorageContainerSasKey *string
 }
 
@@ -8102,15 +8102,15 @@ type UpdateVirtualClusterDNSServersOperation struct {
 }
 
 type UpsertManagedServerOperationParameters struct {
-	Family          *string
+	Family *string
 	StorageSizeInGB *int32
-	Tier            *string
-	VCores          *int32
+	Tier *string
+	VCores *int32
 }
 
 type UpsertManagedServerOperationStep struct {
-	Name   *string
-	Order  *int32
+	Name *string
+	Order *int32
 	Status *UpsertManagedServerOperationStepStatus
 }
 
@@ -8308,7 +8308,7 @@ type VulnerabilityAssessmentListResult struct {
 
 type VulnerabilityAssessmentPolicyProperties struct {
 	// Specifies the state of the SQL Vulnerability Assessment, whether it is enabled or disabled or a state has not been applied
-	// yet on the specific database or server.
+// yet on the specific database or server.
 	State *SQLVulnerabilityAssessmentState
 }
 
@@ -8618,3 +8618,4 @@ type WorkloadGroupProperties struct {
 	// The workload group query execution timeout.
 	QueryExecutionTimeout *int32
 }
+

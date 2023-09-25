@@ -23,7 +23,7 @@ import (
 // BackupProtectionContainersClient contains the methods for the BackupProtectionContainers group.
 // Don't use this type directly, use NewBackupProtectionContainersClient() instead.
 type BackupProtectionContainersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupProtectionContainersClient(subscriptionID string, credential azcor
 	}
 	client := &BackupProtectionContainersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewBackupProtectionContainersClient(subscriptionID string, credential azcor
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupProtectionContainersClientListOptions contains the optional parameters for the BackupProtectionContainersClient.NewListPager
 //     method.
-func (client *BackupProtectionContainersClient) NewListPager(vaultName string, resourceGroupName string, options *BackupProtectionContainersClientListOptions) *runtime.Pager[BackupProtectionContainersClientListResponse] {
+func (client *BackupProtectionContainersClient) NewListPager(vaultName string, resourceGroupName string, options *BackupProtectionContainersClientListOptions) (*runtime.Pager[BackupProtectionContainersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BackupProtectionContainersClientListResponse]{
 		More: func(page BackupProtectionContainersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -115,3 +115,4 @@ func (client *BackupProtectionContainersClient) listHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

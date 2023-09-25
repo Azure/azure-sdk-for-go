@@ -23,7 +23,7 @@ import (
 // ServerAdvancedThreatProtectionSettingsClient contains the methods for the ServerAdvancedThreatProtectionSettings group.
 // Don't use this type directly, use NewServerAdvancedThreatProtectionSettingsClient() instead.
 type ServerAdvancedThreatProtectionSettingsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerAdvancedThreatProtectionSettingsClient(subscriptionID string, cred
 	}
 	client := &ServerAdvancedThreatProtectionSettingsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ServerAdvancedThreatProtectionSettingsClient) createOrUpdateCreate
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -196,7 +196,7 @@ func (client *ServerAdvancedThreatProtectionSettingsClient) getHandleResponse(re
 //   - serverName - The name of the server.
 //   - options - ServerAdvancedThreatProtectionSettingsClientListByServerOptions contains the optional parameters for the ServerAdvancedThreatProtectionSettingsClient.NewListByServerPager
 //     method.
-func (client *ServerAdvancedThreatProtectionSettingsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerAdvancedThreatProtectionSettingsClientListByServerOptions) *runtime.Pager[ServerAdvancedThreatProtectionSettingsClientListByServerResponse] {
+func (client *ServerAdvancedThreatProtectionSettingsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerAdvancedThreatProtectionSettingsClientListByServerOptions) (*runtime.Pager[ServerAdvancedThreatProtectionSettingsClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerAdvancedThreatProtectionSettingsClientListByServerResponse]{
 		More: func(page ServerAdvancedThreatProtectionSettingsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -258,3 +258,4 @@ func (client *ServerAdvancedThreatProtectionSettingsClient) listByServerHandleRe
 	}
 	return result, nil
 }
+

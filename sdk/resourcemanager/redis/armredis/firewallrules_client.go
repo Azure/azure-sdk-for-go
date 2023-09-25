@@ -23,7 +23,7 @@ import (
 // FirewallRulesClient contains the methods for the FirewallRules group.
 // Don't use this type directly, use NewFirewallRulesClient() instead.
 type FirewallRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &FirewallRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -239,7 +239,7 @@ func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (Firew
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - options - FirewallRulesClientListOptions contains the optional parameters for the FirewallRulesClient.NewListPager method.
-func (client *FirewallRulesClient) NewListPager(resourceGroupName string, cacheName string, options *FirewallRulesClientListOptions) *runtime.Pager[FirewallRulesClientListResponse] {
+func (client *FirewallRulesClient) NewListPager(resourceGroupName string, cacheName string, options *FirewallRulesClientListOptions) (*runtime.Pager[FirewallRulesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[FirewallRulesClientListResponse]{
 		More: func(page FirewallRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -301,3 +301,4 @@ func (client *FirewallRulesClient) listHandleResponse(resp *http.Response) (Fire
 	}
 	return result, nil
 }
+

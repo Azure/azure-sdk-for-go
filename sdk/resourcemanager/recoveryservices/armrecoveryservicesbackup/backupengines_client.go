@@ -23,7 +23,7 @@ import (
 // BackupEnginesClient contains the methods for the BackupEngines group.
 // Don't use this type directly, use NewBackupEnginesClient() instead.
 type BackupEnginesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupEnginesClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &BackupEnginesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -120,7 +120,7 @@ func (client *BackupEnginesClient) getHandleResponse(resp *http.Response) (Backu
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupEnginesClientListOptions contains the optional parameters for the BackupEnginesClient.NewListPager method.
-func (client *BackupEnginesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupEnginesClientListOptions) *runtime.Pager[BackupEnginesClientListResponse] {
+func (client *BackupEnginesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupEnginesClientListOptions) (*runtime.Pager[BackupEnginesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BackupEnginesClientListResponse]{
 		More: func(page BackupEnginesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -188,3 +188,4 @@ func (client *BackupEnginesClient) listHandleResponse(resp *http.Response) (Back
 	}
 	return result, nil
 }
+

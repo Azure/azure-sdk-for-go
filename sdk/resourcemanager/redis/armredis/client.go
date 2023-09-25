@@ -24,7 +24,7 @@ import (
 // Client contains the methods for the Redis group.
 // Don't use this type directly, use NewClient() instead.
 type Client struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -83,8 +83,8 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, pa
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -154,8 +154,8 @@ func (client *Client) createCreateRequest(ctx context.Context, resourceGroupName
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -292,8 +292,8 @@ func (client *Client) exportDataCreateRequest(ctx context.Context, resourceGroup
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -417,8 +417,8 @@ func (client *Client) forceRebootCreateRequest(ctx context.Context, resourceGrou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -557,8 +557,8 @@ func (client *Client) importDataCreateRequest(ctx context.Context, resourceGroup
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -568,7 +568,7 @@ func (client *Client) importDataCreateRequest(ctx context.Context, resourceGroup
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager
 //     method.
-func (client *Client) NewListByResourceGroupPager(resourceGroupName string, options *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse] {
+func (client *Client) NewListByResourceGroupPager(resourceGroupName string, options *ClientListByResourceGroupOptions) (*runtime.Pager[ClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClientListByResourceGroupResponse]{
 		More: func(page ClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -631,7 +631,7 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 //
 // Generated from API version 2023-08-01
 //   - options - ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
-func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
+func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) (*runtime.Pager[ClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClientListBySubscriptionResponse]{
 		More: func(page ClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -754,7 +754,7 @@ func (client *Client) listKeysHandleResponse(resp *http.Response) (ClientListKey
 //   - history - how many minutes in past to look for upgrade notifications
 //   - options - ClientListUpgradeNotificationsOptions contains the optional parameters for the Client.NewListUpgradeNotificationsPager
 //     method.
-func (client *Client) NewListUpgradeNotificationsPager(resourceGroupName string, name string, history float64, options *ClientListUpgradeNotificationsOptions) *runtime.Pager[ClientListUpgradeNotificationsResponse] {
+func (client *Client) NewListUpgradeNotificationsPager(resourceGroupName string, name string, history float64, options *ClientListUpgradeNotificationsOptions) (*runtime.Pager[ClientListUpgradeNotificationsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClientListUpgradeNotificationsResponse]{
 		More: func(page ClientListUpgradeNotificationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -868,8 +868,8 @@ func (client *Client) regenerateKeyCreateRequest(ctx context.Context, resourceGr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -948,7 +948,8 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

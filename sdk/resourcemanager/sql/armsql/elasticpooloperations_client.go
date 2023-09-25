@@ -23,7 +23,7 @@ import (
 // ElasticPoolOperationsClient contains the methods for the ElasticPoolOperations group.
 // Don't use this type directly, use NewElasticPoolOperationsClient() instead.
 type ElasticPoolOperationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewElasticPoolOperationsClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &ElasticPoolOperationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -108,7 +108,7 @@ func (client *ElasticPoolOperationsClient) cancelCreateRequest(ctx context.Conte
 //   - serverName - The name of the server.
 //   - options - ElasticPoolOperationsClientListByElasticPoolOptions contains the optional parameters for the ElasticPoolOperationsClient.NewListByElasticPoolPager
 //     method.
-func (client *ElasticPoolOperationsClient) NewListByElasticPoolPager(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolOperationsClientListByElasticPoolOptions) *runtime.Pager[ElasticPoolOperationsClientListByElasticPoolResponse] {
+func (client *ElasticPoolOperationsClient) NewListByElasticPoolPager(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolOperationsClientListByElasticPoolOptions) (*runtime.Pager[ElasticPoolOperationsClientListByElasticPoolResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ElasticPoolOperationsClientListByElasticPoolResponse]{
 		More: func(page ElasticPoolOperationsClientListByElasticPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -174,3 +174,4 @@ func (client *ElasticPoolOperationsClient) listByElasticPoolHandleResponse(resp 
 	}
 	return result, nil
 }
+

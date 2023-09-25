@@ -23,7 +23,7 @@ import (
 // SyncIdentityProvidersClient contains the methods for the SyncIdentityProviders group.
 // Don't use this type directly, use NewSyncIdentityProvidersClient() instead.
 type SyncIdentityProvidersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSyncIdentityProvidersClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &SyncIdentityProvidersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *SyncIdentityProvidersClient) createOrUpdateCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -242,7 +242,7 @@ func (client *SyncIdentityProvidersClient) getHandleResponse(resp *http.Response
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - options - SyncIdentityProvidersClientListOptions contains the optional parameters for the SyncIdentityProvidersClient.NewListPager
 //     method.
-func (client *SyncIdentityProvidersClient) NewListPager(resourceGroupName string, resourceName string, options *SyncIdentityProvidersClientListOptions) *runtime.Pager[SyncIdentityProvidersClientListResponse] {
+func (client *SyncIdentityProvidersClient) NewListPager(resourceGroupName string, resourceName string, options *SyncIdentityProvidersClientListOptions) (*runtime.Pager[SyncIdentityProvidersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SyncIdentityProvidersClientListResponse]{
 		More: func(page SyncIdentityProvidersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -361,8 +361,8 @@ func (client *SyncIdentityProvidersClient) updateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -374,3 +374,4 @@ func (client *SyncIdentityProvidersClient) updateHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

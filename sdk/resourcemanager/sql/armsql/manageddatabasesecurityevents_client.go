@@ -24,7 +24,7 @@ import (
 // ManagedDatabaseSecurityEventsClient contains the methods for the ManagedDatabaseSecurityEvents group.
 // Don't use this type directly, use NewManagedDatabaseSecurityEventsClient() instead.
 type ManagedDatabaseSecurityEventsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewManagedDatabaseSecurityEventsClient(subscriptionID string, credential az
 	}
 	client := &ManagedDatabaseSecurityEventsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -53,7 +53,7 @@ func NewManagedDatabaseSecurityEventsClient(subscriptionID string, credential az
 //   - databaseName - The name of the managed database for which the security events are retrieved.
 //   - options - ManagedDatabaseSecurityEventsClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseSecurityEventsClient.NewListByDatabasePager
 //     method.
-func (client *ManagedDatabaseSecurityEventsClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityEventsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSecurityEventsClientListByDatabaseResponse] {
+func (client *ManagedDatabaseSecurityEventsClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityEventsClientListByDatabaseOptions) (*runtime.Pager[ManagedDatabaseSecurityEventsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseSecurityEventsClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseSecurityEventsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -131,3 +131,4 @@ func (client *ManagedDatabaseSecurityEventsClient) listByDatabaseHandleResponse(
 	}
 	return result, nil
 }
+

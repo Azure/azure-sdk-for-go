@@ -23,7 +23,7 @@ import (
 // BackupResourceVaultConfigsClient contains the methods for the BackupResourceVaultConfigs group.
 // Don't use this type directly, use NewBackupResourceVaultConfigsClient() instead.
 type BackupResourceVaultConfigsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupResourceVaultConfigsClient(subscriptionID string, credential azcor
 	}
 	client := &BackupResourceVaultConfigsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -155,8 +155,8 @@ func (client *BackupResourceVaultConfigsClient) putCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -220,8 +220,8 @@ func (client *BackupResourceVaultConfigsClient) updateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -233,3 +233,4 @@ func (client *BackupResourceVaultConfigsClient) updateHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

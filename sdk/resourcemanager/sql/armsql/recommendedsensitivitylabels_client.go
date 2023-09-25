@@ -23,7 +23,7 @@ import (
 // RecommendedSensitivityLabelsClient contains the methods for the RecommendedSensitivityLabels group.
 // Don't use this type directly, use NewRecommendedSensitivityLabelsClient() instead.
 type RecommendedSensitivityLabelsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRecommendedSensitivityLabelsClient(subscriptionID string, credential azc
 	}
 	client := &RecommendedSensitivityLabelsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -97,7 +97,8 @@ func (client *RecommendedSensitivityLabelsClient) updateCreateRequest(ctx contex
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

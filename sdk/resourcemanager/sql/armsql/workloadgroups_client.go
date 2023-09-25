@@ -23,7 +23,7 @@ import (
 // WorkloadGroupsClient contains the methods for the WorkloadGroups group.
 // Don't use this type directly, use NewWorkloadGroupsClient() instead.
 type WorkloadGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewWorkloadGroupsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &WorkloadGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *WorkloadGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -284,7 +284,7 @@ func (client *WorkloadGroupsClient) getHandleResponse(resp *http.Response) (Work
 //   - databaseName - The name of the database.
 //   - options - WorkloadGroupsClientListByDatabaseOptions contains the optional parameters for the WorkloadGroupsClient.NewListByDatabasePager
 //     method.
-func (client *WorkloadGroupsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *WorkloadGroupsClientListByDatabaseOptions) *runtime.Pager[WorkloadGroupsClientListByDatabaseResponse] {
+func (client *WorkloadGroupsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *WorkloadGroupsClientListByDatabaseOptions) (*runtime.Pager[WorkloadGroupsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadGroupsClientListByDatabaseResponse]{
 		More: func(page WorkloadGroupsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -350,3 +350,4 @@ func (client *WorkloadGroupsClient) listByDatabaseHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

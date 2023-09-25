@@ -23,7 +23,7 @@ import (
 // ResourceGuardProxyClient contains the methods for the ResourceGuardProxy group.
 // Don't use this type directly, use NewResourceGuardProxyClient() instead.
 type ResourceGuardProxyClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewResourceGuardProxyClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &ResourceGuardProxyClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -216,8 +216,8 @@ func (client *ResourceGuardProxyClient) putCreateRequest(ctx context.Context, va
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -285,8 +285,8 @@ func (client *ResourceGuardProxyClient) unlockDeleteCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -298,3 +298,4 @@ func (client *ResourceGuardProxyClient) unlockDeleteHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ProtectionContainerOperationResultsClient contains the methods for the ProtectionContainerOperationResults group.
 // Don't use this type directly, use NewProtectionContainerOperationResultsClient() instead.
 type ProtectionContainerOperationResultsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewProtectionContainerOperationResultsClient(subscriptionID string, credent
 	}
 	client := &ProtectionContainerOperationResultsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,3 +118,4 @@ func (client *ProtectionContainerOperationResultsClient) getHandleResponse(resp 
 	}
 	return result, nil
 }
+

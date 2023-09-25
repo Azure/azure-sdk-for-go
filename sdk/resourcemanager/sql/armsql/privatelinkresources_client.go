@@ -23,7 +23,7 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &PrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,7 +118,7 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 //   - serverName - The name of the server.
 //   - options - PrivateLinkResourcesClientListByServerOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByServerPager
 //     method.
-func (client *PrivateLinkResourcesClient) NewListByServerPager(resourceGroupName string, serverName string, options *PrivateLinkResourcesClientListByServerOptions) *runtime.Pager[PrivateLinkResourcesClientListByServerResponse] {
+func (client *PrivateLinkResourcesClient) NewListByServerPager(resourceGroupName string, serverName string, options *PrivateLinkResourcesClientListByServerOptions) (*runtime.Pager[PrivateLinkResourcesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkResourcesClientListByServerResponse]{
 		More: func(page PrivateLinkResourcesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -180,3 +180,4 @@ func (client *PrivateLinkResourcesClient) listByServerHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

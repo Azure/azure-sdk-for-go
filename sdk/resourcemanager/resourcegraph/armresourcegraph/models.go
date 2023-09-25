@@ -23,11 +23,11 @@ type Column struct {
 // end).
 type DateTimeInterval struct {
 	// REQUIRED; A datetime indicating the exclusive/open end of the time interval, i.e. [start,end). Specifying an end that occurs
-	// chronologically before start will result in an error.
+// chronologically before start will result in an error.
 	End *time.Time
 
 	// REQUIRED; A datetime indicating the inclusive/closed start of the time interval, i.e. [start, end). Specifying a start
-	// that occurs chronologically after end will result in an error.
+// that occurs chronologically after end will result in an error.
 	Start *time.Time
 }
 
@@ -105,7 +105,7 @@ type FacetRequest struct {
 // FacetRequestOptions - The options for facet evaluation
 type FacetRequestOptions struct {
 	// Specifies the filter condition for the 'where' clause which will be run on main query's result, just before the actual
-	// faceting.
+// faceting.
 	Filter *string
 
 	// The column name or query expression to sort on. Defaults to count if not present.
@@ -199,18 +199,18 @@ type QueryRequest struct {
 // QueryRequestOptions - The options for query evaluation
 type QueryRequestOptions struct {
 	// Only applicable for tenant and management group level queries to decide whether to allow partial scopes for result in case
-	// the number of subscriptions exceed allowed limits.
+// the number of subscriptions exceed allowed limits.
 	AllowPartialScopes *bool
 
 	// Defines what level of authorization resources should be returned based on the which subscriptions and management groups
-	// are passed as scopes.
+// are passed as scopes.
 	AuthorizationScopeFilter *AuthorizationScopeFilter
 
 	// Defines in which format query result returned.
 	ResultFormat *ResultFormat
 
 	// The number of rows to skip from the beginning of the results. Overrides the next page offset when $skipToken property is
-	// present.
+// present.
 	Skip *int32
 
 	// Continuation token for pagination, capturing the next page size and offset, as well as the context of the query.
@@ -223,7 +223,7 @@ type QueryRequestOptions struct {
 // QueryResponse - Query result.
 type QueryResponse struct {
 	// REQUIRED; Number of records returned in the current response. In the case of paging, this is the number of records in the
-	// current page.
+// current page.
 	Count *int64
 
 	// REQUIRED; Query output in JObject array or Table format.
@@ -239,7 +239,7 @@ type QueryResponse struct {
 	Facets []FacetClassification
 
 	// When present, the value can be passed to a subsequent query call (together with the same query and scopes used in the current
-	// request) to retrieve the next page of data.
+// request) to retrieve the next page of data.
 	SkipToken *string
 }
 
@@ -267,7 +267,7 @@ type ResourcesHistoryRequestOptions struct {
 	ResultFormat *ResultFormat
 
 	// The number of rows to skip from the beginning of the results. Overrides the next page offset when $skipToken property is
-	// present.
+// present.
 	Skip *int32
 
 	// Continuation token for pagination, capturing the next page size and offset, as well as the context of the query.
@@ -285,3 +285,4 @@ type Table struct {
 	// REQUIRED; Query result rows.
 	Rows [][]any
 }
+

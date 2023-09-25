@@ -125,3 +125,4 @@ type VaultsClientUpdateResponse struct {
 	// Resource information, as returned by the resource provider.
 	Vault
 }
+

@@ -23,7 +23,7 @@ import (
 // ManagedInstanceAzureADOnlyAuthenticationsClient contains the methods for the ManagedInstanceAzureADOnlyAuthentications group.
 // Don't use this type directly, use NewManagedInstanceAzureADOnlyAuthenticationsClient() instead.
 type ManagedInstanceAzureADOnlyAuthenticationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedInstanceAzureADOnlyAuthenticationsClient(subscriptionID string, c
 	}
 	client := &ManagedInstanceAzureADOnlyAuthenticationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) createOrUpdateCre
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) getHandleResponse
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceOptions contains the optional parameters for the
 //     ManagedInstanceAzureADOnlyAuthenticationsClient.NewListByInstancePager method.
-func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse] {
+func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceOptions) (*runtime.Pager[ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse]{
 		More: func(page ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) listByInstanceHan
 	}
 	return result, nil
 }
+

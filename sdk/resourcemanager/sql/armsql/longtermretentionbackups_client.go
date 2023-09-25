@@ -24,7 +24,7 @@ import (
 // LongTermRetentionBackupsClient contains the methods for the LongTermRetentionBackups group.
 // Don't use this type directly, use NewLongTermRetentionBackupsClient() instead.
 type LongTermRetentionBackupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewLongTermRetentionBackupsClient(subscriptionID string, credential azcore.
 	}
 	client := &LongTermRetentionBackupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *LongTermRetentionBackupsClient) copyCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -209,8 +209,8 @@ func (client *LongTermRetentionBackupsClient) copyByResourceGroupCreateRequest(c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -530,7 +530,7 @@ func (client *LongTermRetentionBackupsClient) getByResourceGroupHandleResponse(r
 //   - longTermRetentionDatabaseName - The name of the database
 //   - options - LongTermRetentionBackupsClientListByDatabaseOptions contains the optional parameters for the LongTermRetentionBackupsClient.NewListByDatabasePager
 //     method.
-func (client *LongTermRetentionBackupsClient) NewListByDatabasePager(locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, options *LongTermRetentionBackupsClientListByDatabaseOptions) *runtime.Pager[LongTermRetentionBackupsClientListByDatabaseResponse] {
+func (client *LongTermRetentionBackupsClient) NewListByDatabasePager(locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, options *LongTermRetentionBackupsClientListByDatabaseOptions) (*runtime.Pager[LongTermRetentionBackupsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionBackupsClientListByDatabaseResponse]{
 		More: func(page LongTermRetentionBackupsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -609,7 +609,7 @@ func (client *LongTermRetentionBackupsClient) listByDatabaseHandleResponse(resp 
 //   - locationName - The location of the database
 //   - options - LongTermRetentionBackupsClientListByLocationOptions contains the optional parameters for the LongTermRetentionBackupsClient.NewListByLocationPager
 //     method.
-func (client *LongTermRetentionBackupsClient) NewListByLocationPager(locationName string, options *LongTermRetentionBackupsClientListByLocationOptions) *runtime.Pager[LongTermRetentionBackupsClientListByLocationResponse] {
+func (client *LongTermRetentionBackupsClient) NewListByLocationPager(locationName string, options *LongTermRetentionBackupsClientListByLocationOptions) (*runtime.Pager[LongTermRetentionBackupsClientListByLocationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionBackupsClientListByLocationResponse]{
 		More: func(page LongTermRetentionBackupsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -684,7 +684,7 @@ func (client *LongTermRetentionBackupsClient) listByLocationHandleResponse(resp 
 //   - longTermRetentionDatabaseName - The name of the database
 //   - options - LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions contains the optional parameters for the LongTermRetentionBackupsClient.NewListByResourceGroupDatabasePager
 //     method.
-func (client *LongTermRetentionBackupsClient) NewListByResourceGroupDatabasePager(resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, options *LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions) *runtime.Pager[LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse] {
+func (client *LongTermRetentionBackupsClient) NewListByResourceGroupDatabasePager(resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, options *LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions) (*runtime.Pager[LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse]{
 		More: func(page LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -769,7 +769,7 @@ func (client *LongTermRetentionBackupsClient) listByResourceGroupDatabaseHandleR
 //   - locationName - The location of the database
 //   - options - LongTermRetentionBackupsClientListByResourceGroupLocationOptions contains the optional parameters for the LongTermRetentionBackupsClient.NewListByResourceGroupLocationPager
 //     method.
-func (client *LongTermRetentionBackupsClient) NewListByResourceGroupLocationPager(resourceGroupName string, locationName string, options *LongTermRetentionBackupsClientListByResourceGroupLocationOptions) *runtime.Pager[LongTermRetentionBackupsClientListByResourceGroupLocationResponse] {
+func (client *LongTermRetentionBackupsClient) NewListByResourceGroupLocationPager(resourceGroupName string, locationName string, options *LongTermRetentionBackupsClientListByResourceGroupLocationOptions) (*runtime.Pager[LongTermRetentionBackupsClientListByResourceGroupLocationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionBackupsClientListByResourceGroupLocationResponse]{
 		More: func(page LongTermRetentionBackupsClientListByResourceGroupLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -847,7 +847,7 @@ func (client *LongTermRetentionBackupsClient) listByResourceGroupLocationHandleR
 //   - longTermRetentionServerName - The name of the server
 //   - options - LongTermRetentionBackupsClientListByResourceGroupServerOptions contains the optional parameters for the LongTermRetentionBackupsClient.NewListByResourceGroupServerPager
 //     method.
-func (client *LongTermRetentionBackupsClient) NewListByResourceGroupServerPager(resourceGroupName string, locationName string, longTermRetentionServerName string, options *LongTermRetentionBackupsClientListByResourceGroupServerOptions) *runtime.Pager[LongTermRetentionBackupsClientListByResourceGroupServerResponse] {
+func (client *LongTermRetentionBackupsClient) NewListByResourceGroupServerPager(resourceGroupName string, locationName string, longTermRetentionServerName string, options *LongTermRetentionBackupsClientListByResourceGroupServerOptions) (*runtime.Pager[LongTermRetentionBackupsClientListByResourceGroupServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionBackupsClientListByResourceGroupServerResponse]{
 		More: func(page LongTermRetentionBackupsClientListByResourceGroupServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -927,7 +927,7 @@ func (client *LongTermRetentionBackupsClient) listByResourceGroupServerHandleRes
 //   - longTermRetentionServerName - The name of the server
 //   - options - LongTermRetentionBackupsClientListByServerOptions contains the optional parameters for the LongTermRetentionBackupsClient.NewListByServerPager
 //     method.
-func (client *LongTermRetentionBackupsClient) NewListByServerPager(locationName string, longTermRetentionServerName string, options *LongTermRetentionBackupsClientListByServerOptions) *runtime.Pager[LongTermRetentionBackupsClientListByServerResponse] {
+func (client *LongTermRetentionBackupsClient) NewListByServerPager(locationName string, longTermRetentionServerName string, options *LongTermRetentionBackupsClientListByServerOptions) (*runtime.Pager[LongTermRetentionBackupsClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionBackupsClientListByServerResponse]{
 		More: func(page LongTermRetentionBackupsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1073,8 +1073,8 @@ func (client *LongTermRetentionBackupsClient) updateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1161,7 +1161,8 @@ func (client *LongTermRetentionBackupsClient) updateByResourceGroupCreateRequest
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

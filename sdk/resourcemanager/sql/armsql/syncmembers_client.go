@@ -23,7 +23,7 @@ import (
 // SyncMembersClient contains the methods for the SyncMembers group.
 // Don't use this type directly, use NewSyncMembersClient() instead.
 type SyncMembersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSyncMembersClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &SyncMembersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -126,8 +126,8 @@ func (client *SyncMembersClient) createOrUpdateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -299,7 +299,7 @@ func (client *SyncMembersClient) getHandleResponse(resp *http.Response) (SyncMem
 //   - syncGroupName - The name of the sync group.
 //   - options - SyncMembersClientListBySyncGroupOptions contains the optional parameters for the SyncMembersClient.NewListBySyncGroupPager
 //     method.
-func (client *SyncMembersClient) NewListBySyncGroupPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncMembersClientListBySyncGroupOptions) *runtime.Pager[SyncMembersClientListBySyncGroupResponse] {
+func (client *SyncMembersClient) NewListBySyncGroupPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncMembersClientListBySyncGroupOptions) (*runtime.Pager[SyncMembersClientListBySyncGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SyncMembersClientListBySyncGroupResponse]{
 		More: func(page SyncMembersClientListBySyncGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -381,7 +381,7 @@ func (client *SyncMembersClient) listBySyncGroupHandleResponse(resp *http.Respon
 //   - syncMemberName - The name of the sync member.
 //   - options - SyncMembersClientListMemberSchemasOptions contains the optional parameters for the SyncMembersClient.NewListMemberSchemasPager
 //     method.
-func (client *SyncMembersClient) NewListMemberSchemasPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientListMemberSchemasOptions) *runtime.Pager[SyncMembersClientListMemberSchemasResponse] {
+func (client *SyncMembersClient) NewListMemberSchemasPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientListMemberSchemasOptions) (*runtime.Pager[SyncMembersClientListMemberSchemasResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SyncMembersClientListMemberSchemasResponse]{
 		More: func(page SyncMembersClientListMemberSchemasResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -621,7 +621,8 @@ func (client *SyncMembersClient) updateCreateRequest(ctx context.Context, resour
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

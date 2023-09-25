@@ -23,7 +23,7 @@ import (
 // TableClient contains the methods for the Table group.
 // Don't use this type directly, use NewTableClient() instead.
 type TableClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTableClient(subscriptionID string, credential azcore.TokenCredential, op
 	}
 	client := &TableClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -100,8 +100,8 @@ func (client *TableClient) createCreateRequest(ctx context.Context, resourceGrou
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -247,7 +247,7 @@ func (client *TableClient) getHandleResponse(resp *http.Response) (TableClientGe
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
 //   - options - TableClientListOptions contains the optional parameters for the TableClient.NewListPager method.
-func (client *TableClient) NewListPager(resourceGroupName string, accountName string, options *TableClientListOptions) *runtime.Pager[TableClientListResponse] {
+func (client *TableClient) NewListPager(resourceGroupName string, accountName string, options *TableClientListOptions) (*runtime.Pager[TableClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TableClientListResponse]{
 		More: func(page TableClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -367,8 +367,8 @@ func (client *TableClient) updateCreateRequest(ctx context.Context, resourceGrou
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -382,3 +382,4 @@ func (client *TableClient) updateHandleResponse(resp *http.Response) (TableClien
 	}
 	return result, nil
 }
+

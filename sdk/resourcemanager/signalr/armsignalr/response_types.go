@@ -220,3 +220,4 @@ type UsagesClientListResponse struct {
 	// Object that includes an array of the resource usages and a possible link for next set.
 	UsageList
 }
+

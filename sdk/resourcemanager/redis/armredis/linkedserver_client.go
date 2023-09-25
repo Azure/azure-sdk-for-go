@@ -23,7 +23,7 @@ import (
 // LinkedServerClient contains the methods for the LinkedServer group.
 // Don't use this type directly, use NewLinkedServerClient() instead.
 type LinkedServerClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewLinkedServerClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &LinkedServerClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *LinkedServerClient) createCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -264,7 +264,7 @@ func (client *LinkedServerClient) getHandleResponse(resp *http.Response) (Linked
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the redis cache.
 //   - options - LinkedServerClientListOptions contains the optional parameters for the LinkedServerClient.NewListPager method.
-func (client *LinkedServerClient) NewListPager(resourceGroupName string, name string, options *LinkedServerClientListOptions) *runtime.Pager[LinkedServerClientListResponse] {
+func (client *LinkedServerClient) NewListPager(resourceGroupName string, name string, options *LinkedServerClientListOptions) (*runtime.Pager[LinkedServerClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LinkedServerClientListResponse]{
 		More: func(page LinkedServerClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -326,3 +326,4 @@ func (client *LinkedServerClient) listHandleResponse(resp *http.Response) (Linke
 	}
 	return result, nil
 }
+

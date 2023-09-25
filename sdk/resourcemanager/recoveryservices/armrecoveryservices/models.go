@@ -52,9 +52,9 @@ type CheckNameAvailabilityParameters struct {
 // CheckNameAvailabilityResult - Response for check name availability API. Resource provider will set availability as true
 // | false.
 type CheckNameAvailabilityResult struct {
-	Message       *string
+	Message *string
 	NameAvailable *bool
-	Reason        *string
+	Reason *string
 }
 
 // ClassicAlertSettings - Settings for classic alerts
@@ -190,13 +190,13 @@ type ErrorAdditionalInfo struct {
 // IdentityData - Identity for the resource.
 type IdentityData struct {
 	// REQUIRED; The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
-	// identity and a set of user-assigned identities. The type 'None' will remove any
-	// identities.
+// identity and a set of user-assigned identities. The type 'None' will remove any
+// identities.
 	Type *ResourceIdentityType
 
 	// The list of user-assigned identities associated with the resource. The user-assigned identity dictionary keys will be ARM
-	// resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+// resource ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserIdentity
 
 	// READ-ONLY; The principal ID of resource identity.
@@ -268,7 +268,7 @@ type OperationResource struct {
 	EndTime *time.Time
 
 	// Required if status == failed or status == canceled. This is the OData v4 error format, used by the RPC and will go into
-	// the v2.2 Azure REST API guidelines.
+// the v2.2 Azure REST API guidelines.
 	Error *Error
 
 	// It should match what is used to GET the operation result
@@ -543,15 +543,15 @@ type ResourceCertificateAndAADDetails struct {
 // GetResourceCertificateDetails implements the ResourceCertificateDetailsClassification interface for type ResourceCertificateAndAADDetails.
 func (r *ResourceCertificateAndAADDetails) GetResourceCertificateDetails() *ResourceCertificateDetails {
 	return &ResourceCertificateDetails{
-		AuthType:     r.AuthType,
-		Certificate:  r.Certificate,
+		AuthType: r.AuthType,
+		Certificate: r.Certificate,
 		FriendlyName: r.FriendlyName,
-		Issuer:       r.Issuer,
-		ResourceID:   r.ResourceID,
-		Subject:      r.Subject,
-		Thumbprint:   r.Thumbprint,
-		ValidFrom:    r.ValidFrom,
-		ValidTo:      r.ValidTo,
+		Issuer: r.Issuer,
+		ResourceID: r.ResourceID,
+		Subject: r.Subject,
+		Thumbprint: r.Thumbprint,
+		ValidFrom: r.ValidFrom,
+		ValidTo: r.ValidTo,
 	}
 }
 
@@ -597,15 +597,15 @@ type ResourceCertificateAndAcsDetails struct {
 // GetResourceCertificateDetails implements the ResourceCertificateDetailsClassification interface for type ResourceCertificateAndAcsDetails.
 func (r *ResourceCertificateAndAcsDetails) GetResourceCertificateDetails() *ResourceCertificateDetails {
 	return &ResourceCertificateDetails{
-		AuthType:     r.AuthType,
-		Certificate:  r.Certificate,
+		AuthType: r.AuthType,
+		Certificate: r.Certificate,
 		FriendlyName: r.FriendlyName,
-		Issuer:       r.Issuer,
-		ResourceID:   r.ResourceID,
-		Subject:      r.Subject,
-		Thumbprint:   r.Thumbprint,
-		ValidFrom:    r.ValidFrom,
-		ValidTo:      r.ValidTo,
+		Issuer: r.Issuer,
+		ResourceID: r.ResourceID,
+		Subject: r.Subject,
+		Thumbprint: r.Thumbprint,
+		ValidFrom: r.ValidFrom,
+		ValidTo: r.ValidTo,
 	}
 }
 
@@ -640,9 +640,7 @@ type ResourceCertificateDetails struct {
 }
 
 // GetResourceCertificateDetails implements the ResourceCertificateDetailsClassification interface for type ResourceCertificateDetails.
-func (r *ResourceCertificateDetails) GetResourceCertificateDetails() *ResourceCertificateDetails {
-	return r
-}
+func (r *ResourceCertificateDetails) GetResourceCertificateDetails() *ResourceCertificateDetails { return r }
 
 // RestoreSettings - Restore Settings of the vault
 type RestoreSettings struct {
@@ -653,8 +651,8 @@ type RestoreSettings struct {
 // SKU - Identifies the unique system identifier for each Azure resource.
 type SKU struct {
 	// REQUIRED; Name of SKU is RS0 (Recovery Services 0th version) and the tier is standard tier. They do not have affect on
-	// backend storage redundancy or any other vault settings. To manage storage redundancy, use
-	// the backupstorageconfig
+// backend storage redundancy or any other vault settings. To manage storage redundancy, use
+// the backupstorageconfig
 	Name *SKUName
 
 	// The sku capacity
@@ -686,7 +684,7 @@ type SecuritySettings struct {
 type SoftDeleteSettings struct {
 	// Soft delete retention period in days
 	SoftDeleteRetentionPeriodInDays *int32
-	SoftDeleteState                 *SoftDeleteState
+	SoftDeleteState *SoftDeleteState
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -973,3 +971,4 @@ type VaultUsageList struct {
 	// The list of usages for the given vault.
 	Value []*VaultUsage
 }
+

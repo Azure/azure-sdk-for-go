@@ -23,7 +23,7 @@ import (
 // ServerDNSAliasesClient contains the methods for the ServerDNSAliases group.
 // Don't use this type directly, use NewServerDNSAliasesClient() instead.
 type ServerDNSAliasesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerDNSAliasesClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &ServerDNSAliasesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *ServerDNSAliasesClient) acquireCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -341,7 +341,7 @@ func (client *ServerDNSAliasesClient) getHandleResponse(resp *http.Response) (Se
 //   - serverName - The name of the server that the alias is pointing to.
 //   - options - ServerDNSAliasesClientListByServerOptions contains the optional parameters for the ServerDNSAliasesClient.NewListByServerPager
 //     method.
-func (client *ServerDNSAliasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerDNSAliasesClientListByServerOptions) *runtime.Pager[ServerDNSAliasesClientListByServerResponse] {
+func (client *ServerDNSAliasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerDNSAliasesClientListByServerOptions) (*runtime.Pager[ServerDNSAliasesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerDNSAliasesClientListByServerResponse]{
 		More: func(page ServerDNSAliasesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -403,3 +403,4 @@ func (client *ServerDNSAliasesClient) listByServerHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

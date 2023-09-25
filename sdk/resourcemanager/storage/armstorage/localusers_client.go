@@ -23,7 +23,7 @@ import (
 // LocalUsersClient contains the methods for the LocalUsers group.
 // Don't use this type directly, use NewLocalUsersClient() instead.
 type LocalUsersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewLocalUsersClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &LocalUsersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,8 +101,8 @@ func (client *LocalUsersClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -246,7 +246,7 @@ func (client *LocalUsersClient) getHandleResponse(resp *http.Response) (LocalUse
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
 //   - options - LocalUsersClientListOptions contains the optional parameters for the LocalUsersClient.NewListPager method.
-func (client *LocalUsersClient) NewListPager(resourceGroupName string, accountName string, options *LocalUsersClientListOptions) *runtime.Pager[LocalUsersClientListResponse] {
+func (client *LocalUsersClient) NewListPager(resourceGroupName string, accountName string, options *LocalUsersClientListOptions) (*runtime.Pager[LocalUsersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LocalUsersClientListResponse]{
 		More: func(page LocalUsersClientListResponse) bool {
 			return false
@@ -437,3 +437,4 @@ func (client *LocalUsersClient) regeneratePasswordHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

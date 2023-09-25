@@ -23,7 +23,7 @@ import (
 // OpenShiftVersionsClient contains the methods for the OpenShiftVersions group.
 // Don't use this type directly, use NewOpenShiftVersionsClient() instead.
 type OpenShiftVersionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewOpenShiftVersionsClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &OpenShiftVersionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewOpenShiftVersionsClient(subscriptionID string, credential azcore.TokenCr
 //   - location - The name of Azure region.
 //   - options - OpenShiftVersionsClientListOptions contains the optional parameters for the OpenShiftVersionsClient.NewListPager
 //     method.
-func (client *OpenShiftVersionsClient) NewListPager(location string, options *OpenShiftVersionsClientListOptions) *runtime.Pager[OpenShiftVersionsClientListResponse] {
+func (client *OpenShiftVersionsClient) NewListPager(location string, options *OpenShiftVersionsClientListOptions) (*runtime.Pager[OpenShiftVersionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[OpenShiftVersionsClientListResponse]{
 		More: func(page OpenShiftVersionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -107,3 +107,4 @@ func (client *OpenShiftVersionsClient) listHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

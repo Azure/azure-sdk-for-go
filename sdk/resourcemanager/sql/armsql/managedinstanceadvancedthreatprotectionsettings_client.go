@@ -23,7 +23,7 @@ import (
 // ManagedInstanceAdvancedThreatProtectionSettingsClient contains the methods for the ManagedInstanceAdvancedThreatProtectionSettings group.
 // Don't use this type directly, use NewManagedInstanceAdvancedThreatProtectionSettingsClient() instead.
 type ManagedInstanceAdvancedThreatProtectionSettingsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedInstanceAdvancedThreatProtectionSettingsClient(subscriptionID str
 	}
 	client := &ManagedInstanceAdvancedThreatProtectionSettingsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) createOrUpd
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -196,7 +196,7 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) getHandleRe
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceOptions contains the optional parameters for
 //     the ManagedInstanceAdvancedThreatProtectionSettingsClient.NewListByInstancePager method.
-func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceResponse] {
+func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceOptions) (*runtime.Pager[ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceResponse]{
 		More: func(page ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -258,3 +258,4 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) listByInsta
 	}
 	return result, nil
 }
+

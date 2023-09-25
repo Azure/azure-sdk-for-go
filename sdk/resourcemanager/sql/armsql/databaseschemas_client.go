@@ -23,7 +23,7 @@ import (
 // DatabaseSchemasClient contains the methods for the DatabaseSchemas group.
 // Don't use this type directly, use NewDatabaseSchemasClient() instead.
 type DatabaseSchemasClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatabaseSchemasClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &DatabaseSchemasClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -123,7 +123,7 @@ func (client *DatabaseSchemasClient) getHandleResponse(resp *http.Response) (Dat
 //   - databaseName - The name of the database.
 //   - options - DatabaseSchemasClientListByDatabaseOptions contains the optional parameters for the DatabaseSchemasClient.NewListByDatabasePager
 //     method.
-func (client *DatabaseSchemasClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseSchemasClientListByDatabaseOptions) *runtime.Pager[DatabaseSchemasClientListByDatabaseResponse] {
+func (client *DatabaseSchemasClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseSchemasClientListByDatabaseOptions) (*runtime.Pager[DatabaseSchemasClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabaseSchemasClientListByDatabaseResponse]{
 		More: func(page DatabaseSchemasClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -192,3 +192,4 @@ func (client *DatabaseSchemasClient) listByDatabaseHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

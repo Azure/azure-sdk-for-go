@@ -565,3 +565,4 @@ func unmarshalWorkloadProtectableItemClassification(rawMsg json.RawMessage) (Wor
 	}
 	return b, nil
 }
+

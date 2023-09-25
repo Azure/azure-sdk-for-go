@@ -537,3 +537,4 @@ type WorkerProfile struct {
 	// The size of the worker VMs.
 	VMSize *string
 }
+

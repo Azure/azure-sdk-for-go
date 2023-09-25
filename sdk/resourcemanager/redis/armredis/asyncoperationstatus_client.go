@@ -23,7 +23,7 @@ import (
 // AsyncOperationStatusClient contains the methods for the AsyncOperationStatus group.
 // Don't use this type directly, use NewAsyncOperationStatusClient() instead.
 type AsyncOperationStatusClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAsyncOperationStatusClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &AsyncOperationStatusClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,3 +103,4 @@ func (client *AsyncOperationStatusClient) getHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

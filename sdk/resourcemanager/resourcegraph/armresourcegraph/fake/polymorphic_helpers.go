@@ -54,3 +54,4 @@ func unmarshalFacetClassificationArray(rawMsg json.RawMessage) ([]armresourcegra
 	}
 	return fArray, nil
 }
+

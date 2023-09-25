@@ -237,3 +237,4 @@ type PrivateEndpointConnectionsClientListOptions struct {
 type PrivateLinkResourcesClientListByRedisCacheOptions struct {
 	// placeholder for future optional parameters
 }
+

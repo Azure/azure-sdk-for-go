@@ -23,7 +23,7 @@ import (
 // ManagedInstanceDtcsClient contains the methods for the ManagedInstanceDtcs group.
 // Don't use this type directly, use NewManagedInstanceDtcsClient() instead.
 type ManagedInstanceDtcsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedInstanceDtcsClient(subscriptionID string, credential azcore.Token
 	}
 	client := &ManagedInstanceDtcsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ManagedInstanceDtcsClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -195,7 +195,7 @@ func (client *ManagedInstanceDtcsClient) getHandleResponse(resp *http.Response) 
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstanceDtcsClientListByManagedInstanceOptions contains the optional parameters for the ManagedInstanceDtcsClient.NewListByManagedInstancePager
 //     method.
-func (client *ManagedInstanceDtcsClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceDtcsClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstanceDtcsClientListByManagedInstanceResponse] {
+func (client *ManagedInstanceDtcsClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceDtcsClientListByManagedInstanceOptions) (*runtime.Pager[ManagedInstanceDtcsClientListByManagedInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstanceDtcsClientListByManagedInstanceResponse]{
 		More: func(page ManagedInstanceDtcsClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -257,3 +257,4 @@ func (client *ManagedInstanceDtcsClient) listByManagedInstanceHandleResponse(res
 	}
 	return result, nil
 }
+

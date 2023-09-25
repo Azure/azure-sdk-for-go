@@ -23,7 +23,7 @@ import (
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	}
 	client := &UsagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the recovery services vault.
 //   - options - UsagesClientListByVaultsOptions contains the optional parameters for the UsagesClient.NewListByVaultsPager method.
-func (client *UsagesClient) NewListByVaultsPager(resourceGroupName string, vaultName string, options *UsagesClientListByVaultsOptions) *runtime.Pager[UsagesClientListByVaultsResponse] {
+func (client *UsagesClient) NewListByVaultsPager(resourceGroupName string, vaultName string, options *UsagesClientListByVaultsOptions) (*runtime.Pager[UsagesClientListByVaultsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[UsagesClientListByVaultsResponse]{
 		More: func(page UsagesClientListByVaultsResponse) bool {
 			return false
@@ -105,3 +105,4 @@ func (client *UsagesClient) listByVaultsHandleResponse(resp *http.Response) (Usa
 	}
 	return result, nil
 }
+

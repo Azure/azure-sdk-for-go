@@ -23,7 +23,7 @@ import (
 // ReplicationUsagesClient contains the methods for the ReplicationUsages group.
 // Don't use this type directly, use NewReplicationUsagesClient() instead.
 type ReplicationUsagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewReplicationUsagesClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &ReplicationUsagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewReplicationUsagesClient(subscriptionID string, credential azcore.TokenCr
 //   - vaultName - The name of the recovery services vault.
 //   - options - ReplicationUsagesClientListOptions contains the optional parameters for the ReplicationUsagesClient.NewListPager
 //     method.
-func (client *ReplicationUsagesClient) NewListPager(resourceGroupName string, vaultName string, options *ReplicationUsagesClientListOptions) *runtime.Pager[ReplicationUsagesClientListResponse] {
+func (client *ReplicationUsagesClient) NewListPager(resourceGroupName string, vaultName string, options *ReplicationUsagesClientListOptions) (*runtime.Pager[ReplicationUsagesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationUsagesClientListResponse]{
 		More: func(page ReplicationUsagesClientListResponse) bool {
 			return false
@@ -106,3 +106,4 @@ func (client *ReplicationUsagesClient) listHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

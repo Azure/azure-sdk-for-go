@@ -23,7 +23,7 @@ import (
 // ManagedInstancePrivateLinkResourcesClient contains the methods for the ManagedInstancePrivateLinkResources group.
 // Don't use this type directly, use NewManagedInstancePrivateLinkResourcesClient() instead.
 type ManagedInstancePrivateLinkResourcesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedInstancePrivateLinkResourcesClient(subscriptionID string, credent
 	}
 	client := &ManagedInstancePrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,7 +118,7 @@ func (client *ManagedInstancePrivateLinkResourcesClient) getHandleResponse(resp 
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions contains the optional parameters for the
 //     ManagedInstancePrivateLinkResourcesClient.NewListByManagedInstancePager method.
-func (client *ManagedInstancePrivateLinkResourcesClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse] {
+func (client *ManagedInstancePrivateLinkResourcesClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions) (*runtime.Pager[ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse]{
 		More: func(page ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -180,3 +180,4 @@ func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceHa
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // VaultExtendedInfoClient contains the methods for the VaultExtendedInfo group.
 // Don't use this type directly, use NewVaultExtendedInfoClient() instead.
 type VaultExtendedInfoClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewVaultExtendedInfoClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &VaultExtendedInfoClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -94,8 +94,8 @@ func (client *VaultExtendedInfoClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resourceExtendedInfoDetails); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -219,8 +219,8 @@ func (client *VaultExtendedInfoClient) updateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resourceExtendedInfoDetails); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -232,3 +232,4 @@ func (client *VaultExtendedInfoClient) updateHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

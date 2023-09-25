@@ -23,7 +23,7 @@ import (
 // EndpointCertificatesClient contains the methods for the EndpointCertificates group.
 // Don't use this type directly, use NewEndpointCertificatesClient() instead.
 type EndpointCertificatesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewEndpointCertificatesClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &EndpointCertificatesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,7 +118,7 @@ func (client *EndpointCertificatesClient) getHandleResponse(resp *http.Response)
 //   - managedInstanceName - The name of the managed instance.
 //   - options - EndpointCertificatesClientListByInstanceOptions contains the optional parameters for the EndpointCertificatesClient.NewListByInstancePager
 //     method.
-func (client *EndpointCertificatesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *EndpointCertificatesClientListByInstanceOptions) *runtime.Pager[EndpointCertificatesClientListByInstanceResponse] {
+func (client *EndpointCertificatesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *EndpointCertificatesClientListByInstanceOptions) (*runtime.Pager[EndpointCertificatesClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EndpointCertificatesClientListByInstanceResponse]{
 		More: func(page EndpointCertificatesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -180,3 +180,4 @@ func (client *EndpointCertificatesClient) listByInstanceHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

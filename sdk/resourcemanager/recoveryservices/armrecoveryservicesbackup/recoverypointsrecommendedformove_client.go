@@ -23,7 +23,7 @@ import (
 // RecoveryPointsRecommendedForMoveClient contains the methods for the RecoveryPointsRecommendedForMove group.
 // Don't use this type directly, use NewRecoveryPointsRecommendedForMoveClient() instead.
 type RecoveryPointsRecommendedForMoveClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRecoveryPointsRecommendedForMoveClient(subscriptionID string, credential
 	}
 	client := &RecoveryPointsRecommendedForMoveClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewRecoveryPointsRecommendedForMoveClient(subscriptionID string, credential
 //   - parameters - List Recovery points Recommended for Move Request
 //   - options - RecoveryPointsRecommendedForMoveClientListOptions contains the optional parameters for the RecoveryPointsRecommendedForMoveClient.NewListPager
 //     method.
-func (client *RecoveryPointsRecommendedForMoveClient) NewListPager(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ListRecoveryPointsRecommendedForMoveRequest, options *RecoveryPointsRecommendedForMoveClientListOptions) *runtime.Pager[RecoveryPointsRecommendedForMoveClientListResponse] {
+func (client *RecoveryPointsRecommendedForMoveClient) NewListPager(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ListRecoveryPointsRecommendedForMoveRequest, options *RecoveryPointsRecommendedForMoveClientListOptions) (*runtime.Pager[RecoveryPointsRecommendedForMoveClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RecoveryPointsRecommendedForMoveClientListResponse]{
 		More: func(page RecoveryPointsRecommendedForMoveClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -115,8 +115,8 @@ func (client *RecoveryPointsRecommendedForMoveClient) listCreateRequest(ctx cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -128,3 +128,4 @@ func (client *RecoveryPointsRecommendedForMoveClient) listHandleResponse(resp *h
 	}
 	return result, nil
 }
+

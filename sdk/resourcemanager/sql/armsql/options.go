@@ -159,13 +159,13 @@ type DatabaseColumnsClientGetOptions struct {
 // DatabaseColumnsClientListByDatabaseOptions contains the optional parameters for the DatabaseColumnsClient.NewListByDatabasePager
 // method.
 type DatabaseColumnsClientListByDatabaseOptions struct {
-	Column  []string
+	Column []string
 	OrderBy []string
-	Schema  []string
+	Schema []string
 
 	// An opaque token that identifies a starting point in the collection.
 	Skiptoken *string
-	Table     []string
+	Table []string
 }
 
 // DatabaseColumnsClientListByTableOptions contains the optional parameters for the DatabaseColumnsClient.NewListByTablePager
@@ -1526,13 +1526,13 @@ type ManagedDatabaseColumnsClientGetOptions struct {
 // ManagedDatabaseColumnsClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseColumnsClient.NewListByDatabasePager
 // method.
 type ManagedDatabaseColumnsClientListByDatabaseOptions struct {
-	Column  []string
+	Column []string
 	OrderBy []string
-	Schema  []string
+	Schema []string
 
 	// An opaque token that identifies a starting point in the collection.
 	Skiptoken *string
-	Table     []string
+	Table []string
 }
 
 // ManagedDatabaseColumnsClientListByTableOptions contains the optional parameters for the ManagedDatabaseColumnsClient.NewListByTablePager
@@ -1670,7 +1670,7 @@ type ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseOptions struct {
 	Count *bool
 
 	// An OData filter expression that filters elements in the collection.
-	Filter    *string
+	Filter *string
 	SkipToken *string
 }
 
@@ -1682,7 +1682,7 @@ type ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseOptions stru
 
 	// Specifies whether to include disabled recommendations or not.
 	IncludeDisabledRecommendations *bool
-	SkipToken                      *string
+	SkipToken *string
 }
 
 // ManagedDatabaseSensitivityLabelsClientUpdateOptions contains the optional parameters for the ManagedDatabaseSensitivityLabelsClient.Update
@@ -2522,7 +2522,7 @@ type SensitivityLabelsClientListCurrentByDatabaseOptions struct {
 	Count *bool
 
 	// An OData filter expression that filters elements in the collection.
-	Filter    *string
+	Filter *string
 	SkipToken *string
 }
 
@@ -2534,7 +2534,7 @@ type SensitivityLabelsClientListRecommendedByDatabaseOptions struct {
 
 	// Specifies whether to include disabled recommendations or not.
 	IncludeDisabledRecommendations *bool
-	SkipToken                      *string
+	SkipToken *string
 }
 
 // SensitivityLabelsClientUpdateOptions contains the optional parameters for the SensitivityLabelsClient.Update method.
@@ -3399,3 +3399,4 @@ type WorkloadGroupsClientGetOptions struct {
 type WorkloadGroupsClientListByDatabaseOptions struct {
 	// placeholder for future optional parameters
 }
+

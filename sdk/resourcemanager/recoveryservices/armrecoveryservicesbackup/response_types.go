@@ -14,7 +14,7 @@ type BMSPrepareDataMoveOperationResultClientGetResponse struct {
 	VaultStorageConfigOperationResultResponseClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type BMSPrepareDataMoveOperationResultClientGetResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type BMSPrepareDataMoveOperationResultClientGetResponse.
 func (b *BMSPrepareDataMoveOperationResultClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalVaultStorageConfigOperationResultResponseClassification(data)
 	if err != nil {
@@ -451,3 +451,4 @@ type ValidateOperationStatusesClientGetResponse struct {
 	// Operation status.
 	OperationStatus
 }
+

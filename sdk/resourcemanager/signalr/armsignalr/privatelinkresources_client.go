@@ -23,7 +23,7 @@ import (
 // PrivateLinkResourcesClient contains the methods for the SignalRPrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &PrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 //   - resourceName - The name of the resource.
 //   - options - PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListPager
 //     method.
-func (client *PrivateLinkResourcesClient) NewListPager(resourceGroupName string, resourceName string, options *PrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkResourcesClientListResponse] {
+func (client *PrivateLinkResourcesClient) NewListPager(resourceGroupName string, resourceName string, options *PrivateLinkResourcesClientListOptions) (*runtime.Pager[PrivateLinkResourcesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkResourcesClientListResponse]{
 		More: func(page PrivateLinkResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -109,3 +109,4 @@ func (client *PrivateLinkResourcesClient) listHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

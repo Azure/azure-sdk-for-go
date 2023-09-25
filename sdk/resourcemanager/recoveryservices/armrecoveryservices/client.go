@@ -23,7 +23,7 @@ import (
 // Client contains the methods for the RecoveryServices group.
 // Don't use this type directly, use NewClient() instead.
 type Client struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -88,8 +88,8 @@ func (client *Client) capabilitiesCreateRequest(ctx context.Context, location st
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -154,8 +154,8 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -167,3 +167,4 @@ func (client *Client) checkNameAvailabilityHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

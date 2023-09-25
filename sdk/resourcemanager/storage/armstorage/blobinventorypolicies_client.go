@@ -23,7 +23,7 @@ import (
 // BlobInventoryPoliciesClient contains the methods for the BlobInventoryPolicies group.
 // Don't use this type directly, use NewBlobInventoryPoliciesClient() instead.
 type BlobInventoryPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBlobInventoryPoliciesClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &BlobInventoryPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -100,8 +100,8 @@ func (client *BlobInventoryPoliciesClient) createOrUpdateCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -246,7 +246,7 @@ func (client *BlobInventoryPoliciesClient) getHandleResponse(resp *http.Response
 //     3 and 24 characters in length and use numbers and lower-case letters only.
 //   - options - BlobInventoryPoliciesClientListOptions contains the optional parameters for the BlobInventoryPoliciesClient.NewListPager
 //     method.
-func (client *BlobInventoryPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *BlobInventoryPoliciesClientListOptions) *runtime.Pager[BlobInventoryPoliciesClientListResponse] {
+func (client *BlobInventoryPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *BlobInventoryPoliciesClientListOptions) (*runtime.Pager[BlobInventoryPoliciesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BlobInventoryPoliciesClientListResponse]{
 		More: func(page BlobInventoryPoliciesClientListResponse) bool {
 			return false
@@ -302,3 +302,4 @@ func (client *BlobInventoryPoliciesClient) listHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ManagedInstanceOperationsClient contains the methods for the ManagedInstanceOperations group.
 // Don't use this type directly, use NewManagedInstanceOperationsClient() instead.
 type ManagedInstanceOperationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedInstanceOperationsClient(subscriptionID string, credential azcore
 	}
 	client := &ManagedInstanceOperationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -166,7 +166,7 @@ func (client *ManagedInstanceOperationsClient) getHandleResponse(resp *http.Resp
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstanceOperationsClientListByManagedInstanceOptions contains the optional parameters for the ManagedInstanceOperationsClient.NewListByManagedInstancePager
 //     method.
-func (client *ManagedInstanceOperationsClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstanceOperationsClientListByManagedInstanceResponse] {
+func (client *ManagedInstanceOperationsClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsClientListByManagedInstanceOptions) (*runtime.Pager[ManagedInstanceOperationsClientListByManagedInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstanceOperationsClientListByManagedInstanceResponse]{
 		More: func(page ManagedInstanceOperationsClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -228,3 +228,4 @@ func (client *ManagedInstanceOperationsClient) listByManagedInstanceHandleRespon
 	}
 	return result, nil
 }
+

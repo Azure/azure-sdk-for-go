@@ -23,7 +23,7 @@ import (
 // ManagementPoliciesClient contains the methods for the ManagementPolicies group.
 // Don't use this type directly, use NewManagementPoliciesClient() instead.
 type ManagementPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagementPoliciesClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &ManagementPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -100,8 +100,8 @@ func (client *ManagementPoliciesClient) createOrUpdateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -235,3 +235,4 @@ func (client *ManagementPoliciesClient) getHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

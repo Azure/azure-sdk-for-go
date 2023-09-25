@@ -23,7 +23,7 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &PrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 //   - cacheName - The name of the Redis cache.
 //   - options - PrivateLinkResourcesClientListByRedisCacheOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByRedisCachePager
 //     method.
-func (client *PrivateLinkResourcesClient) NewListByRedisCachePager(resourceGroupName string, cacheName string, options *PrivateLinkResourcesClientListByRedisCacheOptions) *runtime.Pager[PrivateLinkResourcesClientListByRedisCacheResponse] {
+func (client *PrivateLinkResourcesClient) NewListByRedisCachePager(resourceGroupName string, cacheName string, options *PrivateLinkResourcesClientListByRedisCacheOptions) (*runtime.Pager[PrivateLinkResourcesClientListByRedisCacheResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkResourcesClientListByRedisCacheResponse]{
 		More: func(page PrivateLinkResourcesClientListByRedisCacheResponse) bool {
 			return false
@@ -106,3 +106,4 @@ func (client *PrivateLinkResourcesClient) listByRedisCacheHandleResponse(resp *h
 	}
 	return result, nil
 }
+

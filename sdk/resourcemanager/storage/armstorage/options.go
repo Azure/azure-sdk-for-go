@@ -31,7 +31,7 @@ type AccountsClientBeginCustomerInitiatedMigrationOptions struct {
 // AccountsClientBeginFailoverOptions contains the optional parameters for the AccountsClient.BeginFailover method.
 type AccountsClientBeginFailoverOptions struct {
 	// The parameter is set to 'Planned' to indicate whether a Planned failover is requested.. Specifying any value will set the
-	// value to Planned.
+// value to Planned.
 	FailoverType *string
 
 	// Resumes the LRO from the provided token.
@@ -72,7 +72,7 @@ type AccountsClientGetCustomerInitiatedMigrationOptions struct {
 // AccountsClientGetPropertiesOptions contains the optional parameters for the AccountsClient.GetProperties method.
 type AccountsClientGetPropertiesOptions struct {
 	// May be used to expand the properties within account's properties. By default, data is not included when fetching properties.
-	// Currently we only support geoReplicationStats and blobRestoreStatus.
+// Currently we only support geoReplicationStats and blobRestoreStatus.
 	Expand *StorageAccountExpand
 }
 
@@ -141,8 +141,8 @@ type BlobContainersClientCreateOptions struct {
 // method.
 type BlobContainersClientCreateOrUpdateImmutabilityPolicyOptions struct {
 	// The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation
-	// only if the immutability policy already exists. If omitted, this operation will
-	// always be applied.
+// only if the immutability policy already exists. If omitted, this operation will
+// always be applied.
 	IfMatch *string
 
 	// The ImmutabilityPolicy Properties that will be created or updated to a blob container.
@@ -171,8 +171,8 @@ type BlobContainersClientExtendImmutabilityPolicyOptions struct {
 // method.
 type BlobContainersClientGetImmutabilityPolicyOptions struct {
 	// The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation
-	// only if the immutability policy already exists. If omitted, this operation will
-	// always be applied.
+// only if the immutability policy already exists. If omitted, this operation will
+// always be applied.
 	IfMatch *string
 }
 
@@ -311,17 +311,17 @@ type FileServicesClientSetServicePropertiesOptions struct {
 // FileSharesClientCreateOptions contains the optional parameters for the FileSharesClient.Create method.
 type FileSharesClientCreateOptions struct {
 	// Optional, used to expand the properties within share's properties. Valid values are: snapshots. Should be passed as a string
-	// with delimiter ','
+// with delimiter ','
 	Expand *string
 }
 
 // FileSharesClientDeleteOptions contains the optional parameters for the FileSharesClient.Delete method.
 type FileSharesClientDeleteOptions struct {
 	// Optional. Valid values are: snapshots, leased-snapshots, none. The default value is snapshots. For 'snapshots', the file
-	// share is deleted including all of its file share snapshots. If the file share
-	// contains leased-snapshots, the deletion fails. For 'leased-snapshots', the file share is deleted included all of its file
-	// share snapshots (leased/unleased). For 'none', the file share is deleted if it
-	// has no share snapshots. If the file share contains any snapshots (leased or unleased), the deletion fails.
+// share is deleted including all of its file share snapshots. If the file share
+// contains leased-snapshots, the deletion fails. For 'leased-snapshots', the file share is deleted included all of its file
+// share snapshots (leased/unleased). For 'none', the file share is deleted if it
+// has no share snapshots. If the file share contains any snapshots (leased or unleased), the deletion fails.
 	Include *string
 
 	// Optional, used to delete a snapshot.
@@ -331,7 +331,7 @@ type FileSharesClientDeleteOptions struct {
 // FileSharesClientGetOptions contains the optional parameters for the FileSharesClient.Get method.
 type FileSharesClientGetOptions struct {
 	// Optional, used to expand the properties within share's properties. Valid values are: stats. Should be passed as a string
-	// with delimiter ','.
+// with delimiter ','.
 	Expand *string
 
 	// Optional, used to retrieve properties of a snapshot.
@@ -350,7 +350,7 @@ type FileSharesClientLeaseOptions struct {
 // FileSharesClientListOptions contains the optional parameters for the FileSharesClient.NewListPager method.
 type FileSharesClientListOptions struct {
 	// Optional, used to expand the properties within share's properties. Valid values are: deleted, snapshots. Should be passed
-	// as a string with delimiter ','
+// as a string with delimiter ','
 	Expand *string
 
 	// Optional. When specified, only share names starting with the filter will be listed.
@@ -575,3 +575,4 @@ type TableServicesClientSetServicePropertiesOptions struct {
 type UsagesClientListByLocationOptions struct {
 	// placeholder for future optional parameters
 }
+

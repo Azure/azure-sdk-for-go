@@ -23,7 +23,7 @@ import (
 // ProtectionContainersClient contains the methods for the ProtectionContainers group.
 // Don't use this type directly, use NewProtectionContainersClient() instead.
 type ProtectionContainersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewProtectionContainersClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &ProtectionContainersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -301,8 +301,8 @@ func (client *ProtectionContainersClient) registerCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -377,3 +377,4 @@ func (client *ProtectionContainersClient) unregisterCreateRequest(ctx context.Co
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

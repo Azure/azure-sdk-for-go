@@ -23,7 +23,7 @@ import (
 // SecretsClient contains the methods for the Secrets group.
 // Don't use this type directly, use NewSecretsClient() instead.
 type SecretsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &SecretsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -98,8 +98,8 @@ func (client *SecretsClient) createOrUpdateCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -238,7 +238,7 @@ func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClie
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - options - SecretsClientListOptions contains the optional parameters for the SecretsClient.NewListPager method.
-func (client *SecretsClient) NewListPager(resourceGroupName string, resourceName string, options *SecretsClientListOptions) *runtime.Pager[SecretsClientListResponse] {
+func (client *SecretsClient) NewListPager(resourceGroupName string, resourceName string, options *SecretsClientListOptions) (*runtime.Pager[SecretsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SecretsClientListResponse]{
 		More: func(page SecretsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -356,8 +356,8 @@ func (client *SecretsClient) updateCreateRequest(ctx context.Context, resourceGr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -369,3 +369,4 @@ func (client *SecretsClient) updateHandleResponse(resp *http.Response) (SecretsC
 	}
 	return result, nil
 }
+

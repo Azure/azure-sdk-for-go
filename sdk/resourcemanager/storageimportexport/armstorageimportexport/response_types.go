@@ -66,3 +66,4 @@ type OperationsClientListResponse struct {
 	// List operations response
 	ListOperationsResponse
 }
+

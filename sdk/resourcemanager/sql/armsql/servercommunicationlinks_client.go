@@ -23,7 +23,7 @@ import (
 // ServerCommunicationLinksClient contains the methods for the ServerCommunicationLinks group.
 // Don't use this type directly, use NewServerCommunicationLinksClient() instead.
 type ServerCommunicationLinksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerCommunicationLinksClient(subscriptionID string, credential azcore.
 	}
 	client := &ServerCommunicationLinksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ServerCommunicationLinksClient) createOrUpdateCreateRequest(ctx co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -252,7 +252,7 @@ func (client *ServerCommunicationLinksClient) getHandleResponse(resp *http.Respo
 //   - serverName - The name of the server.
 //   - options - ServerCommunicationLinksClientListByServerOptions contains the optional parameters for the ServerCommunicationLinksClient.NewListByServerPager
 //     method.
-func (client *ServerCommunicationLinksClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerCommunicationLinksClientListByServerOptions) *runtime.Pager[ServerCommunicationLinksClientListByServerResponse] {
+func (client *ServerCommunicationLinksClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerCommunicationLinksClientListByServerOptions) (*runtime.Pager[ServerCommunicationLinksClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerCommunicationLinksClientListByServerResponse]{
 		More: func(page ServerCommunicationLinksClientListByServerResponse) bool {
 			return false
@@ -308,3 +308,4 @@ func (client *ServerCommunicationLinksClient) listByServerHandleResponse(resp *h
 	}
 	return result, nil
 }
+

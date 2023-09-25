@@ -23,7 +23,7 @@ import (
 // ManagedDatabaseSecurityAlertPoliciesClient contains the methods for the ManagedDatabaseSecurityAlertPolicies group.
 // Don't use this type directly, use NewManagedDatabaseSecurityAlertPoliciesClient() instead.
 type ManagedDatabaseSecurityAlertPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedDatabaseSecurityAlertPoliciesClient(subscriptionID string, creden
 	}
 	client := &ManagedDatabaseSecurityAlertPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -105,8 +105,8 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRe
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -200,7 +200,7 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) getHandleResponse(resp
 //   - databaseName - The name of the managed database for which the security alert policies are defined.
 //   - options - ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseSecurityAlertPoliciesClient.NewListByDatabasePager
 //     method.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse] {
+func (client *ManagedDatabaseSecurityAlertPoliciesClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions) (*runtime.Pager[ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -266,3 +266,4 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) listByDatabaseHandleRe
 	}
 	return result, nil
 }
+

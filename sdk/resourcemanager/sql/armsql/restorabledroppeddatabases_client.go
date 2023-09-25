@@ -23,7 +23,7 @@ import (
 // RestorableDroppedDatabasesClient contains the methods for the RestorableDroppedDatabases group.
 // Don't use this type directly, use NewRestorableDroppedDatabasesClient() instead.
 type RestorableDroppedDatabasesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRestorableDroppedDatabasesClient(subscriptionID string, credential azcor
 	}
 	client := &RestorableDroppedDatabasesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -123,7 +123,7 @@ func (client *RestorableDroppedDatabasesClient) getHandleResponse(resp *http.Res
 //   - serverName - The name of the server.
 //   - options - RestorableDroppedDatabasesClientListByServerOptions contains the optional parameters for the RestorableDroppedDatabasesClient.NewListByServerPager
 //     method.
-func (client *RestorableDroppedDatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *RestorableDroppedDatabasesClientListByServerOptions) *runtime.Pager[RestorableDroppedDatabasesClientListByServerResponse] {
+func (client *RestorableDroppedDatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *RestorableDroppedDatabasesClientListByServerOptions) (*runtime.Pager[RestorableDroppedDatabasesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RestorableDroppedDatabasesClientListByServerResponse]{
 		More: func(page RestorableDroppedDatabasesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -185,3 +185,4 @@ func (client *RestorableDroppedDatabasesClient) listByServerHandleResponse(resp 
 	}
 	return result, nil
 }
+

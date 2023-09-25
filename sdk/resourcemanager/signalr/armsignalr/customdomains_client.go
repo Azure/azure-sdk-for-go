@@ -23,7 +23,7 @@ import (
 // CustomDomainsClient contains the methods for the SignalRCustomDomains group.
 // Don't use this type directly, use NewCustomDomainsClient() instead.
 type CustomDomainsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &CustomDomainsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *CustomDomainsClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -258,7 +258,7 @@ func (client *CustomDomainsClient) getHandleResponse(resp *http.Response) (Custo
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.NewListPager method.
-func (client *CustomDomainsClient) NewListPager(resourceGroupName string, resourceName string, options *CustomDomainsClientListOptions) *runtime.Pager[CustomDomainsClientListResponse] {
+func (client *CustomDomainsClient) NewListPager(resourceGroupName string, resourceName string, options *CustomDomainsClientListOptions) (*runtime.Pager[CustomDomainsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CustomDomainsClientListResponse]{
 		More: func(page CustomDomainsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -317,3 +317,4 @@ func (client *CustomDomainsClient) listHandleResponse(resp *http.Response) (Cust
 	}
 	return result, nil
 }
+

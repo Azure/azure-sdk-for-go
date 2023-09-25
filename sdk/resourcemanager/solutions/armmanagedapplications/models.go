@@ -70,12 +70,12 @@ type ApplicationArtifact struct {
 // ApplicationAuthorization - The managed application provider authorization.
 type ApplicationAuthorization struct {
 	// REQUIRED; The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the
-	// managed application resources.
+// managed application resources.
 	PrincipalID *string
 
 	// REQUIRED; The provider's role definition identifier. This role will define all the permissions that the provider must have
-	// on the managed application's container resource group. This role definition cannot have
-	// permission to delete the resource group.
+// on the managed application's container resource group. This role definition cannot have
+// permission to delete the resource group.
 	RoleDefinitionID *string
 }
 
@@ -160,15 +160,15 @@ type ApplicationDefinitionProperties struct {
 	LockLevel *ApplicationLockLevel
 
 	// The collection of managed application artifacts. The portal will use the files specified as artifacts to construct the
-	// user experience of creating a managed application from a managed application
-	// definition.
+// user experience of creating a managed application from a managed application
+// definition.
 	Artifacts []*ApplicationDefinitionArtifact
 
 	// The managed application provider authorizations.
 	Authorizations []*ApplicationAuthorization
 
 	// The createUiDefinition json for the backing template with Microsoft.Solutions/applications resource. It can be a JObject
-	// or well-formed JSON string.
+// or well-formed JSON string.
 	CreateUIDefinition any
 
 	// The managed application deployment policy.
@@ -449,8 +449,8 @@ type Identity struct {
 	Type *ResourceIdentityType
 
 	// The list of user identities associated with the resource. The user identity dictionary key references will be resource
-	// ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+// ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserAssignedResourceIdentity
 
 	// READ-ONLY; The principal ID of resource identity.
@@ -622,15 +622,15 @@ type Operation struct {
 	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
-	// operations.
+// operations.
 	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
-	// "Microsoft.Compute/virtualMachines/capture/action"
+// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
-	// value is "user,system"
+// value is "user,system"
 	Origin *Origin
 }
 
@@ -640,15 +640,15 @@ type OperationDisplay struct {
 	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
-	// Machine", "Restart Virtual Machine".
+// Machine", "Restart Virtual Machine".
 	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
-	// Compute".
+// Compute".
 	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
-	// Schedule Collections".
+// Schedule Collections".
 	Resource *string
 }
 
@@ -785,3 +785,4 @@ type UserAssignedResourceIdentity struct {
 	// READ-ONLY; The tenant id of user assigned identity.
 	TenantID *string
 }
+

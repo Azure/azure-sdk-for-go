@@ -71,3 +71,4 @@ type AppliancesClientListOperationsOptions struct {
 type AppliancesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
+

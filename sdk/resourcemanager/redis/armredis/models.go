@@ -138,7 +138,7 @@ type CommonPropertiesRedisConfiguration struct {
 	MaxmemoryReserved *string
 
 	// Preferred auth method to communicate to storage account used for data persistence, specify SAS or ManagedIdentity, default
-	// value is SAS
+// value is SAS
 	PreferredDataPersistenceAuthMethod *string
 
 	// Specifies whether the rdb backup is enabled
@@ -160,7 +160,7 @@ type CommonPropertiesRedisConfiguration struct {
 	Maxclients *string
 
 	// READ-ONLY; Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity,
-	// default value is SAS
+// default value is SAS
 	PreferredDataArchiveAuthMethod *string
 
 	// READ-ONLY; Zonal Configuration
@@ -197,18 +197,18 @@ type CreateProperties struct {
 	MinimumTLSVersion *TLSVersion
 
 	// Whether or not public endpoint access is allowed for this cache. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
-	// Default value is 'Enabled'
+// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
+// Default value is 'Enabled'
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// All Redis Settings. Few possible keys:
-	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-	// etc.
+// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
+// etc.
 	RedisConfiguration *CommonPropertiesRedisConfiguration
 
 	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers
-	// to the latest stable Redis version that is available. Supported versions: 4.0,
-	// 6.0 (latest). Default value is 'latest'.
+// to the latest stable Redis version that is available. Supported versions: 4.0,
+// 6.0 (latest). Default value is 'latest'.
 	RedisVersion *string
 
 	// The number of replicas to be created per primary.
@@ -221,19 +221,19 @@ type CreateProperties struct {
 	ShardCount *int32
 
 	// Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network;
-	// auto assigned by default.
+// auto assigned by default.
 	StaticIP *string
 
 	// The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format:
-	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string
 
 	// A dictionary of tenant settings
 	TenantSettings map[string]*string
 
 	// Optional: Specifies the update channel for the monthly Redis updates your Redis Cache will receive. Caches using 'Preview'
-	// update channel get latest Redis updates at least 4 weeks ahead of 'Stable'
-	// channel caches. Default value is 'Stable'.
+// update channel get latest Redis updates at least 4 weeks ahead of 'Stable'
+// channel caches. Default value is 'Stable'.
 	UpdateChannel *UpdateChannel
 }
 
@@ -264,6 +264,13 @@ type ErrorDetail struct {
 	Target *string
 }
 
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
 // ExportRDBParameters - Parameters for Redis export operation.
 type ExportRDBParameters struct {
 	// REQUIRED; Container name to export to.
@@ -276,7 +283,7 @@ type ExportRDBParameters struct {
 	Format *string
 
 	// Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity, default
-	// value is SAS
+// value is SAS
 	PreferredDataArchiveAuthMethod *string
 
 	// Subscription id of the storage container for data to be exported using ManagedIdentity.
@@ -286,6 +293,22 @@ type ExportRDBParameters struct {
 // FirewallRule - A firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
 // to connect
 type FirewallRule struct {
+	// REQUIRED; redis cache firewall rule properties
+	Properties *FirewallRuleProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// FirewallRuleCreateParameters - Parameters required for creating a firewall rule on redis cache. (Note, you can just use
+// the FirewallRule type instead now.)
+type FirewallRuleCreateParameters struct {
 	// REQUIRED; redis cache firewall rule properties
 	Properties *FirewallRuleProperties
 
@@ -332,7 +355,7 @@ type ImportRDBParameters struct {
 	Format *string
 
 	// Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity, default
-	// value is SAS
+// value is SAS
 	PreferredDataArchiveAuthMethod *string
 
 	// Subscription id of the storage container containing files to import using Managed Identity.
@@ -384,11 +407,11 @@ type LinkedServerCreateProperties struct {
 	ServerRole *ReplicationRole
 
 	// READ-ONLY; The unchanging DNS name which will always point to current geo-primary cache among the linked redis caches for
-	// seamless Geo Failover experience.
+// seamless Geo Failover experience.
 	GeoReplicatedPrimaryHostName *string
 
 	// READ-ONLY; The changing DNS name that resolves to the current geo-primary cache among the linked redis caches before or
-	// after the Geo Failover.
+// after the Geo Failover.
 	PrimaryHostName *string
 }
 
@@ -404,11 +427,11 @@ type LinkedServerProperties struct {
 	ServerRole *ReplicationRole
 
 	// READ-ONLY; The unchanging DNS name which will always point to current geo-primary cache among the linked redis caches for
-	// seamless Geo Failover experience.
+// seamless Geo Failover experience.
 	GeoReplicatedPrimaryHostName *string
 
 	// READ-ONLY; The changing DNS name that resolves to the current geo-primary cache among the linked redis caches before or
-	// after the Geo Failover.
+// after the Geo Failover.
 	PrimaryHostName *string
 
 	// READ-ONLY; Terminal state of the link between primary and secondary redis cache.
@@ -454,14 +477,14 @@ type ManagedServiceIdentity struct {
 	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
-	// resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
-	// The dictionary values can be empty objects ({}) in
-	// requests.
+// resource ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+// The dictionary values can be empty objects ({}) in
+// requests.
 	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
-	// identity.
+// identity.
 	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
@@ -692,18 +715,18 @@ type Properties struct {
 	MinimumTLSVersion *TLSVersion
 
 	// Whether or not public endpoint access is allowed for this cache. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
-	// Default value is 'Enabled'
+// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
+// Default value is 'Enabled'
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// All Redis Settings. Few possible keys:
-	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-	// etc.
+// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
+// etc.
 	RedisConfiguration *CommonPropertiesRedisConfiguration
 
 	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers
-	// to the latest stable Redis version that is available. Supported versions: 4.0,
-	// 6.0 (latest). Default value is 'latest'.
+// to the latest stable Redis version that is available. Supported versions: 4.0,
+// 6.0 (latest). Default value is 'latest'.
 	RedisVersion *string
 
 	// The number of replicas to be created per primary.
@@ -716,19 +739,19 @@ type Properties struct {
 	ShardCount *int32
 
 	// Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network;
-	// auto assigned by default.
+// auto assigned by default.
 	StaticIP *string
 
 	// The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format:
-	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string
 
 	// A dictionary of tenant settings
 	TenantSettings map[string]*string
 
 	// Optional: Specifies the update channel for the monthly Redis updates your Redis Cache will receive. Caches using 'Preview'
-	// update channel get latest Redis updates at least 4 weeks ahead of 'Stable'
-	// channel caches. Default value is 'Stable'.
+// update channel get latest Redis updates at least 4 weeks ahead of 'Stable'
+// channel caches. Default value is 'Stable'.
 	UpdateChannel *UpdateChannel
 
 	// READ-ONLY; The keys of the Redis cache - not set if this object is not the response to Create or Update redis cache
@@ -756,6 +779,19 @@ type Properties struct {
 	SSLPort *int32
 }
 
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // RebootParameters - Specifies which Redis node(s) to reboot.
 type RebootParameters struct {
 	// A list of redis instances to reboot, specified by per-instance SSL ports or non-SSL ports.
@@ -772,6 +808,18 @@ type RebootParameters struct {
 type RegenerateKeyParameters struct {
 	// REQUIRED; The Redis access key to regenerate.
 	KeyType *RedisKeyType
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // ResourceInfo - A single Redis item in List or Get Operation.
@@ -804,7 +852,7 @@ type ResourceInfo struct {
 // SKU parameters supplied to the create Redis operation.
 type SKU struct {
 	// REQUIRED; The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for
-	// P (Premium) family (1, 2, 3, 4).
+// P (Premium) family (1, 2, 3, 4).
 	Capacity *int32
 
 	// REQUIRED; The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).
@@ -832,6 +880,25 @@ type ScheduleEntry struct {
 	MaintenanceWindow *string
 }
 
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // UpdateParameters - Parameters supplied to the Update Redis operation.
 type UpdateParameters struct {
 	// The identity of the resource.
@@ -853,18 +920,18 @@ type UpdateProperties struct {
 	MinimumTLSVersion *TLSVersion
 
 	// Whether or not public endpoint access is allowed for this cache. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
-	// Default value is 'Enabled'
+// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
+// Default value is 'Enabled'
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// All Redis Settings. Few possible keys:
-	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-	// etc.
+// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
+// etc.
 	RedisConfiguration *CommonPropertiesRedisConfiguration
 
 	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers
-	// to the latest stable Redis version that is available. Supported versions: 4.0,
-	// 6.0 (latest). Default value is 'latest'.
+// to the latest stable Redis version that is available. Supported versions: 4.0,
+// 6.0 (latest). Default value is 'latest'.
 	RedisVersion *string
 
 	// The number of replicas to be created per primary.
@@ -883,8 +950,8 @@ type UpdateProperties struct {
 	TenantSettings map[string]*string
 
 	// Optional: Specifies the update channel for the monthly Redis updates your Redis Cache will receive. Caches using 'Preview'
-	// update channel get latest Redis updates at least 4 weeks ahead of 'Stable'
-	// channel caches. Default value is 'Stable'.
+// update channel get latest Redis updates at least 4 weeks ahead of 'Stable'
+// channel caches. Default value is 'Stable'.
 	UpdateChannel *UpdateChannel
 }
 
@@ -908,3 +975,4 @@ type UserAssignedIdentity struct {
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
 }
+

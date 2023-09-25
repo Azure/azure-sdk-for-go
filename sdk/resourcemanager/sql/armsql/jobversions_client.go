@@ -24,7 +24,7 @@ import (
 // JobVersionsClient contains the methods for the JobVersions group.
 // Don't use this type directly, use NewJobVersionsClient() instead.
 type JobVersionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewJobVersionsClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &JobVersionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -127,7 +127,7 @@ func (client *JobVersionsClient) getHandleResponse(resp *http.Response) (JobVers
 //   - jobName - The name of the job to get.
 //   - options - JobVersionsClientListByJobOptions contains the optional parameters for the JobVersionsClient.NewListByJobPager
 //     method.
-func (client *JobVersionsClient) NewListByJobPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobVersionsClientListByJobOptions) *runtime.Pager[JobVersionsClientListByJobResponse] {
+func (client *JobVersionsClient) NewListByJobPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobVersionsClientListByJobOptions) (*runtime.Pager[JobVersionsClientListByJobResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[JobVersionsClientListByJobResponse]{
 		More: func(page JobVersionsClientListByJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -197,3 +197,4 @@ func (client *JobVersionsClient) listByJobHandleResponse(resp *http.Response) (J
 	}
 	return result, nil
 }
+

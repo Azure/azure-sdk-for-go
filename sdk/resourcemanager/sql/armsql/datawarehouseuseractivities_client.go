@@ -23,7 +23,7 @@ import (
 // DataWarehouseUserActivitiesClient contains the methods for the DataWarehouseUserActivities group.
 // Don't use this type directly, use NewDataWarehouseUserActivitiesClient() instead.
 type DataWarehouseUserActivitiesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDataWarehouseUserActivitiesClient(subscriptionID string, credential azco
 	}
 	client := &DataWarehouseUserActivitiesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -124,7 +124,7 @@ func (client *DataWarehouseUserActivitiesClient) getHandleResponse(resp *http.Re
 //   - databaseName - The name of the database.
 //   - options - DataWarehouseUserActivitiesClientListByDatabaseOptions contains the optional parameters for the DataWarehouseUserActivitiesClient.NewListByDatabasePager
 //     method.
-func (client *DataWarehouseUserActivitiesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DataWarehouseUserActivitiesClientListByDatabaseOptions) *runtime.Pager[DataWarehouseUserActivitiesClientListByDatabaseResponse] {
+func (client *DataWarehouseUserActivitiesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DataWarehouseUserActivitiesClientListByDatabaseOptions) (*runtime.Pager[DataWarehouseUserActivitiesClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DataWarehouseUserActivitiesClientListByDatabaseResponse]{
 		More: func(page DataWarehouseUserActivitiesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -190,3 +190,4 @@ func (client *DataWarehouseUserActivitiesClient) listByDatabaseHandleResponse(re
 	}
 	return result, nil
 }
+

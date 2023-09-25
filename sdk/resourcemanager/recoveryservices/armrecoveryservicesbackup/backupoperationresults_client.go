@@ -23,7 +23,7 @@ import (
 // BackupOperationResultsClient contains the methods for the BackupOperationResults group.
 // Don't use this type directly, use NewBackupOperationResultsClient() instead.
 type BackupOperationResultsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupOperationResultsClient(subscriptionID string, credential azcore.To
 	}
 	client := &BackupOperationResultsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,3 +101,4 @@ func (client *BackupOperationResultsClient) getCreateRequest(ctx context.Context
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

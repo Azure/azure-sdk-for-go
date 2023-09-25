@@ -23,7 +23,7 @@ import (
 // OperationClient contains the methods for the Operation group.
 // Don't use this type directly, use NewOperationClient() instead.
 type OperationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewOperationClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &OperationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -93,8 +93,8 @@ func (client *OperationClient) validateCreateRequest(ctx context.Context, vaultN
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -106,3 +106,4 @@ func (client *OperationClient) validateHandleResponse(resp *http.Response) (Oper
 	}
 	return result, nil
 }
+

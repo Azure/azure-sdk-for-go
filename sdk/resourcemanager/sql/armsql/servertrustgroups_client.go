@@ -23,7 +23,7 @@ import (
 // ServerTrustGroupsClient contains the methods for the ServerTrustGroups group.
 // Don't use this type directly, use NewServerTrustGroupsClient() instead.
 type ServerTrustGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerTrustGroupsClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &ServerTrustGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ServerTrustGroupsClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -268,7 +268,7 @@ func (client *ServerTrustGroupsClient) getHandleResponse(resp *http.Response) (S
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ServerTrustGroupsClientListByInstanceOptions contains the optional parameters for the ServerTrustGroupsClient.NewListByInstancePager
 //     method.
-func (client *ServerTrustGroupsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ServerTrustGroupsClientListByInstanceOptions) *runtime.Pager[ServerTrustGroupsClientListByInstanceResponse] {
+func (client *ServerTrustGroupsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ServerTrustGroupsClientListByInstanceOptions) (*runtime.Pager[ServerTrustGroupsClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerTrustGroupsClientListByInstanceResponse]{
 		More: func(page ServerTrustGroupsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -339,7 +339,7 @@ func (client *ServerTrustGroupsClient) listByInstanceHandleResponse(resp *http.R
 //   - locationName - The name of the region where the resource is located.
 //   - options - ServerTrustGroupsClientListByLocationOptions contains the optional parameters for the ServerTrustGroupsClient.NewListByLocationPager
 //     method.
-func (client *ServerTrustGroupsClient) NewListByLocationPager(resourceGroupName string, locationName string, options *ServerTrustGroupsClientListByLocationOptions) *runtime.Pager[ServerTrustGroupsClientListByLocationResponse] {
+func (client *ServerTrustGroupsClient) NewListByLocationPager(resourceGroupName string, locationName string, options *ServerTrustGroupsClientListByLocationOptions) (*runtime.Pager[ServerTrustGroupsClientListByLocationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerTrustGroupsClientListByLocationResponse]{
 		More: func(page ServerTrustGroupsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -401,3 +401,4 @@ func (client *ServerTrustGroupsClient) listByLocationHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

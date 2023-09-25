@@ -481,3 +481,4 @@ type ValidateOperationResultsClientGetOptions struct {
 type ValidateOperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
+

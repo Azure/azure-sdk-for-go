@@ -23,7 +23,7 @@ import (
 // EncryptionProtectorsClient contains the methods for the EncryptionProtectors group.
 // Don't use this type directly, use NewEncryptionProtectorsClient() instead.
 type EncryptionProtectorsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewEncryptionProtectorsClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &EncryptionProtectorsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *EncryptionProtectorsClient) createOrUpdateCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -196,7 +196,7 @@ func (client *EncryptionProtectorsClient) getHandleResponse(resp *http.Response)
 //   - serverName - The name of the server.
 //   - options - EncryptionProtectorsClientListByServerOptions contains the optional parameters for the EncryptionProtectorsClient.NewListByServerPager
 //     method.
-func (client *EncryptionProtectorsClient) NewListByServerPager(resourceGroupName string, serverName string, options *EncryptionProtectorsClientListByServerOptions) *runtime.Pager[EncryptionProtectorsClientListByServerResponse] {
+func (client *EncryptionProtectorsClient) NewListByServerPager(resourceGroupName string, serverName string, options *EncryptionProtectorsClientListByServerOptions) (*runtime.Pager[EncryptionProtectorsClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EncryptionProtectorsClientListByServerResponse]{
 		More: func(page EncryptionProtectorsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -331,3 +331,4 @@ func (client *EncryptionProtectorsClient) revalidateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // DeletedAccountsClient contains the methods for the DeletedAccounts group.
 // Don't use this type directly, use NewDeletedAccountsClient() instead.
 type DeletedAccountsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDeletedAccountsClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &DeletedAccountsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -108,7 +108,7 @@ func (client *DeletedAccountsClient) getHandleResponse(resp *http.Response) (Del
 // Generated from API version 2023-01-01
 //   - options - DeletedAccountsClientListOptions contains the optional parameters for the DeletedAccountsClient.NewListPager
 //     method.
-func (client *DeletedAccountsClient) NewListPager(options *DeletedAccountsClientListOptions) *runtime.Pager[DeletedAccountsClientListResponse] {
+func (client *DeletedAccountsClient) NewListPager(options *DeletedAccountsClientListOptions) (*runtime.Pager[DeletedAccountsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DeletedAccountsClientListResponse]{
 		More: func(page DeletedAccountsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -162,3 +162,4 @@ func (client *DeletedAccountsClient) listHandleResponse(resp *http.Response) (De
 	}
 	return result, nil
 }
+

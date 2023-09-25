@@ -23,7 +23,7 @@ import (
 // ServerConfigurationOptionsClient contains the methods for the ServerConfigurationOptions group.
 // Don't use this type directly, use NewServerConfigurationOptionsClient() instead.
 type ServerConfigurationOptionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerConfigurationOptionsClient(subscriptionID string, credential azcor
 	}
 	client := &ServerConfigurationOptionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ServerConfigurationOptionsClient) createOrUpdateCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -196,7 +196,7 @@ func (client *ServerConfigurationOptionsClient) getHandleResponse(resp *http.Res
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ServerConfigurationOptionsClientListByManagedInstanceOptions contains the optional parameters for the ServerConfigurationOptionsClient.NewListByManagedInstancePager
 //     method.
-func (client *ServerConfigurationOptionsClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ServerConfigurationOptionsClientListByManagedInstanceOptions) *runtime.Pager[ServerConfigurationOptionsClientListByManagedInstanceResponse] {
+func (client *ServerConfigurationOptionsClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ServerConfigurationOptionsClientListByManagedInstanceOptions) (*runtime.Pager[ServerConfigurationOptionsClientListByManagedInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerConfigurationOptionsClientListByManagedInstanceResponse]{
 		More: func(page ServerConfigurationOptionsClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -258,3 +258,4 @@ func (client *ServerConfigurationOptionsClient) listByManagedInstanceHandleRespo
 	}
 	return result, nil
 }
+

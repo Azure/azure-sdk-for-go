@@ -23,7 +23,7 @@ import (
 // TransparentDataEncryptionsClient contains the methods for the TransparentDataEncryptions group.
 // Don't use this type directly, use NewTransparentDataEncryptionsClient() instead.
 type TransparentDataEncryptionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTransparentDataEncryptionsClient(subscriptionID string, credential azcor
 	}
 	client := &TransparentDataEncryptionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -123,8 +123,8 @@ func (client *TransparentDataEncryptionsClient) createOrUpdateCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -209,7 +209,7 @@ func (client *TransparentDataEncryptionsClient) getHandleResponse(resp *http.Res
 //   - databaseName - The name of the logical database for which the transparent data encryption is defined.
 //   - options - TransparentDataEncryptionsClientListByDatabaseOptions contains the optional parameters for the TransparentDataEncryptionsClient.NewListByDatabasePager
 //     method.
-func (client *TransparentDataEncryptionsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *TransparentDataEncryptionsClientListByDatabaseOptions) *runtime.Pager[TransparentDataEncryptionsClientListByDatabaseResponse] {
+func (client *TransparentDataEncryptionsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *TransparentDataEncryptionsClientListByDatabaseOptions) (*runtime.Pager[TransparentDataEncryptionsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TransparentDataEncryptionsClientListByDatabaseResponse]{
 		More: func(page TransparentDataEncryptionsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -275,3 +275,4 @@ func (client *TransparentDataEncryptionsClient) listByDatabaseHandleResponse(res
 	}
 	return result, nil
 }
+

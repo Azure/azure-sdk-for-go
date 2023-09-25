@@ -23,7 +23,7 @@ import (
 // OutboundFirewallRulesClient contains the methods for the OutboundFirewallRules group.
 // Don't use this type directly, use NewOutboundFirewallRulesClient() instead.
 type OutboundFirewallRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewOutboundFirewallRulesClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &OutboundFirewallRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *OutboundFirewallRulesClient) createOrUpdateCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -265,7 +265,7 @@ func (client *OutboundFirewallRulesClient) getHandleResponse(resp *http.Response
 //   - serverName - The name of the server.
 //   - options - OutboundFirewallRulesClientListByServerOptions contains the optional parameters for the OutboundFirewallRulesClient.NewListByServerPager
 //     method.
-func (client *OutboundFirewallRulesClient) NewListByServerPager(resourceGroupName string, serverName string, options *OutboundFirewallRulesClientListByServerOptions) *runtime.Pager[OutboundFirewallRulesClientListByServerResponse] {
+func (client *OutboundFirewallRulesClient) NewListByServerPager(resourceGroupName string, serverName string, options *OutboundFirewallRulesClientListByServerOptions) (*runtime.Pager[OutboundFirewallRulesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[OutboundFirewallRulesClientListByServerResponse]{
 		More: func(page OutboundFirewallRulesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -327,3 +327,4 @@ func (client *OutboundFirewallRulesClient) listByServerHandleResponse(resp *http
 	}
 	return result, nil
 }
+

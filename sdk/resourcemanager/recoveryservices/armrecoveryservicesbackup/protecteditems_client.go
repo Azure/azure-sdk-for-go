@@ -23,7 +23,7 @@ import (
 // ProtectedItemsClient contains the methods for the ProtectedItems group.
 // Don't use this type directly, use NewProtectedItemsClient() instead.
 type ProtectedItemsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewProtectedItemsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &ProtectedItemsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -111,8 +111,8 @@ func (client *ProtectedItemsClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,3 +269,4 @@ func (client *ProtectedItemsClient) getHandleResponse(resp *http.Response) (Prot
 	}
 	return result, nil
 }
+

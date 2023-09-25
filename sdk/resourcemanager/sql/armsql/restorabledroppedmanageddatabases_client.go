@@ -23,7 +23,7 @@ import (
 // RestorableDroppedManagedDatabasesClient contains the methods for the RestorableDroppedManagedDatabases group.
 // Don't use this type directly, use NewRestorableDroppedManagedDatabasesClient() instead.
 type RestorableDroppedManagedDatabasesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRestorableDroppedManagedDatabasesClient(subscriptionID string, credentia
 	}
 	client := &RestorableDroppedManagedDatabasesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,7 +117,7 @@ func (client *RestorableDroppedManagedDatabasesClient) getHandleResponse(resp *h
 //   - managedInstanceName - The name of the managed instance.
 //   - options - RestorableDroppedManagedDatabasesClientListByInstanceOptions contains the optional parameters for the RestorableDroppedManagedDatabasesClient.NewListByInstancePager
 //     method.
-func (client *RestorableDroppedManagedDatabasesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *RestorableDroppedManagedDatabasesClientListByInstanceOptions) *runtime.Pager[RestorableDroppedManagedDatabasesClientListByInstanceResponse] {
+func (client *RestorableDroppedManagedDatabasesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *RestorableDroppedManagedDatabasesClientListByInstanceOptions) (*runtime.Pager[RestorableDroppedManagedDatabasesClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RestorableDroppedManagedDatabasesClientListByInstanceResponse]{
 		More: func(page RestorableDroppedManagedDatabasesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -179,3 +179,4 @@ func (client *RestorableDroppedManagedDatabasesClient) listByInstanceHandleRespo
 	}
 	return result, nil
 }
+

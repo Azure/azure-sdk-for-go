@@ -23,7 +23,7 @@ import (
 // SecurityPINsClient contains the methods for the SecurityPINs group.
 // Don't use this type directly, use NewSecurityPINsClient() instead.
 type SecurityPINsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSecurityPINsClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &SecurityPINsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -93,8 +93,8 @@ func (client *SecurityPINsClient) getCreateRequest(ctx context.Context, vaultNam
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -108,3 +108,4 @@ func (client *SecurityPINsClient) getHandleResponse(resp *http.Response) (Securi
 	}
 	return result, nil
 }
+

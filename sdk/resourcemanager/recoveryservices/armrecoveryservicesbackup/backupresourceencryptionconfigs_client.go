@@ -23,7 +23,7 @@ import (
 // BackupResourceEncryptionConfigsClient contains the methods for the BackupResourceEncryptionConfigs group.
 // Don't use this type directly, use NewBackupResourceEncryptionConfigsClient() instead.
 type BackupResourceEncryptionConfigsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupResourceEncryptionConfigsClient(subscriptionID string, credential 
 	}
 	client := &BackupResourceEncryptionConfigsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -154,7 +154,8 @@ func (client *BackupResourceEncryptionConfigsClient) updateCreateRequest(ctx con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

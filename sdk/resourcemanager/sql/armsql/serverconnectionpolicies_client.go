@@ -23,7 +23,7 @@ import (
 // ServerConnectionPoliciesClient contains the methods for the ServerConnectionPolicies group.
 // Don't use this type directly, use NewServerConnectionPoliciesClient() instead.
 type ServerConnectionPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerConnectionPoliciesClient(subscriptionID string, credential azcore.
 	}
 	client := &ServerConnectionPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ServerConnectionPoliciesClient) createOrUpdateCreateRequest(ctx co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -196,7 +196,7 @@ func (client *ServerConnectionPoliciesClient) getHandleResponse(resp *http.Respo
 //   - serverName - The name of the server.
 //   - options - ServerConnectionPoliciesClientListByServerOptions contains the optional parameters for the ServerConnectionPoliciesClient.NewListByServerPager
 //     method.
-func (client *ServerConnectionPoliciesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerConnectionPoliciesClientListByServerOptions) *runtime.Pager[ServerConnectionPoliciesClientListByServerResponse] {
+func (client *ServerConnectionPoliciesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerConnectionPoliciesClientListByServerOptions) (*runtime.Pager[ServerConnectionPoliciesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerConnectionPoliciesClientListByServerResponse]{
 		More: func(page ServerConnectionPoliciesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -258,3 +258,4 @@ func (client *ServerConnectionPoliciesClient) listByServerHandleResponse(resp *h
 	}
 	return result, nil
 }
+

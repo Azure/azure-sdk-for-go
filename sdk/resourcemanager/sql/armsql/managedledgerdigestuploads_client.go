@@ -23,7 +23,7 @@ import (
 // ManagedLedgerDigestUploadsClient contains the methods for the ManagedLedgerDigestUploads group.
 // Don't use this type directly, use NewManagedLedgerDigestUploadsClient() instead.
 type ManagedLedgerDigestUploadsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedLedgerDigestUploadsClient(subscriptionID string, credential azcor
 	}
 	client := &ManagedLedgerDigestUploadsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *ManagedLedgerDigestUploadsClient) createOrUpdateCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -284,7 +284,7 @@ func (client *ManagedLedgerDigestUploadsClient) getHandleResponse(resp *http.Res
 //   - databaseName - The name of the database.
 //   - options - ManagedLedgerDigestUploadsClientListByDatabaseOptions contains the optional parameters for the ManagedLedgerDigestUploadsClient.NewListByDatabasePager
 //     method.
-func (client *ManagedLedgerDigestUploadsClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedLedgerDigestUploadsClientListByDatabaseOptions) *runtime.Pager[ManagedLedgerDigestUploadsClientListByDatabaseResponse] {
+func (client *ManagedLedgerDigestUploadsClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedLedgerDigestUploadsClientListByDatabaseOptions) (*runtime.Pager[ManagedLedgerDigestUploadsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedLedgerDigestUploadsClientListByDatabaseResponse]{
 		More: func(page ManagedLedgerDigestUploadsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -350,3 +350,4 @@ func (client *ManagedLedgerDigestUploadsClient) listByDatabaseHandleResponse(res
 	}
 	return result, nil
 }
+

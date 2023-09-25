@@ -23,7 +23,7 @@ import (
 // JobDetailsClient contains the methods for the JobDetails group.
 // Don't use this type directly, use NewJobDetailsClient() instead.
 type JobDetailsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewJobDetailsClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &JobDetailsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -107,3 +107,4 @@ func (client *JobDetailsClient) getHandleResponse(resp *http.Response) (JobDetai
 	}
 	return result, nil
 }
+

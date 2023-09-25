@@ -23,7 +23,7 @@ import (
 // ManagedDatabaseTransparentDataEncryptionClient contains the methods for the ManagedDatabaseTransparentDataEncryption group.
 // Don't use this type directly, use NewManagedDatabaseTransparentDataEncryptionClient() instead.
 type ManagedDatabaseTransparentDataEncryptionClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedDatabaseTransparentDataEncryptionClient(subscriptionID string, cr
 	}
 	client := &ManagedDatabaseTransparentDataEncryptionClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -105,8 +105,8 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateCrea
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -200,7 +200,7 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleResponse(
 //   - databaseName - The name of the managed database for which the transparent data encryption is defined.
 //   - options - ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions contains the optional parameters for the
 //     ManagedDatabaseTransparentDataEncryptionClient.NewListByDatabasePager method.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse] {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions) (*runtime.Pager[ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -266,3 +266,4 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseHand
 	}
 	return result, nil
 }
+

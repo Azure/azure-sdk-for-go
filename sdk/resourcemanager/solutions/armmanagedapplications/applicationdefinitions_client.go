@@ -23,7 +23,7 @@ import (
 // ApplicationDefinitionsClient contains the methods for the ApplicationDefinitions group.
 // Don't use this type directly, use NewApplicationDefinitionsClient() instead.
 type ApplicationDefinitionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewApplicationDefinitionsClient(subscriptionID string, credential azcore.To
 	}
 	client := &ApplicationDefinitionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -94,8 +94,8 @@ func (client *ApplicationDefinitionsClient) createOrUpdateCreateRequest(ctx cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -159,8 +159,8 @@ func (client *ApplicationDefinitionsClient) createOrUpdateByIDCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -403,7 +403,7 @@ func (client *ApplicationDefinitionsClient) getByIDHandleResponse(resp *http.Res
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ApplicationDefinitionsClientListByResourceGroupOptions contains the optional parameters for the ApplicationDefinitionsClient.NewListByResourceGroupPager
 //     method.
-func (client *ApplicationDefinitionsClient) NewListByResourceGroupPager(resourceGroupName string, options *ApplicationDefinitionsClientListByResourceGroupOptions) *runtime.Pager[ApplicationDefinitionsClientListByResourceGroupResponse] {
+func (client *ApplicationDefinitionsClient) NewListByResourceGroupPager(resourceGroupName string, options *ApplicationDefinitionsClientListByResourceGroupOptions) (*runtime.Pager[ApplicationDefinitionsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationDefinitionsClientListByResourceGroupResponse]{
 		More: func(page ApplicationDefinitionsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -467,7 +467,7 @@ func (client *ApplicationDefinitionsClient) listByResourceGroupHandleResponse(re
 // Generated from API version 2021-07-01
 //   - options - ApplicationDefinitionsClientListBySubscriptionOptions contains the optional parameters for the ApplicationDefinitionsClient.NewListBySubscriptionPager
 //     method.
-func (client *ApplicationDefinitionsClient) NewListBySubscriptionPager(options *ApplicationDefinitionsClientListBySubscriptionOptions) *runtime.Pager[ApplicationDefinitionsClientListBySubscriptionResponse] {
+func (client *ApplicationDefinitionsClient) NewListBySubscriptionPager(options *ApplicationDefinitionsClientListBySubscriptionOptions) (*runtime.Pager[ApplicationDefinitionsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationDefinitionsClientListBySubscriptionResponse]{
 		More: func(page ApplicationDefinitionsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -573,8 +573,8 @@ func (client *ApplicationDefinitionsClient) updateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -638,8 +638,8 @@ func (client *ApplicationDefinitionsClient) updateByIDCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -651,3 +651,4 @@ func (client *ApplicationDefinitionsClient) updateByIDHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

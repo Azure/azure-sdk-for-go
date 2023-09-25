@@ -23,7 +23,7 @@ import (
 // ServerOperationsClient contains the methods for the ServerOperations group.
 // Don't use this type directly, use NewServerOperationsClient() instead.
 type ServerOperationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerOperationsClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &ServerOperationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewServerOperationsClient(subscriptionID string, credential azcore.TokenCre
 //   - serverName - The name of the server.
 //   - options - ServerOperationsClientListByServerOptions contains the optional parameters for the ServerOperationsClient.NewListByServerPager
 //     method.
-func (client *ServerOperationsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerOperationsClientListByServerOptions) *runtime.Pager[ServerOperationsClientListByServerResponse] {
+func (client *ServerOperationsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerOperationsClientListByServerOptions) (*runtime.Pager[ServerOperationsClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerOperationsClientListByServerResponse]{
 		More: func(page ServerOperationsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -113,3 +113,4 @@ func (client *ServerOperationsClient) listByServerHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

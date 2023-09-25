@@ -23,7 +23,7 @@ import (
 // DataMaskingPoliciesClient contains the methods for the DataMaskingPolicies group.
 // Don't use this type directly, use NewDataMaskingPoliciesClient() instead.
 type DataMaskingPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDataMaskingPoliciesClient(subscriptionID string, credential azcore.Token
 	}
 	client := &DataMaskingPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,8 +101,8 @@ func (client *DataMaskingPoliciesClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -181,3 +181,4 @@ func (client *DataMaskingPoliciesClient) getHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

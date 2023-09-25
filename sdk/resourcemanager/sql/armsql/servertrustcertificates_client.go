@@ -23,7 +23,7 @@ import (
 // ServerTrustCertificatesClient contains the methods for the ServerTrustCertificates group.
 // Don't use this type directly, use NewServerTrustCertificatesClient() instead.
 type ServerTrustCertificatesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerTrustCertificatesClient(subscriptionID string, credential azcore.T
 	}
 	client := &ServerTrustCertificatesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ServerTrustCertificatesClient) createOrUpdateCreateRequest(ctx con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -270,7 +270,7 @@ func (client *ServerTrustCertificatesClient) getHandleResponse(resp *http.Respon
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ServerTrustCertificatesClientListByInstanceOptions contains the optional parameters for the ServerTrustCertificatesClient.NewListByInstancePager
 //     method.
-func (client *ServerTrustCertificatesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ServerTrustCertificatesClientListByInstanceOptions) *runtime.Pager[ServerTrustCertificatesClientListByInstanceResponse] {
+func (client *ServerTrustCertificatesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ServerTrustCertificatesClientListByInstanceOptions) (*runtime.Pager[ServerTrustCertificatesClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerTrustCertificatesClientListByInstanceResponse]{
 		More: func(page ServerTrustCertificatesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -332,3 +332,4 @@ func (client *ServerTrustCertificatesClient) listByInstanceHandleResponse(resp *
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ResourceGuardProxiesClient contains the methods for the ResourceGuardProxies group.
 // Don't use this type directly, use NewResourceGuardProxiesClient() instead.
 type ResourceGuardProxiesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewResourceGuardProxiesClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &ResourceGuardProxiesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewResourceGuardProxiesClient(subscriptionID string, credential azcore.Toke
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - ResourceGuardProxiesClientGetOptions contains the optional parameters for the ResourceGuardProxiesClient.NewGetPager
 //     method.
-func (client *ResourceGuardProxiesClient) NewGetPager(vaultName string, resourceGroupName string, options *ResourceGuardProxiesClientGetOptions) *runtime.Pager[ResourceGuardProxiesClientGetResponse] {
+func (client *ResourceGuardProxiesClient) NewGetPager(vaultName string, resourceGroupName string, options *ResourceGuardProxiesClientGetOptions) (*runtime.Pager[ResourceGuardProxiesClientGetResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ResourceGuardProxiesClientGetResponse]{
 		More: func(page ResourceGuardProxiesClientGetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -112,3 +112,4 @@ func (client *ResourceGuardProxiesClient) getHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

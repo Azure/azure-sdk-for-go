@@ -23,7 +23,7 @@ import (
 // StartStopManagedInstanceSchedulesClient contains the methods for the StartStopManagedInstanceSchedules group.
 // Don't use this type directly, use NewStartStopManagedInstanceSchedulesClient() instead.
 type StartStopManagedInstanceSchedulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewStartStopManagedInstanceSchedulesClient(subscriptionID string, credentia
 	}
 	client := &StartStopManagedInstanceSchedulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -100,8 +100,8 @@ func (client *StartStopManagedInstanceSchedulesClient) createOrUpdateCreateReque
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -245,7 +245,7 @@ func (client *StartStopManagedInstanceSchedulesClient) getHandleResponse(resp *h
 //   - managedInstanceName - The name of the managed instance.
 //   - options - StartStopManagedInstanceSchedulesClientListByInstanceOptions contains the optional parameters for the StartStopManagedInstanceSchedulesClient.NewListByInstancePager
 //     method.
-func (client *StartStopManagedInstanceSchedulesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *StartStopManagedInstanceSchedulesClientListByInstanceOptions) *runtime.Pager[StartStopManagedInstanceSchedulesClientListByInstanceResponse] {
+func (client *StartStopManagedInstanceSchedulesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *StartStopManagedInstanceSchedulesClientListByInstanceOptions) (*runtime.Pager[StartStopManagedInstanceSchedulesClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[StartStopManagedInstanceSchedulesClientListByInstanceResponse]{
 		More: func(page StartStopManagedInstanceSchedulesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -307,3 +307,4 @@ func (client *StartStopManagedInstanceSchedulesClient) listByInstanceHandleRespo
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // MaintenanceWindowOptionsClient contains the methods for the MaintenanceWindowOptions group.
 // Don't use this type directly, use NewMaintenanceWindowOptionsClient() instead.
 type MaintenanceWindowOptionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewMaintenanceWindowOptionsClient(subscriptionID string, credential azcore.
 	}
 	client := &MaintenanceWindowOptionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -111,3 +111,4 @@ func (client *MaintenanceWindowOptionsClient) getHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

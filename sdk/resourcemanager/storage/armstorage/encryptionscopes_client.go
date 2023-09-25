@@ -24,7 +24,7 @@ import (
 // EncryptionScopesClient contains the methods for the EncryptionScopes group.
 // Don't use this type directly, use NewEncryptionScopesClient() instead.
 type EncryptionScopesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &EncryptionScopesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -120,7 +120,7 @@ func (client *EncryptionScopesClient) getHandleResponse(resp *http.Response) (En
 //     3 and 24 characters in length and use numbers and lower-case letters only.
 //   - options - EncryptionScopesClientListOptions contains the optional parameters for the EncryptionScopesClient.NewListPager
 //     method.
-func (client *EncryptionScopesClient) NewListPager(resourceGroupName string, accountName string, options *EncryptionScopesClientListOptions) *runtime.Pager[EncryptionScopesClientListResponse] {
+func (client *EncryptionScopesClient) NewListPager(resourceGroupName string, accountName string, options *EncryptionScopesClientListOptions) (*runtime.Pager[EncryptionScopesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EncryptionScopesClientListResponse]{
 		More: func(page EncryptionScopesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -251,8 +251,8 @@ func (client *EncryptionScopesClient) patchCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, encryptionScope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -325,8 +325,8 @@ func (client *EncryptionScopesClient) putCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, encryptionScope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -338,3 +338,4 @@ func (client *EncryptionScopesClient) putHandleResponse(resp *http.Response) (En
 	}
 	return result, nil
 }
+

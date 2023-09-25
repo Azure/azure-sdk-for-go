@@ -23,7 +23,7 @@ import (
 // ProtectedItemOperationResultsClient contains the methods for the ProtectedItemOperationResults group.
 // Don't use this type directly, use NewProtectedItemOperationResultsClient() instead.
 type ProtectedItemOperationResultsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewProtectedItemOperationResultsClient(subscriptionID string, credential az
 	}
 	client := &ProtectedItemOperationResultsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -123,3 +123,4 @@ func (client *ProtectedItemOperationResultsClient) getHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

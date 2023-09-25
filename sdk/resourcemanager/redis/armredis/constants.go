@@ -9,7 +9,7 @@
 package armredis
 
 const (
-	moduleName    = "armredis"
+	moduleName = "armredis"
 	moduleVersion = "v3.0.0"
 )
 
@@ -17,17 +17,17 @@ const (
 type AccessPolicyAssignmentProvisioningState string
 
 const (
-	AccessPolicyAssignmentProvisioningStateCanceled  AccessPolicyAssignmentProvisioningState = "Canceled"
-	AccessPolicyAssignmentProvisioningStateDeleted   AccessPolicyAssignmentProvisioningState = "Deleted"
-	AccessPolicyAssignmentProvisioningStateDeleting  AccessPolicyAssignmentProvisioningState = "Deleting"
-	AccessPolicyAssignmentProvisioningStateFailed    AccessPolicyAssignmentProvisioningState = "Failed"
+	AccessPolicyAssignmentProvisioningStateCanceled AccessPolicyAssignmentProvisioningState = "Canceled"
+	AccessPolicyAssignmentProvisioningStateDeleted AccessPolicyAssignmentProvisioningState = "Deleted"
+	AccessPolicyAssignmentProvisioningStateDeleting AccessPolicyAssignmentProvisioningState = "Deleting"
+	AccessPolicyAssignmentProvisioningStateFailed AccessPolicyAssignmentProvisioningState = "Failed"
 	AccessPolicyAssignmentProvisioningStateSucceeded AccessPolicyAssignmentProvisioningState = "Succeeded"
-	AccessPolicyAssignmentProvisioningStateUpdating  AccessPolicyAssignmentProvisioningState = "Updating"
+	AccessPolicyAssignmentProvisioningStateUpdating AccessPolicyAssignmentProvisioningState = "Updating"
 )
 
 // PossibleAccessPolicyAssignmentProvisioningStateValues returns the possible values for the AccessPolicyAssignmentProvisioningState const type.
 func PossibleAccessPolicyAssignmentProvisioningStateValues() []AccessPolicyAssignmentProvisioningState {
-	return []AccessPolicyAssignmentProvisioningState{
+	return []AccessPolicyAssignmentProvisioningState{	
 		AccessPolicyAssignmentProvisioningStateCanceled,
 		AccessPolicyAssignmentProvisioningStateDeleted,
 		AccessPolicyAssignmentProvisioningStateDeleting,
@@ -41,17 +41,17 @@ func PossibleAccessPolicyAssignmentProvisioningStateValues() []AccessPolicyAssig
 type AccessPolicyProvisioningState string
 
 const (
-	AccessPolicyProvisioningStateCanceled  AccessPolicyProvisioningState = "Canceled"
-	AccessPolicyProvisioningStateDeleted   AccessPolicyProvisioningState = "Deleted"
-	AccessPolicyProvisioningStateDeleting  AccessPolicyProvisioningState = "Deleting"
-	AccessPolicyProvisioningStateFailed    AccessPolicyProvisioningState = "Failed"
+	AccessPolicyProvisioningStateCanceled AccessPolicyProvisioningState = "Canceled"
+	AccessPolicyProvisioningStateDeleted AccessPolicyProvisioningState = "Deleted"
+	AccessPolicyProvisioningStateDeleting AccessPolicyProvisioningState = "Deleting"
+	AccessPolicyProvisioningStateFailed AccessPolicyProvisioningState = "Failed"
 	AccessPolicyProvisioningStateSucceeded AccessPolicyProvisioningState = "Succeeded"
-	AccessPolicyProvisioningStateUpdating  AccessPolicyProvisioningState = "Updating"
+	AccessPolicyProvisioningStateUpdating AccessPolicyProvisioningState = "Updating"
 )
 
 // PossibleAccessPolicyProvisioningStateValues returns the possible values for the AccessPolicyProvisioningState const type.
 func PossibleAccessPolicyProvisioningStateValues() []AccessPolicyProvisioningState {
-	return []AccessPolicyProvisioningState{
+	return []AccessPolicyProvisioningState{	
 		AccessPolicyProvisioningStateCanceled,
 		AccessPolicyProvisioningStateDeleted,
 		AccessPolicyProvisioningStateDeleting,
@@ -66,12 +66,12 @@ type AccessPolicyType string
 
 const (
 	AccessPolicyTypeBuiltIn AccessPolicyType = "BuiltIn"
-	AccessPolicyTypeCustom  AccessPolicyType = "Custom"
+	AccessPolicyTypeCustom AccessPolicyType = "Custom"
 )
 
 // PossibleAccessPolicyTypeValues returns the possible values for the AccessPolicyType const type.
 func PossibleAccessPolicyTypeValues() []AccessPolicyType {
-	return []AccessPolicyType{
+	return []AccessPolicyType{	
 		AccessPolicyTypeBuiltIn,
 		AccessPolicyTypeCustom,
 	}
@@ -81,20 +81,20 @@ func PossibleAccessPolicyTypeValues() []AccessPolicyType {
 type DayOfWeek string
 
 const (
-	DayOfWeekEveryday  DayOfWeek = "Everyday"
-	DayOfWeekFriday    DayOfWeek = "Friday"
-	DayOfWeekMonday    DayOfWeek = "Monday"
-	DayOfWeekSaturday  DayOfWeek = "Saturday"
-	DayOfWeekSunday    DayOfWeek = "Sunday"
-	DayOfWeekThursday  DayOfWeek = "Thursday"
-	DayOfWeekTuesday   DayOfWeek = "Tuesday"
+	DayOfWeekEveryday DayOfWeek = "Everyday"
+	DayOfWeekFriday DayOfWeek = "Friday"
+	DayOfWeekMonday DayOfWeek = "Monday"
+	DayOfWeekSaturday DayOfWeek = "Saturday"
+	DayOfWeekSunday DayOfWeek = "Sunday"
+	DayOfWeekThursday DayOfWeek = "Thursday"
+	DayOfWeekTuesday DayOfWeek = "Tuesday"
 	DayOfWeekWednesday DayOfWeek = "Wednesday"
-	DayOfWeekWeekend   DayOfWeek = "Weekend"
+	DayOfWeekWeekend DayOfWeek = "Weekend"
 )
 
 // PossibleDayOfWeekValues returns the possible values for the DayOfWeek const type.
 func PossibleDayOfWeekValues() []DayOfWeek {
-	return []DayOfWeek{
+	return []DayOfWeek{	
 		DayOfWeekEveryday,
 		DayOfWeekFriday,
 		DayOfWeekMonday,
@@ -115,7 +115,7 @@ const (
 
 // PossibleDefaultNameValues returns the possible values for the DefaultName const type.
 func PossibleDefaultNameValues() []DefaultName {
-	return []DefaultName{
+	return []DefaultName{	
 		DefaultNameDefault,
 	}
 }
@@ -124,15 +124,15 @@ func PossibleDefaultNameValues() []DefaultName {
 type ManagedServiceIdentityType string
 
 const (
-	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
-	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
 	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
-	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
 
 // PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{
+	return []ManagedServiceIdentityType{	
 		ManagedServiceIdentityTypeNone,
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
@@ -144,15 +144,15 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 type PrivateEndpointConnectionProvisioningState string
 
 const (
-	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
-	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
-	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
+	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
 	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
 )
 
 // PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
-	return []PrivateEndpointConnectionProvisioningState{
+	return []PrivateEndpointConnectionProvisioningState{	
 		PrivateEndpointConnectionProvisioningStateCreating,
 		PrivateEndpointConnectionProvisioningStateDeleting,
 		PrivateEndpointConnectionProvisioningStateFailed,
@@ -165,13 +165,13 @@ type PrivateEndpointServiceConnectionStatus string
 
 const (
 	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
-	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
 	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
 )
 
 // PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
-	return []PrivateEndpointServiceConnectionStatus{
+	return []PrivateEndpointServiceConnectionStatus{	
 		PrivateEndpointServiceConnectionStatusApproved,
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
@@ -182,24 +182,24 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 type ProvisioningState string
 
 const (
-	ProvisioningStateConfiguringAAD         ProvisioningState = "ConfiguringAAD"
-	ProvisioningStateCreating               ProvisioningState = "Creating"
-	ProvisioningStateDeleting               ProvisioningState = "Deleting"
-	ProvisioningStateDisabled               ProvisioningState = "Disabled"
-	ProvisioningStateFailed                 ProvisioningState = "Failed"
-	ProvisioningStateLinking                ProvisioningState = "Linking"
-	ProvisioningStateProvisioning           ProvisioningState = "Provisioning"
+	ProvisioningStateConfiguringAAD ProvisioningState = "ConfiguringAAD"
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	ProvisioningStateDisabled ProvisioningState = "Disabled"
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	ProvisioningStateLinking ProvisioningState = "Linking"
+	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
 	ProvisioningStateRecoveringScaleFailure ProvisioningState = "RecoveringScaleFailure"
-	ProvisioningStateScaling                ProvisioningState = "Scaling"
-	ProvisioningStateSucceeded              ProvisioningState = "Succeeded"
-	ProvisioningStateUnlinking              ProvisioningState = "Unlinking"
-	ProvisioningStateUnprovisioning         ProvisioningState = "Unprovisioning"
-	ProvisioningStateUpdating               ProvisioningState = "Updating"
+	ProvisioningStateScaling ProvisioningState = "Scaling"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	ProvisioningStateUnlinking ProvisioningState = "Unlinking"
+	ProvisioningStateUnprovisioning ProvisioningState = "Unprovisioning"
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateConfiguringAAD,
 		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
@@ -223,12 +223,12 @@ type PublicNetworkAccess string
 
 const (
 	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{
+	return []PublicNetworkAccess{	
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
@@ -238,14 +238,14 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 type RebootType string
 
 const (
-	RebootTypeAllNodes      RebootType = "AllNodes"
-	RebootTypePrimaryNode   RebootType = "PrimaryNode"
+	RebootTypeAllNodes RebootType = "AllNodes"
+	RebootTypePrimaryNode RebootType = "PrimaryNode"
 	RebootTypeSecondaryNode RebootType = "SecondaryNode"
 )
 
 // PossibleRebootTypeValues returns the possible values for the RebootType const type.
 func PossibleRebootTypeValues() []RebootType {
-	return []RebootType{
+	return []RebootType{	
 		RebootTypeAllNodes,
 		RebootTypePrimaryNode,
 		RebootTypeSecondaryNode,
@@ -256,13 +256,13 @@ func PossibleRebootTypeValues() []RebootType {
 type RedisKeyType string
 
 const (
-	RedisKeyTypePrimary   RedisKeyType = "Primary"
+	RedisKeyTypePrimary RedisKeyType = "Primary"
 	RedisKeyTypeSecondary RedisKeyType = "Secondary"
 )
 
 // PossibleRedisKeyTypeValues returns the possible values for the RedisKeyType const type.
 func PossibleRedisKeyTypeValues() []RedisKeyType {
-	return []RedisKeyType{
+	return []RedisKeyType{	
 		RedisKeyTypePrimary,
 		RedisKeyTypeSecondary,
 	}
@@ -272,13 +272,13 @@ func PossibleRedisKeyTypeValues() []RedisKeyType {
 type ReplicationRole string
 
 const (
-	ReplicationRolePrimary   ReplicationRole = "Primary"
+	ReplicationRolePrimary ReplicationRole = "Primary"
 	ReplicationRoleSecondary ReplicationRole = "Secondary"
 )
 
 // PossibleReplicationRoleValues returns the possible values for the ReplicationRole const type.
 func PossibleReplicationRoleValues() []ReplicationRole {
-	return []ReplicationRole{
+	return []ReplicationRole{	
 		ReplicationRolePrimary,
 		ReplicationRoleSecondary,
 	}
@@ -294,7 +294,7 @@ const (
 
 // PossibleSKUFamilyValues returns the possible values for the SKUFamily const type.
 func PossibleSKUFamilyValues() []SKUFamily {
-	return []SKUFamily{
+	return []SKUFamily{	
 		SKUFamilyC,
 		SKUFamilyP,
 	}
@@ -304,14 +304,14 @@ func PossibleSKUFamilyValues() []SKUFamily {
 type SKUName string
 
 const (
-	SKUNameBasic    SKUName = "Basic"
-	SKUNamePremium  SKUName = "Premium"
+	SKUNameBasic SKUName = "Basic"
+	SKUNamePremium SKUName = "Premium"
 	SKUNameStandard SKUName = "Standard"
 )
 
 // PossibleSKUNameValues returns the possible values for the SKUName const type.
 func PossibleSKUNameValues() []SKUName {
-	return []SKUName{
+	return []SKUName{	
 		SKUNameBasic,
 		SKUNamePremium,
 		SKUNameStandard,
@@ -329,7 +329,7 @@ const (
 
 // PossibleTLSVersionValues returns the possible values for the TLSVersion const type.
 func PossibleTLSVersionValues() []TLSVersion {
-	return []TLSVersion{
+	return []TLSVersion{	
 		TLSVersionOne0,
 		TLSVersionOne1,
 		TLSVersionOne2,
@@ -343,13 +343,14 @@ type UpdateChannel string
 
 const (
 	UpdateChannelPreview UpdateChannel = "Preview"
-	UpdateChannelStable  UpdateChannel = "Stable"
+	UpdateChannelStable UpdateChannel = "Stable"
 )
 
 // PossibleUpdateChannelValues returns the possible values for the UpdateChannel const type.
 func PossibleUpdateChannelValues() []UpdateChannel {
-	return []UpdateChannel{
+	return []UpdateChannel{	
 		UpdateChannelPreview,
 		UpdateChannelStable,
 	}
 }
+

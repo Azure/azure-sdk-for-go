@@ -23,7 +23,7 @@ import (
 // OpenShiftClustersClient contains the methods for the OpenShiftClusters group.
 // Don't use this type directly, use NewOpenShiftClustersClient() instead.
 type OpenShiftClustersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewOpenShiftClustersClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &OpenShiftClustersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,8 +110,8 @@ func (client *OpenShiftClustersClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -248,7 +248,7 @@ func (client *OpenShiftClustersClient) getHandleResponse(resp *http.Response) (O
 // Generated from API version 2023-04-01
 //   - options - OpenShiftClustersClientListOptions contains the optional parameters for the OpenShiftClustersClient.NewListPager
 //     method.
-func (client *OpenShiftClustersClient) NewListPager(options *OpenShiftClustersClientListOptions) *runtime.Pager[OpenShiftClustersClientListResponse] {
+func (client *OpenShiftClustersClient) NewListPager(options *OpenShiftClustersClientListOptions) (*runtime.Pager[OpenShiftClustersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[OpenShiftClustersClientListResponse]{
 		More: func(page OpenShiftClustersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -370,7 +370,7 @@ func (client *OpenShiftClustersClient) listAdminCredentialsHandleResponse(resp *
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - OpenShiftClustersClientListByResourceGroupOptions contains the optional parameters for the OpenShiftClustersClient.NewListByResourceGroupPager
 //     method.
-func (client *OpenShiftClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *OpenShiftClustersClientListByResourceGroupOptions) *runtime.Pager[OpenShiftClustersClientListByResourceGroupResponse] {
+func (client *OpenShiftClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *OpenShiftClustersClientListByResourceGroupOptions) (*runtime.Pager[OpenShiftClustersClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[OpenShiftClustersClientListByResourceGroupResponse]{
 		More: func(page OpenShiftClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -557,7 +557,8 @@ func (client *OpenShiftClustersClient) updateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // DeletedServersClient contains the methods for the DeletedServers group.
 // Don't use this type directly, use NewDeletedServersClient() instead.
 type DeletedServersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDeletedServersClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &DeletedServersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -107,7 +107,7 @@ func (client *DeletedServersClient) getHandleResponse(resp *http.Response) (Dele
 //
 // Generated from API version 2020-11-01-preview
 //   - options - DeletedServersClientListOptions contains the optional parameters for the DeletedServersClient.NewListPager method.
-func (client *DeletedServersClient) NewListPager(options *DeletedServersClientListOptions) *runtime.Pager[DeletedServersClientListResponse] {
+func (client *DeletedServersClient) NewListPager(options *DeletedServersClientListOptions) (*runtime.Pager[DeletedServersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DeletedServersClientListResponse]{
 		More: func(page DeletedServersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -168,7 +168,7 @@ func (client *DeletedServersClient) listHandleResponse(resp *http.Response) (Del
 //   - locationName - The name of the region where the resource is located.
 //   - options - DeletedServersClientListByLocationOptions contains the optional parameters for the DeletedServersClient.NewListByLocationPager
 //     method.
-func (client *DeletedServersClient) NewListByLocationPager(locationName string, options *DeletedServersClientListByLocationOptions) *runtime.Pager[DeletedServersClientListByLocationResponse] {
+func (client *DeletedServersClient) NewListByLocationPager(locationName string, options *DeletedServersClientListByLocationOptions) (*runtime.Pager[DeletedServersClientListByLocationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DeletedServersClientListByLocationResponse]{
 		More: func(page DeletedServersClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -294,3 +294,4 @@ func (client *DeletedServersClient) recoverCreateRequest(ctx context.Context, lo
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

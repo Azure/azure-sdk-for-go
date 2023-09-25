@@ -23,7 +23,7 @@ import (
 // BackupStatusClient contains the methods for the BackupStatus group.
 // Don't use this type directly, use NewBackupStatusClient() instead.
 type BackupStatusClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupStatusClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &BackupStatusClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -88,8 +88,8 @@ func (client *BackupStatusClient) getCreateRequest(ctx context.Context, azureReg
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -101,3 +101,4 @@ func (client *BackupStatusClient) getHandleResponse(resp *http.Response) (Backup
 	}
 	return result, nil
 }
+

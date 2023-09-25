@@ -23,7 +23,7 @@ import (
 // JitRequestsClient contains the methods for the JitRequests group.
 // Don't use this type directly, use NewJitRequestsClient() instead.
 type JitRequestsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewJitRequestsClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &JitRequestsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -112,8 +112,8 @@ func (client *JitRequestsClient) createOrUpdateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -384,8 +384,8 @@ func (client *JitRequestsClient) updateCreateRequest(ctx context.Context, resour
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -397,3 +397,4 @@ func (client *JitRequestsClient) updateHandleResponse(resp *http.Response) (JitR
 	}
 	return result, nil
 }
+

@@ -3060,3 +3060,4 @@ type WorkloadGroupsClientListByDatabaseResponse struct {
 	// A list of workload groups.
 	WorkloadGroupListResult
 }
+

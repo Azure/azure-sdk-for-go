@@ -23,7 +23,7 @@ import (
 // BackupWorkloadItemsClient contains the methods for the BackupWorkloadItems group.
 // Don't use this type directly, use NewBackupWorkloadItemsClient() instead.
 type BackupWorkloadItemsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupWorkloadItemsClient(subscriptionID string, credential azcore.Token
 	}
 	client := &BackupWorkloadItemsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -53,7 +53,7 @@ func NewBackupWorkloadItemsClient(subscriptionID string, credential azcore.Token
 //   - containerName - Name of the container.
 //   - options - BackupWorkloadItemsClientListOptions contains the optional parameters for the BackupWorkloadItemsClient.NewListPager
 //     method.
-func (client *BackupWorkloadItemsClient) NewListPager(vaultName string, resourceGroupName string, fabricName string, containerName string, options *BackupWorkloadItemsClientListOptions) *runtime.Pager[BackupWorkloadItemsClientListResponse] {
+func (client *BackupWorkloadItemsClient) NewListPager(vaultName string, resourceGroupName string, fabricName string, containerName string, options *BackupWorkloadItemsClientListOptions) (*runtime.Pager[BackupWorkloadItemsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BackupWorkloadItemsClientListResponse]{
 		More: func(page BackupWorkloadItemsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -129,3 +129,4 @@ func (client *BackupWorkloadItemsClient) listHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // RestoresClient contains the methods for the Restores group.
 // Don't use this type directly, use NewRestoresClient() instead.
 type RestoresClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRestoresClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &RestoresClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -131,7 +131,8 @@ func (client *RestoresClient) triggerCreateRequest(ctx context.Context, vaultNam
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

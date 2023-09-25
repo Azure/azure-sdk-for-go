@@ -23,7 +23,7 @@ import (
 // ExportJobsOperationResultsClient contains the methods for the ExportJobsOperationResults group.
 // Don't use this type directly, use NewExportJobsOperationResultsClient() instead.
 type ExportJobsOperationResultsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewExportJobsOperationResultsClient(subscriptionID string, credential azcor
 	}
 	client := &ExportJobsOperationResultsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,3 +110,4 @@ func (client *ExportJobsOperationResultsClient) getHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

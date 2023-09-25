@@ -13,7 +13,7 @@ import "time"
 // CorsSettings - Cross-Origin Resource Sharing (CORS) settings.
 type CorsSettings struct {
 	// Gets or sets the list of origins that should be allowed to make cross-origin calls (for example: http://example.com:12345).
-	// Use "*" to allow all. If omitted, allow all by default.
+// Use "*" to allow all. If omitted, allow all by default.
 	AllowedOrigins []*string
 }
 
@@ -150,20 +150,20 @@ type ErrorResponse struct {
 // Feature of a resource, which controls the runtime behavior.
 type Feature struct {
 	// REQUIRED; FeatureFlags is the supported features of Azure SignalR service.
-	// * ServiceMode: Flag for backend server for SignalR service. Values allowed: "Default": have your own backend server; "Serverless":
-	// your application doesn't have a backend server; "Classic": for
-	// backward compatibility. Support both Default and Serverless mode but not recommended; "PredefinedOnly": for future use.
-	// * EnableConnectivityLogs: "true"/"false", to enable/disable the connectivity log category respectively.
-	// * EnableMessagingLogs: "true"/"false", to enable/disable the connectivity log category respectively.
-	// * EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will give you live traces
-	// in real time, it will be helpful when you developing your own Azure
-	// SignalR based web application or self-troubleshooting some issues. Please note that live traces are counted as outbound
-	// messages that will be charged. Values allowed: "true"/"false", to
-	// enable/disable live trace feature.
+// * ServiceMode: Flag for backend server for SignalR service. Values allowed: "Default": have your own backend server; "Serverless":
+// your application doesn't have a backend server; "Classic": for
+// backward compatibility. Support both Default and Serverless mode but not recommended; "PredefinedOnly": for future use.
+// * EnableConnectivityLogs: "true"/"false", to enable/disable the connectivity log category respectively.
+// * EnableMessagingLogs: "true"/"false", to enable/disable the connectivity log category respectively.
+// * EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will give you live traces
+// in real time, it will be helpful when you developing your own Azure
+// SignalR based web application or self-troubleshooting some issues. Please note that live traces are counted as outbound
+// messages that will be charged. Values allowed: "true"/"false", to
+// enable/disable live trace feature.
 	Flag *FeatureFlags
 
 	// REQUIRED; Value of the feature flag. See Azure SignalR service document https://docs.microsoft.com/azure/azure-signalr/
-	// for allowed values.
+// for allowed values.
 	Value *string
 
 	// Optional properties related to this feature.
@@ -200,8 +200,8 @@ type LiveTraceConfiguration struct {
 	Categories []*LiveTraceCategory
 
 	// Indicates whether or not enable live trace. When it's set to true, live trace client can connect to the service. Otherwise,
-	// live trace client can't connect to the service, so that you are unable to
-	// receive any log, no matter what you configure in "categories". Available values: true, false. Case insensitive.
+// live trace client can't connect to the service, so that you are unable to
+// receive any log, no matter what you configure in "categories". Available values: true, false. Case insensitive.
 	Enabled *string
 }
 
@@ -232,7 +232,7 @@ type ManagedIdentity struct {
 // ManagedIdentitySettings - Managed identity settings for upstream.
 type ManagedIdentitySettings struct {
 	// The Resource indicating the App ID URI of the target resource. It also appears in the aud (audience) claim of the issued
-	// token.
+// token.
 	Resource *string
 }
 
@@ -254,9 +254,9 @@ type MetricSpecification struct {
 	DisplayName *string
 
 	// Optional. If set to true, then zero will be returned for time duration where no metric is emitted/published. Ex. a metric
-	// that returns the number of times a particular error code was emitted. The
-	// error code may not appear often, instead of the RP publishing 0, Shoebox can auto fill in 0s for time periods where nothing
-	// was emitted.
+// that returns the number of times a particular error code was emitted. The
+// error code may not appear often, instead of the RP publishing 0, Shoebox can auto fill in 0s for time periods where nothing
+// was emitted.
 	FillGapWithZero *string
 
 	// Name of the metric.
@@ -284,7 +284,7 @@ type NameAvailabilityParameters struct {
 	Name *string
 
 	// REQUIRED; The resource type. Can be "Microsoft.SignalRService/SignalR", "Microsoft.SignalRService/WebPubSub", "Microsoft.SignalRService/SignalR/replicas"
-	// or "Microsoft.SignalRService/WebPubSub/replicas"
+// or "Microsoft.SignalRService/WebPubSub/replicas"
 	Type *string
 }
 
@@ -321,7 +321,7 @@ type Operation struct {
 	Name *string
 
 	// Optional. The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs
-	// UX.
+// UX.
 	Origin *string
 
 	// Extra Operation properties.
@@ -397,7 +397,7 @@ type PrivateEndpointConnection struct {
 // PrivateEndpointConnectionList - A list of private endpoint connections
 type PrivateEndpointConnectionList struct {
 	// Request URL that can be used to query next page of private endpoint connections. Returned when the total number of requested
-	// private endpoint connections exceed maximum page size.
+// private endpoint connections exceed maximum page size.
 	NextLink *string
 
 	// The list of the private endpoint connections
@@ -485,10 +485,10 @@ type Properties struct {
 	DisableLocalAuth *bool
 
 	// List of the featureFlags.
-	// FeatureFlags that are not included in the parameters for the update operation will not be modified. And the response will
-	// only include featureFlags that are explicitly set. When a featureFlag is not
-	// explicitly set, its globally default value will be used But keep in mind, the default value doesn't mean "false". It varies
-	// in terms of different FeatureFlags.
+// FeatureFlags that are not included in the parameters for the update operation will not be modified. And the response will
+// only include featureFlags that are explicitly set. When a featureFlag is not
+// explicitly set, its globally default value will be used But keep in mind, the default value doesn't mean "false". It varies
+// in terms of different FeatureFlags.
 	Features []*Feature
 
 	// Live trace configuration of a Microsoft.SignalRService resource.
@@ -498,8 +498,8 @@ type Properties struct {
 	NetworkACLs *NetworkACLs
 
 	// Enable or disable public network access. Default to "Enabled". When it's Enabled, network ACLs still apply. When it's Disabled,
-	// public network access is always disabled no matter what you set in
-	// network ACLs.
+// public network access is always disabled no matter what you set in
+// network ACLs.
 	PublicNetworkAccess *string
 
 	// Resource log configuration of a Microsoft.SignalRService resource.
@@ -567,7 +567,7 @@ type RegenerateKeyParameters struct {
 // Replica - A class represent a replica resource.
 type Replica struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location   *string
+	Location *string
 	Properties *ReplicaProperties
 
 	// The billing information of the resource.
@@ -683,16 +683,16 @@ type ResourceReference struct {
 // ResourceSKU - The billing information of the resource.
 type ResourceSKU struct {
 	// REQUIRED; The name of the SKU. Required.
-	// Allowed values: StandardS1, FreeF1, Premium_P1
+// Allowed values: StandardS1, FreeF1, Premium_P1
 	Name *string
 
 	// Optional, integer. The unit count of the resource. 1 by default.
-	// If present, following values are allowed: Free: 1; Standard: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100; Premium:
-	// 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+// If present, following values are allowed: Free: 1; Standard: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100; Premium:
+// 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
 	Capacity *int32
 
 	// Optional tier of this particular SKU. 'Standard' or 'Free'.
-	// Basic is deprecated, use Standard instead.
+// Basic is deprecated, use Standard instead.
 	Tier *SignalRSKUTier
 
 	// READ-ONLY; Not used. Retained for future use.
@@ -735,7 +735,7 @@ type SKUCapacity struct {
 // SKUList - The list skus operation response
 type SKUList struct {
 	// READ-ONLY; The URL the client should use to fetch the next page (per server side paging). It's null for now, added for
-	// future use.
+// future use.
 	NextLink *string
 
 	// READ-ONLY; The list of skus available for the resource.
@@ -745,11 +745,11 @@ type SKUList struct {
 // ServerlessSettings - Serverless settings.
 type ServerlessSettings struct {
 	// Gets or sets Client Connection Timeout. Optional to be set. Value in seconds. Default value is 30 seconds. Customer should
-	// set the timeout to a shorter period if messages are expected to be sent in
-	// shorter intervals, and want the client to disconnect more quickly after the last message is sent. You can set the timeout
-	// to a longer period if messages are expected to be sent in longer intervals,
-	// and they want to keep the same client connection alive during this session. The service considers the client disconnected
-	// if it hasn't received a message (including keep-alive) in this interval.
+// set the timeout to a shorter period if messages are expected to be sent in
+// shorter intervals, and want the client to disconnect more quickly after the last message is sent. You can set the timeout
+// to a longer period if messages are expected to be sent in longer intervals,
+// and they want to keep the same client connection alive during this session. The service considers the client disconnected
+// if it hasn't received a message (including keep-alive) in this interval.
 	ConnectionTimeoutInSeconds *int32
 }
 
@@ -811,7 +811,7 @@ type SharedPrivateLinkResource struct {
 // SharedPrivateLinkResourceList - A list of shared private link resources
 type SharedPrivateLinkResourceList struct {
 	// Request URL that can be used to query next page of private endpoint connections. Returned when the total number of requested
-	// private endpoint connections exceed maximum page size.
+// private endpoint connections exceed maximum page size.
 	NextLink *string
 
 	// The list of the shared private link resources
@@ -860,7 +860,7 @@ type SystemData struct {
 // TLSSettings - TLS settings for the resource
 type TLSSettings struct {
 	// Request client certificate during TLS handshake if enabled. Not supported for free tier. Any input will be ignored for
-	// free tier.
+// free tier.
 	ClientCertEnabled *bool
 }
 
@@ -900,31 +900,31 @@ type UpstreamAuthSettings struct {
 // current URL template.
 type UpstreamTemplate struct {
 	// REQUIRED; Gets or sets the Upstream URL template. You can use 3 predefined parameters {hub}, {category} {event} inside
-	// the template, the value of the Upstream URL is dynamically calculated when the client
-	// request comes in. For example, if the urlTemplate is http://example.com/{hub}/api/{event}, with a client request from hub
-	// chat connects, it will first POST to this URL:
-	// http://example.com/chat/api/connect.
+// the template, the value of the Upstream URL is dynamically calculated when the client
+// request comes in. For example, if the urlTemplate is http://example.com/{hub}/api/{event}, with a client request from hub
+// chat connects, it will first POST to this URL:
+// http://example.com/chat/api/connect.
 	URLTemplate *string
 
 	// Upstream auth settings. If not set, no auth is used for upstream messages.
 	Auth *UpstreamAuthSettings
 
 	// Gets or sets the matching pattern for category names. If not set, it matches any category. There are 3 kind of patterns
-	// supported: 1. "*", it to matches any category name. 2. Combine multiple
-	// categories with ",", for example "connections,messages", it matches category "connections" and "messages". 3. The single
-	// category name, for example, "connections", it matches the category
-	// "connections".
+// supported: 1. "*", it to matches any category name. 2. Combine multiple
+// categories with ",", for example "connections,messages", it matches category "connections" and "messages". 3. The single
+// category name, for example, "connections", it matches the category
+// "connections".
 	CategoryPattern *string
 
 	// Gets or sets the matching pattern for event names. If not set, it matches any event. There are 3 kind of patterns supported:
-	// 1. "*", it to matches any event name. 2. Combine multiple events with ",",
-	// for example "connect,disconnect", it matches event "connect" and "disconnect". 3. The single event name, for example, "connect",
-	// it matches "connect".
+// 1. "*", it to matches any event name. 2. Combine multiple events with ",",
+// for example "connect,disconnect", it matches event "connect" and "disconnect". 3. The single event name, for example, "connect",
+// it matches "connect".
 	EventPattern *string
 
 	// Gets or sets the matching pattern for hub names. If not set, it matches any hub. There are 3 kind of patterns supported:
-	// 1. "*", it to matches any hub name. 2. Combine multiple hubs with ",", for
-	// example "hub1,hub2", it matches "hub1" and "hub2". 3. The single hub name, for example, "hub1", it matches "hub1".
+// 1. "*", it to matches any hub name. 2. Combine multiple hubs with ",", for
+// example "hub1,hub2", it matches "hub1" and "hub2". 3. The single hub name, for example, "hub1", it matches "hub1".
 	HubPattern *string
 }
 
@@ -972,3 +972,4 @@ type UserAssignedIdentityProperty struct {
 	// READ-ONLY; Get the principal id for the user assigned identity
 	PrincipalID *string
 }
+

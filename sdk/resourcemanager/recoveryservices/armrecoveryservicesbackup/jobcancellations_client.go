@@ -23,7 +23,7 @@ import (
 // JobCancellationsClient contains the methods for the JobCancellations group.
 // Don't use this type directly, use NewJobCancellationsClient() instead.
 type JobCancellationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewJobCancellationsClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &JobCancellationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,3 +99,4 @@ func (client *JobCancellationsClient) triggerCreateRequest(ctx context.Context, 
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

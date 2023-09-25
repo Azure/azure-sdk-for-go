@@ -43,7 +43,7 @@ type AccountsClientFailoverResponse struct {
 // AccountsClientGetCustomerInitiatedMigrationResponse contains the response from method AccountsClient.GetCustomerInitiatedMigration.
 type AccountsClientGetCustomerInitiatedMigrationResponse struct {
 	// The parameters or status associated with an ongoing or enqueued storage account migration in order to update its current
-	// SKU or region.
+// SKU or region.
 	AccountMigration
 }
 
@@ -422,7 +422,7 @@ type ObjectReplicationPoliciesClientListResponse struct {
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// Result of the request to list Storage operations. It contains a list of operations and a URL link to get the next set of
-	// results.
+// results.
 	OperationListResult
 }
 
@@ -555,3 +555,4 @@ type UsagesClientListByLocationResponse struct {
 	// The response from the List Usages operation.
 	UsageListResult
 }
+

@@ -24,7 +24,7 @@ import (
 // JobsClient contains the methods for the Jobs group.
 // Don't use this type directly, use NewJobsClient() instead.
 type JobsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	}
 	client := &JobsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -100,8 +100,8 @@ func (client *JobsClient) createCreateRequest(ctx context.Context, jobName strin
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -236,7 +236,7 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 //   - resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
 //   - options - JobsClientListByResourceGroupOptions contains the optional parameters for the JobsClient.NewListByResourceGroupPager
 //     method.
-func (client *JobsClient) NewListByResourceGroupPager(resourceGroupName string, options *JobsClientListByResourceGroupOptions) *runtime.Pager[JobsClientListByResourceGroupResponse] {
+func (client *JobsClient) NewListByResourceGroupPager(resourceGroupName string, options *JobsClientListByResourceGroupOptions) (*runtime.Pager[JobsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[JobsClientListByResourceGroupResponse]{
 		More: func(page JobsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -309,7 +309,7 @@ func (client *JobsClient) listByResourceGroupHandleResponse(resp *http.Response)
 // Generated from API version 2021-01-01
 //   - options - JobsClientListBySubscriptionOptions contains the optional parameters for the JobsClient.NewListBySubscriptionPager
 //     method.
-func (client *JobsClient) NewListBySubscriptionPager(options *JobsClientListBySubscriptionOptions) *runtime.Pager[JobsClientListBySubscriptionResponse] {
+func (client *JobsClient) NewListBySubscriptionPager(options *JobsClientListBySubscriptionOptions) (*runtime.Pager[JobsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[JobsClientListBySubscriptionResponse]{
 		More: func(page JobsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -428,8 +428,8 @@ func (client *JobsClient) updateCreateRequest(ctx context.Context, jobName strin
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -441,3 +441,4 @@ func (client *JobsClient) updateHandleResponse(resp *http.Response) (JobsClientU
 	}
 	return result, nil
 }
+

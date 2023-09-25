@@ -23,7 +23,7 @@ import (
 // JobAgentsClient contains the methods for the JobAgents group.
 // Don't use this type directly, use NewJobAgentsClient() instead.
 type JobAgentsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewJobAgentsClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &JobAgentsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *JobAgentsClient) createOrUpdateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -267,7 +267,7 @@ func (client *JobAgentsClient) getHandleResponse(resp *http.Response) (JobAgents
 //   - serverName - The name of the server.
 //   - options - JobAgentsClientListByServerOptions contains the optional parameters for the JobAgentsClient.NewListByServerPager
 //     method.
-func (client *JobAgentsClient) NewListByServerPager(resourceGroupName string, serverName string, options *JobAgentsClientListByServerOptions) *runtime.Pager[JobAgentsClientListByServerResponse] {
+func (client *JobAgentsClient) NewListByServerPager(resourceGroupName string, serverName string, options *JobAgentsClientListByServerOptions) (*runtime.Pager[JobAgentsClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[JobAgentsClientListByServerResponse]{
 		More: func(page JobAgentsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -402,7 +402,8 @@ func (client *JobAgentsClient) updateCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

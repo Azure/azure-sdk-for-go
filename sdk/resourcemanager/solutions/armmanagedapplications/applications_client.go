@@ -23,7 +23,7 @@ import (
 // ApplicationsClient contains the methods for the Applications group.
 // Don't use this type directly, use NewApplicationsClient() instead.
 type ApplicationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &ApplicationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -112,8 +112,8 @@ func (client *ApplicationsClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -176,8 +176,8 @@ func (client *ApplicationsClient) createOrUpdateByIDCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -488,7 +488,7 @@ func (client *ApplicationsClient) listAllowedUpgradePlansHandleResponse(resp *ht
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ApplicationsClientListByResourceGroupOptions contains the optional parameters for the ApplicationsClient.NewListByResourceGroupPager
 //     method.
-func (client *ApplicationsClient) NewListByResourceGroupPager(resourceGroupName string, options *ApplicationsClientListByResourceGroupOptions) *runtime.Pager[ApplicationsClientListByResourceGroupResponse] {
+func (client *ApplicationsClient) NewListByResourceGroupPager(resourceGroupName string, options *ApplicationsClientListByResourceGroupOptions) (*runtime.Pager[ApplicationsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationsClientListByResourceGroupResponse]{
 		More: func(page ApplicationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -552,7 +552,7 @@ func (client *ApplicationsClient) listByResourceGroupHandleResponse(resp *http.R
 // Generated from API version 2021-07-01
 //   - options - ApplicationsClientListBySubscriptionOptions contains the optional parameters for the ApplicationsClient.NewListBySubscriptionPager
 //     method.
-func (client *ApplicationsClient) NewListBySubscriptionPager(options *ApplicationsClientListBySubscriptionOptions) *runtime.Pager[ApplicationsClientListBySubscriptionResponse] {
+func (client *ApplicationsClient) NewListBySubscriptionPager(options *ApplicationsClientListBySubscriptionOptions) (*runtime.Pager[ApplicationsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationsClientListBySubscriptionResponse]{
 		More: func(page ApplicationsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -657,8 +657,8 @@ func (client *ApplicationsClient) listTokensCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -810,8 +810,8 @@ func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -886,8 +886,8 @@ func (client *ApplicationsClient) updateAccessCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -950,9 +950,10 @@ func (client *ApplicationsClient) updateByIDCreateRequest(ctx context.Context, a
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
 }
+

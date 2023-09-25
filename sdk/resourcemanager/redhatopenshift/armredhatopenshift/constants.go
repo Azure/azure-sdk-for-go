@@ -9,7 +9,7 @@
 package armredhatopenshift
 
 const (
-	moduleName    = "armredhatopenshift"
+	moduleName = "armredhatopenshift"
 	moduleVersion = "v1.3.0"
 )
 
@@ -17,15 +17,15 @@ const (
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -38,12 +38,12 @@ type EncryptionAtHost string
 
 const (
 	EncryptionAtHostDisabled EncryptionAtHost = "Disabled"
-	EncryptionAtHostEnabled  EncryptionAtHost = "Enabled"
+	EncryptionAtHostEnabled EncryptionAtHost = "Enabled"
 )
 
 // PossibleEncryptionAtHostValues returns the possible values for the EncryptionAtHost const type.
 func PossibleEncryptionAtHostValues() []EncryptionAtHost {
-	return []EncryptionAtHost{
+	return []EncryptionAtHost{	
 		EncryptionAtHostDisabled,
 		EncryptionAtHostEnabled,
 	}
@@ -54,12 +54,12 @@ type FipsValidatedModules string
 
 const (
 	FipsValidatedModulesDisabled FipsValidatedModules = "Disabled"
-	FipsValidatedModulesEnabled  FipsValidatedModules = "Enabled"
+	FipsValidatedModulesEnabled FipsValidatedModules = "Enabled"
 )
 
 // PossibleFipsValidatedModulesValues returns the possible values for the FipsValidatedModules const type.
 func PossibleFipsValidatedModulesValues() []FipsValidatedModules {
-	return []FipsValidatedModules{
+	return []FipsValidatedModules{	
 		FipsValidatedModulesDisabled,
 		FipsValidatedModulesEnabled,
 	}
@@ -69,13 +69,13 @@ func PossibleFipsValidatedModulesValues() []FipsValidatedModules {
 type OutboundType string
 
 const (
-	OutboundTypeLoadbalancer       OutboundType = "Loadbalancer"
+	OutboundTypeLoadbalancer OutboundType = "Loadbalancer"
 	OutboundTypeUserDefinedRouting OutboundType = "UserDefinedRouting"
 )
 
 // PossibleOutboundTypeValues returns the possible values for the OutboundType const type.
 func PossibleOutboundTypeValues() []OutboundType {
-	return []OutboundType{
+	return []OutboundType{	
 		OutboundTypeLoadbalancer,
 		OutboundTypeUserDefinedRouting,
 	}
@@ -86,16 +86,16 @@ type ProvisioningState string
 
 const (
 	ProvisioningStateAdminUpdating ProvisioningState = "AdminUpdating"
-	ProvisioningStateCreating      ProvisioningState = "Creating"
-	ProvisioningStateDeleting      ProvisioningState = "Deleting"
-	ProvisioningStateFailed        ProvisioningState = "Failed"
-	ProvisioningStateSucceeded     ProvisioningState = "Succeeded"
-	ProvisioningStateUpdating      ProvisioningState = "Updating"
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateAdminUpdating,
 		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
@@ -110,13 +110,14 @@ type Visibility string
 
 const (
 	VisibilityPrivate Visibility = "Private"
-	VisibilityPublic  Visibility = "Public"
+	VisibilityPublic Visibility = "Public"
 )
 
 // PossibleVisibilityValues returns the possible values for the Visibility const type.
 func PossibleVisibilityValues() []Visibility {
-	return []Visibility{
+	return []Visibility{	
 		VisibilityPrivate,
 		VisibilityPublic,
 	}
 }
+

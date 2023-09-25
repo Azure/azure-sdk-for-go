@@ -23,7 +23,7 @@ import (
 // ServerSecurityAlertPoliciesClient contains the methods for the ServerSecurityAlertPolicies group.
 // Don't use this type directly, use NewServerSecurityAlertPoliciesClient() instead.
 type ServerSecurityAlertPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerSecurityAlertPoliciesClient(subscriptionID string, credential azco
 	}
 	client := &ServerSecurityAlertPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ServerSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -196,7 +196,7 @@ func (client *ServerSecurityAlertPoliciesClient) getHandleResponse(resp *http.Re
 //   - serverName - The name of the server.
 //   - options - ServerSecurityAlertPoliciesClientListByServerOptions contains the optional parameters for the ServerSecurityAlertPoliciesClient.NewListByServerPager
 //     method.
-func (client *ServerSecurityAlertPoliciesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerSecurityAlertPoliciesClientListByServerOptions) *runtime.Pager[ServerSecurityAlertPoliciesClientListByServerResponse] {
+func (client *ServerSecurityAlertPoliciesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerSecurityAlertPoliciesClientListByServerOptions) (*runtime.Pager[ServerSecurityAlertPoliciesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerSecurityAlertPoliciesClientListByServerResponse]{
 		More: func(page ServerSecurityAlertPoliciesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -258,3 +258,4 @@ func (client *ServerSecurityAlertPoliciesClient) listByServerHandleResponse(resp
 	}
 	return result, nil
 }
+

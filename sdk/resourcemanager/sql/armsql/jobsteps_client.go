@@ -24,7 +24,7 @@ import (
 // JobStepsClient contains the methods for the JobSteps group.
 // Don't use this type directly, use NewJobStepsClient() instead.
 type JobStepsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewJobStepsClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &JobStepsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,8 +110,8 @@ func (client *JobStepsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -352,7 +352,7 @@ func (client *JobStepsClient) getByVersionHandleResponse(resp *http.Response) (J
 //   - jobAgentName - The name of the job agent.
 //   - jobName - The name of the job to get.
 //   - options - JobStepsClientListByJobOptions contains the optional parameters for the JobStepsClient.NewListByJobPager method.
-func (client *JobStepsClient) NewListByJobPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobStepsClientListByJobOptions) *runtime.Pager[JobStepsClientListByJobResponse] {
+func (client *JobStepsClient) NewListByJobPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobStepsClientListByJobOptions) (*runtime.Pager[JobStepsClientListByJobResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[JobStepsClientListByJobResponse]{
 		More: func(page JobStepsClientListByJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -434,7 +434,7 @@ func (client *JobStepsClient) listByJobHandleResponse(resp *http.Response) (JobS
 //   - jobVersion - The version of the job to get.
 //   - options - JobStepsClientListByVersionOptions contains the optional parameters for the JobStepsClient.NewListByVersionPager
 //     method.
-func (client *JobStepsClient) NewListByVersionPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobStepsClientListByVersionOptions) *runtime.Pager[JobStepsClientListByVersionResponse] {
+func (client *JobStepsClient) NewListByVersionPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobStepsClientListByVersionOptions) (*runtime.Pager[JobStepsClientListByVersionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[JobStepsClientListByVersionResponse]{
 		More: func(page JobStepsClientListByVersionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -505,3 +505,4 @@ func (client *JobStepsClient) listByVersionHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

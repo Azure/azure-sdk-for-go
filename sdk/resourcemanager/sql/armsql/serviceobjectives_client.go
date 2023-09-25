@@ -23,7 +23,7 @@ import (
 // ServiceObjectivesClient contains the methods for the ServiceObjectives group.
 // Don't use this type directly, use NewServiceObjectivesClient() instead.
 type ServiceObjectivesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServiceObjectivesClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &ServiceObjectivesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,7 +117,7 @@ func (client *ServiceObjectivesClient) getHandleResponse(resp *http.Response) (S
 //   - serverName - The name of the server.
 //   - options - ServiceObjectivesClientListByServerOptions contains the optional parameters for the ServiceObjectivesClient.NewListByServerPager
 //     method.
-func (client *ServiceObjectivesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServiceObjectivesClientListByServerOptions) *runtime.Pager[ServiceObjectivesClientListByServerResponse] {
+func (client *ServiceObjectivesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServiceObjectivesClientListByServerOptions) (*runtime.Pager[ServiceObjectivesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServiceObjectivesClientListByServerResponse]{
 		More: func(page ServiceObjectivesClientListByServerResponse) bool {
 			return false
@@ -173,3 +173,4 @@ func (client *ServiceObjectivesClient) listByServerHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

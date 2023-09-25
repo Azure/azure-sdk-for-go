@@ -23,7 +23,7 @@ import (
 // QueueServicesClient contains the methods for the QueueServices group.
 // Don't use this type directly, use NewQueueServicesClient() instead.
 type QueueServicesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewQueueServicesClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &QueueServicesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -223,8 +223,8 @@ func (client *QueueServicesClient) setServicePropertiesCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -236,3 +236,4 @@ func (client *QueueServicesClient) setServicePropertiesHandleResponse(resp *http
 	}
 	return result, nil
 }
+

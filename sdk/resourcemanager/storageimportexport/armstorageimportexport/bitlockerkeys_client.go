@@ -23,7 +23,7 @@ import (
 // BitLockerKeysClient contains the methods for the BitLockerKeys group.
 // Don't use this type directly, use NewBitLockerKeysClient() instead.
 type BitLockerKeysClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBitLockerKeysClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &BitLockerKeysClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewBitLockerKeysClient(subscriptionID string, credential azcore.TokenCreden
 //   - jobName - The name of the import/export job.
 //   - resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
 //   - options - BitLockerKeysClientListOptions contains the optional parameters for the BitLockerKeysClient.NewListPager method.
-func (client *BitLockerKeysClient) NewListPager(jobName string, resourceGroupName string, options *BitLockerKeysClientListOptions) *runtime.Pager[BitLockerKeysClientListResponse] {
+func (client *BitLockerKeysClient) NewListPager(jobName string, resourceGroupName string, options *BitLockerKeysClientListOptions) (*runtime.Pager[BitLockerKeysClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BitLockerKeysClientListResponse]{
 		More: func(page BitLockerKeysClientListResponse) bool {
 			return false
@@ -108,3 +108,4 @@ func (client *BitLockerKeysClient) listHandleResponse(resp *http.Response) (BitL
 	}
 	return result, nil
 }
+

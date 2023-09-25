@@ -23,7 +23,7 @@ import (
 // JobTargetGroupsClient contains the methods for the JobTargetGroups group.
 // Don't use this type directly, use NewJobTargetGroupsClient() instead.
 type JobTargetGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewJobTargetGroupsClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &JobTargetGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -105,8 +105,8 @@ func (client *JobTargetGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -259,7 +259,7 @@ func (client *JobTargetGroupsClient) getHandleResponse(resp *http.Response) (Job
 //   - jobAgentName - The name of the job agent.
 //   - options - JobTargetGroupsClientListByAgentOptions contains the optional parameters for the JobTargetGroupsClient.NewListByAgentPager
 //     method.
-func (client *JobTargetGroupsClient) NewListByAgentPager(resourceGroupName string, serverName string, jobAgentName string, options *JobTargetGroupsClientListByAgentOptions) *runtime.Pager[JobTargetGroupsClientListByAgentResponse] {
+func (client *JobTargetGroupsClient) NewListByAgentPager(resourceGroupName string, serverName string, jobAgentName string, options *JobTargetGroupsClientListByAgentOptions) (*runtime.Pager[JobTargetGroupsClientListByAgentResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[JobTargetGroupsClientListByAgentResponse]{
 		More: func(page JobTargetGroupsClientListByAgentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -325,3 +325,4 @@ func (client *JobTargetGroupsClient) listByAgentHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

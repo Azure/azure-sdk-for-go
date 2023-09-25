@@ -23,7 +23,7 @@ import (
 // FailoverGroupsClient contains the methods for the FailoverGroups group.
 // Don't use this type directly, use NewFailoverGroupsClient() instead.
 type FailoverGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewFailoverGroupsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &FailoverGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *FailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -418,7 +418,7 @@ func (client *FailoverGroupsClient) getHandleResponse(resp *http.Response) (Fail
 //   - serverName - The name of the server containing the failover group.
 //   - options - FailoverGroupsClientListByServerOptions contains the optional parameters for the FailoverGroupsClient.NewListByServerPager
 //     method.
-func (client *FailoverGroupsClient) NewListByServerPager(resourceGroupName string, serverName string, options *FailoverGroupsClientListByServerOptions) *runtime.Pager[FailoverGroupsClientListByServerResponse] {
+func (client *FailoverGroupsClient) NewListByServerPager(resourceGroupName string, serverName string, options *FailoverGroupsClientListByServerOptions) (*runtime.Pager[FailoverGroupsClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[FailoverGroupsClientListByServerResponse]{
 		More: func(page FailoverGroupsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -632,7 +632,8 @@ func (client *FailoverGroupsClient) updateCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

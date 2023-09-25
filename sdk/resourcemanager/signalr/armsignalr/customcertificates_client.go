@@ -23,7 +23,7 @@ import (
 // CustomCertificatesClient contains the methods for the SignalRCustomCertificates group.
 // Don't use this type directly, use NewCustomCertificatesClient() instead.
 type CustomCertificatesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewCustomCertificatesClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &CustomCertificatesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *CustomCertificatesClient) createOrUpdateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -240,7 +240,7 @@ func (client *CustomCertificatesClient) getHandleResponse(resp *http.Response) (
 //   - resourceName - The name of the resource.
 //   - options - CustomCertificatesClientListOptions contains the optional parameters for the CustomCertificatesClient.NewListPager
 //     method.
-func (client *CustomCertificatesClient) NewListPager(resourceGroupName string, resourceName string, options *CustomCertificatesClientListOptions) *runtime.Pager[CustomCertificatesClientListResponse] {
+func (client *CustomCertificatesClient) NewListPager(resourceGroupName string, resourceName string, options *CustomCertificatesClientListOptions) (*runtime.Pager[CustomCertificatesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CustomCertificatesClientListResponse]{
 		More: func(page CustomCertificatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -299,3 +299,4 @@ func (client *CustomCertificatesClient) listHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

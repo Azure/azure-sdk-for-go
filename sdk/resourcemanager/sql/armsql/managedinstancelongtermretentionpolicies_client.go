@@ -23,7 +23,7 @@ import (
 // ManagedInstanceLongTermRetentionPoliciesClient contains the methods for the ManagedInstanceLongTermRetentionPolicies group.
 // Don't use this type directly, use NewManagedInstanceLongTermRetentionPoliciesClient() instead.
 type ManagedInstanceLongTermRetentionPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedInstanceLongTermRetentionPoliciesClient(subscriptionID string, cr
 	}
 	client := &ManagedInstanceLongTermRetentionPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) createOrUpdateCrea
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -207,7 +207,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) getHandleResponse(
 //   - databaseName - The name of the database.
 //   - options - ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseOptions contains the optional parameters for the
 //     ManagedInstanceLongTermRetentionPoliciesClient.NewListByDatabasePager method.
-func (client *ManagedInstanceLongTermRetentionPoliciesClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse] {
+func (client *ManagedInstanceLongTermRetentionPoliciesClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseOptions) (*runtime.Pager[ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse]{
 		More: func(page ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -273,3 +273,4 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) listByDatabaseHand
 	}
 	return result, nil
 }
+

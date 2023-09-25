@@ -23,7 +23,7 @@ import (
 // AccessPolicyAssignmentClient contains the methods for the AccessPolicyAssignment group.
 // Don't use this type directly, use NewAccessPolicyAssignmentClient() instead.
 type AccessPolicyAssignmentClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAccessPolicyAssignmentClient(subscriptionID string, credential azcore.To
 	}
 	client := &AccessPolicyAssignmentClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *AccessPolicyAssignmentClient) createUpdateCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -268,7 +268,7 @@ func (client *AccessPolicyAssignmentClient) getHandleResponse(resp *http.Respons
 //   - cacheName - The name of the Redis cache.
 //   - options - AccessPolicyAssignmentClientListOptions contains the optional parameters for the AccessPolicyAssignmentClient.NewListPager
 //     method.
-func (client *AccessPolicyAssignmentClient) NewListPager(resourceGroupName string, cacheName string, options *AccessPolicyAssignmentClientListOptions) *runtime.Pager[AccessPolicyAssignmentClientListResponse] {
+func (client *AccessPolicyAssignmentClient) NewListPager(resourceGroupName string, cacheName string, options *AccessPolicyAssignmentClientListOptions) (*runtime.Pager[AccessPolicyAssignmentClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AccessPolicyAssignmentClientListResponse]{
 		More: func(page AccessPolicyAssignmentClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -330,3 +330,4 @@ func (client *AccessPolicyAssignmentClient) listHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

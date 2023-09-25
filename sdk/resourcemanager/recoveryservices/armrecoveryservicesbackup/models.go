@@ -26,9 +26,9 @@ func (a *AzureBackupGoalFeatureSupportRequest) GetFeatureSupportRequest() *Featu
 // AzureBackupServerContainer - AzureBackupServer (DPMVenus) workload-specific protection container.
 type AzureBackupServerContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -74,32 +74,32 @@ type AzureBackupServerContainer struct {
 // GetDpmContainer implements the DpmContainerClassification interface for type AzureBackupServerContainer.
 func (a *AzureBackupServerContainer) GetDpmContainer() *DpmContainer {
 	return &DpmContainer{
-		BackupManagementType:  a.BackupManagementType,
-		CanReRegister:         a.CanReRegister,
-		ContainerID:           a.ContainerID,
-		ContainerType:         a.ContainerType,
-		DpmAgentVersion:       a.DpmAgentVersion,
-		DpmServers:            a.DpmServers,
-		ExtendedInfo:          a.ExtendedInfo,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		CanReRegister: a.CanReRegister,
+		ContainerID: a.ContainerID,
+		ContainerType: a.ContainerType,
+		DpmAgentVersion: a.DpmAgentVersion,
+		DpmServers: a.DpmServers,
+		ExtendedInfo: a.ExtendedInfo,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
-		ProtectedItemCount:    a.ProtectedItemCount,
-		ProtectionStatus:      a.ProtectionStatus,
-		RegistrationStatus:    a.RegistrationStatus,
-		UpgradeAvailable:      a.UpgradeAvailable,
+		ProtectedItemCount: a.ProtectedItemCount,
+		ProtectionStatus: a.ProtectionStatus,
+		RegistrationStatus: a.RegistrationStatus,
+		UpgradeAvailable: a.UpgradeAvailable,
 	}
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureBackupServerContainer.
 func (a *AzureBackupServerContainer) GetProtectionContainer() *ProtectionContainer {
 	return &ProtectionContainer{
-		BackupManagementType:  a.BackupManagementType,
-		ContainerType:         a.ContainerType,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		ContainerType: a.ContainerType,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
-		RegistrationStatus:    a.RegistrationStatus,
+		RegistrationStatus: a.RegistrationStatus,
 	}
 }
 
@@ -148,19 +148,19 @@ type AzureBackupServerEngine struct {
 // GetBackupEngineBase implements the BackupEngineBaseClassification interface for type AzureBackupServerEngine.
 func (a *AzureBackupServerEngine) GetBackupEngineBase() *BackupEngineBase {
 	return &BackupEngineBase{
-		AzureBackupAgentVersion:            a.AzureBackupAgentVersion,
-		BackupEngineID:                     a.BackupEngineID,
-		BackupEngineState:                  a.BackupEngineState,
-		BackupEngineType:                   a.BackupEngineType,
-		BackupManagementType:               a.BackupManagementType,
-		CanReRegister:                      a.CanReRegister,
-		DpmVersion:                         a.DpmVersion,
-		ExtendedInfo:                       a.ExtendedInfo,
-		FriendlyName:                       a.FriendlyName,
-		HealthStatus:                       a.HealthStatus,
+		AzureBackupAgentVersion: a.AzureBackupAgentVersion,
+		BackupEngineID: a.BackupEngineID,
+		BackupEngineState: a.BackupEngineState,
+		BackupEngineType: a.BackupEngineType,
+		BackupManagementType: a.BackupManagementType,
+		CanReRegister: a.CanReRegister,
+		DpmVersion: a.DpmVersion,
+		ExtendedInfo: a.ExtendedInfo,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		IsAzureBackupAgentUpgradeAvailable: a.IsAzureBackupAgentUpgradeAvailable,
-		IsDpmUpgradeAvailable:              a.IsDpmUpgradeAvailable,
-		RegistrationStatus:                 a.RegistrationStatus,
+		IsDpmUpgradeAvailable: a.IsDpmUpgradeAvailable,
+		RegistrationStatus: a.RegistrationStatus,
 	}
 }
 
@@ -211,10 +211,10 @@ type AzureFileShareProtectableItem struct {
 func (a *AzureFileShareProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -245,8 +245,8 @@ type AzureFileShareProtectionPolicy struct {
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureFileShareProtectionPolicy.
 func (a *AzureFileShareProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
 	return &ProtectionPolicy{
-		BackupManagementType:           a.BackupManagementType,
-		ProtectedItemsCount:            a.ProtectedItemsCount,
+		BackupManagementType: a.BackupManagementType,
+		ProtectedItemsCount: a.ProtectedItemsCount,
 		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
@@ -410,24 +410,24 @@ type AzureFileshareProtectedItem struct {
 // GetProtectedItem implements the ProtectedItemClassification interface for type AzureFileshareProtectedItem.
 func (a *AzureFileshareProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemType:                a.ProtectedItemType,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemType: a.ProtectedItemType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -443,7 +443,7 @@ type AzureFileshareProtectedItemExtendedInfo struct {
 	RecoveryPointCount *int32
 
 	// READ-ONLY; Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeleted,
-	// Deleted}
+// Deleted}
 	ResourceState *string
 
 	// READ-ONLY; The resource state sync time for this backup item.
@@ -453,9 +453,9 @@ type AzureFileshareProtectedItemExtendedInfo struct {
 // AzureIaaSClassicComputeVMContainer - IaaS VM workload-specific backup item representing a classic virtual machine.
 type AzureIaaSClassicComputeVMContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -486,14 +486,14 @@ type AzureIaaSClassicComputeVMContainer struct {
 // GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type AzureIaaSClassicComputeVMContainer.
 func (a *AzureIaaSClassicComputeVMContainer) GetIaaSVMContainer() *IaaSVMContainer {
 	return &IaaSVMContainer{
-		BackupManagementType:  a.BackupManagementType,
-		ContainerType:         a.ContainerType,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		ContainerType: a.ContainerType,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
-		RegistrationStatus:    a.RegistrationStatus,
-		ResourceGroup:         a.ResourceGroup,
-		VirtualMachineID:      a.VirtualMachineID,
+		RegistrationStatus: a.RegistrationStatus,
+		ResourceGroup: a.ResourceGroup,
+		VirtualMachineID: a.VirtualMachineID,
 		VirtualMachineVersion: a.VirtualMachineVersion,
 	}
 }
@@ -501,12 +501,12 @@ func (a *AzureIaaSClassicComputeVMContainer) GetIaaSVMContainer() *IaaSVMContain
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureIaaSClassicComputeVMContainer.
 func (a *AzureIaaSClassicComputeVMContainer) GetProtectionContainer() *ProtectionContainer {
 	return &ProtectionContainer{
-		BackupManagementType:  a.BackupManagementType,
-		ContainerType:         a.ContainerType,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		ContainerType: a.ContainerType,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
-		RegistrationStatus:    a.RegistrationStatus,
+		RegistrationStatus: a.RegistrationStatus,
 	}
 }
 
@@ -540,14 +540,14 @@ type AzureIaaSClassicComputeVMProtectableItem struct {
 // GetIaaSVMProtectableItem implements the IaaSVMProtectableItemClassification interface for type AzureIaaSClassicComputeVMProtectableItem.
 func (a *AzureIaaSClassicComputeVMProtectableItem) GetIaaSVMProtectableItem() *IaaSVMProtectableItem {
 	return &IaaSVMProtectableItem{
-		BackupManagementType:  a.BackupManagementType,
-		FriendlyName:          a.FriendlyName,
-		ProtectableItemType:   a.ProtectableItemType,
-		ProtectionState:       a.ProtectionState,
-		ResourceGroup:         a.ResourceGroup,
-		VirtualMachineID:      a.VirtualMachineID,
+		BackupManagementType: a.BackupManagementType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		ResourceGroup: a.ResourceGroup,
+		VirtualMachineID: a.VirtualMachineID,
 		VirtualMachineVersion: a.VirtualMachineVersion,
-		WorkloadType:          a.WorkloadType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -555,10 +555,10 @@ func (a *AzureIaaSClassicComputeVMProtectableItem) GetIaaSVMProtectableItem() *I
 func (a *AzureIaaSClassicComputeVMProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -658,69 +658,69 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 // GetAzureIaaSVMProtectedItem implements the AzureIaaSVMProtectedItemClassification interface for type AzureIaaSClassicComputeVMProtectedItem.
 func (a *AzureIaaSClassicComputeVMProtectedItem) GetAzureIaaSVMProtectedItem() *AzureIaaSVMProtectedItem {
 	return &AzureIaaSVMProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		ExtendedInfo:                     a.ExtendedInfo,
-		ExtendedProperties:               a.ExtendedProperties,
-		FriendlyName:                     a.FriendlyName,
-		HealthDetails:                    a.HealthDetails,
-		HealthStatus:                     a.HealthStatus,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		ExtendedInfo: a.ExtendedInfo,
+		ExtendedProperties: a.ExtendedProperties,
+		FriendlyName: a.FriendlyName,
+		HealthDetails: a.HealthDetails,
+		HealthStatus: a.HealthStatus,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		KpisHealths:                      a.KpisHealths,
-		LastBackupStatus:                 a.LastBackupStatus,
-		LastBackupTime:                   a.LastBackupTime,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemDataID:              a.ProtectedItemDataID,
-		ProtectedItemType:                a.ProtectedItemType,
-		ProtectionState:                  a.ProtectionState,
-		ProtectionStatus:                 a.ProtectionStatus,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		VirtualMachineID:                 a.VirtualMachineID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		KpisHealths: a.KpisHealths,
+		LastBackupStatus: a.LastBackupStatus,
+		LastBackupTime: a.LastBackupTime,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemDataID: a.ProtectedItemDataID,
+		ProtectedItemType: a.ProtectedItemType,
+		ProtectionState: a.ProtectionState,
+		ProtectionStatus: a.ProtectionStatus,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		VirtualMachineID: a.VirtualMachineID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type AzureIaaSClassicComputeVMProtectedItem.
 func (a *AzureIaaSClassicComputeVMProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemType:                a.ProtectedItemType,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemType: a.ProtectedItemType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
 // AzureIaaSComputeVMContainer - IaaS VM workload-specific backup item representing an Azure Resource Manager virtual machine.
 type AzureIaaSComputeVMContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -751,14 +751,14 @@ type AzureIaaSComputeVMContainer struct {
 // GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type AzureIaaSComputeVMContainer.
 func (a *AzureIaaSComputeVMContainer) GetIaaSVMContainer() *IaaSVMContainer {
 	return &IaaSVMContainer{
-		BackupManagementType:  a.BackupManagementType,
-		ContainerType:         a.ContainerType,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		ContainerType: a.ContainerType,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
-		RegistrationStatus:    a.RegistrationStatus,
-		ResourceGroup:         a.ResourceGroup,
-		VirtualMachineID:      a.VirtualMachineID,
+		RegistrationStatus: a.RegistrationStatus,
+		ResourceGroup: a.ResourceGroup,
+		VirtualMachineID: a.VirtualMachineID,
 		VirtualMachineVersion: a.VirtualMachineVersion,
 	}
 }
@@ -766,12 +766,12 @@ func (a *AzureIaaSComputeVMContainer) GetIaaSVMContainer() *IaaSVMContainer {
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureIaaSComputeVMContainer.
 func (a *AzureIaaSComputeVMContainer) GetProtectionContainer() *ProtectionContainer {
 	return &ProtectionContainer{
-		BackupManagementType:  a.BackupManagementType,
-		ContainerType:         a.ContainerType,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		ContainerType: a.ContainerType,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
-		RegistrationStatus:    a.RegistrationStatus,
+		RegistrationStatus: a.RegistrationStatus,
 	}
 }
 
@@ -805,14 +805,14 @@ type AzureIaaSComputeVMProtectableItem struct {
 // GetIaaSVMProtectableItem implements the IaaSVMProtectableItemClassification interface for type AzureIaaSComputeVMProtectableItem.
 func (a *AzureIaaSComputeVMProtectableItem) GetIaaSVMProtectableItem() *IaaSVMProtectableItem {
 	return &IaaSVMProtectableItem{
-		BackupManagementType:  a.BackupManagementType,
-		FriendlyName:          a.FriendlyName,
-		ProtectableItemType:   a.ProtectableItemType,
-		ProtectionState:       a.ProtectionState,
-		ResourceGroup:         a.ResourceGroup,
-		VirtualMachineID:      a.VirtualMachineID,
+		BackupManagementType: a.BackupManagementType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		ResourceGroup: a.ResourceGroup,
+		VirtualMachineID: a.VirtualMachineID,
 		VirtualMachineVersion: a.VirtualMachineVersion,
-		WorkloadType:          a.WorkloadType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -820,10 +820,10 @@ func (a *AzureIaaSComputeVMProtectableItem) GetIaaSVMProtectableItem() *IaaSVMPr
 func (a *AzureIaaSComputeVMProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -923,60 +923,60 @@ type AzureIaaSComputeVMProtectedItem struct {
 // GetAzureIaaSVMProtectedItem implements the AzureIaaSVMProtectedItemClassification interface for type AzureIaaSComputeVMProtectedItem.
 func (a *AzureIaaSComputeVMProtectedItem) GetAzureIaaSVMProtectedItem() *AzureIaaSVMProtectedItem {
 	return &AzureIaaSVMProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		ExtendedInfo:                     a.ExtendedInfo,
-		ExtendedProperties:               a.ExtendedProperties,
-		FriendlyName:                     a.FriendlyName,
-		HealthDetails:                    a.HealthDetails,
-		HealthStatus:                     a.HealthStatus,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		ExtendedInfo: a.ExtendedInfo,
+		ExtendedProperties: a.ExtendedProperties,
+		FriendlyName: a.FriendlyName,
+		HealthDetails: a.HealthDetails,
+		HealthStatus: a.HealthStatus,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		KpisHealths:                      a.KpisHealths,
-		LastBackupStatus:                 a.LastBackupStatus,
-		LastBackupTime:                   a.LastBackupTime,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemDataID:              a.ProtectedItemDataID,
-		ProtectedItemType:                a.ProtectedItemType,
-		ProtectionState:                  a.ProtectionState,
-		ProtectionStatus:                 a.ProtectionStatus,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		VirtualMachineID:                 a.VirtualMachineID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		KpisHealths: a.KpisHealths,
+		LastBackupStatus: a.LastBackupStatus,
+		LastBackupTime: a.LastBackupTime,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemDataID: a.ProtectedItemDataID,
+		ProtectedItemType: a.ProtectedItemType,
+		ProtectionState: a.ProtectionState,
+		ProtectionStatus: a.ProtectionStatus,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		VirtualMachineID: a.VirtualMachineID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type AzureIaaSComputeVMProtectedItem.
 func (a *AzureIaaSComputeVMProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemType:                a.ProtectedItemType,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemType: a.ProtectedItemType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -1061,14 +1061,14 @@ type AzureIaaSVMJob struct {
 // GetJob implements the JobClassification interface for type AzureIaaSVMJob.
 func (a *AzureIaaSVMJob) GetJob() *Job {
 	return &Job{
-		ActivityID:           a.ActivityID,
+		ActivityID: a.ActivityID,
 		BackupManagementType: a.BackupManagementType,
-		EndTime:              a.EndTime,
-		EntityFriendlyName:   a.EntityFriendlyName,
-		JobType:              a.JobType,
-		Operation:            a.Operation,
-		StartTime:            a.StartTime,
-		Status:               a.Status,
+		EndTime: a.EndTime,
+		EntityFriendlyName: a.EntityFriendlyName,
+		JobType: a.JobType,
+		Operation: a.Operation,
+		StartTime: a.StartTime,
+		Status: a.Status,
 	}
 }
 
@@ -1168,14 +1168,14 @@ type AzureIaaSVMJobV2 struct {
 // GetJob implements the JobClassification interface for type AzureIaaSVMJobV2.
 func (a *AzureIaaSVMJobV2) GetJob() *Job {
 	return &Job{
-		ActivityID:           a.ActivityID,
+		ActivityID: a.ActivityID,
 		BackupManagementType: a.BackupManagementType,
-		EndTime:              a.EndTime,
-		EntityFriendlyName:   a.EntityFriendlyName,
-		JobType:              a.JobType,
-		Operation:            a.Operation,
-		StartTime:            a.StartTime,
-		Status:               a.Status,
+		EndTime: a.EndTime,
+		EntityFriendlyName: a.EntityFriendlyName,
+		JobType: a.JobType,
+		Operation: a.Operation,
+		StartTime: a.StartTime,
+		Status: a.Status,
 	}
 }
 
@@ -1278,24 +1278,24 @@ func (a *AzureIaaSVMProtectedItem) GetAzureIaaSVMProtectedItem() *AzureIaaSVMPro
 // GetProtectedItem implements the ProtectedItemClassification interface for type AzureIaaSVMProtectedItem.
 func (a *AzureIaaSVMProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemType:                a.ProtectedItemType,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemType: a.ProtectedItemType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -1324,11 +1324,11 @@ type AzureIaaSVMProtectedItemExtendedInfo struct {
 type AzureIaaSVMProtectionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	BackupManagementType *string
-	InstantRPDetails     *InstantRPAdditionalDetails
+	InstantRPDetails *InstantRPAdditionalDetails
 
 	// Instant RP retention policy range in days
 	InstantRpRetentionRangeInDays *int32
-	PolicyType                    *IAASVMPolicyType
+	PolicyType *IAASVMPolicyType
 
 	// Number of items associated with this policy.
 	ProtectedItemsCount *int32
@@ -1343,7 +1343,7 @@ type AzureIaaSVMProtectionPolicy struct {
 	SchedulePolicy SchedulePolicyClassification
 
 	// Tiering policy to automatically move RPs to another tier Key is Target Tier, defined in RecoveryPointTierType enum. Tiering
-	// policy specifies the criteria to move RP to the target tier.
+// policy specifies the criteria to move RP to the target tier.
 	TieringPolicy map[string]*TieringPolicy
 
 	// TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
@@ -1353,8 +1353,8 @@ type AzureIaaSVMProtectionPolicy struct {
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureIaaSVMProtectionPolicy.
 func (a *AzureIaaSVMProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
 	return &ProtectionPolicy{
-		BackupManagementType:           a.BackupManagementType,
-		ProtectedItemsCount:            a.ProtectedItemsCount,
+		BackupManagementType: a.BackupManagementType,
+		ProtectedItemsCount: a.ProtectedItemsCount,
 		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
@@ -1382,19 +1382,17 @@ type AzureRecoveryServiceVaultProtectionIntent struct {
 
 // GetAzureRecoveryServiceVaultProtectionIntent implements the AzureRecoveryServiceVaultProtectionIntentClassification interface
 // for type AzureRecoveryServiceVaultProtectionIntent.
-func (a *AzureRecoveryServiceVaultProtectionIntent) GetAzureRecoveryServiceVaultProtectionIntent() *AzureRecoveryServiceVaultProtectionIntent {
-	return a
-}
+func (a *AzureRecoveryServiceVaultProtectionIntent) GetAzureRecoveryServiceVaultProtectionIntent() *AzureRecoveryServiceVaultProtectionIntent { return a }
 
 // GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureRecoveryServiceVaultProtectionIntent.
 func (a *AzureRecoveryServiceVaultProtectionIntent) GetProtectionIntent() *ProtectionIntent {
 	return &ProtectionIntent{
-		BackupManagementType:     a.BackupManagementType,
-		ItemID:                   a.ItemID,
-		PolicyID:                 a.PolicyID,
+		BackupManagementType: a.BackupManagementType,
+		ItemID: a.ItemID,
+		PolicyID: a.PolicyID,
 		ProtectionIntentItemType: a.ProtectionIntentItemType,
-		ProtectionState:          a.ProtectionState,
-		SourceResourceID:         a.SourceResourceID,
+		ProtectionState: a.ProtectionState,
+		SourceResourceID: a.SourceResourceID,
 	}
 }
 
@@ -1425,21 +1423,21 @@ type AzureResourceProtectionIntent struct {
 // GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureResourceProtectionIntent.
 func (a *AzureResourceProtectionIntent) GetProtectionIntent() *ProtectionIntent {
 	return &ProtectionIntent{
-		BackupManagementType:     a.BackupManagementType,
-		ItemID:                   a.ItemID,
-		PolicyID:                 a.PolicyID,
+		BackupManagementType: a.BackupManagementType,
+		ItemID: a.ItemID,
+		PolicyID: a.PolicyID,
 		ProtectionIntentItemType: a.ProtectionIntentItemType,
-		ProtectionState:          a.ProtectionState,
-		SourceResourceID:         a.SourceResourceID,
+		ProtectionState: a.ProtectionState,
+		SourceResourceID: a.SourceResourceID,
 	}
 }
 
 // AzureSQLAGWorkloadContainerProtectionContainer - Container for SQL workloads under SQL Availability Group.
 type AzureSQLAGWorkloadContainerProtectionContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -1476,38 +1474,38 @@ type AzureSQLAGWorkloadContainerProtectionContainer struct {
 // GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureSQLAGWorkloadContainerProtectionContainer.
 func (a *AzureSQLAGWorkloadContainerProtectionContainer) GetAzureWorkloadContainer() *AzureWorkloadContainer {
 	return &AzureWorkloadContainer{
-		BackupManagementType:  a.BackupManagementType,
-		ContainerType:         a.ContainerType,
-		ExtendedInfo:          a.ExtendedInfo,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
-		LastUpdatedTime:       a.LastUpdatedTime,
-		OperationType:         a.OperationType,
+		BackupManagementType: a.BackupManagementType,
+		ContainerType: a.ContainerType,
+		ExtendedInfo: a.ExtendedInfo,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
+		LastUpdatedTime: a.LastUpdatedTime,
+		OperationType: a.OperationType,
 		ProtectableObjectType: a.ProtectableObjectType,
-		RegistrationStatus:    a.RegistrationStatus,
-		SourceResourceID:      a.SourceResourceID,
-		WorkloadType:          a.WorkloadType,
+		RegistrationStatus: a.RegistrationStatus,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureSQLAGWorkloadContainerProtectionContainer.
 func (a *AzureSQLAGWorkloadContainerProtectionContainer) GetProtectionContainer() *ProtectionContainer {
 	return &ProtectionContainer{
-		BackupManagementType:  a.BackupManagementType,
-		ContainerType:         a.ContainerType,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		ContainerType: a.ContainerType,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
-		RegistrationStatus:    a.RegistrationStatus,
+		RegistrationStatus: a.RegistrationStatus,
 	}
 }
 
 // AzureSQLContainer - Azure Sql workload-specific container.
 type AzureSQLContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -1529,12 +1527,12 @@ type AzureSQLContainer struct {
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureSQLContainer.
 func (a *AzureSQLContainer) GetProtectionContainer() *ProtectionContainer {
 	return &ProtectionContainer{
-		BackupManagementType:  a.BackupManagementType,
-		ContainerType:         a.ContainerType,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		ContainerType: a.ContainerType,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
-		RegistrationStatus:    a.RegistrationStatus,
+		RegistrationStatus: a.RegistrationStatus,
 	}
 }
 
@@ -1607,24 +1605,24 @@ type AzureSQLProtectedItem struct {
 // GetProtectedItem implements the ProtectedItemClassification interface for type AzureSQLProtectedItem.
 func (a *AzureSQLProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemType:                a.ProtectedItemType,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemType: a.ProtectedItemType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -1658,8 +1656,8 @@ type AzureSQLProtectionPolicy struct {
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureSQLProtectionPolicy.
 func (a *AzureSQLProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
 	return &ProtectionPolicy{
-		BackupManagementType:           a.BackupManagementType,
-		ProtectedItemsCount:            a.ProtectedItemsCount,
+		BackupManagementType: a.BackupManagementType,
+		ProtectedItemsCount: a.ProtectedItemsCount,
 		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
@@ -1667,9 +1665,9 @@ func (a *AzureSQLProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
 // AzureStorageContainer - Azure Storage Account workload-specific container.
 type AzureStorageContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Whether storage account lock is to be acquired for this container or not.
@@ -1706,12 +1704,12 @@ type AzureStorageContainer struct {
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureStorageContainer.
 func (a *AzureStorageContainer) GetProtectionContainer() *ProtectionContainer {
 	return &ProtectionContainer{
-		BackupManagementType:  a.BackupManagementType,
-		ContainerType:         a.ContainerType,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		ContainerType: a.ContainerType,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
-		RegistrationStatus:    a.RegistrationStatus,
+		RegistrationStatus: a.RegistrationStatus,
 	}
 }
 
@@ -1778,14 +1776,14 @@ type AzureStorageJob struct {
 // GetJob implements the JobClassification interface for type AzureStorageJob.
 func (a *AzureStorageJob) GetJob() *Job {
 	return &Job{
-		ActivityID:           a.ActivityID,
+		ActivityID: a.ActivityID,
 		BackupManagementType: a.BackupManagementType,
-		EndTime:              a.EndTime,
-		EntityFriendlyName:   a.EntityFriendlyName,
-		JobType:              a.JobType,
-		Operation:            a.Operation,
-		StartTime:            a.StartTime,
-		Status:               a.Status,
+		EndTime: a.EndTime,
+		EntityFriendlyName: a.EntityFriendlyName,
+		JobType: a.JobType,
+		Operation: a.Operation,
+		StartTime: a.StartTime,
+		Status: a.Status,
 	}
 }
 
@@ -1813,8 +1811,8 @@ type AzureStorageJobTaskDetails struct {
 // AzureStorageProtectableContainer - Azure Storage-specific protectable containers
 type AzureStorageProtectableContainer struct {
 	// REQUIRED; Type of the container. The value of this property for
-	// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
+// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
 	ProtectableContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -1833,10 +1831,10 @@ type AzureStorageProtectableContainer struct {
 // GetProtectableContainer implements the ProtectableContainerClassification interface for type AzureStorageProtectableContainer.
 func (a *AzureStorageProtectableContainer) GetProtectableContainer() *ProtectableContainer {
 	return &ProtectableContainer{
-		BackupManagementType:     a.BackupManagementType,
-		ContainerID:              a.ContainerID,
-		FriendlyName:             a.FriendlyName,
-		HealthStatus:             a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		ContainerID: a.ContainerID,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableContainerType: a.ProtectableContainerType,
 	}
 }
@@ -1844,8 +1842,8 @@ func (a *AzureStorageProtectableContainer) GetProtectableContainer() *Protectabl
 // AzureVMAppContainerProtectableContainer - Azure workload-specific container
 type AzureVMAppContainerProtectableContainer struct {
 	// REQUIRED; Type of the container. The value of this property for
-	// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
+// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
 	ProtectableContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -1864,10 +1862,10 @@ type AzureVMAppContainerProtectableContainer struct {
 // GetProtectableContainer implements the ProtectableContainerClassification interface for type AzureVMAppContainerProtectableContainer.
 func (a *AzureVMAppContainerProtectableContainer) GetProtectableContainer() *ProtectableContainer {
 	return &ProtectableContainer{
-		BackupManagementType:     a.BackupManagementType,
-		ContainerID:              a.ContainerID,
-		FriendlyName:             a.FriendlyName,
-		HealthStatus:             a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		ContainerID: a.ContainerID,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableContainerType: a.ProtectableContainerType,
 	}
 }
@@ -1875,9 +1873,9 @@ func (a *AzureVMAppContainerProtectableContainer) GetProtectableContainer() *Pro
 // AzureVMAppContainerProtectionContainer - Container for SQL workloads under Azure Virtual Machines.
 type AzureVMAppContainerProtectionContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -1914,29 +1912,29 @@ type AzureVMAppContainerProtectionContainer struct {
 // GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureVMAppContainerProtectionContainer.
 func (a *AzureVMAppContainerProtectionContainer) GetAzureWorkloadContainer() *AzureWorkloadContainer {
 	return &AzureWorkloadContainer{
-		BackupManagementType:  a.BackupManagementType,
-		ContainerType:         a.ContainerType,
-		ExtendedInfo:          a.ExtendedInfo,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
-		LastUpdatedTime:       a.LastUpdatedTime,
-		OperationType:         a.OperationType,
+		BackupManagementType: a.BackupManagementType,
+		ContainerType: a.ContainerType,
+		ExtendedInfo: a.ExtendedInfo,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
+		LastUpdatedTime: a.LastUpdatedTime,
+		OperationType: a.OperationType,
 		ProtectableObjectType: a.ProtectableObjectType,
-		RegistrationStatus:    a.RegistrationStatus,
-		SourceResourceID:      a.SourceResourceID,
-		WorkloadType:          a.WorkloadType,
+		RegistrationStatus: a.RegistrationStatus,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureVMAppContainerProtectionContainer.
 func (a *AzureVMAppContainerProtectionContainer) GetProtectionContainer() *ProtectionContainer {
 	return &ProtectionContainer{
-		BackupManagementType:  a.BackupManagementType,
-		ContainerType:         a.ContainerType,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		ContainerType: a.ContainerType,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
-		RegistrationStatus:    a.RegistrationStatus,
+		RegistrationStatus: a.RegistrationStatus,
 	}
 }
 
@@ -2005,10 +2003,10 @@ func (a *AzureVMWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem { re
 func (a *AzureVMWorkloadItem) GetWorkloadItem() *WorkloadItem {
 	return &WorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectionState:      a.ProtectionState,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectionState: a.ProtectionState,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2036,7 +2034,7 @@ type AzureVMWorkloadProtectableItem struct {
 	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
-	// the parent would be either Instance or a SQL AG.
+// the parent would be either Instance or a SQL AG.
 	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
@@ -2059,18 +2057,16 @@ type AzureVMWorkloadProtectableItem struct {
 }
 
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadProtectableItem.
-func (a *AzureVMWorkloadProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
-	return a
-}
+func (a *AzureVMWorkloadProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem { return a }
 
 // GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadProtectableItem.
 func (a *AzureVMWorkloadProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2174,31 +2170,29 @@ type AzureVMWorkloadProtectedItem struct {
 }
 
 // GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadProtectedItem.
-func (a *AzureVMWorkloadProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
-	return a
-}
+func (a *AzureVMWorkloadProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem { return a }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadProtectedItem.
 func (a *AzureVMWorkloadProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemType:                a.ProtectedItemType,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemType: a.ProtectedItemType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2253,8 +2247,8 @@ type AzureVMWorkloadProtectionPolicy struct {
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureVMWorkloadProtectionPolicy.
 func (a *AzureVMWorkloadProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
 	return &ProtectionPolicy{
-		BackupManagementType:           a.BackupManagementType,
-		ProtectedItemsCount:            a.ProtectedItemsCount,
+		BackupManagementType: a.BackupManagementType,
+		ProtectedItemsCount: a.ProtectedItemsCount,
 		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
 	}
 }
@@ -2361,62 +2355,62 @@ type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
 // GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSAPAseDatabaseProtectedItem.
 func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
 	return &AzureVMWorkloadProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		ExtendedInfo:                     a.ExtendedInfo,
-		FriendlyName:                     a.FriendlyName,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		ExtendedInfo: a.ExtendedInfo,
+		FriendlyName: a.FriendlyName,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		KpisHealths:                      a.KpisHealths,
-		LastBackupErrorDetail:            a.LastBackupErrorDetail,
-		LastBackupStatus:                 a.LastBackupStatus,
-		LastBackupTime:                   a.LastBackupTime,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		NodesList:                        a.NodesList,
-		ParentName:                       a.ParentName,
-		ParentType:                       a.ParentType,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemDataSourceID:        a.ProtectedItemDataSourceID,
-		ProtectedItemHealthStatus:        a.ProtectedItemHealthStatus,
-		ProtectedItemType:                a.ProtectedItemType,
-		ProtectionState:                  a.ProtectionState,
-		ProtectionStatus:                 a.ProtectionStatus,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		ServerName:                       a.ServerName,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		KpisHealths: a.KpisHealths,
+		LastBackupErrorDetail: a.LastBackupErrorDetail,
+		LastBackupStatus: a.LastBackupStatus,
+		LastBackupTime: a.LastBackupTime,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		NodesList: a.NodesList,
+		ParentName: a.ParentName,
+		ParentType: a.ParentType,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemDataSourceID: a.ProtectedItemDataSourceID,
+		ProtectedItemHealthStatus: a.ProtectedItemHealthStatus,
+		ProtectedItemType: a.ProtectedItemType,
+		ProtectionState: a.ProtectionState,
+		ProtectionStatus: a.ProtectionStatus,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		ServerName: a.ServerName,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadSAPAseDatabaseProtectedItem.
 func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemType:                a.ProtectedItemType,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemType: a.ProtectedItemType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2457,15 +2451,15 @@ type AzureVMWorkloadSAPAseDatabaseWorkloadItem struct {
 func (a *AzureVMWorkloadSAPAseDatabaseWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
 	return &AzureVMWorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		IsAutoProtectable:    a.IsAutoProtectable,
-		ParentName:           a.ParentName,
-		ProtectionState:      a.ProtectionState,
-		ServerName:           a.ServerName,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		ParentName: a.ParentName,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
 		SubWorkloadItemCount: a.SubWorkloadItemCount,
 		Subinquireditemcount: a.Subinquireditemcount,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2473,10 +2467,10 @@ func (a *AzureVMWorkloadSAPAseDatabaseWorkloadItem) GetAzureVMWorkloadItem() *Az
 func (a *AzureVMWorkloadSAPAseDatabaseWorkloadItem) GetWorkloadItem() *WorkloadItem {
 	return &WorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectionState:      a.ProtectionState,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectionState: a.ProtectionState,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2504,7 +2498,7 @@ type AzureVMWorkloadSAPAseSystemProtectableItem struct {
 	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
-	// the parent would be either Instance or a SQL AG.
+// the parent would be either Instance or a SQL AG.
 	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
@@ -2529,20 +2523,20 @@ type AzureVMWorkloadSAPAseSystemProtectableItem struct {
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPAseSystemProtectableItem.
 func (a *AzureVMWorkloadSAPAseSystemProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
 	return &AzureVMWorkloadProtectableItem{
-		BackupManagementType:    a.BackupManagementType,
-		FriendlyName:            a.FriendlyName,
-		IsAutoProtectable:       a.IsAutoProtectable,
-		IsAutoProtected:         a.IsAutoProtected,
-		IsProtectable:           a.IsProtectable,
-		ParentName:              a.ParentName,
-		ParentUniqueName:        a.ParentUniqueName,
-		Prebackupvalidation:     a.Prebackupvalidation,
-		ProtectableItemType:     a.ProtectableItemType,
-		ProtectionState:         a.ProtectionState,
-		ServerName:              a.ServerName,
-		Subinquireditemcount:    a.Subinquireditemcount,
+		BackupManagementType: a.BackupManagementType,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		IsAutoProtected: a.IsAutoProtected,
+		IsProtectable: a.IsProtectable,
+		ParentName: a.ParentName,
+		ParentUniqueName: a.ParentUniqueName,
+		Prebackupvalidation: a.Prebackupvalidation,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
+		Subinquireditemcount: a.Subinquireditemcount,
 		Subprotectableitemcount: a.Subprotectableitemcount,
-		WorkloadType:            a.WorkloadType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2550,10 +2544,10 @@ func (a *AzureVMWorkloadSAPAseSystemProtectableItem) GetAzureVMWorkloadProtectab
 func (a *AzureVMWorkloadSAPAseSystemProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2594,15 +2588,15 @@ type AzureVMWorkloadSAPAseSystemWorkloadItem struct {
 func (a *AzureVMWorkloadSAPAseSystemWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
 	return &AzureVMWorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		IsAutoProtectable:    a.IsAutoProtectable,
-		ParentName:           a.ParentName,
-		ProtectionState:      a.ProtectionState,
-		ServerName:           a.ServerName,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		ParentName: a.ParentName,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
 		SubWorkloadItemCount: a.SubWorkloadItemCount,
 		Subinquireditemcount: a.Subinquireditemcount,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2610,10 +2604,10 @@ func (a *AzureVMWorkloadSAPAseSystemWorkloadItem) GetAzureVMWorkloadItem() *Azur
 func (a *AzureVMWorkloadSAPAseSystemWorkloadItem) GetWorkloadItem() *WorkloadItem {
 	return &WorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectionState:      a.ProtectionState,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectionState: a.ProtectionState,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2641,7 +2635,7 @@ type AzureVMWorkloadSAPHanaDBInstance struct {
 	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
-	// the parent would be either Instance or a SQL AG.
+// the parent would be either Instance or a SQL AG.
 	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
@@ -2666,20 +2660,20 @@ type AzureVMWorkloadSAPHanaDBInstance struct {
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaDBInstance.
 func (a *AzureVMWorkloadSAPHanaDBInstance) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
 	return &AzureVMWorkloadProtectableItem{
-		BackupManagementType:    a.BackupManagementType,
-		FriendlyName:            a.FriendlyName,
-		IsAutoProtectable:       a.IsAutoProtectable,
-		IsAutoProtected:         a.IsAutoProtected,
-		IsProtectable:           a.IsProtectable,
-		ParentName:              a.ParentName,
-		ParentUniqueName:        a.ParentUniqueName,
-		Prebackupvalidation:     a.Prebackupvalidation,
-		ProtectableItemType:     a.ProtectableItemType,
-		ProtectionState:         a.ProtectionState,
-		ServerName:              a.ServerName,
-		Subinquireditemcount:    a.Subinquireditemcount,
+		BackupManagementType: a.BackupManagementType,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		IsAutoProtected: a.IsAutoProtected,
+		IsProtectable: a.IsProtectable,
+		ParentName: a.ParentName,
+		ParentUniqueName: a.ParentUniqueName,
+		Prebackupvalidation: a.Prebackupvalidation,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
+		Subinquireditemcount: a.Subinquireditemcount,
 		Subprotectableitemcount: a.Subprotectableitemcount,
-		WorkloadType:            a.WorkloadType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2687,10 +2681,10 @@ func (a *AzureVMWorkloadSAPHanaDBInstance) GetAzureVMWorkloadProtectableItem() *
 func (a *AzureVMWorkloadSAPHanaDBInstance) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2796,62 +2790,62 @@ type AzureVMWorkloadSAPHanaDBInstanceProtectedItem struct {
 // GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSAPHanaDBInstanceProtectedItem.
 func (a *AzureVMWorkloadSAPHanaDBInstanceProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
 	return &AzureVMWorkloadProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		ExtendedInfo:                     a.ExtendedInfo,
-		FriendlyName:                     a.FriendlyName,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		ExtendedInfo: a.ExtendedInfo,
+		FriendlyName: a.FriendlyName,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		KpisHealths:                      a.KpisHealths,
-		LastBackupErrorDetail:            a.LastBackupErrorDetail,
-		LastBackupStatus:                 a.LastBackupStatus,
-		LastBackupTime:                   a.LastBackupTime,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		NodesList:                        a.NodesList,
-		ParentName:                       a.ParentName,
-		ParentType:                       a.ParentType,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemDataSourceID:        a.ProtectedItemDataSourceID,
-		ProtectedItemHealthStatus:        a.ProtectedItemHealthStatus,
-		ProtectedItemType:                a.ProtectedItemType,
-		ProtectionState:                  a.ProtectionState,
-		ProtectionStatus:                 a.ProtectionStatus,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		ServerName:                       a.ServerName,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		KpisHealths: a.KpisHealths,
+		LastBackupErrorDetail: a.LastBackupErrorDetail,
+		LastBackupStatus: a.LastBackupStatus,
+		LastBackupTime: a.LastBackupTime,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		NodesList: a.NodesList,
+		ParentName: a.ParentName,
+		ParentType: a.ParentType,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemDataSourceID: a.ProtectedItemDataSourceID,
+		ProtectedItemHealthStatus: a.ProtectedItemHealthStatus,
+		ProtectedItemType: a.ProtectedItemType,
+		ProtectionState: a.ProtectionState,
+		ProtectionStatus: a.ProtectionStatus,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		ServerName: a.ServerName,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadSAPHanaDBInstanceProtectedItem.
 func (a *AzureVMWorkloadSAPHanaDBInstanceProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemType:                a.ProtectedItemType,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemType: a.ProtectedItemType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2879,7 +2873,7 @@ type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
 	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
-	// the parent would be either Instance or a SQL AG.
+// the parent would be either Instance or a SQL AG.
 	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
@@ -2904,20 +2898,20 @@ type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectableItem.
 func (a *AzureVMWorkloadSAPHanaDatabaseProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
 	return &AzureVMWorkloadProtectableItem{
-		BackupManagementType:    a.BackupManagementType,
-		FriendlyName:            a.FriendlyName,
-		IsAutoProtectable:       a.IsAutoProtectable,
-		IsAutoProtected:         a.IsAutoProtected,
-		IsProtectable:           a.IsProtectable,
-		ParentName:              a.ParentName,
-		ParentUniqueName:        a.ParentUniqueName,
-		Prebackupvalidation:     a.Prebackupvalidation,
-		ProtectableItemType:     a.ProtectableItemType,
-		ProtectionState:         a.ProtectionState,
-		ServerName:              a.ServerName,
-		Subinquireditemcount:    a.Subinquireditemcount,
+		BackupManagementType: a.BackupManagementType,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		IsAutoProtected: a.IsAutoProtected,
+		IsProtectable: a.IsProtectable,
+		ParentName: a.ParentName,
+		ParentUniqueName: a.ParentUniqueName,
+		Prebackupvalidation: a.Prebackupvalidation,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
+		Subinquireditemcount: a.Subinquireditemcount,
 		Subprotectableitemcount: a.Subprotectableitemcount,
-		WorkloadType:            a.WorkloadType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -2925,10 +2919,10 @@ func (a *AzureVMWorkloadSAPHanaDatabaseProtectableItem) GetAzureVMWorkloadProtec
 func (a *AzureVMWorkloadSAPHanaDatabaseProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3034,62 +3028,62 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 // GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectedItem.
 func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
 	return &AzureVMWorkloadProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		ExtendedInfo:                     a.ExtendedInfo,
-		FriendlyName:                     a.FriendlyName,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		ExtendedInfo: a.ExtendedInfo,
+		FriendlyName: a.FriendlyName,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		KpisHealths:                      a.KpisHealths,
-		LastBackupErrorDetail:            a.LastBackupErrorDetail,
-		LastBackupStatus:                 a.LastBackupStatus,
-		LastBackupTime:                   a.LastBackupTime,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		NodesList:                        a.NodesList,
-		ParentName:                       a.ParentName,
-		ParentType:                       a.ParentType,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemDataSourceID:        a.ProtectedItemDataSourceID,
-		ProtectedItemHealthStatus:        a.ProtectedItemHealthStatus,
-		ProtectedItemType:                a.ProtectedItemType,
-		ProtectionState:                  a.ProtectionState,
-		ProtectionStatus:                 a.ProtectionStatus,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		ServerName:                       a.ServerName,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		KpisHealths: a.KpisHealths,
+		LastBackupErrorDetail: a.LastBackupErrorDetail,
+		LastBackupStatus: a.LastBackupStatus,
+		LastBackupTime: a.LastBackupTime,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		NodesList: a.NodesList,
+		ParentName: a.ParentName,
+		ParentType: a.ParentType,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemDataSourceID: a.ProtectedItemDataSourceID,
+		ProtectedItemHealthStatus: a.ProtectedItemHealthStatus,
+		ProtectedItemType: a.ProtectedItemType,
+		ProtectionState: a.ProtectionState,
+		ProtectionStatus: a.ProtectionStatus,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		ServerName: a.ServerName,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectedItem.
 func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemType:                a.ProtectedItemType,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemType: a.ProtectedItemType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3130,15 +3124,15 @@ type AzureVMWorkloadSAPHanaDatabaseWorkloadItem struct {
 func (a *AzureVMWorkloadSAPHanaDatabaseWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
 	return &AzureVMWorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		IsAutoProtectable:    a.IsAutoProtectable,
-		ParentName:           a.ParentName,
-		ProtectionState:      a.ProtectionState,
-		ServerName:           a.ServerName,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		ParentName: a.ParentName,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
 		SubWorkloadItemCount: a.SubWorkloadItemCount,
 		Subinquireditemcount: a.Subinquireditemcount,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3146,10 +3140,10 @@ func (a *AzureVMWorkloadSAPHanaDatabaseWorkloadItem) GetAzureVMWorkloadItem() *A
 func (a *AzureVMWorkloadSAPHanaDatabaseWorkloadItem) GetWorkloadItem() *WorkloadItem {
 	return &WorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectionState:      a.ProtectionState,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectionState: a.ProtectionState,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3177,7 +3171,7 @@ type AzureVMWorkloadSAPHanaHSRProtectableItem struct {
 	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
-	// the parent would be either Instance or a SQL AG.
+// the parent would be either Instance or a SQL AG.
 	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
@@ -3202,20 +3196,20 @@ type AzureVMWorkloadSAPHanaHSRProtectableItem struct {
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaHSRProtectableItem.
 func (a *AzureVMWorkloadSAPHanaHSRProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
 	return &AzureVMWorkloadProtectableItem{
-		BackupManagementType:    a.BackupManagementType,
-		FriendlyName:            a.FriendlyName,
-		IsAutoProtectable:       a.IsAutoProtectable,
-		IsAutoProtected:         a.IsAutoProtected,
-		IsProtectable:           a.IsProtectable,
-		ParentName:              a.ParentName,
-		ParentUniqueName:        a.ParentUniqueName,
-		Prebackupvalidation:     a.Prebackupvalidation,
-		ProtectableItemType:     a.ProtectableItemType,
-		ProtectionState:         a.ProtectionState,
-		ServerName:              a.ServerName,
-		Subinquireditemcount:    a.Subinquireditemcount,
+		BackupManagementType: a.BackupManagementType,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		IsAutoProtected: a.IsAutoProtected,
+		IsProtectable: a.IsProtectable,
+		ParentName: a.ParentName,
+		ParentUniqueName: a.ParentUniqueName,
+		Prebackupvalidation: a.Prebackupvalidation,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
+		Subinquireditemcount: a.Subinquireditemcount,
 		Subprotectableitemcount: a.Subprotectableitemcount,
-		WorkloadType:            a.WorkloadType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3223,10 +3217,10 @@ func (a *AzureVMWorkloadSAPHanaHSRProtectableItem) GetAzureVMWorkloadProtectable
 func (a *AzureVMWorkloadSAPHanaHSRProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3254,7 +3248,7 @@ type AzureVMWorkloadSAPHanaSystemProtectableItem struct {
 	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
-	// the parent would be either Instance or a SQL AG.
+// the parent would be either Instance or a SQL AG.
 	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
@@ -3279,20 +3273,20 @@ type AzureVMWorkloadSAPHanaSystemProtectableItem struct {
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaSystemProtectableItem.
 func (a *AzureVMWorkloadSAPHanaSystemProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
 	return &AzureVMWorkloadProtectableItem{
-		BackupManagementType:    a.BackupManagementType,
-		FriendlyName:            a.FriendlyName,
-		IsAutoProtectable:       a.IsAutoProtectable,
-		IsAutoProtected:         a.IsAutoProtected,
-		IsProtectable:           a.IsProtectable,
-		ParentName:              a.ParentName,
-		ParentUniqueName:        a.ParentUniqueName,
-		Prebackupvalidation:     a.Prebackupvalidation,
-		ProtectableItemType:     a.ProtectableItemType,
-		ProtectionState:         a.ProtectionState,
-		ServerName:              a.ServerName,
-		Subinquireditemcount:    a.Subinquireditemcount,
+		BackupManagementType: a.BackupManagementType,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		IsAutoProtected: a.IsAutoProtected,
+		IsProtectable: a.IsProtectable,
+		ParentName: a.ParentName,
+		ParentUniqueName: a.ParentUniqueName,
+		Prebackupvalidation: a.Prebackupvalidation,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
+		Subinquireditemcount: a.Subinquireditemcount,
 		Subprotectableitemcount: a.Subprotectableitemcount,
-		WorkloadType:            a.WorkloadType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3300,10 +3294,10 @@ func (a *AzureVMWorkloadSAPHanaSystemProtectableItem) GetAzureVMWorkloadProtecta
 func (a *AzureVMWorkloadSAPHanaSystemProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3344,15 +3338,15 @@ type AzureVMWorkloadSAPHanaSystemWorkloadItem struct {
 func (a *AzureVMWorkloadSAPHanaSystemWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
 	return &AzureVMWorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		IsAutoProtectable:    a.IsAutoProtectable,
-		ParentName:           a.ParentName,
-		ProtectionState:      a.ProtectionState,
-		ServerName:           a.ServerName,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		ParentName: a.ParentName,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
 		SubWorkloadItemCount: a.SubWorkloadItemCount,
 		Subinquireditemcount: a.Subinquireditemcount,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3360,10 +3354,10 @@ func (a *AzureVMWorkloadSAPHanaSystemWorkloadItem) GetAzureVMWorkloadItem() *Azu
 func (a *AzureVMWorkloadSAPHanaSystemWorkloadItem) GetWorkloadItem() *WorkloadItem {
 	return &WorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectionState:      a.ProtectionState,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectionState: a.ProtectionState,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3395,7 +3389,7 @@ type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
 	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
-	// the parent would be either Instance or a SQL AG.
+// the parent would be either Instance or a SQL AG.
 	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
@@ -3420,20 +3414,20 @@ type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLAvailabilityGroupProtectableItem.
 func (a *AzureVMWorkloadSQLAvailabilityGroupProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
 	return &AzureVMWorkloadProtectableItem{
-		BackupManagementType:    a.BackupManagementType,
-		FriendlyName:            a.FriendlyName,
-		IsAutoProtectable:       a.IsAutoProtectable,
-		IsAutoProtected:         a.IsAutoProtected,
-		IsProtectable:           a.IsProtectable,
-		ParentName:              a.ParentName,
-		ParentUniqueName:        a.ParentUniqueName,
-		Prebackupvalidation:     a.Prebackupvalidation,
-		ProtectableItemType:     a.ProtectableItemType,
-		ProtectionState:         a.ProtectionState,
-		ServerName:              a.ServerName,
-		Subinquireditemcount:    a.Subinquireditemcount,
+		BackupManagementType: a.BackupManagementType,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		IsAutoProtected: a.IsAutoProtected,
+		IsProtectable: a.IsProtectable,
+		ParentName: a.ParentName,
+		ParentUniqueName: a.ParentUniqueName,
+		Prebackupvalidation: a.Prebackupvalidation,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
+		Subinquireditemcount: a.Subinquireditemcount,
 		Subprotectableitemcount: a.Subprotectableitemcount,
-		WorkloadType:            a.WorkloadType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3441,10 +3435,10 @@ func (a *AzureVMWorkloadSQLAvailabilityGroupProtectableItem) GetAzureVMWorkloadP
 func (a *AzureVMWorkloadSQLAvailabilityGroupProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3472,7 +3466,7 @@ type AzureVMWorkloadSQLDatabaseProtectableItem struct {
 	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
-	// the parent would be either Instance or a SQL AG.
+// the parent would be either Instance or a SQL AG.
 	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
@@ -3497,20 +3491,20 @@ type AzureVMWorkloadSQLDatabaseProtectableItem struct {
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectableItem.
 func (a *AzureVMWorkloadSQLDatabaseProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
 	return &AzureVMWorkloadProtectableItem{
-		BackupManagementType:    a.BackupManagementType,
-		FriendlyName:            a.FriendlyName,
-		IsAutoProtectable:       a.IsAutoProtectable,
-		IsAutoProtected:         a.IsAutoProtected,
-		IsProtectable:           a.IsProtectable,
-		ParentName:              a.ParentName,
-		ParentUniqueName:        a.ParentUniqueName,
-		Prebackupvalidation:     a.Prebackupvalidation,
-		ProtectableItemType:     a.ProtectableItemType,
-		ProtectionState:         a.ProtectionState,
-		ServerName:              a.ServerName,
-		Subinquireditemcount:    a.Subinquireditemcount,
+		BackupManagementType: a.BackupManagementType,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		IsAutoProtected: a.IsAutoProtected,
+		IsProtectable: a.IsProtectable,
+		ParentName: a.ParentName,
+		ParentUniqueName: a.ParentUniqueName,
+		Prebackupvalidation: a.Prebackupvalidation,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
+		Subinquireditemcount: a.Subinquireditemcount,
 		Subprotectableitemcount: a.Subprotectableitemcount,
-		WorkloadType:            a.WorkloadType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3518,10 +3512,10 @@ func (a *AzureVMWorkloadSQLDatabaseProtectableItem) GetAzureVMWorkloadProtectabl
 func (a *AzureVMWorkloadSQLDatabaseProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3627,62 +3621,62 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 // GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectedItem.
 func (a *AzureVMWorkloadSQLDatabaseProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
 	return &AzureVMWorkloadProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		ExtendedInfo:                     a.ExtendedInfo,
-		FriendlyName:                     a.FriendlyName,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		ExtendedInfo: a.ExtendedInfo,
+		FriendlyName: a.FriendlyName,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		KpisHealths:                      a.KpisHealths,
-		LastBackupErrorDetail:            a.LastBackupErrorDetail,
-		LastBackupStatus:                 a.LastBackupStatus,
-		LastBackupTime:                   a.LastBackupTime,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		NodesList:                        a.NodesList,
-		ParentName:                       a.ParentName,
-		ParentType:                       a.ParentType,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemDataSourceID:        a.ProtectedItemDataSourceID,
-		ProtectedItemHealthStatus:        a.ProtectedItemHealthStatus,
-		ProtectedItemType:                a.ProtectedItemType,
-		ProtectionState:                  a.ProtectionState,
-		ProtectionStatus:                 a.ProtectionStatus,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		ServerName:                       a.ServerName,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		KpisHealths: a.KpisHealths,
+		LastBackupErrorDetail: a.LastBackupErrorDetail,
+		LastBackupStatus: a.LastBackupStatus,
+		LastBackupTime: a.LastBackupTime,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		NodesList: a.NodesList,
+		ParentName: a.ParentName,
+		ParentType: a.ParentType,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemDataSourceID: a.ProtectedItemDataSourceID,
+		ProtectedItemHealthStatus: a.ProtectedItemHealthStatus,
+		ProtectedItemType: a.ProtectedItemType,
+		ProtectionState: a.ProtectionState,
+		ProtectionStatus: a.ProtectionStatus,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		ServerName: a.ServerName,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectedItem.
 func (a *AzureVMWorkloadSQLDatabaseProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		BackupManagementType: a.BackupManagementType,
+		BackupSetName: a.BackupSetName,
+		ContainerName: a.ContainerName,
+		CreateMode: a.CreateMode,
+		DeferredDeleteTimeInUTC: a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: a.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: a.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemType:                a.ProtectedItemType,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		WorkloadType:                     a.WorkloadType,
+		IsRehydrate: a.IsRehydrate,
+		IsScheduledForDeferredDelete: a.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: a.LastRecoveryPoint,
+		PolicyID: a.PolicyID,
+		PolicyName: a.PolicyName,
+		ProtectedItemType: a.ProtectedItemType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: a.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: a.SourceResourceID,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3723,15 +3717,15 @@ type AzureVMWorkloadSQLDatabaseWorkloadItem struct {
 func (a *AzureVMWorkloadSQLDatabaseWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
 	return &AzureVMWorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		IsAutoProtectable:    a.IsAutoProtectable,
-		ParentName:           a.ParentName,
-		ProtectionState:      a.ProtectionState,
-		ServerName:           a.ServerName,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		ParentName: a.ParentName,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
 		SubWorkloadItemCount: a.SubWorkloadItemCount,
 		Subinquireditemcount: a.Subinquireditemcount,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3739,10 +3733,10 @@ func (a *AzureVMWorkloadSQLDatabaseWorkloadItem) GetAzureVMWorkloadItem() *Azure
 func (a *AzureVMWorkloadSQLDatabaseWorkloadItem) GetWorkloadItem() *WorkloadItem {
 	return &WorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectionState:      a.ProtectionState,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectionState: a.ProtectionState,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3770,7 +3764,7 @@ type AzureVMWorkloadSQLInstanceProtectableItem struct {
 	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
-	// the parent would be either Instance or a SQL AG.
+// the parent would be either Instance or a SQL AG.
 	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
@@ -3795,20 +3789,20 @@ type AzureVMWorkloadSQLInstanceProtectableItem struct {
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLInstanceProtectableItem.
 func (a *AzureVMWorkloadSQLInstanceProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
 	return &AzureVMWorkloadProtectableItem{
-		BackupManagementType:    a.BackupManagementType,
-		FriendlyName:            a.FriendlyName,
-		IsAutoProtectable:       a.IsAutoProtectable,
-		IsAutoProtected:         a.IsAutoProtected,
-		IsProtectable:           a.IsProtectable,
-		ParentName:              a.ParentName,
-		ParentUniqueName:        a.ParentUniqueName,
-		Prebackupvalidation:     a.Prebackupvalidation,
-		ProtectableItemType:     a.ProtectableItemType,
-		ProtectionState:         a.ProtectionState,
-		ServerName:              a.ServerName,
-		Subinquireditemcount:    a.Subinquireditemcount,
+		BackupManagementType: a.BackupManagementType,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		IsAutoProtected: a.IsAutoProtected,
+		IsProtectable: a.IsProtectable,
+		ParentName: a.ParentName,
+		ParentUniqueName: a.ParentUniqueName,
+		Prebackupvalidation: a.Prebackupvalidation,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
+		Subinquireditemcount: a.Subinquireditemcount,
 		Subprotectableitemcount: a.Subprotectableitemcount,
-		WorkloadType:            a.WorkloadType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3816,10 +3810,10 @@ func (a *AzureVMWorkloadSQLInstanceProtectableItem) GetAzureVMWorkloadProtectabl
 func (a *AzureVMWorkloadSQLInstanceProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectableItemType: a.ProtectableItemType,
+		ProtectionState: a.ProtectionState,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3863,15 +3857,15 @@ type AzureVMWorkloadSQLInstanceWorkloadItem struct {
 func (a *AzureVMWorkloadSQLInstanceWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
 	return &AzureVMWorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		IsAutoProtectable:    a.IsAutoProtectable,
-		ParentName:           a.ParentName,
-		ProtectionState:      a.ProtectionState,
-		ServerName:           a.ServerName,
+		FriendlyName: a.FriendlyName,
+		IsAutoProtectable: a.IsAutoProtectable,
+		ParentName: a.ParentName,
+		ProtectionState: a.ProtectionState,
+		ServerName: a.ServerName,
 		SubWorkloadItemCount: a.SubWorkloadItemCount,
 		Subinquireditemcount: a.Subinquireditemcount,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3879,10 +3873,10 @@ func (a *AzureVMWorkloadSQLInstanceWorkloadItem) GetAzureVMWorkloadItem() *Azure
 func (a *AzureVMWorkloadSQLInstanceWorkloadItem) GetWorkloadItem() *WorkloadItem {
 	return &WorkloadItem{
 		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectionState:      a.ProtectionState,
-		WorkloadItemType:     a.WorkloadItemType,
-		WorkloadType:         a.WorkloadType,
+		FriendlyName: a.FriendlyName,
+		ProtectionState: a.ProtectionState,
+		WorkloadItemType: a.WorkloadItemType,
+		WorkloadType: a.WorkloadType,
 	}
 }
 
@@ -3911,30 +3905,28 @@ type AzureWorkloadAutoProtectionIntent struct {
 // for type AzureWorkloadAutoProtectionIntent.
 func (a *AzureWorkloadAutoProtectionIntent) GetAzureRecoveryServiceVaultProtectionIntent() *AzureRecoveryServiceVaultProtectionIntent {
 	return &AzureRecoveryServiceVaultProtectionIntent{
-		BackupManagementType:     a.BackupManagementType,
-		ItemID:                   a.ItemID,
-		PolicyID:                 a.PolicyID,
+		BackupManagementType: a.BackupManagementType,
+		ItemID: a.ItemID,
+		PolicyID: a.PolicyID,
 		ProtectionIntentItemType: a.ProtectionIntentItemType,
-		ProtectionState:          a.ProtectionState,
-		SourceResourceID:         a.SourceResourceID,
+		ProtectionState: a.ProtectionState,
+		SourceResourceID: a.SourceResourceID,
 	}
 }
 
 // GetAzureWorkloadAutoProtectionIntent implements the AzureWorkloadAutoProtectionIntentClassification interface for type
 // AzureWorkloadAutoProtectionIntent.
-func (a *AzureWorkloadAutoProtectionIntent) GetAzureWorkloadAutoProtectionIntent() *AzureWorkloadAutoProtectionIntent {
-	return a
-}
+func (a *AzureWorkloadAutoProtectionIntent) GetAzureWorkloadAutoProtectionIntent() *AzureWorkloadAutoProtectionIntent { return a }
 
 // GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureWorkloadAutoProtectionIntent.
 func (a *AzureWorkloadAutoProtectionIntent) GetProtectionIntent() *ProtectionIntent {
 	return &ProtectionIntent{
-		BackupManagementType:     a.BackupManagementType,
-		ItemID:                   a.ItemID,
-		PolicyID:                 a.PolicyID,
+		BackupManagementType: a.BackupManagementType,
+		ItemID: a.ItemID,
+		PolicyID: a.PolicyID,
 		ProtectionIntentItemType: a.ProtectionIntentItemType,
-		ProtectionState:          a.ProtectionState,
-		SourceResourceID:         a.SourceResourceID,
+		ProtectionState: a.ProtectionState,
+		SourceResourceID: a.SourceResourceID,
 	}
 }
 
@@ -3963,9 +3955,9 @@ func (a *AzureWorkloadBackupRequest) GetBackupRequest() *BackupRequest {
 // AzureWorkloadContainer - Container for the workloads running inside Azure Compute or Classic Compute.
 type AzureWorkloadContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -4005,12 +3997,12 @@ func (a *AzureWorkloadContainer) GetAzureWorkloadContainer() *AzureWorkloadConta
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureWorkloadContainer.
 func (a *AzureWorkloadContainer) GetProtectionContainer() *ProtectionContainer {
 	return &ProtectionContainer{
-		BackupManagementType:  a.BackupManagementType,
-		ContainerType:         a.ContainerType,
-		FriendlyName:          a.FriendlyName,
-		HealthStatus:          a.HealthStatus,
+		BackupManagementType: a.BackupManagementType,
+		ContainerType: a.ContainerType,
+		FriendlyName: a.FriendlyName,
+		HealthStatus: a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
-		RegistrationStatus:    a.RegistrationStatus,
+		RegistrationStatus: a.RegistrationStatus,
 	}
 }
 
@@ -4038,12 +4030,12 @@ type AzureWorkloadContainerAutoProtectionIntent struct {
 // GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureWorkloadContainerAutoProtectionIntent.
 func (a *AzureWorkloadContainerAutoProtectionIntent) GetProtectionIntent() *ProtectionIntent {
 	return &ProtectionIntent{
-		BackupManagementType:     a.BackupManagementType,
-		ItemID:                   a.ItemID,
-		PolicyID:                 a.PolicyID,
+		BackupManagementType: a.BackupManagementType,
+		ItemID: a.ItemID,
+		PolicyID: a.PolicyID,
 		ProtectionIntentItemType: a.ProtectionIntentItemType,
-		ProtectionState:          a.ProtectionState,
-		SourceResourceID:         a.SourceResourceID,
+		ProtectionState: a.ProtectionState,
+		SourceResourceID: a.SourceResourceID,
 	}
 }
 
@@ -4122,14 +4114,14 @@ type AzureWorkloadJob struct {
 // GetJob implements the JobClassification interface for type AzureWorkloadJob.
 func (a *AzureWorkloadJob) GetJob() *Job {
 	return &Job{
-		ActivityID:           a.ActivityID,
+		ActivityID: a.ActivityID,
 		BackupManagementType: a.BackupManagementType,
-		EndTime:              a.EndTime,
-		EntityFriendlyName:   a.EntityFriendlyName,
-		JobType:              a.JobType,
-		Operation:            a.Operation,
-		StartTime:            a.StartTime,
-		Status:               a.Status,
+		EndTime: a.EndTime,
+		EntityFriendlyName: a.EntityFriendlyName,
+		JobType: a.JobType,
+		Operation: a.Operation,
+		StartTime: a.StartTime,
+		Status: a.Status,
 	}
 }
 
@@ -4180,19 +4172,17 @@ type AzureWorkloadPointInTimeRecoveryPoint struct {
 
 // GetAzureWorkloadPointInTimeRecoveryPoint implements the AzureWorkloadPointInTimeRecoveryPointClassification interface for
 // type AzureWorkloadPointInTimeRecoveryPoint.
-func (a *AzureWorkloadPointInTimeRecoveryPoint) GetAzureWorkloadPointInTimeRecoveryPoint() *AzureWorkloadPointInTimeRecoveryPoint {
-	return a
-}
+func (a *AzureWorkloadPointInTimeRecoveryPoint) GetAzureWorkloadPointInTimeRecoveryPoint() *AzureWorkloadPointInTimeRecoveryPoint { return a }
 
 // GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadPointInTimeRecoveryPoint.
 func (a *AzureWorkloadPointInTimeRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
 	return &AzureWorkloadRecoveryPoint{
-		ObjectType:                     a.ObjectType,
+		ObjectType: a.ObjectType,
 		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
-		RecoveryPointProperties:        a.RecoveryPointProperties,
-		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
-		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
-		Type:                           a.Type,
+		RecoveryPointProperties: a.RecoveryPointProperties,
+		RecoveryPointTierDetails: a.RecoveryPointTierDetails,
+		RecoveryPointTimeInUTC: a.RecoveryPointTimeInUTC,
+		Type: a.Type,
 	}
 }
 
@@ -4233,12 +4223,12 @@ type AzureWorkloadPointInTimeRestoreRequest struct {
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadPointInTimeRestoreRequest.
 func (a *AzureWorkloadPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
@@ -4272,9 +4262,7 @@ type AzureWorkloadRecoveryPoint struct {
 }
 
 // GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadRecoveryPoint.
-func (a *AzureWorkloadRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
-	return a
-}
+func (a *AzureWorkloadRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint { return a }
 
 // GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadRecoveryPoint.
 func (a *AzureWorkloadRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
@@ -4308,9 +4296,7 @@ type AzureWorkloadRestoreRequest struct {
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadRestoreRequest.
-func (a *AzureWorkloadRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
-	return a
-}
+func (a *AzureWorkloadRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest { return a }
 
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadRestoreRequest.
 func (a *AzureWorkloadRestoreRequest) GetRestoreRequest() *RestoreRequest {
@@ -4347,25 +4333,25 @@ type AzureWorkloadSAPHanaPointInTimeRecoveryPoint struct {
 // type AzureWorkloadSAPHanaPointInTimeRecoveryPoint.
 func (a *AzureWorkloadSAPHanaPointInTimeRecoveryPoint) GetAzureWorkloadPointInTimeRecoveryPoint() *AzureWorkloadPointInTimeRecoveryPoint {
 	return &AzureWorkloadPointInTimeRecoveryPoint{
-		ObjectType:                     a.ObjectType,
+		ObjectType: a.ObjectType,
 		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
-		RecoveryPointProperties:        a.RecoveryPointProperties,
-		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
-		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
-		TimeRanges:                     a.TimeRanges,
-		Type:                           a.Type,
+		RecoveryPointProperties: a.RecoveryPointProperties,
+		RecoveryPointTierDetails: a.RecoveryPointTierDetails,
+		RecoveryPointTimeInUTC: a.RecoveryPointTimeInUTC,
+		TimeRanges: a.TimeRanges,
+		Type: a.Type,
 	}
 }
 
 // GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSAPHanaPointInTimeRecoveryPoint.
 func (a *AzureWorkloadSAPHanaPointInTimeRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
 	return &AzureWorkloadRecoveryPoint{
-		ObjectType:                     a.ObjectType,
+		ObjectType: a.ObjectType,
 		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
-		RecoveryPointProperties:        a.RecoveryPointProperties,
-		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
-		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
-		Type:                           a.Type,
+		RecoveryPointProperties: a.RecoveryPointProperties,
+		RecoveryPointTierDetails: a.RecoveryPointTierDetails,
+		RecoveryPointTimeInUTC: a.RecoveryPointTimeInUTC,
+		Type: a.Type,
 	}
 }
 
@@ -4407,32 +4393,30 @@ type AzureWorkloadSAPHanaPointInTimeRestoreRequest struct {
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
 
 // GetAzureWorkloadSAPHanaPointInTimeRestoreRequest implements the AzureWorkloadSAPHanaPointInTimeRestoreRequestClassification
 // interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
-func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadSAPHanaPointInTimeRestoreRequest() *AzureWorkloadSAPHanaPointInTimeRestoreRequest {
-	return a
-}
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadSAPHanaPointInTimeRestoreRequest() *AzureWorkloadSAPHanaPointInTimeRestoreRequest { return a }
 
 // GetAzureWorkloadSAPHanaRestoreRequest implements the AzureWorkloadSAPHanaRestoreRequestClassification interface for type
 // AzureWorkloadSAPHanaPointInTimeRestoreRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
 	return &AzureWorkloadSAPHanaRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
@@ -4478,12 +4462,12 @@ type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest struct {
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
@@ -4492,13 +4476,13 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWor
 // interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSAPHanaPointInTimeRestoreRequest() *AzureWorkloadSAPHanaPointInTimeRestoreRequest {
 	return &AzureWorkloadSAPHanaPointInTimeRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PointInTime:            a.PointInTime,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PointInTime: a.PointInTime,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
@@ -4507,12 +4491,12 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWor
 // AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
 	return &AzureWorkloadSAPHanaRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
@@ -4548,12 +4532,12 @@ type AzureWorkloadSAPHanaRecoveryPoint struct {
 // GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSAPHanaRecoveryPoint.
 func (a *AzureWorkloadSAPHanaRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
 	return &AzureWorkloadRecoveryPoint{
-		ObjectType:                     a.ObjectType,
+		ObjectType: a.ObjectType,
 		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
-		RecoveryPointProperties:        a.RecoveryPointProperties,
-		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
-		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
-		Type:                           a.Type,
+		RecoveryPointProperties: a.RecoveryPointProperties,
+		RecoveryPointTierDetails: a.RecoveryPointTierDetails,
+		RecoveryPointTimeInUTC: a.RecoveryPointTimeInUTC,
+		Type: a.Type,
 	}
 }
 
@@ -4591,21 +4575,19 @@ type AzureWorkloadSAPHanaRestoreRequest struct {
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreRequest.
 func (a *AzureWorkloadSAPHanaRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
 
 // GetAzureWorkloadSAPHanaRestoreRequest implements the AzureWorkloadSAPHanaRestoreRequestClassification interface for type
 // AzureWorkloadSAPHanaRestoreRequest.
-func (a *AzureWorkloadSAPHanaRestoreRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
-	return a
-}
+func (a *AzureWorkloadSAPHanaRestoreRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest { return a }
 
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreRequest.
 func (a *AzureWorkloadSAPHanaRestoreRequest) GetRestoreRequest() *RestoreRequest {
@@ -4645,12 +4627,12 @@ type AzureWorkloadSAPHanaRestoreWithRehydrateRequest struct {
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
@@ -4659,12 +4641,12 @@ func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadRestor
 // AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
 	return &AzureWorkloadSAPHanaRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
@@ -4704,12 +4686,12 @@ type AzureWorkloadSQLAutoProtectionIntent struct {
 // for type AzureWorkloadSQLAutoProtectionIntent.
 func (a *AzureWorkloadSQLAutoProtectionIntent) GetAzureRecoveryServiceVaultProtectionIntent() *AzureRecoveryServiceVaultProtectionIntent {
 	return &AzureRecoveryServiceVaultProtectionIntent{
-		BackupManagementType:     a.BackupManagementType,
-		ItemID:                   a.ItemID,
-		PolicyID:                 a.PolicyID,
+		BackupManagementType: a.BackupManagementType,
+		ItemID: a.ItemID,
+		PolicyID: a.PolicyID,
 		ProtectionIntentItemType: a.ProtectionIntentItemType,
-		ProtectionState:          a.ProtectionState,
-		SourceResourceID:         a.SourceResourceID,
+		ProtectionState: a.ProtectionState,
+		SourceResourceID: a.SourceResourceID,
 	}
 }
 
@@ -4717,24 +4699,24 @@ func (a *AzureWorkloadSQLAutoProtectionIntent) GetAzureRecoveryServiceVaultProte
 // AzureWorkloadSQLAutoProtectionIntent.
 func (a *AzureWorkloadSQLAutoProtectionIntent) GetAzureWorkloadAutoProtectionIntent() *AzureWorkloadAutoProtectionIntent {
 	return &AzureWorkloadAutoProtectionIntent{
-		BackupManagementType:     a.BackupManagementType,
-		ItemID:                   a.ItemID,
-		PolicyID:                 a.PolicyID,
+		BackupManagementType: a.BackupManagementType,
+		ItemID: a.ItemID,
+		PolicyID: a.PolicyID,
 		ProtectionIntentItemType: a.ProtectionIntentItemType,
-		ProtectionState:          a.ProtectionState,
-		SourceResourceID:         a.SourceResourceID,
+		ProtectionState: a.ProtectionState,
+		SourceResourceID: a.SourceResourceID,
 	}
 }
 
 // GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureWorkloadSQLAutoProtectionIntent.
 func (a *AzureWorkloadSQLAutoProtectionIntent) GetProtectionIntent() *ProtectionIntent {
 	return &ProtectionIntent{
-		BackupManagementType:     a.BackupManagementType,
-		ItemID:                   a.ItemID,
-		PolicyID:                 a.PolicyID,
+		BackupManagementType: a.BackupManagementType,
+		ItemID: a.ItemID,
+		PolicyID: a.PolicyID,
 		ProtectionIntentItemType: a.ProtectionIntentItemType,
-		ProtectionState:          a.ProtectionState,
-		SourceResourceID:         a.SourceResourceID,
+		ProtectionState: a.ProtectionState,
+		SourceResourceID: a.SourceResourceID,
 	}
 }
 
@@ -4744,8 +4726,8 @@ type AzureWorkloadSQLPointInTimeRecoveryPoint struct {
 	ObjectType *string
 
 	// Extended Info that provides data directory details. Will be populated in two cases: When a specific recovery point is accessed
-	// using GetRecoveryPoint Or when ListRecoveryPoints is called for Log RP
-	// only with ExtendedInfo query filter
+// using GetRecoveryPoint Or when ListRecoveryPoints is called for Log RP
+// only with ExtendedInfo query filter
 	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo
 
 	// Eligibility of RP to be moved to another tier
@@ -4770,25 +4752,25 @@ type AzureWorkloadSQLPointInTimeRecoveryPoint struct {
 // GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSQLPointInTimeRecoveryPoint.
 func (a *AzureWorkloadSQLPointInTimeRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
 	return &AzureWorkloadRecoveryPoint{
-		ObjectType:                     a.ObjectType,
+		ObjectType: a.ObjectType,
 		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
-		RecoveryPointProperties:        a.RecoveryPointProperties,
-		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
-		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
-		Type:                           a.Type,
+		RecoveryPointProperties: a.RecoveryPointProperties,
+		RecoveryPointTierDetails: a.RecoveryPointTierDetails,
+		RecoveryPointTimeInUTC: a.RecoveryPointTimeInUTC,
+		Type: a.Type,
 	}
 }
 
 // GetAzureWorkloadSQLRecoveryPoint implements the AzureWorkloadSQLRecoveryPointClassification interface for type AzureWorkloadSQLPointInTimeRecoveryPoint.
 func (a *AzureWorkloadSQLPointInTimeRecoveryPoint) GetAzureWorkloadSQLRecoveryPoint() *AzureWorkloadSQLRecoveryPoint {
 	return &AzureWorkloadSQLRecoveryPoint{
-		ExtendedInfo:                   a.ExtendedInfo,
-		ObjectType:                     a.ObjectType,
+		ExtendedInfo: a.ExtendedInfo,
+		ObjectType: a.ObjectType,
 		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
-		RecoveryPointProperties:        a.RecoveryPointProperties,
-		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
-		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
-		Type:                           a.Type,
+		RecoveryPointProperties: a.RecoveryPointProperties,
+		RecoveryPointTierDetails: a.RecoveryPointTierDetails,
+		RecoveryPointTimeInUTC: a.RecoveryPointTimeInUTC,
+		Type: a.Type,
 	}
 }
 
@@ -4838,35 +4820,33 @@ type AzureWorkloadSQLPointInTimeRestoreRequest struct {
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
 
 // GetAzureWorkloadSQLPointInTimeRestoreRequest implements the AzureWorkloadSQLPointInTimeRestoreRequestClassification interface
 // for type AzureWorkloadSQLPointInTimeRestoreRequest.
-func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadSQLPointInTimeRestoreRequest() *AzureWorkloadSQLPointInTimeRestoreRequest {
-	return a
-}
+func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadSQLPointInTimeRestoreRequest() *AzureWorkloadSQLPointInTimeRestoreRequest { return a }
 
 // GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
 	return &AzureWorkloadSQLRestoreRequest{
-		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
-		IsNonRecoverable:                 a.IsNonRecoverable,
-		ObjectType:                       a.ObjectType,
-		PropertyBag:                      a.PropertyBag,
-		RecoveryMode:                     a.RecoveryMode,
-		RecoveryType:                     a.RecoveryType,
+		AlternateDirectoryPaths: a.AlternateDirectoryPaths,
+		IsNonRecoverable: a.IsNonRecoverable,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
 		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
-		SourceResourceID:                 a.SourceResourceID,
-		TargetInfo:                       a.TargetInfo,
-		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
 
@@ -4920,12 +4900,12 @@ type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest struct {
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
@@ -4934,33 +4914,33 @@ func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloa
 // for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSQLPointInTimeRestoreRequest() *AzureWorkloadSQLPointInTimeRestoreRequest {
 	return &AzureWorkloadSQLPointInTimeRestoreRequest{
-		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
-		IsNonRecoverable:                 a.IsNonRecoverable,
-		ObjectType:                       a.ObjectType,
-		PointInTime:                      a.PointInTime,
-		PropertyBag:                      a.PropertyBag,
-		RecoveryMode:                     a.RecoveryMode,
-		RecoveryType:                     a.RecoveryType,
+		AlternateDirectoryPaths: a.AlternateDirectoryPaths,
+		IsNonRecoverable: a.IsNonRecoverable,
+		ObjectType: a.ObjectType,
+		PointInTime: a.PointInTime,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
 		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
-		SourceResourceID:                 a.SourceResourceID,
-		TargetInfo:                       a.TargetInfo,
-		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
 
 // GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
 	return &AzureWorkloadSQLRestoreRequest{
-		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
-		IsNonRecoverable:                 a.IsNonRecoverable,
-		ObjectType:                       a.ObjectType,
-		PropertyBag:                      a.PropertyBag,
-		RecoveryMode:                     a.RecoveryMode,
-		RecoveryType:                     a.RecoveryType,
+		AlternateDirectoryPaths: a.AlternateDirectoryPaths,
+		IsNonRecoverable: a.IsNonRecoverable,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
 		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
-		SourceResourceID:                 a.SourceResourceID,
-		TargetInfo:                       a.TargetInfo,
-		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
 
@@ -4978,8 +4958,8 @@ type AzureWorkloadSQLRecoveryPoint struct {
 	ObjectType *string
 
 	// Extended Info that provides data directory details. Will be populated in two cases: When a specific recovery point is accessed
-	// using GetRecoveryPoint Or when ListRecoveryPoints is called for Log RP
-	// only with ExtendedInfo query filter
+// using GetRecoveryPoint Or when ListRecoveryPoints is called for Log RP
+// only with ExtendedInfo query filter
 	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo
 
 	// Eligibility of RP to be moved to another tier
@@ -5001,19 +4981,17 @@ type AzureWorkloadSQLRecoveryPoint struct {
 // GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSQLRecoveryPoint.
 func (a *AzureWorkloadSQLRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
 	return &AzureWorkloadRecoveryPoint{
-		ObjectType:                     a.ObjectType,
+		ObjectType: a.ObjectType,
 		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
-		RecoveryPointProperties:        a.RecoveryPointProperties,
-		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
-		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
-		Type:                           a.Type,
+		RecoveryPointProperties: a.RecoveryPointProperties,
+		RecoveryPointTierDetails: a.RecoveryPointTierDetails,
+		RecoveryPointTimeInUTC: a.RecoveryPointTimeInUTC,
+		Type: a.Type,
 	}
 }
 
 // GetAzureWorkloadSQLRecoveryPoint implements the AzureWorkloadSQLRecoveryPointClassification interface for type AzureWorkloadSQLRecoveryPoint.
-func (a *AzureWorkloadSQLRecoveryPoint) GetAzureWorkloadSQLRecoveryPoint() *AzureWorkloadSQLRecoveryPoint {
-	return a
-}
+func (a *AzureWorkloadSQLRecoveryPoint) GetAzureWorkloadSQLRecoveryPoint() *AzureWorkloadSQLRecoveryPoint { return a }
 
 // GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadSQLRecoveryPoint.
 func (a *AzureWorkloadSQLRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
@@ -5067,20 +5045,18 @@ type AzureWorkloadSQLRestoreRequest struct {
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLRestoreRequest.
 func (a *AzureWorkloadSQLRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
 
 // GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLRestoreRequest.
-func (a *AzureWorkloadSQLRestoreRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
-	return a
-}
+func (a *AzureWorkloadSQLRestoreRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest { return a }
 
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLRestoreRequest.
 func (a *AzureWorkloadSQLRestoreRequest) GetRestoreRequest() *RestoreRequest {
@@ -5129,12 +5105,12 @@ type AzureWorkloadSQLRestoreWithRehydrateRequest struct {
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
 		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
@@ -5142,16 +5118,16 @@ func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetAzureWorkloadRestoreReq
 // GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
 	return &AzureWorkloadSQLRestoreRequest{
-		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
-		IsNonRecoverable:                 a.IsNonRecoverable,
-		ObjectType:                       a.ObjectType,
-		PropertyBag:                      a.PropertyBag,
-		RecoveryMode:                     a.RecoveryMode,
-		RecoveryType:                     a.RecoveryType,
+		AlternateDirectoryPaths: a.AlternateDirectoryPaths,
+		IsNonRecoverable: a.IsNonRecoverable,
+		ObjectType: a.ObjectType,
+		PropertyBag: a.PropertyBag,
+		RecoveryMode: a.RecoveryMode,
+		RecoveryType: a.RecoveryType,
 		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
-		SourceResourceID:                 a.SourceResourceID,
-		TargetInfo:                       a.TargetInfo,
-		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		SourceResourceID: a.SourceResourceID,
+		TargetInfo: a.TargetInfo,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
 	}
 }
 
@@ -5500,11 +5476,11 @@ type BackupResourceConfigResource struct {
 
 type BackupResourceEncryptionConfig struct {
 	// Encryption At Rest Type
-	EncryptionAtRestType          *EncryptionAtRestType
+	EncryptionAtRestType *EncryptionAtRestType
 	InfrastructureEncryptionState *InfrastructureEncryptionState
 
 	// Key Vault Key URI
-	KeyURI           *string
+	KeyURI *string
 	LastUpdateStatus *LastUpdateStatus
 
 	// Key Vault Subscription Id
@@ -5513,11 +5489,11 @@ type BackupResourceEncryptionConfig struct {
 
 type BackupResourceEncryptionConfigExtended struct {
 	// Encryption At Rest Type
-	EncryptionAtRestType          *EncryptionAtRestType
+	EncryptionAtRestType *EncryptionAtRestType
 	InfrastructureEncryptionState *InfrastructureEncryptionState
 
 	// Key Vault Key URI
-	KeyURI           *string
+	KeyURI *string
 	LastUpdateStatus *LastUpdateStatus
 
 	// Key Vault Subscription Id
@@ -5750,7 +5726,7 @@ type ClientScriptForConnect struct {
 	ScriptExtension *string
 
 	// Mandatory suffix that should be added to the name of script that is given for download to user. If its null or empty then
-	// , ignore it.
+// , ignore it.
 	ScriptNameSuffix *string
 
 	// URL of Executable from where to source the content. If this is not null then ScriptContent should not be used
@@ -5850,24 +5826,24 @@ type DPMProtectedItem struct {
 // GetProtectedItem implements the ProtectedItemClassification interface for type DPMProtectedItem.
 func (d *DPMProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             d.BackupManagementType,
-		BackupSetName:                    d.BackupSetName,
-		ContainerName:                    d.ContainerName,
-		CreateMode:                       d.CreateMode,
-		DeferredDeleteTimeInUTC:          d.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      d.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 d.IsArchiveEnabled,
+		BackupManagementType: d.BackupManagementType,
+		BackupSetName: d.BackupSetName,
+		ContainerName: d.ContainerName,
+		CreateMode: d.CreateMode,
+		DeferredDeleteTimeInUTC: d.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: d.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: d.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: d.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      d.IsRehydrate,
-		IsScheduledForDeferredDelete:     d.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                d.LastRecoveryPoint,
-		PolicyID:                         d.PolicyID,
-		PolicyName:                       d.PolicyName,
-		ProtectedItemType:                d.ProtectedItemType,
-		ResourceGuardOperationRequests:   d.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  d.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 d.SourceResourceID,
-		WorkloadType:                     d.WorkloadType,
+		IsRehydrate: d.IsRehydrate,
+		IsScheduledForDeferredDelete: d.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: d.LastRecoveryPoint,
+		PolicyID: d.PolicyID,
+		PolicyName: d.PolicyName,
+		ProtectedItemType: d.ProtectedItemType,
+		ResourceGuardOperationRequests: d.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: d.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: d.SourceResourceID,
+		WorkloadType: d.WorkloadType,
 	}
 }
 
@@ -5955,7 +5931,7 @@ type DiskExclusionProperties struct {
 
 // DiskInformation - Disk information
 type DiskInformation struct {
-	Lun  *int32
+	Lun *int32
 	Name *string
 }
 
@@ -6019,28 +5995,28 @@ type DpmBackupEngine struct {
 // GetBackupEngineBase implements the BackupEngineBaseClassification interface for type DpmBackupEngine.
 func (d *DpmBackupEngine) GetBackupEngineBase() *BackupEngineBase {
 	return &BackupEngineBase{
-		AzureBackupAgentVersion:            d.AzureBackupAgentVersion,
-		BackupEngineID:                     d.BackupEngineID,
-		BackupEngineState:                  d.BackupEngineState,
-		BackupEngineType:                   d.BackupEngineType,
-		BackupManagementType:               d.BackupManagementType,
-		CanReRegister:                      d.CanReRegister,
-		DpmVersion:                         d.DpmVersion,
-		ExtendedInfo:                       d.ExtendedInfo,
-		FriendlyName:                       d.FriendlyName,
-		HealthStatus:                       d.HealthStatus,
+		AzureBackupAgentVersion: d.AzureBackupAgentVersion,
+		BackupEngineID: d.BackupEngineID,
+		BackupEngineState: d.BackupEngineState,
+		BackupEngineType: d.BackupEngineType,
+		BackupManagementType: d.BackupManagementType,
+		CanReRegister: d.CanReRegister,
+		DpmVersion: d.DpmVersion,
+		ExtendedInfo: d.ExtendedInfo,
+		FriendlyName: d.FriendlyName,
+		HealthStatus: d.HealthStatus,
 		IsAzureBackupAgentUpgradeAvailable: d.IsAzureBackupAgentUpgradeAvailable,
-		IsDpmUpgradeAvailable:              d.IsDpmUpgradeAvailable,
-		RegistrationStatus:                 d.RegistrationStatus,
+		IsDpmUpgradeAvailable: d.IsDpmUpgradeAvailable,
+		RegistrationStatus: d.RegistrationStatus,
 	}
 }
 
 // DpmContainer - DPM workload-specific protection container.
 type DpmContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -6089,12 +6065,12 @@ func (d *DpmContainer) GetDpmContainer() *DpmContainer { return d }
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type DpmContainer.
 func (d *DpmContainer) GetProtectionContainer() *ProtectionContainer {
 	return &ProtectionContainer{
-		BackupManagementType:  d.BackupManagementType,
-		ContainerType:         d.ContainerType,
-		FriendlyName:          d.FriendlyName,
-		HealthStatus:          d.HealthStatus,
+		BackupManagementType: d.BackupManagementType,
+		ContainerType: d.ContainerType,
+		FriendlyName: d.FriendlyName,
+		HealthStatus: d.HealthStatus,
 		ProtectableObjectType: d.ProtectableObjectType,
-		RegistrationStatus:    d.RegistrationStatus,
+		RegistrationStatus: d.RegistrationStatus,
 	}
 }
 
@@ -6161,14 +6137,14 @@ type DpmJob struct {
 // GetJob implements the JobClassification interface for type DpmJob.
 func (d *DpmJob) GetJob() *Job {
 	return &Job{
-		ActivityID:           d.ActivityID,
+		ActivityID: d.ActivityID,
 		BackupManagementType: d.BackupManagementType,
-		EndTime:              d.EndTime,
-		EntityFriendlyName:   d.EntityFriendlyName,
-		JobType:              d.JobType,
-		Operation:            d.Operation,
-		StartTime:            d.StartTime,
-		Status:               d.Status,
+		EndTime: d.EndTime,
+		EntityFriendlyName: d.EntityFriendlyName,
+		JobType: d.JobType,
+		Operation: d.Operation,
+		StartTime: d.StartTime,
+		Status: d.Status,
 	}
 }
 
@@ -6296,9 +6272,9 @@ func (f *FeatureSupportRequest) GetFeatureSupportRequest() *FeatureSupportReques
 // GenericContainer - Base class for generic container of backup items
 type GenericContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -6326,12 +6302,12 @@ type GenericContainer struct {
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type GenericContainer.
 func (g *GenericContainer) GetProtectionContainer() *ProtectionContainer {
 	return &ProtectionContainer{
-		BackupManagementType:  g.BackupManagementType,
-		ContainerType:         g.ContainerType,
-		FriendlyName:          g.FriendlyName,
-		HealthStatus:          g.HealthStatus,
+		BackupManagementType: g.BackupManagementType,
+		ContainerType: g.ContainerType,
+		FriendlyName: g.FriendlyName,
+		HealthStatus: g.HealthStatus,
 		ProtectableObjectType: g.ProtectableObjectType,
-		RegistrationStatus:    g.RegistrationStatus,
+		RegistrationStatus: g.RegistrationStatus,
 	}
 }
 
@@ -6425,24 +6401,24 @@ type GenericProtectedItem struct {
 // GetProtectedItem implements the ProtectedItemClassification interface for type GenericProtectedItem.
 func (g *GenericProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             g.BackupManagementType,
-		BackupSetName:                    g.BackupSetName,
-		ContainerName:                    g.ContainerName,
-		CreateMode:                       g.CreateMode,
-		DeferredDeleteTimeInUTC:          g.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      g.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 g.IsArchiveEnabled,
+		BackupManagementType: g.BackupManagementType,
+		BackupSetName: g.BackupSetName,
+		ContainerName: g.ContainerName,
+		CreateMode: g.CreateMode,
+		DeferredDeleteTimeInUTC: g.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: g.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: g.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: g.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      g.IsRehydrate,
-		IsScheduledForDeferredDelete:     g.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                g.LastRecoveryPoint,
-		PolicyID:                         g.PolicyID,
-		PolicyName:                       g.PolicyName,
-		ProtectedItemType:                g.ProtectedItemType,
-		ResourceGuardOperationRequests:   g.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  g.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 g.SourceResourceID,
-		WorkloadType:                     g.WorkloadType,
+		IsRehydrate: g.IsRehydrate,
+		IsScheduledForDeferredDelete: g.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: g.LastRecoveryPoint,
+		PolicyID: g.PolicyID,
+		PolicyName: g.PolicyName,
+		ProtectedItemType: g.ProtectedItemType,
+		ResourceGuardOperationRequests: g.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: g.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: g.SourceResourceID,
+		WorkloadType: g.WorkloadType,
 	}
 }
 
@@ -6470,8 +6446,8 @@ type GenericProtectionPolicy struct {
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type GenericProtectionPolicy.
 func (g *GenericProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
 	return &ProtectionPolicy{
-		BackupManagementType:           g.BackupManagementType,
-		ProtectedItemsCount:            g.ProtectedItemsCount,
+		BackupManagementType: g.BackupManagementType,
+		ProtectedItemsCount: g.ProtectedItemsCount,
 		ResourceGuardOperationRequests: g.ResourceGuardOperationRequests,
 	}
 }
@@ -6557,9 +6533,9 @@ type ILRRequestResource struct {
 // IaaSVMContainer - IaaS VM workload-specific container.
 type IaaSVMContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -6593,12 +6569,12 @@ func (i *IaaSVMContainer) GetIaaSVMContainer() *IaaSVMContainer { return i }
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type IaaSVMContainer.
 func (i *IaaSVMContainer) GetProtectionContainer() *ProtectionContainer {
 	return &ProtectionContainer{
-		BackupManagementType:  i.BackupManagementType,
-		ContainerType:         i.ContainerType,
-		FriendlyName:          i.FriendlyName,
-		HealthStatus:          i.HealthStatus,
+		BackupManagementType: i.BackupManagementType,
+		ContainerType: i.ContainerType,
+		FriendlyName: i.FriendlyName,
+		HealthStatus: i.HealthStatus,
 		ProtectableObjectType: i.ProtectableObjectType,
-		RegistrationStatus:    i.RegistrationStatus,
+		RegistrationStatus: i.RegistrationStatus,
 	}
 }
 
@@ -6636,10 +6612,10 @@ func (i *IaaSVMProtectableItem) GetIaaSVMProtectableItem() *IaaSVMProtectableIte
 func (i *IaaSVMProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: i.BackupManagementType,
-		FriendlyName:         i.FriendlyName,
-		ProtectableItemType:  i.ProtectableItemType,
-		ProtectionState:      i.ProtectionState,
-		WorkloadType:         i.WorkloadType,
+		FriendlyName: i.FriendlyName,
+		ProtectableItemType: i.ProtectableItemType,
+		ProtectionState: i.ProtectionState,
+		WorkloadType: i.WorkloadType,
 	}
 }
 
@@ -6760,7 +6736,7 @@ type IaasVMRestoreRequest struct {
 	AffinityGroup *string
 
 	// Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same cloud service
-	// as it was at the time of backup.
+// as it was at the time of backup.
 	CreateNewCloudService *bool
 
 	// DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest during restore with customer managed key.
@@ -6806,26 +6782,26 @@ type IaasVMRestoreRequest struct {
 	StorageAccountID *string
 
 	// Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be {VnetID}/Subnet/{SubnetName}
-	// and, for the Azure Resource Manager VMs it would be ARM resource ID used to
-	// represent the subnet.
+// and, for the Azure Resource Manager VMs it would be ARM resource ID used to
+// represent the subnet.
 	SubnetID *string
 
 	// Specifies target network access settings for disks of VM to be restored,
 	TargetDiskNetworkAccessSettings *TargetDiskNetworkAccessSettings
 
 	// Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic Virtual
-	// Machines.
+// Machines.
 	TargetDomainNameID *string
 
 	// This is the ARM Id of the resource group that you want to create for this Virtual machine and other artifacts. For e.g.
-	// /subscriptions/{subId}/resourcegroups/{rg}
+// /subscriptions/{subId}/resourcegroups/{rg}
 	TargetResourceGroupID *string
 
 	// This is the complete ARM Id of the VM that will be created. For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string
 
 	// This is the virtual network Id of the vnet that will be attached to the virtual machine. User will be validated for join
-	// action permissions in the linked access.
+// action permissions in the linked access.
 	VirtualNetworkID *string
 
 	// Target zone where the VM and its disks should be restored.
@@ -6851,7 +6827,7 @@ type IaasVMRestoreWithRehydrationRequest struct {
 	AffinityGroup *string
 
 	// Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same cloud service
-	// as it was at the time of backup.
+// as it was at the time of backup.
 	CreateNewCloudService *bool
 
 	// DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest during restore with customer managed key.
@@ -6900,26 +6876,26 @@ type IaasVMRestoreWithRehydrationRequest struct {
 	StorageAccountID *string
 
 	// Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be {VnetID}/Subnet/{SubnetName}
-	// and, for the Azure Resource Manager VMs it would be ARM resource ID used to
-	// represent the subnet.
+// and, for the Azure Resource Manager VMs it would be ARM resource ID used to
+// represent the subnet.
 	SubnetID *string
 
 	// Specifies target network access settings for disks of VM to be restored,
 	TargetDiskNetworkAccessSettings *TargetDiskNetworkAccessSettings
 
 	// Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic Virtual
-	// Machines.
+// Machines.
 	TargetDomainNameID *string
 
 	// This is the ARM Id of the resource group that you want to create for this Virtual machine and other artifacts. For e.g.
-	// /subscriptions/{subId}/resourcegroups/{rg}
+// /subscriptions/{subId}/resourcegroups/{rg}
 	TargetResourceGroupID *string
 
 	// This is the complete ARM Id of the VM that will be created. For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string
 
 	// This is the virtual network Id of the vnet that will be attached to the virtual machine. User will be validated for join
-	// action permissions in the linked access.
+// action permissions in the linked access.
 	VirtualNetworkID *string
 
 	// Target zone where the VM and its disks should be restored.
@@ -6929,30 +6905,30 @@ type IaasVMRestoreWithRehydrationRequest struct {
 // GetIaasVMRestoreRequest implements the IaasVMRestoreRequestClassification interface for type IaasVMRestoreWithRehydrationRequest.
 func (i *IaasVMRestoreWithRehydrationRequest) GetIaasVMRestoreRequest() *IaasVMRestoreRequest {
 	return &IaasVMRestoreRequest{
-		AffinityGroup:                   i.AffinityGroup,
-		CreateNewCloudService:           i.CreateNewCloudService,
-		DiskEncryptionSetID:             i.DiskEncryptionSetID,
-		EncryptionDetails:               i.EncryptionDetails,
-		ExtendedLocation:                i.ExtendedLocation,
-		IdentityBasedRestoreDetails:     i.IdentityBasedRestoreDetails,
-		IdentityInfo:                    i.IdentityInfo,
-		ObjectType:                      i.ObjectType,
-		OriginalStorageAccountOption:    i.OriginalStorageAccountOption,
-		RecoveryPointID:                 i.RecoveryPointID,
-		RecoveryType:                    i.RecoveryType,
-		Region:                          i.Region,
-		RestoreDiskLunList:              i.RestoreDiskLunList,
-		RestoreWithManagedDisks:         i.RestoreWithManagedDisks,
-		SecuredVMDetails:                i.SecuredVMDetails,
-		SourceResourceID:                i.SourceResourceID,
-		StorageAccountID:                i.StorageAccountID,
-		SubnetID:                        i.SubnetID,
+		AffinityGroup: i.AffinityGroup,
+		CreateNewCloudService: i.CreateNewCloudService,
+		DiskEncryptionSetID: i.DiskEncryptionSetID,
+		EncryptionDetails: i.EncryptionDetails,
+		ExtendedLocation: i.ExtendedLocation,
+		IdentityBasedRestoreDetails: i.IdentityBasedRestoreDetails,
+		IdentityInfo: i.IdentityInfo,
+		ObjectType: i.ObjectType,
+		OriginalStorageAccountOption: i.OriginalStorageAccountOption,
+		RecoveryPointID: i.RecoveryPointID,
+		RecoveryType: i.RecoveryType,
+		Region: i.Region,
+		RestoreDiskLunList: i.RestoreDiskLunList,
+		RestoreWithManagedDisks: i.RestoreWithManagedDisks,
+		SecuredVMDetails: i.SecuredVMDetails,
+		SourceResourceID: i.SourceResourceID,
+		StorageAccountID: i.StorageAccountID,
+		SubnetID: i.SubnetID,
 		TargetDiskNetworkAccessSettings: i.TargetDiskNetworkAccessSettings,
-		TargetDomainNameID:              i.TargetDomainNameID,
-		TargetResourceGroupID:           i.TargetResourceGroupID,
-		TargetVirtualMachineID:          i.TargetVirtualMachineID,
-		VirtualNetworkID:                i.VirtualNetworkID,
-		Zones:                           i.Zones,
+		TargetDomainNameID: i.TargetDomainNameID,
+		TargetResourceGroupID: i.TargetResourceGroupID,
+		TargetVirtualMachineID: i.TargetVirtualMachineID,
+		VirtualNetworkID: i.VirtualNetworkID,
+		Zones: i.Zones,
 	}
 }
 
@@ -7221,9 +7197,9 @@ type MABContainerHealthDetails struct {
 // MabContainer - Container with items backed up using MAB backup engine.
 type MabContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Agent version of this container.
@@ -7266,12 +7242,12 @@ type MabContainer struct {
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type MabContainer.
 func (m *MabContainer) GetProtectionContainer() *ProtectionContainer {
 	return &ProtectionContainer{
-		BackupManagementType:  m.BackupManagementType,
-		ContainerType:         m.ContainerType,
-		FriendlyName:          m.FriendlyName,
-		HealthStatus:          m.HealthStatus,
+		BackupManagementType: m.BackupManagementType,
+		ContainerType: m.ContainerType,
+		FriendlyName: m.FriendlyName,
+		HealthStatus: m.HealthStatus,
 		ProtectableObjectType: m.ProtectableObjectType,
-		RegistrationStatus:    m.RegistrationStatus,
+		RegistrationStatus: m.RegistrationStatus,
 	}
 }
 
@@ -7383,24 +7359,24 @@ type MabFileFolderProtectedItem struct {
 // GetProtectedItem implements the ProtectedItemClassification interface for type MabFileFolderProtectedItem.
 func (m *MabFileFolderProtectedItem) GetProtectedItem() *ProtectedItem {
 	return &ProtectedItem{
-		BackupManagementType:             m.BackupManagementType,
-		BackupSetName:                    m.BackupSetName,
-		ContainerName:                    m.ContainerName,
-		CreateMode:                       m.CreateMode,
-		DeferredDeleteTimeInUTC:          m.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      m.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 m.IsArchiveEnabled,
+		BackupManagementType: m.BackupManagementType,
+		BackupSetName: m.BackupSetName,
+		ContainerName: m.ContainerName,
+		CreateMode: m.CreateMode,
+		DeferredDeleteTimeInUTC: m.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining: m.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled: m.IsArchiveEnabled,
 		IsDeferredDeleteScheduleUpcoming: m.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      m.IsRehydrate,
-		IsScheduledForDeferredDelete:     m.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                m.LastRecoveryPoint,
-		PolicyID:                         m.PolicyID,
-		PolicyName:                       m.PolicyName,
-		ProtectedItemType:                m.ProtectedItemType,
-		ResourceGuardOperationRequests:   m.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  m.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 m.SourceResourceID,
-		WorkloadType:                     m.WorkloadType,
+		IsRehydrate: m.IsRehydrate,
+		IsScheduledForDeferredDelete: m.IsScheduledForDeferredDelete,
+		LastRecoveryPoint: m.LastRecoveryPoint,
+		PolicyID: m.PolicyID,
+		PolicyName: m.PolicyName,
+		ProtectedItemType: m.ProtectedItemType,
+		ResourceGuardOperationRequests: m.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays: m.SoftDeleteRetentionPeriodInDays,
+		SourceResourceID: m.SourceResourceID,
+		WorkloadType: m.WorkloadType,
 	}
 }
 
@@ -7467,14 +7443,14 @@ type MabJob struct {
 // GetJob implements the JobClassification interface for type MabJob.
 func (m *MabJob) GetJob() *Job {
 	return &Job{
-		ActivityID:           m.ActivityID,
+		ActivityID: m.ActivityID,
 		BackupManagementType: m.BackupManagementType,
-		EndTime:              m.EndTime,
-		EntityFriendlyName:   m.EntityFriendlyName,
-		JobType:              m.JobType,
-		Operation:            m.Operation,
-		StartTime:            m.StartTime,
-		Status:               m.Status,
+		EndTime: m.EndTime,
+		EntityFriendlyName: m.EntityFriendlyName,
+		JobType: m.JobType,
+		Operation: m.Operation,
+		StartTime: m.StartTime,
+		Status: m.Status,
 	}
 }
 
@@ -7529,8 +7505,8 @@ type MabProtectionPolicy struct {
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type MabProtectionPolicy.
 func (m *MabProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
 	return &ProtectionPolicy{
-		BackupManagementType:           m.BackupManagementType,
-		ProtectedItemsCount:            m.ProtectedItemsCount,
+		BackupManagementType: m.BackupManagementType,
+		ProtectedItemsCount: m.ProtectedItemsCount,
 		ResourceGuardOperationRequests: m.ResourceGuardOperationRequests,
 	}
 }
@@ -7674,9 +7650,7 @@ type OperationStatusExtendedInfo struct {
 }
 
 // GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusExtendedInfo.
-func (o *OperationStatusExtendedInfo) GetOperationStatusExtendedInfo() *OperationStatusExtendedInfo {
-	return o
-}
+func (o *OperationStatusExtendedInfo) GetOperationStatusExtendedInfo() *OperationStatusExtendedInfo { return o }
 
 // OperationStatusJobExtendedInfo - Operation status job extended info.
 type OperationStatusJobExtendedInfo struct {
@@ -7797,7 +7771,7 @@ type PreValidateEnableBackupRequest struct {
 // PreValidateEnableBackupResponse - Response contract for enable backup validation request
 type PreValidateEnableBackupResponse struct {
 	// Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required for
-	// portal
+// portal
 	ContainerName *string
 
 	// Response error code
@@ -7914,8 +7888,8 @@ type PrivateLinkServiceConnectionState struct {
 // ProtectableContainer - Protectable Container Class.
 type ProtectableContainer struct {
 	// REQUIRED; Type of the container. The value of this property for
-	// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
+// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
 	ProtectableContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -8094,9 +8068,9 @@ type ProtectedItemResourceList struct {
 // class.
 type ProtectionContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
-	// 6. Azure workload Backup is VMAppContainer
+// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -8418,10 +8392,10 @@ type ResourceGuardOperationDetail struct {
 }
 
 type ResourceGuardProxyBase struct {
-	Description                   *string
-	LastUpdatedTime               *string
+	Description *string
+	LastUpdatedTime *string
 	ResourceGuardOperationDetails []*ResourceGuardOperationDetail
-	ResourceGuardResourceID       *string
+	ResourceGuardResourceID *string
 }
 
 type ResourceGuardProxyBaseResource struct {
@@ -8525,7 +8499,7 @@ type RestoreRequestResource struct {
 // RetentionDuration - Retention duration.
 type RetentionDuration struct {
 	// Count of duration types. Retention duration is obtained by the counting the duration type Count times. For example, when
-	// Count = 3 and DurationType = Weeks, retention duration will be three weeks.
+// Count = 3 and DurationType = Weeks, retention duration will be three weeks.
 	Count *int32
 
 	// Retention duration type of retention policy.
@@ -8592,7 +8566,7 @@ type SecurityPinBase struct {
 // Settings - Common settings field for backup management
 type Settings struct {
 	// Workload compression flag. This has been added so that 'isSqlCompression' will be deprecated once clients upgrade to consider
-	// this flag.
+// this flag.
 	IsCompression *bool
 
 	// SQL compression flag
@@ -8683,7 +8657,7 @@ type SubProtectionPolicy struct {
 	SchedulePolicy SchedulePolicyClassification
 
 	// Tiering policy to automatically move RPs to another tier. Key is Target Tier, defined in RecoveryPointTierType enum. Tiering
-	// policy specifies the criteria to move RP to the target tier.
+// policy specifies the criteria to move RP to the target tier.
 	TieringPolicy map[string]*TieringPolicy
 }
 
@@ -8724,16 +8698,16 @@ type TargetRestoreInfo struct {
 // the existing configured tiering policy for that tier
 type TieringPolicy struct {
 	// Number of days/weeks/months/years to retain backups in current tier before tiering. Used only if TieringMode is set to
-	// TierAfter
+// TierAfter
 	Duration *int32
 
 	// Retention duration type: days/weeks/months/years Used only if TieringMode is set to TierAfter
 	DurationType *RetentionDurationType
 
 	// Tiering Mode to control automatic tiering of recovery points. Supported values are:
-	// 1. TierRecommended: Tier all recovery points recommended to be tiered
-	// 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
-	// 3. DoNotTier: Do not tier any recovery points
+// 1. TierRecommended: Tier all recovery points recommended to be tiered
+// 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
+// 3. DoNotTier: Do not tier any recovery points
 	TieringMode *TieringMode
 }
 
@@ -8773,7 +8747,7 @@ type TriggerDataMoveRequest struct {
 // UnlockDeleteRequest - Request body of unlock delete API.
 type UnlockDeleteRequest struct {
 	ResourceGuardOperationRequests []*string
-	ResourceToBeDeleted            *string
+	ResourceToBeDeleted *string
 }
 
 // UnlockDeleteResponse - Response of Unlock Delete API.
@@ -8801,7 +8775,7 @@ func (v *ValidateIaasVMRestoreOperationRequest) GetValidateOperationRequest() *V
 // GetValidateRestoreOperationRequest implements the ValidateRestoreOperationRequestClassification interface for type ValidateIaasVMRestoreOperationRequest.
 func (v *ValidateIaasVMRestoreOperationRequest) GetValidateRestoreOperationRequest() *ValidateRestoreOperationRequest {
 	return &ValidateRestoreOperationRequest{
-		ObjectType:     v.ObjectType,
+		ObjectType: v.ObjectType,
 		RestoreRequest: v.RestoreRequest,
 	}
 }
@@ -8843,9 +8817,7 @@ func (v *ValidateRestoreOperationRequest) GetValidateOperationRequest() *Validat
 }
 
 // GetValidateRestoreOperationRequest implements the ValidateRestoreOperationRequestClassification interface for type ValidateRestoreOperationRequest.
-func (v *ValidateRestoreOperationRequest) GetValidateRestoreOperationRequest() *ValidateRestoreOperationRequest {
-	return v
-}
+func (v *ValidateRestoreOperationRequest) GetValidateRestoreOperationRequest() *ValidateRestoreOperationRequest { return v }
 
 // VaultJob - Vault level Job
 type VaultJob struct {
@@ -8889,14 +8861,14 @@ type VaultJob struct {
 // GetJob implements the JobClassification interface for type VaultJob.
 func (v *VaultJob) GetJob() *Job {
 	return &Job{
-		ActivityID:           v.ActivityID,
+		ActivityID: v.ActivityID,
 		BackupManagementType: v.BackupManagementType,
-		EndTime:              v.EndTime,
-		EntityFriendlyName:   v.EntityFriendlyName,
-		JobType:              v.JobType,
-		Operation:            v.Operation,
-		StartTime:            v.StartTime,
-		Status:               v.Status,
+		EndTime: v.EndTime,
+		EntityFriendlyName: v.EntityFriendlyName,
+		JobType: v.JobType,
+		Operation: v.Operation,
+		StartTime: v.StartTime,
+		Status: v.Status,
 	}
 }
 
@@ -8926,9 +8898,7 @@ type VaultStorageConfigOperationResultResponse struct {
 
 // GetVaultStorageConfigOperationResultResponse implements the VaultStorageConfigOperationResultResponseClassification interface
 // for type VaultStorageConfigOperationResultResponse.
-func (v *VaultStorageConfigOperationResultResponse) GetVaultStorageConfigOperationResultResponse() *VaultStorageConfigOperationResultResponse {
-	return v
-}
+func (v *VaultStorageConfigOperationResultResponse) GetVaultStorageConfigOperationResultResponse() *VaultStorageConfigOperationResultResponse { return v }
 
 // WeeklyRetentionFormat - Weekly retention format.
 type WeeklyRetentionFormat struct {
@@ -9098,3 +9068,4 @@ type YearlyRetentionSchedule struct {
 	// Retention times of retention policy.
 	RetentionTimes []*time.Time
 }
+

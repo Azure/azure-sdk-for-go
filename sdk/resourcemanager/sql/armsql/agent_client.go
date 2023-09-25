@@ -23,7 +23,7 @@ import (
 // AgentClient contains the methods for the SQLAgent group.
 // Don't use this type directly, use NewAgentClient() instead.
 type AgentClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAgentClient(subscriptionID string, credential azcore.TokenCredential, op
 	}
 	client := &AgentClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -93,8 +93,8 @@ func (client *AgentClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -167,3 +167,4 @@ func (client *AgentClient) getHandleResponse(resp *http.Response) (AgentClientGe
 	}
 	return result, nil
 }
+

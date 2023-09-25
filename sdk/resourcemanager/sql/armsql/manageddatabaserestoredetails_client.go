@@ -23,7 +23,7 @@ import (
 // ManagedDatabaseRestoreDetailsClient contains the methods for the ManagedDatabaseRestoreDetails group.
 // Don't use this type directly, use NewManagedDatabaseRestoreDetailsClient() instead.
 type ManagedDatabaseRestoreDetailsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedDatabaseRestoreDetailsClient(subscriptionID string, credential az
 	}
 	client := &ManagedDatabaseRestoreDetailsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,3 +114,4 @@ func (client *ManagedDatabaseRestoreDetailsClient) getHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

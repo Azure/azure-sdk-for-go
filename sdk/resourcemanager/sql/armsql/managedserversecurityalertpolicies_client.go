@@ -23,7 +23,7 @@ import (
 // ManagedServerSecurityAlertPoliciesClient contains the methods for the ManagedServerSecurityAlertPolicies group.
 // Don't use this type directly, use NewManagedServerSecurityAlertPoliciesClient() instead.
 type ManagedServerSecurityAlertPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedServerSecurityAlertPoliciesClient(subscriptionID string, credenti
 	}
 	client := &ManagedServerSecurityAlertPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdateCreateRequ
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -196,7 +196,7 @@ func (client *ManagedServerSecurityAlertPoliciesClient) getHandleResponse(resp *
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerSecurityAlertPoliciesClientListByInstanceOptions contains the optional parameters for the ManagedServerSecurityAlertPoliciesClient.NewListByInstancePager
 //     method.
-func (client *ManagedServerSecurityAlertPoliciesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedServerSecurityAlertPoliciesClientListByInstanceOptions) *runtime.Pager[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse] {
+func (client *ManagedServerSecurityAlertPoliciesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedServerSecurityAlertPoliciesClientListByInstanceOptions) (*runtime.Pager[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse]{
 		More: func(page ManagedServerSecurityAlertPoliciesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -258,3 +258,4 @@ func (client *ManagedServerSecurityAlertPoliciesClient) listByInstanceHandleResp
 	}
 	return result, nil
 }
+

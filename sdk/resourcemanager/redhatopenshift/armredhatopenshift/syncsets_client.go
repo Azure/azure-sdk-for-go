@@ -23,7 +23,7 @@ import (
 // SyncSetsClient contains the methods for the SyncSets group.
 // Don't use this type directly, use NewSyncSetsClient() instead.
 type SyncSetsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSyncSetsClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &SyncSetsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -98,8 +98,8 @@ func (client *SyncSetsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -238,7 +238,7 @@ func (client *SyncSetsClient) getHandleResponse(resp *http.Response) (SyncSetsCl
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - options - SyncSetsClientListOptions contains the optional parameters for the SyncSetsClient.NewListPager method.
-func (client *SyncSetsClient) NewListPager(resourceGroupName string, resourceName string, options *SyncSetsClientListOptions) *runtime.Pager[SyncSetsClientListResponse] {
+func (client *SyncSetsClient) NewListPager(resourceGroupName string, resourceName string, options *SyncSetsClientListOptions) (*runtime.Pager[SyncSetsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SyncSetsClientListResponse]{
 		More: func(page SyncSetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -356,8 +356,8 @@ func (client *SyncSetsClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -369,3 +369,4 @@ func (client *SyncSetsClient) updateHandleResponse(resp *http.Response) (SyncSet
 	}
 	return result, nil
 }
+

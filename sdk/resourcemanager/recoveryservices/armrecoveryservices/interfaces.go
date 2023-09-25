@@ -16,3 +16,4 @@ type ResourceCertificateDetailsClassification interface {
 	// GetResourceCertificateDetails returns the ResourceCertificateDetails content of the underlying type.
 	GetResourceCertificateDetails() *ResourceCertificateDetails
 }
+

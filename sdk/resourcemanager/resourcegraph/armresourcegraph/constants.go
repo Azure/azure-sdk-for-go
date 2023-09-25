@@ -9,7 +9,7 @@
 package armresourcegraph
 
 const (
-	moduleName    = "armresourcegraph"
+	moduleName = "armresourcegraph"
 	moduleVersion = "v0.8.1"
 )
 
@@ -19,14 +19,14 @@ type AuthorizationScopeFilter string
 
 const (
 	AuthorizationScopeFilterAtScopeAboveAndBelow AuthorizationScopeFilter = "AtScopeAboveAndBelow"
-	AuthorizationScopeFilterAtScopeAndAbove      AuthorizationScopeFilter = "AtScopeAndAbove"
-	AuthorizationScopeFilterAtScopeAndBelow      AuthorizationScopeFilter = "AtScopeAndBelow"
-	AuthorizationScopeFilterAtScopeExact         AuthorizationScopeFilter = "AtScopeExact"
+	AuthorizationScopeFilterAtScopeAndAbove AuthorizationScopeFilter = "AtScopeAndAbove"
+	AuthorizationScopeFilterAtScopeAndBelow AuthorizationScopeFilter = "AtScopeAndBelow"
+	AuthorizationScopeFilterAtScopeExact AuthorizationScopeFilter = "AtScopeExact"
 )
 
 // PossibleAuthorizationScopeFilterValues returns the possible values for the AuthorizationScopeFilter const type.
 func PossibleAuthorizationScopeFilterValues() []AuthorizationScopeFilter {
-	return []AuthorizationScopeFilter{
+	return []AuthorizationScopeFilter{	
 		AuthorizationScopeFilterAtScopeAboveAndBelow,
 		AuthorizationScopeFilterAtScopeAndAbove,
 		AuthorizationScopeFilterAtScopeAndBelow,
@@ -38,17 +38,17 @@ func PossibleAuthorizationScopeFilterValues() []AuthorizationScopeFilter {
 type ColumnDataType string
 
 const (
-	ColumnDataTypeBoolean  ColumnDataType = "boolean"
+	ColumnDataTypeBoolean ColumnDataType = "boolean"
 	ColumnDataTypeDatetime ColumnDataType = "datetime"
-	ColumnDataTypeInteger  ColumnDataType = "integer"
-	ColumnDataTypeNumber   ColumnDataType = "number"
-	ColumnDataTypeObject   ColumnDataType = "object"
-	ColumnDataTypeString   ColumnDataType = "string"
+	ColumnDataTypeInteger ColumnDataType = "integer"
+	ColumnDataTypeNumber ColumnDataType = "number"
+	ColumnDataTypeObject ColumnDataType = "object"
+	ColumnDataTypeString ColumnDataType = "string"
 )
 
 // PossibleColumnDataTypeValues returns the possible values for the ColumnDataType const type.
 func PossibleColumnDataTypeValues() []ColumnDataType {
-	return []ColumnDataType{
+	return []ColumnDataType{	
 		ColumnDataTypeBoolean,
 		ColumnDataTypeDatetime,
 		ColumnDataTypeInteger,
@@ -62,13 +62,13 @@ func PossibleColumnDataTypeValues() []ColumnDataType {
 type FacetSortOrder string
 
 const (
-	FacetSortOrderAsc  FacetSortOrder = "asc"
+	FacetSortOrderAsc FacetSortOrder = "asc"
 	FacetSortOrderDesc FacetSortOrder = "desc"
 )
 
 // PossibleFacetSortOrderValues returns the possible values for the FacetSortOrder const type.
 func PossibleFacetSortOrderValues() []FacetSortOrder {
-	return []FacetSortOrder{
+	return []FacetSortOrder{	
 		FacetSortOrderAsc,
 		FacetSortOrderDesc,
 	}
@@ -79,12 +79,12 @@ type ResultFormat string
 
 const (
 	ResultFormatObjectArray ResultFormat = "objectArray"
-	ResultFormatTable       ResultFormat = "table"
+	ResultFormatTable ResultFormat = "table"
 )
 
 // PossibleResultFormatValues returns the possible values for the ResultFormat const type.
 func PossibleResultFormatValues() []ResultFormat {
-	return []ResultFormat{
+	return []ResultFormat{	
 		ResultFormatObjectArray,
 		ResultFormatTable,
 	}
@@ -95,13 +95,14 @@ type ResultTruncated string
 
 const (
 	ResultTruncatedFalse ResultTruncated = "false"
-	ResultTruncatedTrue  ResultTruncated = "true"
+	ResultTruncatedTrue ResultTruncated = "true"
 )
 
 // PossibleResultTruncatedValues returns the possible values for the ResultTruncated const type.
 func PossibleResultTruncatedValues() []ResultTruncated {
-	return []ResultTruncated{
+	return []ResultTruncated{	
 		ResultTruncatedFalse,
 		ResultTruncatedTrue,
 	}
 }
+

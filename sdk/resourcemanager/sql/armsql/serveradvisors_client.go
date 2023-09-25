@@ -23,7 +23,7 @@ import (
 // ServerAdvisorsClient contains the methods for the ServerAdvisors group.
 // Don't use this type directly, use NewServerAdvisorsClient() instead.
 type ServerAdvisorsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerAdvisorsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &ServerAdvisorsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -230,8 +230,8 @@ func (client *ServerAdvisorsClient) updateCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -243,3 +243,4 @@ func (client *ServerAdvisorsClient) updateHandleResponse(resp *http.Response) (S
 	}
 	return result, nil
 }
+

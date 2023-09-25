@@ -23,7 +23,7 @@ import (
 // JobOperationResultsClient contains the methods for the JobOperationResults group.
 // Don't use this type directly, use NewJobOperationResultsClient() instead.
 type JobOperationResultsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewJobOperationResultsClient(subscriptionID string, credential azcore.Token
 	}
 	client := &JobOperationResultsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -102,3 +102,4 @@ func (client *JobOperationResultsClient) getCreateRequest(ctx context.Context, v
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

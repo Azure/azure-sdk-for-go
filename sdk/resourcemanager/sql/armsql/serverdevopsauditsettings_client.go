@@ -23,7 +23,7 @@ import (
 // ServerDevOpsAuditSettingsClient contains the methods for the ServerDevOpsAuditSettings group.
 // Don't use this type directly, use NewServerDevOpsAuditSettingsClient() instead.
 type ServerDevOpsAuditSettingsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerDevOpsAuditSettingsClient(subscriptionID string, credential azcore
 	}
 	client := &ServerDevOpsAuditSettingsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,8 +117,8 @@ func (client *ServerDevOpsAuditSettingsClient) createOrUpdateCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -196,7 +196,7 @@ func (client *ServerDevOpsAuditSettingsClient) getHandleResponse(resp *http.Resp
 //   - serverName - The name of the server.
 //   - options - ServerDevOpsAuditSettingsClientListByServerOptions contains the optional parameters for the ServerDevOpsAuditSettingsClient.NewListByServerPager
 //     method.
-func (client *ServerDevOpsAuditSettingsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerDevOpsAuditSettingsClientListByServerOptions) *runtime.Pager[ServerDevOpsAuditSettingsClientListByServerResponse] {
+func (client *ServerDevOpsAuditSettingsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerDevOpsAuditSettingsClientListByServerOptions) (*runtime.Pager[ServerDevOpsAuditSettingsClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerDevOpsAuditSettingsClientListByServerResponse]{
 		More: func(page ServerDevOpsAuditSettingsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -258,3 +258,4 @@ func (client *ServerDevOpsAuditSettingsClient) listByServerHandleResponse(resp *
 	}
 	return result, nil
 }
+

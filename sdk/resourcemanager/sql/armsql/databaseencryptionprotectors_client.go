@@ -23,7 +23,7 @@ import (
 // DatabaseEncryptionProtectorsClient contains the methods for the DatabaseEncryptionProtectors group.
 // Don't use this type directly, use NewDatabaseEncryptionProtectorsClient() instead.
 type DatabaseEncryptionProtectorsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatabaseEncryptionProtectorsClient(subscriptionID string, credential azc
 	}
 	client := &DatabaseEncryptionProtectorsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -202,3 +202,4 @@ func (client *DatabaseEncryptionProtectorsClient) revertCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
+

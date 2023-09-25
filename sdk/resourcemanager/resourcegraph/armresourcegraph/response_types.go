@@ -23,6 +23,7 @@ type ClientResourcesResponse struct {
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// Result of the request to list Resource Graph operations. It contains a list of operations and a URL link to get the next
-	// set of results.
+// set of results.
 	OperationListResult
 }
+

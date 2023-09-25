@@ -23,7 +23,7 @@ import (
 // DatabaseSecurityAlertPoliciesClient contains the methods for the DatabaseSecurityAlertPolicies group.
 // Don't use this type directly, use NewDatabaseSecurityAlertPoliciesClient() instead.
 type DatabaseSecurityAlertPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatabaseSecurityAlertPoliciesClient(subscriptionID string, credential az
 	}
 	client := &DatabaseSecurityAlertPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -105,8 +105,8 @@ func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRequest(c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -200,7 +200,7 @@ func (client *DatabaseSecurityAlertPoliciesClient) getHandleResponse(resp *http.
 //   - databaseName - The name of the database for which the security alert policy is defined.
 //   - options - DatabaseSecurityAlertPoliciesClientListByDatabaseOptions contains the optional parameters for the DatabaseSecurityAlertPoliciesClient.NewListByDatabasePager
 //     method.
-func (client *DatabaseSecurityAlertPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseSecurityAlertPoliciesClientListByDatabaseOptions) *runtime.Pager[DatabaseSecurityAlertPoliciesClientListByDatabaseResponse] {
+func (client *DatabaseSecurityAlertPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseSecurityAlertPoliciesClientListByDatabaseOptions) (*runtime.Pager[DatabaseSecurityAlertPoliciesClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabaseSecurityAlertPoliciesClientListByDatabaseResponse]{
 		More: func(page DatabaseSecurityAlertPoliciesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -266,3 +266,4 @@ func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseHandleResponse(
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ManagedInstanceTdeCertificatesClient contains the methods for the ManagedInstanceTdeCertificates group.
 // Don't use this type directly, use NewManagedInstanceTdeCertificatesClient() instead.
 type ManagedInstanceTdeCertificatesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedInstanceTdeCertificatesClient(subscriptionID string, credential a
 	}
 	client := &ManagedInstanceTdeCertificatesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,7 +110,8 @@ func (client *ManagedInstanceTdeCertificatesClient) createCreateRequest(ctx cont
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

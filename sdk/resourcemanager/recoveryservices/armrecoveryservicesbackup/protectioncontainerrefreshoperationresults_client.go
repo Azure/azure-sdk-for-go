@@ -23,7 +23,7 @@ import (
 // ProtectionContainerRefreshOperationResultsClient contains the methods for the ProtectionContainerRefreshOperationResults group.
 // Don't use this type directly, use NewProtectionContainerRefreshOperationResultsClient() instead.
 type ProtectionContainerRefreshOperationResultsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewProtectionContainerRefreshOperationResultsClient(subscriptionID string, 
 	}
 	client := &ProtectionContainerRefreshOperationResultsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,3 +103,4 @@ func (client *ProtectionContainerRefreshOperationResultsClient) getCreateRequest
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

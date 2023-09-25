@@ -23,7 +23,7 @@ import (
 // ManagedDatabasesClient contains the methods for the ManagedDatabases group.
 // Don't use this type directly, use NewManagedDatabasesClient() instead.
 type ManagedDatabasesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedDatabasesClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &ManagedDatabasesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *ManagedDatabasesClient) cancelMoveCreateRequest(ctx context.Contex
 	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -192,8 +192,8 @@ func (client *ManagedDatabasesClient) completeMoveCreateRequest(ctx context.Cont
 	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,8 +269,8 @@ func (client *ManagedDatabasesClient) completeRestoreCreateRequest(ctx context.C
 	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -347,8 +347,8 @@ func (client *ManagedDatabasesClient) createOrUpdateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -499,7 +499,7 @@ func (client *ManagedDatabasesClient) getHandleResponse(resp *http.Response) (Ma
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedDatabasesClientListByInstanceOptions contains the optional parameters for the ManagedDatabasesClient.NewListByInstancePager
 //     method.
-func (client *ManagedDatabasesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedDatabasesClientListByInstanceOptions) *runtime.Pager[ManagedDatabasesClientListByInstanceResponse] {
+func (client *ManagedDatabasesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedDatabasesClientListByInstanceOptions) (*runtime.Pager[ManagedDatabasesClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedDatabasesClientListByInstanceResponse]{
 		More: func(page ManagedDatabasesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -570,7 +570,7 @@ func (client *ManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Re
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedDatabasesClientListInaccessibleByInstanceOptions contains the optional parameters for the ManagedDatabasesClient.NewListInaccessibleByInstancePager
 //     method.
-func (client *ManagedDatabasesClient) NewListInaccessibleByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedDatabasesClientListInaccessibleByInstanceOptions) *runtime.Pager[ManagedDatabasesClientListInaccessibleByInstanceResponse] {
+func (client *ManagedDatabasesClient) NewListInaccessibleByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedDatabasesClientListInaccessibleByInstanceOptions) (*runtime.Pager[ManagedDatabasesClientListInaccessibleByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedDatabasesClientListInaccessibleByInstanceResponse]{
 		More: func(page ManagedDatabasesClientListInaccessibleByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -705,8 +705,8 @@ func (client *ManagedDatabasesClient) startMoveCreateRequest(ctx context.Context
 	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -783,7 +783,8 @@ func (client *ManagedDatabasesClient) updateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

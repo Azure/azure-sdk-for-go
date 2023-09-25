@@ -23,7 +23,7 @@ import (
 // DatabaseAdvisorsClient contains the methods for the DatabaseAdvisors group.
 // Don't use this type directly, use NewDatabaseAdvisorsClient() instead.
 type DatabaseAdvisorsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatabaseAdvisorsClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &DatabaseAdvisorsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -245,8 +245,8 @@ func (client *DatabaseAdvisorsClient) updateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -258,3 +258,4 @@ func (client *DatabaseAdvisorsClient) updateHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

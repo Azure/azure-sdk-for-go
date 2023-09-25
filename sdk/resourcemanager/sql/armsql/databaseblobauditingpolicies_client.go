@@ -23,7 +23,7 @@ import (
 // DatabaseBlobAuditingPoliciesClient contains the methods for the DatabaseBlobAuditingPolicies group.
 // Don't use this type directly, use NewDatabaseBlobAuditingPoliciesClient() instead.
 type DatabaseBlobAuditingPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatabaseBlobAuditingPoliciesClient(subscriptionID string, credential azc
 	}
 	client := &DatabaseBlobAuditingPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,8 +101,8 @@ func (client *DatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ct
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -192,7 +192,7 @@ func (client *DatabaseBlobAuditingPoliciesClient) getHandleResponse(resp *http.R
 //   - databaseName - The name of the database.
 //   - options - DatabaseBlobAuditingPoliciesClientListByDatabaseOptions contains the optional parameters for the DatabaseBlobAuditingPoliciesClient.NewListByDatabasePager
 //     method.
-func (client *DatabaseBlobAuditingPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseBlobAuditingPoliciesClientListByDatabaseOptions) *runtime.Pager[DatabaseBlobAuditingPoliciesClientListByDatabaseResponse] {
+func (client *DatabaseBlobAuditingPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseBlobAuditingPoliciesClientListByDatabaseOptions) (*runtime.Pager[DatabaseBlobAuditingPoliciesClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabaseBlobAuditingPoliciesClientListByDatabaseResponse]{
 		More: func(page DatabaseBlobAuditingPoliciesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -258,3 +258,4 @@ func (client *DatabaseBlobAuditingPoliciesClient) listByDatabaseHandleResponse(r
 	}
 	return result, nil
 }
+

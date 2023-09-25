@@ -23,7 +23,7 @@ import (
 // MachinePoolsClient contains the methods for the MachinePools group.
 // Don't use this type directly, use NewMachinePoolsClient() instead.
 type MachinePoolsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewMachinePoolsClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &MachinePoolsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *MachinePoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -239,7 +239,7 @@ func (client *MachinePoolsClient) getHandleResponse(resp *http.Response) (Machin
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - options - MachinePoolsClientListOptions contains the optional parameters for the MachinePoolsClient.NewListPager method.
-func (client *MachinePoolsClient) NewListPager(resourceGroupName string, resourceName string, options *MachinePoolsClientListOptions) *runtime.Pager[MachinePoolsClientListResponse] {
+func (client *MachinePoolsClient) NewListPager(resourceGroupName string, resourceName string, options *MachinePoolsClientListOptions) (*runtime.Pager[MachinePoolsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MachinePoolsClientListResponse]{
 		More: func(page MachinePoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -357,8 +357,8 @@ func (client *MachinePoolsClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -370,3 +370,4 @@ func (client *MachinePoolsClient) updateHandleResponse(resp *http.Response) (Mac
 	}
 	return result, nil
 }
+

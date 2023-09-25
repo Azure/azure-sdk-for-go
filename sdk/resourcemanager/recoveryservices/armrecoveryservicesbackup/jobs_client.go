@@ -23,7 +23,7 @@ import (
 // JobsClient contains the methods for the Jobs group.
 // Don't use this type directly, use NewJobsClient() instead.
 type JobsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	}
 	client := &JobsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -95,3 +95,4 @@ func (client *JobsClient) exportCreateRequest(ctx context.Context, vaultName str
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

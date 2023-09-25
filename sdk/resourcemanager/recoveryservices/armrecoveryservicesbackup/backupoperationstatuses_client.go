@@ -23,7 +23,7 @@ import (
 // BackupOperationStatusesClient contains the methods for the BackupOperationStatuses group.
 // Don't use this type directly, use NewBackupOperationStatusesClient() instead.
 type BackupOperationStatusesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupOperationStatusesClient(subscriptionID string, credential azcore.T
 	}
 	client := &BackupOperationStatusesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,3 +110,4 @@ func (client *BackupOperationStatusesClient) getHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

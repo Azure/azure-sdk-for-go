@@ -23,7 +23,7 @@ import (
 // DatabaseUsagesClient contains the methods for the DatabaseUsages group.
 // Don't use this type directly, use NewDatabaseUsagesClient() instead.
 type DatabaseUsagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatabaseUsagesClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &DatabaseUsagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -52,7 +52,7 @@ func NewDatabaseUsagesClient(subscriptionID string, credential azcore.TokenCrede
 //   - databaseName - The name of the database.
 //   - options - DatabaseUsagesClientListByDatabaseOptions contains the optional parameters for the DatabaseUsagesClient.NewListByDatabasePager
 //     method.
-func (client *DatabaseUsagesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseUsagesClientListByDatabaseOptions) *runtime.Pager[DatabaseUsagesClientListByDatabaseResponse] {
+func (client *DatabaseUsagesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseUsagesClientListByDatabaseOptions) (*runtime.Pager[DatabaseUsagesClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabaseUsagesClientListByDatabaseResponse]{
 		More: func(page DatabaseUsagesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -118,3 +118,4 @@ func (client *DatabaseUsagesClient) listByDatabaseHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

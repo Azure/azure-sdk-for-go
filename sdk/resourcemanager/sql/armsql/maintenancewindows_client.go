@@ -23,7 +23,7 @@ import (
 // MaintenanceWindowsClient contains the methods for the MaintenanceWindows group.
 // Don't use this type directly, use NewMaintenanceWindowsClient() instead.
 type MaintenanceWindowsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewMaintenanceWindowsClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &MaintenanceWindowsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *MaintenanceWindowsClient) createOrUpdateCreateRequest(ctx context.
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -171,3 +171,4 @@ func (client *MaintenanceWindowsClient) getHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

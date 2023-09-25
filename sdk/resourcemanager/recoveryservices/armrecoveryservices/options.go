@@ -115,3 +115,4 @@ type VaultsClientListByResourceGroupOptions struct {
 type VaultsClientListBySubscriptionIDOptions struct {
 	// placeholder for future optional parameters
 }
+

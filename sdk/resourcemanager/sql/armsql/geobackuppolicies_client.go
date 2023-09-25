@@ -23,7 +23,7 @@ import (
 // GeoBackupPoliciesClient contains the methods for the GeoBackupPolicies group.
 // Don't use this type directly, use NewGeoBackupPoliciesClient() instead.
 type GeoBackupPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewGeoBackupPoliciesClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &GeoBackupPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -105,8 +105,8 @@ func (client *GeoBackupPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -199,7 +199,7 @@ func (client *GeoBackupPoliciesClient) getHandleResponse(resp *http.Response) (G
 //   - databaseName - The name of the database.
 //   - options - GeoBackupPoliciesClientListByDatabaseOptions contains the optional parameters for the GeoBackupPoliciesClient.NewListByDatabasePager
 //     method.
-func (client *GeoBackupPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *GeoBackupPoliciesClientListByDatabaseOptions) *runtime.Pager[GeoBackupPoliciesClientListByDatabaseResponse] {
+func (client *GeoBackupPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *GeoBackupPoliciesClientListByDatabaseOptions) (*runtime.Pager[GeoBackupPoliciesClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GeoBackupPoliciesClientListByDatabaseResponse]{
 		More: func(page GeoBackupPoliciesClientListByDatabaseResponse) bool {
 			return false
@@ -259,3 +259,4 @@ func (client *GeoBackupPoliciesClient) listByDatabaseHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

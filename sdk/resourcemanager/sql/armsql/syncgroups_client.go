@@ -23,7 +23,7 @@ import (
 // SyncGroupsClient contains the methods for the SyncGroups group.
 // Don't use this type directly, use NewSyncGroupsClient() instead.
 type SyncGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSyncGroupsClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &SyncGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -181,8 +181,8 @@ func (client *SyncGroupsClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -343,7 +343,7 @@ func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGrou
 //   - databaseName - The name of the database on which the sync group is hosted.
 //   - options - SyncGroupsClientListByDatabaseOptions contains the optional parameters for the SyncGroupsClient.NewListByDatabasePager
 //     method.
-func (client *SyncGroupsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *SyncGroupsClientListByDatabaseOptions) *runtime.Pager[SyncGroupsClientListByDatabaseResponse] {
+func (client *SyncGroupsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *SyncGroupsClientListByDatabaseOptions) (*runtime.Pager[SyncGroupsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListByDatabaseResponse]{
 		More: func(page SyncGroupsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -420,7 +420,7 @@ func (client *SyncGroupsClient) listByDatabaseHandleResponse(resp *http.Response
 //   - syncGroupName - The name of the sync group.
 //   - options - SyncGroupsClientListHubSchemasOptions contains the optional parameters for the SyncGroupsClient.NewListHubSchemasPager
 //     method.
-func (client *SyncGroupsClient) NewListHubSchemasPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientListHubSchemasOptions) *runtime.Pager[SyncGroupsClientListHubSchemasResponse] {
+func (client *SyncGroupsClient) NewListHubSchemasPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientListHubSchemasOptions) (*runtime.Pager[SyncGroupsClientListHubSchemasResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListHubSchemasResponse]{
 		More: func(page SyncGroupsClientListHubSchemasResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -503,7 +503,7 @@ func (client *SyncGroupsClient) listHubSchemasHandleResponse(resp *http.Response
 //   - endTime - Get logs generated before this time.
 //   - typeParam - The types of logs to retrieve.
 //   - options - SyncGroupsClientListLogsOptions contains the optional parameters for the SyncGroupsClient.NewListLogsPager method.
-func (client *SyncGroupsClient) NewListLogsPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam SyncGroupsType, options *SyncGroupsClientListLogsOptions) *runtime.Pager[SyncGroupsClientListLogsResponse] {
+func (client *SyncGroupsClient) NewListLogsPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam SyncGroupsType, options *SyncGroupsClientListLogsOptions) (*runtime.Pager[SyncGroupsClientListLogsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListLogsResponse]{
 		More: func(page SyncGroupsClientListLogsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -586,7 +586,7 @@ func (client *SyncGroupsClient) listLogsHandleResponse(resp *http.Response) (Syn
 //   - locationName - The name of the region where the resource is located.
 //   - options - SyncGroupsClientListSyncDatabaseIDsOptions contains the optional parameters for the SyncGroupsClient.NewListSyncDatabaseIDsPager
 //     method.
-func (client *SyncGroupsClient) NewListSyncDatabaseIDsPager(locationName string, options *SyncGroupsClientListSyncDatabaseIDsOptions) *runtime.Pager[SyncGroupsClientListSyncDatabaseIDsResponse] {
+func (client *SyncGroupsClient) NewListSyncDatabaseIDsPager(locationName string, options *SyncGroupsClientListSyncDatabaseIDsOptions) (*runtime.Pager[SyncGroupsClientListSyncDatabaseIDsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListSyncDatabaseIDsResponse]{
 		More: func(page SyncGroupsClientListSyncDatabaseIDsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -860,7 +860,8 @@ func (client *SyncGroupsClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

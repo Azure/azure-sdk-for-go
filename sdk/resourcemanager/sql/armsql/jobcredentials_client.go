@@ -23,7 +23,7 @@ import (
 // JobCredentialsClient contains the methods for the JobCredentials group.
 // Don't use this type directly, use NewJobCredentialsClient() instead.
 type JobCredentialsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewJobCredentialsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &JobCredentialsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -105,8 +105,8 @@ func (client *JobCredentialsClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -259,7 +259,7 @@ func (client *JobCredentialsClient) getHandleResponse(resp *http.Response) (JobC
 //   - jobAgentName - The name of the job agent.
 //   - options - JobCredentialsClientListByAgentOptions contains the optional parameters for the JobCredentialsClient.NewListByAgentPager
 //     method.
-func (client *JobCredentialsClient) NewListByAgentPager(resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsClientListByAgentOptions) *runtime.Pager[JobCredentialsClientListByAgentResponse] {
+func (client *JobCredentialsClient) NewListByAgentPager(resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsClientListByAgentOptions) (*runtime.Pager[JobCredentialsClientListByAgentResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[JobCredentialsClientListByAgentResponse]{
 		More: func(page JobCredentialsClientListByAgentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -325,3 +325,4 @@ func (client *JobCredentialsClient) listByAgentHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

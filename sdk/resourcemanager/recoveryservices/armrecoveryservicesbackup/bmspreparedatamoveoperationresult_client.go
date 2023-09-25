@@ -23,7 +23,7 @@ import (
 // BMSPrepareDataMoveOperationResultClient contains the methods for the BMSPrepareDataMoveOperationResult group.
 // Don't use this type directly, use NewBMSPrepareDataMoveOperationResultClient() instead.
 type BMSPrepareDataMoveOperationResultClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBMSPrepareDataMoveOperationResultClient(subscriptionID string, credentia
 	}
 	client := &BMSPrepareDataMoveOperationResultClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -107,3 +107,4 @@ func (client *BMSPrepareDataMoveOperationResultClient) getHandleResponse(resp *h
 	}
 	return result, nil
 }
+

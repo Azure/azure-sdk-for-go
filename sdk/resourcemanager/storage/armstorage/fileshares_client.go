@@ -23,7 +23,7 @@ import (
 // FileSharesClient contains the methods for the FileShares group.
 // Don't use this type directly, use NewFileSharesClient() instead.
 type FileSharesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewFileSharesClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &FileSharesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -106,8 +106,8 @@ func (client *FileSharesClient) createCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, fileShare); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -320,8 +320,8 @@ func (client *FileSharesClient) leaseCreateRequest(ctx context.Context, resource
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -346,7 +346,7 @@ func (client *FileSharesClient) leaseHandleResponse(resp *http.Response) (FileSh
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
 //   - options - FileSharesClientListOptions contains the optional parameters for the FileSharesClient.NewListPager method.
-func (client *FileSharesClient) NewListPager(resourceGroupName string, accountName string, options *FileSharesClientListOptions) *runtime.Pager[FileSharesClientListResponse] {
+func (client *FileSharesClient) NewListPager(resourceGroupName string, accountName string, options *FileSharesClientListOptions) (*runtime.Pager[FileSharesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[FileSharesClientListResponse]{
 		More: func(page FileSharesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -474,8 +474,8 @@ func (client *FileSharesClient) restoreCreateRequest(ctx context.Context, resour
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, deletedShare); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -538,8 +538,8 @@ func (client *FileSharesClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, fileShare); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -551,3 +551,4 @@ func (client *FileSharesClient) updateHandleResponse(resp *http.Response) (FileS
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // VirtualNetworkRulesClient contains the methods for the VirtualNetworkRules group.
 // Don't use this type directly, use NewVirtualNetworkRulesClient() instead.
 type VirtualNetworkRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewVirtualNetworkRulesClient(subscriptionID string, credential azcore.Token
 	}
 	client := &VirtualNetworkRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *VirtualNetworkRulesClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -268,7 +268,7 @@ func (client *VirtualNetworkRulesClient) getHandleResponse(resp *http.Response) 
 //   - serverName - The name of the server.
 //   - options - VirtualNetworkRulesClientListByServerOptions contains the optional parameters for the VirtualNetworkRulesClient.NewListByServerPager
 //     method.
-func (client *VirtualNetworkRulesClient) NewListByServerPager(resourceGroupName string, serverName string, options *VirtualNetworkRulesClientListByServerOptions) *runtime.Pager[VirtualNetworkRulesClientListByServerResponse] {
+func (client *VirtualNetworkRulesClient) NewListByServerPager(resourceGroupName string, serverName string, options *VirtualNetworkRulesClientListByServerOptions) (*runtime.Pager[VirtualNetworkRulesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkRulesClientListByServerResponse]{
 		More: func(page VirtualNetworkRulesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -330,3 +330,4 @@ func (client *VirtualNetworkRulesClient) listByServerHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

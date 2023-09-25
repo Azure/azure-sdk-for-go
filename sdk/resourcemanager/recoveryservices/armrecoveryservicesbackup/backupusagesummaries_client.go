@@ -23,7 +23,7 @@ import (
 // BackupUsageSummariesClient contains the methods for the BackupUsageSummaries group.
 // Don't use this type directly, use NewBackupUsageSummariesClient() instead.
 type BackupUsageSummariesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupUsageSummariesClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &BackupUsageSummariesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewBackupUsageSummariesClient(subscriptionID string, credential azcore.Toke
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupUsageSummariesClientListOptions contains the optional parameters for the BackupUsageSummariesClient.NewListPager
 //     method.
-func (client *BackupUsageSummariesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupUsageSummariesClientListOptions) *runtime.Pager[BackupUsageSummariesClientListResponse] {
+func (client *BackupUsageSummariesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupUsageSummariesClientListOptions) (*runtime.Pager[BackupUsageSummariesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BackupUsageSummariesClientListResponse]{
 		More: func(page BackupUsageSummariesClientListResponse) bool {
 			return false
@@ -112,3 +112,4 @@ func (client *BackupUsageSummariesClient) listHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

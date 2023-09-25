@@ -24,7 +24,7 @@ import (
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	}
 	client := &UsagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -52,7 +52,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 //   - instancePoolName - The name of the instance pool to be retrieved.
 //   - options - UsagesClientListByInstancePoolOptions contains the optional parameters for the UsagesClient.NewListByInstancePoolPager
 //     method.
-func (client *UsagesClient) NewListByInstancePoolPager(resourceGroupName string, instancePoolName string, options *UsagesClientListByInstancePoolOptions) *runtime.Pager[UsagesClientListByInstancePoolResponse] {
+func (client *UsagesClient) NewListByInstancePoolPager(resourceGroupName string, instancePoolName string, options *UsagesClientListByInstancePoolOptions) (*runtime.Pager[UsagesClientListByInstancePoolResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[UsagesClientListByInstancePoolResponse]{
 		More: func(page UsagesClientListByInstancePoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -117,3 +117,4 @@ func (client *UsagesClient) listByInstancePoolHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

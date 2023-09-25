@@ -23,7 +23,7 @@ import (
 // ManagedInstanceKeysClient contains the methods for the ManagedInstanceKeys group.
 // Don't use this type directly, use NewManagedInstanceKeysClient() instead.
 type ManagedInstanceKeysClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedInstanceKeysClient(subscriptionID string, credential azcore.Token
 	}
 	client := &ManagedInstanceKeysClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ManagedInstanceKeysClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -268,7 +268,7 @@ func (client *ManagedInstanceKeysClient) getHandleResponse(resp *http.Response) 
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstanceKeysClientListByInstanceOptions contains the optional parameters for the ManagedInstanceKeysClient.NewListByInstancePager
 //     method.
-func (client *ManagedInstanceKeysClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceKeysClientListByInstanceOptions) *runtime.Pager[ManagedInstanceKeysClientListByInstanceResponse] {
+func (client *ManagedInstanceKeysClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceKeysClientListByInstanceOptions) (*runtime.Pager[ManagedInstanceKeysClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstanceKeysClientListByInstanceResponse]{
 		More: func(page ManagedInstanceKeysClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *ManagedInstanceKeysClient) listByInstanceHandleResponse(resp *http
 	}
 	return result, nil
 }
+

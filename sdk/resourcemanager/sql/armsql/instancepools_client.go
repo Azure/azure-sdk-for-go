@@ -23,7 +23,7 @@ import (
 // InstancePoolsClient contains the methods for the InstancePools group.
 // Don't use this type directly, use NewInstancePoolsClient() instead.
 type InstancePoolsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewInstancePoolsClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &InstancePoolsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -111,8 +111,8 @@ func (client *InstancePoolsClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -249,7 +249,7 @@ func (client *InstancePoolsClient) getHandleResponse(resp *http.Response) (Insta
 //
 // Generated from API version 2020-11-01-preview
 //   - options - InstancePoolsClientListOptions contains the optional parameters for the InstancePoolsClient.NewListPager method.
-func (client *InstancePoolsClient) NewListPager(options *InstancePoolsClientListOptions) *runtime.Pager[InstancePoolsClientListResponse] {
+func (client *InstancePoolsClient) NewListPager(options *InstancePoolsClientListOptions) (*runtime.Pager[InstancePoolsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InstancePoolsClientListResponse]{
 		More: func(page InstancePoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -311,7 +311,7 @@ func (client *InstancePoolsClient) listHandleResponse(resp *http.Response) (Inst
 //     Resource Manager API or the portal.
 //   - options - InstancePoolsClientListByResourceGroupOptions contains the optional parameters for the InstancePoolsClient.NewListByResourceGroupPager
 //     method.
-func (client *InstancePoolsClient) NewListByResourceGroupPager(resourceGroupName string, options *InstancePoolsClientListByResourceGroupOptions) *runtime.Pager[InstancePoolsClientListByResourceGroupResponse] {
+func (client *InstancePoolsClient) NewListByResourceGroupPager(resourceGroupName string, options *InstancePoolsClientListByResourceGroupOptions) (*runtime.Pager[InstancePoolsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InstancePoolsClientListByResourceGroupResponse]{
 		More: func(page InstancePoolsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -438,7 +438,8 @@ func (client *InstancePoolsClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

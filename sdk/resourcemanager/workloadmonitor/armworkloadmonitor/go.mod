@@ -1,11 +1,11 @@
-// Deprecated: The service backing this library is retired on November 30th, 2022. At that point, this library will no longer work. Please migrate to Azure Monitor Log Alerts API in module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor.
+// Deprecated: The service backing this library is retired on November 30th, 2022. At that point, this library will no longer work. Please migrate to Azure Monitor Log Alerts API in module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/armworkloadmonitor
 // For more details on the Azure VM Insights Guest Health retirement, please visit: https://azure.microsoft.com/updates/transition-to-azure-monitor-log-alerts-for-vm-guest-health-by-30-november-2022
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/armworkloadmonitor
 
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.0.0
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.6.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.0.0
 )
 

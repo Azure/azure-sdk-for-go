@@ -23,7 +23,7 @@ import (
 // RecoveryPointsClient contains the methods for the RecoveryPoints group.
 // Don't use this type directly, use NewRecoveryPointsClient() instead.
 type RecoveryPointsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &RecoveryPointsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -133,7 +133,7 @@ func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (Reco
 //   - containerName - Container name associated with the backed up item.
 //   - protectedItemName - Backed up item whose backup copies are to be fetched.
 //   - options - RecoveryPointsClientListOptions contains the optional parameters for the RecoveryPointsClient.NewListPager method.
-func (client *RecoveryPointsClient) NewListPager(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *RecoveryPointsClientListOptions) *runtime.Pager[RecoveryPointsClientListResponse] {
+func (client *RecoveryPointsClient) NewListPager(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *RecoveryPointsClientListOptions) (*runtime.Pager[RecoveryPointsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RecoveryPointsClientListResponse]{
 		More: func(page RecoveryPointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -210,3 +210,4 @@ func (client *RecoveryPointsClient) listHandleResponse(resp *http.Response) (Rec
 	}
 	return result, nil
 }
+

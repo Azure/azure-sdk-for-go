@@ -23,7 +23,7 @@ import (
 // WorkloadClassifiersClient contains the methods for the WorkloadClassifiers group.
 // Don't use this type directly, use NewWorkloadClassifiersClient() instead.
 type WorkloadClassifiersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewWorkloadClassifiersClient(subscriptionID string, credential azcore.Token
 	}
 	client := &WorkloadClassifiersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -126,8 +126,8 @@ func (client *WorkloadClassifiersClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -300,7 +300,7 @@ func (client *WorkloadClassifiersClient) getHandleResponse(resp *http.Response) 
 //   - workloadGroupName - The name of the workload group from which to receive the classifiers from.
 //   - options - WorkloadClassifiersClientListByWorkloadGroupOptions contains the optional parameters for the WorkloadClassifiersClient.NewListByWorkloadGroupPager
 //     method.
-func (client *WorkloadClassifiersClient) NewListByWorkloadGroupPager(resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadClassifiersClientListByWorkloadGroupOptions) *runtime.Pager[WorkloadClassifiersClientListByWorkloadGroupResponse] {
+func (client *WorkloadClassifiersClient) NewListByWorkloadGroupPager(resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadClassifiersClientListByWorkloadGroupOptions) (*runtime.Pager[WorkloadClassifiersClientListByWorkloadGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadClassifiersClientListByWorkloadGroupResponse]{
 		More: func(page WorkloadClassifiersClientListByWorkloadGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -370,3 +370,4 @@ func (client *WorkloadClassifiersClient) listByWorkloadGroupHandleResponse(resp 
 	}
 	return result, nil
 }
+

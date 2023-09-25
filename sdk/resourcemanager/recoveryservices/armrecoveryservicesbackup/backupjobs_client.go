@@ -23,7 +23,7 @@ import (
 // BackupJobsClient contains the methods for the BackupJobs group.
 // Don't use this type directly, use NewBackupJobsClient() instead.
 type BackupJobsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupJobsClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &BackupJobsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewBackupJobsClient(subscriptionID string, credential azcore.TokenCredentia
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupJobsClientListOptions contains the optional parameters for the BackupJobsClient.NewListPager method.
-func (client *BackupJobsClient) NewListPager(vaultName string, resourceGroupName string, options *BackupJobsClientListOptions) *runtime.Pager[BackupJobsClientListResponse] {
+func (client *BackupJobsClient) NewListPager(vaultName string, resourceGroupName string, options *BackupJobsClientListOptions) (*runtime.Pager[BackupJobsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BackupJobsClientListResponse]{
 		More: func(page BackupJobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -117,3 +117,4 @@ func (client *BackupJobsClient) listHandleResponse(resp *http.Response) (BackupJ
 	}
 	return result, nil
 }
+

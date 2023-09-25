@@ -23,7 +23,7 @@ import (
 // ManagedServerDNSAliasesClient contains the methods for the ManagedServerDNSAliases group.
 // Don't use this type directly, use NewManagedServerDNSAliasesClient() instead.
 type ManagedServerDNSAliasesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedServerDNSAliasesClient(subscriptionID string, credential azcore.T
 	}
 	client := &ManagedServerDNSAliasesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *ManagedServerDNSAliasesClient) acquireCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -190,8 +190,8 @@ func (client *ManagedServerDNSAliasesClient) createOrUpdateCreateRequest(ctx con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -341,7 +341,7 @@ func (client *ManagedServerDNSAliasesClient) getHandleResponse(resp *http.Respon
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedServerDNSAliasesClientListByManagedInstanceOptions contains the optional parameters for the ManagedServerDNSAliasesClient.NewListByManagedInstancePager
 //     method.
-func (client *ManagedServerDNSAliasesClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedServerDNSAliasesClientListByManagedInstanceOptions) *runtime.Pager[ManagedServerDNSAliasesClientListByManagedInstanceResponse] {
+func (client *ManagedServerDNSAliasesClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedServerDNSAliasesClientListByManagedInstanceOptions) (*runtime.Pager[ManagedServerDNSAliasesClientListByManagedInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedServerDNSAliasesClientListByManagedInstanceResponse]{
 		More: func(page ManagedServerDNSAliasesClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -403,3 +403,4 @@ func (client *ManagedServerDNSAliasesClient) listByManagedInstanceHandleResponse
 	}
 	return result, nil
 }
+

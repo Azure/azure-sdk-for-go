@@ -16,3 +16,4 @@ type FacetClassification interface {
 	// GetFacet returns the Facet content of the underlying type.
 	GetFacet() *Facet
 }
+

@@ -23,7 +23,7 @@ import (
 // DatabaseExtensionsClient contains the methods for the DatabaseExtensions group.
 // Don't use this type directly, use NewDatabaseExtensionsClient() instead.
 type DatabaseExtensionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatabaseExtensionsClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &DatabaseExtensionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -120,8 +120,8 @@ func (client *DatabaseExtensionsClient) createOrUpdateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -193,7 +193,7 @@ func (client *DatabaseExtensionsClient) getCreateRequest(ctx context.Context, re
 //   - databaseName - The name of the database.
 //   - options - DatabaseExtensionsClientListByDatabaseOptions contains the optional parameters for the DatabaseExtensionsClient.NewListByDatabasePager
 //     method.
-func (client *DatabaseExtensionsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseExtensionsClientListByDatabaseOptions) *runtime.Pager[DatabaseExtensionsClientListByDatabaseResponse] {
+func (client *DatabaseExtensionsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseExtensionsClientListByDatabaseOptions) (*runtime.Pager[DatabaseExtensionsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabaseExtensionsClientListByDatabaseResponse]{
 		More: func(page DatabaseExtensionsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -259,3 +259,4 @@ func (client *DatabaseExtensionsClient) listByDatabaseHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

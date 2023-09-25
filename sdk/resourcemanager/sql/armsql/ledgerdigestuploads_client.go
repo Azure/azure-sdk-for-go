@@ -23,7 +23,7 @@ import (
 // LedgerDigestUploadsClient contains the methods for the LedgerDigestUploads group.
 // Don't use this type directly, use NewLedgerDigestUploadsClient() instead.
 type LedgerDigestUploadsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewLedgerDigestUploadsClient(subscriptionID string, credential azcore.Token
 	}
 	client := &LedgerDigestUploadsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -119,8 +119,8 @@ func (client *LedgerDigestUploadsClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -281,7 +281,7 @@ func (client *LedgerDigestUploadsClient) getHandleResponse(resp *http.Response) 
 //   - databaseName - The name of the database.
 //   - options - LedgerDigestUploadsClientListByDatabaseOptions contains the optional parameters for the LedgerDigestUploadsClient.NewListByDatabasePager
 //     method.
-func (client *LedgerDigestUploadsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *LedgerDigestUploadsClientListByDatabaseOptions) *runtime.Pager[LedgerDigestUploadsClientListByDatabaseResponse] {
+func (client *LedgerDigestUploadsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *LedgerDigestUploadsClientListByDatabaseOptions) (*runtime.Pager[LedgerDigestUploadsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LedgerDigestUploadsClientListByDatabaseResponse]{
 		More: func(page LedgerDigestUploadsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -347,3 +347,4 @@ func (client *LedgerDigestUploadsClient) listByDatabaseHandleResponse(resp *http
 	}
 	return result, nil
 }
+

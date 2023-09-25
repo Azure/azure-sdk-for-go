@@ -9,7 +9,7 @@
 package armrecoveryservices
 
 const (
-	moduleName    = "armrecoveryservices"
+	moduleName = "armrecoveryservices"
 	moduleVersion = "v1.5.0"
 )
 
@@ -17,12 +17,12 @@ type AlertsState string
 
 const (
 	AlertsStateDisabled AlertsState = "Disabled"
-	AlertsStateEnabled  AlertsState = "Enabled"
+	AlertsStateEnabled AlertsState = "Enabled"
 )
 
 // PossibleAlertsStateValues returns the possible values for the AlertsState const type.
 func PossibleAlertsStateValues() []AlertsState {
-	return []AlertsState{
+	return []AlertsState{	
 		AlertsStateDisabled,
 		AlertsStateEnabled,
 	}
@@ -32,16 +32,16 @@ func PossibleAlertsStateValues() []AlertsState {
 type AuthType string
 
 const (
-	AuthTypeAAD                  AuthType = "AAD"
-	AuthTypeACS                  AuthType = "ACS"
+	AuthTypeAAD AuthType = "AAD"
+	AuthTypeACS AuthType = "ACS"
 	AuthTypeAccessControlService AuthType = "AccessControlService"
 	AuthTypeAzureActiveDirectory AuthType = "AzureActiveDirectory"
-	AuthTypeInvalid              AuthType = "Invalid"
+	AuthTypeInvalid AuthType = "Invalid"
 )
 
 // PossibleAuthTypeValues returns the possible values for the AuthType const type.
 func PossibleAuthTypeValues() []AuthType {
-	return []AuthType{
+	return []AuthType{	
 		AuthTypeAAD,
 		AuthTypeACS,
 		AuthTypeAccessControlService,
@@ -55,13 +55,13 @@ type BackupStorageVersion string
 
 const (
 	BackupStorageVersionUnassigned BackupStorageVersion = "Unassigned"
-	BackupStorageVersionV1         BackupStorageVersion = "V1"
-	BackupStorageVersionV2         BackupStorageVersion = "V2"
+	BackupStorageVersionV1 BackupStorageVersion = "V1"
+	BackupStorageVersionV2 BackupStorageVersion = "V2"
 )
 
 // PossibleBackupStorageVersionValues returns the possible values for the BackupStorageVersion const type.
 func PossibleBackupStorageVersionValues() []BackupStorageVersion {
-	return []BackupStorageVersion{
+	return []BackupStorageVersion{	
 		BackupStorageVersionUnassigned,
 		BackupStorageVersionV1,
 		BackupStorageVersionV2,
@@ -72,15 +72,15 @@ func PossibleBackupStorageVersionValues() []BackupStorageVersion {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -93,12 +93,12 @@ type CrossRegionRestore string
 
 const (
 	CrossRegionRestoreDisabled CrossRegionRestore = "Disabled"
-	CrossRegionRestoreEnabled  CrossRegionRestore = "Enabled"
+	CrossRegionRestoreEnabled CrossRegionRestore = "Enabled"
 )
 
 // PossibleCrossRegionRestoreValues returns the possible values for the CrossRegionRestore const type.
 func PossibleCrossRegionRestoreValues() []CrossRegionRestore {
-	return []CrossRegionRestore{
+	return []CrossRegionRestore{	
 		CrossRegionRestoreDisabled,
 		CrossRegionRestoreEnabled,
 	}
@@ -107,14 +107,14 @@ func PossibleCrossRegionRestoreValues() []CrossRegionRestore {
 type CrossSubscriptionRestoreState string
 
 const (
-	CrossSubscriptionRestoreStateDisabled            CrossSubscriptionRestoreState = "Disabled"
-	CrossSubscriptionRestoreStateEnabled             CrossSubscriptionRestoreState = "Enabled"
+	CrossSubscriptionRestoreStateDisabled CrossSubscriptionRestoreState = "Disabled"
+	CrossSubscriptionRestoreStateEnabled CrossSubscriptionRestoreState = "Enabled"
 	CrossSubscriptionRestoreStatePermanentlyDisabled CrossSubscriptionRestoreState = "PermanentlyDisabled"
 )
 
 // PossibleCrossSubscriptionRestoreStateValues returns the possible values for the CrossSubscriptionRestoreState const type.
 func PossibleCrossSubscriptionRestoreStateValues() []CrossSubscriptionRestoreState {
-	return []CrossSubscriptionRestoreState{
+	return []CrossSubscriptionRestoreState{	
 		CrossSubscriptionRestoreStateDisabled,
 		CrossSubscriptionRestoreStateEnabled,
 		CrossSubscriptionRestoreStatePermanentlyDisabled,
@@ -125,13 +125,13 @@ type ImmutabilityState string
 
 const (
 	ImmutabilityStateDisabled ImmutabilityState = "Disabled"
-	ImmutabilityStateLocked   ImmutabilityState = "Locked"
+	ImmutabilityStateLocked ImmutabilityState = "Locked"
 	ImmutabilityStateUnlocked ImmutabilityState = "Unlocked"
 )
 
 // PossibleImmutabilityStateValues returns the possible values for the ImmutabilityState const type.
 func PossibleImmutabilityStateValues() []ImmutabilityState {
-	return []ImmutabilityState{
+	return []ImmutabilityState{	
 		ImmutabilityStateDisabled,
 		ImmutabilityStateLocked,
 		ImmutabilityStateUnlocked,
@@ -143,12 +143,12 @@ type InfrastructureEncryptionState string
 
 const (
 	InfrastructureEncryptionStateDisabled InfrastructureEncryptionState = "Disabled"
-	InfrastructureEncryptionStateEnabled  InfrastructureEncryptionState = "Enabled"
+	InfrastructureEncryptionStateEnabled InfrastructureEncryptionState = "Enabled"
 )
 
 // PossibleInfrastructureEncryptionStateValues returns the possible values for the InfrastructureEncryptionState const type.
 func PossibleInfrastructureEncryptionStateValues() []InfrastructureEncryptionState {
-	return []InfrastructureEncryptionState{
+	return []InfrastructureEncryptionState{	
 		InfrastructureEncryptionStateDisabled,
 		InfrastructureEncryptionStateEnabled,
 	}
@@ -159,13 +159,13 @@ type MultiUserAuthorization string
 
 const (
 	MultiUserAuthorizationDisabled MultiUserAuthorization = "Disabled"
-	MultiUserAuthorizationEnabled  MultiUserAuthorization = "Enabled"
-	MultiUserAuthorizationInvalid  MultiUserAuthorization = "Invalid"
+	MultiUserAuthorizationEnabled MultiUserAuthorization = "Enabled"
+	MultiUserAuthorizationInvalid MultiUserAuthorization = "Invalid"
 )
 
 // PossibleMultiUserAuthorizationValues returns the possible values for the MultiUserAuthorization const type.
 func PossibleMultiUserAuthorizationValues() []MultiUserAuthorization {
-	return []MultiUserAuthorization{
+	return []MultiUserAuthorization{	
 		MultiUserAuthorizationDisabled,
 		MultiUserAuthorizationEnabled,
 		MultiUserAuthorizationInvalid,
@@ -176,15 +176,15 @@ func PossibleMultiUserAuthorizationValues() []MultiUserAuthorization {
 type PrivateEndpointConnectionStatus string
 
 const (
-	PrivateEndpointConnectionStatusApproved     PrivateEndpointConnectionStatus = "Approved"
+	PrivateEndpointConnectionStatusApproved PrivateEndpointConnectionStatus = "Approved"
 	PrivateEndpointConnectionStatusDisconnected PrivateEndpointConnectionStatus = "Disconnected"
-	PrivateEndpointConnectionStatusPending      PrivateEndpointConnectionStatus = "Pending"
-	PrivateEndpointConnectionStatusRejected     PrivateEndpointConnectionStatus = "Rejected"
+	PrivateEndpointConnectionStatusPending PrivateEndpointConnectionStatus = "Pending"
+	PrivateEndpointConnectionStatusRejected PrivateEndpointConnectionStatus = "Rejected"
 )
 
 // PossiblePrivateEndpointConnectionStatusValues returns the possible values for the PrivateEndpointConnectionStatus const type.
 func PossiblePrivateEndpointConnectionStatusValues() []PrivateEndpointConnectionStatus {
-	return []PrivateEndpointConnectionStatus{
+	return []PrivateEndpointConnectionStatus{	
 		PrivateEndpointConnectionStatusApproved,
 		PrivateEndpointConnectionStatusDisconnected,
 		PrivateEndpointConnectionStatusPending,
@@ -196,15 +196,15 @@ func PossiblePrivateEndpointConnectionStatusValues() []PrivateEndpointConnection
 type ProvisioningState string
 
 const (
-	ProvisioningStateDeleting  ProvisioningState = "Deleting"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
-	ProvisioningStatePending   ProvisioningState = "Pending"
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	ProvisioningStatePending ProvisioningState = "Pending"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
 		ProvisioningStatePending,
@@ -217,12 +217,12 @@ type PublicNetworkAccess string
 
 const (
 	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{
+	return []PublicNetworkAccess{	
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
@@ -234,15 +234,15 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 type ResourceIdentityType string
 
 const (
-	ResourceIdentityTypeNone                       ResourceIdentityType = "None"
-	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = "SystemAssigned"
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
 	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
-	ResourceIdentityTypeUserAssigned               ResourceIdentityType = "UserAssigned"
+	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
 )
 
 // PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{
+	return []ResourceIdentityType{	
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 		ResourceIdentityTypeSystemAssignedUserAssigned,
@@ -254,21 +254,21 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type ResourceMoveState string
 
 const (
-	ResourceMoveStateCommitFailed    ResourceMoveState = "CommitFailed"
-	ResourceMoveStateCommitTimedout  ResourceMoveState = "CommitTimedout"
+	ResourceMoveStateCommitFailed ResourceMoveState = "CommitFailed"
+	ResourceMoveStateCommitTimedout ResourceMoveState = "CommitTimedout"
 	ResourceMoveStateCriticalFailure ResourceMoveState = "CriticalFailure"
-	ResourceMoveStateFailure         ResourceMoveState = "Failure"
-	ResourceMoveStateInProgress      ResourceMoveState = "InProgress"
-	ResourceMoveStateMoveSucceeded   ResourceMoveState = "MoveSucceeded"
-	ResourceMoveStatePartialSuccess  ResourceMoveState = "PartialSuccess"
-	ResourceMoveStatePrepareFailed   ResourceMoveState = "PrepareFailed"
+	ResourceMoveStateFailure ResourceMoveState = "Failure"
+	ResourceMoveStateInProgress ResourceMoveState = "InProgress"
+	ResourceMoveStateMoveSucceeded ResourceMoveState = "MoveSucceeded"
+	ResourceMoveStatePartialSuccess ResourceMoveState = "PartialSuccess"
+	ResourceMoveStatePrepareFailed ResourceMoveState = "PrepareFailed"
 	ResourceMoveStatePrepareTimedout ResourceMoveState = "PrepareTimedout"
-	ResourceMoveStateUnknown         ResourceMoveState = "Unknown"
+	ResourceMoveStateUnknown ResourceMoveState = "Unknown"
 )
 
 // PossibleResourceMoveStateValues returns the possible values for the ResourceMoveState const type.
 func PossibleResourceMoveStateValues() []ResourceMoveState {
-	return []ResourceMoveState{
+	return []ResourceMoveState{	
 		ResourceMoveStateCommitFailed,
 		ResourceMoveStateCommitTimedout,
 		ResourceMoveStateCriticalFailure,
@@ -288,13 +288,13 @@ func PossibleResourceMoveStateValues() []ResourceMoveState {
 type SKUName string
 
 const (
-	SKUNameRS0      SKUName = "RS0"
+	SKUNameRS0 SKUName = "RS0"
 	SKUNameStandard SKUName = "Standard"
 )
 
 // PossibleSKUNameValues returns the possible values for the SKUName const type.
 func PossibleSKUNameValues() []SKUName {
-	return []SKUName{
+	return []SKUName{	
 		SKUNameRS0,
 		SKUNameStandard,
 	}
@@ -305,14 +305,14 @@ type SecureScoreLevel string
 
 const (
 	SecureScoreLevelAdequate SecureScoreLevel = "Adequate"
-	SecureScoreLevelMaximum  SecureScoreLevel = "Maximum"
-	SecureScoreLevelMinimum  SecureScoreLevel = "Minimum"
-	SecureScoreLevelNone     SecureScoreLevel = "None"
+	SecureScoreLevelMaximum SecureScoreLevel = "Maximum"
+	SecureScoreLevelMinimum SecureScoreLevel = "Minimum"
+	SecureScoreLevelNone SecureScoreLevel = "None"
 )
 
 // PossibleSecureScoreLevelValues returns the possible values for the SecureScoreLevel const type.
 func PossibleSecureScoreLevelValues() []SecureScoreLevel {
-	return []SecureScoreLevel{
+	return []SecureScoreLevel{	
 		SecureScoreLevelAdequate,
 		SecureScoreLevelMaximum,
 		SecureScoreLevelMinimum,
@@ -325,13 +325,13 @@ type SoftDeleteState string
 const (
 	SoftDeleteStateAlwaysON SoftDeleteState = "AlwaysON"
 	SoftDeleteStateDisabled SoftDeleteState = "Disabled"
-	SoftDeleteStateEnabled  SoftDeleteState = "Enabled"
-	SoftDeleteStateInvalid  SoftDeleteState = "Invalid"
+	SoftDeleteStateEnabled SoftDeleteState = "Enabled"
+	SoftDeleteStateInvalid SoftDeleteState = "Invalid"
 )
 
 // PossibleSoftDeleteStateValues returns the possible values for the SoftDeleteState const type.
 func PossibleSoftDeleteStateValues() []SoftDeleteState {
-	return []SoftDeleteState{
+	return []SoftDeleteState{	
 		SoftDeleteStateAlwaysON,
 		SoftDeleteStateDisabled,
 		SoftDeleteStateEnabled,
@@ -343,14 +343,14 @@ func PossibleSoftDeleteStateValues() []SoftDeleteState {
 type StandardTierStorageRedundancy string
 
 const (
-	StandardTierStorageRedundancyGeoRedundant     StandardTierStorageRedundancy = "GeoRedundant"
+	StandardTierStorageRedundancyGeoRedundant StandardTierStorageRedundancy = "GeoRedundant"
 	StandardTierStorageRedundancyLocallyRedundant StandardTierStorageRedundancy = "LocallyRedundant"
-	StandardTierStorageRedundancyZoneRedundant    StandardTierStorageRedundancy = "ZoneRedundant"
+	StandardTierStorageRedundancyZoneRedundant StandardTierStorageRedundancy = "ZoneRedundant"
 )
 
 // PossibleStandardTierStorageRedundancyValues returns the possible values for the StandardTierStorageRedundancy const type.
 func PossibleStandardTierStorageRedundancyValues() []StandardTierStorageRedundancy {
-	return []StandardTierStorageRedundancy{
+	return []StandardTierStorageRedundancy{	
 		StandardTierStorageRedundancyGeoRedundant,
 		StandardTierStorageRedundancyLocallyRedundant,
 		StandardTierStorageRedundancyZoneRedundant,
@@ -367,7 +367,7 @@ const (
 
 // PossibleTriggerTypeValues returns the possible values for the TriggerType const type.
 func PossibleTriggerTypeValues() []TriggerType {
-	return []TriggerType{
+	return []TriggerType{	
 		TriggerTypeForcedUpgrade,
 		TriggerTypeUserTriggered,
 	}
@@ -377,17 +377,17 @@ func PossibleTriggerTypeValues() []TriggerType {
 type UsagesUnit string
 
 const (
-	UsagesUnitBytes          UsagesUnit = "Bytes"
+	UsagesUnitBytes UsagesUnit = "Bytes"
 	UsagesUnitBytesPerSecond UsagesUnit = "BytesPerSecond"
-	UsagesUnitCount          UsagesUnit = "Count"
+	UsagesUnitCount UsagesUnit = "Count"
 	UsagesUnitCountPerSecond UsagesUnit = "CountPerSecond"
-	UsagesUnitPercent        UsagesUnit = "Percent"
-	UsagesUnitSeconds        UsagesUnit = "Seconds"
+	UsagesUnitPercent UsagesUnit = "Percent"
+	UsagesUnitSeconds UsagesUnit = "Seconds"
 )
 
 // PossibleUsagesUnitValues returns the possible values for the UsagesUnit const type.
 func PossibleUsagesUnitValues() []UsagesUnit {
-	return []UsagesUnit{
+	return []UsagesUnit{	
 		UsagesUnitBytes,
 		UsagesUnitBytesPerSecond,
 		UsagesUnitCount,
@@ -402,12 +402,12 @@ type VaultPrivateEndpointState string
 
 const (
 	VaultPrivateEndpointStateEnabled VaultPrivateEndpointState = "Enabled"
-	VaultPrivateEndpointStateNone    VaultPrivateEndpointState = "None"
+	VaultPrivateEndpointStateNone VaultPrivateEndpointState = "None"
 )
 
 // PossibleVaultPrivateEndpointStateValues returns the possible values for the VaultPrivateEndpointState const type.
 func PossibleVaultPrivateEndpointStateValues() []VaultPrivateEndpointState {
-	return []VaultPrivateEndpointState{
+	return []VaultPrivateEndpointState{	
 		VaultPrivateEndpointStateEnabled,
 		VaultPrivateEndpointStateNone,
 	}
@@ -417,14 +417,14 @@ func PossibleVaultPrivateEndpointStateValues() []VaultPrivateEndpointState {
 type VaultSubResourceType string
 
 const (
-	VaultSubResourceTypeAzureBackup          VaultSubResourceType = "AzureBackup"
+	VaultSubResourceTypeAzureBackup VaultSubResourceType = "AzureBackup"
 	VaultSubResourceTypeAzureBackupSecondary VaultSubResourceType = "AzureBackup_secondary"
-	VaultSubResourceTypeAzureSiteRecovery    VaultSubResourceType = "AzureSiteRecovery"
+	VaultSubResourceTypeAzureSiteRecovery VaultSubResourceType = "AzureSiteRecovery"
 )
 
 // PossibleVaultSubResourceTypeValues returns the possible values for the VaultSubResourceType const type.
 func PossibleVaultSubResourceTypeValues() []VaultSubResourceType {
-	return []VaultSubResourceType{
+	return []VaultSubResourceType{	
 		VaultSubResourceTypeAzureBackup,
 		VaultSubResourceTypeAzureBackupSecondary,
 		VaultSubResourceTypeAzureSiteRecovery,
@@ -435,18 +435,19 @@ func PossibleVaultSubResourceTypeValues() []VaultSubResourceType {
 type VaultUpgradeState string
 
 const (
-	VaultUpgradeStateFailed     VaultUpgradeState = "Failed"
+	VaultUpgradeStateFailed VaultUpgradeState = "Failed"
 	VaultUpgradeStateInProgress VaultUpgradeState = "InProgress"
-	VaultUpgradeStateUnknown    VaultUpgradeState = "Unknown"
-	VaultUpgradeStateUpgraded   VaultUpgradeState = "Upgraded"
+	VaultUpgradeStateUnknown VaultUpgradeState = "Unknown"
+	VaultUpgradeStateUpgraded VaultUpgradeState = "Upgraded"
 )
 
 // PossibleVaultUpgradeStateValues returns the possible values for the VaultUpgradeState const type.
 func PossibleVaultUpgradeStateValues() []VaultUpgradeState {
-	return []VaultUpgradeState{
+	return []VaultUpgradeState{	
 		VaultUpgradeStateFailed,
 		VaultUpgradeStateInProgress,
 		VaultUpgradeStateUnknown,
 		VaultUpgradeStateUpgraded,
 	}
 }
+

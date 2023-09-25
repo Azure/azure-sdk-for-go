@@ -24,7 +24,7 @@ import (
 // LongTermRetentionManagedInstanceBackupsClient contains the methods for the LongTermRetentionManagedInstanceBackups group.
 // Don't use this type directly, use NewLongTermRetentionManagedInstanceBackupsClient() instead.
 type LongTermRetentionManagedInstanceBackupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewLongTermRetentionManagedInstanceBackupsClient(subscriptionID string, cre
 	}
 	client := &LongTermRetentionManagedInstanceBackupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -360,7 +360,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupH
 //   - databaseName - The name of the managed database.
 //   - options - LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.NewListByDatabasePager
 //     method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByDatabasePager(locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse] {
+func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByDatabasePager(locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions) (*runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -440,7 +440,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseHandl
 //   - managedInstanceName - The name of the managed instance.
 //   - options - LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.NewListByInstancePager
 //     method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByInstancePager(locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse] {
+func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByInstancePager(locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions) (*runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -515,7 +515,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceHandl
 //   - locationName - The location of the database.
 //   - options - LongTermRetentionManagedInstanceBackupsClientListByLocationOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.NewListByLocationPager
 //     method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByLocationPager(locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByLocationOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByLocationResponse] {
+func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByLocationPager(locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByLocationOptions) (*runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByLocationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionManagedInstanceBackupsClientListByLocationResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -590,7 +590,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationHandl
 //   - databaseName - The name of the managed database.
 //   - options - LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions contains the optional parameters
 //     for the LongTermRetentionManagedInstanceBackupsClient.NewListByResourceGroupDatabasePager method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGroupDatabasePager(resourceGroupName string, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse] {
+func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGroupDatabasePager(resourceGroupName string, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions) (*runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -676,7 +676,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 //   - managedInstanceName - The name of the managed instance.
 //   - options - LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions contains the optional parameters
 //     for the LongTermRetentionManagedInstanceBackupsClient.NewListByResourceGroupInstancePager method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGroupInstancePager(resourceGroupName string, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse] {
+func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGroupInstancePager(resourceGroupName string, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions) (*runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -757,7 +757,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 //   - locationName - The location of the database.
 //   - options - LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions contains the optional parameters
 //     for the LongTermRetentionManagedInstanceBackupsClient.NewListByResourceGroupLocationPager method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGroupLocationPager(resourceGroupName string, locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse] {
+func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGroupLocationPager(resourceGroupName string, locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions) (*runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -825,3 +825,4 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 	}
 	return result, nil
 }
+

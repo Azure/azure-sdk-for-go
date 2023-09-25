@@ -23,7 +23,7 @@ import (
 // ObjectReplicationPoliciesClient contains the methods for the ObjectReplicationPolicies group.
 // Don't use this type directly, use NewObjectReplicationPoliciesClient() instead.
 type ObjectReplicationPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewObjectReplicationPoliciesClient(subscriptionID string, credential azcore
 	}
 	client := &ObjectReplicationPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -102,8 +102,8 @@ func (client *ObjectReplicationPoliciesClient) createOrUpdateCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -252,7 +252,7 @@ func (client *ObjectReplicationPoliciesClient) getHandleResponse(resp *http.Resp
 //     3 and 24 characters in length and use numbers and lower-case letters only.
 //   - options - ObjectReplicationPoliciesClientListOptions contains the optional parameters for the ObjectReplicationPoliciesClient.NewListPager
 //     method.
-func (client *ObjectReplicationPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *ObjectReplicationPoliciesClientListOptions) *runtime.Pager[ObjectReplicationPoliciesClientListResponse] {
+func (client *ObjectReplicationPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *ObjectReplicationPoliciesClientListOptions) (*runtime.Pager[ObjectReplicationPoliciesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ObjectReplicationPoliciesClientListResponse]{
 		More: func(page ObjectReplicationPoliciesClientListResponse) bool {
 			return false
@@ -308,3 +308,4 @@ func (client *ObjectReplicationPoliciesClient) listHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

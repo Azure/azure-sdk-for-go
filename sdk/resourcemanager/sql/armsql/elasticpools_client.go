@@ -24,7 +24,7 @@ import (
 // ElasticPoolsClient contains the methods for the ElasticPools group.
 // Don't use this type directly, use NewElasticPoolsClient() instead.
 type ElasticPoolsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewElasticPoolsClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &ElasticPoolsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -119,8 +119,8 @@ func (client *ElasticPoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -346,7 +346,7 @@ func (client *ElasticPoolsClient) getHandleResponse(resp *http.Response) (Elasti
 //   - serverName - The name of the server.
 //   - options - ElasticPoolsClientListByServerOptions contains the optional parameters for the ElasticPoolsClient.NewListByServerPager
 //     method.
-func (client *ElasticPoolsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ElasticPoolsClientListByServerOptions) *runtime.Pager[ElasticPoolsClientListByServerResponse] {
+func (client *ElasticPoolsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ElasticPoolsClientListByServerOptions) (*runtime.Pager[ElasticPoolsClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ElasticPoolsClientListByServerResponse]{
 		More: func(page ElasticPoolsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -421,7 +421,7 @@ func (client *ElasticPoolsClient) listByServerHandleResponse(resp *http.Response
 //   - elasticPoolName - The name of the elastic pool.
 //   - options - ElasticPoolsClientListMetricDefinitionsOptions contains the optional parameters for the ElasticPoolsClient.NewListMetricDefinitionsPager
 //     method.
-func (client *ElasticPoolsClient) NewListMetricDefinitionsPager(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientListMetricDefinitionsOptions) *runtime.Pager[ElasticPoolsClientListMetricDefinitionsResponse] {
+func (client *ElasticPoolsClient) NewListMetricDefinitionsPager(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientListMetricDefinitionsOptions) (*runtime.Pager[ElasticPoolsClientListMetricDefinitionsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ElasticPoolsClientListMetricDefinitionsResponse]{
 		More: func(page ElasticPoolsClientListMetricDefinitionsResponse) bool {
 			return false
@@ -492,7 +492,7 @@ func (client *ElasticPoolsClient) listMetricDefinitionsHandleResponse(resp *http
 //   - filter - An OData filter expression that describes a subset of metrics to return.
 //   - options - ElasticPoolsClientListMetricsOptions contains the optional parameters for the ElasticPoolsClient.NewListMetricsPager
 //     method.
-func (client *ElasticPoolsClient) NewListMetricsPager(resourceGroupName string, serverName string, elasticPoolName string, filter string, options *ElasticPoolsClientListMetricsOptions) *runtime.Pager[ElasticPoolsClientListMetricsResponse] {
+func (client *ElasticPoolsClient) NewListMetricsPager(resourceGroupName string, serverName string, elasticPoolName string, filter string, options *ElasticPoolsClientListMetricsOptions) (*runtime.Pager[ElasticPoolsClientListMetricsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ElasticPoolsClientListMetricsResponse]{
 		More: func(page ElasticPoolsClientListMetricsResponse) bool {
 			return false
@@ -629,7 +629,8 @@ func (client *ElasticPoolsClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

@@ -24,7 +24,7 @@ import (
 // ManagedInstancesClient contains the methods for the ManagedInstances group.
 // Don't use this type directly, use NewManagedInstancesClient() instead.
 type ManagedInstancesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewManagedInstancesClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &ManagedInstancesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -112,8 +112,8 @@ func (client *ManagedInstancesClient) createOrUpdateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -325,7 +325,7 @@ func (client *ManagedInstancesClient) getHandleResponse(resp *http.Response) (Ma
 // Generated from API version 2022-08-01-preview
 //   - options - ManagedInstancesClientListOptions contains the optional parameters for the ManagedInstancesClient.NewListPager
 //     method.
-func (client *ManagedInstancesClient) NewListPager(options *ManagedInstancesClientListOptions) *runtime.Pager[ManagedInstancesClientListResponse] {
+func (client *ManagedInstancesClient) NewListPager(options *ManagedInstancesClientListOptions) (*runtime.Pager[ManagedInstancesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstancesClientListResponse]{
 		More: func(page ManagedInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -391,7 +391,7 @@ func (client *ManagedInstancesClient) listHandleResponse(resp *http.Response) (M
 //   - instancePoolName - The instance pool name.
 //   - options - ManagedInstancesClientListByInstancePoolOptions contains the optional parameters for the ManagedInstancesClient.NewListByInstancePoolPager
 //     method.
-func (client *ManagedInstancesClient) NewListByInstancePoolPager(resourceGroupName string, instancePoolName string, options *ManagedInstancesClientListByInstancePoolOptions) *runtime.Pager[ManagedInstancesClientListByInstancePoolResponse] {
+func (client *ManagedInstancesClient) NewListByInstancePoolPager(resourceGroupName string, instancePoolName string, options *ManagedInstancesClientListByInstancePoolOptions) (*runtime.Pager[ManagedInstancesClientListByInstancePoolResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstancesClientListByInstancePoolResponse]{
 		More: func(page ManagedInstancesClientListByInstancePoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -465,7 +465,7 @@ func (client *ManagedInstancesClient) listByInstancePoolHandleResponse(resp *htt
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancesClientListByManagedInstanceOptions contains the optional parameters for the ManagedInstancesClient.NewListByManagedInstancePager
 //     method.
-func (client *ManagedInstancesClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancesClientListByManagedInstanceResponse] {
+func (client *ManagedInstancesClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientListByManagedInstanceOptions) (*runtime.Pager[ManagedInstancesClientListByManagedInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstancesClientListByManagedInstanceResponse]{
 		More: func(page ManagedInstancesClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -556,7 +556,7 @@ func (client *ManagedInstancesClient) listByManagedInstanceHandleResponse(resp *
 //     Resource Manager API or the portal.
 //   - options - ManagedInstancesClientListByResourceGroupOptions contains the optional parameters for the ManagedInstancesClient.NewListByResourceGroupPager
 //     method.
-func (client *ManagedInstancesClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedInstancesClientListByResourceGroupOptions) *runtime.Pager[ManagedInstancesClientListByResourceGroupResponse] {
+func (client *ManagedInstancesClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedInstancesClientListByResourceGroupOptions) (*runtime.Pager[ManagedInstancesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstancesClientListByResourceGroupResponse]{
 		More: func(page ManagedInstancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -627,7 +627,7 @@ func (client *ManagedInstancesClient) listByResourceGroupHandleResponse(resp *ht
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceOptions contains the optional parameters
 //     for the ManagedInstancesClient.NewListOutboundNetworkDependenciesByManagedInstancePager method.
-func (client *ManagedInstancesClient) NewListOutboundNetworkDependenciesByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceOptions) *runtime.Pager[ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse] {
+func (client *ManagedInstancesClient) NewListOutboundNetworkDependenciesByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceOptions) (*runtime.Pager[ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse]{
 		More: func(page ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -898,7 +898,8 @@ func (client *ManagedInstancesClient) updateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

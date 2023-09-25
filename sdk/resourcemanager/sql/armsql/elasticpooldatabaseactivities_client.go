@@ -23,7 +23,7 @@ import (
 // ElasticPoolDatabaseActivitiesClient contains the methods for the ElasticPoolDatabaseActivities group.
 // Don't use this type directly, use NewElasticPoolDatabaseActivitiesClient() instead.
 type ElasticPoolDatabaseActivitiesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewElasticPoolDatabaseActivitiesClient(subscriptionID string, credential az
 	}
 	client := &ElasticPoolDatabaseActivitiesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -52,7 +52,7 @@ func NewElasticPoolDatabaseActivitiesClient(subscriptionID string, credential az
 //   - elasticPoolName - The name of the elastic pool.
 //   - options - ElasticPoolDatabaseActivitiesClientListByElasticPoolOptions contains the optional parameters for the ElasticPoolDatabaseActivitiesClient.NewListByElasticPoolPager
 //     method.
-func (client *ElasticPoolDatabaseActivitiesClient) NewListByElasticPoolPager(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolDatabaseActivitiesClientListByElasticPoolOptions) *runtime.Pager[ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse] {
+func (client *ElasticPoolDatabaseActivitiesClient) NewListByElasticPoolPager(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolDatabaseActivitiesClientListByElasticPoolOptions) (*runtime.Pager[ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse]{
 		More: func(page ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse) bool {
 			return false
@@ -112,3 +112,4 @@ func (client *ElasticPoolDatabaseActivitiesClient) listByElasticPoolHandleRespon
 	}
 	return result, nil
 }
+

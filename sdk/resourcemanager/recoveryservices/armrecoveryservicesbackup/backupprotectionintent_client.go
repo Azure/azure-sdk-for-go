@@ -23,7 +23,7 @@ import (
 // BackupProtectionIntentClient contains the methods for the BackupProtectionIntent group.
 // Don't use this type directly, use NewBackupProtectionIntentClient() instead.
 type BackupProtectionIntentClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupProtectionIntentClient(subscriptionID string, credential azcore.To
 	}
 	client := &BackupProtectionIntentClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewBackupProtectionIntentClient(subscriptionID string, credential azcore.To
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupProtectionIntentClientListOptions contains the optional parameters for the BackupProtectionIntentClient.NewListPager
 //     method.
-func (client *BackupProtectionIntentClient) NewListPager(vaultName string, resourceGroupName string, options *BackupProtectionIntentClientListOptions) *runtime.Pager[BackupProtectionIntentClientListResponse] {
+func (client *BackupProtectionIntentClient) NewListPager(vaultName string, resourceGroupName string, options *BackupProtectionIntentClientListOptions) (*runtime.Pager[BackupProtectionIntentClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BackupProtectionIntentClientListResponse]{
 		More: func(page BackupProtectionIntentClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -118,3 +118,4 @@ func (client *BackupProtectionIntentClient) listHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

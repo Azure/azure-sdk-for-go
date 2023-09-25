@@ -60,7 +60,7 @@ type AccountCheckNameAvailabilityParameters struct {
 	Name *string
 
 	// CONSTANT; The type of resource, Microsoft.Storage/storageAccounts
-	// Field has constant value "Microsoft.Storage/storageAccounts", any specified value is ignored.
+// Field has constant value "Microsoft.Storage/storageAccounts", any specified value is ignored.
 	Type *string
 }
 
@@ -70,15 +70,15 @@ type AccountCreateParameters struct {
 	Kind *Kind
 
 	// REQUIRED; Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo
-	// Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource
-	// cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
+// Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource
+// cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
 	Location *string
 
 	// REQUIRED; Required. Gets or sets the SKU name.
 	SKU *SKU
 
 	// Optional. Set the extended location of the resource. If not set, the storage account will be created in Azure main region.
-	// Otherwise it will be created in the specified extended location
+// Otherwise it will be created in the specified extended location
 	ExtendedLocation *ExtendedLocation
 
 	// The identity of the resource.
@@ -88,27 +88,27 @@ type AccountCreateParameters struct {
 	Properties *AccountPropertiesCreateParameters
 
 	// Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this
-	// resource (across resource groups). A maximum of 15 tags can be provided for a
-	// resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than
-	// 256 characters.
+// resource (across resource groups). A maximum of 15 tags can be provided for a
+// resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than
+// 256 characters.
 	Tags map[string]*string
 }
 
 // AccountImmutabilityPolicyProperties - This defines account-level immutability policy properties.
 type AccountImmutabilityPolicyProperties struct {
 	// This property can only be changed for disabled and unlocked time-based retention policies. When enabled, new blocks can
-	// be written to an append blob while maintaining immutability protection and
-	// compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted.
+// be written to an append blob while maintaining immutability protection and
+// compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted.
 	AllowProtectedAppendWrites *bool
 
 	// The immutability period for the blobs in the container since the policy creation, in days.
 	ImmutabilityPeriodSinceCreationInDays *int32
 
 	// The ImmutabilityPolicy state defines the mode of the policy. Disabled state disables the policy, Unlocked state allows
-	// increase and decrease of immutability retention time and also allows toggling
-	// allowProtectedAppendWrites property, Locked state only allows the increase of the immutability retention time. A policy
-	// can only be created in a Disabled or Unlocked state and can be toggled between
-	// the two states. Only a policy in an Unlocked state can transition to a Locked state which cannot be reverted.
+// increase and decrease of immutability retention time and also allows toggling
+// allowProtectedAppendWrites property, Locked state only allows the increase of the immutability retention time. A policy
+// can only be created in a Disabled or Unlocked state and can be toggled between
+// the two states. Only a policy in an Unlocked state can transition to a Locked state which cannot be reverted.
 	State *AccountImmutabilityPolicyState
 }
 
@@ -152,7 +152,7 @@ type AccountListKeysResult struct {
 // AccountListResult - The response from the List Storage Accounts operation.
 type AccountListResult struct {
 	// READ-ONLY; Request URL that can be used to query next page of storage accounts. Returned when total number of requested
-	// storage accounts exceed maximum page size.
+// storage accounts exceed maximum page size.
 	NextLink *string
 
 	// READ-ONLY; Gets the list of storage accounts and their properties.
@@ -215,17 +215,17 @@ type AccountMigrationProperties struct {
 // AccountProperties - Properties of the storage account.
 type AccountProperties struct {
 	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is false
-	// for this property.
+// for this property.
 	AllowBlobPublicAccess *bool
 
 	// Allow or disallow cross AAD tenant object replication. Set this property to true for new or existing accounts only if object
-	// replication policies will involve storage accounts in different AAD
-	// tenants. The default interpretation is false for new accounts to follow best security practices by default.
+// replication policies will involve storage accounts in different AAD
+// tenants. The default interpretation is false for new accounts to follow best security practices by default.
 	AllowCrossTenantReplication *bool
 
 	// Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If
-	// false, then all requests, including shared access signatures, must be authorized
-	// with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+// false, then all requests, including shared access signatures, must be authorized
+// with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
 	AllowSharedKeyAccess *bool
 
 	// Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
@@ -235,12 +235,12 @@ type AccountProperties struct {
 	AzureFilesIdentityBasedAuthentication *AzureFilesIdentityBasedAuthentication
 
 	// Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single subscription,
-	// which creates accounts in an Azure DNS Zone and the endpoint URL
-	// will have an alphanumeric DNS Zone identifier.
+// which creates accounts in an Azure DNS Zone and the endpoint URL
+// will have an alphanumeric DNS Zone identifier.
 	DNSEndpointType *DNSEndpointType
 
 	// A boolean flag which indicates whether the default authentication is OAuth or not. The default interpretation is false
-	// for this property.
+// for this property.
 	DefaultToOAuthAuthentication *bool
 
 	// Allows https traffic only to storage service if sets to true.
@@ -250,7 +250,7 @@ type AccountProperties struct {
 	EnableNfsV3 *bool
 
 	// The property is immutable and can only be set to true at the account creation time. When set to true, it enables object
-	// level immutability for all the containers in the account by default.
+// level immutability for all the containers in the account by default.
 	ImmutableStorageWithVersioning *ImmutableStorageAccount
 
 	// Account HierarchicalNamespace enabled if sets to true.
@@ -278,8 +278,8 @@ type AccountProperties struct {
 	StorageAccountSKUConversionStatus *AccountSKUConversionStatus
 
 	// READ-ONLY; Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium' access
-	// tier is the default value for premium block blobs storage account type and it cannot
-	// be changed for the premium block blobs storage account type.
+// tier is the default value for premium block blobs storage account type and it cannot
+// be changed for the premium block blobs storage account type.
 	AccessTier *AccessTier
 
 	// READ-ONLY; If customer initiated account migration is in progress, the value will be true else it will be null.
@@ -313,15 +313,15 @@ type AccountProperties struct {
 	KeyPolicy *KeyPolicy
 
 	// READ-ONLY; Gets the timestamp of the most recent instance of a failover to the secondary location. Only the most recent
-	// timestamp is retained. This element is not returned if there has never been a failover
-	// instance. Only available if the accountType is StandardGRS or StandardRAGRS.
+// timestamp is retained. This element is not returned if there has never been a failover
+// instance. Only available if the accountType is StandardGRS or StandardRAGRS.
 	LastGeoFailoverTime *time.Time
 
 	// READ-ONLY; Network rule set
 	NetworkRuleSet *NetworkRuleSet
 
 	// READ-ONLY; Gets the URLs that are used to perform a retrieval of a public blob, queue, or table object. Note that StandardZRS
-	// and PremiumLRS accounts only return the blob endpoint.
+// and PremiumLRS accounts only return the blob endpoint.
 	PrimaryEndpoints *Endpoints
 
 	// READ-ONLY; Gets the location of the primary data center for the storage account.
@@ -337,40 +337,40 @@ type AccountProperties struct {
 	SasPolicy *SasPolicy
 
 	// READ-ONLY; Gets the URLs that are used to perform a retrieval of a public blob, queue, or table object from the secondary
-	// location of the storage account. Only available if the SKU name is Standard_RAGRS.
+// location of the storage account. Only available if the SKU name is Standard_RAGRS.
 	SecondaryEndpoints *Endpoints
 
 	// READ-ONLY; Gets the location of the geo-replicated secondary for the storage account. Only available if the accountType
-	// is StandardGRS or StandardRAGRS.
+// is StandardGRS or StandardRAGRS.
 	SecondaryLocation *string
 
 	// READ-ONLY; Gets the status indicating whether the primary location of the storage account is available or unavailable.
 	StatusOfPrimary *AccountStatus
 
 	// READ-ONLY; Gets the status indicating whether the secondary location of the storage account is available or unavailable.
-	// Only available if the SKU name is StandardGRS or StandardRAGRS.
+// Only available if the SKU name is StandardGRS or StandardRAGRS.
 	StatusOfSecondary *AccountStatus
 }
 
 // AccountPropertiesCreateParameters - The parameters used to create the storage account.
 type AccountPropertiesCreateParameters struct {
 	// Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium' access tier
-	// is the default value for premium block blobs storage account type and it cannot
-	// be changed for the premium block blobs storage account type.
+// is the default value for premium block blobs storage account type and it cannot
+// be changed for the premium block blobs storage account type.
 	AccessTier *AccessTier
 
 	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is false
-	// for this property.
+// for this property.
 	AllowBlobPublicAccess *bool
 
 	// Allow or disallow cross AAD tenant object replication. Set this property to true for new or existing accounts only if object
-	// replication policies will involve storage accounts in different AAD
-	// tenants. The default interpretation is false for new accounts to follow best security practices by default.
+// replication policies will involve storage accounts in different AAD
+// tenants. The default interpretation is false for new accounts to follow best security practices by default.
 	AllowCrossTenantReplication *bool
 
 	// Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If
-	// false, then all requests, including shared access signatures, must be authorized
-	// with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+// false, then all requests, including shared access signatures, must be authorized
+// with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
 	AllowSharedKeyAccess *bool
 
 	// Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
@@ -380,17 +380,17 @@ type AccountPropertiesCreateParameters struct {
 	AzureFilesIdentityBasedAuthentication *AzureFilesIdentityBasedAuthentication
 
 	// User domain assigned to the storage account. Name is the CNAME source. Only one custom domain is supported per storage
-	// account at this time. To clear the existing custom domain, use an empty string
-	// for the custom domain name property.
+// account at this time. To clear the existing custom domain, use an empty string
+// for the custom domain name property.
 	CustomDomain *CustomDomain
 
 	// Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single subscription,
-	// which creates accounts in an Azure DNS Zone and the endpoint URL
-	// will have an alphanumeric DNS Zone identifier.
+// which creates accounts in an Azure DNS Zone and the endpoint URL
+// will have an alphanumeric DNS Zone identifier.
 	DNSEndpointType *DNSEndpointType
 
 	// A boolean flag which indicates whether the default authentication is OAuth or not. The default interpretation is false
-	// for this property.
+// for this property.
 	DefaultToOAuthAuthentication *bool
 
 	// Allows https traffic only to storage service if sets to true. The default value is true since API version 2019-04-01.
@@ -403,7 +403,7 @@ type AccountPropertiesCreateParameters struct {
 	Encryption *Encryption
 
 	// The property is immutable and can only be set to true at the account creation time. When set to true, it enables object
-	// level immutability for all the new containers in the account by default.
+// level immutability for all the new containers in the account by default.
 	ImmutableStorageWithVersioning *ImmutableStorageAccount
 
 	// Account HierarchicalNamespace enabled if sets to true.
@@ -440,22 +440,22 @@ type AccountPropertiesCreateParameters struct {
 // AccountPropertiesUpdateParameters - The parameters used when updating a storage account.
 type AccountPropertiesUpdateParameters struct {
 	// Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium' access tier
-	// is the default value for premium block blobs storage account type and it cannot
-	// be changed for the premium block blobs storage account type.
+// is the default value for premium block blobs storage account type and it cannot
+// be changed for the premium block blobs storage account type.
 	AccessTier *AccessTier
 
 	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is false
-	// for this property.
+// for this property.
 	AllowBlobPublicAccess *bool
 
 	// Allow or disallow cross AAD tenant object replication. Set this property to true for new or existing accounts only if object
-	// replication policies will involve storage accounts in different AAD
-	// tenants. The default interpretation is false for new accounts to follow best security practices by default.
+// replication policies will involve storage accounts in different AAD
+// tenants. The default interpretation is false for new accounts to follow best security practices by default.
 	AllowCrossTenantReplication *bool
 
 	// Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If
-	// false, then all requests, including shared access signatures, must be authorized
-	// with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+// false, then all requests, including shared access signatures, must be authorized
+// with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
 	AllowSharedKeyAccess *bool
 
 	// Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
@@ -465,17 +465,17 @@ type AccountPropertiesUpdateParameters struct {
 	AzureFilesIdentityBasedAuthentication *AzureFilesIdentityBasedAuthentication
 
 	// Custom domain assigned to the storage account by the user. Name is the CNAME source. Only one custom domain is supported
-	// per storage account at this time. To clear the existing custom domain, use an
-	// empty string for the custom domain name property.
+// per storage account at this time. To clear the existing custom domain, use an
+// empty string for the custom domain name property.
 	CustomDomain *CustomDomain
 
 	// Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single subscription,
-	// which creates accounts in an Azure DNS Zone and the endpoint URL
-	// will have an alphanumeric DNS Zone identifier.
+// which creates accounts in an Azure DNS Zone and the endpoint URL
+// will have an alphanumeric DNS Zone identifier.
 	DNSEndpointType *DNSEndpointType
 
 	// A boolean flag which indicates whether the default authentication is OAuth or not. The default interpretation is false
-	// for this property.
+// for this property.
 	DefaultToOAuthAuthentication *bool
 
 	// Allows https traffic only to storage service if sets to true.
@@ -485,7 +485,7 @@ type AccountPropertiesUpdateParameters struct {
 	Encryption *Encryption
 
 	// The property is immutable and can only be set to true at the account creation time. When set to true, it enables object
-	// level immutability for all the containers in the account by default.
+// level immutability for all the containers in the account by default.
 	ImmutableStorageWithVersioning *ImmutableStorageAccount
 
 	// Enables local users feature, if set to true
@@ -540,16 +540,16 @@ type AccountSKUConversionStatus struct {
 // AccountSasParameters - The parameters to list SAS credentials of a storage account.
 type AccountSasParameters struct {
 	// REQUIRED; The signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List (l),
-	// Add (a), Create (c), Update (u) and Process (p).
+// Add (a), Create (c), Update (u) and Process (p).
 	Permissions *Permissions
 
 	// REQUIRED; The signed resource types that are accessible with the account SAS. Service (s): Access to service-level APIs;
-	// Container (c): Access to container-level APIs; Object (o): Access to object-level APIs
-	// for blobs, queue messages, table entities, and files.
+// Container (c): Access to container-level APIs; Object (o): Access to object-level APIs
+// for blobs, queue messages, table entities, and files.
 	ResourceTypes *SignedResourceTypes
 
 	// REQUIRED; The signed services accessible with the account SAS. Possible values include: Blob (b), Queue (q), Table (t),
-	// File (f).
+// File (f).
 	Services *Services
 
 	// REQUIRED; The time at which the shared access signature becomes invalid.
@@ -580,12 +580,12 @@ type AccountUpdateParameters struct {
 	Properties *AccountPropertiesUpdateParameters
 
 	// Gets or sets the SKU name. Note that the SKU name cannot be updated to StandardZRS, PremiumLRS or Premium_ZRS, nor can
-	// accounts of those SKU names be updated to any other value.
+// accounts of those SKU names be updated to any other value.
 	SKU *SKU
 
 	// Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this
-	// resource (across resource groups). A maximum of 15 tags can be provided for a
-	// resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
+// resource (across resource groups). A maximum of 15 tags can be provided for a
+// resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
 	Tags map[string]*string
 }
 
@@ -692,29 +692,29 @@ type BlobInventoryPolicyDefinition struct {
 	Format *Format
 
 	// REQUIRED; This is a required field. This field specifies the scope of the inventory created either at the blob or container
-	// level.
+// level.
 	ObjectType *ObjectType
 
 	// REQUIRED; This is a required field. This field is used to schedule an inventory formation.
 	Schedule *Schedule
 
 	// REQUIRED; This is a required field. This field specifies the fields and properties of the object to be included in the
-	// inventory. The Schema field value 'Name' is always required. The valid values for this
-	// field for the 'Blob' definition.objectType include 'Name, Creation-Time, Last-Modified, Content-Length, Content-MD5, BlobType,
-	// AccessTier, AccessTierChangeTime, AccessTierInferred, Tags, Expiry-Time,
-	// hdiisfolder, Owner, Group, Permissions, Acl, Snapshot, VersionId, IsCurrentVersion, Metadata, LastAccessTime, Tags, Etag,
-	// ContentType, ContentEncoding, ContentLanguage, ContentCRC64, CacheControl,
-	// ContentDisposition, LeaseStatus, LeaseState, LeaseDuration, ServerEncrypted, Deleted, DeletionId, DeletedTime, RemainingRetentionDays,
-	// ImmutabilityPolicyUntilDate, ImmutabilityPolicyMode, LegalHold,
-	// CopyId, CopyStatus, CopySource, CopyProgress, CopyCompletionTime, CopyStatusDescription, CustomerProvidedKeySha256, RehydratePriority,
-	// ArchiveStatus, XmsBlobSequenceNumber, EncryptionScope,
-	// IncrementalCopy, TagCount'. For Blob object type schema field value 'DeletedTime' is applicable only for Hns enabled accounts.
-	// The valid values for 'Container' definition.objectType include 'Name,
-	// Last-Modified, Metadata, LeaseStatus, LeaseState, LeaseDuration, PublicAccess, HasImmutabilityPolicy, HasLegalHold, Etag,
-	// DefaultEncryptionScope, DenyEncryptionScopeOverride,
-	// ImmutableStorageWithVersioningEnabled, Deleted, Version, DeletedTime, RemainingRetentionDays'. Schema field values 'Expiry-Time,
-	// hdiisfolder, Owner, Group, Permissions, Acl, DeletionId' are valid only
-	// for Hns enabled accounts.Schema field values 'Tags, TagCount' are only valid for Non-Hns accounts.
+// inventory. The Schema field value 'Name' is always required. The valid values for this
+// field for the 'Blob' definition.objectType include 'Name, Creation-Time, Last-Modified, Content-Length, Content-MD5, BlobType,
+// AccessTier, AccessTierChangeTime, AccessTierInferred, Tags, Expiry-Time,
+// hdiisfolder, Owner, Group, Permissions, Acl, Snapshot, VersionId, IsCurrentVersion, Metadata, LastAccessTime, Tags, Etag,
+// ContentType, ContentEncoding, ContentLanguage, ContentCRC64, CacheControl,
+// ContentDisposition, LeaseStatus, LeaseState, LeaseDuration, ServerEncrypted, Deleted, DeletionId, DeletedTime, RemainingRetentionDays,
+// ImmutabilityPolicyUntilDate, ImmutabilityPolicyMode, LegalHold,
+// CopyId, CopyStatus, CopySource, CopyProgress, CopyCompletionTime, CopyStatusDescription, CustomerProvidedKeySha256, RehydratePriority,
+// ArchiveStatus, XmsBlobSequenceNumber, EncryptionScope,
+// IncrementalCopy, TagCount'. For Blob object type schema field value 'DeletedTime' is applicable only for Hns enabled accounts.
+// The valid values for 'Container' definition.objectType include 'Name,
+// Last-Modified, Metadata, LeaseStatus, LeaseState, LeaseDuration, PublicAccess, HasImmutabilityPolicy, HasLegalHold, Etag,
+// DefaultEncryptionScope, DenyEncryptionScopeOverride,
+// ImmutableStorageWithVersioningEnabled, Deleted, Version, DeletedTime, RemainingRetentionDays'. Schema field values 'Expiry-Time,
+// hdiisfolder, Owner, Group, Permissions, Acl, DeletionId' are valid only
+// for Hns enabled accounts.Schema field values 'Tags, TagCount' are only valid for Non-Hns accounts.
 	SchemaFields []*string
 
 	// An object that defines the filter set.
@@ -726,8 +726,8 @@ type BlobInventoryPolicyDefinition struct {
 // 'Container' definition.objectType only prefixMatch is applicable and is optional.
 type BlobInventoryPolicyFilter struct {
 	// An array of predefined enum values. Valid values include blockBlob, appendBlob, pageBlob. Hns accounts does not support
-	// pageBlobs. This field is required when definition.objectType property is set to
-	// 'Blob'.
+// pageBlobs. This field is required when definition.objectType property is set to
+// 'Blob'.
 	BlobTypes []*string
 
 	// This property is used to filter objects based on the object creation time
@@ -737,19 +737,19 @@ type BlobInventoryPolicyFilter struct {
 	ExcludePrefix []*string
 
 	// Includes blob versions in blob inventory when value is set to true. The definition.schemaFields values 'VersionId and IsCurrentVersion'
-	// are required if this property is set to true, else they must be
-	// excluded.
+// are required if this property is set to true, else they must be
+// excluded.
 	IncludeBlobVersions *bool
 
 	// For 'Container' definition.objectType the definition.schemaFields must include 'Deleted, Version, DeletedTime and RemainingRetentionDays'.
-	// For 'Blob' definition.objectType and HNS enabled storage
-	// accounts the definition.schemaFields must include 'DeletionId, Deleted, DeletedTime and RemainingRetentionDays' and for
-	// Hns disabled accounts the definition.schemaFields must include 'Deleted and
-	// RemainingRetentionDays', else it must be excluded.
+// For 'Blob' definition.objectType and HNS enabled storage
+// accounts the definition.schemaFields must include 'DeletionId, Deleted, DeletedTime and RemainingRetentionDays' and for
+// Hns disabled accounts the definition.schemaFields must include 'Deleted and
+// RemainingRetentionDays', else it must be excluded.
 	IncludeDeleted *bool
 
 	// Includes blob snapshots in blob inventory when value is set to true. The definition.schemaFields value 'Snapshot' is required
-	// if this property is set to true, else it must be excluded.
+// if this property is set to true, else it must be excluded.
 	IncludeSnapshots *bool
 
 	// An array of strings with maximum 10 blob prefixes to be included in the inventory.
@@ -777,7 +777,7 @@ type BlobInventoryPolicyRule struct {
 	Enabled *bool
 
 	// REQUIRED; A rule name can contain any combination of alpha numeric characters. Rule name is case-sensitive. It must be
-	// unique within a policy.
+// unique within a policy.
 	Name *string
 }
 
@@ -793,7 +793,7 @@ type BlobInventoryPolicySchema struct {
 	Type *InventoryRuleType
 
 	// READ-ONLY; Deprecated Property from API version 2021-04-01 onwards, the required destination container name must be specified
-	// at the rule level 'policy.rule.destination'
+// at the rule level 'policy.rule.destination'
 	Destination *string
 }
 
@@ -827,8 +827,8 @@ type BlobRestoreStatus struct {
 	RestoreID *string
 
 	// READ-ONLY; The status of blob restore progress. Possible values are: - InProgress: Indicates that blob restore is ongoing.
-	// - Complete: Indicates that blob restore has been completed successfully. - Failed:
-	// Indicates that blob restore is failed.
+// - Complete: Indicates that blob restore has been completed successfully. - Failed:
+// Indicates that blob restore is failed.
 	Status *BlobRestoreProgressStatus
 }
 
@@ -867,13 +867,13 @@ type BlobServicePropertiesProperties struct {
 	ContainerDeleteRetentionPolicy *DeleteRetentionPolicy
 
 	// Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule
-	// elements are included in the request body, all CORS rules will be deleted, and
-	// CORS will be disabled for the Blob service.
+// elements are included in the request body, all CORS rules will be deleted, and
+// CORS will be disabled for the Blob service.
 	Cors *CorsRules
 
 	// DefaultServiceVersion indicates the default version to use for requests to the Blob service if an incoming request’s version
-	// is not specified. Possible values include version 2008-10-27 and all more
-	// recent versions.
+// is not specified. Possible values include version 2008-10-27 and all more
+// recent versions.
 	DefaultServiceVersion *string
 
 	// The blob service properties for blob soft delete.
@@ -895,7 +895,7 @@ type ChangeFeed struct {
 	Enabled *bool
 
 	// Indicates the duration of changeFeed retention in days. Minimum value is 1 day and maximum value is 146000 days (400 years).
-	// A null value indicates an infinite retention of the change feed.
+// A null value indicates an infinite retention of the change feed.
 	RetentionInDays *int32
 }
 
@@ -905,11 +905,11 @@ type CheckNameAvailabilityResult struct {
 	Message *string
 
 	// READ-ONLY; Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available.
-	// If false, the name has already been taken or is invalid and cannot be used.
+// If false, the name has already been taken or is invalid and cannot be used.
 	NameAvailable *bool
 
 	// READ-ONLY; Gets the reason that a storage account name could not be used. The Reason element is only returned if NameAvailable
-	// is false.
+// is false.
 	Reason *Reason
 }
 
@@ -928,7 +928,7 @@ type ContainerProperties struct {
 	EnableNfsV3RootSquash *bool
 
 	// The object level immutability property of the container. The property is immutable and can only be set to true at the container
-	// creation time. Existing containers must undergo a migration process.
+// creation time. Existing containers must undergo a migration process.
 	ImmutableStorageWithVersioning *ImmutableStorageWithVersioning
 
 	// A name-value pair to associate with the container as metadata.
@@ -944,13 +944,13 @@ type ContainerProperties struct {
 	DeletedTime *time.Time
 
 	// READ-ONLY; The hasImmutabilityPolicy public property is set to true by SRP if ImmutabilityPolicy has been created for this
-	// container. The hasImmutabilityPolicy public property is set to false by SRP if
-	// ImmutabilityPolicy has not been created for this container.
+// container. The hasImmutabilityPolicy public property is set to false by SRP if
+// ImmutabilityPolicy has not been created for this container.
 	HasImmutabilityPolicy *bool
 
 	// READ-ONLY; The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold
-	// public property is set to false by SRP if all existing legal hold tags are cleared out.
-	// There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
+// public property is set to false by SRP if all existing legal hold tags are cleared out.
+// There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
 	HasLegalHold *bool
 
 	// READ-ONLY; The ImmutabilityPolicy property of the container.
@@ -987,14 +987,14 @@ type CorsRule struct {
 	AllowedMethods []*CorsRuleAllowedMethodsItem
 
 	// REQUIRED; Required if CorsRule element is present. A list of origin domains that will be allowed via CORS, or "*" to allow
-	// all domains
+// all domains
 	AllowedOrigins []*string
 
 	// REQUIRED; Required if CorsRule element is present. A list of response headers to expose to CORS clients.
 	ExposedHeaders []*string
 
 	// REQUIRED; Required if CorsRule element is present. The number of seconds that the client/browser should cache a preflight
-	// response.
+// response.
 	MaxAgeInSeconds *int32
 }
 
@@ -1019,8 +1019,8 @@ type DateAfterCreation struct {
 	DaysAfterCreationGreaterThan *float32
 
 	// Value indicating the age in days after last blob tier change time. This property is only applicable for tierToArchive actions
-	// and requires daysAfterCreationGreaterThan to be set for snapshots and blob
-	// version based actions. The blob will be archived if both the conditions are satisfied.
+// and requires daysAfterCreationGreaterThan to be set for snapshots and blob
+// version based actions. The blob will be archived if both the conditions are satisfied.
 	DaysAfterLastTierChangeGreaterThan *float32
 }
 
@@ -1034,12 +1034,12 @@ type DateAfterModification struct {
 	DaysAfterCreationGreaterThan *float32
 
 	// Value indicating the age in days after last blob access. This property can only be used in conjunction with last access
-	// time tracking policy
+// time tracking policy
 	DaysAfterLastAccessTimeGreaterThan *float32
 
 	// Value indicating the age in days after last blob tier change time. This property is only applicable for tierToArchive actions
-	// and requires daysAfterModificationGreaterThan to be set for baseBlobs
-	// based actions. The blob will be archived if both the conditions are satisfied.
+// and requires daysAfterModificationGreaterThan to be set for baseBlobs
+// based actions. The blob will be archived if both the conditions are satisfied.
 	DaysAfterLastTierChangeGreaterThan *float32
 
 	// Value indicating the age in days after last modification
@@ -1049,12 +1049,12 @@ type DateAfterModification struct {
 // DeleteRetentionPolicy - The service properties for soft delete.
 type DeleteRetentionPolicy struct {
 	// This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be
-	// used blob restore policy. This property only applies to blob service and does
-	// not apply to containers or file share.
+// used blob restore policy. This property only applies to blob service and does
+// not apply to containers or file share.
 	AllowPermanentDelete *bool
 
 	// Indicates the number of days that the deleted item should be retained. The minimum specified value can be 1 and the maximum
-	// value can be 365.
+// value can be 365.
 	Days *int32
 
 	// Indicates whether DeleteRetentionPolicy is enabled.
@@ -1079,7 +1079,7 @@ type DeletedAccount struct {
 // DeletedAccountListResult - The response from the List Deleted Accounts operation.
 type DeletedAccountListResult struct {
 	// READ-ONLY; Request URL that can be used to query next page of deleted accounts. Returned when total number of requested
-	// deleted accounts exceed maximum page size.
+// deleted accounts exceed maximum page size.
 	NextLink *string
 
 	// READ-ONLY; Gets the list of deleted accounts and their properties.
@@ -1134,7 +1134,7 @@ type Encryption struct {
 	KeyVaultProperties *KeyVaultProperties
 
 	// A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for
-	// data at rest.
+// data at rest.
 	RequireInfrastructureEncryption *bool
 
 	// List of services which support encryption.
@@ -1144,7 +1144,7 @@ type Encryption struct {
 // EncryptionIdentity - Encryption identity for the storage account.
 type EncryptionIdentity struct {
 	// ClientId of the multi-tenant application to be used in conjunction with the user-assigned identity for cross-tenant customer-managed-keys
-	// server-side encryption on the storage account.
+// server-side encryption on the storage account.
 	EncryptionFederatedIdentityClientID *string
 
 	// Resource identifier of the UserAssigned identity to be associated with server-side encryption on the storage account.
@@ -1170,7 +1170,7 @@ type EncryptionScope struct {
 // scope 'source' attribute is set to 'Microsoft.KeyVault'.
 type EncryptionScopeKeyVaultProperties struct {
 	// The object identifier for a key vault key object. When applied, the encryption scope will use the key referenced by the
-	// identifier to enable customer-managed key support on this encryption scope.
+// identifier to enable customer-managed key support on this encryption scope.
 	KeyURI *string
 
 	// READ-ONLY; The object identifier of the current versioned Key Vault Key in use.
@@ -1184,7 +1184,7 @@ type EncryptionScopeKeyVaultProperties struct {
 // scopes.
 type EncryptionScopeListResult struct {
 	// READ-ONLY; Request URL that can be used to query next page of encryption scopes. Returned when total number of requested
-	// encryption scopes exceeds the maximum page size.
+// encryption scopes exceeds the maximum page size.
 	NextLink *string
 
 	// READ-ONLY; List of encryption scopes requested.
@@ -1194,11 +1194,11 @@ type EncryptionScopeListResult struct {
 // EncryptionScopeProperties - Properties of the encryption scope.
 type EncryptionScopeProperties struct {
 	// The key vault properties for the encryption scope. This is a required field if encryption scope 'source' attribute is set
-	// to 'Microsoft.KeyVault'.
+// to 'Microsoft.KeyVault'.
 	KeyVaultProperties *EncryptionScopeKeyVaultProperties
 
 	// A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for
-	// data at rest.
+// data at rest.
 	RequireInfrastructureEncryption *bool
 
 	// The provider for the encryption scope. Possible values (case-insensitive): Microsoft.Storage, Microsoft.KeyVault.
@@ -1217,15 +1217,15 @@ type EncryptionScopeProperties struct {
 // EncryptionService - A service that allows server-side encryption to be used.
 type EncryptionService struct {
 	// A boolean indicating whether or not the service encrypts the data as it is stored. Encryption at rest is enabled by default
-	// today and cannot be disabled.
+// today and cannot be disabled.
 	Enabled *bool
 
 	// Encryption key type to be used for the encryption service. 'Account' key type implies that an account-scoped encryption
-	// key will be used. 'Service' key type implies that a default service key is used.
+// key will be used. 'Service' key type implies that a default service key is used.
 	KeyType *KeyType
 
 	// READ-ONLY; Gets a rough estimate of the date/time when the encryption was last enabled by the user. Data is encrypted at
-	// rest by default today and cannot be disabled.
+// rest by default today and cannot be disabled.
 	LastEnabledTime *time.Time
 }
 
@@ -1355,8 +1355,8 @@ type FileServiceProperties struct {
 // FileServicePropertiesProperties - The properties of File services in storage account.
 type FileServicePropertiesProperties struct {
 	// Specifies CORS rules for the File service. You can include up to five CorsRule elements in the request. If no CorsRule
-	// elements are included in the request body, all CORS rules will be deleted, and
-	// CORS will be disabled for the File service.
+// elements are included in the request body, all CORS rules will be deleted, and
+// CORS will be disabled for the File service.
 	Cors *CorsRules
 
 	// Protocol settings for file service
@@ -1406,7 +1406,7 @@ type FileShareItem struct {
 // page of shares.
 type FileShareItems struct {
 	// READ-ONLY; Request URL that can be used to query next page of shares. Returned when total number of requested shares exceed
-	// maximum page size.
+// maximum page size.
 	NextLink *string
 
 	// READ-ONLY; List of file shares returned.
@@ -1416,7 +1416,7 @@ type FileShareItems struct {
 // FileShareProperties - The properties of the file share.
 type FileShareProperties struct {
 	// Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool. FileStorage
-	// account can choose Premium.
+// account can choose Premium.
 	AccessTier *ShareAccessTier
 
 	// The authentication protocol that is used for the file share. Can only be specified when creating a share.
@@ -1429,7 +1429,7 @@ type FileShareProperties struct {
 	RootSquash *RootSquashType
 
 	// The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File
-	// Shares, the maximum size is 102400.
+// Shares, the maximum size is 102400.
 	ShareQuota *int32
 
 	// List of stored access policies specified on the share.
@@ -1463,7 +1463,7 @@ type FileShareProperties struct {
 	RemainingRetentionDays *int32
 
 	// READ-ONLY; The approximate size of the data stored on the share. Note that this value may not include all recently created
-	// or recently resized files.
+// or recently resized files.
 	ShareUsageBytes *int64
 
 	// READ-ONLY; Creation time of share snapshot returned in the response of list shares with expand param "snapshots".
@@ -1483,8 +1483,8 @@ type GeoReplicationStats struct {
 	CanPlannedFailover *bool
 
 	// READ-ONLY; All primary writes preceding this UTC date/time value are guaranteed to be available for read operations. Primary
-	// writes following this point in time may or may not be available for reads. Element may
-	// be default value if value of LastSyncTime is not available, this can happen if secondary is offline or we are in bootstrap.
+// writes following this point in time may or may not be available for reads. Element may
+// be default value if value of LastSyncTime is not available, this can happen if secondary is offline or we are in bootstrap.
 	LastSyncTime *time.Time
 
 	// READ-ONLY; The redundancy type of the account after an account failover is performed.
@@ -1494,9 +1494,9 @@ type GeoReplicationStats struct {
 	PostPlannedFailoverRedundancy *PostPlannedFailoverRedundancy
 
 	// READ-ONLY; The status of the secondary location. Possible values are: - Live: Indicates that the secondary location is
-	// active and operational. - Bootstrap: Indicates initial synchronization from the primary
-	// location to the secondary location is in progress.This typically occurs when replication is first enabled. - Unavailable:
-	// Indicates that the secondary location is temporarily unavailable.
+// active and operational. - Bootstrap: Indicates initial synchronization from the primary
+// location to the secondary location is in progress.This typically occurs when replication is first enabled. - Unavailable:
+// Indicates that the secondary location is temporarily unavailable.
 	Status *GeoReplicationStatus
 }
 
@@ -1515,8 +1515,8 @@ type Identity struct {
 	Type *IdentityType
 
 	// Gets or sets a list of key value pairs that describe the set of User Assigned identities that will be used with this storage
-	// account. The key is the ARM resource identifier of the identity. Only 1
-	// User Assigned identity is permitted here.
+// account. The key is the ARM resource identifier of the identity. Only 1
+// User Assigned identity is permitted here.
 	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The principal ID of resource identity.
@@ -1559,16 +1559,16 @@ type ImmutabilityPolicyProperties struct {
 // ImmutabilityPolicyProperty - The properties of an ImmutabilityPolicy of a blob container.
 type ImmutabilityPolicyProperty struct {
 	// This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to
-	// an append blob while maintaining immutability protection and compliance. Only
-	// new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy
-	// API.
+// an append blob while maintaining immutability protection and compliance. Only
+// new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy
+// API.
 	AllowProtectedAppendWrites *bool
 
 	// This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to
-	// both 'Append and Bock Blobs' while maintaining immutability protection and
-	// compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be
-	// changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and
-	// 'allowProtectedAppendWritesAll' properties are mutually exclusive.
+// both 'Append and Bock Blobs' while maintaining immutability protection and
+// compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be
+// changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and
+// 'allowProtectedAppendWritesAll' properties are mutually exclusive.
 	AllowProtectedAppendWritesAll *bool
 
 	// The immutability period for the blobs in the container since the policy creation, in days.
@@ -1582,13 +1582,13 @@ type ImmutabilityPolicyProperty struct {
 // Blob Versioning.
 type ImmutableStorageAccount struct {
 	// A boolean flag which enables account-level immutability. All the containers under such an account have object-level immutability
-	// enabled by default.
+// enabled by default.
 	Enabled *bool
 
 	// Specifies the default account-level immutability policy which is inherited and applied to objects that do not possess an
-	// explicit immutability policy at the object level. The object-level immutability
-	// policy has higher precedence than the container-level immutability policy, which has a higher precedence than the account-level
-	// immutability policy.
+// explicit immutability policy at the object level. The object-level immutability
+// policy has higher precedence than the container-level immutability policy, which has a higher precedence than the account-level
+// immutability policy.
 	ImmutabilityPolicy *AccountImmutabilityPolicyProperties
 }
 
@@ -1628,7 +1628,7 @@ type KeyVaultProperties struct {
 	KeyVersion *string
 
 	// READ-ONLY; This is a read only property that represents the expiration time of the current version of the customer managed
-	// key used for encryption.
+// key used for encryption.
 	CurrentVersionedKeyExpirationTimestamp *time.Time
 
 	// READ-ONLY; The object identifier of the current versioned Key Vault Key in use.
@@ -1650,7 +1650,7 @@ type LastAccessTimeTrackingPolicy struct {
 	Name *Name
 
 	// The field specifies blob object tracking granularity in days, typically how often the blob object should be tracked.This
-	// field is currently read only with value as 1
+// field is currently read only with value as 1
 	TrackingGranularityInDays *int32
 }
 
@@ -1660,7 +1660,7 @@ type LeaseContainerRequest struct {
 	Action *LeaseContainerRequestAction
 
 	// Optional. For a break action, proposed duration the lease should continue before it is broken, in seconds, between 0 and
-	// 60.
+// 60.
 	BreakPeriod *int32
 
 	// Required for acquire. Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires.
@@ -1676,7 +1676,7 @@ type LeaseContainerRequest struct {
 // LeaseContainerResponse - Lease Container response schema.
 type LeaseContainerResponse struct {
 	// Returned unique lease ID that must be included with any request to delete the container, or to renew, change, or release
-	// the lease.
+// the lease.
 	LeaseID *string
 
 	// Approximate time remaining in the lease period, in seconds.
@@ -1689,7 +1689,7 @@ type LeaseShareRequest struct {
 	Action *LeaseShareAction
 
 	// Optional. For a break action, proposed duration the lease should continue before it is broken, in seconds, between 0 and
-	// 60.
+// 60.
 	BreakPeriod *int32
 
 	// Required for acquire. Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires.
@@ -1705,7 +1705,7 @@ type LeaseShareRequest struct {
 // LeaseShareResponse - Lease Share response schema.
 type LeaseShareResponse struct {
 	// Returned unique lease ID that must be included with any request to delete the share, or to renew, change, or release the
-	// lease.
+// lease.
 	LeaseID *string
 
 	// Approximate time remaining in the lease period, in seconds.
@@ -1718,13 +1718,13 @@ type LegalHold struct {
 	Tags []*string
 
 	// When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining legal hold protection and compliance.
-	// Only new blocks can be added and any existing blocks cannot be modified
-	// or deleted.
+// Only new blocks can be added and any existing blocks cannot be modified
+// or deleted.
 	AllowProtectedAppendWritesAll *bool
 
 	// READ-ONLY; The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold
-	// public property is set to false by SRP if all existing legal hold tags are cleared out.
-	// There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
+// public property is set to false by SRP if all existing legal hold tags are cleared out.
+// There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
 	HasLegalHold *bool
 }
 
@@ -1737,8 +1737,8 @@ type LegalHoldProperties struct {
 	Tags []*TagProperty
 
 	// READ-ONLY; The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold
-	// public property is set to false by SRP if all existing legal hold tags are cleared out.
-	// There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
+// public property is set to false by SRP if all existing legal hold tags are cleared out.
+// There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
 	HasLegalHold *bool
 }
 
@@ -1776,7 +1776,7 @@ type ListContainerItem struct {
 // next page of containers.
 type ListContainerItems struct {
 	// READ-ONLY; Request URL that can be used to query next page of containers. Returned when total number of requested containers
-	// exceed maximum page size.
+// exceed maximum page size.
 	NextLink *string
 
 	// READ-ONLY; List of blobs containers returned.
@@ -1890,7 +1890,7 @@ type LocalUserProperties struct {
 // LocalUserRegeneratePasswordResult - The secrets of Storage Account Local User.
 type LocalUserRegeneratePasswordResult struct {
 	// READ-ONLY; Auto generated password by the server for SSH authentication if hasSshPassword is set to true on the creation
-	// of local user.
+// of local user.
 	SSHPassword *string
 }
 
@@ -1962,7 +1962,7 @@ type ManagementPolicyDefinition struct {
 // are defined, a logical AND is performed on all filters.
 type ManagementPolicyFilter struct {
 	// REQUIRED; An array of predefined enum values. Currently blockBlob supports all tiering and delete actions. Only delete
-	// actions are supported for appendBlob.
+// actions are supported for appendBlob.
 	BlobTypes []*string
 
 	// An array of blob index tag based filters, there can be at most 10 tag filters
@@ -1987,7 +1987,7 @@ type ManagementPolicyRule struct {
 	Definition *ManagementPolicyDefinition
 
 	// REQUIRED; A rule name can contain any combination of alpha numeric characters. Rule name is case-sensitive. It must be
-	// unique within a policy.
+// unique within a policy.
 	Name *string
 
 	// REQUIRED; The valid value is Lifecycle
@@ -2081,8 +2081,8 @@ type NetworkRuleSet struct {
 	DefaultAction *DefaultAction
 
 	// Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values are any combination of Logging|Metrics|AzureServices
-	// (For example, "Logging, Metrics"), or None to bypass none
-	// of those traffics.
+// (For example, "Logging, Metrics"), or None to bypass none
+// of those traffics.
 	Bypass *Bypass
 
 	// Sets the IP ACL rules
@@ -2121,7 +2121,7 @@ type ObjectReplicationPolicy struct {
 // filters.
 type ObjectReplicationPolicyFilter struct {
 	// Blobs created after the time will be replicated to the destination. It must be in datetime format 'yyyy-MM-ddTHH:mm:ssZ'.
-	// Example: 2020-02-19T16:05:00Z
+// Example: 2020-02-19T16:05:00Z
 	MinCreationTime *string
 
 	// Optional. Filters the results to replicate only blobs whose names begin with the specified prefix.
@@ -2206,7 +2206,7 @@ type OperationProperties struct {
 
 type PermissionScope struct {
 	// REQUIRED; The permissions for the local user. Possible values include: Read (r), Write (w), Delete (d), List (l), and Create
-	// (c).
+// (c).
 	Permissions *string
 
 	// REQUIRED; The name of resource, normally the container name or the file share name, used by the local user.
@@ -2304,8 +2304,8 @@ type PrivateLinkServiceConnectionState struct {
 // ProtectedAppendWritesHistory - Protected append writes history setting for the blob container with Legal holds.
 type ProtectedAppendWritesHistory struct {
 	// When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining legal hold protection and compliance.
-	// Only new blocks can be added and any existing blocks cannot be modified
-	// or deleted.
+// Only new blocks can be added and any existing blocks cannot be modified
+// or deleted.
 	AllowProtectedAppendWritesAll *bool
 
 	// READ-ONLY; Returns the date and time the tag was added.
@@ -2350,7 +2350,7 @@ type QueueProperties struct {
 	Metadata map[string]*string
 
 	// READ-ONLY; Integer indicating an approximate number of messages in the queue. This number is not lower than the actual
-	// number of messages in the queue, but could be higher.
+// number of messages in the queue, but could be higher.
 	ApproximateMessageCount *int32
 }
 
@@ -2372,8 +2372,8 @@ type QueueServiceProperties struct {
 // QueueServicePropertiesProperties - The properties of a storage account’s Queue service.
 type QueueServicePropertiesProperties struct {
 	// Specifies CORS rules for the Queue service. You can include up to five CorsRule elements in the request. If no CorsRule
-	// elements are included in the request body, all CORS rules will be deleted, and
-	// CORS will be disabled for the Queue service.
+// elements are included in the request body, all CORS rules will be deleted, and
+// CORS will be disabled for the Queue service.
 	Cors *CorsRules
 }
 
@@ -2416,15 +2416,15 @@ type RestorePolicyProperties struct {
 // Restriction - The restriction because of which SKU cannot be used.
 type Restriction struct {
 	// The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". Quota Id is set when
-	// the SKU has requiredQuotas parameter as the subscription does not belong to that
-	// quota. The "NotAvailableForSubscription" is related to capacity at DC.
+// the SKU has requiredQuotas parameter as the subscription does not belong to that
+// quota. The "NotAvailableForSubscription" is related to capacity at DC.
 	ReasonCode *ReasonCode
 
 	// READ-ONLY; The type of restrictions. As of now only possible value for this is location.
 	Type *string
 
 	// READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where
-	// the SKU is restricted.
+// the SKU is restricted.
 	Values []*string
 }
 
@@ -2444,7 +2444,7 @@ type RoutingPreference struct {
 // SKU - The SKU of the storage account.
 type SKU struct {
 	// REQUIRED; The SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called
-	// accountType.
+// accountType.
 	Name *SKUName
 
 	// READ-ONLY; The SKU tier. This is based on the SKU name.
@@ -2455,7 +2455,7 @@ type SKU struct {
 // etc.
 type SKUCapability struct {
 	// READ-ONLY; The name of capability, The capability information in the specified SKU, including file encryption, network
-	// ACLs, change notification, etc.
+// ACLs, change notification, etc.
 	Name *string
 
 	// READ-ONLY; A string value to indicate states of given capability. Possibly 'true' or 'false'.
@@ -2465,21 +2465,21 @@ type SKUCapability struct {
 // SKUInformation - Storage SKU and its properties
 type SKUInformation struct {
 	// REQUIRED; The SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called
-	// accountType.
+// accountType.
 	Name *SKUName
 
 	// The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
 	Restrictions []*Restriction
 
 	// READ-ONLY; The capability information in the specified SKU, including file encryption, network ACLs, change notification,
-	// etc.
+// etc.
 	Capabilities []*SKUCapability
 
 	// READ-ONLY; Indicates the type of storage account.
 	Kind *Kind
 
 	// READ-ONLY; The set of locations that the SKU is available. This will be supported and registered Azure Geo Regions (e.g.
-	// West US, East US, Southeast Asia, etc.).
+// West US, East US, Southeast Asia, etc.).
 	Locations []*string
 
 	// READ-ONLY; The type of the resource, usually it is 'storageAccounts'.
@@ -2536,7 +2536,7 @@ type ServiceSasParameters struct {
 	IPAddressOrRange *string
 
 	// A unique value up to 64 characters in length that correlates to an access policy specified for the container, queue, or
-	// table.
+// table.
 	Identifier *string
 
 	// The key to sign the account SAS token with.
@@ -2549,14 +2549,14 @@ type ServiceSasParameters struct {
 	PartitionKeyStart *string
 
 	// The signed permissions for the service SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a),
-	// Create (c), Update (u) and Process (p).
+// Create (c), Update (u) and Process (p).
 	Permissions *Permissions
 
 	// The protocol permitted for a request made with the account SAS.
 	Protocols *HTTPProtocol
 
 	// The signed services accessible with the service SAS. Possible values include: Blob (b), Container (c), File (f), Share
-	// (s).
+// (s).
 	Resource *SignedResource
 
 	// The end of row key.
@@ -2589,22 +2589,22 @@ type SignedIdentifier struct {
 // SmbSetting - Setting for SMB protocol
 type SmbSetting struct {
 	// SMB authentication methods supported by server. Valid values are NTLMv2, Kerberos. Should be passed as a string with delimiter
-	// ';'.
+// ';'.
 	AuthenticationMethods *string
 
 	// SMB channel encryption supported by server. Valid values are AES-128-CCM, AES-128-GCM, AES-256-GCM. Should be passed as
-	// a string with delimiter ';'.
+// a string with delimiter ';'.
 	ChannelEncryption *string
 
 	// Kerberos ticket encryption supported by server. Valid values are RC4-HMAC, AES-256. Should be passed as a string with delimiter
-	// ';'
+// ';'
 	KerberosTicketEncryption *string
 
 	// Multichannel setting. Applies to Premium FileStorage only.
 	Multichannel *Multichannel
 
 	// SMB protocol versions supported by server. Valid values are SMB2.1, SMB3.0, SMB3.1.1. Should be passed as a string with
-	// delimiter ';'.
+// delimiter ';'.
 	Versions *string
 }
 
@@ -2682,8 +2682,8 @@ type TableServiceProperties struct {
 // TableServicePropertiesProperties - The properties of a storage account’s Table service.
 type TableServicePropertiesProperties struct {
 	// Specifies CORS rules for the Table service. You can include up to five CorsRule elements in the request. If no CorsRule
-	// elements are included in the request body, all CORS rules will be deleted, and
-	// CORS will be disabled for the Table service.
+// elements are included in the request body, all CORS rules will be deleted, and
+// CORS will be disabled for the Table service.
 	Cors *CorsRules
 }
 
@@ -2702,7 +2702,7 @@ type TagFilter struct {
 	Name *string
 
 	// REQUIRED; This is the comparison operator which is used for object comparison and filtering. Only == (equality operator)
-	// is currently supported
+// is currently supported
 	Op *string
 
 	// REQUIRED; This is the filter tag value field used for tag based filtering, it can have 0 - 256 characters
@@ -2749,16 +2749,16 @@ type TrackedResource struct {
 // UpdateHistoryProperty - An update history of the ImmutabilityPolicy of a blob container.
 type UpdateHistoryProperty struct {
 	// This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to
-	// an append blob while maintaining immutability protection and compliance. Only
-	// new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy
-	// API.
+// an append blob while maintaining immutability protection and compliance. Only
+// new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy
+// API.
 	AllowProtectedAppendWrites *bool
 
 	// This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to
-	// both 'Append and Bock Blobs' while maintaining immutability protection and
-	// compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be
-	// changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and
-	// 'allowProtectedAppendWritesAll' properties are mutually exclusive.
+// both 'Append and Bock Blobs' while maintaining immutability protection and
+// compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be
+// changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and
+// 'allowProtectedAppendWritesAll' properties are mutually exclusive.
 	AllowProtectedAppendWritesAll *bool
 
 	// READ-ONLY; The immutability period for the blobs in the container since the policy creation, in days.
@@ -2830,3 +2830,4 @@ type VirtualNetworkRule struct {
 	// Gets the state of virtual network rule.
 	State *State
 }
+

@@ -23,7 +23,7 @@ import (
 // PatchSchedulesClient contains the methods for the PatchSchedules group.
 // Don't use this type directly, use NewPatchSchedulesClient() instead.
 type PatchSchedulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPatchSchedulesClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &PatchSchedulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *PatchSchedulesClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -240,7 +240,7 @@ func (client *PatchSchedulesClient) getHandleResponse(resp *http.Response) (Patc
 //   - cacheName - The name of the Redis cache.
 //   - options - PatchSchedulesClientListByRedisResourceOptions contains the optional parameters for the PatchSchedulesClient.NewListByRedisResourcePager
 //     method.
-func (client *PatchSchedulesClient) NewListByRedisResourcePager(resourceGroupName string, cacheName string, options *PatchSchedulesClientListByRedisResourceOptions) *runtime.Pager[PatchSchedulesClientListByRedisResourceResponse] {
+func (client *PatchSchedulesClient) NewListByRedisResourcePager(resourceGroupName string, cacheName string, options *PatchSchedulesClientListByRedisResourceOptions) (*runtime.Pager[PatchSchedulesClientListByRedisResourceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PatchSchedulesClientListByRedisResourceResponse]{
 		More: func(page PatchSchedulesClientListByRedisResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -302,3 +302,4 @@ func (client *PatchSchedulesClient) listByRedisResourceHandleResponse(resp *http
 	}
 	return result, nil
 }
+

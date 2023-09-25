@@ -23,7 +23,7 @@ import (
 // SubscriptionUsagesClient contains the methods for the SubscriptionUsages group.
 // Don't use this type directly, use NewSubscriptionUsagesClient() instead.
 type SubscriptionUsagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSubscriptionUsagesClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &SubscriptionUsagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,7 +109,7 @@ func (client *SubscriptionUsagesClient) getHandleResponse(resp *http.Response) (
 //   - locationName - The name of the region where the resource is located.
 //   - options - SubscriptionUsagesClientListByLocationOptions contains the optional parameters for the SubscriptionUsagesClient.NewListByLocationPager
 //     method.
-func (client *SubscriptionUsagesClient) NewListByLocationPager(locationName string, options *SubscriptionUsagesClientListByLocationOptions) *runtime.Pager[SubscriptionUsagesClientListByLocationResponse] {
+func (client *SubscriptionUsagesClient) NewListByLocationPager(locationName string, options *SubscriptionUsagesClientListByLocationOptions) (*runtime.Pager[SubscriptionUsagesClientListByLocationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SubscriptionUsagesClientListByLocationResponse]{
 		More: func(page SubscriptionUsagesClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -167,3 +167,4 @@ func (client *SubscriptionUsagesClient) listByLocationHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

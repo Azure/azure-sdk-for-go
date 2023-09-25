@@ -23,7 +23,7 @@ import (
 // QueueClient contains the methods for the Queue group.
 // Don't use this type directly, use NewQueueClient() instead.
 type QueueClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewQueueClient(subscriptionID string, credential azcore.TokenCredential, op
 	}
 	client := &QueueClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,8 +101,8 @@ func (client *QueueClient) createCreateRequest(ctx context.Context, resourceGrou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, queue); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -248,7 +248,7 @@ func (client *QueueClient) getHandleResponse(resp *http.Response) (QueueClientGe
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
 //   - options - QueueClientListOptions contains the optional parameters for the QueueClient.NewListPager method.
-func (client *QueueClient) NewListPager(resourceGroupName string, accountName string, options *QueueClientListOptions) *runtime.Pager[QueueClientListResponse] {
+func (client *QueueClient) NewListPager(resourceGroupName string, accountName string, options *QueueClientListOptions) (*runtime.Pager[QueueClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[QueueClientListResponse]{
 		More: func(page QueueClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -375,8 +375,8 @@ func (client *QueueClient) updateCreateRequest(ctx context.Context, resourceGrou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, queue); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -388,3 +388,4 @@ func (client *QueueClient) updateHandleResponse(resp *http.Response) (QueueClien
 	}
 	return result, nil
 }
+

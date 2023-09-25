@@ -23,7 +23,7 @@ import (
 // ServerAzureADOnlyAuthenticationsClient contains the methods for the ServerAzureADOnlyAuthentications group.
 // Don't use this type directly, use NewServerAzureADOnlyAuthenticationsClient() instead.
 type ServerAzureADOnlyAuthenticationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerAzureADOnlyAuthenticationsClient(subscriptionID string, credential
 	}
 	client := &ServerAzureADOnlyAuthenticationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdateCreateReques
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *ServerAzureADOnlyAuthenticationsClient) getHandleResponse(resp *ht
 //   - serverName - The name of the server.
 //   - options - ServerAzureADOnlyAuthenticationsClientListByServerOptions contains the optional parameters for the ServerAzureADOnlyAuthenticationsClient.NewListByServerPager
 //     method.
-func (client *ServerAzureADOnlyAuthenticationsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerAzureADOnlyAuthenticationsClientListByServerOptions) *runtime.Pager[ServerAzureADOnlyAuthenticationsClientListByServerResponse] {
+func (client *ServerAzureADOnlyAuthenticationsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerAzureADOnlyAuthenticationsClientListByServerOptions) (*runtime.Pager[ServerAzureADOnlyAuthenticationsClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerAzureADOnlyAuthenticationsClientListByServerResponse]{
 		More: func(page ServerAzureADOnlyAuthenticationsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *ServerAzureADOnlyAuthenticationsClient) listByServerHandleResponse
 	}
 	return result, nil
 }
+

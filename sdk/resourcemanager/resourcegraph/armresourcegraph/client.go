@@ -32,7 +32,7 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 		return nil, err
 	}
 	client := &Client{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -77,8 +77,8 @@ func (client *Client) resourcesCreateRequest(ctx context.Context, query QueryReq
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, query); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -131,8 +131,8 @@ func (client *Client) resourcesHistoryCreateRequest(ctx context.Context, request
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -144,3 +144,4 @@ func (client *Client) resourcesHistoryHandleResponse(resp *http.Response) (Clien
 	}
 	return result, nil
 }
+

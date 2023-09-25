@@ -23,7 +23,7 @@ import (
 // BackupPoliciesClient contains the methods for the BackupPolicies group.
 // Don't use this type directly, use NewBackupPoliciesClient() instead.
 type BackupPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupPoliciesClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &BackupPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewBackupPoliciesClient(subscriptionID string, credential azcore.TokenCrede
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.NewListPager method.
-func (client *BackupPoliciesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupPoliciesClientListOptions) *runtime.Pager[BackupPoliciesClientListResponse] {
+func (client *BackupPoliciesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupPoliciesClientListOptions) (*runtime.Pager[BackupPoliciesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BackupPoliciesClientListResponse]{
 		More: func(page BackupPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -115,3 +115,4 @@ func (client *BackupPoliciesClient) listHandleResponse(resp *http.Response) (Bac
 	}
 	return result, nil
 }
+

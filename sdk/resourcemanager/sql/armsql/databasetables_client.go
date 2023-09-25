@@ -23,7 +23,7 @@ import (
 // DatabaseTablesClient contains the methods for the DatabaseTables group.
 // Don't use this type directly, use NewDatabaseTablesClient() instead.
 type DatabaseTablesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatabaseTablesClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &DatabaseTablesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -129,7 +129,7 @@ func (client *DatabaseTablesClient) getHandleResponse(resp *http.Response) (Data
 //   - schemaName - The name of the schema.
 //   - options - DatabaseTablesClientListBySchemaOptions contains the optional parameters for the DatabaseTablesClient.NewListBySchemaPager
 //     method.
-func (client *DatabaseTablesClient) NewListBySchemaPager(resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseTablesClientListBySchemaOptions) *runtime.Pager[DatabaseTablesClientListBySchemaResponse] {
+func (client *DatabaseTablesClient) NewListBySchemaPager(resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseTablesClientListBySchemaOptions) (*runtime.Pager[DatabaseTablesClientListBySchemaResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabaseTablesClientListBySchemaResponse]{
 		More: func(page DatabaseTablesClientListBySchemaResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -202,3 +202,4 @@ func (client *DatabaseTablesClient) listBySchemaHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

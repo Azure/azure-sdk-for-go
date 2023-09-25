@@ -187,3 +187,4 @@ type JitRequestsClientUpdateResponse struct {
 	// Information about JIT request definition.
 	JitRequestDefinition
 }
+

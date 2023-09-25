@@ -23,7 +23,7 @@ import (
 // ManagedInstancePrivateEndpointConnectionsClient contains the methods for the ManagedInstancePrivateEndpointConnections group.
 // Don't use this type directly, use NewManagedInstancePrivateEndpointConnectionsClient() instead.
 type ManagedInstancePrivateEndpointConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedInstancePrivateEndpointConnectionsClient(subscriptionID string, c
 	}
 	client := &ManagedInstancePrivateEndpointConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdateCre
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -266,7 +266,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) getHandleResponse
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceOptions contains the optional parameters
 //     for the ManagedInstancePrivateEndpointConnectionsClient.NewListByManagedInstancePager method.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse] {
+func (client *ManagedInstancePrivateEndpointConnectionsClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceOptions) (*runtime.Pager[ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse]{
 		More: func(page ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -328,3 +328,4 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) listByManagedInst
 	}
 	return result, nil
 }
+

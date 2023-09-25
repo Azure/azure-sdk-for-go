@@ -20,7 +20,7 @@ import (
 )
 
 // Server is a fake server for instances of the armresourcegraph.Client type.
-type Server struct {
+type Server struct{
 	// Resources is the fake for method Client.Resources
 	// HTTP status codes to indicate success: http.StatusOK
 	Resources func(ctx context.Context, query armresourcegraph.QueryRequest, options *armresourcegraph.ClientResourcesOptions) (resp azfake.Responder[armresourcegraph.ClientResourcesResponse], errResp azfake.ErrorResponder)
@@ -28,6 +28,7 @@ type Server struct {
 	// ResourcesHistory is the fake for method Client.ResourcesHistory
 	// HTTP status codes to indicate success: http.StatusOK
 	ResourcesHistory func(ctx context.Context, request armresourcegraph.ResourcesHistoryRequest, options *armresourcegraph.ClientResourcesHistoryOptions) (resp azfake.Responder[armresourcegraph.ClientResourcesHistoryResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -87,8 +88,7 @@ func (s *ServerTransport) dispatchResources(req *http.Request) (*http.Response, 
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).QueryResponse, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -110,8 +110,8 @@ func (s *ServerTransport) dispatchResourcesHistory(req *http.Request) (*http.Res
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Interface, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

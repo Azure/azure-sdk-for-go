@@ -35,7 +35,7 @@ func NewLocationsClient(credential azcore.TokenCredential, options *arm.ClientOp
 		return nil, err
 	}
 	client := &LocationsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -100,7 +100,7 @@ func (client *LocationsClient) getHandleResponse(resp *http.Response) (Locations
 //
 // Generated from API version 2021-01-01
 //   - options - LocationsClientListOptions contains the optional parameters for the LocationsClient.NewListPager method.
-func (client *LocationsClient) NewListPager(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
+func (client *LocationsClient) NewListPager(options *LocationsClientListOptions) (*runtime.Pager[LocationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LocationsClientListResponse]{
 		More: func(page LocationsClientListResponse) bool {
 			return false
@@ -147,3 +147,4 @@ func (client *LocationsClient) listHandleResponse(resp *http.Response) (Location
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // PrivateEndpointClient contains the methods for the PrivateEndpoint group.
 // Don't use this type directly, use NewPrivateEndpointClient() instead.
 type PrivateEndpointClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPrivateEndpointClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &PrivateEndpointClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,3 +113,4 @@ func (client *PrivateEndpointClient) getOperationStatusHandleResponse(resp *http
 	}
 	return result, nil
 }
+

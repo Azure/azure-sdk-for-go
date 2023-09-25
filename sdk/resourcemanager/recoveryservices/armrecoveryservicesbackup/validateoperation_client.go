@@ -23,7 +23,7 @@ import (
 // ValidateOperationClient contains the methods for the ValidateOperation group.
 // Don't use this type directly, use NewValidateOperationClient() instead.
 type ValidateOperationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewValidateOperationClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &ValidateOperationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -112,7 +112,8 @@ func (client *ValidateOperationClient) triggerCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

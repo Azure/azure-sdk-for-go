@@ -23,7 +23,7 @@ import (
 // AccessPolicyClient contains the methods for the AccessPolicy group.
 // Don't use this type directly, use NewAccessPolicyClient() instead.
 type AccessPolicyClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAccessPolicyClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &AccessPolicyClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *AccessPolicyClient) createUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -266,7 +266,7 @@ func (client *AccessPolicyClient) getHandleResponse(resp *http.Response) (Access
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - options - AccessPolicyClientListOptions contains the optional parameters for the AccessPolicyClient.NewListPager method.
-func (client *AccessPolicyClient) NewListPager(resourceGroupName string, cacheName string, options *AccessPolicyClientListOptions) *runtime.Pager[AccessPolicyClientListResponse] {
+func (client *AccessPolicyClient) NewListPager(resourceGroupName string, cacheName string, options *AccessPolicyClientListOptions) (*runtime.Pager[AccessPolicyClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AccessPolicyClientListResponse]{
 		More: func(page AccessPolicyClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -328,3 +328,4 @@ func (client *AccessPolicyClient) listHandleResponse(resp *http.Response) (Acces
 	}
 	return result, nil
 }
+

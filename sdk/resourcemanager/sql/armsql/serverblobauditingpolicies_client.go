@@ -23,7 +23,7 @@ import (
 // ServerBlobAuditingPoliciesClient contains the methods for the ServerBlobAuditingPolicies group.
 // Don't use this type directly, use NewServerBlobAuditingPoliciesClient() instead.
 type ServerBlobAuditingPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerBlobAuditingPoliciesClient(subscriptionID string, credential azcor
 	}
 	client := &ServerBlobAuditingPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -112,8 +112,8 @@ func (client *ServerBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -188,7 +188,7 @@ func (client *ServerBlobAuditingPoliciesClient) getHandleResponse(resp *http.Res
 //   - serverName - The name of the server.
 //   - options - ServerBlobAuditingPoliciesClientListByServerOptions contains the optional parameters for the ServerBlobAuditingPoliciesClient.NewListByServerPager
 //     method.
-func (client *ServerBlobAuditingPoliciesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesClientListByServerOptions) *runtime.Pager[ServerBlobAuditingPoliciesClientListByServerResponse] {
+func (client *ServerBlobAuditingPoliciesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesClientListByServerOptions) (*runtime.Pager[ServerBlobAuditingPoliciesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerBlobAuditingPoliciesClientListByServerResponse]{
 		More: func(page ServerBlobAuditingPoliciesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -250,3 +250,4 @@ func (client *ServerBlobAuditingPoliciesClient) listByServerHandleResponse(resp 
 	}
 	return result, nil
 }
+

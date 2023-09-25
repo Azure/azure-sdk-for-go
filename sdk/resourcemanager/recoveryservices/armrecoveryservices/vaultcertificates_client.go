@@ -23,7 +23,7 @@ import (
 // VaultCertificatesClient contains the methods for the VaultCertificates group.
 // Don't use this type directly, use NewVaultCertificatesClient() instead.
 type VaultCertificatesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewVaultCertificatesClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &VaultCertificatesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *VaultCertificatesClient) createCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, certificateRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -112,3 +112,4 @@ func (client *VaultCertificatesClient) createHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

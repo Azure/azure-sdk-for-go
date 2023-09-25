@@ -23,7 +23,7 @@ import (
 // DeletedProtectionContainersClient contains the methods for the DeletedProtectionContainers group.
 // Don't use this type directly, use NewDeletedProtectionContainersClient() instead.
 type DeletedProtectionContainersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDeletedProtectionContainersClient(subscriptionID string, credential azco
 	}
 	client := &DeletedProtectionContainersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewDeletedProtectionContainersClient(subscriptionID string, credential azco
 //   - vaultName - The name of the recovery services vault.
 //   - options - DeletedProtectionContainersClientListOptions contains the optional parameters for the DeletedProtectionContainersClient.NewListPager
 //     method.
-func (client *DeletedProtectionContainersClient) NewListPager(resourceGroupName string, vaultName string, options *DeletedProtectionContainersClientListOptions) *runtime.Pager[DeletedProtectionContainersClientListResponse] {
+func (client *DeletedProtectionContainersClient) NewListPager(resourceGroupName string, vaultName string, options *DeletedProtectionContainersClientListOptions) (*runtime.Pager[DeletedProtectionContainersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DeletedProtectionContainersClientListResponse]{
 		More: func(page DeletedProtectionContainersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -115,3 +115,4 @@ func (client *DeletedProtectionContainersClient) listHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

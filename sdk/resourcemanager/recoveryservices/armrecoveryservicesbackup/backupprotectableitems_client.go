@@ -23,7 +23,7 @@ import (
 // BackupProtectableItemsClient contains the methods for the BackupProtectableItems group.
 // Don't use this type directly, use NewBackupProtectableItemsClient() instead.
 type BackupProtectableItemsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupProtectableItemsClient(subscriptionID string, credential azcore.To
 	}
 	client := &BackupProtectableItemsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewBackupProtectableItemsClient(subscriptionID string, credential azcore.To
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupProtectableItemsClientListOptions contains the optional parameters for the BackupProtectableItemsClient.NewListPager
 //     method.
-func (client *BackupProtectableItemsClient) NewListPager(vaultName string, resourceGroupName string, options *BackupProtectableItemsClientListOptions) *runtime.Pager[BackupProtectableItemsClientListResponse] {
+func (client *BackupProtectableItemsClient) NewListPager(vaultName string, resourceGroupName string, options *BackupProtectableItemsClientListOptions) (*runtime.Pager[BackupProtectableItemsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BackupProtectableItemsClientListResponse]{
 		More: func(page BackupProtectableItemsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -119,3 +119,4 @@ func (client *BackupProtectableItemsClient) listHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

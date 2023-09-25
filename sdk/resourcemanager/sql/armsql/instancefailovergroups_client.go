@@ -23,7 +23,7 @@ import (
 // InstanceFailoverGroupsClient contains the methods for the InstanceFailoverGroups group.
 // Don't use this type directly, use NewInstanceFailoverGroupsClient() instead.
 type InstanceFailoverGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewInstanceFailoverGroupsClient(subscriptionID string, credential azcore.To
 	}
 	client := &InstanceFailoverGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *InstanceFailoverGroupsClient) createOrUpdateCreateRequest(ctx cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -419,7 +419,7 @@ func (client *InstanceFailoverGroupsClient) getHandleResponse(resp *http.Respons
 //   - locationName - The name of the region where the resource is located.
 //   - options - InstanceFailoverGroupsClientListByLocationOptions contains the optional parameters for the InstanceFailoverGroupsClient.NewListByLocationPager
 //     method.
-func (client *InstanceFailoverGroupsClient) NewListByLocationPager(resourceGroupName string, locationName string, options *InstanceFailoverGroupsClientListByLocationOptions) *runtime.Pager[InstanceFailoverGroupsClientListByLocationResponse] {
+func (client *InstanceFailoverGroupsClient) NewListByLocationPager(resourceGroupName string, locationName string, options *InstanceFailoverGroupsClientListByLocationOptions) (*runtime.Pager[InstanceFailoverGroupsClientListByLocationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InstanceFailoverGroupsClientListByLocationResponse]{
 		More: func(page InstanceFailoverGroupsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -481,3 +481,4 @@ func (client *InstanceFailoverGroupsClient) listByLocationHandleResponse(resp *h
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ServerUsagesClient contains the methods for the ServerUsages group.
 // Don't use this type directly, use NewServerUsagesClient() instead.
 type ServerUsagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerUsagesClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &ServerUsagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewServerUsagesClient(subscriptionID string, credential azcore.TokenCredent
 //   - serverName - The name of the server.
 //   - options - ServerUsagesClientListByServerOptions contains the optional parameters for the ServerUsagesClient.NewListByServerPager
 //     method.
-func (client *ServerUsagesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerUsagesClientListByServerOptions) *runtime.Pager[ServerUsagesClientListByServerResponse] {
+func (client *ServerUsagesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerUsagesClientListByServerOptions) (*runtime.Pager[ServerUsagesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerUsagesClientListByServerResponse]{
 		More: func(page ServerUsagesClientListByServerResponse) bool {
 			return false
@@ -107,3 +107,4 @@ func (client *ServerUsagesClient) listByServerHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

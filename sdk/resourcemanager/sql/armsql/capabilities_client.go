@@ -23,7 +23,7 @@ import (
 // CapabilitiesClient contains the methods for the Capabilities group.
 // Don't use this type directly, use NewCapabilitiesClient() instead.
 type CapabilitiesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &CapabilitiesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,3 +101,4 @@ func (client *CapabilitiesClient) listByLocationHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

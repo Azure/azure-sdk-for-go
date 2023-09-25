@@ -72,3 +72,4 @@ type AppliancesClientUpdateResponse struct {
 	// Appliances definition.
 	Appliance
 }
+

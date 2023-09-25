@@ -182,3 +182,4 @@ type SyncSetsClientUpdateResponse struct {
 	// SyncSet represents a SyncSet for an Azure Red Hat OpenShift Cluster.
 	SyncSet
 }
+

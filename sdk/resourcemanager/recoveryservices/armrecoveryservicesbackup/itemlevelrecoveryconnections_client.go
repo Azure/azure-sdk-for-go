@@ -23,7 +23,7 @@ import (
 // ItemLevelRecoveryConnectionsClient contains the methods for the ItemLevelRecoveryConnections group.
 // Don't use this type directly, use NewItemLevelRecoveryConnectionsClient() instead.
 type ItemLevelRecoveryConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewItemLevelRecoveryConnectionsClient(subscriptionID string, credential azc
 	}
 	client := &ItemLevelRecoveryConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -193,3 +193,4 @@ func (client *ItemLevelRecoveryConnectionsClient) revokeCreateRequest(ctx contex
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

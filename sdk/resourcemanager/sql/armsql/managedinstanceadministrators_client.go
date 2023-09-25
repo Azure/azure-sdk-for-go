@@ -23,7 +23,7 @@ import (
 // ManagedInstanceAdministratorsClient contains the methods for the ManagedInstanceAdministrators group.
 // Don't use this type directly, use NewManagedInstanceAdministratorsClient() instead.
 type ManagedInstanceAdministratorsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedInstanceAdministratorsClient(subscriptionID string, credential az
 	}
 	client := &ManagedInstanceAdministratorsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *ManagedInstanceAdministratorsClient) createOrUpdateCreateRequest(c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -266,7 +266,7 @@ func (client *ManagedInstanceAdministratorsClient) getHandleResponse(resp *http.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstanceAdministratorsClientListByInstanceOptions contains the optional parameters for the ManagedInstanceAdministratorsClient.NewListByInstancePager
 //     method.
-func (client *ManagedInstanceAdministratorsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAdministratorsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceAdministratorsClientListByInstanceResponse] {
+func (client *ManagedInstanceAdministratorsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAdministratorsClientListByInstanceOptions) (*runtime.Pager[ManagedInstanceAdministratorsClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstanceAdministratorsClientListByInstanceResponse]{
 		More: func(page ManagedInstanceAdministratorsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -328,3 +328,4 @@ func (client *ManagedInstanceAdministratorsClient) listByInstanceHandleResponse(
 	}
 	return result, nil
 }
+

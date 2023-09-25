@@ -23,7 +23,7 @@ import (
 // RecoverableDatabasesClient contains the methods for the RecoverableDatabases group.
 // Don't use this type directly, use NewRecoverableDatabasesClient() instead.
 type RecoverableDatabasesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRecoverableDatabasesClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &RecoverableDatabasesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -124,7 +124,7 @@ func (client *RecoverableDatabasesClient) getHandleResponse(resp *http.Response)
 //   - serverName - The name of the server.
 //   - options - RecoverableDatabasesClientListByServerOptions contains the optional parameters for the RecoverableDatabasesClient.NewListByServerPager
 //     method.
-func (client *RecoverableDatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *RecoverableDatabasesClientListByServerOptions) *runtime.Pager[RecoverableDatabasesClientListByServerResponse] {
+func (client *RecoverableDatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *RecoverableDatabasesClientListByServerOptions) (*runtime.Pager[RecoverableDatabasesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RecoverableDatabasesClientListByServerResponse]{
 		More: func(page RecoverableDatabasesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -186,3 +186,4 @@ func (client *RecoverableDatabasesClient) listByServerHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

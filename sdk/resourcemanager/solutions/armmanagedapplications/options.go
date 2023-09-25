@@ -197,3 +197,4 @@ type JitRequestsClientListBySubscriptionOptions struct {
 type JitRequestsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
+

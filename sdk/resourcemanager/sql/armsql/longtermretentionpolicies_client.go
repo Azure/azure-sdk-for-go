@@ -23,7 +23,7 @@ import (
 // LongTermRetentionPoliciesClient contains the methods for the LongTermRetentionPolicies group.
 // Don't use this type directly, use NewLongTermRetentionPoliciesClient() instead.
 type LongTermRetentionPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewLongTermRetentionPoliciesClient(subscriptionID string, credential azcore
 	}
 	client := &LongTermRetentionPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *LongTermRetentionPoliciesClient) createOrUpdateCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -207,7 +207,7 @@ func (client *LongTermRetentionPoliciesClient) getHandleResponse(resp *http.Resp
 //   - databaseName - The name of the database.
 //   - options - LongTermRetentionPoliciesClientListByDatabaseOptions contains the optional parameters for the LongTermRetentionPoliciesClient.NewListByDatabasePager
 //     method.
-func (client *LongTermRetentionPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *LongTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[LongTermRetentionPoliciesClientListByDatabaseResponse] {
+func (client *LongTermRetentionPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *LongTermRetentionPoliciesClientListByDatabaseOptions) (*runtime.Pager[LongTermRetentionPoliciesClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LongTermRetentionPoliciesClientListByDatabaseResponse]{
 		More: func(page LongTermRetentionPoliciesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -273,3 +273,4 @@ func (client *LongTermRetentionPoliciesClient) listByDatabaseHandleResponse(resp
 	}
 	return result, nil
 }
+

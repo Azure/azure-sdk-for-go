@@ -9,7 +9,7 @@
 package armresourceconnector
 
 const (
-	moduleName    = "armresourceconnector"
+	moduleName = "armresourceconnector"
 	moduleVersion = "v1.0.0"
 )
 
@@ -18,14 +18,28 @@ type AccessProfileType string
 
 const (
 	AccessProfileTypeClusterCustomerUser AccessProfileType = "clusterCustomerUser"
-	AccessProfileTypeClusterUser         AccessProfileType = "clusterUser"
+	AccessProfileTypeClusterUser AccessProfileType = "clusterUser"
 )
 
 // PossibleAccessProfileTypeValues returns the possible values for the AccessProfileType const type.
 func PossibleAccessProfileTypeValues() []AccessProfileType {
-	return []AccessProfileType{
+	return []AccessProfileType{	
 		AccessProfileTypeClusterCustomerUser,
 		AccessProfileTypeClusterUser,
+	}
+}
+
+// ArtifactType - Appliance ArtifactType definition.
+type ArtifactType string
+
+const (
+	ArtifactTypeLogsArtifactType ArtifactType = "LogsArtifactType"
+)
+
+// PossibleArtifactTypeValues returns the possible values for the ArtifactType const type.
+func PossibleArtifactTypeValues() []ArtifactType {
+	return []ArtifactType{	
+		ArtifactTypeLogsArtifactType,
 	}
 }
 
@@ -33,15 +47,15 @@ func PossibleAccessProfileTypeValues() []AccessProfileType {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -58,7 +72,7 @@ const (
 
 // PossibleDistroValues returns the possible values for the Distro const type.
 func PossibleDistroValues() []Distro {
-	return []Distro{
+	return []Distro{	
 		DistroAKSEdge,
 	}
 }
@@ -67,14 +81,14 @@ func PossibleDistroValues() []Distro {
 type Provider string
 
 const (
-	ProviderHCI    Provider = "HCI"
-	ProviderSCVMM  Provider = "SCVMM"
+	ProviderHCI Provider = "HCI"
+	ProviderSCVMM Provider = "SCVMM"
 	ProviderVMWare Provider = "VMWare"
 )
 
 // PossibleProviderValues returns the possible values for the Provider const type.
 func PossibleProviderValues() []Provider {
-	return []Provider{
+	return []Provider{	
 		ProviderHCI,
 		ProviderSCVMM,
 		ProviderVMWare,
@@ -85,15 +99,35 @@ func PossibleProviderValues() []Provider {
 type ResourceIdentityType string
 
 const (
-	ResourceIdentityTypeNone           ResourceIdentityType = "None"
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
 )
 
 // PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{
+	return []ResourceIdentityType{	
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
+	}
+}
+
+// SSHKeyType - Appliance SSHKeyType definition.
+type SSHKeyType string
+
+const (
+	SSHKeyTypeLogsKey SSHKeyType = "LogsKey"
+	SSHKeyTypeManagementCAKey SSHKeyType = "ManagementCAKey"
+	SSHKeyTypeSSHCustomerUser SSHKeyType = "SSHCustomerUser"
+	SSHKeyTypeScopedAccessKey SSHKeyType = "ScopedAccessKey"
+)
+
+// PossibleSSHKeyTypeValues returns the possible values for the SSHKeyType const type.
+func PossibleSSHKeyTypeValues() []SSHKeyType {
+	return []SSHKeyType{	
+		SSHKeyTypeLogsKey,
+		SSHKeyTypeManagementCAKey,
+		SSHKeyTypeSSHCustomerUser,
+		SSHKeyTypeScopedAccessKey,
 	}
 }
 
@@ -101,43 +135,43 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type Status string
 
 const (
-	StatusConnected                             Status = "Connected"
-	StatusConnecting                            Status = "Connecting"
-	StatusETCDSnapshotFailed                    Status = "ETCDSnapshotFailed"
-	StatusImageDeprovisioning                   Status = "ImageDeprovisioning"
-	StatusImageDownloaded                       Status = "ImageDownloaded"
-	StatusImageDownloading                      Status = "ImageDownloading"
-	StatusImagePending                          Status = "ImagePending"
-	StatusImageProvisioned                      Status = "ImageProvisioned"
-	StatusImageProvisioning                     Status = "ImageProvisioning"
-	StatusImageUnknown                          Status = "ImageUnknown"
-	StatusNone                                  Status = "None"
-	StatusOffline                               Status = "Offline"
-	StatusPostUpgrade                           Status = "PostUpgrade"
-	StatusPreUpgrade                            Status = "PreUpgrade"
-	StatusPreparingForUpgrade                   Status = "PreparingForUpgrade"
-	StatusRunning                               Status = "Running"
-	StatusUpdatingCAPI                          Status = "UpdatingCAPI"
-	StatusUpdatingCloudOperator                 Status = "UpdatingCloudOperator"
-	StatusUpdatingCluster                       Status = "UpdatingCluster"
+	StatusConnected Status = "Connected"
+	StatusConnecting Status = "Connecting"
+	StatusETCDSnapshotFailed Status = "ETCDSnapshotFailed"
+	StatusImageDeprovisioning Status = "ImageDeprovisioning"
+	StatusImageDownloaded Status = "ImageDownloaded"
+	StatusImageDownloading Status = "ImageDownloading"
+	StatusImagePending Status = "ImagePending"
+	StatusImageProvisioned Status = "ImageProvisioned"
+	StatusImageProvisioning Status = "ImageProvisioning"
+	StatusImageUnknown Status = "ImageUnknown"
+	StatusNone Status = "None"
+	StatusOffline Status = "Offline"
+	StatusPostUpgrade Status = "PostUpgrade"
+	StatusPreUpgrade Status = "PreUpgrade"
+	StatusPreparingForUpgrade Status = "PreparingForUpgrade"
+	StatusRunning Status = "Running"
+	StatusUpdatingCAPI Status = "UpdatingCAPI"
+	StatusUpdatingCloudOperator Status = "UpdatingCloudOperator"
+	StatusUpdatingCluster Status = "UpdatingCluster"
 	StatusUpgradeClusterExtensionFailedToDelete Status = "UpgradeClusterExtensionFailedToDelete"
-	StatusUpgradeComplete                       Status = "UpgradeComplete"
-	StatusUpgradeFailed                         Status = "UpgradeFailed"
-	StatusUpgradePrerequisitesCompleted         Status = "UpgradePrerequisitesCompleted"
-	StatusUpgradingKVAIO                        Status = "UpgradingKVAIO"
-	StatusValidating                            Status = "Validating"
-	StatusValidatingETCDHealth                  Status = "ValidatingETCDHealth"
-	StatusValidatingImageDownload               Status = "ValidatingImageDownload"
-	StatusValidatingImageUpload                 Status = "ValidatingImageUpload"
-	StatusValidatingSFSConnectivity             Status = "ValidatingSFSConnectivity"
-	StatusWaitingForCloudOperator               Status = "WaitingForCloudOperator"
-	StatusWaitingForHeartbeat                   Status = "WaitingForHeartbeat"
-	StatusWaitingForKVAIO                       Status = "WaitingForKVAIO"
+	StatusUpgradeComplete Status = "UpgradeComplete"
+	StatusUpgradeFailed Status = "UpgradeFailed"
+	StatusUpgradePrerequisitesCompleted Status = "UpgradePrerequisitesCompleted"
+	StatusUpgradingKVAIO Status = "UpgradingKVAIO"
+	StatusValidating Status = "Validating"
+	StatusValidatingETCDHealth Status = "ValidatingETCDHealth"
+	StatusValidatingImageDownload Status = "ValidatingImageDownload"
+	StatusValidatingImageUpload Status = "ValidatingImageUpload"
+	StatusValidatingSFSConnectivity Status = "ValidatingSFSConnectivity"
+	StatusWaitingForCloudOperator Status = "WaitingForCloudOperator"
+	StatusWaitingForHeartbeat Status = "WaitingForHeartbeat"
+	StatusWaitingForKVAIO Status = "WaitingForKVAIO"
 )
 
 // PossibleStatusValues returns the possible values for the Status const type.
 func PossibleStatusValues() []Status {
-	return []Status{
+	return []Status{	
 		StatusConnected,
 		StatusConnecting,
 		StatusETCDSnapshotFailed,
@@ -172,3 +206,4 @@ func PossibleStatusValues() []Status {
 		StatusWaitingForKVAIO,
 	}
 }
+

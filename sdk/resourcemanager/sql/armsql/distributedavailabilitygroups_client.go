@@ -23,7 +23,7 @@ import (
 // DistributedAvailabilityGroupsClient contains the methods for the DistributedAvailabilityGroups group.
 // Don't use this type directly, use NewDistributedAvailabilityGroupsClient() instead.
 type DistributedAvailabilityGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDistributedAvailabilityGroupsClient(subscriptionID string, credential az
 	}
 	client := &DistributedAvailabilityGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *DistributedAvailabilityGroupsClient) createOrUpdateCreateRequest(c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,7 +269,7 @@ func (client *DistributedAvailabilityGroupsClient) getHandleResponse(resp *http.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - DistributedAvailabilityGroupsClientListByInstanceOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.NewListByInstancePager
 //     method.
-func (client *DistributedAvailabilityGroupsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *DistributedAvailabilityGroupsClientListByInstanceOptions) *runtime.Pager[DistributedAvailabilityGroupsClientListByInstanceResponse] {
+func (client *DistributedAvailabilityGroupsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *DistributedAvailabilityGroupsClientListByInstanceOptions) (*runtime.Pager[DistributedAvailabilityGroupsClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DistributedAvailabilityGroupsClientListByInstanceResponse]{
 		More: func(page DistributedAvailabilityGroupsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -405,7 +405,8 @@ func (client *DistributedAvailabilityGroupsClient) updateCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

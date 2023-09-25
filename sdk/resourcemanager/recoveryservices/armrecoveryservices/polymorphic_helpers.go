@@ -32,3 +32,4 @@ func unmarshalResourceCertificateDetailsClassification(rawMsg json.RawMessage) (
 	}
 	return b, nil
 }
+

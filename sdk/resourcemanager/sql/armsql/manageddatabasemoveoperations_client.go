@@ -24,7 +24,7 @@ import (
 // ManagedDatabaseMoveOperationsClient contains the methods for the ManagedDatabaseMoveOperations group.
 // Don't use this type directly, use NewManagedDatabaseMoveOperationsClient() instead.
 type ManagedDatabaseMoveOperationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewManagedDatabaseMoveOperationsClient(subscriptionID string, credential az
 	}
 	client := &ManagedDatabaseMoveOperationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,7 +113,7 @@ func (client *ManagedDatabaseMoveOperationsClient) getHandleResponse(resp *http.
 //     Resource Manager API or the portal.
 //   - options - ManagedDatabaseMoveOperationsClientListByLocationOptions contains the optional parameters for the ManagedDatabaseMoveOperationsClient.NewListByLocationPager
 //     method.
-func (client *ManagedDatabaseMoveOperationsClient) NewListByLocationPager(resourceGroupName string, locationName string, options *ManagedDatabaseMoveOperationsClientListByLocationOptions) *runtime.Pager[ManagedDatabaseMoveOperationsClientListByLocationResponse] {
+func (client *ManagedDatabaseMoveOperationsClient) NewListByLocationPager(resourceGroupName string, locationName string, options *ManagedDatabaseMoveOperationsClientListByLocationOptions) (*runtime.Pager[ManagedDatabaseMoveOperationsClientListByLocationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseMoveOperationsClientListByLocationResponse]{
 		More: func(page ManagedDatabaseMoveOperationsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -181,3 +181,4 @@ func (client *ManagedDatabaseMoveOperationsClient) listByLocationHandleResponse(
 	}
 	return result, nil
 }
+

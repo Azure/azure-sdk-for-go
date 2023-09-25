@@ -23,7 +23,7 @@ import (
 // DatabaseOperationsClient contains the methods for the DatabaseOperations group.
 // Don't use this type directly, use NewDatabaseOperationsClient() instead.
 type DatabaseOperationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatabaseOperationsClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &DatabaseOperationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,7 +110,7 @@ func (client *DatabaseOperationsClient) cancelCreateRequest(ctx context.Context,
 //   - databaseName - The name of the database.
 //   - options - DatabaseOperationsClientListByDatabaseOptions contains the optional parameters for the DatabaseOperationsClient.NewListByDatabasePager
 //     method.
-func (client *DatabaseOperationsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseOperationsClientListByDatabaseOptions) *runtime.Pager[DatabaseOperationsClientListByDatabaseResponse] {
+func (client *DatabaseOperationsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseOperationsClientListByDatabaseOptions) (*runtime.Pager[DatabaseOperationsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabaseOperationsClientListByDatabaseResponse]{
 		More: func(page DatabaseOperationsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -176,3 +176,4 @@ func (client *DatabaseOperationsClient) listByDatabaseHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // SynapseLinkWorkspacesClient contains the methods for the SynapseLinkWorkspaces group.
 // Don't use this type directly, use NewSynapseLinkWorkspacesClient() instead.
 type SynapseLinkWorkspacesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSynapseLinkWorkspacesClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &SynapseLinkWorkspacesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -52,7 +52,7 @@ func NewSynapseLinkWorkspacesClient(subscriptionID string, credential azcore.Tok
 //   - databaseName - The name of the database.
 //   - options - SynapseLinkWorkspacesClientListByDatabaseOptions contains the optional parameters for the SynapseLinkWorkspacesClient.NewListByDatabasePager
 //     method.
-func (client *SynapseLinkWorkspacesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *SynapseLinkWorkspacesClientListByDatabaseOptions) *runtime.Pager[SynapseLinkWorkspacesClientListByDatabaseResponse] {
+func (client *SynapseLinkWorkspacesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *SynapseLinkWorkspacesClientListByDatabaseOptions) (*runtime.Pager[SynapseLinkWorkspacesClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SynapseLinkWorkspacesClientListByDatabaseResponse]{
 		More: func(page SynapseLinkWorkspacesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -118,3 +118,4 @@ func (client *SynapseLinkWorkspacesClient) listByDatabaseHandleResponse(resp *ht
 	}
 	return result, nil
 }
+

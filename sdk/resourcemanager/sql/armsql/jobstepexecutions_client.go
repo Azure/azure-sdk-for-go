@@ -25,7 +25,7 @@ import (
 // JobStepExecutionsClient contains the methods for the JobStepExecutions group.
 // Don't use this type directly, use NewJobStepExecutionsClient() instead.
 type JobStepExecutionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewJobStepExecutionsClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &JobStepExecutionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -134,7 +134,7 @@ func (client *JobStepExecutionsClient) getHandleResponse(resp *http.Response) (J
 //   - jobExecutionID - The id of the job execution
 //   - options - JobStepExecutionsClientListByJobExecutionOptions contains the optional parameters for the JobStepExecutionsClient.NewListByJobExecutionPager
 //     method.
-func (client *JobStepExecutionsClient) NewListByJobExecutionPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobStepExecutionsClientListByJobExecutionOptions) *runtime.Pager[JobStepExecutionsClientListByJobExecutionResponse] {
+func (client *JobStepExecutionsClient) NewListByJobExecutionPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobStepExecutionsClientListByJobExecutionOptions) (*runtime.Pager[JobStepExecutionsClientListByJobExecutionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[JobStepExecutionsClientListByJobExecutionResponse]{
 		More: func(page JobStepExecutionsClientListByJobExecutionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -226,3 +226,4 @@ func (client *JobStepExecutionsClient) listByJobExecutionHandleResponse(resp *ht
 	}
 	return result, nil
 }
+

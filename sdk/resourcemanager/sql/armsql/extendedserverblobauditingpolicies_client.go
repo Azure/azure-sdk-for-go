@@ -23,7 +23,7 @@ import (
 // ExtendedServerBlobAuditingPoliciesClient contains the methods for the ExtendedServerBlobAuditingPolicies group.
 // Don't use this type directly, use NewExtendedServerBlobAuditingPoliciesClient() instead.
 type ExtendedServerBlobAuditingPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewExtendedServerBlobAuditingPoliciesClient(subscriptionID string, credenti
 	}
 	client := &ExtendedServerBlobAuditingPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -112,8 +112,8 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdateCreateRequ
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -188,7 +188,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) getHandleResponse(resp *
 //   - serverName - The name of the server.
 //   - options - ExtendedServerBlobAuditingPoliciesClientListByServerOptions contains the optional parameters for the ExtendedServerBlobAuditingPoliciesClient.NewListByServerPager
 //     method.
-func (client *ExtendedServerBlobAuditingPoliciesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ExtendedServerBlobAuditingPoliciesClientListByServerOptions) *runtime.Pager[ExtendedServerBlobAuditingPoliciesClientListByServerResponse] {
+func (client *ExtendedServerBlobAuditingPoliciesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ExtendedServerBlobAuditingPoliciesClientListByServerOptions) (*runtime.Pager[ExtendedServerBlobAuditingPoliciesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExtendedServerBlobAuditingPoliciesClientListByServerResponse]{
 		More: func(page ExtendedServerBlobAuditingPoliciesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -250,3 +250,4 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) listByServerHandleRespon
 	}
 	return result, nil
 }
+

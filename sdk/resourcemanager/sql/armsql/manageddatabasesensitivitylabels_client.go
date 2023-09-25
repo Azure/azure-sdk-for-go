@@ -24,7 +24,7 @@ import (
 // ManagedDatabaseSensitivityLabelsClient contains the methods for the ManagedDatabaseSensitivityLabels group.
 // Don't use this type directly, use NewManagedDatabaseSensitivityLabelsClient() instead.
 type ManagedDatabaseSensitivityLabelsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewManagedDatabaseSensitivityLabelsClient(subscriptionID string, credential
 	}
 	client := &ManagedDatabaseSensitivityLabelsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,8 +117,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) createOrUpdateCreateReques
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -444,7 +444,7 @@ func (client *ManagedDatabaseSensitivityLabelsClient) getHandleResponse(resp *ht
 //   - databaseName - The name of the database.
 //   - options - ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseOptions contains the optional parameters for the ManagedDatabaseSensitivityLabelsClient.NewListCurrentByDatabasePager
 //     method.
-func (client *ManagedDatabaseSensitivityLabelsClient) NewListCurrentByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseOptions) *runtime.Pager[ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse] {
+func (client *ManagedDatabaseSensitivityLabelsClient) NewListCurrentByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseOptions) (*runtime.Pager[ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse]{
 		More: func(page ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -529,7 +529,7 @@ func (client *ManagedDatabaseSensitivityLabelsClient) listCurrentByDatabaseHandl
 //   - databaseName - The name of the database.
 //   - options - ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseOptions contains the optional parameters for the
 //     ManagedDatabaseSensitivityLabelsClient.NewListRecommendedByDatabasePager method.
-func (client *ManagedDatabaseSensitivityLabelsClient) NewListRecommendedByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseOptions) *runtime.Pager[ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse] {
+func (client *ManagedDatabaseSensitivityLabelsClient) NewListRecommendedByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseOptions) (*runtime.Pager[ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse]{
 		More: func(page ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -659,7 +659,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) updateCreateRequest(ctx co
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

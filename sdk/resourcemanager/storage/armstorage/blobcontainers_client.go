@@ -23,7 +23,7 @@ import (
 // BlobContainersClient contains the methods for the BlobContainers group.
 // Don't use this type directly, use NewBlobContainersClient() instead.
 type BlobContainersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBlobContainersClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &BlobContainersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,8 +103,8 @@ func (client *BlobContainersClient) clearLegalHoldCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, legalHold); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -177,8 +177,8 @@ func (client *BlobContainersClient) createCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, blobContainer); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -255,8 +255,8 @@ func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyCreateReques
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -475,8 +475,8 @@ func (client *BlobContainersClient) extendImmutabilityPolicyCreateRequest(ctx co
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -698,8 +698,8 @@ func (client *BlobContainersClient) leaseCreateRequest(ctx context.Context, reso
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -722,7 +722,7 @@ func (client *BlobContainersClient) leaseHandleResponse(resp *http.Response) (Bl
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
 //   - options - BlobContainersClientListOptions contains the optional parameters for the BlobContainersClient.NewListPager method.
-func (client *BlobContainersClient) NewListPager(resourceGroupName string, accountName string, options *BlobContainersClientListOptions) *runtime.Pager[BlobContainersClientListResponse] {
+func (client *BlobContainersClient) NewListPager(resourceGroupName string, accountName string, options *BlobContainersClientListOptions) (*runtime.Pager[BlobContainersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BlobContainersClientListResponse]{
 		More: func(page BlobContainersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1013,8 +1013,8 @@ func (client *BlobContainersClient) setLegalHoldCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, legalHold); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1086,8 +1086,8 @@ func (client *BlobContainersClient) updateCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, blobContainer); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1099,3 +1099,4 @@ func (client *BlobContainersClient) updateHandleResponse(resp *http.Response) (B
 	}
 	return result, nil
 }
+

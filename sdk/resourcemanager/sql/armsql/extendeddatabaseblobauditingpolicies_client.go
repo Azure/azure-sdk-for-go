@@ -23,7 +23,7 @@ import (
 // ExtendedDatabaseBlobAuditingPoliciesClient contains the methods for the ExtendedDatabaseBlobAuditingPolicies group.
 // Don't use this type directly, use NewExtendedDatabaseBlobAuditingPoliciesClient() instead.
 type ExtendedDatabaseBlobAuditingPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewExtendedDatabaseBlobAuditingPoliciesClient(subscriptionID string, creden
 	}
 	client := &ExtendedDatabaseBlobAuditingPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,8 +101,8 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRe
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -192,7 +192,7 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) getHandleResponse(resp
 //   - databaseName - The name of the database.
 //   - options - ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseOptions contains the optional parameters for the ExtendedDatabaseBlobAuditingPoliciesClient.NewListByDatabasePager
 //     method.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseOptions) *runtime.Pager[ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse] {
+func (client *ExtendedDatabaseBlobAuditingPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseOptions) (*runtime.Pager[ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse]{
 		More: func(page ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -258,3 +258,4 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) listByDatabaseHandleRe
 	}
 	return result, nil
 }
+

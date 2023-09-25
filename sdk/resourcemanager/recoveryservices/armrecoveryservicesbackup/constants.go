@@ -9,7 +9,7 @@
 package armrecoveryservicesbackup
 
 const (
-	moduleName    = "armrecoveryservicesbackup"
+	moduleName = "armrecoveryservicesbackup"
 	moduleVersion = "v3.0.0"
 )
 
@@ -17,13 +17,13 @@ const (
 type AcquireStorageAccountLock string
 
 const (
-	AcquireStorageAccountLockAcquire    AcquireStorageAccountLock = "Acquire"
+	AcquireStorageAccountLockAcquire AcquireStorageAccountLock = "Acquire"
 	AcquireStorageAccountLockNotAcquire AcquireStorageAccountLock = "NotAcquire"
 )
 
 // PossibleAcquireStorageAccountLockValues returns the possible values for the AcquireStorageAccountLock const type.
 func PossibleAcquireStorageAccountLockValues() []AcquireStorageAccountLock {
-	return []AcquireStorageAccountLock{
+	return []AcquireStorageAccountLock{	
 		AcquireStorageAccountLockAcquire,
 		AcquireStorageAccountLockNotAcquire,
 	}
@@ -34,13 +34,13 @@ type AzureFileShareType string
 
 const (
 	AzureFileShareTypeInvalid AzureFileShareType = "Invalid"
-	AzureFileShareTypeXSMB    AzureFileShareType = "XSMB"
-	AzureFileShareTypeXSync   AzureFileShareType = "XSync"
+	AzureFileShareTypeXSMB AzureFileShareType = "XSMB"
+	AzureFileShareTypeXSync AzureFileShareType = "XSync"
 )
 
 // PossibleAzureFileShareTypeValues returns the possible values for the AzureFileShareType const type.
 func PossibleAzureFileShareTypeValues() []AzureFileShareType {
-	return []AzureFileShareType{
+	return []AzureFileShareType{	
 		AzureFileShareTypeInvalid,
 		AzureFileShareTypeXSMB,
 		AzureFileShareTypeXSync,
@@ -52,13 +52,13 @@ type BackupEngineType string
 
 const (
 	BackupEngineTypeAzureBackupServerEngine BackupEngineType = "AzureBackupServerEngine"
-	BackupEngineTypeDpmBackupEngine         BackupEngineType = "DpmBackupEngine"
-	BackupEngineTypeInvalid                 BackupEngineType = "Invalid"
+	BackupEngineTypeDpmBackupEngine BackupEngineType = "DpmBackupEngine"
+	BackupEngineTypeInvalid BackupEngineType = "Invalid"
 )
 
 // PossibleBackupEngineTypeValues returns the possible values for the BackupEngineType const type.
 func PossibleBackupEngineTypeValues() []BackupEngineType {
-	return []BackupEngineType{
+	return []BackupEngineType{	
 		BackupEngineTypeAzureBackupServerEngine,
 		BackupEngineTypeDpmBackupEngine,
 		BackupEngineTypeInvalid,
@@ -69,27 +69,27 @@ func PossibleBackupEngineTypeValues() []BackupEngineType {
 type BackupItemType string
 
 const (
-	BackupItemTypeAzureFileShare    BackupItemType = "AzureFileShare"
-	BackupItemTypeAzureSQLDb        BackupItemType = "AzureSqlDb"
-	BackupItemTypeClient            BackupItemType = "Client"
-	BackupItemTypeExchange          BackupItemType = "Exchange"
-	BackupItemTypeFileFolder        BackupItemType = "FileFolder"
+	BackupItemTypeAzureFileShare BackupItemType = "AzureFileShare"
+	BackupItemTypeAzureSQLDb BackupItemType = "AzureSqlDb"
+	BackupItemTypeClient BackupItemType = "Client"
+	BackupItemTypeExchange BackupItemType = "Exchange"
+	BackupItemTypeFileFolder BackupItemType = "FileFolder"
 	BackupItemTypeGenericDataSource BackupItemType = "GenericDataSource"
-	BackupItemTypeInvalid           BackupItemType = "Invalid"
-	BackupItemTypeSAPAseDatabase    BackupItemType = "SAPAseDatabase"
+	BackupItemTypeInvalid BackupItemType = "Invalid"
+	BackupItemTypeSAPAseDatabase BackupItemType = "SAPAseDatabase"
 	BackupItemTypeSAPHanaDBInstance BackupItemType = "SAPHanaDBInstance"
-	BackupItemTypeSAPHanaDatabase   BackupItemType = "SAPHanaDatabase"
-	BackupItemTypeSQLDB             BackupItemType = "SQLDB"
-	BackupItemTypeSQLDataBase       BackupItemType = "SQLDataBase"
-	BackupItemTypeSharepoint        BackupItemType = "Sharepoint"
-	BackupItemTypeSystemState       BackupItemType = "SystemState"
-	BackupItemTypeVM                BackupItemType = "VM"
-	BackupItemTypeVMwareVM          BackupItemType = "VMwareVM"
+	BackupItemTypeSAPHanaDatabase BackupItemType = "SAPHanaDatabase"
+	BackupItemTypeSQLDB BackupItemType = "SQLDB"
+	BackupItemTypeSQLDataBase BackupItemType = "SQLDataBase"
+	BackupItemTypeSharepoint BackupItemType = "Sharepoint"
+	BackupItemTypeSystemState BackupItemType = "SystemState"
+	BackupItemTypeVM BackupItemType = "VM"
+	BackupItemTypeVMwareVM BackupItemType = "VMwareVM"
 )
 
 // PossibleBackupItemTypeValues returns the possible values for the BackupItemType const type.
 func PossibleBackupItemTypeValues() []BackupItemType {
-	return []BackupItemType{
+	return []BackupItemType{	
 		BackupItemTypeAzureFileShare,
 		BackupItemTypeAzureSQLDb,
 		BackupItemTypeClient,
@@ -114,19 +114,19 @@ type BackupManagementType string
 
 const (
 	BackupManagementTypeAzureBackupServer BackupManagementType = "AzureBackupServer"
-	BackupManagementTypeAzureIaasVM       BackupManagementType = "AzureIaasVM"
-	BackupManagementTypeAzureSQL          BackupManagementType = "AzureSql"
-	BackupManagementTypeAzureStorage      BackupManagementType = "AzureStorage"
-	BackupManagementTypeAzureWorkload     BackupManagementType = "AzureWorkload"
-	BackupManagementTypeDPM               BackupManagementType = "DPM"
-	BackupManagementTypeDefaultBackup     BackupManagementType = "DefaultBackup"
-	BackupManagementTypeInvalid           BackupManagementType = "Invalid"
-	BackupManagementTypeMAB               BackupManagementType = "MAB"
+	BackupManagementTypeAzureIaasVM BackupManagementType = "AzureIaasVM"
+	BackupManagementTypeAzureSQL BackupManagementType = "AzureSql"
+	BackupManagementTypeAzureStorage BackupManagementType = "AzureStorage"
+	BackupManagementTypeAzureWorkload BackupManagementType = "AzureWorkload"
+	BackupManagementTypeDPM BackupManagementType = "DPM"
+	BackupManagementTypeDefaultBackup BackupManagementType = "DefaultBackup"
+	BackupManagementTypeInvalid BackupManagementType = "Invalid"
+	BackupManagementTypeMAB BackupManagementType = "MAB"
 )
 
 // PossibleBackupManagementTypeValues returns the possible values for the BackupManagementType const type.
 func PossibleBackupManagementTypeValues() []BackupManagementType {
-	return []BackupManagementType{
+	return []BackupManagementType{	
 		BackupManagementTypeAzureBackupServer,
 		BackupManagementTypeAzureIaasVM,
 		BackupManagementTypeAzureSQL,
@@ -143,19 +143,19 @@ func PossibleBackupManagementTypeValues() []BackupManagementType {
 type BackupType string
 
 const (
-	BackupTypeCopyOnlyFull         BackupType = "CopyOnlyFull"
-	BackupTypeDifferential         BackupType = "Differential"
-	BackupTypeFull                 BackupType = "Full"
-	BackupTypeIncremental          BackupType = "Incremental"
-	BackupTypeInvalid              BackupType = "Invalid"
-	BackupTypeLog                  BackupType = "Log"
+	BackupTypeCopyOnlyFull BackupType = "CopyOnlyFull"
+	BackupTypeDifferential BackupType = "Differential"
+	BackupTypeFull BackupType = "Full"
+	BackupTypeIncremental BackupType = "Incremental"
+	BackupTypeInvalid BackupType = "Invalid"
+	BackupTypeLog BackupType = "Log"
 	BackupTypeSnapshotCopyOnlyFull BackupType = "SnapshotCopyOnlyFull"
-	BackupTypeSnapshotFull         BackupType = "SnapshotFull"
+	BackupTypeSnapshotFull BackupType = "SnapshotFull"
 )
 
 // PossibleBackupTypeValues returns the possible values for the BackupType const type.
 func PossibleBackupTypeValues() []BackupType {
-	return []BackupType{
+	return []BackupType{	
 		BackupTypeCopyOnlyFull,
 		BackupTypeDifferential,
 		BackupTypeFull,
@@ -172,26 +172,26 @@ type ContainerType string
 
 const (
 	ContainerTypeAzureBackupServerContainer ContainerType = "AzureBackupServerContainer"
-	ContainerTypeAzureSQLContainer          ContainerType = "AzureSqlContainer"
-	ContainerTypeCluster                    ContainerType = "Cluster"
-	ContainerTypeDPMContainer               ContainerType = "DPMContainer"
-	ContainerTypeGenericContainer           ContainerType = "GenericContainer"
-	ContainerTypeHanaHSRContainer           ContainerType = "HanaHSRContainer"
-	ContainerTypeIaasVMContainer            ContainerType = "IaasVMContainer"
-	ContainerTypeIaasVMServiceContainer     ContainerType = "IaasVMServiceContainer"
-	ContainerTypeInvalid                    ContainerType = "Invalid"
-	ContainerTypeMABContainer               ContainerType = "MABContainer"
-	ContainerTypeSQLAGWorkLoadContainer     ContainerType = "SQLAGWorkLoadContainer"
-	ContainerTypeStorageContainer           ContainerType = "StorageContainer"
-	ContainerTypeUnknown                    ContainerType = "Unknown"
-	ContainerTypeVCenter                    ContainerType = "VCenter"
-	ContainerTypeVMAppContainer             ContainerType = "VMAppContainer"
-	ContainerTypeWindows                    ContainerType = "Windows"
+	ContainerTypeAzureSQLContainer ContainerType = "AzureSqlContainer"
+	ContainerTypeCluster ContainerType = "Cluster"
+	ContainerTypeDPMContainer ContainerType = "DPMContainer"
+	ContainerTypeGenericContainer ContainerType = "GenericContainer"
+	ContainerTypeHanaHSRContainer ContainerType = "HanaHSRContainer"
+	ContainerTypeIaasVMContainer ContainerType = "IaasVMContainer"
+	ContainerTypeIaasVMServiceContainer ContainerType = "IaasVMServiceContainer"
+	ContainerTypeInvalid ContainerType = "Invalid"
+	ContainerTypeMABContainer ContainerType = "MABContainer"
+	ContainerTypeSQLAGWorkLoadContainer ContainerType = "SQLAGWorkLoadContainer"
+	ContainerTypeStorageContainer ContainerType = "StorageContainer"
+	ContainerTypeUnknown ContainerType = "Unknown"
+	ContainerTypeVCenter ContainerType = "VCenter"
+	ContainerTypeVMAppContainer ContainerType = "VMAppContainer"
+	ContainerTypeWindows ContainerType = "Windows"
 )
 
 // PossibleContainerTypeValues returns the possible values for the ContainerType const type.
 func PossibleContainerTypeValues() []ContainerType {
-	return []ContainerType{
+	return []ContainerType{	
 		ContainerTypeAzureBackupServerContainer,
 		ContainerTypeAzureSQLContainer,
 		ContainerTypeCluster,
@@ -215,16 +215,16 @@ func PossibleContainerTypeValues() []ContainerType {
 type CopyOptions string
 
 const (
-	CopyOptionsCreateCopy     CopyOptions = "CreateCopy"
+	CopyOptionsCreateCopy CopyOptions = "CreateCopy"
 	CopyOptionsFailOnConflict CopyOptions = "FailOnConflict"
-	CopyOptionsInvalid        CopyOptions = "Invalid"
-	CopyOptionsOverwrite      CopyOptions = "Overwrite"
-	CopyOptionsSkip           CopyOptions = "Skip"
+	CopyOptionsInvalid CopyOptions = "Invalid"
+	CopyOptionsOverwrite CopyOptions = "Overwrite"
+	CopyOptionsSkip CopyOptions = "Skip"
 )
 
 // PossibleCopyOptionsValues returns the possible values for the CopyOptions const type.
 func PossibleCopyOptionsValues() []CopyOptions {
-	return []CopyOptions{
+	return []CopyOptions{	
 		CopyOptionsCreateCopy,
 		CopyOptionsFailOnConflict,
 		CopyOptionsInvalid,
@@ -244,7 +244,7 @@ const (
 
 // PossibleCreateModeValues returns the possible values for the CreateMode const type.
 func PossibleCreateModeValues() []CreateMode {
-	return []CreateMode{
+	return []CreateMode{	
 		CreateModeDefault,
 		CreateModeInvalid,
 		CreateModeRecover,
@@ -256,13 +256,13 @@ type DataMoveLevel string
 
 const (
 	DataMoveLevelContainer DataMoveLevel = "Container"
-	DataMoveLevelInvalid   DataMoveLevel = "Invalid"
-	DataMoveLevelVault     DataMoveLevel = "Vault"
+	DataMoveLevelInvalid DataMoveLevel = "Invalid"
+	DataMoveLevelVault DataMoveLevel = "Vault"
 )
 
 // PossibleDataMoveLevelValues returns the possible values for the DataMoveLevel const type.
 func PossibleDataMoveLevelValues() []DataMoveLevel {
-	return []DataMoveLevel{
+	return []DataMoveLevel{	
 		DataMoveLevelContainer,
 		DataMoveLevelInvalid,
 		DataMoveLevelVault,
@@ -273,27 +273,27 @@ func PossibleDataMoveLevelValues() []DataMoveLevel {
 type DataSourceType string
 
 const (
-	DataSourceTypeAzureFileShare    DataSourceType = "AzureFileShare"
-	DataSourceTypeAzureSQLDb        DataSourceType = "AzureSqlDb"
-	DataSourceTypeClient            DataSourceType = "Client"
-	DataSourceTypeExchange          DataSourceType = "Exchange"
-	DataSourceTypeFileFolder        DataSourceType = "FileFolder"
+	DataSourceTypeAzureFileShare DataSourceType = "AzureFileShare"
+	DataSourceTypeAzureSQLDb DataSourceType = "AzureSqlDb"
+	DataSourceTypeClient DataSourceType = "Client"
+	DataSourceTypeExchange DataSourceType = "Exchange"
+	DataSourceTypeFileFolder DataSourceType = "FileFolder"
 	DataSourceTypeGenericDataSource DataSourceType = "GenericDataSource"
-	DataSourceTypeInvalid           DataSourceType = "Invalid"
-	DataSourceTypeSAPAseDatabase    DataSourceType = "SAPAseDatabase"
+	DataSourceTypeInvalid DataSourceType = "Invalid"
+	DataSourceTypeSAPAseDatabase DataSourceType = "SAPAseDatabase"
 	DataSourceTypeSAPHanaDBInstance DataSourceType = "SAPHanaDBInstance"
-	DataSourceTypeSAPHanaDatabase   DataSourceType = "SAPHanaDatabase"
-	DataSourceTypeSQLDB             DataSourceType = "SQLDB"
-	DataSourceTypeSQLDataBase       DataSourceType = "SQLDataBase"
-	DataSourceTypeSharepoint        DataSourceType = "Sharepoint"
-	DataSourceTypeSystemState       DataSourceType = "SystemState"
-	DataSourceTypeVM                DataSourceType = "VM"
-	DataSourceTypeVMwareVM          DataSourceType = "VMwareVM"
+	DataSourceTypeSAPHanaDatabase DataSourceType = "SAPHanaDatabase"
+	DataSourceTypeSQLDB DataSourceType = "SQLDB"
+	DataSourceTypeSQLDataBase DataSourceType = "SQLDataBase"
+	DataSourceTypeSharepoint DataSourceType = "Sharepoint"
+	DataSourceTypeSystemState DataSourceType = "SystemState"
+	DataSourceTypeVM DataSourceType = "VM"
+	DataSourceTypeVMwareVM DataSourceType = "VMwareVM"
 )
 
 // PossibleDataSourceTypeValues returns the possible values for the DataSourceType const type.
 func PossibleDataSourceTypeValues() []DataSourceType {
-	return []DataSourceType{
+	return []DataSourceType{	
 		DataSourceTypeAzureFileShare,
 		DataSourceTypeAzureSQLDb,
 		DataSourceTypeClient,
@@ -316,18 +316,18 @@ func PossibleDataSourceTypeValues() []DataSourceType {
 type DayOfWeek string
 
 const (
-	DayOfWeekFriday    DayOfWeek = "Friday"
-	DayOfWeekMonday    DayOfWeek = "Monday"
-	DayOfWeekSaturday  DayOfWeek = "Saturday"
-	DayOfWeekSunday    DayOfWeek = "Sunday"
-	DayOfWeekThursday  DayOfWeek = "Thursday"
-	DayOfWeekTuesday   DayOfWeek = "Tuesday"
+	DayOfWeekFriday DayOfWeek = "Friday"
+	DayOfWeekMonday DayOfWeek = "Monday"
+	DayOfWeekSaturday DayOfWeek = "Saturday"
+	DayOfWeekSunday DayOfWeek = "Sunday"
+	DayOfWeekThursday DayOfWeek = "Thursday"
+	DayOfWeekTuesday DayOfWeek = "Tuesday"
 	DayOfWeekWednesday DayOfWeek = "Wednesday"
 )
 
 // PossibleDayOfWeekValues returns the possible values for the DayOfWeek const type.
 func PossibleDayOfWeekValues() []DayOfWeek {
-	return []DayOfWeek{
+	return []DayOfWeek{	
 		DayOfWeekFriday,
 		DayOfWeekMonday,
 		DayOfWeekSaturday,
@@ -343,13 +343,13 @@ type DedupState string
 
 const (
 	DedupStateDisabled DedupState = "Disabled"
-	DedupStateEnabled  DedupState = "Enabled"
-	DedupStateInvalid  DedupState = "Invalid"
+	DedupStateEnabled DedupState = "Enabled"
+	DedupStateInvalid DedupState = "Invalid"
 )
 
 // PossibleDedupStateValues returns the possible values for the DedupState const type.
 func PossibleDedupStateValues() []DedupState {
-	return []DedupState{
+	return []DedupState{	
 		DedupStateDisabled,
 		DedupStateEnabled,
 		DedupStateInvalid,
@@ -360,14 +360,14 @@ func PossibleDedupStateValues() []DedupState {
 type EncryptionAtRestType string
 
 const (
-	EncryptionAtRestTypeCustomerManaged  EncryptionAtRestType = "CustomerManaged"
-	EncryptionAtRestTypeInvalid          EncryptionAtRestType = "Invalid"
+	EncryptionAtRestTypeCustomerManaged EncryptionAtRestType = "CustomerManaged"
+	EncryptionAtRestTypeInvalid EncryptionAtRestType = "Invalid"
 	EncryptionAtRestTypeMicrosoftManaged EncryptionAtRestType = "MicrosoftManaged"
 )
 
 // PossibleEncryptionAtRestTypeValues returns the possible values for the EncryptionAtRestType const type.
 func PossibleEncryptionAtRestTypeValues() []EncryptionAtRestType {
-	return []EncryptionAtRestType{
+	return []EncryptionAtRestType{	
 		EncryptionAtRestTypeCustomerManaged,
 		EncryptionAtRestTypeInvalid,
 		EncryptionAtRestTypeMicrosoftManaged,
@@ -379,13 +379,13 @@ type EnhancedSecurityState string
 
 const (
 	EnhancedSecurityStateDisabled EnhancedSecurityState = "Disabled"
-	EnhancedSecurityStateEnabled  EnhancedSecurityState = "Enabled"
-	EnhancedSecurityStateInvalid  EnhancedSecurityState = "Invalid"
+	EnhancedSecurityStateEnabled EnhancedSecurityState = "Enabled"
+	EnhancedSecurityStateInvalid EnhancedSecurityState = "Invalid"
 )
 
 // PossibleEnhancedSecurityStateValues returns the possible values for the EnhancedSecurityState const type.
 func PossibleEnhancedSecurityStateValues() []EnhancedSecurityState {
-	return []EnhancedSecurityState{
+	return []EnhancedSecurityState{	
 		EnhancedSecurityStateDisabled,
 		EnhancedSecurityStateEnabled,
 		EnhancedSecurityStateInvalid,
@@ -396,13 +396,13 @@ func PossibleEnhancedSecurityStateValues() []EnhancedSecurityState {
 type FabricName string
 
 const (
-	FabricNameAzure   FabricName = "Azure"
+	FabricNameAzure FabricName = "Azure"
 	FabricNameInvalid FabricName = "Invalid"
 )
 
 // PossibleFabricNameValues returns the possible values for the FabricName const type.
 func PossibleFabricNameValues() []FabricName {
-	return []FabricName{
+	return []FabricName{	
 		FabricNameAzure,
 		FabricNameInvalid,
 	}
@@ -412,58 +412,58 @@ func PossibleFabricNameValues() []FabricName {
 type HTTPStatusCode string
 
 const (
-	HTTPStatusCodeAccepted                     HTTPStatusCode = "Accepted"
-	HTTPStatusCodeAmbiguous                    HTTPStatusCode = "Ambiguous"
-	HTTPStatusCodeBadGateway                   HTTPStatusCode = "BadGateway"
-	HTTPStatusCodeBadRequest                   HTTPStatusCode = "BadRequest"
-	HTTPStatusCodeConflict                     HTTPStatusCode = "Conflict"
-	HTTPStatusCodeContinue                     HTTPStatusCode = "Continue"
-	HTTPStatusCodeCreated                      HTTPStatusCode = "Created"
-	HTTPStatusCodeExpectationFailed            HTTPStatusCode = "ExpectationFailed"
-	HTTPStatusCodeForbidden                    HTTPStatusCode = "Forbidden"
-	HTTPStatusCodeFound                        HTTPStatusCode = "Found"
-	HTTPStatusCodeGatewayTimeout               HTTPStatusCode = "GatewayTimeout"
-	HTTPStatusCodeGone                         HTTPStatusCode = "Gone"
-	HTTPStatusCodeHTTPVersionNotSupported      HTTPStatusCode = "HttpVersionNotSupported"
-	HTTPStatusCodeInternalServerError          HTTPStatusCode = "InternalServerError"
-	HTTPStatusCodeLengthRequired               HTTPStatusCode = "LengthRequired"
-	HTTPStatusCodeMethodNotAllowed             HTTPStatusCode = "MethodNotAllowed"
-	HTTPStatusCodeMoved                        HTTPStatusCode = "Moved"
-	HTTPStatusCodeMovedPermanently             HTTPStatusCode = "MovedPermanently"
-	HTTPStatusCodeMultipleChoices              HTTPStatusCode = "MultipleChoices"
-	HTTPStatusCodeNoContent                    HTTPStatusCode = "NoContent"
-	HTTPStatusCodeNonAuthoritativeInformation  HTTPStatusCode = "NonAuthoritativeInformation"
-	HTTPStatusCodeNotAcceptable                HTTPStatusCode = "NotAcceptable"
-	HTTPStatusCodeNotFound                     HTTPStatusCode = "NotFound"
-	HTTPStatusCodeNotImplemented               HTTPStatusCode = "NotImplemented"
-	HTTPStatusCodeNotModified                  HTTPStatusCode = "NotModified"
-	HTTPStatusCodeOK                           HTTPStatusCode = "OK"
-	HTTPStatusCodePartialContent               HTTPStatusCode = "PartialContent"
-	HTTPStatusCodePaymentRequired              HTTPStatusCode = "PaymentRequired"
-	HTTPStatusCodePreconditionFailed           HTTPStatusCode = "PreconditionFailed"
-	HTTPStatusCodeProxyAuthenticationRequired  HTTPStatusCode = "ProxyAuthenticationRequired"
-	HTTPStatusCodeRedirect                     HTTPStatusCode = "Redirect"
-	HTTPStatusCodeRedirectKeepVerb             HTTPStatusCode = "RedirectKeepVerb"
-	HTTPStatusCodeRedirectMethod               HTTPStatusCode = "RedirectMethod"
-	HTTPStatusCodeRequestEntityTooLarge        HTTPStatusCode = "RequestEntityTooLarge"
-	HTTPStatusCodeRequestTimeout               HTTPStatusCode = "RequestTimeout"
-	HTTPStatusCodeRequestURITooLong            HTTPStatusCode = "RequestUriTooLong"
+	HTTPStatusCodeAccepted HTTPStatusCode = "Accepted"
+	HTTPStatusCodeAmbiguous HTTPStatusCode = "Ambiguous"
+	HTTPStatusCodeBadGateway HTTPStatusCode = "BadGateway"
+	HTTPStatusCodeBadRequest HTTPStatusCode = "BadRequest"
+	HTTPStatusCodeConflict HTTPStatusCode = "Conflict"
+	HTTPStatusCodeContinue HTTPStatusCode = "Continue"
+	HTTPStatusCodeCreated HTTPStatusCode = "Created"
+	HTTPStatusCodeExpectationFailed HTTPStatusCode = "ExpectationFailed"
+	HTTPStatusCodeForbidden HTTPStatusCode = "Forbidden"
+	HTTPStatusCodeFound HTTPStatusCode = "Found"
+	HTTPStatusCodeGatewayTimeout HTTPStatusCode = "GatewayTimeout"
+	HTTPStatusCodeGone HTTPStatusCode = "Gone"
+	HTTPStatusCodeHTTPVersionNotSupported HTTPStatusCode = "HttpVersionNotSupported"
+	HTTPStatusCodeInternalServerError HTTPStatusCode = "InternalServerError"
+	HTTPStatusCodeLengthRequired HTTPStatusCode = "LengthRequired"
+	HTTPStatusCodeMethodNotAllowed HTTPStatusCode = "MethodNotAllowed"
+	HTTPStatusCodeMoved HTTPStatusCode = "Moved"
+	HTTPStatusCodeMovedPermanently HTTPStatusCode = "MovedPermanently"
+	HTTPStatusCodeMultipleChoices HTTPStatusCode = "MultipleChoices"
+	HTTPStatusCodeNoContent HTTPStatusCode = "NoContent"
+	HTTPStatusCodeNonAuthoritativeInformation HTTPStatusCode = "NonAuthoritativeInformation"
+	HTTPStatusCodeNotAcceptable HTTPStatusCode = "NotAcceptable"
+	HTTPStatusCodeNotFound HTTPStatusCode = "NotFound"
+	HTTPStatusCodeNotImplemented HTTPStatusCode = "NotImplemented"
+	HTTPStatusCodeNotModified HTTPStatusCode = "NotModified"
+	HTTPStatusCodeOK HTTPStatusCode = "OK"
+	HTTPStatusCodePartialContent HTTPStatusCode = "PartialContent"
+	HTTPStatusCodePaymentRequired HTTPStatusCode = "PaymentRequired"
+	HTTPStatusCodePreconditionFailed HTTPStatusCode = "PreconditionFailed"
+	HTTPStatusCodeProxyAuthenticationRequired HTTPStatusCode = "ProxyAuthenticationRequired"
+	HTTPStatusCodeRedirect HTTPStatusCode = "Redirect"
+	HTTPStatusCodeRedirectKeepVerb HTTPStatusCode = "RedirectKeepVerb"
+	HTTPStatusCodeRedirectMethod HTTPStatusCode = "RedirectMethod"
+	HTTPStatusCodeRequestEntityTooLarge HTTPStatusCode = "RequestEntityTooLarge"
+	HTTPStatusCodeRequestTimeout HTTPStatusCode = "RequestTimeout"
+	HTTPStatusCodeRequestURITooLong HTTPStatusCode = "RequestUriTooLong"
 	HTTPStatusCodeRequestedRangeNotSatisfiable HTTPStatusCode = "RequestedRangeNotSatisfiable"
-	HTTPStatusCodeResetContent                 HTTPStatusCode = "ResetContent"
-	HTTPStatusCodeSeeOther                     HTTPStatusCode = "SeeOther"
-	HTTPStatusCodeServiceUnavailable           HTTPStatusCode = "ServiceUnavailable"
-	HTTPStatusCodeSwitchingProtocols           HTTPStatusCode = "SwitchingProtocols"
-	HTTPStatusCodeTemporaryRedirect            HTTPStatusCode = "TemporaryRedirect"
-	HTTPStatusCodeUnauthorized                 HTTPStatusCode = "Unauthorized"
-	HTTPStatusCodeUnsupportedMediaType         HTTPStatusCode = "UnsupportedMediaType"
-	HTTPStatusCodeUnused                       HTTPStatusCode = "Unused"
-	HTTPStatusCodeUpgradeRequired              HTTPStatusCode = "UpgradeRequired"
-	HTTPStatusCodeUseProxy                     HTTPStatusCode = "UseProxy"
+	HTTPStatusCodeResetContent HTTPStatusCode = "ResetContent"
+	HTTPStatusCodeSeeOther HTTPStatusCode = "SeeOther"
+	HTTPStatusCodeServiceUnavailable HTTPStatusCode = "ServiceUnavailable"
+	HTTPStatusCodeSwitchingProtocols HTTPStatusCode = "SwitchingProtocols"
+	HTTPStatusCodeTemporaryRedirect HTTPStatusCode = "TemporaryRedirect"
+	HTTPStatusCodeUnauthorized HTTPStatusCode = "Unauthorized"
+	HTTPStatusCodeUnsupportedMediaType HTTPStatusCode = "UnsupportedMediaType"
+	HTTPStatusCodeUnused HTTPStatusCode = "Unused"
+	HTTPStatusCodeUpgradeRequired HTTPStatusCode = "UpgradeRequired"
+	HTTPStatusCodeUseProxy HTTPStatusCode = "UseProxy"
 )
 
 // PossibleHTTPStatusCodeValues returns the possible values for the HTTPStatusCode const type.
 func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
-	return []HTTPStatusCode{
+	return []HTTPStatusCode{	
 		HTTPStatusCodeAccepted,
 		HTTPStatusCodeAmbiguous,
 		HTTPStatusCodeBadGateway,
@@ -518,15 +518,15 @@ func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
 type HealthState string
 
 const (
-	HealthStateActionRequired  HealthState = "ActionRequired"
+	HealthStateActionRequired HealthState = "ActionRequired"
 	HealthStateActionSuggested HealthState = "ActionSuggested"
-	HealthStateInvalid         HealthState = "Invalid"
-	HealthStatePassed          HealthState = "Passed"
+	HealthStateInvalid HealthState = "Invalid"
+	HealthStatePassed HealthState = "Passed"
 )
 
 // PossibleHealthStateValues returns the possible values for the HealthState const type.
 func PossibleHealthStateValues() []HealthState {
-	return []HealthState{
+	return []HealthState{	
 		HealthStateActionRequired,
 		HealthStateActionSuggested,
 		HealthStateInvalid,
@@ -538,15 +538,15 @@ func PossibleHealthStateValues() []HealthState {
 type HealthStatus string
 
 const (
-	HealthStatusActionRequired  HealthStatus = "ActionRequired"
+	HealthStatusActionRequired HealthStatus = "ActionRequired"
 	HealthStatusActionSuggested HealthStatus = "ActionSuggested"
-	HealthStatusInvalid         HealthStatus = "Invalid"
-	HealthStatusPassed          HealthStatus = "Passed"
+	HealthStatusInvalid HealthStatus = "Invalid"
+	HealthStatusPassed HealthStatus = "Passed"
 )
 
 // PossibleHealthStatusValues returns the possible values for the HealthStatus const type.
 func PossibleHealthStatusValues() []HealthStatus {
-	return []HealthStatus{
+	return []HealthStatus{	
 		HealthStatusActionRequired,
 		HealthStatusActionSuggested,
 		HealthStatusInvalid,
@@ -558,13 +558,13 @@ type IAASVMPolicyType string
 
 const (
 	IAASVMPolicyTypeInvalid IAASVMPolicyType = "Invalid"
-	IAASVMPolicyTypeV1      IAASVMPolicyType = "V1"
-	IAASVMPolicyTypeV2      IAASVMPolicyType = "V2"
+	IAASVMPolicyTypeV1 IAASVMPolicyType = "V1"
+	IAASVMPolicyTypeV2 IAASVMPolicyType = "V2"
 )
 
 // PossibleIAASVMPolicyTypeValues returns the possible values for the IAASVMPolicyType const type.
 func PossibleIAASVMPolicyTypeValues() []IAASVMPolicyType {
-	return []IAASVMPolicyType{
+	return []IAASVMPolicyType{	
 		IAASVMPolicyTypeInvalid,
 		IAASVMPolicyTypeV1,
 		IAASVMPolicyTypeV2,
@@ -575,13 +575,13 @@ type InfrastructureEncryptionState string
 
 const (
 	InfrastructureEncryptionStateDisabled InfrastructureEncryptionState = "Disabled"
-	InfrastructureEncryptionStateEnabled  InfrastructureEncryptionState = "Enabled"
-	InfrastructureEncryptionStateInvalid  InfrastructureEncryptionState = "Invalid"
+	InfrastructureEncryptionStateEnabled InfrastructureEncryptionState = "Enabled"
+	InfrastructureEncryptionStateInvalid InfrastructureEncryptionState = "Invalid"
 )
 
 // PossibleInfrastructureEncryptionStateValues returns the possible values for the InfrastructureEncryptionState const type.
 func PossibleInfrastructureEncryptionStateValues() []InfrastructureEncryptionState {
-	return []InfrastructureEncryptionState{
+	return []InfrastructureEncryptionState{	
 		InfrastructureEncryptionStateDisabled,
 		InfrastructureEncryptionStateEnabled,
 		InfrastructureEncryptionStateInvalid,
@@ -592,14 +592,14 @@ func PossibleInfrastructureEncryptionStateValues() []InfrastructureEncryptionSta
 type InquiryStatus string
 
 const (
-	InquiryStatusFailed  InquiryStatus = "Failed"
+	InquiryStatusFailed InquiryStatus = "Failed"
 	InquiryStatusInvalid InquiryStatus = "Invalid"
 	InquiryStatusSuccess InquiryStatus = "Success"
 )
 
 // PossibleInquiryStatusValues returns the possible values for the InquiryStatus const type.
 func PossibleInquiryStatusValues() []InquiryStatus {
-	return []InquiryStatus{
+	return []InquiryStatus{	
 		InquiryStatusFailed,
 		InquiryStatusInvalid,
 		InquiryStatusSuccess,
@@ -610,14 +610,14 @@ func PossibleInquiryStatusValues() []InquiryStatus {
 type IntentItemType string
 
 const (
-	IntentItemTypeInvalid                       IntentItemType = "Invalid"
+	IntentItemTypeInvalid IntentItemType = "Invalid"
 	IntentItemTypeSQLAvailabilityGroupContainer IntentItemType = "SQLAvailabilityGroupContainer"
-	IntentItemTypeSQLInstance                   IntentItemType = "SQLInstance"
+	IntentItemTypeSQLInstance IntentItemType = "SQLInstance"
 )
 
 // PossibleIntentItemTypeValues returns the possible values for the IntentItemType const type.
 func PossibleIntentItemTypeValues() []IntentItemType {
-	return []IntentItemType{
+	return []IntentItemType{	
 		IntentItemTypeInvalid,
 		IntentItemTypeSQLAvailabilityGroupContainer,
 		IntentItemTypeSQLInstance,
@@ -628,22 +628,22 @@ func PossibleIntentItemTypeValues() []IntentItemType {
 type JobOperationType string
 
 const (
-	JobOperationTypeBackup                   JobOperationType = "Backup"
-	JobOperationTypeConfigureBackup          JobOperationType = "ConfigureBackup"
-	JobOperationTypeCrossRegionRestore       JobOperationType = "CrossRegionRestore"
-	JobOperationTypeDeleteBackupData         JobOperationType = "DeleteBackupData"
-	JobOperationTypeDisableBackup            JobOperationType = "DisableBackup"
-	JobOperationTypeInvalid                  JobOperationType = "Invalid"
-	JobOperationTypeRegister                 JobOperationType = "Register"
-	JobOperationTypeRestore                  JobOperationType = "Restore"
-	JobOperationTypeUnRegister               JobOperationType = "UnRegister"
-	JobOperationTypeUndelete                 JobOperationType = "Undelete"
+	JobOperationTypeBackup JobOperationType = "Backup"
+	JobOperationTypeConfigureBackup JobOperationType = "ConfigureBackup"
+	JobOperationTypeCrossRegionRestore JobOperationType = "CrossRegionRestore"
+	JobOperationTypeDeleteBackupData JobOperationType = "DeleteBackupData"
+	JobOperationTypeDisableBackup JobOperationType = "DisableBackup"
+	JobOperationTypeInvalid JobOperationType = "Invalid"
+	JobOperationTypeRegister JobOperationType = "Register"
+	JobOperationTypeRestore JobOperationType = "Restore"
+	JobOperationTypeUnRegister JobOperationType = "UnRegister"
+	JobOperationTypeUndelete JobOperationType = "Undelete"
 	JobOperationTypeUpdateCustomerManagedKey JobOperationType = "UpdateCustomerManagedKey"
 )
 
 // PossibleJobOperationTypeValues returns the possible values for the JobOperationType const type.
 func PossibleJobOperationTypeValues() []JobOperationType {
-	return []JobOperationType{
+	return []JobOperationType{	
 		JobOperationTypeBackup,
 		JobOperationTypeConfigureBackup,
 		JobOperationTypeCrossRegionRestore,
@@ -662,18 +662,18 @@ func PossibleJobOperationTypeValues() []JobOperationType {
 type JobStatus string
 
 const (
-	JobStatusCancelled             JobStatus = "Cancelled"
-	JobStatusCancelling            JobStatus = "Cancelling"
-	JobStatusCompleted             JobStatus = "Completed"
+	JobStatusCancelled JobStatus = "Cancelled"
+	JobStatusCancelling JobStatus = "Cancelling"
+	JobStatusCompleted JobStatus = "Completed"
 	JobStatusCompletedWithWarnings JobStatus = "CompletedWithWarnings"
-	JobStatusFailed                JobStatus = "Failed"
-	JobStatusInProgress            JobStatus = "InProgress"
-	JobStatusInvalid               JobStatus = "Invalid"
+	JobStatusFailed JobStatus = "Failed"
+	JobStatusInProgress JobStatus = "InProgress"
+	JobStatusInvalid JobStatus = "Invalid"
 )
 
 // PossibleJobStatusValues returns the possible values for the JobStatus const type.
 func PossibleJobStatusValues() []JobStatus {
-	return []JobStatus{
+	return []JobStatus{	
 		JobStatusCancelled,
 		JobStatusCancelling,
 		JobStatusCompleted,
@@ -688,13 +688,13 @@ type JobSupportedAction string
 
 const (
 	JobSupportedActionCancellable JobSupportedAction = "Cancellable"
-	JobSupportedActionInvalid     JobSupportedAction = "Invalid"
-	JobSupportedActionRetriable   JobSupportedAction = "Retriable"
+	JobSupportedActionInvalid JobSupportedAction = "Invalid"
+	JobSupportedActionRetriable JobSupportedAction = "Retriable"
 )
 
 // PossibleJobSupportedActionValues returns the possible values for the JobSupportedAction const type.
 func PossibleJobSupportedActionValues() []JobSupportedAction {
-	return []JobSupportedAction{
+	return []JobSupportedAction{	
 		JobSupportedActionCancellable,
 		JobSupportedActionInvalid,
 		JobSupportedActionRetriable,
@@ -705,15 +705,15 @@ func PossibleJobSupportedActionValues() []JobSupportedAction {
 type LastBackupStatus string
 
 const (
-	LastBackupStatusHealthy   LastBackupStatus = "Healthy"
+	LastBackupStatusHealthy LastBackupStatus = "Healthy"
 	LastBackupStatusIRPending LastBackupStatus = "IRPending"
-	LastBackupStatusInvalid   LastBackupStatus = "Invalid"
+	LastBackupStatusInvalid LastBackupStatus = "Invalid"
 	LastBackupStatusUnhealthy LastBackupStatus = "Unhealthy"
 )
 
 // PossibleLastBackupStatusValues returns the possible values for the LastBackupStatus const type.
 func PossibleLastBackupStatusValues() []LastBackupStatus {
-	return []LastBackupStatus{
+	return []LastBackupStatus{	
 		LastBackupStatusHealthy,
 		LastBackupStatusIRPending,
 		LastBackupStatusInvalid,
@@ -724,19 +724,19 @@ func PossibleLastBackupStatusValues() []LastBackupStatus {
 type LastUpdateStatus string
 
 const (
-	LastUpdateStatusFailed              LastUpdateStatus = "Failed"
+	LastUpdateStatusFailed LastUpdateStatus = "Failed"
 	LastUpdateStatusFirstInitialization LastUpdateStatus = "FirstInitialization"
-	LastUpdateStatusInitialized         LastUpdateStatus = "Initialized"
-	LastUpdateStatusInvalid             LastUpdateStatus = "Invalid"
-	LastUpdateStatusNotEnabled          LastUpdateStatus = "NotEnabled"
-	LastUpdateStatusPartiallyFailed     LastUpdateStatus = "PartiallyFailed"
-	LastUpdateStatusPartiallySucceeded  LastUpdateStatus = "PartiallySucceeded"
-	LastUpdateStatusSucceeded           LastUpdateStatus = "Succeeded"
+	LastUpdateStatusInitialized LastUpdateStatus = "Initialized"
+	LastUpdateStatusInvalid LastUpdateStatus = "Invalid"
+	LastUpdateStatusNotEnabled LastUpdateStatus = "NotEnabled"
+	LastUpdateStatusPartiallyFailed LastUpdateStatus = "PartiallyFailed"
+	LastUpdateStatusPartiallySucceeded LastUpdateStatus = "PartiallySucceeded"
+	LastUpdateStatusSucceeded LastUpdateStatus = "Succeeded"
 )
 
 // PossibleLastUpdateStatusValues returns the possible values for the LastUpdateStatus const type.
 func PossibleLastUpdateStatusValues() []LastUpdateStatus {
-	return []LastUpdateStatus{
+	return []LastUpdateStatus{	
 		LastUpdateStatusFailed,
 		LastUpdateStatusFirstInitialization,
 		LastUpdateStatusInitialized,
@@ -753,25 +753,25 @@ type MabServerType string
 
 const (
 	MabServerTypeAzureBackupServerContainer MabServerType = "AzureBackupServerContainer"
-	MabServerTypeAzureSQLContainer          MabServerType = "AzureSqlContainer"
-	MabServerTypeCluster                    MabServerType = "Cluster"
-	MabServerTypeDPMContainer               MabServerType = "DPMContainer"
-	MabServerTypeGenericContainer           MabServerType = "GenericContainer"
-	MabServerTypeIaasVMContainer            MabServerType = "IaasVMContainer"
-	MabServerTypeIaasVMServiceContainer     MabServerType = "IaasVMServiceContainer"
-	MabServerTypeInvalid                    MabServerType = "Invalid"
-	MabServerTypeMABContainer               MabServerType = "MABContainer"
-	MabServerTypeSQLAGWorkLoadContainer     MabServerType = "SQLAGWorkLoadContainer"
-	MabServerTypeStorageContainer           MabServerType = "StorageContainer"
-	MabServerTypeUnknown                    MabServerType = "Unknown"
-	MabServerTypeVCenter                    MabServerType = "VCenter"
-	MabServerTypeVMAppContainer             MabServerType = "VMAppContainer"
-	MabServerTypeWindows                    MabServerType = "Windows"
+	MabServerTypeAzureSQLContainer MabServerType = "AzureSqlContainer"
+	MabServerTypeCluster MabServerType = "Cluster"
+	MabServerTypeDPMContainer MabServerType = "DPMContainer"
+	MabServerTypeGenericContainer MabServerType = "GenericContainer"
+	MabServerTypeIaasVMContainer MabServerType = "IaasVMContainer"
+	MabServerTypeIaasVMServiceContainer MabServerType = "IaasVMServiceContainer"
+	MabServerTypeInvalid MabServerType = "Invalid"
+	MabServerTypeMABContainer MabServerType = "MABContainer"
+	MabServerTypeSQLAGWorkLoadContainer MabServerType = "SQLAGWorkLoadContainer"
+	MabServerTypeStorageContainer MabServerType = "StorageContainer"
+	MabServerTypeUnknown MabServerType = "Unknown"
+	MabServerTypeVCenter MabServerType = "VCenter"
+	MabServerTypeVMAppContainer MabServerType = "VMAppContainer"
+	MabServerTypeWindows MabServerType = "Windows"
 )
 
 // PossibleMabServerTypeValues returns the possible values for the MabServerType const type.
 func PossibleMabServerTypeValues() []MabServerType {
-	return []MabServerType{
+	return []MabServerType{	
 		MabServerTypeAzureBackupServerContainer,
 		MabServerTypeAzureSQLContainer,
 		MabServerTypeCluster,
@@ -793,24 +793,24 @@ func PossibleMabServerTypeValues() []MabServerType {
 type MonthOfYear string
 
 const (
-	MonthOfYearApril     MonthOfYear = "April"
-	MonthOfYearAugust    MonthOfYear = "August"
-	MonthOfYearDecember  MonthOfYear = "December"
-	MonthOfYearFebruary  MonthOfYear = "February"
-	MonthOfYearInvalid   MonthOfYear = "Invalid"
-	MonthOfYearJanuary   MonthOfYear = "January"
-	MonthOfYearJuly      MonthOfYear = "July"
-	MonthOfYearJune      MonthOfYear = "June"
-	MonthOfYearMarch     MonthOfYear = "March"
-	MonthOfYearMay       MonthOfYear = "May"
-	MonthOfYearNovember  MonthOfYear = "November"
-	MonthOfYearOctober   MonthOfYear = "October"
+	MonthOfYearApril MonthOfYear = "April"
+	MonthOfYearAugust MonthOfYear = "August"
+	MonthOfYearDecember MonthOfYear = "December"
+	MonthOfYearFebruary MonthOfYear = "February"
+	MonthOfYearInvalid MonthOfYear = "Invalid"
+	MonthOfYearJanuary MonthOfYear = "January"
+	MonthOfYearJuly MonthOfYear = "July"
+	MonthOfYearJune MonthOfYear = "June"
+	MonthOfYearMarch MonthOfYear = "March"
+	MonthOfYearMay MonthOfYear = "May"
+	MonthOfYearNovember MonthOfYear = "November"
+	MonthOfYearOctober MonthOfYear = "October"
 	MonthOfYearSeptember MonthOfYear = "September"
 )
 
 // PossibleMonthOfYearValues returns the possible values for the MonthOfYear const type.
 func PossibleMonthOfYearValues() []MonthOfYear {
-	return []MonthOfYear{
+	return []MonthOfYear{	
 		MonthOfYearApril,
 		MonthOfYearAugust,
 		MonthOfYearDecember,
@@ -831,16 +831,16 @@ func PossibleMonthOfYearValues() []MonthOfYear {
 type OperationStatusValues string
 
 const (
-	OperationStatusValuesCanceled   OperationStatusValues = "Canceled"
-	OperationStatusValuesFailed     OperationStatusValues = "Failed"
+	OperationStatusValuesCanceled OperationStatusValues = "Canceled"
+	OperationStatusValuesFailed OperationStatusValues = "Failed"
 	OperationStatusValuesInProgress OperationStatusValues = "InProgress"
-	OperationStatusValuesInvalid    OperationStatusValues = "Invalid"
-	OperationStatusValuesSucceeded  OperationStatusValues = "Succeeded"
+	OperationStatusValuesInvalid OperationStatusValues = "Invalid"
+	OperationStatusValuesSucceeded OperationStatusValues = "Succeeded"
 )
 
 // PossibleOperationStatusValuesValues returns the possible values for the OperationStatusValues const type.
 func PossibleOperationStatusValuesValues() []OperationStatusValues {
-	return []OperationStatusValues{
+	return []OperationStatusValues{	
 		OperationStatusValuesCanceled,
 		OperationStatusValuesFailed,
 		OperationStatusValuesInProgress,
@@ -853,14 +853,14 @@ func PossibleOperationStatusValuesValues() []OperationStatusValues {
 type OperationType string
 
 const (
-	OperationTypeInvalid    OperationType = "Invalid"
-	OperationTypeRegister   OperationType = "Register"
+	OperationTypeInvalid OperationType = "Invalid"
+	OperationTypeRegister OperationType = "Register"
 	OperationTypeReregister OperationType = "Reregister"
 )
 
 // PossibleOperationTypeValues returns the possible values for the OperationType const type.
 func PossibleOperationTypeValues() []OperationType {
-	return []OperationType{
+	return []OperationType{	
 		OperationTypeInvalid,
 		OperationTypeRegister,
 		OperationTypeReregister,
@@ -872,13 +872,13 @@ type OverwriteOptions string
 
 const (
 	OverwriteOptionsFailOnConflict OverwriteOptions = "FailOnConflict"
-	OverwriteOptionsInvalid        OverwriteOptions = "Invalid"
-	OverwriteOptionsOverwrite      OverwriteOptions = "Overwrite"
+	OverwriteOptionsInvalid OverwriteOptions = "Invalid"
+	OverwriteOptionsOverwrite OverwriteOptions = "Overwrite"
 )
 
 // PossibleOverwriteOptionsValues returns the possible values for the OverwriteOptions const type.
 func PossibleOverwriteOptionsValues() []OverwriteOptions {
-	return []OverwriteOptions{
+	return []OverwriteOptions{	
 		OverwriteOptionsFailOnConflict,
 		OverwriteOptionsInvalid,
 		OverwriteOptionsOverwrite,
@@ -889,19 +889,19 @@ func PossibleOverwriteOptionsValues() []OverwriteOptions {
 type PolicyType string
 
 const (
-	PolicyTypeCopyOnlyFull         PolicyType = "CopyOnlyFull"
-	PolicyTypeDifferential         PolicyType = "Differential"
-	PolicyTypeFull                 PolicyType = "Full"
-	PolicyTypeIncremental          PolicyType = "Incremental"
-	PolicyTypeInvalid              PolicyType = "Invalid"
-	PolicyTypeLog                  PolicyType = "Log"
+	PolicyTypeCopyOnlyFull PolicyType = "CopyOnlyFull"
+	PolicyTypeDifferential PolicyType = "Differential"
+	PolicyTypeFull PolicyType = "Full"
+	PolicyTypeIncremental PolicyType = "Incremental"
+	PolicyTypeInvalid PolicyType = "Invalid"
+	PolicyTypeLog PolicyType = "Log"
 	PolicyTypeSnapshotCopyOnlyFull PolicyType = "SnapshotCopyOnlyFull"
-	PolicyTypeSnapshotFull         PolicyType = "SnapshotFull"
+	PolicyTypeSnapshotFull PolicyType = "SnapshotFull"
 )
 
 // PossiblePolicyTypeValues returns the possible values for the PolicyType const type.
 func PossiblePolicyTypeValues() []PolicyType {
-	return []PolicyType{
+	return []PolicyType{	
 		PolicyTypeCopyOnlyFull,
 		PolicyTypeDifferential,
 		PolicyTypeFull,
@@ -917,15 +917,15 @@ func PossiblePolicyTypeValues() []PolicyType {
 type PrivateEndpointConnectionStatus string
 
 const (
-	PrivateEndpointConnectionStatusApproved     PrivateEndpointConnectionStatus = "Approved"
+	PrivateEndpointConnectionStatusApproved PrivateEndpointConnectionStatus = "Approved"
 	PrivateEndpointConnectionStatusDisconnected PrivateEndpointConnectionStatus = "Disconnected"
-	PrivateEndpointConnectionStatusPending      PrivateEndpointConnectionStatus = "Pending"
-	PrivateEndpointConnectionStatusRejected     PrivateEndpointConnectionStatus = "Rejected"
+	PrivateEndpointConnectionStatusPending PrivateEndpointConnectionStatus = "Pending"
+	PrivateEndpointConnectionStatusRejected PrivateEndpointConnectionStatus = "Rejected"
 )
 
 // PossiblePrivateEndpointConnectionStatusValues returns the possible values for the PrivateEndpointConnectionStatus const type.
 func PossiblePrivateEndpointConnectionStatusValues() []PrivateEndpointConnectionStatus {
-	return []PrivateEndpointConnectionStatus{
+	return []PrivateEndpointConnectionStatus{	
 		PrivateEndpointConnectionStatusApproved,
 		PrivateEndpointConnectionStatusDisconnected,
 		PrivateEndpointConnectionStatusPending,
@@ -939,29 +939,29 @@ func PossiblePrivateEndpointConnectionStatusValues() []PrivateEndpointConnection
 type ProtectableContainerType string
 
 const (
-	ProtectableContainerTypeAzureBackupServerContainer             ProtectableContainerType = "AzureBackupServerContainer"
-	ProtectableContainerTypeAzureSQLContainer                      ProtectableContainerType = "AzureSqlContainer"
-	ProtectableContainerTypeAzureWorkloadContainer                 ProtectableContainerType = "AzureWorkloadContainer"
-	ProtectableContainerTypeCluster                                ProtectableContainerType = "Cluster"
-	ProtectableContainerTypeDPMContainer                           ProtectableContainerType = "DPMContainer"
-	ProtectableContainerTypeGenericContainer                       ProtectableContainerType = "GenericContainer"
-	ProtectableContainerTypeIaasVMContainer                        ProtectableContainerType = "IaasVMContainer"
-	ProtectableContainerTypeIaasVMServiceContainer                 ProtectableContainerType = "IaasVMServiceContainer"
-	ProtectableContainerTypeInvalid                                ProtectableContainerType = "Invalid"
-	ProtectableContainerTypeMABContainer                           ProtectableContainerType = "MABContainer"
+	ProtectableContainerTypeAzureBackupServerContainer ProtectableContainerType = "AzureBackupServerContainer"
+	ProtectableContainerTypeAzureSQLContainer ProtectableContainerType = "AzureSqlContainer"
+	ProtectableContainerTypeAzureWorkloadContainer ProtectableContainerType = "AzureWorkloadContainer"
+	ProtectableContainerTypeCluster ProtectableContainerType = "Cluster"
+	ProtectableContainerTypeDPMContainer ProtectableContainerType = "DPMContainer"
+	ProtectableContainerTypeGenericContainer ProtectableContainerType = "GenericContainer"
+	ProtectableContainerTypeIaasVMContainer ProtectableContainerType = "IaasVMContainer"
+	ProtectableContainerTypeIaasVMServiceContainer ProtectableContainerType = "IaasVMServiceContainer"
+	ProtectableContainerTypeInvalid ProtectableContainerType = "Invalid"
+	ProtectableContainerTypeMABContainer ProtectableContainerType = "MABContainer"
 	ProtectableContainerTypeMicrosoftClassicComputeVirtualMachines ProtectableContainerType = "Microsoft.ClassicCompute/virtualMachines"
-	ProtectableContainerTypeMicrosoftComputeVirtualMachines        ProtectableContainerType = "Microsoft.Compute/virtualMachines"
-	ProtectableContainerTypeSQLAGWorkLoadContainer                 ProtectableContainerType = "SQLAGWorkLoadContainer"
-	ProtectableContainerTypeStorageContainer                       ProtectableContainerType = "StorageContainer"
-	ProtectableContainerTypeUnknown                                ProtectableContainerType = "Unknown"
-	ProtectableContainerTypeVCenter                                ProtectableContainerType = "VCenter"
-	ProtectableContainerTypeVMAppContainer                         ProtectableContainerType = "VMAppContainer"
-	ProtectableContainerTypeWindows                                ProtectableContainerType = "Windows"
+	ProtectableContainerTypeMicrosoftComputeVirtualMachines ProtectableContainerType = "Microsoft.Compute/virtualMachines"
+	ProtectableContainerTypeSQLAGWorkLoadContainer ProtectableContainerType = "SQLAGWorkLoadContainer"
+	ProtectableContainerTypeStorageContainer ProtectableContainerType = "StorageContainer"
+	ProtectableContainerTypeUnknown ProtectableContainerType = "Unknown"
+	ProtectableContainerTypeVCenter ProtectableContainerType = "VCenter"
+	ProtectableContainerTypeVMAppContainer ProtectableContainerType = "VMAppContainer"
+	ProtectableContainerTypeWindows ProtectableContainerType = "Windows"
 )
 
 // PossibleProtectableContainerTypeValues returns the possible values for the ProtectableContainerType const type.
 func PossibleProtectableContainerTypeValues() []ProtectableContainerType {
-	return []ProtectableContainerType{
+	return []ProtectableContainerType{	
 		ProtectableContainerTypeAzureBackupServerContainer,
 		ProtectableContainerTypeAzureSQLContainer,
 		ProtectableContainerTypeAzureWorkloadContainer,
@@ -987,16 +987,16 @@ func PossibleProtectableContainerTypeValues() []ProtectableContainerType {
 type ProtectedItemHealthStatus string
 
 const (
-	ProtectedItemHealthStatusHealthy      ProtectedItemHealthStatus = "Healthy"
-	ProtectedItemHealthStatusIRPending    ProtectedItemHealthStatus = "IRPending"
-	ProtectedItemHealthStatusInvalid      ProtectedItemHealthStatus = "Invalid"
+	ProtectedItemHealthStatusHealthy ProtectedItemHealthStatus = "Healthy"
+	ProtectedItemHealthStatusIRPending ProtectedItemHealthStatus = "IRPending"
+	ProtectedItemHealthStatusInvalid ProtectedItemHealthStatus = "Invalid"
 	ProtectedItemHealthStatusNotReachable ProtectedItemHealthStatus = "NotReachable"
-	ProtectedItemHealthStatusUnhealthy    ProtectedItemHealthStatus = "Unhealthy"
+	ProtectedItemHealthStatusUnhealthy ProtectedItemHealthStatus = "Unhealthy"
 )
 
 // PossibleProtectedItemHealthStatusValues returns the possible values for the ProtectedItemHealthStatus const type.
 func PossibleProtectedItemHealthStatusValues() []ProtectedItemHealthStatus {
-	return []ProtectedItemHealthStatus{
+	return []ProtectedItemHealthStatus{	
 		ProtectedItemHealthStatusHealthy,
 		ProtectedItemHealthStatusIRPending,
 		ProtectedItemHealthStatusInvalid,
@@ -1009,18 +1009,18 @@ func PossibleProtectedItemHealthStatusValues() []ProtectedItemHealthStatus {
 type ProtectedItemState string
 
 const (
-	ProtectedItemStateBackupsSuspended  ProtectedItemState = "BackupsSuspended"
-	ProtectedItemStateIRPending         ProtectedItemState = "IRPending"
-	ProtectedItemStateInvalid           ProtectedItemState = "Invalid"
-	ProtectedItemStateProtected         ProtectedItemState = "Protected"
-	ProtectedItemStateProtectionError   ProtectedItemState = "ProtectionError"
-	ProtectedItemStateProtectionPaused  ProtectedItemState = "ProtectionPaused"
+	ProtectedItemStateBackupsSuspended ProtectedItemState = "BackupsSuspended"
+	ProtectedItemStateIRPending ProtectedItemState = "IRPending"
+	ProtectedItemStateInvalid ProtectedItemState = "Invalid"
+	ProtectedItemStateProtected ProtectedItemState = "Protected"
+	ProtectedItemStateProtectionError ProtectedItemState = "ProtectionError"
+	ProtectedItemStateProtectionPaused ProtectedItemState = "ProtectionPaused"
 	ProtectedItemStateProtectionStopped ProtectedItemState = "ProtectionStopped"
 )
 
 // PossibleProtectedItemStateValues returns the possible values for the ProtectedItemState const type.
 func PossibleProtectedItemStateValues() []ProtectedItemState {
-	return []ProtectedItemState{
+	return []ProtectedItemState{	
 		ProtectedItemStateBackupsSuspended,
 		ProtectedItemStateIRPending,
 		ProtectedItemStateInvalid,
@@ -1035,17 +1035,17 @@ func PossibleProtectedItemStateValues() []ProtectedItemState {
 type ProtectionIntentItemType string
 
 const (
-	ProtectionIntentItemTypeAzureResourceItem                          ProtectionIntentItemType = "AzureResourceItem"
-	ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent          ProtectionIntentItemType = "AzureWorkloadAutoProtectionIntent"
+	ProtectionIntentItemTypeAzureResourceItem ProtectionIntentItemType = "AzureResourceItem"
+	ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent ProtectionIntentItemType = "AzureWorkloadAutoProtectionIntent"
 	ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent ProtectionIntentItemType = "AzureWorkloadContainerAutoProtectionIntent"
-	ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent       ProtectionIntentItemType = "AzureWorkloadSQLAutoProtectionIntent"
-	ProtectionIntentItemTypeInvalid                                    ProtectionIntentItemType = "Invalid"
-	ProtectionIntentItemTypeRecoveryServiceVaultItem                   ProtectionIntentItemType = "RecoveryServiceVaultItem"
+	ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent ProtectionIntentItemType = "AzureWorkloadSQLAutoProtectionIntent"
+	ProtectionIntentItemTypeInvalid ProtectionIntentItemType = "Invalid"
+	ProtectionIntentItemTypeRecoveryServiceVaultItem ProtectionIntentItemType = "RecoveryServiceVaultItem"
 )
 
 // PossibleProtectionIntentItemTypeValues returns the possible values for the ProtectionIntentItemType const type.
 func PossibleProtectionIntentItemTypeValues() []ProtectionIntentItemType {
-	return []ProtectionIntentItemType{
+	return []ProtectionIntentItemType{	
 		ProtectionIntentItemTypeAzureResourceItem,
 		ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent,
 		ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent,
@@ -1059,18 +1059,18 @@ func PossibleProtectionIntentItemTypeValues() []ProtectionIntentItemType {
 type ProtectionState string
 
 const (
-	ProtectionStateBackupsSuspended  ProtectionState = "BackupsSuspended"
-	ProtectionStateIRPending         ProtectionState = "IRPending"
-	ProtectionStateInvalid           ProtectionState = "Invalid"
-	ProtectionStateProtected         ProtectionState = "Protected"
-	ProtectionStateProtectionError   ProtectionState = "ProtectionError"
-	ProtectionStateProtectionPaused  ProtectionState = "ProtectionPaused"
+	ProtectionStateBackupsSuspended ProtectionState = "BackupsSuspended"
+	ProtectionStateIRPending ProtectionState = "IRPending"
+	ProtectionStateInvalid ProtectionState = "Invalid"
+	ProtectionStateProtected ProtectionState = "Protected"
+	ProtectionStateProtectionError ProtectionState = "ProtectionError"
+	ProtectionStateProtectionPaused ProtectionState = "ProtectionPaused"
 	ProtectionStateProtectionStopped ProtectionState = "ProtectionStopped"
 )
 
 // PossibleProtectionStateValues returns the possible values for the ProtectionState const type.
 func PossibleProtectionStateValues() []ProtectionState {
-	return []ProtectionState{
+	return []ProtectionState{	
 		ProtectionStateBackupsSuspended,
 		ProtectionStateIRPending,
 		ProtectionStateInvalid,
@@ -1085,16 +1085,16 @@ func PossibleProtectionStateValues() []ProtectionState {
 type ProtectionStatus string
 
 const (
-	ProtectionStatusInvalid          ProtectionStatus = "Invalid"
-	ProtectionStatusNotProtected     ProtectionStatus = "NotProtected"
-	ProtectionStatusProtected        ProtectionStatus = "Protected"
-	ProtectionStatusProtecting       ProtectionStatus = "Protecting"
+	ProtectionStatusInvalid ProtectionStatus = "Invalid"
+	ProtectionStatusNotProtected ProtectionStatus = "NotProtected"
+	ProtectionStatusProtected ProtectionStatus = "Protected"
+	ProtectionStatusProtecting ProtectionStatus = "Protecting"
 	ProtectionStatusProtectionFailed ProtectionStatus = "ProtectionFailed"
 )
 
 // PossibleProtectionStatusValues returns the possible values for the ProtectionStatus const type.
 func PossibleProtectionStatusValues() []ProtectionStatus {
-	return []ProtectionStatus{
+	return []ProtectionStatus{	
 		ProtectionStatusInvalid,
 		ProtectionStatusNotProtected,
 		ProtectionStatusProtected,
@@ -1107,15 +1107,15 @@ func PossibleProtectionStatusValues() []ProtectionStatus {
 type ProvisioningState string
 
 const (
-	ProvisioningStateDeleting  ProvisioningState = "Deleting"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
-	ProvisioningStatePending   ProvisioningState = "Pending"
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	ProvisioningStatePending ProvisioningState = "Pending"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
 		ProvisioningStatePending,
@@ -1127,14 +1127,14 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type RecoveryMode string
 
 const (
-	RecoveryModeFileRecovery     RecoveryMode = "FileRecovery"
-	RecoveryModeInvalid          RecoveryMode = "Invalid"
+	RecoveryModeFileRecovery RecoveryMode = "FileRecovery"
+	RecoveryModeInvalid RecoveryMode = "Invalid"
 	RecoveryModeWorkloadRecovery RecoveryMode = "WorkloadRecovery"
 )
 
 // PossibleRecoveryModeValues returns the possible values for the RecoveryMode const type.
 func PossibleRecoveryModeValues() []RecoveryMode {
-	return []RecoveryMode{
+	return []RecoveryMode{	
 		RecoveryModeFileRecovery,
 		RecoveryModeInvalid,
 		RecoveryModeWorkloadRecovery,
@@ -1145,16 +1145,16 @@ func PossibleRecoveryModeValues() []RecoveryMode {
 type RecoveryPointTierStatus string
 
 const (
-	RecoveryPointTierStatusDeleted    RecoveryPointTierStatus = "Deleted"
-	RecoveryPointTierStatusDisabled   RecoveryPointTierStatus = "Disabled"
-	RecoveryPointTierStatusInvalid    RecoveryPointTierStatus = "Invalid"
+	RecoveryPointTierStatusDeleted RecoveryPointTierStatus = "Deleted"
+	RecoveryPointTierStatusDisabled RecoveryPointTierStatus = "Disabled"
+	RecoveryPointTierStatusInvalid RecoveryPointTierStatus = "Invalid"
 	RecoveryPointTierStatusRehydrated RecoveryPointTierStatus = "Rehydrated"
-	RecoveryPointTierStatusValid      RecoveryPointTierStatus = "Valid"
+	RecoveryPointTierStatusValid RecoveryPointTierStatus = "Valid"
 )
 
 // PossibleRecoveryPointTierStatusValues returns the possible values for the RecoveryPointTierStatus const type.
 func PossibleRecoveryPointTierStatusValues() []RecoveryPointTierStatus {
-	return []RecoveryPointTierStatus{
+	return []RecoveryPointTierStatus{	
 		RecoveryPointTierStatusDeleted,
 		RecoveryPointTierStatusDisabled,
 		RecoveryPointTierStatusInvalid,
@@ -1169,13 +1169,13 @@ type RecoveryPointTierType string
 const (
 	RecoveryPointTierTypeArchivedRP RecoveryPointTierType = "ArchivedRP"
 	RecoveryPointTierTypeHardenedRP RecoveryPointTierType = "HardenedRP"
-	RecoveryPointTierTypeInstantRP  RecoveryPointTierType = "InstantRP"
-	RecoveryPointTierTypeInvalid    RecoveryPointTierType = "Invalid"
+	RecoveryPointTierTypeInstantRP RecoveryPointTierType = "InstantRP"
+	RecoveryPointTierTypeInvalid RecoveryPointTierType = "Invalid"
 )
 
 // PossibleRecoveryPointTierTypeValues returns the possible values for the RecoveryPointTierType const type.
 func PossibleRecoveryPointTierTypeValues() []RecoveryPointTierType {
-	return []RecoveryPointTierType{
+	return []RecoveryPointTierType{	
 		RecoveryPointTierTypeArchivedRP,
 		RecoveryPointTierTypeHardenedRP,
 		RecoveryPointTierTypeInstantRP,
@@ -1188,15 +1188,15 @@ type RecoveryType string
 
 const (
 	RecoveryTypeAlternateLocation RecoveryType = "AlternateLocation"
-	RecoveryTypeInvalid           RecoveryType = "Invalid"
-	RecoveryTypeOffline           RecoveryType = "Offline"
-	RecoveryTypeOriginalLocation  RecoveryType = "OriginalLocation"
-	RecoveryTypeRestoreDisks      RecoveryType = "RestoreDisks"
+	RecoveryTypeInvalid RecoveryType = "Invalid"
+	RecoveryTypeOffline RecoveryType = "Offline"
+	RecoveryTypeOriginalLocation RecoveryType = "OriginalLocation"
+	RecoveryTypeRestoreDisks RecoveryType = "RestoreDisks"
 )
 
 // PossibleRecoveryTypeValues returns the possible values for the RecoveryType const type.
 func PossibleRecoveryTypeValues() []RecoveryType {
-	return []RecoveryType{
+	return []RecoveryType{	
 		RecoveryTypeAlternateLocation,
 		RecoveryTypeInvalid,
 		RecoveryTypeOffline,
@@ -1209,13 +1209,13 @@ func PossibleRecoveryTypeValues() []RecoveryType {
 type RehydrationPriority string
 
 const (
-	RehydrationPriorityHigh     RehydrationPriority = "High"
+	RehydrationPriorityHigh RehydrationPriority = "High"
 	RehydrationPriorityStandard RehydrationPriority = "Standard"
 )
 
 // PossibleRehydrationPriorityValues returns the possible values for the RehydrationPriority const type.
 func PossibleRehydrationPriorityValues() []RehydrationPriority {
-	return []RehydrationPriority{
+	return []RehydrationPriority{	
 		RehydrationPriorityHigh,
 		RehydrationPriorityStandard,
 	}
@@ -1225,17 +1225,17 @@ func PossibleRehydrationPriorityValues() []RehydrationPriority {
 type ResourceHealthStatus string
 
 const (
-	ResourceHealthStatusHealthy             ResourceHealthStatus = "Healthy"
-	ResourceHealthStatusInvalid             ResourceHealthStatus = "Invalid"
-	ResourceHealthStatusPersistentDegraded  ResourceHealthStatus = "PersistentDegraded"
+	ResourceHealthStatusHealthy ResourceHealthStatus = "Healthy"
+	ResourceHealthStatusInvalid ResourceHealthStatus = "Invalid"
+	ResourceHealthStatusPersistentDegraded ResourceHealthStatus = "PersistentDegraded"
 	ResourceHealthStatusPersistentUnhealthy ResourceHealthStatus = "PersistentUnhealthy"
-	ResourceHealthStatusTransientDegraded   ResourceHealthStatus = "TransientDegraded"
-	ResourceHealthStatusTransientUnhealthy  ResourceHealthStatus = "TransientUnhealthy"
+	ResourceHealthStatusTransientDegraded ResourceHealthStatus = "TransientDegraded"
+	ResourceHealthStatusTransientUnhealthy ResourceHealthStatus = "TransientUnhealthy"
 )
 
 // PossibleResourceHealthStatusValues returns the possible values for the ResourceHealthStatus const type.
 func PossibleResourceHealthStatusValues() []ResourceHealthStatus {
-	return []ResourceHealthStatus{
+	return []ResourceHealthStatus{	
 		ResourceHealthStatusHealthy,
 		ResourceHealthStatusInvalid,
 		ResourceHealthStatusPersistentDegraded,
@@ -1249,20 +1249,20 @@ func PossibleResourceHealthStatusValues() []ResourceHealthStatus {
 type RestorePointQueryType string
 
 const (
-	RestorePointQueryTypeAll                  RestorePointQueryType = "All"
-	RestorePointQueryTypeDifferential         RestorePointQueryType = "Differential"
-	RestorePointQueryTypeFull                 RestorePointQueryType = "Full"
-	RestorePointQueryTypeFullAndDifferential  RestorePointQueryType = "FullAndDifferential"
-	RestorePointQueryTypeIncremental          RestorePointQueryType = "Incremental"
-	RestorePointQueryTypeInvalid              RestorePointQueryType = "Invalid"
-	RestorePointQueryTypeLog                  RestorePointQueryType = "Log"
+	RestorePointQueryTypeAll RestorePointQueryType = "All"
+	RestorePointQueryTypeDifferential RestorePointQueryType = "Differential"
+	RestorePointQueryTypeFull RestorePointQueryType = "Full"
+	RestorePointQueryTypeFullAndDifferential RestorePointQueryType = "FullAndDifferential"
+	RestorePointQueryTypeIncremental RestorePointQueryType = "Incremental"
+	RestorePointQueryTypeInvalid RestorePointQueryType = "Invalid"
+	RestorePointQueryTypeLog RestorePointQueryType = "Log"
 	RestorePointQueryTypeSnapshotCopyOnlyFull RestorePointQueryType = "SnapshotCopyOnlyFull"
-	RestorePointQueryTypeSnapshotFull         RestorePointQueryType = "SnapshotFull"
+	RestorePointQueryTypeSnapshotFull RestorePointQueryType = "SnapshotFull"
 )
 
 // PossibleRestorePointQueryTypeValues returns the possible values for the RestorePointQueryType const type.
 func PossibleRestorePointQueryTypeValues() []RestorePointQueryType {
-	return []RestorePointQueryType{
+	return []RestorePointQueryType{	
 		RestorePointQueryTypeAll,
 		RestorePointQueryTypeDifferential,
 		RestorePointQueryTypeFull,
@@ -1279,18 +1279,18 @@ func PossibleRestorePointQueryTypeValues() []RestorePointQueryType {
 type RestorePointType string
 
 const (
-	RestorePointTypeDifferential         RestorePointType = "Differential"
-	RestorePointTypeFull                 RestorePointType = "Full"
-	RestorePointTypeIncremental          RestorePointType = "Incremental"
-	RestorePointTypeInvalid              RestorePointType = "Invalid"
-	RestorePointTypeLog                  RestorePointType = "Log"
+	RestorePointTypeDifferential RestorePointType = "Differential"
+	RestorePointTypeFull RestorePointType = "Full"
+	RestorePointTypeIncremental RestorePointType = "Incremental"
+	RestorePointTypeInvalid RestorePointType = "Invalid"
+	RestorePointTypeLog RestorePointType = "Log"
 	RestorePointTypeSnapshotCopyOnlyFull RestorePointType = "SnapshotCopyOnlyFull"
-	RestorePointTypeSnapshotFull         RestorePointType = "SnapshotFull"
+	RestorePointTypeSnapshotFull RestorePointType = "SnapshotFull"
 )
 
 // PossibleRestorePointTypeValues returns the possible values for the RestorePointType const type.
 func PossibleRestorePointTypeValues() []RestorePointType {
-	return []RestorePointType{
+	return []RestorePointType{	
 		RestorePointTypeDifferential,
 		RestorePointTypeFull,
 		RestorePointTypeIncremental,
@@ -1306,13 +1306,13 @@ type RestoreRequestType string
 
 const (
 	RestoreRequestTypeFullShareRestore RestoreRequestType = "FullShareRestore"
-	RestoreRequestTypeInvalid          RestoreRequestType = "Invalid"
+	RestoreRequestTypeInvalid RestoreRequestType = "Invalid"
 	RestoreRequestTypeItemLevelRestore RestoreRequestType = "ItemLevelRestore"
 )
 
 // PossibleRestoreRequestTypeValues returns the possible values for the RestoreRequestType const type.
 func PossibleRestoreRequestTypeValues() []RestoreRequestType {
-	return []RestoreRequestType{
+	return []RestoreRequestType{	
 		RestoreRequestTypeFullShareRestore,
 		RestoreRequestTypeInvalid,
 		RestoreRequestTypeItemLevelRestore,
@@ -1323,16 +1323,16 @@ func PossibleRestoreRequestTypeValues() []RestoreRequestType {
 type RetentionDurationType string
 
 const (
-	RetentionDurationTypeDays    RetentionDurationType = "Days"
+	RetentionDurationTypeDays RetentionDurationType = "Days"
 	RetentionDurationTypeInvalid RetentionDurationType = "Invalid"
-	RetentionDurationTypeMonths  RetentionDurationType = "Months"
-	RetentionDurationTypeWeeks   RetentionDurationType = "Weeks"
-	RetentionDurationTypeYears   RetentionDurationType = "Years"
+	RetentionDurationTypeMonths RetentionDurationType = "Months"
+	RetentionDurationTypeWeeks RetentionDurationType = "Weeks"
+	RetentionDurationTypeYears RetentionDurationType = "Years"
 )
 
 // PossibleRetentionDurationTypeValues returns the possible values for the RetentionDurationType const type.
 func PossibleRetentionDurationTypeValues() []RetentionDurationType {
-	return []RetentionDurationType{
+	return []RetentionDurationType{	
 		RetentionDurationTypeDays,
 		RetentionDurationTypeInvalid,
 		RetentionDurationTypeMonths,
@@ -1345,14 +1345,14 @@ func PossibleRetentionDurationTypeValues() []RetentionDurationType {
 type RetentionScheduleFormat string
 
 const (
-	RetentionScheduleFormatDaily   RetentionScheduleFormat = "Daily"
+	RetentionScheduleFormatDaily RetentionScheduleFormat = "Daily"
 	RetentionScheduleFormatInvalid RetentionScheduleFormat = "Invalid"
-	RetentionScheduleFormatWeekly  RetentionScheduleFormat = "Weekly"
+	RetentionScheduleFormatWeekly RetentionScheduleFormat = "Weekly"
 )
 
 // PossibleRetentionScheduleFormatValues returns the possible values for the RetentionScheduleFormat const type.
 func PossibleRetentionScheduleFormatValues() []RetentionScheduleFormat {
-	return []RetentionScheduleFormat{
+	return []RetentionScheduleFormat{	
 		RetentionScheduleFormatDaily,
 		RetentionScheduleFormatInvalid,
 		RetentionScheduleFormatWeekly,
@@ -1363,14 +1363,14 @@ func PossibleRetentionScheduleFormatValues() []RetentionScheduleFormat {
 type SQLDataDirectoryType string
 
 const (
-	SQLDataDirectoryTypeData    SQLDataDirectoryType = "Data"
+	SQLDataDirectoryTypeData SQLDataDirectoryType = "Data"
 	SQLDataDirectoryTypeInvalid SQLDataDirectoryType = "Invalid"
-	SQLDataDirectoryTypeLog     SQLDataDirectoryType = "Log"
+	SQLDataDirectoryTypeLog SQLDataDirectoryType = "Log"
 )
 
 // PossibleSQLDataDirectoryTypeValues returns the possible values for the SQLDataDirectoryType const type.
 func PossibleSQLDataDirectoryTypeValues() []SQLDataDirectoryType {
-	return []SQLDataDirectoryType{
+	return []SQLDataDirectoryType{	
 		SQLDataDirectoryTypeData,
 		SQLDataDirectoryTypeInvalid,
 		SQLDataDirectoryTypeLog,
@@ -1381,15 +1381,15 @@ func PossibleSQLDataDirectoryTypeValues() []SQLDataDirectoryType {
 type ScheduleRunType string
 
 const (
-	ScheduleRunTypeDaily   ScheduleRunType = "Daily"
-	ScheduleRunTypeHourly  ScheduleRunType = "Hourly"
+	ScheduleRunTypeDaily ScheduleRunType = "Daily"
+	ScheduleRunTypeHourly ScheduleRunType = "Hourly"
 	ScheduleRunTypeInvalid ScheduleRunType = "Invalid"
-	ScheduleRunTypeWeekly  ScheduleRunType = "Weekly"
+	ScheduleRunTypeWeekly ScheduleRunType = "Weekly"
 )
 
 // PossibleScheduleRunTypeValues returns the possible values for the ScheduleRunType const type.
 func PossibleScheduleRunTypeValues() []ScheduleRunType {
-	return []ScheduleRunType{
+	return []ScheduleRunType{	
 		ScheduleRunTypeDaily,
 		ScheduleRunTypeHourly,
 		ScheduleRunTypeInvalid,
@@ -1403,13 +1403,13 @@ type SoftDeleteFeatureState string
 const (
 	SoftDeleteFeatureStateAlwaysON SoftDeleteFeatureState = "AlwaysON"
 	SoftDeleteFeatureStateDisabled SoftDeleteFeatureState = "Disabled"
-	SoftDeleteFeatureStateEnabled  SoftDeleteFeatureState = "Enabled"
-	SoftDeleteFeatureStateInvalid  SoftDeleteFeatureState = "Invalid"
+	SoftDeleteFeatureStateEnabled SoftDeleteFeatureState = "Enabled"
+	SoftDeleteFeatureStateInvalid SoftDeleteFeatureState = "Invalid"
 )
 
 // PossibleSoftDeleteFeatureStateValues returns the possible values for the SoftDeleteFeatureState const type.
 func PossibleSoftDeleteFeatureStateValues() []SoftDeleteFeatureState {
-	return []SoftDeleteFeatureState{
+	return []SoftDeleteFeatureState{	
 		SoftDeleteFeatureStateAlwaysON,
 		SoftDeleteFeatureStateDisabled,
 		SoftDeleteFeatureStateEnabled,
@@ -1421,16 +1421,16 @@ func PossibleSoftDeleteFeatureStateValues() []SoftDeleteFeatureState {
 type StorageType string
 
 const (
-	StorageTypeGeoRedundant               StorageType = "GeoRedundant"
-	StorageTypeInvalid                    StorageType = "Invalid"
-	StorageTypeLocallyRedundant           StorageType = "LocallyRedundant"
+	StorageTypeGeoRedundant StorageType = "GeoRedundant"
+	StorageTypeInvalid StorageType = "Invalid"
+	StorageTypeLocallyRedundant StorageType = "LocallyRedundant"
 	StorageTypeReadAccessGeoZoneRedundant StorageType = "ReadAccessGeoZoneRedundant"
-	StorageTypeZoneRedundant              StorageType = "ZoneRedundant"
+	StorageTypeZoneRedundant StorageType = "ZoneRedundant"
 )
 
 // PossibleStorageTypeValues returns the possible values for the StorageType const type.
 func PossibleStorageTypeValues() []StorageType {
-	return []StorageType{
+	return []StorageType{	
 		StorageTypeGeoRedundant,
 		StorageTypeInvalid,
 		StorageTypeLocallyRedundant,
@@ -1444,14 +1444,14 @@ func PossibleStorageTypeValues() []StorageType {
 type StorageTypeState string
 
 const (
-	StorageTypeStateInvalid  StorageTypeState = "Invalid"
-	StorageTypeStateLocked   StorageTypeState = "Locked"
+	StorageTypeStateInvalid StorageTypeState = "Invalid"
+	StorageTypeStateLocked StorageTypeState = "Locked"
 	StorageTypeStateUnlocked StorageTypeState = "Unlocked"
 )
 
 // PossibleStorageTypeStateValues returns the possible values for the StorageTypeState const type.
 func PossibleStorageTypeStateValues() []StorageTypeState {
-	return []StorageTypeState{
+	return []StorageTypeState{	
 		StorageTypeStateInvalid,
 		StorageTypeStateLocked,
 		StorageTypeStateUnlocked,
@@ -1462,16 +1462,16 @@ func PossibleStorageTypeStateValues() []StorageTypeState {
 type SupportStatus string
 
 const (
-	SupportStatusDefaultOFF   SupportStatus = "DefaultOFF"
-	SupportStatusDefaultON    SupportStatus = "DefaultON"
-	SupportStatusInvalid      SupportStatus = "Invalid"
+	SupportStatusDefaultOFF SupportStatus = "DefaultOFF"
+	SupportStatusDefaultON SupportStatus = "DefaultON"
+	SupportStatusInvalid SupportStatus = "Invalid"
 	SupportStatusNotSupported SupportStatus = "NotSupported"
-	SupportStatusSupported    SupportStatus = "Supported"
+	SupportStatusSupported SupportStatus = "Supported"
 )
 
 // PossibleSupportStatusValues returns the possible values for the SupportStatus const type.
 func PossibleSupportStatusValues() []SupportStatus {
-	return []SupportStatus{
+	return []SupportStatus{	
 		SupportStatusDefaultOFF,
 		SupportStatusDefaultON,
 		SupportStatusInvalid,
@@ -1485,13 +1485,13 @@ type TargetDiskNetworkAccessOption string
 
 const (
 	TargetDiskNetworkAccessOptionEnablePrivateAccessForAllDisks TargetDiskNetworkAccessOption = "EnablePrivateAccessForAllDisks"
-	TargetDiskNetworkAccessOptionEnablePublicAccessForAllDisks  TargetDiskNetworkAccessOption = "EnablePublicAccessForAllDisks"
-	TargetDiskNetworkAccessOptionSameAsOnSourceDisks            TargetDiskNetworkAccessOption = "SameAsOnSourceDisks"
+	TargetDiskNetworkAccessOptionEnablePublicAccessForAllDisks TargetDiskNetworkAccessOption = "EnablePublicAccessForAllDisks"
+	TargetDiskNetworkAccessOptionSameAsOnSourceDisks TargetDiskNetworkAccessOption = "SameAsOnSourceDisks"
 )
 
 // PossibleTargetDiskNetworkAccessOptionValues returns the possible values for the TargetDiskNetworkAccessOption const type.
 func PossibleTargetDiskNetworkAccessOptionValues() []TargetDiskNetworkAccessOption {
-	return []TargetDiskNetworkAccessOption{
+	return []TargetDiskNetworkAccessOption{	
 		TargetDiskNetworkAccessOptionEnablePrivateAccessForAllDisks,
 		TargetDiskNetworkAccessOptionEnablePublicAccessForAllDisks,
 		TargetDiskNetworkAccessOptionSameAsOnSourceDisks,
@@ -1505,15 +1505,15 @@ func PossibleTargetDiskNetworkAccessOptionValues() []TargetDiskNetworkAccessOpti
 type TieringMode string
 
 const (
-	TieringModeDoNotTier       TieringMode = "DoNotTier"
-	TieringModeInvalid         TieringMode = "Invalid"
-	TieringModeTierAfter       TieringMode = "TierAfter"
+	TieringModeDoNotTier TieringMode = "DoNotTier"
+	TieringModeInvalid TieringMode = "Invalid"
+	TieringModeTierAfter TieringMode = "TierAfter"
 	TieringModeTierRecommended TieringMode = "TierRecommended"
 )
 
 // PossibleTieringModeValues returns the possible values for the TieringMode const type.
 func PossibleTieringModeValues() []TieringMode {
-	return []TieringMode{
+	return []TieringMode{	
 		TieringModeDoNotTier,
 		TieringModeInvalid,
 		TieringModeTierAfter,
@@ -1525,14 +1525,14 @@ func PossibleTieringModeValues() []TieringMode {
 type Type string
 
 const (
-	TypeBackupProtectedItemCountSummary       Type = "BackupProtectedItemCountSummary"
+	TypeBackupProtectedItemCountSummary Type = "BackupProtectedItemCountSummary"
 	TypeBackupProtectionContainerCountSummary Type = "BackupProtectionContainerCountSummary"
-	TypeInvalid                               Type = "Invalid"
+	TypeInvalid Type = "Invalid"
 )
 
 // PossibleTypeValues returns the possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{
+	return []Type{	
 		TypeBackupProtectedItemCountSummary,
 		TypeBackupProtectionContainerCountSummary,
 		TypeInvalid,
@@ -1543,17 +1543,17 @@ func PossibleTypeValues() []Type {
 type UsagesUnit string
 
 const (
-	UsagesUnitBytes          UsagesUnit = "Bytes"
+	UsagesUnitBytes UsagesUnit = "Bytes"
 	UsagesUnitBytesPerSecond UsagesUnit = "BytesPerSecond"
-	UsagesUnitCount          UsagesUnit = "Count"
+	UsagesUnitCount UsagesUnit = "Count"
 	UsagesUnitCountPerSecond UsagesUnit = "CountPerSecond"
-	UsagesUnitPercent        UsagesUnit = "Percent"
-	UsagesUnitSeconds        UsagesUnit = "Seconds"
+	UsagesUnitPercent UsagesUnit = "Percent"
+	UsagesUnitSeconds UsagesUnit = "Seconds"
 )
 
 // PossibleUsagesUnitValues returns the possible values for the UsagesUnit const type.
 func PossibleUsagesUnitValues() []UsagesUnit {
-	return []UsagesUnit{
+	return []UsagesUnit{	
 		UsagesUnitBytes,
 		UsagesUnitBytesPerSecond,
 		UsagesUnitCount,
@@ -1567,14 +1567,14 @@ func PossibleUsagesUnitValues() []UsagesUnit {
 type ValidationStatus string
 
 const (
-	ValidationStatusFailed    ValidationStatus = "Failed"
-	ValidationStatusInvalid   ValidationStatus = "Invalid"
+	ValidationStatusFailed ValidationStatus = "Failed"
+	ValidationStatusInvalid ValidationStatus = "Invalid"
 	ValidationStatusSucceeded ValidationStatus = "Succeeded"
 )
 
 // PossibleValidationStatusValues returns the possible values for the ValidationStatus const type.
 func PossibleValidationStatusValues() []ValidationStatus {
-	return []ValidationStatus{
+	return []ValidationStatus{	
 		ValidationStatusFailed,
 		ValidationStatusInvalid,
 		ValidationStatusSucceeded,
@@ -1585,14 +1585,14 @@ func PossibleValidationStatusValues() []ValidationStatus {
 type VaultSubResourceType string
 
 const (
-	VaultSubResourceTypeAzureBackup          VaultSubResourceType = "AzureBackup"
+	VaultSubResourceTypeAzureBackup VaultSubResourceType = "AzureBackup"
 	VaultSubResourceTypeAzureBackupSecondary VaultSubResourceType = "AzureBackup_secondary"
-	VaultSubResourceTypeAzureSiteRecovery    VaultSubResourceType = "AzureSiteRecovery"
+	VaultSubResourceTypeAzureSiteRecovery VaultSubResourceType = "AzureSiteRecovery"
 )
 
 // PossibleVaultSubResourceTypeValues returns the possible values for the VaultSubResourceType const type.
 func PossibleVaultSubResourceTypeValues() []VaultSubResourceType {
-	return []VaultSubResourceType{
+	return []VaultSubResourceType{	
 		VaultSubResourceTypeAzureBackup,
 		VaultSubResourceTypeAzureBackupSecondary,
 		VaultSubResourceTypeAzureSiteRecovery,
@@ -1602,17 +1602,17 @@ func PossibleVaultSubResourceTypeValues() []VaultSubResourceType {
 type WeekOfMonth string
 
 const (
-	WeekOfMonthFirst   WeekOfMonth = "First"
-	WeekOfMonthFourth  WeekOfMonth = "Fourth"
+	WeekOfMonthFirst WeekOfMonth = "First"
+	WeekOfMonthFourth WeekOfMonth = "Fourth"
 	WeekOfMonthInvalid WeekOfMonth = "Invalid"
-	WeekOfMonthLast    WeekOfMonth = "Last"
-	WeekOfMonthSecond  WeekOfMonth = "Second"
-	WeekOfMonthThird   WeekOfMonth = "Third"
+	WeekOfMonthLast WeekOfMonth = "Last"
+	WeekOfMonthSecond WeekOfMonth = "Second"
+	WeekOfMonthThird WeekOfMonth = "Third"
 )
 
 // PossibleWeekOfMonthValues returns the possible values for the WeekOfMonth const type.
 func PossibleWeekOfMonthValues() []WeekOfMonth {
-	return []WeekOfMonth{
+	return []WeekOfMonth{	
 		WeekOfMonthFirst,
 		WeekOfMonthFourth,
 		WeekOfMonthInvalid,
@@ -1626,19 +1626,19 @@ func PossibleWeekOfMonthValues() []WeekOfMonth {
 type WorkloadItemType string
 
 const (
-	WorkloadItemTypeInvalid           WorkloadItemType = "Invalid"
-	WorkloadItemTypeSAPAseDatabase    WorkloadItemType = "SAPAseDatabase"
-	WorkloadItemTypeSAPAseSystem      WorkloadItemType = "SAPAseSystem"
+	WorkloadItemTypeInvalid WorkloadItemType = "Invalid"
+	WorkloadItemTypeSAPAseDatabase WorkloadItemType = "SAPAseDatabase"
+	WorkloadItemTypeSAPAseSystem WorkloadItemType = "SAPAseSystem"
 	WorkloadItemTypeSAPHanaDBInstance WorkloadItemType = "SAPHanaDBInstance"
-	WorkloadItemTypeSAPHanaDatabase   WorkloadItemType = "SAPHanaDatabase"
-	WorkloadItemTypeSAPHanaSystem     WorkloadItemType = "SAPHanaSystem"
-	WorkloadItemTypeSQLDataBase       WorkloadItemType = "SQLDataBase"
-	WorkloadItemTypeSQLInstance       WorkloadItemType = "SQLInstance"
+	WorkloadItemTypeSAPHanaDatabase WorkloadItemType = "SAPHanaDatabase"
+	WorkloadItemTypeSAPHanaSystem WorkloadItemType = "SAPHanaSystem"
+	WorkloadItemTypeSQLDataBase WorkloadItemType = "SQLDataBase"
+	WorkloadItemTypeSQLInstance WorkloadItemType = "SQLInstance"
 )
 
 // PossibleWorkloadItemTypeValues returns the possible values for the WorkloadItemType const type.
 func PossibleWorkloadItemTypeValues() []WorkloadItemType {
-	return []WorkloadItemType{
+	return []WorkloadItemType{	
 		WorkloadItemTypeInvalid,
 		WorkloadItemTypeSAPAseDatabase,
 		WorkloadItemTypeSAPAseSystem,
@@ -1654,27 +1654,27 @@ func PossibleWorkloadItemTypeValues() []WorkloadItemType {
 type WorkloadType string
 
 const (
-	WorkloadTypeAzureFileShare    WorkloadType = "AzureFileShare"
-	WorkloadTypeAzureSQLDb        WorkloadType = "AzureSqlDb"
-	WorkloadTypeClient            WorkloadType = "Client"
-	WorkloadTypeExchange          WorkloadType = "Exchange"
-	WorkloadTypeFileFolder        WorkloadType = "FileFolder"
+	WorkloadTypeAzureFileShare WorkloadType = "AzureFileShare"
+	WorkloadTypeAzureSQLDb WorkloadType = "AzureSqlDb"
+	WorkloadTypeClient WorkloadType = "Client"
+	WorkloadTypeExchange WorkloadType = "Exchange"
+	WorkloadTypeFileFolder WorkloadType = "FileFolder"
 	WorkloadTypeGenericDataSource WorkloadType = "GenericDataSource"
-	WorkloadTypeInvalid           WorkloadType = "Invalid"
-	WorkloadTypeSAPAseDatabase    WorkloadType = "SAPAseDatabase"
+	WorkloadTypeInvalid WorkloadType = "Invalid"
+	WorkloadTypeSAPAseDatabase WorkloadType = "SAPAseDatabase"
 	WorkloadTypeSAPHanaDBInstance WorkloadType = "SAPHanaDBInstance"
-	WorkloadTypeSAPHanaDatabase   WorkloadType = "SAPHanaDatabase"
-	WorkloadTypeSQLDB             WorkloadType = "SQLDB"
-	WorkloadTypeSQLDataBase       WorkloadType = "SQLDataBase"
-	WorkloadTypeSharepoint        WorkloadType = "Sharepoint"
-	WorkloadTypeSystemState       WorkloadType = "SystemState"
-	WorkloadTypeVM                WorkloadType = "VM"
-	WorkloadTypeVMwareVM          WorkloadType = "VMwareVM"
+	WorkloadTypeSAPHanaDatabase WorkloadType = "SAPHanaDatabase"
+	WorkloadTypeSQLDB WorkloadType = "SQLDB"
+	WorkloadTypeSQLDataBase WorkloadType = "SQLDataBase"
+	WorkloadTypeSharepoint WorkloadType = "Sharepoint"
+	WorkloadTypeSystemState WorkloadType = "SystemState"
+	WorkloadTypeVM WorkloadType = "VM"
+	WorkloadTypeVMwareVM WorkloadType = "VMwareVM"
 )
 
 // PossibleWorkloadTypeValues returns the possible values for the WorkloadType const type.
 func PossibleWorkloadTypeValues() []WorkloadType {
-	return []WorkloadType{
+	return []WorkloadType{	
 		WorkloadTypeAzureFileShare,
 		WorkloadTypeAzureSQLDb,
 		WorkloadTypeClient,
@@ -1699,15 +1699,16 @@ type XcoolState string
 
 const (
 	XcoolStateDisabled XcoolState = "Disabled"
-	XcoolStateEnabled  XcoolState = "Enabled"
-	XcoolStateInvalid  XcoolState = "Invalid"
+	XcoolStateEnabled XcoolState = "Enabled"
+	XcoolStateInvalid XcoolState = "Invalid"
 )
 
 // PossibleXcoolStateValues returns the possible values for the XcoolState const type.
 func PossibleXcoolStateValues() []XcoolState {
-	return []XcoolState{
+	return []XcoolState{	
 		XcoolStateDisabled,
 		XcoolStateEnabled,
 		XcoolStateInvalid,
 	}
 }
+

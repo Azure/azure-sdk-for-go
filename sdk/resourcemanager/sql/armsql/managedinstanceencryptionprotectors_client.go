@@ -23,7 +23,7 @@ import (
 // ManagedInstanceEncryptionProtectorsClient contains the methods for the ManagedInstanceEncryptionProtectors group.
 // Don't use this type directly, use NewManagedInstanceEncryptionProtectorsClient() instead.
 type ManagedInstanceEncryptionProtectorsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedInstanceEncryptionProtectorsClient(subscriptionID string, credent
 	}
 	client := &ManagedInstanceEncryptionProtectorsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdateCreateReq
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -196,7 +196,7 @@ func (client *ManagedInstanceEncryptionProtectorsClient) getHandleResponse(resp 
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstanceEncryptionProtectorsClientListByInstanceOptions contains the optional parameters for the ManagedInstanceEncryptionProtectorsClient.NewListByInstancePager
 //     method.
-func (client *ManagedInstanceEncryptionProtectorsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceEncryptionProtectorsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceEncryptionProtectorsClientListByInstanceResponse] {
+func (client *ManagedInstanceEncryptionProtectorsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceEncryptionProtectorsClientListByInstanceOptions) (*runtime.Pager[ManagedInstanceEncryptionProtectorsClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedInstanceEncryptionProtectorsClientListByInstanceResponse]{
 		More: func(page ManagedInstanceEncryptionProtectorsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -331,3 +331,4 @@ func (client *ManagedInstanceEncryptionProtectorsClient) revalidateCreateRequest
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
+

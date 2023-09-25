@@ -23,7 +23,7 @@ import (
 // SyncAgentsClient contains the methods for the SyncAgents group.
 // Don't use this type directly, use NewSyncAgentsClient() instead.
 type SyncAgentsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSyncAgentsClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &SyncAgentsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *SyncAgentsClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -333,7 +333,7 @@ func (client *SyncAgentsClient) getHandleResponse(resp *http.Response) (SyncAgen
 //   - serverName - The name of the server on which the sync agent is hosted.
 //   - options - SyncAgentsClientListByServerOptions contains the optional parameters for the SyncAgentsClient.NewListByServerPager
 //     method.
-func (client *SyncAgentsClient) NewListByServerPager(resourceGroupName string, serverName string, options *SyncAgentsClientListByServerOptions) *runtime.Pager[SyncAgentsClientListByServerResponse] {
+func (client *SyncAgentsClient) NewListByServerPager(resourceGroupName string, serverName string, options *SyncAgentsClientListByServerOptions) (*runtime.Pager[SyncAgentsClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SyncAgentsClientListByServerResponse]{
 		More: func(page SyncAgentsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -405,7 +405,7 @@ func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response) 
 //   - syncAgentName - The name of the sync agent.
 //   - options - SyncAgentsClientListLinkedDatabasesOptions contains the optional parameters for the SyncAgentsClient.NewListLinkedDatabasesPager
 //     method.
-func (client *SyncAgentsClient) NewListLinkedDatabasesPager(resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientListLinkedDatabasesOptions) *runtime.Pager[SyncAgentsClientListLinkedDatabasesResponse] {
+func (client *SyncAgentsClient) NewListLinkedDatabasesPager(resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientListLinkedDatabasesOptions) (*runtime.Pager[SyncAgentsClientListLinkedDatabasesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SyncAgentsClientListLinkedDatabasesResponse]{
 		More: func(page SyncAgentsClientListLinkedDatabasesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -471,3 +471,4 @@ func (client *SyncAgentsClient) listLinkedDatabasesHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

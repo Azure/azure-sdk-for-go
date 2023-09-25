@@ -23,7 +23,7 @@ import (
 // ManagedDatabaseSchemasClient contains the methods for the ManagedDatabaseSchemas group.
 // Don't use this type directly, use NewManagedDatabaseSchemasClient() instead.
 type ManagedDatabaseSchemasClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedDatabaseSchemasClient(subscriptionID string, credential azcore.To
 	}
 	client := &ManagedDatabaseSchemasClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -124,7 +124,7 @@ func (client *ManagedDatabaseSchemasClient) getHandleResponse(resp *http.Respons
 //   - databaseName - The name of the database.
 //   - options - ManagedDatabaseSchemasClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseSchemasClient.NewListByDatabasePager
 //     method.
-func (client *ManagedDatabaseSchemasClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSchemasClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSchemasClientListByDatabaseResponse] {
+func (client *ManagedDatabaseSchemasClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSchemasClientListByDatabaseOptions) (*runtime.Pager[ManagedDatabaseSchemasClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseSchemasClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseSchemasClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -193,3 +193,4 @@ func (client *ManagedDatabaseSchemasClient) listByDatabaseHandleResponse(resp *h
 	}
 	return result, nil
 }
+

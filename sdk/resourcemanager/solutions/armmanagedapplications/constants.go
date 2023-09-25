@@ -9,7 +9,7 @@
 package armmanagedapplications
 
 const (
-	moduleName    = "armmanagedapplications"
+	moduleName = "armmanagedapplications"
 	moduleVersion = "v2.0.0"
 )
 
@@ -22,7 +22,7 @@ const (
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
+	return []ActionType{	
 		ActionTypeInternal,
 	}
 }
@@ -31,15 +31,15 @@ func PossibleActionTypeValues() []ActionType {
 type ApplicationArtifactName string
 
 const (
-	ApplicationArtifactNameAuthorizations       ApplicationArtifactName = "Authorizations"
+	ApplicationArtifactNameAuthorizations ApplicationArtifactName = "Authorizations"
 	ApplicationArtifactNameCustomRoleDefinition ApplicationArtifactName = "CustomRoleDefinition"
-	ApplicationArtifactNameNotSpecified         ApplicationArtifactName = "NotSpecified"
-	ApplicationArtifactNameViewDefinition       ApplicationArtifactName = "ViewDefinition"
+	ApplicationArtifactNameNotSpecified ApplicationArtifactName = "NotSpecified"
+	ApplicationArtifactNameViewDefinition ApplicationArtifactName = "ViewDefinition"
 )
 
 // PossibleApplicationArtifactNameValues returns the possible values for the ApplicationArtifactName const type.
 func PossibleApplicationArtifactNameValues() []ApplicationArtifactName {
-	return []ApplicationArtifactName{
+	return []ApplicationArtifactName{	
 		ApplicationArtifactNameAuthorizations,
 		ApplicationArtifactNameCustomRoleDefinition,
 		ApplicationArtifactNameNotSpecified,
@@ -51,14 +51,14 @@ func PossibleApplicationArtifactNameValues() []ApplicationArtifactName {
 type ApplicationArtifactType string
 
 const (
-	ApplicationArtifactTypeCustom       ApplicationArtifactType = "Custom"
+	ApplicationArtifactTypeCustom ApplicationArtifactType = "Custom"
 	ApplicationArtifactTypeNotSpecified ApplicationArtifactType = "NotSpecified"
-	ApplicationArtifactTypeTemplate     ApplicationArtifactType = "Template"
+	ApplicationArtifactTypeTemplate ApplicationArtifactType = "Template"
 )
 
 // PossibleApplicationArtifactTypeValues returns the possible values for the ApplicationArtifactType const type.
 func PossibleApplicationArtifactTypeValues() []ApplicationArtifactType {
-	return []ApplicationArtifactType{
+	return []ApplicationArtifactType{	
 		ApplicationArtifactTypeCustom,
 		ApplicationArtifactTypeNotSpecified,
 		ApplicationArtifactTypeTemplate,
@@ -70,14 +70,14 @@ type ApplicationDefinitionArtifactName string
 
 const (
 	ApplicationDefinitionArtifactNameApplicationResourceTemplate ApplicationDefinitionArtifactName = "ApplicationResourceTemplate"
-	ApplicationDefinitionArtifactNameCreateUIDefinition          ApplicationDefinitionArtifactName = "CreateUiDefinition"
-	ApplicationDefinitionArtifactNameMainTemplateParameters      ApplicationDefinitionArtifactName = "MainTemplateParameters"
-	ApplicationDefinitionArtifactNameNotSpecified                ApplicationDefinitionArtifactName = "NotSpecified"
+	ApplicationDefinitionArtifactNameCreateUIDefinition ApplicationDefinitionArtifactName = "CreateUiDefinition"
+	ApplicationDefinitionArtifactNameMainTemplateParameters ApplicationDefinitionArtifactName = "MainTemplateParameters"
+	ApplicationDefinitionArtifactNameNotSpecified ApplicationDefinitionArtifactName = "NotSpecified"
 )
 
 // PossibleApplicationDefinitionArtifactNameValues returns the possible values for the ApplicationDefinitionArtifactName const type.
 func PossibleApplicationDefinitionArtifactNameValues() []ApplicationDefinitionArtifactName {
-	return []ApplicationDefinitionArtifactName{
+	return []ApplicationDefinitionArtifactName{	
 		ApplicationDefinitionArtifactNameApplicationResourceTemplate,
 		ApplicationDefinitionArtifactNameCreateUIDefinition,
 		ApplicationDefinitionArtifactNameMainTemplateParameters,
@@ -90,13 +90,13 @@ type ApplicationLockLevel string
 
 const (
 	ApplicationLockLevelCanNotDelete ApplicationLockLevel = "CanNotDelete"
-	ApplicationLockLevelNone         ApplicationLockLevel = "None"
-	ApplicationLockLevelReadOnly     ApplicationLockLevel = "ReadOnly"
+	ApplicationLockLevelNone ApplicationLockLevel = "None"
+	ApplicationLockLevelReadOnly ApplicationLockLevel = "ReadOnly"
 )
 
 // PossibleApplicationLockLevelValues returns the possible values for the ApplicationLockLevel const type.
 func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
-	return []ApplicationLockLevel{
+	return []ApplicationLockLevel{	
 		ApplicationLockLevelCanNotDelete,
 		ApplicationLockLevelNone,
 		ApplicationLockLevelReadOnly,
@@ -107,14 +107,14 @@ func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
 type ApplicationManagementMode string
 
 const (
-	ApplicationManagementModeManaged      ApplicationManagementMode = "Managed"
+	ApplicationManagementModeManaged ApplicationManagementMode = "Managed"
 	ApplicationManagementModeNotSpecified ApplicationManagementMode = "NotSpecified"
-	ApplicationManagementModeUnmanaged    ApplicationManagementMode = "Unmanaged"
+	ApplicationManagementModeUnmanaged ApplicationManagementMode = "Unmanaged"
 )
 
 // PossibleApplicationManagementModeValues returns the possible values for the ApplicationManagementMode const type.
 func PossibleApplicationManagementModeValues() []ApplicationManagementMode {
-	return []ApplicationManagementMode{
+	return []ApplicationManagementMode{	
 		ApplicationManagementModeManaged,
 		ApplicationManagementModeNotSpecified,
 		ApplicationManagementModeUnmanaged,
@@ -125,15 +125,15 @@ func PossibleApplicationManagementModeValues() []ApplicationManagementMode {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -145,14 +145,14 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type DeploymentMode string
 
 const (
-	DeploymentModeComplete     DeploymentMode = "Complete"
-	DeploymentModeIncremental  DeploymentMode = "Incremental"
+	DeploymentModeComplete DeploymentMode = "Complete"
+	DeploymentModeIncremental DeploymentMode = "Incremental"
 	DeploymentModeNotSpecified DeploymentMode = "NotSpecified"
 )
 
 // PossibleDeploymentModeValues returns the possible values for the DeploymentMode const type.
 func PossibleDeploymentModeValues() []DeploymentMode {
-	return []DeploymentMode{
+	return []DeploymentMode{	
 		DeploymentModeComplete,
 		DeploymentModeIncremental,
 		DeploymentModeNotSpecified,
@@ -163,14 +163,14 @@ func PossibleDeploymentModeValues() []DeploymentMode {
 type JitApprovalMode string
 
 const (
-	JitApprovalModeAutoApprove   JitApprovalMode = "AutoApprove"
+	JitApprovalModeAutoApprove JitApprovalMode = "AutoApprove"
 	JitApprovalModeManualApprove JitApprovalMode = "ManualApprove"
-	JitApprovalModeNotSpecified  JitApprovalMode = "NotSpecified"
+	JitApprovalModeNotSpecified JitApprovalMode = "NotSpecified"
 )
 
 // PossibleJitApprovalModeValues returns the possible values for the JitApprovalMode const type.
 func PossibleJitApprovalModeValues() []JitApprovalMode {
-	return []JitApprovalMode{
+	return []JitApprovalMode{	
 		JitApprovalModeAutoApprove,
 		JitApprovalModeManualApprove,
 		JitApprovalModeNotSpecified,
@@ -182,12 +182,12 @@ type JitApproverType string
 
 const (
 	JitApproverTypeGroup JitApproverType = "group"
-	JitApproverTypeUser  JitApproverType = "user"
+	JitApproverTypeUser JitApproverType = "user"
 )
 
 // PossibleJitApproverTypeValues returns the possible values for the JitApproverType const type.
 func PossibleJitApproverTypeValues() []JitApproverType {
-	return []JitApproverType{
+	return []JitApproverType{	
 		JitApproverTypeGroup,
 		JitApproverTypeUser,
 	}
@@ -197,19 +197,19 @@ func PossibleJitApproverTypeValues() []JitApproverType {
 type JitRequestState string
 
 const (
-	JitRequestStateApproved     JitRequestState = "Approved"
-	JitRequestStateCanceled     JitRequestState = "Canceled"
-	JitRequestStateDenied       JitRequestState = "Denied"
-	JitRequestStateExpired      JitRequestState = "Expired"
-	JitRequestStateFailed       JitRequestState = "Failed"
+	JitRequestStateApproved JitRequestState = "Approved"
+	JitRequestStateCanceled JitRequestState = "Canceled"
+	JitRequestStateDenied JitRequestState = "Denied"
+	JitRequestStateExpired JitRequestState = "Expired"
+	JitRequestStateFailed JitRequestState = "Failed"
 	JitRequestStateNotSpecified JitRequestState = "NotSpecified"
-	JitRequestStatePending      JitRequestState = "Pending"
-	JitRequestStateTimeout      JitRequestState = "Timeout"
+	JitRequestStatePending JitRequestState = "Pending"
+	JitRequestStateTimeout JitRequestState = "Timeout"
 )
 
 // PossibleJitRequestStateValues returns the possible values for the JitRequestState const type.
 func PossibleJitRequestStateValues() []JitRequestState {
-	return []JitRequestState{
+	return []JitRequestState{	
 		JitRequestStateApproved,
 		JitRequestStateCanceled,
 		JitRequestStateDenied,
@@ -226,13 +226,13 @@ type JitSchedulingType string
 
 const (
 	JitSchedulingTypeNotSpecified JitSchedulingType = "NotSpecified"
-	JitSchedulingTypeOnce         JitSchedulingType = "Once"
-	JitSchedulingTypeRecurring    JitSchedulingType = "Recurring"
+	JitSchedulingTypeOnce JitSchedulingType = "Once"
+	JitSchedulingTypeRecurring JitSchedulingType = "Recurring"
 )
 
 // PossibleJitSchedulingTypeValues returns the possible values for the JitSchedulingType const type.
 func PossibleJitSchedulingTypeValues() []JitSchedulingType {
-	return []JitSchedulingType{
+	return []JitSchedulingType{	
 		JitSchedulingTypeNotSpecified,
 		JitSchedulingTypeOnce,
 		JitSchedulingTypeRecurring,
@@ -244,14 +244,14 @@ func PossibleJitSchedulingTypeValues() []JitSchedulingType {
 type Origin string
 
 const (
-	OriginSystem     Origin = "system"
-	OriginUser       Origin = "user"
+	OriginSystem Origin = "system"
+	OriginUser Origin = "user"
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{
+	return []Origin{	
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -262,20 +262,20 @@ func PossibleOriginValues() []Origin {
 type ProvisioningState string
 
 const (
-	ProvisioningStateAccepted     ProvisioningState = "Accepted"
-	ProvisioningStateCanceled     ProvisioningState = "Canceled"
-	ProvisioningStateDeleted      ProvisioningState = "Deleted"
-	ProvisioningStateDeleting     ProvisioningState = "Deleting"
-	ProvisioningStateFailed       ProvisioningState = "Failed"
+	ProvisioningStateAccepted ProvisioningState = "Accepted"
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	ProvisioningStateDeleted ProvisioningState = "Deleted"
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	ProvisioningStateFailed ProvisioningState = "Failed"
 	ProvisioningStateNotSpecified ProvisioningState = "NotSpecified"
-	ProvisioningStateRunning      ProvisioningState = "Running"
-	ProvisioningStateSucceeded    ProvisioningState = "Succeeded"
-	ProvisioningStateUpdating     ProvisioningState = "Updating"
+	ProvisioningStateRunning ProvisioningState = "Running"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateAccepted,
 		ProvisioningStateCanceled,
 		ProvisioningStateDeleted,
@@ -292,15 +292,15 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type ResourceIdentityType string
 
 const (
-	ResourceIdentityTypeNone                       ResourceIdentityType = "None"
-	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = "SystemAssigned"
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
 	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
-	ResourceIdentityTypeUserAssigned               ResourceIdentityType = "UserAssigned"
+	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
 )
 
 // PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{
+	return []ResourceIdentityType{	
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 		ResourceIdentityTypeSystemAssignedUserAssigned,
@@ -312,14 +312,14 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type Status string
 
 const (
-	StatusElevate      Status = "Elevate"
+	StatusElevate Status = "Elevate"
 	StatusNotSpecified Status = "NotSpecified"
-	StatusRemove       Status = "Remove"
+	StatusRemove Status = "Remove"
 )
 
 // PossibleStatusValues returns the possible values for the Status const type.
 func PossibleStatusValues() []Status {
-	return []Status{
+	return []Status{	
 		StatusElevate,
 		StatusNotSpecified,
 		StatusRemove,
@@ -330,17 +330,17 @@ func PossibleStatusValues() []Status {
 type Substatus string
 
 const (
-	SubstatusApproved     Substatus = "Approved"
-	SubstatusDenied       Substatus = "Denied"
-	SubstatusExpired      Substatus = "Expired"
-	SubstatusFailed       Substatus = "Failed"
+	SubstatusApproved Substatus = "Approved"
+	SubstatusDenied Substatus = "Denied"
+	SubstatusExpired Substatus = "Expired"
+	SubstatusFailed Substatus = "Failed"
 	SubstatusNotSpecified Substatus = "NotSpecified"
-	SubstatusTimeout      Substatus = "Timeout"
+	SubstatusTimeout Substatus = "Timeout"
 )
 
 // PossibleSubstatusValues returns the possible values for the Substatus const type.
 func PossibleSubstatusValues() []Substatus {
-	return []Substatus{
+	return []Substatus{	
 		SubstatusApproved,
 		SubstatusDenied,
 		SubstatusExpired,
@@ -349,3 +349,4 @@ func PossibleSubstatusValues() []Substatus {
 		SubstatusTimeout,
 	}
 }
+

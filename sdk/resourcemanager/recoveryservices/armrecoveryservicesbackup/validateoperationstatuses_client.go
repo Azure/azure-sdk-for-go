@@ -23,7 +23,7 @@ import (
 // ValidateOperationStatusesClient contains the methods for the ValidateOperationStatuses group.
 // Don't use this type directly, use NewValidateOperationStatusesClient() instead.
 type ValidateOperationStatusesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewValidateOperationStatusesClient(subscriptionID string, credential azcore
 	}
 	client := &ValidateOperationStatusesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,3 +110,4 @@ func (client *ValidateOperationStatusesClient) getHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

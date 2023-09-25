@@ -23,7 +23,7 @@ import (
 // DatabaseRecommendedActionsClient contains the methods for the DatabaseRecommendedActions group.
 // Don't use this type directly, use NewDatabaseRecommendedActionsClient() instead.
 type DatabaseRecommendedActionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatabaseRecommendedActionsClient(subscriptionID string, credential azcor
 	}
 	client := &DatabaseRecommendedActionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -259,8 +259,8 @@ func (client *DatabaseRecommendedActionsClient) updateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -272,3 +272,4 @@ func (client *DatabaseRecommendedActionsClient) updateHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

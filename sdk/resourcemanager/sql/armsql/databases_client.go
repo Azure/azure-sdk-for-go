@@ -23,7 +23,7 @@ import (
 // DatabasesClient contains the methods for the Databases group.
 // Don't use this type directly, use NewDatabasesClient() instead.
 type DatabasesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &DatabasesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *DatabasesClient) createOrUpdateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,8 +269,8 @@ func (client *DatabasesClient) exportCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -493,8 +493,8 @@ func (client *DatabasesClient) importCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -507,7 +507,7 @@ func (client *DatabasesClient) importCreateRequest(ctx context.Context, resource
 //   - elasticPoolName - The name of the elastic pool.
 //   - options - DatabasesClientListByElasticPoolOptions contains the optional parameters for the DatabasesClient.NewListByElasticPoolPager
 //     method.
-func (client *DatabasesClient) NewListByElasticPoolPager(resourceGroupName string, serverName string, elasticPoolName string, options *DatabasesClientListByElasticPoolOptions) *runtime.Pager[DatabasesClientListByElasticPoolResponse] {
+func (client *DatabasesClient) NewListByElasticPoolPager(resourceGroupName string, serverName string, elasticPoolName string, options *DatabasesClientListByElasticPoolOptions) (*runtime.Pager[DatabasesClientListByElasticPoolResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabasesClientListByElasticPoolResponse]{
 		More: func(page DatabasesClientListByElasticPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -582,7 +582,7 @@ func (client *DatabasesClient) listByElasticPoolHandleResponse(resp *http.Respon
 //   - serverName - The name of the server.
 //   - options - DatabasesClientListByServerOptions contains the optional parameters for the DatabasesClient.NewListByServerPager
 //     method.
-func (client *DatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *DatabasesClientListByServerOptions) *runtime.Pager[DatabasesClientListByServerResponse] {
+func (client *DatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *DatabasesClientListByServerOptions) (*runtime.Pager[DatabasesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabasesClientListByServerResponse]{
 		More: func(page DatabasesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -656,7 +656,7 @@ func (client *DatabasesClient) listByServerHandleResponse(resp *http.Response) (
 //   - serverName - The name of the server.
 //   - options - DatabasesClientListInaccessibleByServerOptions contains the optional parameters for the DatabasesClient.NewListInaccessibleByServerPager
 //     method.
-func (client *DatabasesClient) NewListInaccessibleByServerPager(resourceGroupName string, serverName string, options *DatabasesClientListInaccessibleByServerOptions) *runtime.Pager[DatabasesClientListInaccessibleByServerResponse] {
+func (client *DatabasesClient) NewListInaccessibleByServerPager(resourceGroupName string, serverName string, options *DatabasesClientListInaccessibleByServerOptions) (*runtime.Pager[DatabasesClientListInaccessibleByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabasesClientListInaccessibleByServerResponse]{
 		More: func(page DatabasesClientListInaccessibleByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -728,7 +728,7 @@ func (client *DatabasesClient) listInaccessibleByServerHandleResponse(resp *http
 //   - databaseName - The name of the database.
 //   - options - DatabasesClientListMetricDefinitionsOptions contains the optional parameters for the DatabasesClient.NewListMetricDefinitionsPager
 //     method.
-func (client *DatabasesClient) NewListMetricDefinitionsPager(resourceGroupName string, serverName string, databaseName string, options *DatabasesClientListMetricDefinitionsOptions) *runtime.Pager[DatabasesClientListMetricDefinitionsResponse] {
+func (client *DatabasesClient) NewListMetricDefinitionsPager(resourceGroupName string, serverName string, databaseName string, options *DatabasesClientListMetricDefinitionsOptions) (*runtime.Pager[DatabasesClientListMetricDefinitionsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabasesClientListMetricDefinitionsResponse]{
 		More: func(page DatabasesClientListMetricDefinitionsResponse) bool {
 			return false
@@ -799,7 +799,7 @@ func (client *DatabasesClient) listMetricDefinitionsHandleResponse(resp *http.Re
 //   - filter - An OData filter expression that describes a subset of metrics to return.
 //   - options - DatabasesClientListMetricsOptions contains the optional parameters for the DatabasesClient.NewListMetricsPager
 //     method.
-func (client *DatabasesClient) NewListMetricsPager(resourceGroupName string, serverName string, databaseName string, filter string, options *DatabasesClientListMetricsOptions) *runtime.Pager[DatabasesClientListMetricsResponse] {
+func (client *DatabasesClient) NewListMetricsPager(resourceGroupName string, serverName string, databaseName string, filter string, options *DatabasesClientListMetricsOptions) (*runtime.Pager[DatabasesClientListMetricsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabasesClientListMetricsResponse]{
 		More: func(page DatabasesClientListMetricsResponse) bool {
 			return false
@@ -988,8 +988,8 @@ func (client *DatabasesClient) renameCreateRequest(ctx context.Context, resource
 	reqQP.Set("api-version", "2023-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1140,8 +1140,8 @@ func (client *DatabasesClient) updateCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1217,3 +1217,4 @@ func (client *DatabasesClient) upgradeDataWarehouseCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
+

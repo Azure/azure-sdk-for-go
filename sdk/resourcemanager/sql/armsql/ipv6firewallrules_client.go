@@ -23,7 +23,7 @@ import (
 // IPv6FirewallRulesClient contains the methods for the IPv6FirewallRules group.
 // Don't use this type directly, use NewIPv6FirewallRulesClient() instead.
 type IPv6FirewallRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewIPv6FirewallRulesClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &IPv6FirewallRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -100,8 +100,8 @@ func (client *IPv6FirewallRulesClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -244,7 +244,7 @@ func (client *IPv6FirewallRulesClient) getHandleResponse(resp *http.Response) (I
 //   - serverName - The name of the server.
 //   - options - IPv6FirewallRulesClientListByServerOptions contains the optional parameters for the IPv6FirewallRulesClient.NewListByServerPager
 //     method.
-func (client *IPv6FirewallRulesClient) NewListByServerPager(resourceGroupName string, serverName string, options *IPv6FirewallRulesClientListByServerOptions) *runtime.Pager[IPv6FirewallRulesClientListByServerResponse] {
+func (client *IPv6FirewallRulesClient) NewListByServerPager(resourceGroupName string, serverName string, options *IPv6FirewallRulesClientListByServerOptions) (*runtime.Pager[IPv6FirewallRulesClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[IPv6FirewallRulesClientListByServerResponse]{
 		More: func(page IPv6FirewallRulesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -306,3 +306,4 @@ func (client *IPv6FirewallRulesClient) listByServerHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

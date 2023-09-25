@@ -23,7 +23,7 @@ import (
 // ServerKeysClient contains the methods for the ServerKeys group.
 // Don't use this type directly, use NewServerKeysClient() instead.
 type ServerKeysClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerKeysClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &ServerKeysClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -119,8 +119,8 @@ func (client *ServerKeysClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -270,7 +270,7 @@ func (client *ServerKeysClient) getHandleResponse(resp *http.Response) (ServerKe
 //   - serverName - The name of the server.
 //   - options - ServerKeysClientListByServerOptions contains the optional parameters for the ServerKeysClient.NewListByServerPager
 //     method.
-func (client *ServerKeysClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerKeysClientListByServerOptions) *runtime.Pager[ServerKeysClientListByServerResponse] {
+func (client *ServerKeysClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerKeysClientListByServerOptions) (*runtime.Pager[ServerKeysClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerKeysClientListByServerResponse]{
 		More: func(page ServerKeysClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -332,3 +332,4 @@ func (client *ServerKeysClient) listByServerHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

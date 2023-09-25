@@ -23,7 +23,7 @@ import (
 // AppliancesClient contains the methods for the Appliances group.
 // Don't use this type directly, use NewAppliancesClient() instead.
 type AppliancesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAppliancesClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &AppliancesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -112,8 +112,8 @@ func (client *AppliancesClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -371,7 +371,7 @@ func (client *AppliancesClient) getUpgradeGraphHandleResponse(resp *http.Respons
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AppliancesClientListByResourceGroupOptions contains the optional parameters for the AppliancesClient.NewListByResourceGroupPager
 //     method.
-func (client *AppliancesClient) NewListByResourceGroupPager(resourceGroupName string, options *AppliancesClientListByResourceGroupOptions) *runtime.Pager[AppliancesClientListByResourceGroupResponse] {
+func (client *AppliancesClient) NewListByResourceGroupPager(resourceGroupName string, options *AppliancesClientListByResourceGroupOptions) (*runtime.Pager[AppliancesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AppliancesClientListByResourceGroupResponse]{
 		More: func(page AppliancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -436,7 +436,7 @@ func (client *AppliancesClient) listByResourceGroupHandleResponse(resp *http.Res
 // Generated from API version 2022-10-27
 //   - options - AppliancesClientListBySubscriptionOptions contains the optional parameters for the AppliancesClient.NewListBySubscriptionPager
 //     method.
-func (client *AppliancesClient) NewListBySubscriptionPager(options *AppliancesClientListBySubscriptionOptions) *runtime.Pager[AppliancesClientListBySubscriptionResponse] {
+func (client *AppliancesClient) NewListBySubscriptionPager(options *AppliancesClientListBySubscriptionOptions) (*runtime.Pager[AppliancesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AppliancesClientListBySubscriptionResponse]{
 		More: func(page AppliancesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -620,7 +620,7 @@ func (client *AppliancesClient) listKeysHandleResponse(resp *http.Response) (App
 // Generated from API version 2022-10-27
 //   - options - AppliancesClientListOperationsOptions contains the optional parameters for the AppliancesClient.NewListOperationsPager
 //     method.
-func (client *AppliancesClient) NewListOperationsPager(options *AppliancesClientListOperationsOptions) *runtime.Pager[AppliancesClientListOperationsResponse] {
+func (client *AppliancesClient) NewListOperationsPager(options *AppliancesClientListOperationsOptions) (*runtime.Pager[AppliancesClientListOperationsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AppliancesClientListOperationsResponse]{
 		More: func(page AppliancesClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -721,8 +721,8 @@ func (client *AppliancesClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -734,3 +734,4 @@ func (client *AppliancesClient) updateHandleResponse(resp *http.Response) (Appli
 	}
 	return result, nil
 }
+

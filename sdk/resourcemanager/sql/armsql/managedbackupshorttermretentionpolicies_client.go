@@ -23,7 +23,7 @@ import (
 // ManagedBackupShortTermRetentionPoliciesClient contains the methods for the ManagedBackupShortTermRetentionPolicies group.
 // Don't use this type directly, use NewManagedBackupShortTermRetentionPoliciesClient() instead.
 type ManagedBackupShortTermRetentionPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedBackupShortTermRetentionPoliciesClient(subscriptionID string, cre
 	}
 	client := &ManagedBackupShortTermRetentionPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *ManagedBackupShortTermRetentionPoliciesClient) createOrUpdateCreat
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -207,7 +207,7 @@ func (client *ManagedBackupShortTermRetentionPoliciesClient) getHandleResponse(r
 //   - databaseName - The name of the database.
 //   - options - ManagedBackupShortTermRetentionPoliciesClientListByDatabaseOptions contains the optional parameters for the ManagedBackupShortTermRetentionPoliciesClient.NewListByDatabasePager
 //     method.
-func (client *ManagedBackupShortTermRetentionPoliciesClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedBackupShortTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse] {
+func (client *ManagedBackupShortTermRetentionPoliciesClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedBackupShortTermRetentionPoliciesClientListByDatabaseOptions) (*runtime.Pager[ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse]{
 		More: func(page ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -352,7 +352,8 @@ func (client *ManagedBackupShortTermRetentionPoliciesClient) updateCreateRequest
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

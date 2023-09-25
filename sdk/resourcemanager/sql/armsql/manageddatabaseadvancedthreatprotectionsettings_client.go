@@ -23,7 +23,7 @@ import (
 // ManagedDatabaseAdvancedThreatProtectionSettingsClient contains the methods for the ManagedDatabaseAdvancedThreatProtectionSettings group.
 // Don't use this type directly, use NewManagedDatabaseAdvancedThreatProtectionSettingsClient() instead.
 type ManagedDatabaseAdvancedThreatProtectionSettingsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedDatabaseAdvancedThreatProtectionSettingsClient(subscriptionID str
 	}
 	client := &ManagedDatabaseAdvancedThreatProtectionSettingsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -105,8 +105,8 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) createOrUpd
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -200,7 +200,7 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) getHandleRe
 //   - databaseName - The name of the database.
 //   - options - ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseOptions contains the optional parameters for
 //     the ManagedDatabaseAdvancedThreatProtectionSettingsClient.NewListByDatabasePager method.
-func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse] {
+func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseOptions) (*runtime.Pager[ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -266,3 +266,4 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) listByDatab
 	}
 	return result, nil
 }
+

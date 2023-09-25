@@ -23,7 +23,7 @@ import (
 // ManagedDatabaseColumnsClient contains the methods for the ManagedDatabaseColumns group.
 // Don't use this type directly, use NewManagedDatabaseColumnsClient() instead.
 type ManagedDatabaseColumnsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedDatabaseColumnsClient(subscriptionID string, credential azcore.To
 	}
 	client := &ManagedDatabaseColumnsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -134,7 +134,7 @@ func (client *ManagedDatabaseColumnsClient) getHandleResponse(resp *http.Respons
 //   - databaseName - The name of the database.
 //   - options - ManagedDatabaseColumnsClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseColumnsClient.NewListByDatabasePager
 //     method.
-func (client *ManagedDatabaseColumnsClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseColumnsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseColumnsClientListByDatabaseResponse] {
+func (client *ManagedDatabaseColumnsClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseColumnsClientListByDatabaseOptions) (*runtime.Pager[ManagedDatabaseColumnsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseColumnsClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseColumnsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -187,24 +187,24 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseCreateRequest(ctx cont
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Schema != nil {
-		for _, qv := range options.Schema {
-			reqQP.Add("schema", qv)
-		}
+			for _, qv := range options.Schema {
+		reqQP.Add("schema", qv)
+	}
 	}
 	if options != nil && options.Table != nil {
-		for _, qv := range options.Table {
-			reqQP.Add("table", qv)
-		}
+			for _, qv := range options.Table {
+		reqQP.Add("table", qv)
+	}
 	}
 	if options != nil && options.Column != nil {
-		for _, qv := range options.Column {
-			reqQP.Add("column", qv)
-		}
+			for _, qv := range options.Column {
+		reqQP.Add("column", qv)
+	}
 	}
 	if options != nil && options.OrderBy != nil {
-		for _, qv := range options.OrderBy {
-			reqQP.Add("orderBy", qv)
-		}
+			for _, qv := range options.OrderBy {
+		reqQP.Add("orderBy", qv)
+	}
 	}
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
@@ -235,7 +235,7 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseHandleResponse(resp *h
 //   - tableName - The name of the table.
 //   - options - ManagedDatabaseColumnsClientListByTableOptions contains the optional parameters for the ManagedDatabaseColumnsClient.NewListByTablePager
 //     method.
-func (client *ManagedDatabaseColumnsClient) NewListByTablePager(resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, options *ManagedDatabaseColumnsClientListByTableOptions) *runtime.Pager[ManagedDatabaseColumnsClientListByTableResponse] {
+func (client *ManagedDatabaseColumnsClient) NewListByTablePager(resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, options *ManagedDatabaseColumnsClientListByTableOptions) (*runtime.Pager[ManagedDatabaseColumnsClientListByTableResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseColumnsClientListByTableResponse]{
 		More: func(page ManagedDatabaseColumnsClientListByTableResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -312,3 +312,4 @@ func (client *ManagedDatabaseColumnsClient) listByTableHandleResponse(resp *http
 	}
 	return result, nil
 }
+

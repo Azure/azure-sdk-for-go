@@ -23,7 +23,7 @@ import (
 // ReplicationLinksClient contains the methods for the ReplicationLinks group.
 // Don't use this type directly, use NewReplicationLinksClient() instead.
 type ReplicationLinksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewReplicationLinksClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &ReplicationLinksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -358,7 +358,7 @@ func (client *ReplicationLinksClient) getHandleResponse(resp *http.Response) (Re
 //   - databaseName - The name of the database.
 //   - options - ReplicationLinksClientListByDatabaseOptions contains the optional parameters for the ReplicationLinksClient.NewListByDatabasePager
 //     method.
-func (client *ReplicationLinksClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *ReplicationLinksClientListByDatabaseOptions) *runtime.Pager[ReplicationLinksClientListByDatabaseResponse] {
+func (client *ReplicationLinksClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *ReplicationLinksClientListByDatabaseOptions) (*runtime.Pager[ReplicationLinksClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationLinksClientListByDatabaseResponse]{
 		More: func(page ReplicationLinksClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -433,7 +433,7 @@ func (client *ReplicationLinksClient) listByDatabaseHandleResponse(resp *http.Re
 //   - serverName - The name of the server.
 //   - options - ReplicationLinksClientListByServerOptions contains the optional parameters for the ReplicationLinksClient.NewListByServerPager
 //     method.
-func (client *ReplicationLinksClient) NewListByServerPager(resourceGroupName string, serverName string, options *ReplicationLinksClientListByServerOptions) *runtime.Pager[ReplicationLinksClientListByServerResponse] {
+func (client *ReplicationLinksClient) NewListByServerPager(resourceGroupName string, serverName string, options *ReplicationLinksClientListByServerOptions) (*runtime.Pager[ReplicationLinksClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationLinksClientListByServerResponse]{
 		More: func(page ReplicationLinksClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -495,3 +495,4 @@ func (client *ReplicationLinksClient) listByServerHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

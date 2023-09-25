@@ -23,7 +23,7 @@ import (
 // ProtectionPolicyOperationResultsClient contains the methods for the ProtectionPolicyOperationResults group.
 // Don't use this type directly, use NewProtectionPolicyOperationResultsClient() instead.
 type ProtectionPolicyOperationResultsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewProtectionPolicyOperationResultsClient(subscriptionID string, credential
 	}
 	client := &ProtectionPolicyOperationResultsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,3 +113,4 @@ func (client *ProtectionPolicyOperationResultsClient) getHandleResponse(resp *ht
 	}
 	return result, nil
 }
+

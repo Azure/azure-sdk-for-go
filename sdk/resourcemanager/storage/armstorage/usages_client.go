@@ -23,7 +23,7 @@ import (
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	}
 	client := &UsagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 //   - location - The location of the Azure Storage resource.
 //   - options - UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.NewListByLocationPager
 //     method.
-func (client *UsagesClient) NewListByLocationPager(location string, options *UsagesClientListByLocationOptions) *runtime.Pager[UsagesClientListByLocationResponse] {
+func (client *UsagesClient) NewListByLocationPager(location string, options *UsagesClientListByLocationOptions) (*runtime.Pager[UsagesClientListByLocationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[UsagesClientListByLocationResponse]{
 		More: func(page UsagesClientListByLocationResponse) bool {
 			return false
@@ -101,3 +101,4 @@ func (client *UsagesClient) listByLocationHandleResponse(resp *http.Response) (U
 	}
 	return result, nil
 }
+

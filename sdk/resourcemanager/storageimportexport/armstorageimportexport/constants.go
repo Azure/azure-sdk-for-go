@@ -9,7 +9,7 @@
 package armstorageimportexport
 
 const (
-	moduleName    = "armstorageimportexport"
+	moduleName = "armstorageimportexport"
 	moduleVersion = "v0.7.0"
 )
 
@@ -17,15 +17,15 @@ const (
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -37,18 +37,18 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type DriveState string
 
 const (
-	DriveStateCompleted         DriveState = "Completed"
+	DriveStateCompleted DriveState = "Completed"
 	DriveStateCompletedMoreInfo DriveState = "CompletedMoreInfo"
-	DriveStateNeverReceived     DriveState = "NeverReceived"
-	DriveStateReceived          DriveState = "Received"
-	DriveStateShippedBack       DriveState = "ShippedBack"
-	DriveStateSpecified         DriveState = "Specified"
-	DriveStateTransferring      DriveState = "Transferring"
+	DriveStateNeverReceived DriveState = "NeverReceived"
+	DriveStateReceived DriveState = "Received"
+	DriveStateShippedBack DriveState = "ShippedBack"
+	DriveStateSpecified DriveState = "Specified"
+	DriveStateTransferring DriveState = "Transferring"
 )
 
 // PossibleDriveStateValues returns the possible values for the DriveState const type.
 func PossibleDriveStateValues() []DriveState {
-	return []DriveState{
+	return []DriveState{	
 		DriveStateCompleted,
 		DriveStateCompletedMoreInfo,
 		DriveStateNeverReceived,
@@ -63,13 +63,13 @@ func PossibleDriveStateValues() []DriveState {
 type EncryptionKekType string
 
 const (
-	EncryptionKekTypeCustomerManaged  EncryptionKekType = "CustomerManaged"
+	EncryptionKekTypeCustomerManaged EncryptionKekType = "CustomerManaged"
 	EncryptionKekTypeMicrosoftManaged EncryptionKekType = "MicrosoftManaged"
 )
 
 // PossibleEncryptionKekTypeValues returns the possible values for the EncryptionKekType const type.
 func PossibleEncryptionKekTypeValues() []EncryptionKekType {
-	return []EncryptionKekType{
+	return []EncryptionKekType{	
 		EncryptionKekTypeCustomerManaged,
 		EncryptionKekTypeMicrosoftManaged,
 	}
@@ -79,16 +79,17 @@ func PossibleEncryptionKekTypeValues() []EncryptionKekType {
 type IdentityType string
 
 const (
-	IdentityTypeNone           IdentityType = "None"
+	IdentityTypeNone IdentityType = "None"
 	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
-	IdentityTypeUserAssigned   IdentityType = "UserAssigned"
+	IdentityTypeUserAssigned IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{
+	return []IdentityType{	
 		IdentityTypeNone,
 		IdentityTypeSystemAssigned,
 		IdentityTypeUserAssigned,
 	}
 }
+

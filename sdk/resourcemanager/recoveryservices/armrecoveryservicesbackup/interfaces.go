@@ -28,6 +28,16 @@ type AzureRecoveryServiceVaultProtectionIntentClassification interface {
 	GetAzureRecoveryServiceVaultProtectionIntent() *AzureRecoveryServiceVaultProtectionIntent
 }
 
+// AzureRecoveryServiceVaultProtectionIntentClassification provides polymorphic access to related types.
+// Call the interface's GetAzureRecoveryServiceVaultProtectionIntent() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureRecoveryServiceVaultProtectionIntent, *AzureWorkloadAutoProtectionIntent, *AzureWorkloadSQLAutoProtectionIntent
+type AzureRecoveryServiceVaultProtectionIntentClassification interface {
+	ProtectionIntentClassification
+	// GetAzureRecoveryServiceVaultProtectionIntent returns the AzureRecoveryServiceVaultProtectionIntent content of the underlying type.
+	GetAzureRecoveryServiceVaultProtectionIntent() *AzureRecoveryServiceVaultProtectionIntent
+}
+
 // AzureVMWorkloadItemClassification provides polymorphic access to related types.
 // Call the interface's GetAzureVMWorkloadItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -103,6 +113,30 @@ type AzureWorkloadRecoveryPointClassification interface {
 	GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint
 }
 
+// AzureWorkloadRecoveryPointClassification provides polymorphic access to related types.
+// Call the interface's GetAzureWorkloadRecoveryPoint() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureWorkloadPointInTimeRecoveryPoint, *AzureWorkloadRecoveryPoint, *AzureWorkloadSAPHanaPointInTimeRecoveryPoint, *AzureWorkloadSAPHanaRecoveryPoint,
+// - *AzureWorkloadSQLPointInTimeRecoveryPoint, *AzureWorkloadSQLRecoveryPoint
+type AzureWorkloadRecoveryPointClassification interface {
+	RecoveryPointClassification
+	// GetAzureWorkloadRecoveryPoint returns the AzureWorkloadRecoveryPoint content of the underlying type.
+	GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint
+}
+
+// AzureWorkloadRestoreRequestClassification provides polymorphic access to related types.
+// Call the interface's GetAzureWorkloadRestoreRequest() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureWorkloadPointInTimeRestoreRequest, *AzureWorkloadRestoreRequest, *AzureWorkloadSAPHanaPointInTimeRestoreRequest,
+// - *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest, *AzureWorkloadSAPHanaRestoreRequest, *AzureWorkloadSAPHanaRestoreWithRehydrateRequest,
+// - *AzureWorkloadSQLPointInTimeRestoreRequest, *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest, *AzureWorkloadSQLRestoreRequest,
+// - *AzureWorkloadSQLRestoreWithRehydrateRequest
+type AzureWorkloadRestoreRequestClassification interface {
+	RestoreRequestClassification
+	// GetAzureWorkloadRestoreRequest returns the AzureWorkloadRestoreRequest content of the underlying type.
+	GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest
+}
+
 // AzureWorkloadRestoreRequestClassification provides polymorphic access to related types.
 // Call the interface's GetAzureWorkloadRestoreRequest() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -137,6 +171,17 @@ type AzureWorkloadSAPHanaRestoreRequestClassification interface {
 	GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest
 }
 
+// AzureWorkloadSAPHanaRestoreRequestClassification provides polymorphic access to related types.
+// Call the interface's GetAzureWorkloadSAPHanaRestoreRequest() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureWorkloadSAPHanaPointInTimeRestoreRequest, *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest, *AzureWorkloadSAPHanaRestoreRequest,
+// - *AzureWorkloadSAPHanaRestoreWithRehydrateRequest
+type AzureWorkloadSAPHanaRestoreRequestClassification interface {
+	AzureWorkloadRestoreRequestClassification
+	// GetAzureWorkloadSAPHanaRestoreRequest returns the AzureWorkloadSAPHanaRestoreRequest content of the underlying type.
+	GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest
+}
+
 // AzureWorkloadSQLPointInTimeRestoreRequestClassification provides polymorphic access to related types.
 // Call the interface's GetAzureWorkloadSQLPointInTimeRestoreRequest() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -155,6 +200,17 @@ type AzureWorkloadSQLRecoveryPointClassification interface {
 	AzureWorkloadRecoveryPointClassification
 	// GetAzureWorkloadSQLRecoveryPoint returns the AzureWorkloadSQLRecoveryPoint content of the underlying type.
 	GetAzureWorkloadSQLRecoveryPoint() *AzureWorkloadSQLRecoveryPoint
+}
+
+// AzureWorkloadSQLRestoreRequestClassification provides polymorphic access to related types.
+// Call the interface's GetAzureWorkloadSQLRestoreRequest() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureWorkloadSQLPointInTimeRestoreRequest, *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest, *AzureWorkloadSQLRestoreRequest,
+// - *AzureWorkloadSQLRestoreWithRehydrateRequest
+type AzureWorkloadSQLRestoreRequestClassification interface {
+	AzureWorkloadRestoreRequestClassification
+	// GetAzureWorkloadSQLRestoreRequest returns the AzureWorkloadSQLRestoreRequest content of the underlying type.
+	GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest
 }
 
 // AzureWorkloadSQLRestoreRequestClassification provides polymorphic access to related types.
@@ -415,3 +471,4 @@ type WorkloadProtectableItemClassification interface {
 	// GetWorkloadProtectableItem returns the WorkloadProtectableItem content of the underlying type.
 	GetWorkloadProtectableItem() *WorkloadProtectableItem
 }
+

@@ -23,7 +23,7 @@ import (
 // TimeZonesClient contains the methods for the TimeZones group.
 // Don't use this type directly, use NewTimeZonesClient() instead.
 type TimeZonesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTimeZonesClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &TimeZonesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -106,7 +106,7 @@ func (client *TimeZonesClient) getHandleResponse(resp *http.Response) (TimeZones
 // Generated from API version 2020-11-01-preview
 //   - options - TimeZonesClientListByLocationOptions contains the optional parameters for the TimeZonesClient.NewListByLocationPager
 //     method.
-func (client *TimeZonesClient) NewListByLocationPager(locationName string, options *TimeZonesClientListByLocationOptions) *runtime.Pager[TimeZonesClientListByLocationResponse] {
+func (client *TimeZonesClient) NewListByLocationPager(locationName string, options *TimeZonesClientListByLocationOptions) (*runtime.Pager[TimeZonesClientListByLocationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TimeZonesClientListByLocationResponse]{
 		More: func(page TimeZonesClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -164,3 +164,4 @@ func (client *TimeZonesClient) listByLocationHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

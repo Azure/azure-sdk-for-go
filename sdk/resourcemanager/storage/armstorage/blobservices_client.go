@@ -23,7 +23,7 @@ import (
 // BlobServicesClient contains the methods for the BlobServices group.
 // Don't use this type directly, use NewBlobServicesClient() instead.
 type BlobServicesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBlobServicesClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &BlobServicesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,7 +114,7 @@ func (client *BlobServicesClient) getServicePropertiesHandleResponse(resp *http.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
 //   - options - BlobServicesClientListOptions contains the optional parameters for the BlobServicesClient.NewListPager method.
-func (client *BlobServicesClient) NewListPager(resourceGroupName string, accountName string, options *BlobServicesClientListOptions) *runtime.Pager[BlobServicesClientListResponse] {
+func (client *BlobServicesClient) NewListPager(resourceGroupName string, accountName string, options *BlobServicesClientListOptions) (*runtime.Pager[BlobServicesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BlobServicesClientListResponse]{
 		More: func(page BlobServicesClientListResponse) bool {
 			return false
@@ -226,8 +226,8 @@ func (client *BlobServicesClient) setServicePropertiesCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -239,3 +239,4 @@ func (client *BlobServicesClient) setServicePropertiesHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

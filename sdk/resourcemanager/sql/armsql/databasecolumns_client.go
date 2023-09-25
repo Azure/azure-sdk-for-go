@@ -23,7 +23,7 @@ import (
 // DatabaseColumnsClient contains the methods for the DatabaseColumns group.
 // Don't use this type directly, use NewDatabaseColumnsClient() instead.
 type DatabaseColumnsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatabaseColumnsClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &DatabaseColumnsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -133,7 +133,7 @@ func (client *DatabaseColumnsClient) getHandleResponse(resp *http.Response) (Dat
 //   - databaseName - The name of the database.
 //   - options - DatabaseColumnsClientListByDatabaseOptions contains the optional parameters for the DatabaseColumnsClient.NewListByDatabasePager
 //     method.
-func (client *DatabaseColumnsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseColumnsClientListByDatabaseOptions) *runtime.Pager[DatabaseColumnsClientListByDatabaseResponse] {
+func (client *DatabaseColumnsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseColumnsClientListByDatabaseOptions) (*runtime.Pager[DatabaseColumnsClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabaseColumnsClientListByDatabaseResponse]{
 		More: func(page DatabaseColumnsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -186,24 +186,24 @@ func (client *DatabaseColumnsClient) listByDatabaseCreateRequest(ctx context.Con
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Schema != nil {
-		for _, qv := range options.Schema {
-			reqQP.Add("schema", qv)
-		}
+			for _, qv := range options.Schema {
+		reqQP.Add("schema", qv)
+	}
 	}
 	if options != nil && options.Table != nil {
-		for _, qv := range options.Table {
-			reqQP.Add("table", qv)
-		}
+			for _, qv := range options.Table {
+		reqQP.Add("table", qv)
+	}
 	}
 	if options != nil && options.Column != nil {
-		for _, qv := range options.Column {
-			reqQP.Add("column", qv)
-		}
+			for _, qv := range options.Column {
+		reqQP.Add("column", qv)
+	}
 	}
 	if options != nil && options.OrderBy != nil {
-		for _, qv := range options.OrderBy {
-			reqQP.Add("orderBy", qv)
-		}
+			for _, qv := range options.OrderBy {
+		reqQP.Add("orderBy", qv)
+	}
 	}
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
@@ -234,7 +234,7 @@ func (client *DatabaseColumnsClient) listByDatabaseHandleResponse(resp *http.Res
 //   - tableName - The name of the table.
 //   - options - DatabaseColumnsClientListByTableOptions contains the optional parameters for the DatabaseColumnsClient.NewListByTablePager
 //     method.
-func (client *DatabaseColumnsClient) NewListByTablePager(resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseColumnsClientListByTableOptions) *runtime.Pager[DatabaseColumnsClientListByTableResponse] {
+func (client *DatabaseColumnsClient) NewListByTablePager(resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseColumnsClientListByTableOptions) (*runtime.Pager[DatabaseColumnsClientListByTableResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatabaseColumnsClientListByTableResponse]{
 		More: func(page DatabaseColumnsClientListByTableResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -311,3 +311,4 @@ func (client *DatabaseColumnsClient) listByTableHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

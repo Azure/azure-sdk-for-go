@@ -23,7 +23,7 @@ import (
 // RegisteredIdentitiesClient contains the methods for the RegisteredIdentities group.
 // Don't use this type directly, use NewRegisteredIdentitiesClient() instead.
 type RegisteredIdentitiesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRegisteredIdentitiesClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &RegisteredIdentitiesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -97,3 +97,4 @@ func (client *RegisteredIdentitiesClient) deleteCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
+

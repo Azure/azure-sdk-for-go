@@ -23,7 +23,7 @@ import (
 // ServersClient contains the methods for the Servers group.
 // Don't use this type directly, use NewServersClient() instead.
 type ServersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServersClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &ServersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -84,8 +84,8 @@ func (client *ServersClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -166,8 +166,8 @@ func (client *ServersClient) createOrUpdateCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -370,8 +370,8 @@ func (client *ServersClient) importDatabaseCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -379,7 +379,7 @@ func (client *ServersClient) importDatabaseCreateRequest(ctx context.Context, re
 //
 // Generated from API version 2023-02-01-preview
 //   - options - ServersClientListOptions contains the optional parameters for the ServersClient.NewListPager method.
-func (client *ServersClient) NewListPager(options *ServersClientListOptions) *runtime.Pager[ServersClientListResponse] {
+func (client *ServersClient) NewListPager(options *ServersClientListOptions) (*runtime.Pager[ServersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServersClientListResponse]{
 		More: func(page ServersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -444,7 +444,7 @@ func (client *ServersClient) listHandleResponse(resp *http.Response) (ServersCli
 //     Resource Manager API or the portal.
 //   - options - ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.NewListByResourceGroupPager
 //     method.
-func (client *ServersClient) NewListByResourceGroupPager(resourceGroupName string, options *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse] {
+func (client *ServersClient) NewListByResourceGroupPager(resourceGroupName string, options *ServersClientListByResourceGroupOptions) (*runtime.Pager[ServersClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServersClientListByResourceGroupResponse]{
 		More: func(page ServersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -644,7 +644,8 @@ func (client *ServersClient) updateCreateRequest(ctx context.Context, resourceGr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

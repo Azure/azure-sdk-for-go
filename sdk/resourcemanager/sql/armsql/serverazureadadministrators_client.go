@@ -23,7 +23,7 @@ import (
 // ServerAzureADAdministratorsClient contains the methods for the ServerAzureADAdministrators group.
 // Don't use this type directly, use NewServerAzureADAdministratorsClient() instead.
 type ServerAzureADAdministratorsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServerAzureADAdministratorsClient(subscriptionID string, credential azco
 	}
 	client := &ServerAzureADAdministratorsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ServerAzureADAdministratorsClient) createOrUpdateCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,7 +269,7 @@ func (client *ServerAzureADAdministratorsClient) getHandleResponse(resp *http.Re
 //   - serverName - The name of the server.
 //   - options - ServerAzureADAdministratorsClientListByServerOptions contains the optional parameters for the ServerAzureADAdministratorsClient.NewListByServerPager
 //     method.
-func (client *ServerAzureADAdministratorsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerAzureADAdministratorsClientListByServerOptions) *runtime.Pager[ServerAzureADAdministratorsClientListByServerResponse] {
+func (client *ServerAzureADAdministratorsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerAzureADAdministratorsClientListByServerOptions) (*runtime.Pager[ServerAzureADAdministratorsClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServerAzureADAdministratorsClientListByServerResponse]{
 		More: func(page ServerAzureADAdministratorsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -331,3 +331,4 @@ func (client *ServerAzureADAdministratorsClient) listByServerHandleResponse(resp
 	}
 	return result, nil
 }
+

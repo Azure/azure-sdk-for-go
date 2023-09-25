@@ -23,7 +23,7 @@ import (
 // RecoverableManagedDatabasesClient contains the methods for the RecoverableManagedDatabases group.
 // Don't use this type directly, use NewRecoverableManagedDatabasesClient() instead.
 type RecoverableManagedDatabasesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRecoverableManagedDatabasesClient(subscriptionID string, credential azco
 	}
 	client := &RecoverableManagedDatabasesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,7 +117,7 @@ func (client *RecoverableManagedDatabasesClient) getHandleResponse(resp *http.Re
 //   - managedInstanceName - The name of the managed instance.
 //   - options - RecoverableManagedDatabasesClientListByInstanceOptions contains the optional parameters for the RecoverableManagedDatabasesClient.NewListByInstancePager
 //     method.
-func (client *RecoverableManagedDatabasesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *RecoverableManagedDatabasesClientListByInstanceOptions) *runtime.Pager[RecoverableManagedDatabasesClientListByInstanceResponse] {
+func (client *RecoverableManagedDatabasesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *RecoverableManagedDatabasesClientListByInstanceOptions) (*runtime.Pager[RecoverableManagedDatabasesClientListByInstanceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RecoverableManagedDatabasesClientListByInstanceResponse]{
 		More: func(page RecoverableManagedDatabasesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -179,3 +179,4 @@ func (client *RecoverableManagedDatabasesClient) listByInstanceHandleResponse(re
 	}
 	return result, nil
 }
+

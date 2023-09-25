@@ -23,7 +23,7 @@ import (
 // TdeCertificatesClient contains the methods for the TdeCertificates group.
 // Don't use this type directly, use NewTdeCertificatesClient() instead.
 type TdeCertificatesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTdeCertificatesClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &TdeCertificatesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,7 +110,8 @@ func (client *TdeCertificatesClient) createCreateRequest(ctx context.Context, re
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

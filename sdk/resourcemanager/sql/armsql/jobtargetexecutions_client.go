@@ -25,7 +25,7 @@ import (
 // JobTargetExecutionsClient contains the methods for the JobTargetExecutions group.
 // Don't use this type directly, use NewJobTargetExecutionsClient() instead.
 type JobTargetExecutionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewJobTargetExecutionsClient(subscriptionID string, credential azcore.Token
 	}
 	client := &JobTargetExecutionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -136,7 +136,7 @@ func (client *JobTargetExecutionsClient) getHandleResponse(resp *http.Response) 
 //   - jobExecutionID - The id of the job execution
 //   - options - JobTargetExecutionsClientListByJobExecutionOptions contains the optional parameters for the JobTargetExecutionsClient.NewListByJobExecutionPager
 //     method.
-func (client *JobTargetExecutionsClient) NewListByJobExecutionPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobTargetExecutionsClientListByJobExecutionOptions) *runtime.Pager[JobTargetExecutionsClientListByJobExecutionResponse] {
+func (client *JobTargetExecutionsClient) NewListByJobExecutionPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobTargetExecutionsClientListByJobExecutionOptions) (*runtime.Pager[JobTargetExecutionsClientListByJobExecutionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[JobTargetExecutionsClientListByJobExecutionResponse]{
 		More: func(page JobTargetExecutionsClientListByJobExecutionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -241,7 +241,7 @@ func (client *JobTargetExecutionsClient) listByJobExecutionHandleResponse(resp *
 //   - stepName - The name of the step.
 //   - options - JobTargetExecutionsClientListByStepOptions contains the optional parameters for the JobTargetExecutionsClient.NewListByStepPager
 //     method.
-func (client *JobTargetExecutionsClient) NewListByStepPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, options *JobTargetExecutionsClientListByStepOptions) *runtime.Pager[JobTargetExecutionsClientListByStepResponse] {
+func (client *JobTargetExecutionsClient) NewListByStepPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, options *JobTargetExecutionsClientListByStepOptions) (*runtime.Pager[JobTargetExecutionsClientListByStepResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[JobTargetExecutionsClientListByStepResponse]{
 		More: func(page JobTargetExecutionsClientListByStepResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -337,3 +337,4 @@ func (client *JobTargetExecutionsClient) listByStepHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

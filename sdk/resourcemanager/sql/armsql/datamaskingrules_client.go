@@ -23,7 +23,7 @@ import (
 // DataMaskingRulesClient contains the methods for the DataMaskingRules group.
 // Don't use this type directly, use NewDataMaskingRulesClient() instead.
 type DataMaskingRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDataMaskingRulesClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &DataMaskingRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -106,8 +106,8 @@ func (client *DataMaskingRulesClient) createOrUpdateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -129,7 +129,7 @@ func (client *DataMaskingRulesClient) createOrUpdateHandleResponse(resp *http.Re
 //   - databaseName - The name of the database.
 //   - options - DataMaskingRulesClientListByDatabaseOptions contains the optional parameters for the DataMaskingRulesClient.NewListByDatabasePager
 //     method.
-func (client *DataMaskingRulesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DataMaskingRulesClientListByDatabaseOptions) *runtime.Pager[DataMaskingRulesClientListByDatabaseResponse] {
+func (client *DataMaskingRulesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DataMaskingRulesClientListByDatabaseOptions) (*runtime.Pager[DataMaskingRulesClientListByDatabaseResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DataMaskingRulesClientListByDatabaseResponse]{
 		More: func(page DataMaskingRulesClientListByDatabaseResponse) bool {
 			return false
@@ -190,3 +190,4 @@ func (client *DataMaskingRulesClient) listByDatabaseHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

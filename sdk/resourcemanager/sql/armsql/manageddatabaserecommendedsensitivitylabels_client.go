@@ -23,7 +23,7 @@ import (
 // ManagedDatabaseRecommendedSensitivityLabelsClient contains the methods for the ManagedDatabaseRecommendedSensitivityLabels group.
 // Don't use this type directly, use NewManagedDatabaseRecommendedSensitivityLabelsClient() instead.
 type ManagedDatabaseRecommendedSensitivityLabelsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedDatabaseRecommendedSensitivityLabelsClient(subscriptionID string,
 	}
 	client := &ManagedDatabaseRecommendedSensitivityLabelsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -97,7 +97,8 @@ func (client *ManagedDatabaseRecommendedSensitivityLabelsClient) updateCreateReq
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

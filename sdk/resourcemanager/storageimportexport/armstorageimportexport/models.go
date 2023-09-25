@@ -44,7 +44,7 @@ type DriveStatus struct {
 	BytesSucceeded *int64
 
 	// Detailed status about the data transfer process. This field is not returned in the response until the drive is in the Transferring
-	// state.
+// state.
 	CopyStatus *string
 
 	// The drive header hash value.
@@ -129,8 +129,8 @@ type Export struct {
 	BlobList *ExportBlobList
 
 	// The relative URI to the block blob that contains the list of blob paths or blob path prefixes as defined above, beginning
-	// with the container name. If the blob is in root container, the URI must begin
-	// with $root.
+// with the container name. If the blob is in root container, the URI must begin
+// with $root.
 	BlobListBlobPath *string
 }
 
@@ -176,19 +176,19 @@ type JobDetails struct {
 	DiagnosticsPath *string
 
 	// List of up to ten drives that comprise the job. The drive list is a required element for an import job; it is not specified
-	// for export jobs.
+// for export jobs.
 	DriveList []*DriveStatus
 
 	// Contains information about the encryption key.
 	EncryptionKey *EncryptionKeyDetails
 
 	// A property containing information about the blobs to be exported for an export job. This property is included for export
-	// jobs only.
+// jobs only.
 	Export *Export
 
 	// A blob path that points to a block blob containing a list of blob names that were not exported due to insufficient drive
-	// space. If all blobs were exported successfully, then this element is not
-	// included in the response.
+// space. If all blobs were exported successfully, then this element is not
+// included in the response.
 	IncompleteBlobListURI *string
 
 	// The type of job
@@ -207,8 +207,8 @@ type JobDetails struct {
 	ReturnAddress *ReturnAddress
 
 	// Contains information about the package being shipped from the Microsoft data center to the customer to return the drives.
-	// The format is the same as the deliveryPackage property above. This property is
-	// not included if the drives have not yet been returned.
+// The format is the same as the deliveryPackage property above. This property is
+// not included if the drives have not yet been returned.
 	ReturnPackage *PackageInformation
 
 	// Specifies the return carrier and customer's account with the carrier.
@@ -287,8 +287,8 @@ type LocationProperties struct {
 	AdditionalShippingInformation *string
 
 	// A list of location IDs that should be used to ship shipping drives to for jobs created against the current location. If
-	// the current location is active, it will be part of the list. If it is
-	// temporarily closed due to maintenance, this list may contain other locations.
+// the current location is active, it will be part of the list. If it is
+// temporarily closed due to maintenance, this list may contain other locations.
 	AlternateLocations []*string
 
 	// The city name to use when shipping the drives to the Azure data center.
@@ -499,7 +499,8 @@ type UpdateJobParametersProperties struct {
 	ReturnShipping *ReturnShipping
 
 	// If specified, the value must be Shipping, which tells the Import/Export service that the package for the job has been shipped.
-	// The ReturnAddress and DeliveryPackage properties must have been set
-	// either in this request or in a previous request, otherwise the request will fail.
+// The ReturnAddress and DeliveryPackage properties must have been set
+// either in this request or in a previous request, otherwise the request will fail.
 	State *string
 }
+

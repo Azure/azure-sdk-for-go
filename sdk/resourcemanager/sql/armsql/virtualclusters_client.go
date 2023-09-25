@@ -23,7 +23,7 @@ import (
 // VirtualClustersClient contains the methods for the VirtualClusters group.
 // Don't use this type directly, use NewVirtualClustersClient() instead.
 type VirtualClustersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewVirtualClustersClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &VirtualClustersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -177,7 +177,7 @@ func (client *VirtualClustersClient) getHandleResponse(resp *http.Response) (Vir
 // Generated from API version 2022-05-01-preview
 //   - options - VirtualClustersClientListOptions contains the optional parameters for the VirtualClustersClient.NewListPager
 //     method.
-func (client *VirtualClustersClient) NewListPager(options *VirtualClustersClientListOptions) *runtime.Pager[VirtualClustersClientListResponse] {
+func (client *VirtualClustersClient) NewListPager(options *VirtualClustersClientListOptions) (*runtime.Pager[VirtualClustersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualClustersClientListResponse]{
 		More: func(page VirtualClustersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -239,7 +239,7 @@ func (client *VirtualClustersClient) listHandleResponse(resp *http.Response) (Vi
 //     Resource Manager API or the portal.
 //   - options - VirtualClustersClientListByResourceGroupOptions contains the optional parameters for the VirtualClustersClient.NewListByResourceGroupPager
 //     method.
-func (client *VirtualClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualClustersClientListByResourceGroupOptions) *runtime.Pager[VirtualClustersClientListByResourceGroupResponse] {
+func (client *VirtualClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualClustersClientListByResourceGroupOptions) (*runtime.Pager[VirtualClustersClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualClustersClientListByResourceGroupResponse]{
 		More: func(page VirtualClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -366,8 +366,8 @@ func (client *VirtualClustersClient) updateCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -439,3 +439,4 @@ func (client *VirtualClustersClient) updateDNSServersCreateRequest(ctx context.C
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

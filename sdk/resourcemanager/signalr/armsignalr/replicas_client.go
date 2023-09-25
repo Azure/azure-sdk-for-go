@@ -23,7 +23,7 @@ import (
 // ReplicasClient contains the methods for the SignalRReplicas group.
 // Don't use this type directly, use NewReplicasClient() instead.
 type ReplicasClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &ReplicasClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *ReplicasClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -239,7 +239,7 @@ func (client *ReplicasClient) getHandleResponse(resp *http.Response) (ReplicasCl
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - ReplicasClientListOptions contains the optional parameters for the ReplicasClient.NewListPager method.
-func (client *ReplicasClient) NewListPager(resourceGroupName string, resourceName string, options *ReplicasClientListOptions) *runtime.Pager[ReplicasClientListResponse] {
+func (client *ReplicasClient) NewListPager(resourceGroupName string, resourceName string, options *ReplicasClientListOptions) (*runtime.Pager[ReplicasClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReplicasClientListResponse]{
 		More: func(page ReplicasClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -440,7 +440,8 @@ func (client *ReplicasClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ProtectedItemOperationStatusesClient contains the methods for the ProtectedItemOperationStatuses group.
 // Don't use this type directly, use NewProtectedItemOperationStatusesClient() instead.
 type ProtectedItemOperationStatusesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewProtectedItemOperationStatusesClient(subscriptionID string, credential a
 	}
 	client := &ProtectedItemOperationStatusesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -125,3 +125,4 @@ func (client *ProtectedItemOperationStatusesClient) getHandleResponse(resp *http
 	}
 	return result, nil
 }
+

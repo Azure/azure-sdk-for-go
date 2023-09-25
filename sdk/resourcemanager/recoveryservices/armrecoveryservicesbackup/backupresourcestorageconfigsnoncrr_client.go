@@ -23,7 +23,7 @@ import (
 // BackupResourceStorageConfigsNonCRRClient contains the methods for the BackupResourceStorageConfigsNonCRR group.
 // Don't use this type directly, use NewBackupResourceStorageConfigsNonCRRClient() instead.
 type BackupResourceStorageConfigsNonCRRClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBackupResourceStorageConfigsNonCRRClient(subscriptionID string, credenti
 	}
 	client := &BackupResourceStorageConfigsNonCRRClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -154,8 +154,8 @@ func (client *BackupResourceStorageConfigsNonCRRClient) patchCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -210,8 +210,8 @@ func (client *BackupResourceStorageConfigsNonCRRClient) updateCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -223,3 +223,4 @@ func (client *BackupResourceStorageConfigsNonCRRClient) updateHandleResponse(res
 	}
 	return result, nil
 }
+

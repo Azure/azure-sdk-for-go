@@ -165,15 +165,21 @@ function Update-Go-GeneratedSdks([string]$PackageDirectoriesFile) {
   $packageDirectories = Get-Content $PackageDirectoriesFile | ConvertFrom-Json
   
   $directoriesWithErrors = @()
+
+  Invoke-LoggedCommand "npm install -g autorest"
+
   foreach ($directory in $packageDirectories) {
     Push-Location $RepoRoot
     try {
-      Write-Host 'Generating projects under directory ' -ForegroundColor Green -NoNewline
-      Write-Host "$directory" -ForegroundColor Yellow
+      Write-Host "`n`n======================================================================"
+      Write-Host "Generating projects under directory '$directory'" -ForegroundColor Yellow
+      Write-Host "======================================================================`n"
 
-      ./eng/scripts/build.ps1 -Filter $directory
+      ./eng/scripts/build.ps1 -Filter $directory -Generate -Vet
     }
     catch {
+      Write-Host "##[error]Error generating project under directory $directory"
+      Write-Host $_.Exception.Message
       $directoriesWithErrors += $directory
     }
     finally {
@@ -183,8 +189,11 @@ function Update-Go-GeneratedSdks([string]$PackageDirectoriesFile) {
 
   if($directoriesWithErrors.Count -gt 0) {
     Write-Host "##[error]Generation errors found in $($directoriesWithErrors.Count) directories:"
+    
     foreach ($directory in $directoriesWithErrors) {
       Write-Host "  $directory"
     }
+
+    exit 1
   }
 }

@@ -168,12 +168,15 @@ function Update-Go-GeneratedSdks([string]$PackageDirectoriesFile) {
   foreach ($directory in $packageDirectories) {
     Push-Location $RepoRoot
     try {
-      Write-Host 'Generating projects under directory ' -ForegroundColor Green -NoNewline
-      Write-Host "$directory" -ForegroundColor Yellow
+      Write-Host "`n`n======================================================================"
+      Write-Host "Generating projects under directory '$directory'" -ForegroundColor Yellow
+      Write-Host "======================================================================`n"
 
-      ./eng/scripts/build.ps1 -Filter $directory
+      ./eng/scripts/build.ps1 -Filter $directory -Generate -Vet
     }
     catch {
+      Write-Host "##[error]Error generating project under directory $directory"
+      Write-Host $_.Exception.Message
       $directoriesWithErrors += $directory
     }
     finally {

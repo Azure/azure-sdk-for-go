@@ -22,10 +22,11 @@ import (
 )
 
 // ActivityLogsServer is a fake server for instances of the armmonitor.ActivityLogsClient type.
-type ActivityLogsServer struct {
+type ActivityLogsServer struct{
 	// NewListPager is the fake for method ActivityLogsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(filter string, options *armmonitor.ActivityLogsClientListOptions) (resp azfake.PagerResponder[armmonitor.ActivityLogsClientListResponse])
+
 }
 
 // NewActivityLogsServerTransport creates a new instance of ActivityLogsServerTransport with the provided implementation.
@@ -33,7 +34,7 @@ type ActivityLogsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewActivityLogsServerTransport(srv *ActivityLogsServer) *ActivityLogsServerTransport {
 	return &ActivityLogsServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armmonitor.ActivityLogsClientListResponse]](),
 	}
 }
@@ -41,7 +42,7 @@ func NewActivityLogsServerTransport(srv *ActivityLogsServer) *ActivityLogsServer
 // ActivityLogsServerTransport connects instances of armmonitor.ActivityLogsClient to instances of ActivityLogsServer.
 // Don't use this type directly, use NewActivityLogsServerTransport instead.
 type ActivityLogsServerTransport struct {
-	srv          *ActivityLogsServer
+	srv *ActivityLogsServer
 	newListPager *tracker[azfake.PagerResponder[armmonitor.ActivityLogsClientListResponse]]
 }
 
@@ -76,29 +77,29 @@ func (a *ActivityLogsServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/eventtypes/management/values`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/eventtypes/management/values`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
+	if err != nil {
+		return nil, err
+	}
+	selectParam := getOptional(selectUnescaped)
+	var options *armmonitor.ActivityLogsClientListOptions
+	if selectParam != nil {
+		options = &armmonitor.ActivityLogsClientListOptions{
+			Select: selectParam,
 		}
-		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
-		if err != nil {
-			return nil, err
-		}
-		selectParam := getOptional(selectUnescaped)
-		var options *armmonitor.ActivityLogsClientListOptions
-		if selectParam != nil {
-			options = &armmonitor.ActivityLogsClientListOptions{
-				Select: selectParam,
-			}
-		}
-		resp := a.srv.NewListPager(filterUnescaped, options)
+	}
+resp := a.srv.NewListPager(filterUnescaped, options)
 		newListPager = &resp
 		a.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmonitor.ActivityLogsClientListResponse, createLink func() string) {
@@ -118,3 +119,4 @@ func (a *ActivityLogsServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	return resp, nil
 }
+

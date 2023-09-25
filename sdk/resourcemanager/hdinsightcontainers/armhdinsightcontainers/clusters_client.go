@@ -23,7 +23,7 @@ import (
 // ClustersClient contains the methods for the Clusters group.
 // Don't use this type directly, use NewClustersClient() instead.
 type ClustersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &ClustersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *ClustersClient) createCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, hdInsightCluster); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -321,7 +321,7 @@ func (client *ClustersClient) getInstanceViewHandleResponse(resp *http.Response)
 //   - clusterPoolName - The name of the cluster pool.
 //   - options - ClustersClientListByClusterPoolNameOptions contains the optional parameters for the ClustersClient.NewListByClusterPoolNamePager
 //     method.
-func (client *ClustersClient) NewListByClusterPoolNamePager(resourceGroupName string, clusterPoolName string, options *ClustersClientListByClusterPoolNameOptions) *runtime.Pager[ClustersClientListByClusterPoolNameResponse] {
+func (client *ClustersClient) NewListByClusterPoolNamePager(resourceGroupName string, clusterPoolName string, options *ClustersClientListByClusterPoolNameOptions) (*runtime.Pager[ClustersClientListByClusterPoolNameResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClustersClientListByClusterPoolNameResponse]{
 		More: func(page ClustersClientListByClusterPoolNameResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -389,7 +389,7 @@ func (client *ClustersClient) listByClusterPoolNameHandleResponse(resp *http.Res
 //   - clusterName - The name of the HDInsight cluster.
 //   - options - ClustersClientListInstanceViewsOptions contains the optional parameters for the ClustersClient.NewListInstanceViewsPager
 //     method.
-func (client *ClustersClient) NewListInstanceViewsPager(resourceGroupName string, clusterPoolName string, clusterName string, options *ClustersClientListInstanceViewsOptions) *runtime.Pager[ClustersClientListInstanceViewsResponse] {
+func (client *ClustersClient) NewListInstanceViewsPager(resourceGroupName string, clusterPoolName string, clusterName string, options *ClustersClientListInstanceViewsOptions) (*runtime.Pager[ClustersClientListInstanceViewsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClustersClientListInstanceViewsResponse]{
 		More: func(page ClustersClientListInstanceViewsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -461,7 +461,7 @@ func (client *ClustersClient) listInstanceViewsHandleResponse(resp *http.Respons
 //   - clusterName - The name of the HDInsight cluster.
 //   - options - ClustersClientListServiceConfigsOptions contains the optional parameters for the ClustersClient.NewListServiceConfigsPager
 //     method.
-func (client *ClustersClient) NewListServiceConfigsPager(resourceGroupName string, clusterPoolName string, clusterName string, options *ClustersClientListServiceConfigsOptions) *runtime.Pager[ClustersClientListServiceConfigsResponse] {
+func (client *ClustersClient) NewListServiceConfigsPager(resourceGroupName string, clusterPoolName string, clusterName string, options *ClustersClientListServiceConfigsOptions) (*runtime.Pager[ClustersClientListServiceConfigsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClustersClientListServiceConfigsResponse]{
 		More: func(page ClustersClientListServiceConfigsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -595,8 +595,8 @@ func (client *ClustersClient) resizeCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterResizeRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -670,7 +670,8 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterPatchRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

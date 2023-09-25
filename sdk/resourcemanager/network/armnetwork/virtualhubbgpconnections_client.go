@@ -23,7 +23,7 @@ import (
 // VirtualHubBgpConnectionsClient contains the methods for the VirtualHubBgpConnections group.
 // Don't use this type directly, use NewVirtualHubBgpConnectionsClient() instead.
 type VirtualHubBgpConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualHubBgpConnectionsClient(subscriptionID string, credential azcore.
 	}
 	client := &VirtualHubBgpConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewVirtualHubBgpConnectionsClient(subscriptionID string, credential azcore.
 //   - virtualHubName - The name of the VirtualHub.
 //   - options - VirtualHubBgpConnectionsClientListOptions contains the optional parameters for the VirtualHubBgpConnectionsClient.NewListPager
 //     method.
-func (client *VirtualHubBgpConnectionsClient) NewListPager(resourceGroupName string, virtualHubName string, options *VirtualHubBgpConnectionsClientListOptions) *runtime.Pager[VirtualHubBgpConnectionsClientListResponse] {
+func (client *VirtualHubBgpConnectionsClient) NewListPager(resourceGroupName string, virtualHubName string, options *VirtualHubBgpConnectionsClientListOptions) (*runtime.Pager[VirtualHubBgpConnectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualHubBgpConnectionsClientListResponse]{
 		More: func(page VirtualHubBgpConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -263,3 +263,4 @@ func (client *VirtualHubBgpConnectionsClient) listLearnedRoutesCreateRequest(ctx
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

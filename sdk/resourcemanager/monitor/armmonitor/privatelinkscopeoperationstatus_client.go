@@ -23,7 +23,7 @@ import (
 // PrivateLinkScopeOperationStatusClient contains the methods for the PrivateLinkScopeOperationStatus group.
 // Don't use this type directly, use NewPrivateLinkScopeOperationStatusClient() instead.
 type PrivateLinkScopeOperationStatusClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPrivateLinkScopeOperationStatusClient(subscriptionID string, credential 
 	}
 	client := &PrivateLinkScopeOperationStatusClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -107,3 +107,4 @@ func (client *PrivateLinkScopeOperationStatusClient) getHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ExpressRouteCircuitConnectionsClient contains the methods for the ExpressRouteCircuitConnections group.
 // Don't use this type directly, use NewExpressRouteCircuitConnectionsClient() instead.
 type ExpressRouteCircuitConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRouteCircuitConnectionsClient(subscriptionID string, credential a
 	}
 	client := &ExpressRouteCircuitConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -124,8 +124,8 @@ func (client *ExpressRouteCircuitConnectionsClient) createOrUpdateCreateRequest(
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, expressRouteCircuitConnectionParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -288,7 +288,7 @@ func (client *ExpressRouteCircuitConnectionsClient) getHandleResponse(resp *http
 //   - peeringName - The name of the peering.
 //   - options - ExpressRouteCircuitConnectionsClientListOptions contains the optional parameters for the ExpressRouteCircuitConnectionsClient.NewListPager
 //     method.
-func (client *ExpressRouteCircuitConnectionsClient) NewListPager(resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitConnectionsClientListOptions) *runtime.Pager[ExpressRouteCircuitConnectionsClientListResponse] {
+func (client *ExpressRouteCircuitConnectionsClient) NewListPager(resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitConnectionsClientListOptions) (*runtime.Pager[ExpressRouteCircuitConnectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteCircuitConnectionsClientListResponse]{
 		More: func(page ExpressRouteCircuitConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -354,3 +354,4 @@ func (client *ExpressRouteCircuitConnectionsClient) listHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

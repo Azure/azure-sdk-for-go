@@ -23,7 +23,7 @@ import (
 // OperationStatusClient contains the methods for the OperationStatus group.
 // Don't use this type directly, use NewOperationStatusClient() instead.
 type OperationStatusClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &OperationStatusClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -132,7 +132,7 @@ func (client *OperationStatusClient) getHandleResponse(resp *http.Response) (Ope
 //   - clusterName - The name of the kubernetes cluster.
 //   - options - OperationStatusClientListOptions contains the optional parameters for the OperationStatusClient.NewListPager
 //     method.
-func (client *OperationStatusClient) NewListPager(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *OperationStatusClientListOptions) *runtime.Pager[OperationStatusClientListResponse] {
+func (client *OperationStatusClient) NewListPager(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *OperationStatusClientListOptions) (*runtime.Pager[OperationStatusClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[OperationStatusClientListResponse]{
 		More: func(page OperationStatusClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -202,3 +202,4 @@ func (client *OperationStatusClient) listHandleResponse(resp *http.Response) (Op
 	}
 	return result, nil
 }
+

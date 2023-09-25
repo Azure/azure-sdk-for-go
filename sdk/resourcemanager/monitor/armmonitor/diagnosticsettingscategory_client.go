@@ -35,7 +35,7 @@ func NewDiagnosticSettingsCategoryClient(credential azcore.TokenCredential, opti
 		return nil, err
 	}
 	client := &DiagnosticSettingsCategoryClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -104,13 +104,13 @@ func (client *DiagnosticSettingsCategoryClient) getHandleResponse(resp *http.Res
 //   - resourceURI - The identifier of the resource.
 //   - options - DiagnosticSettingsCategoryClientListOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.NewListPager
 //     method.
-func (client *DiagnosticSettingsCategoryClient) NewListPager(resourceURI string, options *DiagnosticSettingsCategoryClientListOptions) *runtime.Pager[DiagnosticSettingsCategoryClientListResponse] {
+func (client *DiagnosticSettingsCategoryClient) NewListPager(resourceURI string, options *DiagnosticSettingsCategoryClientListOptions) (*runtime.Pager[DiagnosticSettingsCategoryClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticSettingsCategoryClientListResponse]{
 		More: func(page DiagnosticSettingsCategoryClientListResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *DiagnosticSettingsCategoryClientListResponse) (DiagnosticSettingsCategoryClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiagnosticSettingsCategoryClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiagnosticSettingsCategoryClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceURI, options)
 			if err != nil {
 				return DiagnosticSettingsCategoryClientListResponse{}, err
@@ -151,3 +151,4 @@ func (client *DiagnosticSettingsCategoryClient) listHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ResourceProviderCommonClient contains the methods for the ResourceProviderCommon group.
 // Don't use this type directly, use NewResourceProviderCommonClient() instead.
 type ResourceProviderCommonClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewResourceProviderCommonClient(subscriptionID string, credential azcore.To
 	}
 	client := &ResourceProviderCommonClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -93,3 +93,4 @@ func (client *ResourceProviderCommonClient) getSubscriptionQuotaHandleResponse(r
 	}
 	return result, nil
 }
+

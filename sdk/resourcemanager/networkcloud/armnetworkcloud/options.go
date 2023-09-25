@@ -23,6 +23,9 @@ type AgentPoolsClientBeginDeleteOptions struct {
 
 // AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
 type AgentPoolsClientBeginUpdateOptions struct {
+	// The request body.
+	AgentPoolUpdateParameters *AgentPoolPatchParameters
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -55,6 +58,9 @@ type BareMetalMachineKeySetsClientBeginDeleteOptions struct {
 // BareMetalMachineKeySetsClientBeginUpdateOptions contains the optional parameters for the BareMetalMachineKeySetsClient.BeginUpdate
 // method.
 type BareMetalMachineKeySetsClientBeginUpdateOptions struct {
+	// The request body.
+	BareMetalMachineKeySetUpdateParameters *BareMetalMachineKeySetPatchParameters
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -165,6 +171,9 @@ type BareMetalMachinesClientBeginUncordonOptions struct {
 // BareMetalMachinesClientBeginUpdateOptions contains the optional parameters for the BareMetalMachinesClient.BeginUpdate
 // method.
 type BareMetalMachinesClientBeginUpdateOptions struct {
+	// The request body.
+	BareMetalMachineUpdateParameters *BareMetalMachinePatchParameters
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -201,6 +210,9 @@ type BmcKeySetsClientBeginDeleteOptions struct {
 
 // BmcKeySetsClientBeginUpdateOptions contains the optional parameters for the BmcKeySetsClient.BeginUpdate method.
 type BmcKeySetsClientBeginUpdateOptions struct {
+	// The request body.
+	BmcKeySetUpdateParameters *BmcKeySetPatchParameters
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -232,6 +244,9 @@ type CloudServicesNetworksClientBeginDeleteOptions struct {
 // CloudServicesNetworksClientBeginUpdateOptions contains the optional parameters for the CloudServicesNetworksClient.BeginUpdate
 // method.
 type CloudServicesNetworksClientBeginUpdateOptions struct {
+	// The request body.
+	CloudServicesNetworkUpdateParameters *CloudServicesNetworkPatchParameters
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -285,7 +300,8 @@ type ClusterManagersClientListBySubscriptionOptions struct {
 
 // ClusterManagersClientUpdateOptions contains the optional parameters for the ClusterManagersClient.Update method.
 type ClusterManagersClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The request body.
+	ClusterManagerUpdateParameters *ClusterManagerPatchParameters
 }
 
 // ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
@@ -311,6 +327,9 @@ type ClustersClientBeginDeployOptions struct {
 
 // ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
 type ClustersClientBeginUpdateOptions struct {
+	// The request body.
+	ClusterUpdateParameters *ClusterPatchParameters
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -352,6 +371,9 @@ type ConsolesClientBeginDeleteOptions struct {
 
 // ConsolesClientBeginUpdateOptions contains the optional parameters for the ConsolesClient.BeginUpdate method.
 type ConsolesClientBeginUpdateOptions struct {
+	// The request body.
+	ConsoleUpdateParameters *ConsolePatchParameters
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -391,6 +413,9 @@ type KubernetesClustersClientBeginRestartNodeOptions struct {
 // KubernetesClustersClientBeginUpdateOptions contains the optional parameters for the KubernetesClustersClient.BeginUpdate
 // method.
 type KubernetesClustersClientBeginUpdateOptions struct {
+	// The request body.
+	KubernetesClusterUpdateParameters *KubernetesClusterPatchParameters
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -444,7 +469,8 @@ type L2NetworksClientListBySubscriptionOptions struct {
 
 // L2NetworksClientUpdateOptions contains the optional parameters for the L2NetworksClient.Update method.
 type L2NetworksClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The request body.
+	L2NetworkUpdateParameters *L2NetworkPatchParameters
 }
 
 // L3NetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the L3NetworksClient.BeginCreateOrUpdate
@@ -479,7 +505,8 @@ type L3NetworksClientListBySubscriptionOptions struct {
 
 // L3NetworksClientUpdateOptions contains the optional parameters for the L3NetworksClient.Update method.
 type L3NetworksClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The request body.
+	L3NetworkUpdateParameters *L3NetworkPatchParameters
 }
 
 // MetricsConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the MetricsConfigurationsClient.BeginCreateOrUpdate
@@ -499,6 +526,9 @@ type MetricsConfigurationsClientBeginDeleteOptions struct {
 // MetricsConfigurationsClientBeginUpdateOptions contains the optional parameters for the MetricsConfigurationsClient.BeginUpdate
 // method.
 type MetricsConfigurationsClientBeginUpdateOptions struct {
+	// The request body.
+	MetricsConfigurationUpdateParameters *ClusterMetricsConfigurationPatchParameters
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -544,6 +574,9 @@ type RacksClientBeginDeleteOptions struct {
 
 // RacksClientBeginUpdateOptions contains the optional parameters for the RacksClient.BeginUpdate method.
 type RacksClientBeginUpdateOptions struct {
+	// The request body.
+	RackUpdateParameters *RackPatchParameters
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -600,6 +633,9 @@ type StorageAppliancesClientBeginEnableRemoteVendorManagementOptions struct {
 type StorageAppliancesClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
+
+	// The request body.
+	StorageApplianceUpdateParameters *StorageAppliancePatchParameters
 }
 
 // StorageAppliancesClientGetOptions contains the optional parameters for the StorageAppliancesClient.Get method.
@@ -651,7 +687,8 @@ type TrunkedNetworksClientListBySubscriptionOptions struct {
 
 // TrunkedNetworksClientUpdateOptions contains the optional parameters for the TrunkedNetworksClient.Update method.
 type TrunkedNetworksClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The request body.
+	TrunkedNetworkUpdateParameters *TrunkedNetworkPatchParameters
 }
 
 // VirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateOrUpdate
@@ -699,6 +736,9 @@ type VirtualMachinesClientBeginStartOptions struct {
 type VirtualMachinesClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
+
+	// The request body.
+	VirtualMachineUpdateParameters *VirtualMachinePatchParameters
 }
 
 // VirtualMachinesClientGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
@@ -749,5 +789,7 @@ type VolumesClientListBySubscriptionOptions struct {
 
 // VolumesClientUpdateOptions contains the optional parameters for the VolumesClient.Update method.
 type VolumesClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The request body.
+	VolumeUpdateParameters *VolumePatchParameters
 }
+

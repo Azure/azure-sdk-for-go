@@ -23,7 +23,7 @@ import (
 // ConfigurationAssignmentsForResourceGroupClient contains the methods for the ConfigurationAssignmentsForResourceGroup group.
 // Don't use this type directly, use NewConfigurationAssignmentsForResourceGroupClient() instead.
 type ConfigurationAssignmentsForResourceGroupClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewConfigurationAssignmentsForResourceGroupClient(subscriptionID string, cr
 	}
 	client := &ConfigurationAssignmentsForResourceGroupClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -95,8 +95,8 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) createOrUpdateCrea
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configurationAssignment); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -282,8 +282,8 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) updateCreateReques
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configurationAssignment); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -295,3 +295,4 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) updateHandleRespon
 	}
 	return result, nil
 }
+

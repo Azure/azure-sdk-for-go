@@ -23,7 +23,7 @@ import (
 // ExpressRoutePortAuthorizationsClient contains the methods for the ExpressRoutePortAuthorizations group.
 // Don't use this type directly, use NewExpressRoutePortAuthorizationsClient() instead.
 type ExpressRoutePortAuthorizationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRoutePortAuthorizationsClient(subscriptionID string, credential a
 	}
 	client := &ExpressRoutePortAuthorizationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ExpressRoutePortAuthorizationsClient) createOrUpdateCreateRequest(
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, authorizationParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *ExpressRoutePortAuthorizationsClient) getHandleResponse(resp *http
 //   - expressRoutePortName - The name of the express route port.
 //   - options - ExpressRoutePortAuthorizationsClientListOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.NewListPager
 //     method.
-func (client *ExpressRoutePortAuthorizationsClient) NewListPager(resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortAuthorizationsClientListOptions) *runtime.Pager[ExpressRoutePortAuthorizationsClientListResponse] {
+func (client *ExpressRoutePortAuthorizationsClient) NewListPager(resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortAuthorizationsClientListOptions) (*runtime.Pager[ExpressRoutePortAuthorizationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRoutePortAuthorizationsClientListResponse]{
 		More: func(page ExpressRoutePortAuthorizationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *ExpressRoutePortAuthorizationsClient) listHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

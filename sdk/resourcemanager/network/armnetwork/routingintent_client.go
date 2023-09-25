@@ -23,7 +23,7 @@ import (
 // RoutingIntentClient contains the methods for the RoutingIntent group.
 // Don't use this type directly, use NewRoutingIntentClient() instead.
 type RoutingIntentClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewRoutingIntentClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &RoutingIntentClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *RoutingIntentClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, routingIntentParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,7 +269,7 @@ func (client *RoutingIntentClient) getHandleResponse(resp *http.Response) (Routi
 //   - resourceGroupName - The resource group name of the VirtualHub.
 //   - virtualHubName - The name of the VirtualHub.
 //   - options - RoutingIntentClientListOptions contains the optional parameters for the RoutingIntentClient.NewListPager method.
-func (client *RoutingIntentClient) NewListPager(resourceGroupName string, virtualHubName string, options *RoutingIntentClientListOptions) *runtime.Pager[RoutingIntentClientListResponse] {
+func (client *RoutingIntentClient) NewListPager(resourceGroupName string, virtualHubName string, options *RoutingIntentClientListOptions) (*runtime.Pager[RoutingIntentClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RoutingIntentClientListResponse]{
 		More: func(page RoutingIntentClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -331,3 +331,4 @@ func (client *RoutingIntentClient) listHandleResponse(resp *http.Response) (Rout
 	}
 	return result, nil
 }
+

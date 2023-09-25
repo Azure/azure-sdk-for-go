@@ -23,7 +23,7 @@ import (
 // PrivateEndpointsClient contains the methods for the PrivateEndpoints group.
 // Don't use this type directly, use NewPrivateEndpointsClient() instead.
 type PrivateEndpointsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewPrivateEndpointsClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &PrivateEndpointsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *PrivateEndpointsClient) createOrUpdateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -257,7 +257,7 @@ func (client *PrivateEndpointsClient) getHandleResponse(resp *http.Response) (Pr
 //   - resourceGroupName - The name of the resource group.
 //   - options - PrivateEndpointsClientListOptions contains the optional parameters for the PrivateEndpointsClient.NewListPager
 //     method.
-func (client *PrivateEndpointsClient) NewListPager(resourceGroupName string, options *PrivateEndpointsClientListOptions) *runtime.Pager[PrivateEndpointsClientListResponse] {
+func (client *PrivateEndpointsClient) NewListPager(resourceGroupName string, options *PrivateEndpointsClientListOptions) (*runtime.Pager[PrivateEndpointsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointsClientListResponse]{
 		More: func(page PrivateEndpointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -321,7 +321,7 @@ func (client *PrivateEndpointsClient) listHandleResponse(resp *http.Response) (P
 // Generated from API version 2023-05-01
 //   - options - PrivateEndpointsClientListBySubscriptionOptions contains the optional parameters for the PrivateEndpointsClient.NewListBySubscriptionPager
 //     method.
-func (client *PrivateEndpointsClient) NewListBySubscriptionPager(options *PrivateEndpointsClientListBySubscriptionOptions) *runtime.Pager[PrivateEndpointsClientListBySubscriptionResponse] {
+func (client *PrivateEndpointsClient) NewListBySubscriptionPager(options *PrivateEndpointsClientListBySubscriptionOptions) (*runtime.Pager[PrivateEndpointsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointsClientListBySubscriptionResponse]{
 		More: func(page PrivateEndpointsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -375,3 +375,4 @@ func (client *PrivateEndpointsClient) listBySubscriptionHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

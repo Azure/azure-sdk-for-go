@@ -24,7 +24,7 @@ import (
 // MetricsClient contains the methods for the Metrics group.
 // Don't use this type directly, use NewMetricsClient() instead.
 type MetricsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewMetricsClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &MetricsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -300,8 +300,8 @@ func (client *MetricsClient) listAtSubscriptionScopePostCreateRequest(ctx contex
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -315,3 +315,4 @@ func (client *MetricsClient) listAtSubscriptionScopePostHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

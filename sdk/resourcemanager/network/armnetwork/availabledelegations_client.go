@@ -23,7 +23,7 @@ import (
 // AvailableDelegationsClient contains the methods for the AvailableDelegations group.
 // Don't use this type directly, use NewAvailableDelegationsClient() instead.
 type AvailableDelegationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAvailableDelegationsClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &AvailableDelegationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewAvailableDelegationsClient(subscriptionID string, credential azcore.Toke
 //   - location - The location of the subnet.
 //   - options - AvailableDelegationsClientListOptions contains the optional parameters for the AvailableDelegationsClient.NewListPager
 //     method.
-func (client *AvailableDelegationsClient) NewListPager(location string, options *AvailableDelegationsClientListOptions) *runtime.Pager[AvailableDelegationsClientListResponse] {
+func (client *AvailableDelegationsClient) NewListPager(location string, options *AvailableDelegationsClientListOptions) (*runtime.Pager[AvailableDelegationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AvailableDelegationsClientListResponse]{
 		More: func(page AvailableDelegationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -108,3 +108,4 @@ func (client *AvailableDelegationsClient) listHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

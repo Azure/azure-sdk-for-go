@@ -23,7 +23,7 @@ import (
 // LoadBalancersClient contains the methods for the LoadBalancers group.
 // Don't use this type directly, use NewLoadBalancersClient() instead.
 type LoadBalancersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewLoadBalancersClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &LoadBalancersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -256,7 +256,7 @@ func (client *LoadBalancersClient) getHandleResponse(resp *http.Response) (LoadB
 // Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - LoadBalancersClientListOptions contains the optional parameters for the LoadBalancersClient.NewListPager method.
-func (client *LoadBalancersClient) NewListPager(resourceGroupName string, options *LoadBalancersClientListOptions) *runtime.Pager[LoadBalancersClientListResponse] {
+func (client *LoadBalancersClient) NewListPager(resourceGroupName string, options *LoadBalancersClientListOptions) (*runtime.Pager[LoadBalancersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LoadBalancersClientListResponse]{
 		More: func(page LoadBalancersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -320,7 +320,7 @@ func (client *LoadBalancersClient) listHandleResponse(resp *http.Response) (Load
 // Generated from API version 2023-05-01
 //   - options - LoadBalancersClientListAllOptions contains the optional parameters for the LoadBalancersClient.NewListAllPager
 //     method.
-func (client *LoadBalancersClient) NewListAllPager(options *LoadBalancersClientListAllOptions) *runtime.Pager[LoadBalancersClientListAllResponse] {
+func (client *LoadBalancersClient) NewListAllPager(options *LoadBalancersClientListAllOptions) (*runtime.Pager[LoadBalancersClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LoadBalancersClientListAllResponse]{
 		More: func(page LoadBalancersClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -449,8 +449,8 @@ func (client *LoadBalancersClient) listInboundNatRulePortMappingsCreateRequest(c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -505,8 +505,8 @@ func (client *LoadBalancersClient) migrateToIPBasedCreateRequest(ctx context.Con
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -585,8 +585,8 @@ func (client *LoadBalancersClient) swapPublicIPAddressesCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -641,8 +641,8 @@ func (client *LoadBalancersClient) updateTagsCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -654,3 +654,4 @@ func (client *LoadBalancersClient) updateTagsHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

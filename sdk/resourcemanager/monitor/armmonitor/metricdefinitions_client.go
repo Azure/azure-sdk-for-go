@@ -23,7 +23,7 @@ import (
 // MetricDefinitionsClient contains the methods for the MetricDefinitions group.
 // Don't use this type directly, use NewMetricDefinitionsClient() instead.
 type MetricDefinitionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewMetricDefinitionsClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &MetricDefinitionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,13 +49,13 @@ func NewMetricDefinitionsClient(subscriptionID string, credential azcore.TokenCr
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricDefinitionsClientListOptions contains the optional parameters for the MetricDefinitionsClient.NewListPager
 //     method.
-func (client *MetricDefinitionsClient) NewListPager(resourceURI string, options *MetricDefinitionsClientListOptions) *runtime.Pager[MetricDefinitionsClientListResponse] {
+func (client *MetricDefinitionsClient) NewListPager(resourceURI string, options *MetricDefinitionsClientListOptions) (*runtime.Pager[MetricDefinitionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MetricDefinitionsClientListResponse]{
 		More: func(page MetricDefinitionsClientListResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *MetricDefinitionsClientListResponse) (MetricDefinitionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetricDefinitionsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetricDefinitionsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceURI, options)
 			if err != nil {
 				return MetricDefinitionsClientListResponse{}, err
@@ -106,13 +106,13 @@ func (client *MetricDefinitionsClient) listHandleResponse(resp *http.Response) (
 //   - region - The region where the metrics you want reside.
 //   - options - MetricDefinitionsClientListAtSubscriptionScopeOptions contains the optional parameters for the MetricDefinitionsClient.NewListAtSubscriptionScopePager
 //     method.
-func (client *MetricDefinitionsClient) NewListAtSubscriptionScopePager(region string, options *MetricDefinitionsClientListAtSubscriptionScopeOptions) *runtime.Pager[MetricDefinitionsClientListAtSubscriptionScopeResponse] {
+func (client *MetricDefinitionsClient) NewListAtSubscriptionScopePager(region string, options *MetricDefinitionsClientListAtSubscriptionScopeOptions) (*runtime.Pager[MetricDefinitionsClientListAtSubscriptionScopeResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MetricDefinitionsClientListAtSubscriptionScopeResponse]{
 		More: func(page MetricDefinitionsClientListAtSubscriptionScopeResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *MetricDefinitionsClientListAtSubscriptionScopeResponse) (MetricDefinitionsClientListAtSubscriptionScopeResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetricDefinitionsClient.NewListAtSubscriptionScopePager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetricDefinitionsClient.NewListAtSubscriptionScopePager")
 			req, err := client.listAtSubscriptionScopeCreateRequest(ctx, region, options)
 			if err != nil {
 				return MetricDefinitionsClientListAtSubscriptionScopeResponse{}, err
@@ -160,3 +160,4 @@ func (client *MetricDefinitionsClient) listAtSubscriptionScopeHandleResponse(res
 	}
 	return result, nil
 }
+

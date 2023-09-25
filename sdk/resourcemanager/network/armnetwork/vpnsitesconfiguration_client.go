@@ -23,7 +23,7 @@ import (
 // VPNSitesConfigurationClient contains the methods for the VPNSitesConfiguration group.
 // Don't use this type directly, use NewVPNSitesConfigurationClient() instead.
 type VPNSitesConfigurationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVPNSitesConfigurationClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &VPNSitesConfigurationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,7 +113,8 @@ func (client *VPNSitesConfigurationClient) downloadCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

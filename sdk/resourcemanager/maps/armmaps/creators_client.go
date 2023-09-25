@@ -23,7 +23,7 @@ import (
 // CreatorsClient contains the methods for the Creators group.
 // Don't use this type directly, use NewCreatorsClient() instead.
 type CreatorsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewCreatorsClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &CreatorsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *CreatorsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, creatorResource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -240,7 +240,7 @@ func (client *CreatorsClient) getHandleResponse(resp *http.Response) (CreatorsCl
 //   - accountName - The name of the Maps Account.
 //   - options - CreatorsClientListByAccountOptions contains the optional parameters for the CreatorsClient.NewListByAccountPager
 //     method.
-func (client *CreatorsClient) NewListByAccountPager(resourceGroupName string, accountName string, options *CreatorsClientListByAccountOptions) *runtime.Pager[CreatorsClientListByAccountResponse] {
+func (client *CreatorsClient) NewListByAccountPager(resourceGroupName string, accountName string, options *CreatorsClientListByAccountOptions) (*runtime.Pager[CreatorsClientListByAccountResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CreatorsClientListByAccountResponse]{
 		More: func(page CreatorsClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -358,8 +358,8 @@ func (client *CreatorsClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, creatorUpdateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -371,3 +371,4 @@ func (client *CreatorsClient) updateHandleResponse(resp *http.Response) (Creator
 	}
 	return result, nil
 }
+

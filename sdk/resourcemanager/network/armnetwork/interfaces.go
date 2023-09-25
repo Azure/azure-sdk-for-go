@@ -52,3 +52,4 @@ type FirewallPolicyRuleCollectionClassification interface {
 	// GetFirewallPolicyRuleCollection returns the FirewallPolicyRuleCollection content of the underlying type.
 	GetFirewallPolicyRuleCollection() *FirewallPolicyRuleCollection
 }
+

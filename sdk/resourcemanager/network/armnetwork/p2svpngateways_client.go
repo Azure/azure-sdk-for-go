@@ -23,7 +23,7 @@ import (
 // P2SVPNGatewaysClient contains the methods for the P2SVPNGateways group.
 // Don't use this type directly, use NewP2SVPNGatewaysClient() instead.
 type P2SVPNGatewaysClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewP2SVPNGatewaysClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &P2SVPNGatewaysClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *P2SVPNGatewaysClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, p2SVPNGatewayParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -259,8 +259,8 @@ func (client *P2SVPNGatewaysClient) disconnectP2SVPNConnectionsCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -333,8 +333,8 @@ func (client *P2SVPNGatewaysClient) generateVPNProfileCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -541,8 +541,8 @@ func (client *P2SVPNGatewaysClient) getP2SVPNConnectionHealthDetailedCreateReque
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -550,7 +550,7 @@ func (client *P2SVPNGatewaysClient) getP2SVPNConnectionHealthDetailedCreateReque
 //
 // Generated from API version 2023-05-01
 //   - options - P2SVPNGatewaysClientListOptions contains the optional parameters for the P2SVPNGatewaysClient.NewListPager method.
-func (client *P2SVPNGatewaysClient) NewListPager(options *P2SVPNGatewaysClientListOptions) *runtime.Pager[P2SVPNGatewaysClientListResponse] {
+func (client *P2SVPNGatewaysClient) NewListPager(options *P2SVPNGatewaysClientListOptions) (*runtime.Pager[P2SVPNGatewaysClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[P2SVPNGatewaysClientListResponse]{
 		More: func(page P2SVPNGatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -611,7 +611,7 @@ func (client *P2SVPNGatewaysClient) listHandleResponse(resp *http.Response) (P2S
 //   - resourceGroupName - The resource group name of the P2SVpnGateway.
 //   - options - P2SVPNGatewaysClientListByResourceGroupOptions contains the optional parameters for the P2SVPNGatewaysClient.NewListByResourceGroupPager
 //     method.
-func (client *P2SVPNGatewaysClient) NewListByResourceGroupPager(resourceGroupName string, options *P2SVPNGatewaysClientListByResourceGroupOptions) *runtime.Pager[P2SVPNGatewaysClientListByResourceGroupResponse] {
+func (client *P2SVPNGatewaysClient) NewListByResourceGroupPager(resourceGroupName string, options *P2SVPNGatewaysClientListByResourceGroupOptions) (*runtime.Pager[P2SVPNGatewaysClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[P2SVPNGatewaysClientListByResourceGroupResponse]{
 		More: func(page P2SVPNGatewaysClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -809,7 +809,8 @@ func (client *P2SVPNGatewaysClient) updateTagsCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, p2SVPNGatewayParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

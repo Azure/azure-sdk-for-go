@@ -23,7 +23,7 @@ import (
 // SourceControlConfigurationsClient contains the methods for the SourceControlConfigurations group.
 // Don't use this type directly, use NewSourceControlConfigurationsClient() instead.
 type SourceControlConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSourceControlConfigurationsClient(subscriptionID string, credential azco
 	}
 	client := &SourceControlConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *SourceControlConfigurationsClient) createOrUpdateCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sourceControlConfiguration); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -293,7 +293,7 @@ func (client *SourceControlConfigurationsClient) getHandleResponse(resp *http.Re
 //   - clusterName - The name of the kubernetes cluster.
 //   - options - SourceControlConfigurationsClientListOptions contains the optional parameters for the SourceControlConfigurationsClient.NewListPager
 //     method.
-func (client *SourceControlConfigurationsClient) NewListPager(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *SourceControlConfigurationsClientListOptions) *runtime.Pager[SourceControlConfigurationsClientListResponse] {
+func (client *SourceControlConfigurationsClient) NewListPager(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *SourceControlConfigurationsClientListOptions) (*runtime.Pager[SourceControlConfigurationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SourceControlConfigurationsClientListResponse]{
 		More: func(page SourceControlConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -363,3 +363,4 @@ func (client *SourceControlConfigurationsClient) listHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

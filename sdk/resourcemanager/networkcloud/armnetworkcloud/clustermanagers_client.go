@@ -23,7 +23,7 @@ import (
 // ClusterManagersClient contains the methods for the ClusterManagers group.
 // Don't use this type directly, use NewClusterManagersClient() instead.
 type ClusterManagersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewClusterManagersClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &ClusterManagersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *ClusterManagersClient) createOrUpdateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterManagerParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -244,7 +244,7 @@ func (client *ClusterManagersClient) getHandleResponse(resp *http.Response) (Clu
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClusterManagersClientListByResourceGroupOptions contains the optional parameters for the ClusterManagersClient.NewListByResourceGroupPager
 //     method.
-func (client *ClusterManagersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClusterManagersClientListByResourceGroupOptions) *runtime.Pager[ClusterManagersClientListByResourceGroupResponse] {
+func (client *ClusterManagersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClusterManagersClientListByResourceGroupOptions) (*runtime.Pager[ClusterManagersClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClusterManagersClientListByResourceGroupResponse]{
 		More: func(page ClusterManagersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -305,7 +305,7 @@ func (client *ClusterManagersClient) listByResourceGroupHandleResponse(resp *htt
 // Generated from API version 2023-07-01
 //   - options - ClusterManagersClientListBySubscriptionOptions contains the optional parameters for the ClusterManagersClient.NewListBySubscriptionPager
 //     method.
-func (client *ClusterManagersClient) NewListBySubscriptionPager(options *ClusterManagersClientListBySubscriptionOptions) *runtime.Pager[ClusterManagersClientListBySubscriptionResponse] {
+func (client *ClusterManagersClient) NewListBySubscriptionPager(options *ClusterManagersClientListBySubscriptionOptions) (*runtime.Pager[ClusterManagersClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClusterManagersClientListBySubscriptionResponse]{
 		More: func(page ClusterManagersClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -364,11 +364,10 @@ func (client *ClusterManagersClient) listBySubscriptionHandleResponse(resp *http
 // Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterManagerName - The name of the cluster manager.
-//   - clusterManagerUpdateParameters - The request body.
 //   - options - ClusterManagersClientUpdateOptions contains the optional parameters for the ClusterManagersClient.Update method.
-func (client *ClusterManagersClient) Update(ctx context.Context, resourceGroupName string, clusterManagerName string, clusterManagerUpdateParameters ClusterManagerPatchParameters, options *ClusterManagersClientUpdateOptions) (ClusterManagersClientUpdateResponse, error) {
+func (client *ClusterManagersClient) Update(ctx context.Context, resourceGroupName string, clusterManagerName string, options *ClusterManagersClientUpdateOptions) (ClusterManagersClientUpdateResponse, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterManagerName, clusterManagerUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterManagerName, options)
 	if err != nil {
 		return ClusterManagersClientUpdateResponse{}, err
 	}
@@ -385,7 +384,7 @@ func (client *ClusterManagersClient) Update(ctx context.Context, resourceGroupNa
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ClusterManagersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterManagerName string, clusterManagerUpdateParameters ClusterManagerPatchParameters, options *ClusterManagersClientUpdateOptions) (*policy.Request, error) {
+func (client *ClusterManagersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterManagerName string, options *ClusterManagersClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusterManagers/{clusterManagerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -404,8 +403,11 @@ func (client *ClusterManagersClient) updateCreateRequest(ctx context.Context, re
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, clusterManagerUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.ClusterManagerUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.ClusterManagerUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
@@ -418,3 +420,4 @@ func (client *ClusterManagersClient) updateHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

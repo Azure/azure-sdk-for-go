@@ -23,7 +23,7 @@ import (
 // ConfigurationAssignmentsClient contains the methods for the ConfigurationAssignments group.
 // Don't use this type directly, use NewConfigurationAssignmentsClient() instead.
 type ConfigurationAssignmentsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewConfigurationAssignmentsClient(subscriptionID string, credential azcore.
 	}
 	client := &ConfigurationAssignmentsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,8 +110,8 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateCreateRequest(ctx co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configurationAssignment); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -200,8 +200,8 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateParentCreateRequest(
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configurationAssignment); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -547,7 +547,7 @@ func (client *ConfigurationAssignmentsClient) getParentHandleResponse(resp *http
 //   - resourceName - Resource identifier
 //   - options - ConfigurationAssignmentsClientListOptions contains the optional parameters for the ConfigurationAssignmentsClient.NewListPager
 //     method.
-func (client *ConfigurationAssignmentsClient) NewListPager(resourceGroupName string, providerName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListOptions) *runtime.Pager[ConfigurationAssignmentsClientListResponse] {
+func (client *ConfigurationAssignmentsClient) NewListPager(resourceGroupName string, providerName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListOptions) (*runtime.Pager[ConfigurationAssignmentsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationAssignmentsClientListResponse]{
 		More: func(page ConfigurationAssignmentsClientListResponse) bool {
 			return false
@@ -623,7 +623,7 @@ func (client *ConfigurationAssignmentsClient) listHandleResponse(resp *http.Resp
 //   - resourceName - Resource identifier
 //   - options - ConfigurationAssignmentsClientListParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.NewListParentPager
 //     method.
-func (client *ConfigurationAssignmentsClient) NewListParentPager(resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListParentOptions) *runtime.Pager[ConfigurationAssignmentsClientListParentResponse] {
+func (client *ConfigurationAssignmentsClient) NewListParentPager(resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListParentOptions) (*runtime.Pager[ConfigurationAssignmentsClientListParentResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationAssignmentsClientListParentResponse]{
 		More: func(page ConfigurationAssignmentsClientListParentResponse) bool {
 			return false
@@ -695,3 +695,4 @@ func (client *ConfigurationAssignmentsClient) listParentHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

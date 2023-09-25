@@ -23,7 +23,7 @@ import (
 // VirtualApplianceSKUsClient contains the methods for the VirtualApplianceSKUs group.
 // Don't use this type directly, use NewVirtualApplianceSKUsClient() instead.
 type VirtualApplianceSKUsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualApplianceSKUsClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &VirtualApplianceSKUsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -105,7 +105,7 @@ func (client *VirtualApplianceSKUsClient) getHandleResponse(resp *http.Response)
 // Generated from API version 2023-05-01
 //   - options - VirtualApplianceSKUsClientListOptions contains the optional parameters for the VirtualApplianceSKUsClient.NewListPager
 //     method.
-func (client *VirtualApplianceSKUsClient) NewListPager(options *VirtualApplianceSKUsClientListOptions) *runtime.Pager[VirtualApplianceSKUsClientListResponse] {
+func (client *VirtualApplianceSKUsClient) NewListPager(options *VirtualApplianceSKUsClientListOptions) (*runtime.Pager[VirtualApplianceSKUsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualApplianceSKUsClientListResponse]{
 		More: func(page VirtualApplianceSKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -159,3 +159,4 @@ func (client *VirtualApplianceSKUsClient) listHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

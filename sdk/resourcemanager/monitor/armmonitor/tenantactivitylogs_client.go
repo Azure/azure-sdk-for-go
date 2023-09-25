@@ -32,7 +32,7 @@ func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm
 		return nil, err
 	}
 	client := &TenantActivityLogsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -45,13 +45,13 @@ func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm
 // Generated from API version 2015-04-01
 //   - options - TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.NewListPager
 //     method.
-func (client *TenantActivityLogsClient) NewListPager(options *TenantActivityLogsClientListOptions) *runtime.Pager[TenantActivityLogsClientListResponse] {
+func (client *TenantActivityLogsClient) NewListPager(options *TenantActivityLogsClientListOptions) (*runtime.Pager[TenantActivityLogsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TenantActivityLogsClientListResponse]{
 		More: func(page TenantActivityLogsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TenantActivityLogsClientListResponse) (TenantActivityLogsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TenantActivityLogsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TenantActivityLogsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -103,3 +103,4 @@ func (client *TenantActivityLogsClient) listHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

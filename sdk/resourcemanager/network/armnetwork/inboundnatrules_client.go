@@ -23,7 +23,7 @@ import (
 // InboundNatRulesClient contains the methods for the InboundNatRules group.
 // Don't use this type directly, use NewInboundNatRulesClient() instead.
 type InboundNatRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewInboundNatRulesClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &InboundNatRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *InboundNatRulesClient) createOrUpdateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, inboundNatRuleParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -273,7 +273,7 @@ func (client *InboundNatRulesClient) getHandleResponse(resp *http.Response) (Inb
 //   - loadBalancerName - The name of the load balancer.
 //   - options - InboundNatRulesClientListOptions contains the optional parameters for the InboundNatRulesClient.NewListPager
 //     method.
-func (client *InboundNatRulesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *InboundNatRulesClientListOptions) *runtime.Pager[InboundNatRulesClientListResponse] {
+func (client *InboundNatRulesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *InboundNatRulesClientListOptions) (*runtime.Pager[InboundNatRulesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InboundNatRulesClientListResponse]{
 		More: func(page InboundNatRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -335,3 +335,4 @@ func (client *InboundNatRulesClient) listHandleResponse(resp *http.Response) (In
 	}
 	return result, nil
 }
+

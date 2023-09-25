@@ -88,6 +88,40 @@ type EnvironmentProperties struct {
 	UserID *string
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
 // FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them
 // from being monitored.
 type FilteringTag struct {
@@ -152,9 +186,9 @@ type LinkableEnvironmentResponse struct {
 // LogRules - Set of rules for sending logs for the Monitor resource.
 type LogRules struct {
 	// List of filtering tags to be used for capturing logs. This only takes effect if SendActivityLogs flag is enabled. If empty,
-	// all resources will be captured. If only Exclude action is specified, the
-	// rules will apply to the list of all available resources. If Include actions are specified, the rules will only include
-	// resources with the associated tags.
+// all resources will be captured. If only Exclude action is specified, the
+// rules will apply to the list of all available resources. If Include actions are specified, the rules will only include
+// resources with the associated tags.
 	FilteringTags []*FilteringTag
 
 	// Flag specifying if AAD logs should be sent for the Monitor resource.
@@ -188,8 +222,8 @@ type MarketplaceSaaSResourceDetailsResponse struct {
 // MetricRules - Set of rules for sending metrics for the Monitor resource.
 type MetricRules struct {
 	// List of filtering tags to be used for capturing metrics. If empty, all resources will be captured. If only Exclude action
-	// is specified, the rules will apply to the list of all available resources. If
-	// Include actions are specified, the rules will only include resources with the associated tags.
+// is specified, the rules will apply to the list of all available resources. If
+// Include actions are specified, the rules will only include resources with the associated tags.
 	FilteringTags []*FilteringTag
 
 	// Flag specifying if metrics from Azure resources should be sent for the Monitor resource.
@@ -319,15 +353,15 @@ type Operation struct {
 	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
-	// operations.
+// operations.
 	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
-	// "Microsoft.Compute/virtualMachines/capture/action"
+// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
-	// value is "user,system"
+// value is "user,system"
 	Origin *Origin
 }
 
@@ -337,15 +371,15 @@ type OperationDisplay struct {
 	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
-	// Machine", "Restart Virtual Machine".
+// Machine", "Restart Virtual Machine".
 	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
-	// Compute".
+// Compute".
 	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
-	// Schedule Collections".
+// Schedule Collections".
 	Resource *string
 }
 
@@ -372,6 +406,31 @@ type PlanData struct {
 
 	// different usage type like PAYG/COMMITTED. this could be enum
 	UsageType *string
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // SSODetailsRequest - Request for getting sso details for a user
@@ -491,6 +550,25 @@ type TagRuleListResult struct {
 	NextLink *string
 }
 
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // UserAssignedIdentity - A managed identity assigned by the user.
 type UserAssignedIdentity struct {
 	// REQUIRED; The active directory client identifier for this principal.
@@ -565,3 +643,4 @@ type VMInfo struct {
 	// Version of the Dynatrace agent installed on the VM.
 	Version *string
 }
+

@@ -23,7 +23,7 @@ import (
 // ConfigurationAssignmentsForSubscriptionsClient contains the methods for the ConfigurationAssignmentsForSubscriptions group.
 // Don't use this type directly, use NewConfigurationAssignmentsForSubscriptionsClient() instead.
 type ConfigurationAssignmentsForSubscriptionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewConfigurationAssignmentsForSubscriptionsClient(subscriptionID string, cr
 	}
 	client := &ConfigurationAssignmentsForSubscriptionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -90,8 +90,8 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) createOrUpdateCrea
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configurationAssignment); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -262,8 +262,8 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) updateCreateReques
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configurationAssignment); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -275,3 +275,4 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) updateHandleRespon
 	}
 	return result, nil
 }
+

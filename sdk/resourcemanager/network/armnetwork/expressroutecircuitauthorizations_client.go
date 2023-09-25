@@ -23,7 +23,7 @@ import (
 // ExpressRouteCircuitAuthorizationsClient contains the methods for the ExpressRouteCircuitAuthorizations group.
 // Don't use this type directly, use NewExpressRouteCircuitAuthorizationsClient() instead.
 type ExpressRouteCircuitAuthorizationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string, credentia
 	}
 	client := &ExpressRouteCircuitAuthorizationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ExpressRouteCircuitAuthorizationsClient) createOrUpdateCreateReque
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, authorizationParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) getHandleResponse(resp *h
 //   - circuitName - The name of the circuit.
 //   - options - ExpressRouteCircuitAuthorizationsClientListOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.NewListPager
 //     method.
-func (client *ExpressRouteCircuitAuthorizationsClient) NewListPager(resourceGroupName string, circuitName string, options *ExpressRouteCircuitAuthorizationsClientListOptions) *runtime.Pager[ExpressRouteCircuitAuthorizationsClientListResponse] {
+func (client *ExpressRouteCircuitAuthorizationsClient) NewListPager(resourceGroupName string, circuitName string, options *ExpressRouteCircuitAuthorizationsClientListOptions) (*runtime.Pager[ExpressRouteCircuitAuthorizationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteCircuitAuthorizationsClientListResponse]{
 		More: func(page ExpressRouteCircuitAuthorizationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *ExpressRouteCircuitAuthorizationsClient) listHandleResponse(resp *
 	}
 	return result, nil
 }
+

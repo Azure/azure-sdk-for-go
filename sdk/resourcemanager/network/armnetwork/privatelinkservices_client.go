@@ -23,7 +23,7 @@ import (
 // PrivateLinkServicesClient contains the methods for the PrivateLinkServices group.
 // Don't use this type directly, use NewPrivateLinkServicesClient() instead.
 type PrivateLinkServicesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewPrivateLinkServicesClient(subscriptionID string, credential azcore.Token
 	}
 	client := &PrivateLinkServicesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -108,8 +108,8 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityCreate
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -184,8 +184,8 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityByReso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -258,8 +258,8 @@ func (client *PrivateLinkServicesClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -547,7 +547,7 @@ func (client *PrivateLinkServicesClient) getPrivateEndpointConnectionHandleRespo
 //   - resourceGroupName - The name of the resource group.
 //   - options - PrivateLinkServicesClientListOptions contains the optional parameters for the PrivateLinkServicesClient.NewListPager
 //     method.
-func (client *PrivateLinkServicesClient) NewListPager(resourceGroupName string, options *PrivateLinkServicesClientListOptions) *runtime.Pager[PrivateLinkServicesClientListResponse] {
+func (client *PrivateLinkServicesClient) NewListPager(resourceGroupName string, options *PrivateLinkServicesClientListOptions) (*runtime.Pager[PrivateLinkServicesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkServicesClientListResponse]{
 		More: func(page PrivateLinkServicesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -613,7 +613,7 @@ func (client *PrivateLinkServicesClient) listHandleResponse(resp *http.Response)
 //   - location - The location of the domain name.
 //   - options - PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions contains the optional parameters for the
 //     PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesPager method.
-func (client *PrivateLinkServicesClient) NewListAutoApprovedPrivateLinkServicesPager(location string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions) *runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse] {
+func (client *PrivateLinkServicesClient) NewListAutoApprovedPrivateLinkServicesPager(location string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions) (*runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse]{
 		More: func(page PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -680,7 +680,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesHand
 //   - resourceGroupName - The name of the resource group.
 //   - options - PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions contains the optional parameters
 //     for the PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager method.
-func (client *PrivateLinkServicesClient) NewListAutoApprovedPrivateLinkServicesByResourceGroupPager(location string, resourceGroupName string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse] {
+func (client *PrivateLinkServicesClient) NewListAutoApprovedPrivateLinkServicesByResourceGroupPager(location string, resourceGroupName string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions) (*runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse]{
 		More: func(page PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -748,7 +748,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesByRe
 // Generated from API version 2023-05-01
 //   - options - PrivateLinkServicesClientListBySubscriptionOptions contains the optional parameters for the PrivateLinkServicesClient.NewListBySubscriptionPager
 //     method.
-func (client *PrivateLinkServicesClient) NewListBySubscriptionPager(options *PrivateLinkServicesClientListBySubscriptionOptions) *runtime.Pager[PrivateLinkServicesClientListBySubscriptionResponse] {
+func (client *PrivateLinkServicesClient) NewListBySubscriptionPager(options *PrivateLinkServicesClientListBySubscriptionOptions) (*runtime.Pager[PrivateLinkServicesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkServicesClientListBySubscriptionResponse]{
 		More: func(page PrivateLinkServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -810,7 +810,7 @@ func (client *PrivateLinkServicesClient) listBySubscriptionHandleResponse(resp *
 //   - serviceName - The name of the private link service.
 //   - options - PrivateLinkServicesClientListPrivateEndpointConnectionsOptions contains the optional parameters for the PrivateLinkServicesClient.NewListPrivateEndpointConnectionsPager
 //     method.
-func (client *PrivateLinkServicesClient) NewListPrivateEndpointConnectionsPager(resourceGroupName string, serviceName string, options *PrivateLinkServicesClientListPrivateEndpointConnectionsOptions) *runtime.Pager[PrivateLinkServicesClientListPrivateEndpointConnectionsResponse] {
+func (client *PrivateLinkServicesClient) NewListPrivateEndpointConnectionsPager(resourceGroupName string, serviceName string, options *PrivateLinkServicesClientListPrivateEndpointConnectionsOptions) (*runtime.Pager[PrivateLinkServicesClientListPrivateEndpointConnectionsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkServicesClientListPrivateEndpointConnectionsResponse]{
 		More: func(page PrivateLinkServicesClientListPrivateEndpointConnectionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -929,8 +929,8 @@ func (client *PrivateLinkServicesClient) updatePrivateEndpointConnectionCreateRe
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -942,3 +942,4 @@ func (client *PrivateLinkServicesClient) updatePrivateEndpointConnectionHandleRe
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // DataCollectionEndpointsClient contains the methods for the DataCollectionEndpoints group.
 // Don't use this type directly, use NewDataCollectionEndpointsClient() instead.
 type DataCollectionEndpointsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDataCollectionEndpointsClient(subscriptionID string, credential azcore.T
 	}
 	client := &DataCollectionEndpointsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -98,8 +98,8 @@ func (client *DataCollectionEndpointsClient) createCreateRequest(ctx context.Con
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -240,13 +240,13 @@ func (client *DataCollectionEndpointsClient) getHandleResponse(resp *http.Respon
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DataCollectionEndpointsClientListByResourceGroupOptions contains the optional parameters for the DataCollectionEndpointsClient.NewListByResourceGroupPager
 //     method.
-func (client *DataCollectionEndpointsClient) NewListByResourceGroupPager(resourceGroupName string, options *DataCollectionEndpointsClientListByResourceGroupOptions) *runtime.Pager[DataCollectionEndpointsClientListByResourceGroupResponse] {
+func (client *DataCollectionEndpointsClient) NewListByResourceGroupPager(resourceGroupName string, options *DataCollectionEndpointsClientListByResourceGroupOptions) (*runtime.Pager[DataCollectionEndpointsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionEndpointsClientListByResourceGroupResponse]{
 		More: func(page DataCollectionEndpointsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DataCollectionEndpointsClientListByResourceGroupResponse) (DataCollectionEndpointsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionEndpointsClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionEndpointsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -306,13 +306,13 @@ func (client *DataCollectionEndpointsClient) listByResourceGroupHandleResponse(r
 // Generated from API version 2022-06-01
 //   - options - DataCollectionEndpointsClientListBySubscriptionOptions contains the optional parameters for the DataCollectionEndpointsClient.NewListBySubscriptionPager
 //     method.
-func (client *DataCollectionEndpointsClient) NewListBySubscriptionPager(options *DataCollectionEndpointsClientListBySubscriptionOptions) *runtime.Pager[DataCollectionEndpointsClientListBySubscriptionResponse] {
+func (client *DataCollectionEndpointsClient) NewListBySubscriptionPager(options *DataCollectionEndpointsClientListBySubscriptionOptions) (*runtime.Pager[DataCollectionEndpointsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionEndpointsClientListBySubscriptionResponse]{
 		More: func(page DataCollectionEndpointsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DataCollectionEndpointsClientListBySubscriptionResponse) (DataCollectionEndpointsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionEndpointsClient.NewListBySubscriptionPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionEndpointsClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -418,8 +418,8 @@ func (client *DataCollectionEndpointsClient) updateCreateRequest(ctx context.Con
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -433,3 +433,4 @@ func (client *DataCollectionEndpointsClient) updateHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

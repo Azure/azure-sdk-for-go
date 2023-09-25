@@ -25,7 +25,7 @@ type AADAuthenticationParameters struct {
 // Action to be taken on a route matching a RouteMap criterion.
 type Action struct {
 	// List of parameters relevant to the action.For instance if type is drop then parameters has list of prefixes to be dropped.If
-	// type is add, parameters would have list of ASN numbers to be added
+// type is add, parameters would have list of ASN numbers to be added
 	Parameters []*Parameter
 
 	// Type of action to be taken. Supported types are 'Remove', 'Add', 'Replace', and 'Drop.'
@@ -60,9 +60,7 @@ type ActiveBaseSecurityAdminRule struct {
 }
 
 // GetActiveBaseSecurityAdminRule implements the ActiveBaseSecurityAdminRuleClassification interface for type ActiveBaseSecurityAdminRule.
-func (a *ActiveBaseSecurityAdminRule) GetActiveBaseSecurityAdminRule() *ActiveBaseSecurityAdminRule {
-	return a
-}
+func (a *ActiveBaseSecurityAdminRule) GetActiveBaseSecurityAdminRule() *ActiveBaseSecurityAdminRule { return a }
 
 // ActiveConfigurationParameter - Effective Virtual Networks Parameter.
 type ActiveConfigurationParameter struct {
@@ -70,7 +68,7 @@ type ActiveConfigurationParameter struct {
 	Regions []*string
 
 	// When present, the value can be passed to a subsequent query call (together with the same query and scopes used in the current
-	// request) to retrieve the next page of data.
+// request) to retrieve the next page of data.
 	SkipToken *string
 }
 
@@ -96,7 +94,7 @@ type ActiveConnectivityConfiguration struct {
 // a list of active connectivity configurations and a skiptoken to get the next set of results.
 type ActiveConnectivityConfigurationsListResult struct {
 	// When present, the value can be passed to a subsequent query call (together with the same query and scopes used in the current
-	// request) to retrieve the next page of data.
+// request) to retrieve the next page of data.
 	SkipToken *string
 
 	// Gets a page of active connectivity configurations.
@@ -136,14 +134,14 @@ type ActiveDefaultSecurityAdminRule struct {
 // GetActiveBaseSecurityAdminRule implements the ActiveBaseSecurityAdminRuleClassification interface for type ActiveDefaultSecurityAdminRule.
 func (a *ActiveDefaultSecurityAdminRule) GetActiveBaseSecurityAdminRule() *ActiveBaseSecurityAdminRule {
 	return &ActiveBaseSecurityAdminRule{
-		CommitTime:                    a.CommitTime,
-		ConfigurationDescription:      a.ConfigurationDescription,
-		ID:                            a.ID,
-		Kind:                          a.Kind,
-		Region:                        a.Region,
+		CommitTime: a.CommitTime,
+		ConfigurationDescription: a.ConfigurationDescription,
+		ID: a.ID,
+		Kind: a.Kind,
+		Region: a.Region,
 		RuleCollectionAppliesToGroups: a.RuleCollectionAppliesToGroups,
-		RuleCollectionDescription:     a.RuleCollectionDescription,
-		RuleGroups:                    a.RuleGroups,
+		RuleCollectionDescription: a.RuleCollectionDescription,
+		RuleGroups: a.RuleGroups,
 	}
 }
 
@@ -180,14 +178,14 @@ type ActiveSecurityAdminRule struct {
 // GetActiveBaseSecurityAdminRule implements the ActiveBaseSecurityAdminRuleClassification interface for type ActiveSecurityAdminRule.
 func (a *ActiveSecurityAdminRule) GetActiveBaseSecurityAdminRule() *ActiveBaseSecurityAdminRule {
 	return &ActiveBaseSecurityAdminRule{
-		CommitTime:                    a.CommitTime,
-		ConfigurationDescription:      a.ConfigurationDescription,
-		ID:                            a.ID,
-		Kind:                          a.Kind,
-		Region:                        a.Region,
+		CommitTime: a.CommitTime,
+		ConfigurationDescription: a.ConfigurationDescription,
+		ID: a.ID,
+		Kind: a.Kind,
+		Region: a.Region,
 		RuleCollectionAppliesToGroups: a.RuleCollectionAppliesToGroups,
-		RuleCollectionDescription:     a.RuleCollectionDescription,
-		RuleGroups:                    a.RuleGroups,
+		RuleCollectionDescription: a.RuleCollectionDescription,
+		RuleGroups: a.RuleGroups,
 	}
 }
 
@@ -195,7 +193,7 @@ func (a *ActiveSecurityAdminRule) GetActiveBaseSecurityAdminRule() *ActiveBaseSe
 // security admin rules and a skiptoken to get the next set of results.
 type ActiveSecurityAdminRulesListResult struct {
 	// When present, the value can be passed to a subsequent query call (together with the same query and scopes used in the current
-	// request) to retrieve the next page of data.
+// request) to retrieve the next page of data.
 	SkipToken *string
 
 	// Gets a page of active security admin rules.
@@ -226,7 +224,7 @@ type AdminPropertiesFormat struct {
 	Direction *SecurityConfigurationRuleDirection
 
 	// REQUIRED; The priority of the rule. The value can be between 1 and 4096. The priority number must be unique for each rule
-	// in the collection. The lower the priority number, the higher the priority of the rule.
+// in the collection. The lower the priority number, the higher the priority of the rule.
 	Priority *int32
 
 	// REQUIRED; Network protocol this rule applies to.
@@ -281,12 +279,12 @@ type AdminRule struct {
 // GetBaseAdminRule implements the BaseAdminRuleClassification interface for type AdminRule.
 func (a *AdminRule) GetBaseAdminRule() *BaseAdminRule {
 	return &BaseAdminRule{
-		Etag:       a.Etag,
-		ID:         a.ID,
-		Kind:       a.Kind,
-		Name:       a.Name,
+		Etag: a.Etag,
+		ID: a.ID,
+		Kind: a.Kind,
+		Name: a.Name,
 		SystemData: a.SystemData,
-		Type:       a.Type,
+		Type: a.Type,
 	}
 }
 
@@ -555,7 +553,7 @@ type ApplicationGatewayBackendHTTPSettingsPropertiesFormat struct {
 	Protocol *ApplicationGatewayProtocol
 
 	// Request timeout in seconds. Application Gateway will fail the request if response is not received within RequestTimeout.
-	// Acceptable values are from 1 second to 86400 seconds.
+// Acceptable values are from 1 second to 86400 seconds.
 	RequestTimeout *int32
 
 	// Array of references to application gateway trusted root certificates.
@@ -649,7 +647,7 @@ type ApplicationGatewayBackendSettingsPropertiesFormat struct {
 	Protocol *ApplicationGatewayProtocol
 
 	// Connection timeout in seconds. Application Gateway will fail the request if response is not received within ConnectionTimeout.
-	// Acceptable values are from 1 second to 86400 seconds.
+// Acceptable values are from 1 second to 86400 seconds.
 	Timeout *int32
 
 	// Array of references to application gateway trusted root certificates.
@@ -702,11 +700,11 @@ type ApplicationGatewayFirewallExclusion struct {
 	MatchVariable *string
 
 	// REQUIRED; When matchVariable is a collection, operator used to specify which elements in the collection this exclusion
-	// applies to.
+// applies to.
 	Selector *string
 
 	// REQUIRED; When matchVariable is a collection, operate on the selector to specify which elements in the collection this
-	// exclusion applies to.
+// exclusion applies to.
 	SelectorMatchOperator *string
 }
 
@@ -1091,7 +1089,7 @@ type ApplicationGatewayOnDemandProbe struct {
 	Protocol *ApplicationGatewayProtocol
 
 	// The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable
-	// values are from 1 second to 86400 seconds.
+// values are from 1 second to 86400 seconds.
 	Timeout *int32
 }
 
@@ -1319,7 +1317,7 @@ type ApplicationGatewayProbePropertiesFormat struct {
 	Host *string
 
 	// The probing interval in seconds. This is the time interval between two consecutive probes. Acceptable values are from 1
-	// second to 86400 seconds.
+// second to 86400 seconds.
 	Interval *int32
 
 	// Criterion for classifying a healthy probe response.
@@ -1338,19 +1336,19 @@ type ApplicationGatewayProbePropertiesFormat struct {
 	PickHostNameFromBackendSettings *bool
 
 	// Custom port which will be used for probing the backend servers. The valid value ranges from 1 to 65535. In case not set,
-	// port from http settings will be used. This property is valid for Basic,
-	// Standardv2 and WAFv2 only.
+// port from http settings will be used. This property is valid for Basic,
+// Standardv2 and WAFv2 only.
 	Port *int32
 
 	// The protocol used for the probe.
 	Protocol *ApplicationGatewayProtocol
 
 	// The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable
-	// values are from 1 second to 86400 seconds.
+// values are from 1 second to 86400 seconds.
 	Timeout *int32
 
 	// The probe retry count. Backend server is marked down after consecutive probe failure count reaches UnhealthyThreshold.
-	// Acceptable values are from 1 second to 20.
+// Acceptable values are from 1 second to 20.
 	UnhealthyThreshold *int32
 
 	// READ-ONLY; The provisioning state of the probe resource.
@@ -1360,22 +1358,22 @@ type ApplicationGatewayProbePropertiesFormat struct {
 // ApplicationGatewayPropertiesFormat - Properties of the application gateway.
 type ApplicationGatewayPropertiesFormat struct {
 	// Authentication certificates of the application gateway resource. For default limits, see Application Gateway limits
-	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	AuthenticationCertificates []*ApplicationGatewayAuthenticationCertificate
 
 	// Autoscale Configuration.
 	AutoscaleConfiguration *ApplicationGatewayAutoscaleConfiguration
 
 	// Backend address pool of the application gateway resource. For default limits, see Application Gateway limits
-	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	BackendAddressPools []*ApplicationGatewayBackendAddressPool
 
 	// Backend http settings of the application gateway resource. For default limits, see Application Gateway limits
-	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	BackendHTTPSettingsCollection []*ApplicationGatewayBackendHTTPSettings
 
 	// Backend settings of the application gateway resource. For default limits, see Application Gateway limits [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits]
-	// .
+// .
 	BackendSettingsCollection []*ApplicationGatewayBackendSettings
 
 	// Custom error configurations of the application gateway resource.
@@ -1394,7 +1392,7 @@ type ApplicationGatewayPropertiesFormat struct {
 	ForceFirewallPolicyAssociation *bool
 
 	// Frontend IP addresses of the application gateway resource. For default limits, see Application Gateway limits
-	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	FrontendIPConfigurations []*ApplicationGatewayFrontendIPConfiguration
 
 	// Frontend ports of the application gateway resource. For default limits, see Application Gateway limits [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
@@ -1422,7 +1420,7 @@ type ApplicationGatewayPropertiesFormat struct {
 	Probes []*ApplicationGatewayProbe
 
 	// Redirect configurations of the application gateway resource. For default limits, see Application Gateway limits
-	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	RedirectConfigurations []*ApplicationGatewayRedirectConfiguration
 
 	// Request routing rules of the application gateway resource.
@@ -1438,7 +1436,7 @@ type ApplicationGatewayPropertiesFormat struct {
 	SKU *ApplicationGatewaySKU
 
 	// SSL certificates of the application gateway resource. For default limits, see Application Gateway limits [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits]
-	// .
+// .
 	SSLCertificates []*ApplicationGatewaySSLCertificate
 
 	// SSL policy of the application gateway resource.
@@ -1448,11 +1446,11 @@ type ApplicationGatewayPropertiesFormat struct {
 	SSLProfiles []*ApplicationGatewaySSLProfile
 
 	// Trusted client certificates of the application gateway resource. For default limits, see Application Gateway limits
-	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	TrustedClientCertificates []*ApplicationGatewayTrustedClientCertificate
 
 	// Trusted Root certificates of the application gateway resource. For default limits, see Application Gateway limits
-	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	TrustedRootCertificates []*ApplicationGatewayTrustedRootCertificate
 
 	// URL path map of the application gateway resource. For default limits, see Application Gateway limits [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
@@ -1870,7 +1868,7 @@ type ApplicationGatewayURLConfiguration struct {
 	ModifiedQueryString *string
 
 	// If set as true, it will re-evaluate the url path map provided in path based request routing rules using modified path.
-	// Default value is false.
+// Default value is false.
 	Reroute *bool
 }
 
@@ -2028,8 +2026,8 @@ type ApplicationRule struct {
 func (a *ApplicationRule) GetFirewallPolicyRule() *FirewallPolicyRule {
 	return &FirewallPolicyRule{
 		Description: a.Description,
-		Name:        a.Name,
-		RuleType:    a.RuleType,
+		Name: a.Name,
+		RuleType: a.RuleType,
 	}
 }
 
@@ -2072,8 +2070,8 @@ type ApplicationSecurityGroupPropertiesFormat struct {
 	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The resource GUID property of the application security group resource. It uniquely identifies a resource, even
-	// if the user changes its name or migrate the resource across subscriptions or resource
-	// groups.
+// if the user changes its name or migrate the resource across subscriptions or resource
+// groups.
 	ResourceGUID *string
 }
 
@@ -2795,7 +2793,7 @@ type BackendAddressPool struct {
 	ID *string
 
 	// The name of the resource that is unique within the set of backend address pools used by the load balancer. This name can
-	// be used to access the resource.
+// be used to access the resource.
 	Name *string
 
 	// Properties of load balancer backend address pool.
@@ -3010,7 +3008,7 @@ type BastionHostPropertiesFormat struct {
 
 	// IP configuration of the Bastion Host resource.
 	IPConfigurations []*BastionHostIPConfiguration
-	NetworkACLs      *BastionHostPropertiesFormatNetworkACLs
+	NetworkACLs *BastionHostPropertiesFormatNetworkACLs
 
 	// The scale units for the Bastion Host resource.
 	ScaleUnits *int32
@@ -3248,7 +3246,7 @@ type ConfigurationDiagnosticParameters struct {
 	Profiles []*ConfigurationDiagnosticProfile
 
 	// REQUIRED; The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface,
-	// VMSS/NetworkInterface and Application Gateway.
+// VMSS/NetworkInterface and Application Gateway.
 	TargetResourceID *string
 
 	// Verbosity level.
@@ -3570,7 +3568,7 @@ type ConnectionMonitorTestConfiguration struct {
 	IcmpConfiguration *ConnectionMonitorIcmpConfiguration
 
 	// The preferred IP version to use in test evaluation. The connection monitor may choose to use a different version depending
-	// on other parameters.
+// on other parameters.
 	PreferredIPVersion *PreferredIPVersion
 
 	// The threshold for declaring a test successful.
@@ -4097,7 +4095,7 @@ type DdosCustomPolicyPropertiesFormat struct {
 	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The resource GUID property of the DDoS custom policy resource. It uniquely identifies the resource, even if
-	// the user changes its name or migrate the resource across subscriptions or resource groups.
+// the user changes its name or migrate the resource across subscriptions or resource groups.
 	ResourceGUID *string
 }
 
@@ -4143,7 +4141,7 @@ type DdosProtectionPlanPropertiesFormat struct {
 	PublicIPAddresses []*SubResource
 
 	// READ-ONLY; The resource GUID property of the DDoS protection plan resource. It uniquely identifies the resource, even if
-	// the user changes its name or migrate the resource across subscriptions or resource groups.
+// the user changes its name or migrate the resource across subscriptions or resource groups.
 	ResourceGUID *string
 
 	// READ-ONLY; The list of virtual networks associated with the DDoS protection plan resource. This list is read-only.
@@ -4180,7 +4178,7 @@ type DefaultAdminPropertiesFormat struct {
 	Direction *SecurityConfigurationRuleDirection
 
 	// READ-ONLY; The priority of the rule. The value can be between 1 and 4096. The priority number must be unique for each rule
-	// in the collection. The lower the priority number, the higher the priority of the rule.
+// in the collection. The lower the priority number, the higher the priority of the rule.
 	Priority *int32
 
 	// READ-ONLY; Network protocol this rule applies to.
@@ -4226,12 +4224,12 @@ type DefaultAdminRule struct {
 // GetBaseAdminRule implements the BaseAdminRuleClassification interface for type DefaultAdminRule.
 func (d *DefaultAdminRule) GetBaseAdminRule() *BaseAdminRule {
 	return &BaseAdminRule{
-		Etag:       d.Etag,
-		ID:         d.ID,
-		Kind:       d.Kind,
-		Name:       d.Name,
+		Etag: d.Etag,
+		ID: d.ID,
+		Kind: d.Kind,
+		Name: d.Name,
 		SystemData: d.SystemData,
-		Type:       d.Type,
+		Type: d.Type,
 	}
 }
 
@@ -4393,9 +4391,7 @@ type EffectiveBaseSecurityAdminRule struct {
 }
 
 // GetEffectiveBaseSecurityAdminRule implements the EffectiveBaseSecurityAdminRuleClassification interface for type EffectiveBaseSecurityAdminRule.
-func (e *EffectiveBaseSecurityAdminRule) GetEffectiveBaseSecurityAdminRule() *EffectiveBaseSecurityAdminRule {
-	return e
-}
+func (e *EffectiveBaseSecurityAdminRule) GetEffectiveBaseSecurityAdminRule() *EffectiveBaseSecurityAdminRule { return e }
 
 // EffectiveConnectivityConfiguration - The network manager effective connectivity configuration
 type EffectiveConnectivityConfiguration struct {
@@ -4436,12 +4432,12 @@ type EffectiveDefaultSecurityAdminRule struct {
 // GetEffectiveBaseSecurityAdminRule implements the EffectiveBaseSecurityAdminRuleClassification interface for type EffectiveDefaultSecurityAdminRule.
 func (e *EffectiveDefaultSecurityAdminRule) GetEffectiveBaseSecurityAdminRule() *EffectiveBaseSecurityAdminRule {
 	return &EffectiveBaseSecurityAdminRule{
-		ConfigurationDescription:      e.ConfigurationDescription,
-		ID:                            e.ID,
-		Kind:                          e.Kind,
+		ConfigurationDescription: e.ConfigurationDescription,
+		ID: e.ID,
+		Kind: e.Kind,
 		RuleCollectionAppliesToGroups: e.RuleCollectionAppliesToGroups,
-		RuleCollectionDescription:     e.RuleCollectionDescription,
-		RuleGroups:                    e.RuleGroups,
+		RuleCollectionDescription: e.RuleCollectionDescription,
+		RuleGroups: e.RuleGroups,
 	}
 }
 
@@ -4490,14 +4486,14 @@ type EffectiveNetworkSecurityRule struct {
 	DestinationAddressPrefix *string
 
 	// The destination address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AzureLoadBalancer,
-	// Internet), System Tags, and the asterisk (*).
+// Internet), System Tags, and the asterisk (*).
 	DestinationAddressPrefixes []*string
 
 	// The destination port or range.
 	DestinationPortRange *string
 
 	// The destination port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as separator
-	// (e.g. 100-400), or an asterisk (*).
+// (e.g. 100-400), or an asterisk (*).
 	DestinationPortRanges []*string
 
 	// The direction of the rule.
@@ -4522,14 +4518,14 @@ type EffectiveNetworkSecurityRule struct {
 	SourceAddressPrefix *string
 
 	// The source address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AzureLoadBalancer, Internet),
-	// System Tags, and the asterisk (*).
+// System Tags, and the asterisk (*).
 	SourceAddressPrefixes []*string
 
 	// The source port or range.
 	SourcePortRange *string
 
 	// The source port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as separator (e.g.
-	// 100-400), or an asterisk (*).
+// 100-400), or an asterisk (*).
 	SourcePortRanges []*string
 }
 
@@ -4590,7 +4586,7 @@ type EffectiveRoutesParameters struct {
 	ResourceID *string
 
 	// The type of the specified resource like RouteTable, ExpressRouteConnection, HubVirtualNetworkConnection, VpnConnection
-	// and P2SConnection.
+// and P2SConnection.
 	VirtualWanResourceType *string
 }
 
@@ -4621,12 +4617,12 @@ type EffectiveSecurityAdminRule struct {
 // GetEffectiveBaseSecurityAdminRule implements the EffectiveBaseSecurityAdminRuleClassification interface for type EffectiveSecurityAdminRule.
 func (e *EffectiveSecurityAdminRule) GetEffectiveBaseSecurityAdminRule() *EffectiveBaseSecurityAdminRule {
 	return &EffectiveBaseSecurityAdminRule{
-		ConfigurationDescription:      e.ConfigurationDescription,
-		ID:                            e.ID,
-		Kind:                          e.Kind,
+		ConfigurationDescription: e.ConfigurationDescription,
+		ID: e.ID,
+		Kind: e.Kind,
 		RuleCollectionAppliesToGroups: e.RuleCollectionAppliesToGroups,
-		RuleCollectionDescription:     e.RuleCollectionDescription,
-		RuleGroups:                    e.RuleGroups,
+		RuleCollectionDescription: e.RuleCollectionDescription,
+		RuleGroups: e.RuleGroups,
 	}
 }
 
@@ -5076,7 +5072,7 @@ type ExpressRouteCircuitRoutesTableSummary struct {
 	StatePfxRcd *string
 
 	// The length of time that the BGP session has been in the Established state, or the current status if not in the Established
-	// state.
+// state.
 	UpDown *string
 
 	// BGP version number spoken to the neighbor.
@@ -5186,7 +5182,7 @@ type ExpressRouteConnectionProperties struct {
 	EnableInternetSecurity *bool
 
 	// Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be
-	// enabled.
+// enabled.
 	EnablePrivateLinkFastPath *bool
 
 	// Enable FastPath to vWan Firewall hub.
@@ -5353,7 +5349,7 @@ type ExpressRouteCrossConnectionRoutesTableSummary struct {
 	StateOrPrefixesReceived *string
 
 	// The length of time that the BGP session has been in the Established state, or the current status if not in the Established
-	// state.
+// state.
 	UpDown *string
 }
 
@@ -5889,8 +5885,8 @@ type FirewallPolicyFilterRuleCollection struct {
 // GetFirewallPolicyRuleCollection implements the FirewallPolicyRuleCollectionClassification interface for type FirewallPolicyFilterRuleCollection.
 func (f *FirewallPolicyFilterRuleCollection) GetFirewallPolicyRuleCollection() *FirewallPolicyRuleCollection {
 	return &FirewallPolicyRuleCollection{
-		Name:               f.Name,
-		Priority:           f.Priority,
+		Name: f.Name,
+		Priority: f.Priority,
 		RuleCollectionType: f.RuleCollectionType,
 	}
 }
@@ -5964,8 +5960,8 @@ type FirewallPolicyIntrusionDetectionConfiguration struct {
 	BypassTrafficSettings []*FirewallPolicyIntrusionDetectionBypassTrafficSpecifications
 
 	// IDPS Private IP address ranges are used to identify traffic direction (i.e. inbound, outbound, etc.). By default, only
-	// ranges defined by IANA RFC 1918 are considered private IP addresses. To modify
-	// default ranges, specify your Private IP address ranges with this property
+// ranges defined by IANA RFC 1918 are considered private IP addresses. To modify
+// default ranges, specify your Private IP address ranges with this property
 	PrivateRanges []*string
 
 	// List of specific signatures states.
@@ -6029,8 +6025,8 @@ type FirewallPolicyNatRuleCollection struct {
 // GetFirewallPolicyRuleCollection implements the FirewallPolicyRuleCollectionClassification interface for type FirewallPolicyNatRuleCollection.
 func (f *FirewallPolicyNatRuleCollection) GetFirewallPolicyRuleCollection() *FirewallPolicyRuleCollection {
 	return &FirewallPolicyRuleCollection{
-		Name:               f.Name,
-		Priority:           f.Priority,
+		Name: f.Name,
+		Priority: f.Priority,
 		RuleCollectionType: f.RuleCollectionType,
 	}
 }
@@ -6129,9 +6125,7 @@ type FirewallPolicyRuleCollection struct {
 }
 
 // GetFirewallPolicyRuleCollection implements the FirewallPolicyRuleCollectionClassification interface for type FirewallPolicyRuleCollection.
-func (f *FirewallPolicyRuleCollection) GetFirewallPolicyRuleCollection() *FirewallPolicyRuleCollection {
-	return f
-}
+func (f *FirewallPolicyRuleCollection) GetFirewallPolicyRuleCollection() *FirewallPolicyRuleCollection { return f }
 
 // FirewallPolicyRuleCollectionGroup - Rule Collection Group resource.
 type FirewallPolicyRuleCollectionGroup struct {
@@ -6319,7 +6313,7 @@ type FrontendIPConfiguration struct {
 	ID *string
 
 	// The name of the resource that is unique within the set of frontend IP configurations used by the load balancer. This name
-	// can be used to access the resource.
+// can be used to access the resource.
 	Name *string
 
 	// Properties of the load balancer probe.
@@ -6443,7 +6437,7 @@ type GenerateExpressRoutePortsLOAResult struct {
 // GetInboundRoutesParameters - The parameters specifying the connection resource whose inbound routes are being requested.
 type GetInboundRoutesParameters struct {
 	// The type of the specified connection resource like ExpressRouteConnection, HubVirtualNetworkConnection, VpnConnection and
-	// P2SConnection.
+// P2SConnection.
 	ConnectionType *string
 
 	// The connection resource whose inbound routes are being requested.
@@ -6453,7 +6447,7 @@ type GetInboundRoutesParameters struct {
 // GetOutboundRoutesParameters - The parameters specifying the connection resource whose outbound routes are being requested.
 type GetOutboundRoutesParameters struct {
 	// The type of the specified connection resource like ExpressRouteConnection, HubVirtualNetworkConnection, VpnConnection and
-	// P2SConnection.
+// P2SConnection.
 	ConnectionType *string
 
 	// The connection resource whose outbound routes are being requested.
@@ -6976,11 +6970,11 @@ type IPSecPolicy struct {
 	PfsGroup *PfsGroup
 
 	// REQUIRED; The IPSec Security Association (also called Quick Mode or Phase 2 SA) payload size in KB for a site to site VPN
-	// tunnel.
+// tunnel.
 	SaDataSizeKilobytes *int32
 
 	// REQUIRED; The IPSec Security Association (also called Quick Mode or Phase 2 SA) lifetime in seconds for a site to site
-	// VPN tunnel.
+// VPN tunnel.
 	SaLifeTimeSeconds *int32
 }
 
@@ -7026,7 +7020,7 @@ type InboundNatPool struct {
 	ID *string
 
 	// The name of the resource that is unique within the set of inbound NAT pools used by the load balancer. This name can be
-	// used to access the resource.
+// used to access the resource.
 	Name *string
 
 	// Properties of load balancer inbound nat pool.
@@ -7045,30 +7039,30 @@ type InboundNatPoolPropertiesFormat struct {
 	BackendPort *int32
 
 	// REQUIRED; The last port number in the range of external ports that will be used to provide Inbound Nat to NICs associated
-	// with a load balancer. Acceptable values range between 1 and 65535.
+// with a load balancer. Acceptable values range between 1 and 65535.
 	FrontendPortRangeEnd *int32
 
 	// REQUIRED; The first port number in the range of external ports that will be used to provide Inbound Nat to NICs associated
-	// with a load balancer. Acceptable values range between 1 and 65534.
+// with a load balancer. Acceptable values range between 1 and 65534.
 	FrontendPortRangeStart *int32
 
 	// REQUIRED; The reference to the transport protocol used by the inbound NAT pool.
 	Protocol *TransportProtocol
 
 	// Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability
-	// Group. This setting is required when using the SQL AlwaysOn Availability Groups
-	// in SQL server. This setting can't be changed after you create the endpoint.
+// Group. This setting is required when using the SQL AlwaysOn Availability Groups
+// in SQL server. This setting can't be changed after you create the endpoint.
 	EnableFloatingIP *bool
 
 	// Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used
-	// when the protocol is set to TCP.
+// when the protocol is set to TCP.
 	EnableTCPReset *bool
 
 	// A reference to frontend IP addresses.
 	FrontendIPConfiguration *SubResource
 
 	// The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes.
-	// This element is only used when the protocol is set to TCP.
+// This element is only used when the protocol is set to TCP.
 	IdleTimeoutInMinutes *int32
 
 	// READ-ONLY; The provisioning state of the inbound NAT pool resource.
@@ -7081,7 +7075,7 @@ type InboundNatRule struct {
 	ID *string
 
 	// The name of the resource that is unique within the set of inbound NAT rules used by the load balancer. This name can be
-	// used to access the resource.
+// used to access the resource.
 	Name *string
 
 	// Properties of load balancer inbound NAT rule.
@@ -7127,40 +7121,40 @@ type InboundNatRulePropertiesFormat struct {
 	BackendPort *int32
 
 	// Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability
-	// Group. This setting is required when using the SQL AlwaysOn Availability Groups
-	// in SQL server. This setting can't be changed after you create the endpoint.
+// Group. This setting is required when using the SQL AlwaysOn Availability Groups
+// in SQL server. This setting can't be changed after you create the endpoint.
 	EnableFloatingIP *bool
 
 	// Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used
-	// when the protocol is set to TCP.
+// when the protocol is set to TCP.
 	EnableTCPReset *bool
 
 	// A reference to frontend IP addresses.
 	FrontendIPConfiguration *SubResource
 
 	// The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. Acceptable values
-	// range from 1 to 65534.
+// range from 1 to 65534.
 	FrontendPort *int32
 
 	// The port range end for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeStart.
-	// Individual inbound NAT rule port mappings will be created for each
-	// backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
+// Individual inbound NAT rule port mappings will be created for each
+// backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
 	FrontendPortRangeEnd *int32
 
 	// The port range start for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeEnd.
-	// Individual inbound NAT rule port mappings will be created for each
-	// backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
+// Individual inbound NAT rule port mappings will be created for each
+// backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
 	FrontendPortRangeStart *int32
 
 	// The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes.
-	// This element is only used when the protocol is set to TCP.
+// This element is only used when the protocol is set to TCP.
 	IdleTimeoutInMinutes *int32
 
 	// The reference to the transport protocol used by the load balancing rule.
 	Protocol *TransportProtocol
 
 	// READ-ONLY; A reference to a private IP address defined on a network interface of a VM. Traffic sent to the frontend port
-	// of each of the frontend IP configurations is forwarded to the backend IP.
+// of each of the frontend IP configurations is forwarded to the backend IP.
 	BackendIPConfiguration *InterfaceIPConfiguration
 
 	// READ-ONLY; The provisioning state of the inbound NAT rule resource.
@@ -7275,21 +7269,21 @@ type InterfaceAssociation struct {
 // InterfaceDNSSettings - DNS settings of a network interface.
 type InterfaceDNSSettings struct {
 	// List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided DNS resolution. 'AzureProvidedDNS'
-	// value cannot be combined with other IPs, it must be the only value in dnsServers
-	// collection.
+// value cannot be combined with other IPs, it must be the only value in dnsServers
+// collection.
 	DNSServers []*string
 
 	// Relative DNS name for this NIC used for internal communications between VMs in the same virtual network.
 	InternalDNSNameLabel *string
 
 	// READ-ONLY; If the VM that uses this NIC is part of an Availability Set, then this list will have the union of all DNS servers
-	// from all NICs that are part of the Availability Set. This property is what is
-	// configured on each of those VMs.
+// from all NICs that are part of the Availability Set. This property is what is
+// configured on each of those VMs.
 	AppliedDNSServers []*string
 
 	// READ-ONLY; Even if internalDnsNameLabel is not specified, a DNS entry is created for the primary NIC of the VM. This DNS
-	// name can be constructed by concatenating the VM name with the value of
-	// internalDomainNameSuffix.
+// name can be constructed by concatenating the VM name with the value of
+// internalDomainNameSuffix.
 	InternalDomainNameSuffix *string
 
 	// READ-ONLY; Fully qualified DNS name supporting internal communications between VMs in the same virtual network.
@@ -7413,7 +7407,7 @@ type InterfacePropertiesFormat struct {
 	DisableTCPStateTracking *bool
 
 	// If the network interface is configured for accelerated networking. Not applicable to VM sizes which require accelerated
-	// networking.
+// networking.
 	EnableAcceleratedNetworking *bool
 
 	// Indicates whether IP forwarding is enabled on this network interface.
@@ -7739,7 +7733,7 @@ type LoadBalancerBackendAddressPoolListResult struct {
 // LoadBalancerBackendAddressPropertiesFormat - Properties of the load balancer backend addresses.
 type LoadBalancerBackendAddressPropertiesFormat struct {
 	// A list of administrative states which once set can override health probe so that Load Balancer will always forward new
-	// connections to backend, or deny new connections and reset existing connections.
+// connections to backend, or deny new connections and reset existing connections.
 	AdminState *LoadBalancerBackendAddressAdminState
 
 	// IP Address belonging to the referenced virtual network.
@@ -7815,17 +7809,17 @@ type LoadBalancerPropertiesFormat struct {
 	FrontendIPConfigurations []*FrontendIPConfiguration
 
 	// Defines an external port range for inbound NAT to a single backend port on NICs associated with a load balancer. Inbound
-	// NAT rules are created automatically for each NIC associated with the Load
-	// Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is mutually exclusive
-	// with defining inbound NAT rules. Inbound NAT pools are referenced from virtual
-	// machine scale sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They
-	// have to reference individual inbound NAT rules.
+// NAT rules are created automatically for each NIC associated with the Load
+// Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is mutually exclusive
+// with defining inbound NAT rules. Inbound NAT pools are referenced from virtual
+// machine scale sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They
+// have to reference individual inbound NAT rules.
 	InboundNatPools []*InboundNatPool
 
 	// Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive
-	// with defining an inbound NAT pool. Inbound NAT pools are referenced from
-	// virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool.
-	// They have to reference individual inbound NAT rules.
+// with defining an inbound NAT pool. Inbound NAT pools are referenced from
+// virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool.
+// They have to reference individual inbound NAT rules.
 	InboundNatRules []*InboundNatRule
 
 	// Object collection representing the load balancing rules Gets the provisioning.
@@ -7881,7 +7875,7 @@ type LoadBalancingRule struct {
 	ID *string
 
 	// The name of the resource that is unique within the set of load balancing rules used by the load balancer. This name can
-	// be used to access the resource.
+// be used to access the resource.
 	Name *string
 
 	// Properties of load balancer load balancing rule.
@@ -7897,7 +7891,7 @@ type LoadBalancingRule struct {
 // LoadBalancingRulePropertiesFormat - Properties of the load balancer.
 type LoadBalancingRulePropertiesFormat struct {
 	// REQUIRED; The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. Acceptable
-	// values are between 0 and 65534. Note that value 0 enables "Any Port".
+// values are between 0 and 65534. Note that value 0 enables "Any Port".
 	FrontendPort *int32
 
 	// REQUIRED; The reference to the transport protocol used by the load balancing rule.
@@ -7910,27 +7904,27 @@ type LoadBalancingRulePropertiesFormat struct {
 	BackendAddressPools []*SubResource
 
 	// The port used for internal connections on the endpoint. Acceptable values are between 0 and 65535. Note that value 0 enables
-	// "Any Port".
+// "Any Port".
 	BackendPort *int32
 
 	// Configures SNAT for the VMs in the backend pool to use the publicIP address specified in the frontend of the load balancing
-	// rule.
+// rule.
 	DisableOutboundSnat *bool
 
 	// Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability
-	// Group. This setting is required when using the SQL AlwaysOn Availability Groups
-	// in SQL server. This setting can't be changed after you create the endpoint.
+// Group. This setting is required when using the SQL AlwaysOn Availability Groups
+// in SQL server. This setting can't be changed after you create the endpoint.
 	EnableFloatingIP *bool
 
 	// Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used
-	// when the protocol is set to TCP.
+// when the protocol is set to TCP.
 	EnableTCPReset *bool
 
 	// A reference to frontend IP addresses.
 	FrontendIPConfiguration *SubResource
 
 	// The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes.
-	// This element is only used when the protocol is set to TCP.
+// This element is only used when the protocol is set to TCP.
 	IdleTimeoutInMinutes *int32
 
 	// The load distribution policy for this rule.
@@ -8054,17 +8048,17 @@ type ManagedRulesDefinition struct {
 // ManagedServiceIdentity - Identity for the resource.
 type ManagedServiceIdentity struct {
 	// The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
-	// identity and a set of user assigned identities. The type 'None' will remove any
-	// identities from the virtual machine.
+// identity and a set of user assigned identities. The type 'None' will remove any
+// identities from the virtual machine.
 	Type *ResourceIdentityType
 
 	// The list of user identities associated with resource. The user identity dictionary key references will be ARM resource
-	// ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+// ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties
 
 	// READ-ONLY; The principal id of the system assigned identity. This property will only be provided for a system assigned
-	// identity.
+// identity.
 	PrincipalID *string
 
 	// READ-ONLY; The tenant id of the system assigned identity. This property will only be provided for a system assigned identity.
@@ -8179,7 +8173,7 @@ type ManagerDeploymentStatus struct {
 // ManagerDeploymentStatusListResult - A list of Network Manager Deployment Status
 type ManagerDeploymentStatusListResult struct {
 	// When present, the value can be passed to a subsequent query call (together with the same query and scopes used in the current
-	// request) to retrieve the next page of data.
+// request) to retrieve the next page of data.
 	SkipToken *string
 
 	// Gets a page of Network Manager Deployment Status
@@ -8202,7 +8196,7 @@ type ManagerDeploymentStatusParameter struct {
 // It contains a list of groups and a skiptoken to get the next set of results.
 type ManagerEffectiveConnectivityConfigurationListResult struct {
 	// When present, the value can be passed to a subsequent query call (together with the same query and scopes used in the current
-	// request) to retrieve the next page of data.
+// request) to retrieve the next page of data.
 	SkipToken *string
 
 	// Gets a page of NetworkManagerEffectiveConnectivityConfiguration
@@ -8213,7 +8207,7 @@ type ManagerEffectiveConnectivityConfigurationListResult struct {
 // It contains a list of groups and a skiptoken to get the next set of results.
 type ManagerEffectiveSecurityAdminRulesListResult struct {
 	// When present, the value can be passed to a subsequent query call (together with the same query and scopes used in the current
-	// request) to retrieve the next page of data.
+// request) to retrieve the next page of data.
 	SkipToken *string
 
 	// Gets a page of NetworkManagerEffectiveSecurityAdminRules
@@ -8465,8 +8459,8 @@ type NatRule struct {
 func (n *NatRule) GetFirewallPolicyRule() *FirewallPolicyRule {
 	return &FirewallPolicyRule{
 		Description: n.Description,
-		Name:        n.Name,
-		RuleType:    n.RuleType,
+		Name: n.Name,
+		RuleType: n.RuleType,
 	}
 }
 
@@ -8494,7 +8488,7 @@ type NextHopParameters struct {
 	TargetResourceID *string
 
 	// The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of the nics, then this parameter must be specified.
-	// Otherwise optional).
+// Otherwise optional).
 	TargetNicResourceID *string
 }
 
@@ -8507,8 +8501,8 @@ type NextHopResult struct {
 	NextHopType *NextHopType
 
 	// The resource identifier for the route table associated with the route being returned. If the route being returned does
-	// not correspond to any user created routes then this field will be the string
-	// 'System Route'.
+// not correspond to any user created routes then this field will be the string
+// 'System Route'.
 	RouteTableID *string
 }
 
@@ -8606,7 +8600,7 @@ type OutboundRule struct {
 	ID *string
 
 	// The name of the resource that is unique within the set of outbound rules used by the load balancer. This name can be used
-	// to access the resource.
+// to access the resource.
 	Name *string
 
 	// Properties of load balancer outbound rule.
@@ -8634,7 +8628,7 @@ type OutboundRulePropertiesFormat struct {
 	AllocatedOutboundPorts *int32
 
 	// Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used
-	// when the protocol is set to TCP.
+// when the protocol is set to TCP.
 	EnableTCPReset *bool
 
 	// The timeout for the TCP idle connection.
@@ -8650,11 +8644,11 @@ type OwaspCrsExclusionEntry struct {
 	MatchVariable *OwaspCrsExclusionEntryMatchVariable
 
 	// REQUIRED; When matchVariable is a collection, operator used to specify which elements in the collection this exclusion
-	// applies to.
+// applies to.
 	Selector *string
 
 	// REQUIRED; When matchVariable is a collection, operate on the selector to specify which elements in the collection this
-	// exclusion applies to.
+// exclusion applies to.
 	SelectorMatchOperator *OwaspCrsExclusionEntrySelectorMatchOperator
 
 	// The managed rule sets that are associated with the exclusion.
@@ -8784,26 +8778,26 @@ type PacketCapture struct {
 // PacketCaptureFilter - Filter that is applied to packet capture request. Multiple filters can be applied.
 type PacketCaptureFilter struct {
 	// Local IP Address to be filtered on. Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range.
-	// "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not currently
-	// supported. Mixing ranges with multiple entries not currently supported. Default = null.
+// "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not currently
+// supported. Mixing ranges with multiple entries not currently supported. Default = null.
 	LocalIPAddress *string
 
 	// Local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries. Multiple
-	// ranges not currently supported. Mixing ranges with multiple entries not
-	// currently supported. Default = null.
+// ranges not currently supported. Mixing ranges with multiple entries not
+// currently supported. Default = null.
 	LocalPort *string
 
 	// Protocol to be filtered on.
 	Protocol *PcProtocol
 
 	// Local IP Address to be filtered on. Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range.
-	// "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not currently
-	// supported. Mixing ranges with multiple entries not currently supported. Default = null.
+// "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not currently
+// supported. Mixing ranges with multiple entries not currently supported. Default = null.
 	RemoteIPAddress *string
 
 	// Remote port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries.
-	// Multiple ranges not currently supported. Mixing ranges with multiple entries not
-	// currently supported. Default = null.
+// Multiple ranges not currently supported. Mixing ranges with multiple entries not
+// currently supported. Default = null.
 	RemotePort *string
 }
 
@@ -8838,7 +8832,7 @@ type PacketCaptureParameters struct {
 	Filters []*PacketCaptureFilter
 
 	// A list of AzureVMSS instances which can be included or excluded to run packet capture. If both included and excluded are
-	// empty, then the packet capture will run on all instances of AzureVMSS.
+// empty, then the packet capture will run on all instances of AzureVMSS.
 	Scope *PacketCaptureMachineScope
 
 	// Target type of the resource provided.
@@ -8902,7 +8896,7 @@ type PacketCaptureResultProperties struct {
 	Filters []*PacketCaptureFilter
 
 	// A list of AzureVMSS instances which can be included or excluded to run packet capture. If both included and excluded are
-	// empty, then the packet capture will run on all instances of AzureVMSS.
+// empty, then the packet capture will run on all instances of AzureVMSS.
 	Scope *PacketCaptureMachineScope
 
 	// Target type of the resource provided.
@@ -8921,15 +8915,15 @@ type PacketCaptureResultProperties struct {
 // PacketCaptureStorageLocation - The storage location for a packet capture session.
 type PacketCaptureStorageLocation struct {
 	// A valid local path on the targeting VM. Must include the name of the capture file (*.cap). For linux virtual machine it
-	// must start with /var/captures. Required if no storage ID is provided, otherwise
-	// optional.
+// must start with /var/captures. Required if no storage ID is provided, otherwise
+// optional.
 	FilePath *string
 
 	// The ID of the storage account to save the packet capture session. Required if no local file path is provided.
 	StorageID *string
 
 	// The URI of the storage path to save the packet capture. Must be a well-formed URI describing the location to save the packet
-	// capture.
+// capture.
 	StoragePath *string
 }
 
@@ -9303,7 +9297,7 @@ type PrivateEndpointProperties struct {
 	IPConfigurations []*PrivateEndpointIPConfiguration
 
 	// A grouping of information about the connection to the remote resource. Used when the network admin does not have access
-	// to approve connections to the remote resource.
+// to approve connections to the remote resource.
 	ManualPrivateLinkServiceConnections []*PrivateLinkServiceConnection
 
 	// A grouping of information about the connection to the remote resource.
@@ -9500,7 +9494,7 @@ type Probe struct {
 	ID *string
 
 	// The name of the resource that is unique within the set of probes used by the load balancer. This name can be used to access
-	// the resource.
+// the resource.
 	Name *string
 
 	// Properties of load balancer probe.
@@ -9519,28 +9513,28 @@ type ProbePropertiesFormat struct {
 	Port *int32
 
 	// REQUIRED; The protocol of the end point. If 'Tcp' is specified, a received ACK is required for the probe to be successful.
-	// If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is required
-	// for the probe to be successful.
+// If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is required
+// for the probe to be successful.
 	Protocol *ProbeProtocol
 
 	// The interval, in seconds, for how frequently to probe the endpoint for health status. Typically, the interval is slightly
-	// less than half the allocated timeout period (in seconds) which allows two full
-	// probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
+// less than half the allocated timeout period (in seconds) which allows two full
+// probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
 	IntervalInSeconds *int32
 
 	// The number of probes where if no response, will result in stopping further traffic from being delivered to the endpoint.
-	// This values allows endpoints to be taken out of rotation faster or slower than
-	// the typical times used in Azure.
+// This values allows endpoints to be taken out of rotation faster or slower than
+// the typical times used in Azure.
 	NumberOfProbes *int32
 
 	// The number of consecutive successful or failed probes in order to allow or deny traffic from being delivered to this endpoint.
-	// After failing the number of consecutive probes equal to this value, the
-	// endpoint will be taken out of rotation and require the same number of successful consecutive probes to be placed back in
-	// rotation.
+// After failing the number of consecutive probes equal to this value, the
+// endpoint will be taken out of rotation and require the same number of successful consecutive probes to be placed back in
+// rotation.
 	ProbeThreshold *int32
 
 	// The URI used for requesting health status from the VM. Path is required if a protocol is set to http. Otherwise, it is
-	// not allowed. There is no default value.
+// not allowed. There is no default value.
 	RequestPath *string
 
 	// READ-ONLY; The load balancer rules that use this probe.
@@ -9658,22 +9652,22 @@ type PublicIPAddress struct {
 // PublicIPAddressDNSSettings - Contains FQDN of the DNS record associated with the public IP address.
 type PublicIPAddressDNSSettings struct {
 	// The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified
-	// domain name associated with the public IP address. If a domain name label is
-	// specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.
+// domain name associated with the public IP address. If a domain name label is
+// specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.
 	DomainNameLabel *string
 
 	// The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created
-	// for the public IP in the Microsoft Azure DNS system with a hashed value
-	// includes in FQDN.
+// for the public IP in the Microsoft Azure DNS system with a hashed value
+// includes in FQDN.
 	DomainNameLabelScope *PublicIPAddressDNSSettingsDomainNameLabelScope
 
 	// The Fully Qualified Domain Name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel
-	// and the regionalized DNS zone.
+// and the regionalized DNS zone.
 	Fqdn *string
 
 	// The reverse FQDN. A user-visible, fully qualified domain name that resolves to this public IP address. If the reverseFqdn
-	// is specified, then a PTR DNS record is created pointing from the IP address in
-	// the in-addr.arpa domain to the reverse FQDN.
+// is specified, then a PTR DNS record is created pointing from the IP address in
+// the in-addr.arpa domain to the reverse FQDN.
 	ReverseFqdn *string
 }
 
@@ -9897,7 +9891,7 @@ type QueryInboundNatRulePortMappingRequest struct {
 // QueryRequestOptions - Query Request Options
 type QueryRequestOptions struct {
 	// When present, the value can be passed to a subsequent query call (together with the same query and scopes used in the current
-	// request) to retrieve the next page of data.
+// request) to retrieve the next page of data.
 	SkipToken *string
 }
 
@@ -10377,8 +10371,8 @@ type Rule struct {
 func (r *Rule) GetFirewallPolicyRule() *FirewallPolicyRule {
 	return &FirewallPolicyRule{
 		Description: r.Description,
-		Name:        r.Name,
-		RuleType:    r.RuleType,
+		Name: r.Name,
+		RuleType: r.RuleType,
 	}
 }
 
@@ -10523,7 +10517,7 @@ type SecurityGroupNetworkInterface struct {
 // SecurityGroupPropertiesFormat - Network Security Group resource.
 type SecurityGroupPropertiesFormat struct {
 	// When enabled, flows created from Network Security Group connections will be re-evaluated when rules are updates. Initial
-	// enablement will trigger re-evaluation.
+// enablement will trigger re-evaluation.
 	FlushConnection *bool
 
 	// A collection of security rules of the network security group.
@@ -10669,7 +10663,7 @@ type SecurityRulePropertiesFormat struct {
 	Direction *SecurityRuleDirection
 
 	// REQUIRED; The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each
-	// rule in the collection. The lower the priority number, the higher the priority of the rule.
+// rule in the collection. The lower the priority number, the higher the priority of the rule.
 	Priority *int32
 
 	// REQUIRED; Network protocol this rule applies to.
@@ -10679,8 +10673,8 @@ type SecurityRulePropertiesFormat struct {
 	Description *string
 
 	// The destination address prefix. CIDR or destination IP range. Asterisk '*' can also be used to match all source IPs. Default
-	// tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also
-	// be used.
+// tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also
+// be used.
 	DestinationAddressPrefix *string
 
 	// The destination address prefixes. CIDR or destination IP ranges.
@@ -10696,8 +10690,8 @@ type SecurityRulePropertiesFormat struct {
 	DestinationPortRanges []*string
 
 	// The CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork',
-	// 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress
-	// rule, specifies where network traffic originates from.
+// 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress
+// rule, specifies where network traffic originates from.
 	SourceAddressPrefix *string
 
 	// The CIDR or source IP ranges.
@@ -11114,7 +11108,7 @@ type StaticRoutesConfig struct {
 	VnetLocalRouteOverrideCriteria *VnetLocalRouteOverrideCriteria
 
 	// READ-ONLY; Boolean indicating whether static routes on this connection are automatically propagate to route tables which
-	// this connection propagates to.
+// this connection propagates to.
 	PropagateStaticRoutes *bool
 }
 
@@ -11172,8 +11166,8 @@ type SubnetPropertiesFormat struct {
 	ApplicationGatewayIPConfigurations []*ApplicationGatewayIPConfiguration
 
 	// Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can only be
-	// set at the time of subnet creation and cannot be updated for an existing
-	// subnet.
+// set at the time of subnet creation and cannot be updated for an existing
+// subnet.
 	DefaultOutboundAccess *bool
 
 	// An array of references to the delegations on the subnet.
@@ -11216,7 +11210,7 @@ type SubnetPropertiesFormat struct {
 	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; A read-only string identifying the intention of use for this subnet based on delegations and other user-defined
-	// properties.
+// properties.
 	Purpose *string
 
 	// READ-ONLY; An array of references to the external resources using subnet.
@@ -11645,15 +11639,15 @@ type VPNClientParameters struct {
 	AuthenticationMethod *AuthenticationMethod
 
 	// A list of client root certificates public certificate data encoded as Base-64 strings. Optional parameter for external
-	// radius based authentication with EAPTLS.
+// radius based authentication with EAPTLS.
 	ClientRootCertificates []*string
 
 	// VPN client Processor Architecture.
 	ProcessorArchitecture *ProcessorArchitecture
 
 	// The public certificate data for the radius server authentication certificate as a Base-64 encoded string. Required only
-	// if external radius authentication has been configured with EAPTLS
-	// authentication.
+// if external radius authentication has been configured with EAPTLS
+// authentication.
 	RadiusServerAuthCertificate *string
 }
 
@@ -12136,7 +12130,7 @@ type VPNServerConfigurationProperties struct {
 	P2SVPNGateways []*P2SVPNGateway
 
 	// READ-ONLY; The provisioning state of the VpnServerConfiguration resource. Possible values are: 'Updating', 'Deleting',
-	// and 'Failed'.
+// and 'Failed'.
 	ProvisioningState *string
 }
 
@@ -12329,7 +12323,7 @@ type VerificationIPFlowParameters struct {
 	LocalIPAddress *string
 
 	// REQUIRED; The local port. Acceptable values are a single integer in the range (0-65535). Support for * for the source port,
-	// which depends on the direction.
+// which depends on the direction.
 	LocalPort *string
 
 	// REQUIRED; Protocol to be verified on.
@@ -12339,14 +12333,14 @@ type VerificationIPFlowParameters struct {
 	RemoteIPAddress *string
 
 	// REQUIRED; The remote port. Acceptable values are a single integer in the range (0-65535). Support for * for the source
-	// port, which depends on the direction.
+// port, which depends on the direction.
 	RemotePort *string
 
 	// REQUIRED; The ID of the target resource to perform next-hop on.
 	TargetResourceID *string
 
 	// The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of them, then this parameter must be specified.
-	// Otherwise optional).
+// Otherwise optional).
 	TargetNicResourceID *string
 }
 
@@ -12677,7 +12671,7 @@ type VirtualHubEffectiveRouteList struct {
 // VirtualHubID - Virtual Hub identifier.
 type VirtualHubID struct {
 	// The resource URI for the Virtual Hub where the ExpressRoute gateway is or will be deployed. The Virtual Hub resource and
-	// the ExpressRoute gateway resource reside in the same subscription.
+// the ExpressRoute gateway resource reside in the same subscription.
 	ID *string
 }
 
@@ -12979,7 +12973,7 @@ type VirtualNetworkGatewayConnectionListEntityPropertiesFormat struct {
 	EnableBgp *bool
 
 	// Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be
-	// enabled.
+// enabled.
 	EnablePrivateLinkFastPath *bool
 
 	// Bypass ExpressRoute Gateway for data forwarding.
@@ -13067,7 +13061,7 @@ type VirtualNetworkGatewayConnectionPropertiesFormat struct {
 	EnableBgp *bool
 
 	// Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be
-	// enabled.
+// enabled.
 	EnablePrivateLinkFastPath *bool
 
 	// Bypass ExpressRoute Gateway for data forwarding.
@@ -13266,11 +13260,11 @@ type VirtualNetworkGatewayPropertiesFormat struct {
 	Active *bool
 
 	// Property to indicate if the Express Route Gateway serves traffic when there are multiple Express Route Gateways in the
-	// vnet
+// vnet
 	AdminState *AdminState
 
 	// Configure this gateway to accept traffic from other Azure Virtual Networks. This configuration does not support connectivity
-	// to Azure Virtual WAN.
+// to Azure Virtual WAN.
 	AllowRemoteVnetTraffic *bool
 
 	// Configures this gateway to accept traffic from remote Virtual WAN networks.
@@ -13283,7 +13277,7 @@ type VirtualNetworkGatewayPropertiesFormat struct {
 	BgpSettings *BgpSettings
 
 	// The reference to the address space resource which represents the custom routes address space specified by the customer
-	// for virtual network gateway and VpnClient.
+// for virtual network gateway and VpnClient.
 	CustomRoutes *AddressSpace
 
 	// disableIPSecReplayProtection flag.
@@ -13302,7 +13296,7 @@ type VirtualNetworkGatewayPropertiesFormat struct {
 	EnablePrivateIPAddress *bool
 
 	// The reference to the LocalNetworkGateway resource which represents local network site having default routes. Assign Null
-	// value in case of removing existing default site setting.
+// value in case of removing existing default site setting.
 	GatewayDefaultSite *SubResource
 
 	// The type of this virtual network gateway.
@@ -13330,7 +13324,7 @@ type VirtualNetworkGatewayPropertiesFormat struct {
 	VPNType *VPNType
 
 	// The reference to the VirtualNetworkGatewayPolicyGroup resource which represents the available VirtualNetworkGatewayPolicyGroup
-	// for the gateway.
+// for the gateway.
 	VirtualNetworkGatewayPolicyGroups []*VirtualNetworkGatewayPolicyGroup
 
 	// READ-ONLY; The IP address allocated by the gateway to which dns requests can be sent.
@@ -13428,17 +13422,17 @@ type VirtualNetworkPeeringPropertiesFormat struct {
 	RemoteBgpCommunities *VirtualNetworkBgpCommunities
 
 	// The reference to the remote virtual network. The remote virtual network can be in the same or different region (preview).
-	// See here to register for the preview and learn more
-	// (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
+// See here to register for the preview and learn more
+// (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
 	RemoteVirtualNetwork *SubResource
 
 	// The reference to the current address space of the remote virtual network.
 	RemoteVirtualNetworkAddressSpace *AddressSpace
 
 	// If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering
-	// is also true, virtual network will use gateways of remote virtual network
-	// for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a
-	// gateway.
+// is also true, virtual network will use gateways of remote virtual network
+// for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a
+// gateway.
 	UseRemoteGateways *bool
 
 	// READ-ONLY; The provisioning state of the virtual network peering resource.
@@ -13466,7 +13460,7 @@ type VirtualNetworkPropertiesFormat struct {
 	DhcpOptions *DhcpOptions
 
 	// Indicates if DDoS protection is enabled for all the protected resources in the virtual network. It requires a DDoS protection
-	// plan associated with the resource.
+// plan associated with the resource.
 	EnableDdosProtection *bool
 
 	// Indicates if VM protection is enabled for all the subnets in the virtual network.
@@ -13930,7 +13924,7 @@ type WebApplicationFirewallScrubbingRules struct {
 	MatchVariable *ScrubbingRuleEntryMatchVariable
 
 	// REQUIRED; When matchVariable is a collection, operate on the selector to specify which elements in the collection this
-	// rule applies to.
+// rule applies to.
 	SelectorMatchOperator *ScrubbingRuleEntryMatchOperator
 
 	// When matchVariable is a collection, operator used to specify which elements in the collection this rule applies to.
@@ -13939,3 +13933,4 @@ type WebApplicationFirewallScrubbingRules struct {
 	// Defines the state of log scrubbing rule. Default value is Enabled.
 	State *ScrubbingRuleEntryState
 }
+

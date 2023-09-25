@@ -23,7 +23,7 @@ import (
 // SimsClient contains the methods for the Sims group.
 // Don't use this type directly, use NewSimsClient() instead.
 type SimsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSimsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	}
 	client := &SimsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -108,8 +108,8 @@ func (client *SimsClient) bulkDeleteCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -178,8 +178,8 @@ func (client *SimsClient) bulkUploadCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -249,8 +249,8 @@ func (client *SimsClient) bulkUploadEncryptedCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -325,8 +325,8 @@ func (client *SimsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -469,7 +469,7 @@ func (client *SimsClient) getHandleResponse(resp *http.Response) (SimsClientGetR
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - simGroupName - The name of the SIM Group.
 //   - options - SimsClientListByGroupOptions contains the optional parameters for the SimsClient.NewListByGroupPager method.
-func (client *SimsClient) NewListByGroupPager(resourceGroupName string, simGroupName string, options *SimsClientListByGroupOptions) *runtime.Pager[SimsClientListByGroupResponse] {
+func (client *SimsClient) NewListByGroupPager(resourceGroupName string, simGroupName string, options *SimsClientListByGroupOptions) (*runtime.Pager[SimsClientListByGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SimsClientListByGroupResponse]{
 		More: func(page SimsClientListByGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -528,3 +528,4 @@ func (client *SimsClient) listByGroupHandleResponse(resp *http.Response) (SimsCl
 	}
 	return result, nil
 }
+

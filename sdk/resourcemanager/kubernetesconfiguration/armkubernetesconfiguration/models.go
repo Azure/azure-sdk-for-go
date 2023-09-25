@@ -19,7 +19,7 @@ type AzureBlobDefinition struct {
 	ContainerName *string
 
 	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
-	// configuration secrets.
+// configuration secrets.
 	LocalAuthRef *string
 
 	// Parameters to authenticate using a Managed Identity.
@@ -50,7 +50,7 @@ type AzureBlobPatchDefinition struct {
 	ContainerName *string
 
 	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
-	// configuration secrets.
+// configuration secrets.
 	LocalAuthRef *string
 
 	// Parameters to authenticate using a Managed Identity.
@@ -84,7 +84,7 @@ type BucketDefinition struct {
 	Insecure *bool
 
 	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
-	// configuration secrets.
+// configuration secrets.
 	LocalAuthRef *string
 
 	// The interval at which to re-reconcile the cluster bucket source with the remote.
@@ -109,7 +109,7 @@ type BucketPatchDefinition struct {
 	Insecure *bool
 
 	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
-	// configuration secrets.
+// configuration secrets.
 	LocalAuthRef *string
 
 	// The interval at which to re-reconcile the cluster bucket source with the remote.
@@ -210,11 +210,11 @@ type ExtensionProperties struct {
 	ConfigurationSettings map[string]*string
 
 	// Type of the Extension, of which this resource is an instance of. It must be one of the Extension Types registered with
-	// Microsoft.KubernetesConfiguration by the Extension publisher.
+// Microsoft.KubernetesConfiguration by the Extension publisher.
 	ExtensionType *string
 
 	// ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion
-	// is 'true'.
+// is 'true'.
 	ReleaseTrain *string
 
 	// Scope at which the extension is installed.
@@ -224,7 +224,7 @@ type ExtensionProperties struct {
 	Statuses []*ExtensionStatus
 
 	// User-specified version of the extension for this extension to 'pin'. To use 'version', autoUpgradeMinorVersion must be
-	// 'false'.
+// 'false'.
 	Version *string
 
 	// READ-ONLY; Currently installed version of the extension.
@@ -352,7 +352,7 @@ type FluxConfigurationProperties struct {
 	Kustomizations map[string]*KustomizationDefinition
 
 	// The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and
-	// period only.
+// period only.
 	Namespace *string
 
 	// Maximum duration to wait for flux configuration reconciliation. E.g PT1H, PT5M, P1D
@@ -371,7 +371,7 @@ type FluxConfigurationProperties struct {
 	WaitForReconciliation *bool
 
 	// READ-ONLY; Combined status of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed
-	// objects.
+// objects.
 	ComplianceState *FluxComplianceState
 
 	// READ-ONLY; Error message returned to the user in the case of provisioning failure.
@@ -393,7 +393,7 @@ type FluxConfigurationProperties struct {
 	StatusUpdatedAt *time.Time
 
 	// READ-ONLY; Statuses of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed objects
-	// provisioned by the fluxConfiguration.
+// provisioned by the fluxConfiguration.
 	Statuses []*ObjectStatusDefinition
 }
 
@@ -416,7 +416,7 @@ type GitRepositoryDefinition struct {
 	HTTPSUser *string
 
 	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
-	// configuration secrets.
+// configuration secrets.
 	LocalAuthRef *string
 
 	// The source reference for the GitRepository object.
@@ -444,7 +444,7 @@ type GitRepositoryPatchDefinition struct {
 	HTTPSUser *string
 
 	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
-	// configuration secrets.
+// configuration secrets.
 	LocalAuthRef *string
 
 	// The source reference for the GitRepository object.
@@ -505,7 +505,7 @@ type Identity struct {
 // KustomizationDefinition - The Kustomization defining how to reconcile the artifact pulled by the source type on the cluster.
 type KustomizationDefinition struct {
 	// Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until all dependencies
-	// have completed their reconciliation.
+// have completed their reconciliation.
 	DependsOn []*string
 
 	// Enable/disable re-creating Kubernetes resources on the cluster when patching fails due to an immutable field change.
@@ -540,7 +540,7 @@ type KustomizationDefinition struct {
 // cluster.
 type KustomizationPatchDefinition struct {
 	// Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until all dependencies
-	// have completed their reconciliation.
+// have completed their reconciliation.
 	DependsOn []*string
 
 	// Enable/disable re-creating Kubernetes resources on the cluster when patching fails due to an immutable field change.
@@ -676,7 +676,7 @@ type PatchExtensionProperties struct {
 	ConfigurationSettings map[string]*string
 
 	// ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion
-	// is 'true'.
+// is 'true'.
 	ReleaseTrain *string
 
 	// Version of the extension for this extension, if it is 'pinned' to a specific version. autoUpgradeMinorVersion must be 'false'.
@@ -689,7 +689,7 @@ type Plan struct {
 	Name *string
 
 	// REQUIRED; The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact
-	// at the time of Data Market onboarding.
+// at the time of Data Market onboarding.
 	Product *string
 
 	// REQUIRED; The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
@@ -803,14 +803,14 @@ type Scope struct {
 // ScopeCluster - Specifies that the scope of the extension is Cluster
 type ScopeCluster struct {
 	// Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist,
-	// it will be created
+// it will be created
 	ReleaseNamespace *string
 }
 
 // ScopeNamespace - Specifies that the scope of the extension is Namespace
 type ScopeNamespace struct {
 	// Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will
-	// be created
+// be created
 	TargetNamespace *string
 }
 
@@ -823,7 +823,7 @@ type ServicePrincipalDefinition struct {
 	ClientCertificatePassword *string
 
 	// Specifies whether to include x5c header in client claims when acquiring a token to enable subject name / issuer based authentication
-	// for the Client Certificate
+// for the Client Certificate
 	ClientCertificateSendChain *bool
 
 	// The client Id for authenticating a Service Principal.
@@ -845,7 +845,7 @@ type ServicePrincipalPatchDefinition struct {
 	ClientCertificatePassword *string
 
 	// Specifies whether to include x5c header in client claims when acquiring a token to enable subject name / issuer based authentication
-	// for the Client Certificate
+// for the Client Certificate
 	ClientCertificateSendChain *bool
 
 	// The client Id for authenticating a Service Principal.
@@ -901,7 +901,7 @@ type SourceControlConfigurationProperties struct {
 	OperatorInstanceName *string
 
 	// The namespace to which this operator is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period
-	// only.
+// only.
 	OperatorNamespace *string
 
 	// Any Parameters for the Operator instance in string format.
@@ -926,7 +926,7 @@ type SourceControlConfigurationProperties struct {
 	ProvisioningState *ProvisioningStateType
 
 	// READ-ONLY; Public Key associated with this SourceControl configuration (either generated within the cluster or provided
-	// by the user).
+// by the user).
 	RepositoryPublicKey *string
 }
 
@@ -962,3 +962,4 @@ type SystemData struct {
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
 }
+

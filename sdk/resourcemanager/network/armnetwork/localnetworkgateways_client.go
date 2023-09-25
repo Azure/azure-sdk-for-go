@@ -23,7 +23,7 @@ import (
 // LocalNetworkGatewaysClient contains the methods for the LocalNetworkGateways group.
 // Don't use this type directly, use NewLocalNetworkGatewaysClient() instead.
 type LocalNetworkGatewaysClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewLocalNetworkGatewaysClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &LocalNetworkGatewaysClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *LocalNetworkGatewaysClient) createOrUpdateCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -255,7 +255,7 @@ func (client *LocalNetworkGatewaysClient) getHandleResponse(resp *http.Response)
 //   - resourceGroupName - The name of the resource group.
 //   - options - LocalNetworkGatewaysClientListOptions contains the optional parameters for the LocalNetworkGatewaysClient.NewListPager
 //     method.
-func (client *LocalNetworkGatewaysClient) NewListPager(resourceGroupName string, options *LocalNetworkGatewaysClientListOptions) *runtime.Pager[LocalNetworkGatewaysClientListResponse] {
+func (client *LocalNetworkGatewaysClient) NewListPager(resourceGroupName string, options *LocalNetworkGatewaysClientListOptions) (*runtime.Pager[LocalNetworkGatewaysClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LocalNetworkGatewaysClientListResponse]{
 		More: func(page LocalNetworkGatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -365,8 +365,8 @@ func (client *LocalNetworkGatewaysClient) updateTagsCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -378,3 +378,4 @@ func (client *LocalNetworkGatewaysClient) updateTagsHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

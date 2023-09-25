@@ -23,7 +23,7 @@ import (
 // AzureMonitorWorkspacesClient contains the methods for the AzureMonitorWorkspaces group.
 // Don't use this type directly, use NewAzureMonitorWorkspacesClient() instead.
 type AzureMonitorWorkspacesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAzureMonitorWorkspacesClient(subscriptionID string, credential azcore.To
 	}
 	client := &AzureMonitorWorkspacesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -98,8 +98,8 @@ func (client *AzureMonitorWorkspacesClient) createCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, azureMonitorWorkspaceProperties); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -238,13 +238,13 @@ func (client *AzureMonitorWorkspacesClient) getHandleResponse(resp *http.Respons
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AzureMonitorWorkspacesClientListByResourceGroupOptions contains the optional parameters for the AzureMonitorWorkspacesClient.NewListByResourceGroupPager
 //     method.
-func (client *AzureMonitorWorkspacesClient) NewListByResourceGroupPager(resourceGroupName string, options *AzureMonitorWorkspacesClientListByResourceGroupOptions) *runtime.Pager[AzureMonitorWorkspacesClientListByResourceGroupResponse] {
+func (client *AzureMonitorWorkspacesClient) NewListByResourceGroupPager(resourceGroupName string, options *AzureMonitorWorkspacesClientListByResourceGroupOptions) (*runtime.Pager[AzureMonitorWorkspacesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AzureMonitorWorkspacesClientListByResourceGroupResponse]{
 		More: func(page AzureMonitorWorkspacesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AzureMonitorWorkspacesClientListByResourceGroupResponse) (AzureMonitorWorkspacesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AzureMonitorWorkspacesClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AzureMonitorWorkspacesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -304,13 +304,13 @@ func (client *AzureMonitorWorkspacesClient) listByResourceGroupHandleResponse(re
 // Generated from API version 2021-06-03-preview
 //   - options - AzureMonitorWorkspacesClientListBySubscriptionOptions contains the optional parameters for the AzureMonitorWorkspacesClient.NewListBySubscriptionPager
 //     method.
-func (client *AzureMonitorWorkspacesClient) NewListBySubscriptionPager(options *AzureMonitorWorkspacesClientListBySubscriptionOptions) *runtime.Pager[AzureMonitorWorkspacesClientListBySubscriptionResponse] {
+func (client *AzureMonitorWorkspacesClient) NewListBySubscriptionPager(options *AzureMonitorWorkspacesClientListBySubscriptionOptions) (*runtime.Pager[AzureMonitorWorkspacesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AzureMonitorWorkspacesClientListBySubscriptionResponse]{
 		More: func(page AzureMonitorWorkspacesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AzureMonitorWorkspacesClientListBySubscriptionResponse) (AzureMonitorWorkspacesClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AzureMonitorWorkspacesClient.NewListBySubscriptionPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AzureMonitorWorkspacesClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -416,8 +416,8 @@ func (client *AzureMonitorWorkspacesClient) updateCreateRequest(ctx context.Cont
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.AzureMonitorWorkspaceProperties != nil {
 		if err := runtime.MarshalAsJSON(req, *options.AzureMonitorWorkspaceProperties); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -431,3 +431,4 @@ func (client *AzureMonitorWorkspacesClient) updateHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

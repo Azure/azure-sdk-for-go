@@ -23,7 +23,7 @@ import (
 // LoadBalancerProbesClient contains the methods for the LoadBalancerProbes group.
 // Don't use this type directly, use NewLoadBalancerProbesClient() instead.
 type LoadBalancerProbesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewLoadBalancerProbesClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &LoadBalancerProbesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,7 +116,7 @@ func (client *LoadBalancerProbesClient) getHandleResponse(resp *http.Response) (
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerProbesClientListOptions contains the optional parameters for the LoadBalancerProbesClient.NewListPager
 //     method.
-func (client *LoadBalancerProbesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesClientListOptions) *runtime.Pager[LoadBalancerProbesClientListResponse] {
+func (client *LoadBalancerProbesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesClientListOptions) (*runtime.Pager[LoadBalancerProbesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LoadBalancerProbesClientListResponse]{
 		More: func(page LoadBalancerProbesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -178,3 +178,4 @@ func (client *LoadBalancerProbesClient) listHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

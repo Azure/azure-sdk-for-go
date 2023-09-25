@@ -221,3 +221,4 @@ type ResourceClientTestRouteOptions struct {
 type ResourceProviderCommonClientGetSubscriptionQuotaOptions struct {
 	// placeholder for future optional parameters
 }
+

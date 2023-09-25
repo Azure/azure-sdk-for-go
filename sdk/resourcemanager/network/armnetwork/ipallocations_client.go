@@ -23,7 +23,7 @@ import (
 // IPAllocationsClient contains the methods for the IPAllocations group.
 // Don't use this type directly, use NewIPAllocationsClient() instead.
 type IPAllocationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewIPAllocationsClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &IPAllocationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *IPAllocationsClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -255,7 +255,7 @@ func (client *IPAllocationsClient) getHandleResponse(resp *http.Response) (IPAll
 //
 // Generated from API version 2023-05-01
 //   - options - IPAllocationsClientListOptions contains the optional parameters for the IPAllocationsClient.NewListPager method.
-func (client *IPAllocationsClient) NewListPager(options *IPAllocationsClientListOptions) *runtime.Pager[IPAllocationsClientListResponse] {
+func (client *IPAllocationsClient) NewListPager(options *IPAllocationsClientListOptions) (*runtime.Pager[IPAllocationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[IPAllocationsClientListResponse]{
 		More: func(page IPAllocationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -316,7 +316,7 @@ func (client *IPAllocationsClient) listHandleResponse(resp *http.Response) (IPAl
 //   - resourceGroupName - The name of the resource group.
 //   - options - IPAllocationsClientListByResourceGroupOptions contains the optional parameters for the IPAllocationsClient.NewListByResourceGroupPager
 //     method.
-func (client *IPAllocationsClient) NewListByResourceGroupPager(resourceGroupName string, options *IPAllocationsClientListByResourceGroupOptions) *runtime.Pager[IPAllocationsClientListByResourceGroupResponse] {
+func (client *IPAllocationsClient) NewListByResourceGroupPager(resourceGroupName string, options *IPAllocationsClientListByResourceGroupOptions) (*runtime.Pager[IPAllocationsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[IPAllocationsClientListByResourceGroupResponse]{
 		More: func(page IPAllocationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -426,8 +426,8 @@ func (client *IPAllocationsClient) updateTagsCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -439,3 +439,4 @@ func (client *IPAllocationsClient) updateTagsHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

@@ -193,9 +193,9 @@ type BmcKeySetsClientUpdateResponse struct {
 // CloudServicesNetworksClientCreateOrUpdateResponse contains the response from method CloudServicesNetworksClient.BeginCreateOrUpdate.
 type CloudServicesNetworksClientCreateOrUpdateResponse struct {
 	// Upon creation, the additional services that are provided by the platform will be allocated and
-	// represented in the status of this resource. All resources associated with this cloud services network will be part
-	// of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
-	// virtual machines and/or Hybrid AKS clusters.
+// represented in the status of this resource. All resources associated with this cloud services network will be part
+// of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
+// virtual machines and/or Hybrid AKS clusters.
 	CloudServicesNetwork
 }
 
@@ -207,9 +207,9 @@ type CloudServicesNetworksClientDeleteResponse struct {
 // CloudServicesNetworksClientGetResponse contains the response from method CloudServicesNetworksClient.Get.
 type CloudServicesNetworksClientGetResponse struct {
 	// Upon creation, the additional services that are provided by the platform will be allocated and
-	// represented in the status of this resource. All resources associated with this cloud services network will be part
-	// of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
-	// virtual machines and/or Hybrid AKS clusters.
+// represented in the status of this resource. All resources associated with this cloud services network will be part
+// of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
+// virtual machines and/or Hybrid AKS clusters.
 	CloudServicesNetwork
 }
 
@@ -228,9 +228,9 @@ type CloudServicesNetworksClientListBySubscriptionResponse struct {
 // CloudServicesNetworksClientUpdateResponse contains the response from method CloudServicesNetworksClient.BeginUpdate.
 type CloudServicesNetworksClientUpdateResponse struct {
 	// Upon creation, the additional services that are provided by the platform will be allocated and
-	// represented in the status of this resource. All resources associated with this cloud services network will be part
-	// of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
-	// virtual machines and/or Hybrid AKS clusters.
+// represented in the status of this resource. All resources associated with this cloud services network will be part
+// of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
+// virtual machines and/or Hybrid AKS clusters.
 	CloudServicesNetwork
 }
 
@@ -713,3 +713,4 @@ type VolumesClientUpdateResponse struct {
 	// Volume represents storage made available for use by resources running on the cluster.
 	Volume
 }
+

@@ -19,10 +19,11 @@ import (
 )
 
 // EventCategoriesServer is a fake server for instances of the armmonitor.EventCategoriesClient type.
-type EventCategoriesServer struct {
+type EventCategoriesServer struct{
 	// NewListPager is the fake for method EventCategoriesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armmonitor.EventCategoriesClientListOptions) (resp azfake.PagerResponder[armmonitor.EventCategoriesClientListResponse])
+
 }
 
 // NewEventCategoriesServerTransport creates a new instance of EventCategoriesServerTransport with the provided implementation.
@@ -30,7 +31,7 @@ type EventCategoriesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewEventCategoriesServerTransport(srv *EventCategoriesServer) *EventCategoriesServerTransport {
 	return &EventCategoriesServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armmonitor.EventCategoriesClientListResponse]](),
 	}
 }
@@ -38,7 +39,7 @@ func NewEventCategoriesServerTransport(srv *EventCategoriesServer) *EventCategor
 // EventCategoriesServerTransport connects instances of armmonitor.EventCategoriesClient to instances of EventCategoriesServer.
 // Don't use this type directly, use NewEventCategoriesServerTransport instead.
 type EventCategoriesServerTransport struct {
-	srv          *EventCategoriesServer
+	srv *EventCategoriesServer
 	newListPager *tracker[azfake.PagerResponder[armmonitor.EventCategoriesClientListResponse]]
 }
 
@@ -73,7 +74,7 @@ func (e *EventCategoriesServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := e.newListPager.get(req)
 	if newListPager == nil {
-		resp := e.srv.NewListPager(nil)
+resp := e.srv.NewListPager(nil)
 		newListPager = &resp
 		e.newListPager.add(req, newListPager)
 	}
@@ -90,3 +91,4 @@ func (e *EventCategoriesServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	return resp, nil
 }
+

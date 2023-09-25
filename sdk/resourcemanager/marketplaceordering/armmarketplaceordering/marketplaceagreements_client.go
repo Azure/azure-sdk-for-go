@@ -23,7 +23,7 @@ import (
 // MarketplaceAgreementsClient contains the methods for the MarketplaceAgreements group.
 // Don't use this type directly, use NewMarketplaceAgreementsClient() instead.
 type MarketplaceAgreementsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewMarketplaceAgreementsClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &MarketplaceAgreementsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -178,8 +178,8 @@ func (client *MarketplaceAgreementsClient) createCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -461,3 +461,4 @@ func (client *MarketplaceAgreementsClient) signHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

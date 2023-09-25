@@ -89,3 +89,4 @@ type ServiceConfigurationsClientListByEndpointResourceOptions struct {
 type ServiceConfigurationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
+

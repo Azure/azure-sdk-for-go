@@ -23,7 +23,7 @@ import (
 // TagRulesClient contains the methods for the TagRules group.
 // Don't use this type directly, use NewTagRulesClient() instead.
 type TagRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTagRulesClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &TagRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,8 +117,8 @@ func (client *TagRulesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -267,7 +267,7 @@ func (client *TagRulesClient) getHandleResponse(resp *http.Response) (TagRulesCl
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - TagRulesClientListOptions contains the optional parameters for the TagRulesClient.NewListPager method.
-func (client *TagRulesClient) NewListPager(resourceGroupName string, monitorName string, options *TagRulesClientListOptions) *runtime.Pager[TagRulesClientListResponse] {
+func (client *TagRulesClient) NewListPager(resourceGroupName string, monitorName string, options *TagRulesClientListOptions) (*runtime.Pager[TagRulesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TagRulesClientListResponse]{
 		More: func(page TagRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -329,3 +329,4 @@ func (client *TagRulesClient) listHandleResponse(resp *http.Response) (TagRulesC
 	}
 	return result, nil
 }
+

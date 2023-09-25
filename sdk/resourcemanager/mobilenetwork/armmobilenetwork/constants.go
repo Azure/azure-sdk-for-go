@@ -9,7 +9,7 @@
 package armmobilenetwork
 
 const (
-	moduleName    = "armmobilenetwork"
+	moduleName = "armmobilenetwork"
 	moduleVersion = "v3.0.0"
 )
 
@@ -25,7 +25,7 @@ const (
 
 // PossibleAuthenticationTypeValues returns the possible values for the AuthenticationType const type.
 func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return []AuthenticationType{
+	return []AuthenticationType{	
 		AuthenticationTypeAAD,
 		AuthenticationTypePassword,
 	}
@@ -50,7 +50,7 @@ const (
 
 // PossibleBillingSKUValues returns the possible values for the BillingSKU const type.
 func PossibleBillingSKUValues() []BillingSKU {
-	return []BillingSKU{
+	return []BillingSKU{	
 		BillingSKUG0,
 		BillingSKUG1,
 		BillingSKUG10,
@@ -73,7 +73,7 @@ const (
 
 // PossibleCertificateProvisioningStateValues returns the possible values for the CertificateProvisioningState const type.
 func PossibleCertificateProvisioningStateValues() []CertificateProvisioningState {
-	return []CertificateProvisioningState{
+	return []CertificateProvisioningState{	
 		CertificateProvisioningStateFailed,
 		CertificateProvisioningStateNotProvisioned,
 		CertificateProvisioningStateProvisioned,
@@ -94,7 +94,7 @@ const (
 
 // PossibleCoreNetworkTypeValues returns the possible values for the CoreNetworkType const type.
 func PossibleCoreNetworkTypeValues() []CoreNetworkType {
-	return []CoreNetworkType{
+	return []CoreNetworkType{	
 		CoreNetworkTypeEPC,
 		CoreNetworkTypeEPC5GC,
 		CoreNetworkTypeFiveGC,
@@ -105,15 +105,15 @@ func PossibleCoreNetworkTypeValues() []CoreNetworkType {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -133,7 +133,7 @@ const (
 
 // PossibleDesiredInstallationStateValues returns the possible values for the DesiredInstallationState const type.
 func PossibleDesiredInstallationStateValues() []DesiredInstallationState {
-	return []DesiredInstallationState{
+	return []DesiredInstallationState{	
 		DesiredInstallationStateInstalled,
 		DesiredInstallationStateUninstalled,
 	}
@@ -143,15 +143,15 @@ func PossibleDesiredInstallationStateValues() []DesiredInstallationState {
 type DiagnosticsPackageStatus string
 
 const (
-	DiagnosticsPackageStatusCollected  DiagnosticsPackageStatus = "Collected"
+	DiagnosticsPackageStatusCollected DiagnosticsPackageStatus = "Collected"
 	DiagnosticsPackageStatusCollecting DiagnosticsPackageStatus = "Collecting"
-	DiagnosticsPackageStatusError      DiagnosticsPackageStatus = "Error"
+	DiagnosticsPackageStatusError DiagnosticsPackageStatus = "Error"
 	DiagnosticsPackageStatusNotStarted DiagnosticsPackageStatus = "NotStarted"
 )
 
 // PossibleDiagnosticsPackageStatusValues returns the possible values for the DiagnosticsPackageStatus const type.
 func PossibleDiagnosticsPackageStatusValues() []DiagnosticsPackageStatus {
-	return []DiagnosticsPackageStatus{
+	return []DiagnosticsPackageStatus{	
 		DiagnosticsPackageStatusCollected,
 		DiagnosticsPackageStatusCollecting,
 		DiagnosticsPackageStatusError,
@@ -173,7 +173,7 @@ const (
 
 // PossibleInstallationReasonValues returns the possible values for the InstallationReason const type.
 func PossibleInstallationReasonValues() []InstallationReason {
-	return []InstallationReason{
+	return []InstallationReason{	
 		InstallationReasonNoAttachedDataNetworks,
 		InstallationReasonNoPacketCoreDataPlane,
 		InstallationReasonNoSlices,
@@ -206,7 +206,7 @@ const (
 
 // PossibleInstallationStateValues returns the possible values for the InstallationState const type.
 func PossibleInstallationStateValues() []InstallationState {
-	return []InstallationState{
+	return []InstallationState{	
 		InstallationStateFailed,
 		InstallationStateInstalled,
 		InstallationStateInstalling,
@@ -223,13 +223,13 @@ func PossibleInstallationStateValues() []InstallationState {
 type ManagedServiceIdentityType string
 
 const (
-	ManagedServiceIdentityTypeNone         ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
 	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
 
 // PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{
+	return []ManagedServiceIdentityType{	
 		ManagedServiceIdentityTypeNone,
 		ManagedServiceIdentityTypeUserAssigned,
 	}
@@ -247,7 +247,7 @@ const (
 
 // PossibleNaptEnabledValues returns the possible values for the NaptEnabled const type.
 func PossibleNaptEnabledValues() []NaptEnabled {
-	return []NaptEnabled{
+	return []NaptEnabled{	
 		NaptEnabledDisabled,
 		NaptEnabledEnabled,
 	}
@@ -265,7 +265,7 @@ const (
 
 // PossibleObsoleteVersionValues returns the possible values for the ObsoleteVersion const type.
 func PossibleObsoleteVersionValues() []ObsoleteVersion {
-	return []ObsoleteVersion{
+	return []ObsoleteVersion{	
 		ObsoleteVersionNotObsolete,
 		ObsoleteVersionObsolete,
 	}
@@ -275,15 +275,15 @@ func PossibleObsoleteVersionValues() []ObsoleteVersion {
 type PacketCaptureStatus string
 
 const (
-	PacketCaptureStatusError      PacketCaptureStatus = "Error"
+	PacketCaptureStatusError PacketCaptureStatus = "Error"
 	PacketCaptureStatusNotStarted PacketCaptureStatus = "NotStarted"
-	PacketCaptureStatusRunning    PacketCaptureStatus = "Running"
-	PacketCaptureStatusStopped    PacketCaptureStatus = "Stopped"
+	PacketCaptureStatusRunning PacketCaptureStatus = "Running"
+	PacketCaptureStatusStopped PacketCaptureStatus = "Stopped"
 )
 
 // PossiblePacketCaptureStatusValues returns the possible values for the PacketCaptureStatus const type.
 func PossiblePacketCaptureStatusValues() []PacketCaptureStatus {
-	return []PacketCaptureStatus{
+	return []PacketCaptureStatus{	
 		PacketCaptureStatusError,
 		PacketCaptureStatusNotStarted,
 		PacketCaptureStatusRunning,
@@ -301,7 +301,7 @@ const (
 
 // PossiblePduSessionTypeValues returns the possible values for the PduSessionType const type.
 func PossiblePduSessionTypeValues() []PduSessionType {
-	return []PduSessionType{
+	return []PduSessionType{	
 		PduSessionTypeIPv4,
 		PduSessionTypeIPv6,
 	}
@@ -312,16 +312,16 @@ type PlatformType string
 
 const (
 	// PlatformTypeAKSHCI - If this option is chosen, you must set one of "azureStackEdgeDevice", "connectedCluster" or "customLocation".
-	// If multiple are set, they must be consistent with each other.
+// If multiple are set, they must be consistent with each other.
 	PlatformTypeAKSHCI PlatformType = "AKS-HCI"
 	// PlatformTypeThreePAZURESTACKHCI - If this option is chosen, you must set one of "azureStackHciCluster", "connectedCluster"
-	// or "customLocation". If multiple are set, they must be consistent with each other.
+// or "customLocation". If multiple are set, they must be consistent with each other.
 	PlatformTypeThreePAZURESTACKHCI PlatformType = "3P-AZURE-STACK-HCI"
 )
 
 // PossiblePlatformTypeValues returns the possible values for the PlatformType const type.
 func PossiblePlatformTypeValues() []PlatformType {
-	return []PlatformType{
+	return []PlatformType{	
 		PlatformTypeAKSHCI,
 		PlatformTypeThreePAZURESTACKHCI,
 	}
@@ -339,7 +339,7 @@ const (
 
 // PossiblePreemptionCapabilityValues returns the possible values for the PreemptionCapability const type.
 func PossiblePreemptionCapabilityValues() []PreemptionCapability {
-	return []PreemptionCapability{
+	return []PreemptionCapability{	
 		PreemptionCapabilityMayPreempt,
 		PreemptionCapabilityNotPreempt,
 	}
@@ -357,7 +357,7 @@ const (
 
 // PossiblePreemptionVulnerabilityValues returns the possible values for the PreemptionVulnerability const type.
 func PossiblePreemptionVulnerabilityValues() []PreemptionVulnerability {
-	return []PreemptionVulnerability{
+	return []PreemptionVulnerability{	
 		PreemptionVulnerabilityNotPreemptable,
 		PreemptionVulnerabilityPreemptable,
 	}
@@ -367,18 +367,18 @@ func PossiblePreemptionVulnerabilityValues() []PreemptionVulnerability {
 type ProvisioningState string
 
 const (
-	ProvisioningStateAccepted  ProvisioningState = "Accepted"
-	ProvisioningStateCanceled  ProvisioningState = "Canceled"
-	ProvisioningStateDeleted   ProvisioningState = "Deleted"
-	ProvisioningStateDeleting  ProvisioningState = "Deleting"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStateAccepted ProvisioningState = "Accepted"
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	ProvisioningStateDeleted ProvisioningState = "Deleted"
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	ProvisioningStateFailed ProvisioningState = "Failed"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	ProvisioningStateUnknown   ProvisioningState = "Unknown"
+	ProvisioningStateUnknown ProvisioningState = "Unknown"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateAccepted,
 		ProvisioningStateCanceled,
 		ProvisioningStateDeleted,
@@ -401,7 +401,7 @@ const (
 
 // PossibleRecommendedVersionValues returns the possible values for the RecommendedVersion const type.
 func PossibleRecommendedVersionValues() []RecommendedVersion {
-	return []RecommendedVersion{
+	return []RecommendedVersion{	
 		RecommendedVersionNotRecommended,
 		RecommendedVersionRecommended,
 	}
@@ -419,7 +419,7 @@ const (
 
 // PossibleReinstallRequiredValues returns the possible values for the ReinstallRequired const type.
 func PossibleReinstallRequiredValues() []ReinstallRequired {
-	return []ReinstallRequired{
+	return []ReinstallRequired{	
 		ReinstallRequiredNotRequired,
 		ReinstallRequiredRequired,
 	}
@@ -439,7 +439,7 @@ const (
 
 // PossibleSdfDirectionValues returns the possible values for the SdfDirection const type.
 func PossibleSdfDirectionValues() []SdfDirection {
-	return []SdfDirection{
+	return []SdfDirection{	
 		SdfDirectionBidirectional,
 		SdfDirectionDownlink,
 		SdfDirectionUplink,
@@ -460,7 +460,7 @@ const (
 
 // PossibleSimStateValues returns the possible values for the SimState const type.
 func PossibleSimStateValues() []SimState {
-	return []SimState{
+	return []SimState{	
 		SimStateDisabled,
 		SimStateEnabled,
 		SimStateInvalid,
@@ -487,7 +487,7 @@ const (
 
 // PossibleSiteProvisioningStateValues returns the possible values for the SiteProvisioningState const type.
 func PossibleSiteProvisioningStateValues() []SiteProvisioningState {
-	return []SiteProvisioningState{
+	return []SiteProvisioningState{	
 		SiteProvisioningStateAdding,
 		SiteProvisioningStateDeleting,
 		SiteProvisioningStateFailed,
@@ -509,7 +509,7 @@ const (
 
 // PossibleTrafficControlPermissionValues returns the possible values for the TrafficControlPermission const type.
 func PossibleTrafficControlPermissionValues() []TrafficControlPermission {
-	return []TrafficControlPermission{
+	return []TrafficControlPermission{	
 		TrafficControlPermissionBlocked,
 		TrafficControlPermissionEnabled,
 	}
@@ -535,7 +535,7 @@ const (
 
 // PossibleVersionStateValues returns the possible values for the VersionState const type.
 func PossibleVersionStateValues() []VersionState {
-	return []VersionState{
+	return []VersionState{	
 		VersionStateActive,
 		VersionStateDeprecated,
 		VersionStatePreview,
@@ -544,3 +544,4 @@ func PossibleVersionStateValues() []VersionState {
 		VersionStateValidationFailed,
 	}
 }
+

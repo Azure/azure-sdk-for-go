@@ -23,7 +23,7 @@ import (
 // FirewallPolicyIdpsSignaturesFilterValuesClient contains the methods for the FirewallPolicyIdpsSignaturesFilterValues group.
 // Don't use this type directly, use NewFirewallPolicyIdpsSignaturesFilterValuesClient() instead.
 type FirewallPolicyIdpsSignaturesFilterValuesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewFirewallPolicyIdpsSignaturesFilterValuesClient(subscriptionID string, cr
 	}
 	client := &FirewallPolicyIdpsSignaturesFilterValuesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -94,8 +94,8 @@ func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listCreateRequest(
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -107,3 +107,4 @@ func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listHandleResponse
 	}
 	return result, nil
 }
+

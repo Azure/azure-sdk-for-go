@@ -8,6 +8,8 @@
 
 package armiothub
 
+
+
 import (
 	"encoding/json"
 	"fmt"
@@ -16,6 +18,8 @@ import (
 	"strings"
 	"time"
 )
+
+
 
 const (
 	rfc1123JSON = `"` + time.RFC1123 + `"`
@@ -44,6 +48,7 @@ func (t *timeRFC1123) UnmarshalText(data []byte) error {
 	*t = timeRFC1123(p)
 	return err
 }
+
 
 func populateTimeRFC1123(m map[string]any, k string, t *time.Time) {
 	if t == nil {

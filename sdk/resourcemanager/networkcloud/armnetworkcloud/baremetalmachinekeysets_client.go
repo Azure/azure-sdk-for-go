@@ -23,7 +23,7 @@ import (
 // BareMetalMachineKeySetsClient contains the methods for the BareMetalMachineKeySets group.
 // Don't use this type directly, use NewBareMetalMachineKeySetsClient() instead.
 type BareMetalMachineKeySetsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBareMetalMachineKeySetsClient(subscriptionID string, credential azcore.T
 	}
 	client := &BareMetalMachineKeySetsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *BareMetalMachineKeySetsClient) createOrUpdateCreateRequest(ctx con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, bareMetalMachineKeySetParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -261,7 +261,7 @@ func (client *BareMetalMachineKeySetsClient) getHandleResponse(resp *http.Respon
 //   - clusterName - The name of the cluster.
 //   - options - BareMetalMachineKeySetsClientListByClusterOptions contains the optional parameters for the BareMetalMachineKeySetsClient.NewListByClusterPager
 //     method.
-func (client *BareMetalMachineKeySetsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *BareMetalMachineKeySetsClientListByClusterOptions) *runtime.Pager[BareMetalMachineKeySetsClientListByClusterResponse] {
+func (client *BareMetalMachineKeySetsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *BareMetalMachineKeySetsClientListByClusterOptions) (*runtime.Pager[BareMetalMachineKeySetsClientListByClusterResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BareMetalMachineKeySetsClientListByClusterResponse]{
 		More: func(page BareMetalMachineKeySetsClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -329,12 +329,11 @@ func (client *BareMetalMachineKeySetsClient) listByClusterHandleResponse(resp *h
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - bareMetalMachineKeySetName - The name of the bare metal machine key set.
-//   - bareMetalMachineKeySetUpdateParameters - The request body.
 //   - options - BareMetalMachineKeySetsClientBeginUpdateOptions contains the optional parameters for the BareMetalMachineKeySetsClient.BeginUpdate
 //     method.
-func (client *BareMetalMachineKeySetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, bareMetalMachineKeySetUpdateParameters BareMetalMachineKeySetPatchParameters, options *BareMetalMachineKeySetsClientBeginUpdateOptions) (*runtime.Poller[BareMetalMachineKeySetsClientUpdateResponse], error) {
+func (client *BareMetalMachineKeySetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, options *BareMetalMachineKeySetsClientBeginUpdateOptions) (*runtime.Poller[BareMetalMachineKeySetsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, clusterName, bareMetalMachineKeySetName, bareMetalMachineKeySetUpdateParameters, options)
+		resp, err := client.update(ctx, resourceGroupName, clusterName, bareMetalMachineKeySetName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -352,9 +351,9 @@ func (client *BareMetalMachineKeySetsClient) BeginUpdate(ctx context.Context, re
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
-func (client *BareMetalMachineKeySetsClient) update(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, bareMetalMachineKeySetUpdateParameters BareMetalMachineKeySetPatchParameters, options *BareMetalMachineKeySetsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *BareMetalMachineKeySetsClient) update(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, options *BareMetalMachineKeySetsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, bareMetalMachineKeySetName, bareMetalMachineKeySetUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, bareMetalMachineKeySetName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -370,7 +369,7 @@ func (client *BareMetalMachineKeySetsClient) update(ctx context.Context, resourc
 }
 
 // updateCreateRequest creates the Update request.
-func (client *BareMetalMachineKeySetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, bareMetalMachineKeySetUpdateParameters BareMetalMachineKeySetPatchParameters, options *BareMetalMachineKeySetsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *BareMetalMachineKeySetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, bareMetalMachineKeySetName string, options *BareMetalMachineKeySetsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bareMetalMachineKeySets/{bareMetalMachineKeySetName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -393,8 +392,12 @@ func (client *BareMetalMachineKeySetsClient) updateCreateRequest(ctx context.Con
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, bareMetalMachineKeySetUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.BareMetalMachineKeySetUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.BareMetalMachineKeySetUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
+

@@ -24,7 +24,7 @@ import (
 // FluxConfigurationsClient contains the methods for the FluxConfigurations group.
 // Don't use this type directly, use NewFluxConfigurationsClient() instead.
 type FluxConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewFluxConfigurationsClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &FluxConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -128,8 +128,8 @@ func (client *FluxConfigurationsClient) createOrUpdateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, fluxConfiguration); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -307,7 +307,7 @@ func (client *FluxConfigurationsClient) getHandleResponse(resp *http.Response) (
 //   - clusterName - The name of the kubernetes cluster.
 //   - options - FluxConfigurationsClientListOptions contains the optional parameters for the FluxConfigurationsClient.NewListPager
 //     method.
-func (client *FluxConfigurationsClient) NewListPager(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *FluxConfigurationsClientListOptions) *runtime.Pager[FluxConfigurationsClientListResponse] {
+func (client *FluxConfigurationsClient) NewListPager(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *FluxConfigurationsClientListOptions) (*runtime.Pager[FluxConfigurationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[FluxConfigurationsClientListResponse]{
 		More: func(page FluxConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -462,7 +462,8 @@ func (client *FluxConfigurationsClient) updateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, fluxConfigurationPatch); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

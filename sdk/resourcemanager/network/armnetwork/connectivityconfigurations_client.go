@@ -24,7 +24,7 @@ import (
 // ConnectivityConfigurationsClient contains the methods for the ConnectivityConfigurations group.
 // Don't use this type directly, use NewConnectivityConfigurationsClient() instead.
 type ConnectivityConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewConnectivityConfigurationsClient(subscriptionID string, credential azcor
 	}
 	client := &ConnectivityConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,8 +101,8 @@ func (client *ConnectivityConfigurationsClient) createOrUpdateCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectivityConfiguration); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,7 +269,7 @@ func (client *ConnectivityConfigurationsClient) getHandleResponse(resp *http.Res
 //   - networkManagerName - The name of the network manager.
 //   - options - ConnectivityConfigurationsClientListOptions contains the optional parameters for the ConnectivityConfigurationsClient.NewListPager
 //     method.
-func (client *ConnectivityConfigurationsClient) NewListPager(resourceGroupName string, networkManagerName string, options *ConnectivityConfigurationsClientListOptions) *runtime.Pager[ConnectivityConfigurationsClientListResponse] {
+func (client *ConnectivityConfigurationsClient) NewListPager(resourceGroupName string, networkManagerName string, options *ConnectivityConfigurationsClientListOptions) (*runtime.Pager[ConnectivityConfigurationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConnectivityConfigurationsClientListResponse]{
 		More: func(page ConnectivityConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -337,3 +337,4 @@ func (client *ConnectivityConfigurationsClient) listHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

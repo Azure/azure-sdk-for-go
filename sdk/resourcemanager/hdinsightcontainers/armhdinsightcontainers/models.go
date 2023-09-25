@@ -10,6 +10,18 @@ package armhdinsightcontainers
 
 import "time"
 
+// AksClusterProfile - Properties of the cluster pool underlying AKS cluster.
+type AksClusterProfile struct {
+	// Identity properties of the AKS cluster agentpool MSI
+	AksClusterAgentPoolIdentityProfile *AksClusterProfileAksClusterAgentPoolIdentityProfile
+
+	// ARM Resource ID of the AKS cluster
+	AksClusterResourceID *string
+
+	// READ-ONLY; AKS control plane and default node pool version of this ClusterPool
+	AksVersion *string
+}
+
 // AksClusterProfileAksClusterAgentPoolIdentityProfile - Identity properties of the AKS cluster agentpool MSI
 type AksClusterProfileAksClusterAgentPoolIdentityProfile struct {
 	// REQUIRED; ClientId of the MSI.
@@ -41,9 +53,9 @@ type AutoscaleProfile struct {
 	AutoscaleType *AutoscaleType
 
 	// This property is for graceful decommission timeout; It has a default setting of 3600 seconds before forced shutdown takes
-	// place. This is the maximal time to wait for running containers and
-	// applications to complete before transition a DECOMMISSIONING node into DECOMMISSIONED. The default value is 3600 seconds.
-	// Negative value (like -1) is handled as infinite timeout.
+// place. This is the maximal time to wait for running containers and
+// applications to complete before transition a DECOMMISSIONING node into DECOMMISSIONED. The default value is 3600 seconds.
+// Negative value (like -1) is handled as infinite timeout.
 	GracefulDecommissionTimeout *int32
 
 	// Profiles of load based Autoscale.
@@ -84,7 +96,7 @@ type Cluster struct {
 }
 
 type ClusterComponentsItem struct {
-	Name    *string
+	Name *string
 	Version *string
 }
 
@@ -97,7 +109,7 @@ type ClusterConfigFile struct {
 	Content *string
 
 	// This property indicates if the content is encoded and is case-insensitive. Please set the value to base64 if the content
-	// is base64 encoded. Set it to none or skip it if the content is plain text.
+// is base64 encoded. Set it to none or skip it if the content is plain text.
 	Encoding *ContentEncoding
 
 	// Path of the config file if content is specified.
@@ -105,6 +117,15 @@ type ClusterConfigFile struct {
 
 	// List of key value pairs where key represents a valid service configuration name and value represents the value of the config.
 	Values map[string]*string
+}
+
+// ClusterInstanceViewProperties - Cluster Instance View Properties.
+type ClusterInstanceViewProperties struct {
+	// REQUIRED; List of statuses of relevant services that make up the HDInsight on aks cluster to surface to the customer.
+	ServiceStatuses []*ServiceStatus
+
+	// REQUIRED; Status of the instance view.
+	Status *ClusterInstanceViewPropertiesStatus
 }
 
 // ClusterInstanceViewPropertiesStatus - Status of the instance view.
@@ -135,6 +156,18 @@ type ClusterInstanceViewResultProperties struct {
 
 	// REQUIRED; Status of the instance view.
 	Status *ClusterInstanceViewPropertiesStatus
+}
+
+// ClusterInstanceViewStatus - Status of the instance view.
+type ClusterInstanceViewStatus struct {
+	// REQUIRED; The cluster ready status
+	Ready *string
+
+	// The additional message.
+	Message *string
+
+	// The status reason.
+	Reason *string
 }
 
 // ClusterInstanceViewsResult - The instance view of a HDInsight Cluster.
@@ -266,6 +299,15 @@ type ClusterPool struct {
 	Type *string
 }
 
+// ClusterPoolComputeProfile - Cluster pool compute profile.
+type ClusterPoolComputeProfile struct {
+	// REQUIRED; The virtual machine SKU.
+	VMSize *string
+
+	// READ-ONLY; The number of virtual machines.
+	Count *int32
+}
+
 // ClusterPoolListResult - The list cluster pools operation response.
 type ClusterPoolListResult struct {
 	// The list of cluster pools.
@@ -273,6 +315,27 @@ type ClusterPoolListResult struct {
 
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
+}
+
+// ClusterPoolLogAnalyticsProfile - Cluster pool log analytics profile used to enable or disable OMS agent for AKS cluster.
+type ClusterPoolLogAnalyticsProfile struct {
+	// REQUIRED; True if log analytics is enabled for cluster pool, otherwise false.
+	Enabled *bool
+
+	// Log analytics workspace to associate with the OMS agent.
+	WorkspaceID *string
+}
+
+// ClusterPoolNetworkProfile - Cluster pool networking configuration.
+type ClusterPoolNetworkProfile struct {
+	// REQUIRED; Cluster pool subnet resource id.
+	SubnetID *string
+}
+
+// ClusterPoolProfile - Cluster pool profile.
+type ClusterPoolProfile struct {
+	// REQUIRED; Cluster pool version is a 2-part version.
+	ClusterPoolVersion *string
 }
 
 // ClusterPoolResourceProperties - Cluster pool resource properties.
@@ -287,8 +350,8 @@ type ClusterPoolResourceProperties struct {
 	LogAnalyticsProfile *ClusterPoolResourcePropertiesLogAnalyticsProfile
 
 	// A resource group created by RP, to hold the resources created by RP on-behalf of customers. It will also be used to generate
-	// aksManagedResourceGroupName by pattern: MC{managedResourceGroupName}
-	// {clusterPoolName}_{region}. Please make sure it meets resource group name restriction.
+// aksManagedResourceGroupName by pattern: MC{managedResourceGroupName}
+// {clusterPoolName}_{region}. Please make sure it meets resource group name restriction.
 	ManagedResourceGroupName *string
 
 	// Cluster pool network profile.
@@ -298,8 +361,8 @@ type ClusterPoolResourceProperties struct {
 	AksClusterProfile *ClusterPoolResourcePropertiesAksClusterProfile
 
 	// READ-ONLY; A resource group created by AKS, to hold the infrastructure resources created by AKS on-behalf of customers.
-	// It is generated by cluster pool name and managed resource group name by pattern: MC
-	// {managedResourceGroupName}{clusterPoolName}_{region}
+// It is generated by cluster pool name and managed resource group name by pattern: MC
+// {managedResourceGroupName}{clusterPoolName}_{region}
 	AksManagedResourceGroupName *string
 
 	// READ-ONLY; A unique id generated by the RP to identify the resource.
@@ -549,7 +612,7 @@ type ClusterVersion struct {
 // ClusterVersionProperties - Cluster version properties.
 type ClusterVersionProperties struct {
 	// The two part cluster pool version. If the cluster version is before cluster pool version on-board, the return value will
-	// be empty string
+// be empty string
 	ClusterPoolVersion *string
 
 	// The type of cluster.
@@ -616,6 +679,40 @@ type ConnectivityProfileWeb struct {
 	Fqdn *string
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
 // FlinkCatalogOptions - Flink cluster catalog options.
 type FlinkCatalogOptions struct {
 	// Hive Catalog Option for Flink cluster.
@@ -643,8 +740,8 @@ type FlinkJobProperties struct {
 	JobType *JobType
 
 	// A string property that indicates the action to be performed on the Flink job. It can have one of the following enum values
-	// => NEW, UPDATE, STATELESSUPDATE, STOP, START, CANCEL, SAVEPOINT, LIST
-	// SAVEPOINT, or DELETE.
+// => NEW, UPDATE, STATELESSUPDATE, STOP, START, CANCEL, SAVEPOINT, LIST
+// SAVEPOINT, or DELETE.
 	Action *Action
 
 	// A string property representing additional JVM arguments for the Flink job. It should be space separated value.
@@ -654,8 +751,8 @@ type FlinkJobProperties struct {
 	EntryClass *string
 
 	// Additional properties used to configure Flink jobs. It allows users to set properties such as parallelism and jobSavePointDirectory.
-	// It accepts additional key-value pairs as properties, where the keys
-	// are strings and the values are strings as well.
+// It accepts additional key-value pairs as properties, where the keys
+// are strings and the values are strings as well.
 	FlinkConfiguration map[string]*string
 
 	// A string property that represents the name of the job JAR.
@@ -753,23 +850,23 @@ type IdentityProfile struct {
 // LoadBasedConfig - Profile of load based Autoscale.
 type LoadBasedConfig struct {
 	// REQUIRED; User needs to set the maximum number of nodes for load based scaling, the load based scaling will use this to
-	// scale up and scale down between minimum and maximum number of nodes.
+// scale up and scale down between minimum and maximum number of nodes.
 	MaxNodes *int32
 
 	// REQUIRED; User needs to set the minimum number of nodes for load based scaling, the load based scaling will use this to
-	// scale up and scale down between minimum and maximum number of nodes.
+// scale up and scale down between minimum and maximum number of nodes.
 	MinNodes *int32
 
 	// REQUIRED; The scaling rules.
 	ScalingRules []*ScalingRule
 
 	// This is a cool down period, this is a time period in seconds, which determines the amount of time that must elapse between
-	// a scaling activity started by a rule and the start of the next scaling
-	// activity, regardless of the rule that triggers it. The default value is 300 seconds.
+// a scaling activity started by a rule and the start of the next scaling
+// activity, regardless of the rule that triggers it. The default value is 300 seconds.
 	CooldownPeriod *int32
 
 	// User can specify the poll interval, this is the time period (in seconds) after which scaling metrics are polled for triggering
-	// a scaling operation.
+// a scaling operation.
 	PollInterval *int32
 }
 
@@ -815,15 +912,15 @@ type Operation struct {
 	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
-	// operations.
+// operations.
 	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
-	// "Microsoft.Compute/virtualMachines/capture/action"
+// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
-	// value is "user,system"
+// value is "user,system"
 	Origin *Origin
 }
 
@@ -833,15 +930,15 @@ type OperationDisplay struct {
 	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
-	// Machine", "Restart Virtual Machine".
+// Machine", "Restart Virtual Machine".
 	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
-	// Compute".
+// Compute".
 	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
-	// Schedule Collections".
+// Schedule Collections".
 	Resource *string
 }
 
@@ -853,6 +950,37 @@ type OperationListResult struct {
 
 	// READ-ONLY; List of operations supported by the resource provider
 	Value []*Operation
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // SSHConnectivityEndpoint - SSH connectivity endpoint details.
@@ -867,7 +995,7 @@ type SSHProfile struct {
 	Count *int32
 
 	// READ-ONLY; Prefix of the pod names. Pod number will be appended to the prefix. The ingress URLs for the pods will be available
-	// at //-
+// at //-
 	PodPrefix *string
 }
 
@@ -880,7 +1008,7 @@ type ScalingRule struct {
 	ComparisonRule *ComparisonRule
 
 	// REQUIRED; This is an evaluation count for a scaling condition, the number of times a trigger condition should be successful,
-	// before scaling activity is triggered.
+// before scaling activity is triggered.
 	EvaluationCount *int32
 
 	// REQUIRED; Metrics name for individual workloads. For example: cpu
@@ -890,7 +1018,7 @@ type ScalingRule struct {
 // Schedule definition.
 type Schedule struct {
 	// REQUIRED; User has to set the node count anticipated at end of the scaling operation of the set current schedule configuration,
-	// format is integer.
+// format is integer.
 	Count *int32
 
 	// REQUIRED; User has to set the days where schedule has to be set for autoscale operation.
@@ -906,11 +1034,11 @@ type Schedule struct {
 // ScheduleBasedConfig - Profile of schedule based Autoscale.
 type ScheduleBasedConfig struct {
 	// REQUIRED; Setting default node count of current schedule configuration. Default node count specifies the number of nodes
-	// which are default when an specified scaling operation is executed (scale up/scale down)
+// which are default when an specified scaling operation is executed (scale up/scale down)
 	DefaultCount *int32
 
 	// REQUIRED; This specifies the schedules where scheduled based Autoscale to be enabled, the user has a choice to set multiple
-	// rules within the schedule across days and times (start/end).
+// rules within the schedule across days and times (start/end).
 	Schedules []*Schedule
 
 	// REQUIRED; User has to specify the timezone on which the schedule has to be set for schedule based autoscale configuration.
@@ -972,6 +1100,33 @@ type ServiceConfigListResult struct {
 
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string
+}
+
+// ServiceConfigListResultProperties - Service config response.
+type ServiceConfigListResultProperties struct {
+	// REQUIRED; Component Name.
+	ComponentName *string
+
+	// REQUIRED; File Name.
+	FileName *string
+
+	// REQUIRED; Service Config Name.
+	ServiceName *string
+
+	// Content in the service config file.
+	Content *string
+
+	// The custom keys.
+	CustomKeys map[string]*string
+
+	// The default keys.
+	DefaultKeys map[string]*ServiceConfigListResultValueEntity
+
+	// Config file path.
+	Path *string
+
+	// Config type.
+	Type *string
 }
 
 // ServiceConfigListResultValueEntity - Default config details.
@@ -1100,13 +1255,35 @@ type TagsObject struct {
 	Tags map[string]*string
 }
 
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // TrinoCoordinator - Trino Coordinator.
 type TrinoCoordinator struct {
 	// Trino debug configuration.
 	Debug *TrinoDebugConfig
 
 	// The flag that if enable coordinator HA, uses multiple coordinator replicas with auto failover, one per each head node.
-	// Default: true.
+// Default: true.
 	HighAvailabilityEnabled *bool
 }
 
@@ -1146,7 +1323,7 @@ type TrinoTelemetryConfig struct {
 	HivecatalogName *string
 
 	// Schema of the above catalog to use, to mount query logs as external tables, if not specified tables will be mounted under
-	// schema trinologs.
+// schema trinologs.
 	HivecatalogSchema *string
 
 	// Retention period for query log table partitions, this doesn't have any affect on actual data.
@@ -1209,3 +1386,10 @@ type UpdatableClusterProfile struct {
 	// The service configs profiles.
 	ServiceConfigsProfiles []*ClusterServiceConfigsProfile
 }
+
+// WebConnectivityEndpoint - Web connectivity endpoint details.
+type WebConnectivityEndpoint struct {
+	// REQUIRED; Web connectivity endpoint.
+	Fqdn *string
+}
+

@@ -24,7 +24,7 @@ import (
 // ManagerDeploymentStatusClient contains the methods for the NetworkManagerDeploymentStatus group.
 // Don't use this type directly, use NewManagerDeploymentStatusClient() instead.
 type ManagerDeploymentStatusClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewManagerDeploymentStatusClient(subscriptionID string, credential azcore.T
 	}
 	client := &ManagerDeploymentStatusClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *ManagerDeploymentStatusClient) listCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -112,3 +112,4 @@ func (client *ManagerDeploymentStatusClient) listHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

@@ -461,3 +461,4 @@ type SlicesClientUpdateTagsResponse struct {
 	// Network slice resource. Must be created in the same location as its parent mobile network.
 	Slice
 }
+

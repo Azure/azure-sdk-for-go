@@ -9,7 +9,7 @@
 package armmaintenance
 
 const (
-	moduleName    = "armmaintenance"
+	moduleName = "armmaintenance"
 	moduleVersion = "v1.2.0"
 )
 
@@ -17,15 +17,15 @@ const (
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -49,7 +49,7 @@ const (
 
 // PossibleImpactTypeValues returns the possible values for the ImpactType const type.
 func PossibleImpactTypeValues() []ImpactType {
-	return []ImpactType{
+	return []ImpactType{	
 		ImpactTypeFreeze,
 		ImpactTypeNone,
 		ImpactTypeRedeploy,
@@ -64,7 +64,7 @@ const (
 	// MaintenanceScopeExtension - This maintenance scope controls extension installation on VM/VMSS
 	MaintenanceScopeExtension MaintenanceScope = "Extension"
 	// MaintenanceScopeHost - This maintenance scope controls installation of azure platform updates i.e. services on physical
-	// nodes hosting customer VMs.
+// nodes hosting customer VMs.
 	MaintenanceScopeHost MaintenanceScope = "Host"
 	// MaintenanceScopeInGuestPatch - This maintenance scope controls installation of windows and linux packages on VM/VMSS
 	MaintenanceScopeInGuestPatch MaintenanceScope = "InGuestPatch"
@@ -80,7 +80,7 @@ const (
 
 // PossibleMaintenanceScopeValues returns the possible values for the MaintenanceScope const type.
 func PossibleMaintenanceScopeValues() []MaintenanceScope {
-	return []MaintenanceScope{
+	return []MaintenanceScope{	
 		MaintenanceScopeExtension,
 		MaintenanceScopeHost,
 		MaintenanceScopeInGuestPatch,
@@ -96,14 +96,14 @@ func PossibleMaintenanceScopeValues() []MaintenanceScope {
 type RebootOptions string
 
 const (
-	RebootOptionsAlways     RebootOptions = "Always"
+	RebootOptionsAlways RebootOptions = "Always"
 	RebootOptionsIfRequired RebootOptions = "IfRequired"
-	RebootOptionsNever      RebootOptions = "Never"
+	RebootOptionsNever RebootOptions = "Never"
 )
 
 // PossibleRebootOptionsValues returns the possible values for the RebootOptions const type.
 func PossibleRebootOptionsValues() []RebootOptions {
-	return []RebootOptions{
+	return []RebootOptions{	
 		RebootOptionsAlways,
 		RebootOptionsIfRequired,
 		RebootOptionsNever,
@@ -120,7 +120,7 @@ const (
 
 // PossibleTagOperatorsValues returns the possible values for the TagOperators const type.
 func PossibleTagOperatorsValues() []TagOperators {
-	return []TagOperators{
+	return []TagOperators{	
 		TagOperatorsAll,
 		TagOperatorsAny,
 	}
@@ -144,7 +144,7 @@ const (
 
 // PossibleUpdateStatusValues returns the possible values for the UpdateStatus const type.
 func PossibleUpdateStatusValues() []UpdateStatus {
-	return []UpdateStatus{
+	return []UpdateStatus{	
 		UpdateStatusCompleted,
 		UpdateStatusInProgress,
 		UpdateStatusPending,
@@ -165,8 +165,9 @@ const (
 
 // PossibleVisibilityValues returns the possible values for the Visibility const type.
 func PossibleVisibilityValues() []Visibility {
-	return []Visibility{
+	return []Visibility{	
 		VisibilityCustom,
 		VisibilityPublic,
 	}
 }
+

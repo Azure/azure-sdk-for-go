@@ -33,7 +33,7 @@ func NewVMInsightsClient(credential azcore.TokenCredential, options *arm.ClientO
 		return nil, err
 	}
 	client := &VMInsightsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -90,3 +90,4 @@ func (client *VMInsightsClient) getOnboardingStatusHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

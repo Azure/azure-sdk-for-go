@@ -23,7 +23,7 @@ import (
 // InterfaceIPConfigurationsClient contains the methods for the NetworkInterfaceIPConfigurations group.
 // Don't use this type directly, use NewInterfaceIPConfigurationsClient() instead.
 type InterfaceIPConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewInterfaceIPConfigurationsClient(subscriptionID string, credential azcore
 	}
 	client := &InterfaceIPConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,7 +117,7 @@ func (client *InterfaceIPConfigurationsClient) getHandleResponse(resp *http.Resp
 //   - networkInterfaceName - The name of the network interface.
 //   - options - InterfaceIPConfigurationsClientListOptions contains the optional parameters for the InterfaceIPConfigurationsClient.NewListPager
 //     method.
-func (client *InterfaceIPConfigurationsClient) NewListPager(resourceGroupName string, networkInterfaceName string, options *InterfaceIPConfigurationsClientListOptions) *runtime.Pager[InterfaceIPConfigurationsClientListResponse] {
+func (client *InterfaceIPConfigurationsClient) NewListPager(resourceGroupName string, networkInterfaceName string, options *InterfaceIPConfigurationsClientListOptions) (*runtime.Pager[InterfaceIPConfigurationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InterfaceIPConfigurationsClientListResponse]{
 		More: func(page InterfaceIPConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -179,3 +179,4 @@ func (client *InterfaceIPConfigurationsClient) listHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

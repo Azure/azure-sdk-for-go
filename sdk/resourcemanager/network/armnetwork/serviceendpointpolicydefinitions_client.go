@@ -23,7 +23,7 @@ import (
 // ServiceEndpointPolicyDefinitionsClient contains the methods for the ServiceEndpointPolicyDefinitions group.
 // Don't use this type directly, use NewServiceEndpointPolicyDefinitionsClient() instead.
 type ServiceEndpointPolicyDefinitionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewServiceEndpointPolicyDefinitionsClient(subscriptionID string, credential
 	}
 	client := &ServiceEndpointPolicyDefinitionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ServiceEndpointPolicyDefinitionsClient) createOrUpdateCreateReques
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, serviceEndpointPolicyDefinitions); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) getHandleResponse(resp *ht
 //   - serviceEndpointPolicyName - The name of the service endpoint policy name.
 //   - options - ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions contains the optional parameters for the ServiceEndpointPolicyDefinitionsClient.NewListByResourceGroupPager
 //     method.
-func (client *ServiceEndpointPolicyDefinitionsClient) NewListByResourceGroupPager(resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions) *runtime.Pager[ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse] {
+func (client *ServiceEndpointPolicyDefinitionsClient) NewListByResourceGroupPager(resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions) (*runtime.Pager[ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse]{
 		More: func(page ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *ServiceEndpointPolicyDefinitionsClient) listByResourceGroupHandleR
 	}
 	return result, nil
 }
+

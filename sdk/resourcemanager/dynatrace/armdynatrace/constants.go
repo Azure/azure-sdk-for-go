@@ -9,7 +9,7 @@
 package armdynatrace
 
 const (
-	moduleName    = "armdynatrace"
+	moduleName = "armdynatrace"
 	moduleVersion = "v2.0.0"
 )
 
@@ -22,7 +22,7 @@ const (
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
+	return []ActionType{	
 		ActionTypeInternal,
 	}
 }
@@ -32,12 +32,12 @@ type AutoUpdateSetting string
 
 const (
 	AutoUpdateSettingDISABLED AutoUpdateSetting = "DISABLED"
-	AutoUpdateSettingENABLED  AutoUpdateSetting = "ENABLED"
+	AutoUpdateSettingENABLED AutoUpdateSetting = "ENABLED"
 )
 
 // PossibleAutoUpdateSettingValues returns the possible values for the AutoUpdateSetting const type.
 func PossibleAutoUpdateSettingValues() []AutoUpdateSetting {
-	return []AutoUpdateSetting{
+	return []AutoUpdateSetting{	
 		AutoUpdateSettingDISABLED,
 		AutoUpdateSettingENABLED,
 	}
@@ -47,19 +47,19 @@ func PossibleAutoUpdateSettingValues() []AutoUpdateSetting {
 type AvailabilityState string
 
 const (
-	AvailabilityStateCRASHED            AvailabilityState = "CRASHED"
-	AvailabilityStateLOST               AvailabilityState = "LOST"
-	AvailabilityStateMONITORED          AvailabilityState = "MONITORED"
-	AvailabilityStatePREMONITORED       AvailabilityState = "PRE_MONITORED"
-	AvailabilityStateSHUTDOWN           AvailabilityState = "SHUTDOWN"
+	AvailabilityStateCRASHED AvailabilityState = "CRASHED"
+	AvailabilityStateLOST AvailabilityState = "LOST"
+	AvailabilityStateMONITORED AvailabilityState = "MONITORED"
+	AvailabilityStatePREMONITORED AvailabilityState = "PRE_MONITORED"
+	AvailabilityStateSHUTDOWN AvailabilityState = "SHUTDOWN"
 	AvailabilityStateUNEXPECTEDSHUTDOWN AvailabilityState = "UNEXPECTED_SHUTDOWN"
-	AvailabilityStateUNKNOWN            AvailabilityState = "UNKNOWN"
-	AvailabilityStateUNMONITORED        AvailabilityState = "UNMONITORED"
+	AvailabilityStateUNKNOWN AvailabilityState = "UNKNOWN"
+	AvailabilityStateUNMONITORED AvailabilityState = "UNMONITORED"
 )
 
 // PossibleAvailabilityStateValues returns the possible values for the AvailabilityState const type.
 func PossibleAvailabilityStateValues() []AvailabilityState {
-	return []AvailabilityState{
+	return []AvailabilityState{	
 		AvailabilityStateCRASHED,
 		AvailabilityStateLOST,
 		AvailabilityStateMONITORED,
@@ -75,15 +75,15 @@ func PossibleAvailabilityStateValues() []AvailabilityState {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -96,12 +96,12 @@ type LiftrResourceCategories string
 
 const (
 	LiftrResourceCategoriesMonitorLogs LiftrResourceCategories = "MonitorLogs"
-	LiftrResourceCategoriesUnknown     LiftrResourceCategories = "Unknown"
+	LiftrResourceCategoriesUnknown LiftrResourceCategories = "Unknown"
 )
 
 // PossibleLiftrResourceCategoriesValues returns the possible values for the LiftrResourceCategories const type.
 func PossibleLiftrResourceCategoriesValues() []LiftrResourceCategories {
-	return []LiftrResourceCategories{
+	return []LiftrResourceCategories{	
 		LiftrResourceCategoriesMonitorLogs,
 		LiftrResourceCategoriesUnknown,
 	}
@@ -112,12 +112,12 @@ type LogModule string
 
 const (
 	LogModuleDISABLED LogModule = "DISABLED"
-	LogModuleENABLED  LogModule = "ENABLED"
+	LogModuleENABLED LogModule = "ENABLED"
 )
 
 // PossibleLogModuleValues returns the possible values for the LogModule const type.
 func PossibleLogModuleValues() []LogModule {
-	return []LogModule{
+	return []LogModule{	
 		LogModuleDISABLED,
 		LogModuleENABLED,
 	}
@@ -128,13 +128,13 @@ type ManagedIdentityType string
 
 const (
 	ManagedIdentityTypeSystemAndUserAssigned ManagedIdentityType = "SystemAndUserAssigned"
-	ManagedIdentityTypeSystemAssigned        ManagedIdentityType = "SystemAssigned"
-	ManagedIdentityTypeUserAssigned          ManagedIdentityType = "UserAssigned"
+	ManagedIdentityTypeSystemAssigned ManagedIdentityType = "SystemAssigned"
+	ManagedIdentityTypeUserAssigned ManagedIdentityType = "UserAssigned"
 )
 
 // PossibleManagedIdentityTypeValues returns the possible values for the ManagedIdentityType const type.
 func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
-	return []ManagedIdentityType{
+	return []ManagedIdentityType{	
 		ManagedIdentityTypeSystemAndUserAssigned,
 		ManagedIdentityTypeSystemAssigned,
 		ManagedIdentityTypeUserAssigned,
@@ -146,13 +146,13 @@ func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
 type MarketplaceSubscriptionStatus string
 
 const (
-	MarketplaceSubscriptionStatusActive    MarketplaceSubscriptionStatus = "Active"
+	MarketplaceSubscriptionStatusActive MarketplaceSubscriptionStatus = "Active"
 	MarketplaceSubscriptionStatusSuspended MarketplaceSubscriptionStatus = "Suspended"
 )
 
 // PossibleMarketplaceSubscriptionStatusValues returns the possible values for the MarketplaceSubscriptionStatus const type.
 func PossibleMarketplaceSubscriptionStatusValues() []MarketplaceSubscriptionStatus {
-	return []MarketplaceSubscriptionStatus{
+	return []MarketplaceSubscriptionStatus{	
 		MarketplaceSubscriptionStatusActive,
 		MarketplaceSubscriptionStatusSuspended,
 	}
@@ -163,12 +163,12 @@ type MonitoringStatus string
 
 const (
 	MonitoringStatusDisabled MonitoringStatus = "Disabled"
-	MonitoringStatusEnabled  MonitoringStatus = "Enabled"
+	MonitoringStatusEnabled MonitoringStatus = "Enabled"
 )
 
 // PossibleMonitoringStatusValues returns the possible values for the MonitoringStatus const type.
 func PossibleMonitoringStatusValues() []MonitoringStatus {
-	return []MonitoringStatus{
+	return []MonitoringStatus{	
 		MonitoringStatusDisabled,
 		MonitoringStatusEnabled,
 	}
@@ -179,12 +179,12 @@ type MonitoringType string
 
 const (
 	MonitoringTypeCLOUDINFRASTRUCTURE MonitoringType = "CLOUD_INFRASTRUCTURE"
-	MonitoringTypeFULLSTACK           MonitoringType = "FULL_STACK"
+	MonitoringTypeFULLSTACK MonitoringType = "FULL_STACK"
 )
 
 // PossibleMonitoringTypeValues returns the possible values for the MonitoringType const type.
 func PossibleMonitoringTypeValues() []MonitoringType {
-	return []MonitoringType{
+	return []MonitoringType{	
 		MonitoringTypeCLOUDINFRASTRUCTURE,
 		MonitoringTypeFULLSTACK,
 	}
@@ -195,14 +195,14 @@ func PossibleMonitoringTypeValues() []MonitoringType {
 type Origin string
 
 const (
-	OriginSystem     Origin = "system"
-	OriginUser       Origin = "user"
+	OriginSystem Origin = "system"
+	OriginUser Origin = "user"
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{
+	return []Origin{	
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -213,20 +213,20 @@ func PossibleOriginValues() []Origin {
 type ProvisioningState string
 
 const (
-	ProvisioningStateAccepted     ProvisioningState = "Accepted"
-	ProvisioningStateCanceled     ProvisioningState = "Canceled"
-	ProvisioningStateCreating     ProvisioningState = "Creating"
-	ProvisioningStateDeleted      ProvisioningState = "Deleted"
-	ProvisioningStateDeleting     ProvisioningState = "Deleting"
-	ProvisioningStateFailed       ProvisioningState = "Failed"
+	ProvisioningStateAccepted ProvisioningState = "Accepted"
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	ProvisioningStateDeleted ProvisioningState = "Deleted"
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	ProvisioningStateFailed ProvisioningState = "Failed"
 	ProvisioningStateNotSpecified ProvisioningState = "NotSpecified"
-	ProvisioningStateSucceeded    ProvisioningState = "Succeeded"
-	ProvisioningStateUpdating     ProvisioningState = "Updating"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateAccepted,
 		ProvisioningStateCanceled,
 		ProvisioningStateCreating,
@@ -244,12 +244,12 @@ type SSOStatus string
 
 const (
 	SSOStatusDisabled SSOStatus = "Disabled"
-	SSOStatusEnabled  SSOStatus = "Enabled"
+	SSOStatusEnabled SSOStatus = "Enabled"
 )
 
 // PossibleSSOStatusValues returns the possible values for the SSOStatus const type.
 func PossibleSSOStatusValues() []SSOStatus {
-	return []SSOStatus{
+	return []SSOStatus{	
 		SSOStatusDisabled,
 		SSOStatusEnabled,
 	}
@@ -260,12 +260,12 @@ type SendAADLogsStatus string
 
 const (
 	SendAADLogsStatusDisabled SendAADLogsStatus = "Disabled"
-	SendAADLogsStatusEnabled  SendAADLogsStatus = "Enabled"
+	SendAADLogsStatusEnabled SendAADLogsStatus = "Enabled"
 )
 
 // PossibleSendAADLogsStatusValues returns the possible values for the SendAADLogsStatus const type.
 func PossibleSendAADLogsStatusValues() []SendAADLogsStatus {
-	return []SendAADLogsStatus{
+	return []SendAADLogsStatus{	
 		SendAADLogsStatusDisabled,
 		SendAADLogsStatusEnabled,
 	}
@@ -276,12 +276,12 @@ type SendActivityLogsStatus string
 
 const (
 	SendActivityLogsStatusDisabled SendActivityLogsStatus = "Disabled"
-	SendActivityLogsStatusEnabled  SendActivityLogsStatus = "Enabled"
+	SendActivityLogsStatusEnabled SendActivityLogsStatus = "Enabled"
 )
 
 // PossibleSendActivityLogsStatusValues returns the possible values for the SendActivityLogsStatus const type.
 func PossibleSendActivityLogsStatusValues() []SendActivityLogsStatus {
-	return []SendActivityLogsStatus{
+	return []SendActivityLogsStatus{	
 		SendActivityLogsStatusDisabled,
 		SendActivityLogsStatusEnabled,
 	}
@@ -292,12 +292,12 @@ type SendSubscriptionLogsStatus string
 
 const (
 	SendSubscriptionLogsStatusDisabled SendSubscriptionLogsStatus = "Disabled"
-	SendSubscriptionLogsStatusEnabled  SendSubscriptionLogsStatus = "Enabled"
+	SendSubscriptionLogsStatusEnabled SendSubscriptionLogsStatus = "Enabled"
 )
 
 // PossibleSendSubscriptionLogsStatusValues returns the possible values for the SendSubscriptionLogsStatus const type.
 func PossibleSendSubscriptionLogsStatusValues() []SendSubscriptionLogsStatus {
-	return []SendSubscriptionLogsStatus{
+	return []SendSubscriptionLogsStatus{	
 		SendSubscriptionLogsStatusDisabled,
 		SendSubscriptionLogsStatusEnabled,
 	}
@@ -308,12 +308,12 @@ type SendingLogsStatus string
 
 const (
 	SendingLogsStatusDisabled SendingLogsStatus = "Disabled"
-	SendingLogsStatusEnabled  SendingLogsStatus = "Enabled"
+	SendingLogsStatusEnabled SendingLogsStatus = "Enabled"
 )
 
 // PossibleSendingLogsStatusValues returns the possible values for the SendingLogsStatus const type.
 func PossibleSendingLogsStatusValues() []SendingLogsStatus {
-	return []SendingLogsStatus{
+	return []SendingLogsStatus{	
 		SendingLogsStatusDisabled,
 		SendingLogsStatusEnabled,
 	}
@@ -324,12 +324,12 @@ type SendingMetricsStatus string
 
 const (
 	SendingMetricsStatusDisabled SendingMetricsStatus = "Disabled"
-	SendingMetricsStatusEnabled  SendingMetricsStatus = "Enabled"
+	SendingMetricsStatusEnabled SendingMetricsStatus = "Enabled"
 )
 
 // PossibleSendingMetricsStatusValues returns the possible values for the SendingMetricsStatus const type.
 func PossibleSendingMetricsStatusValues() []SendingMetricsStatus {
-	return []SendingMetricsStatus{
+	return []SendingMetricsStatus{	
 		SendingMetricsStatusDisabled,
 		SendingMetricsStatusEnabled,
 	}
@@ -339,15 +339,15 @@ func PossibleSendingMetricsStatusValues() []SendingMetricsStatus {
 type SingleSignOnStates string
 
 const (
-	SingleSignOnStatesDisable  SingleSignOnStates = "Disable"
-	SingleSignOnStatesEnable   SingleSignOnStates = "Enable"
+	SingleSignOnStatesDisable SingleSignOnStates = "Disable"
+	SingleSignOnStatesEnable SingleSignOnStates = "Enable"
 	SingleSignOnStatesExisting SingleSignOnStates = "Existing"
-	SingleSignOnStatesInitial  SingleSignOnStates = "Initial"
+	SingleSignOnStatesInitial SingleSignOnStates = "Initial"
 )
 
 // PossibleSingleSignOnStatesValues returns the possible values for the SingleSignOnStates const type.
 func PossibleSingleSignOnStatesValues() []SingleSignOnStates {
-	return []SingleSignOnStates{
+	return []SingleSignOnStates{	
 		SingleSignOnStatesDisable,
 		SingleSignOnStatesEnable,
 		SingleSignOnStatesExisting,
@@ -365,7 +365,7 @@ const (
 
 // PossibleTagActionValues returns the possible values for the TagAction const type.
 func PossibleTagActionValues() []TagAction {
-	return []TagAction{
+	return []TagAction{	
 		TagActionExclude,
 		TagActionInclude,
 	}
@@ -375,20 +375,20 @@ func PossibleTagActionValues() []TagAction {
 type UpdateStatus string
 
 const (
-	UpdateStatusINCOMPATIBLE     UpdateStatus = "INCOMPATIBLE"
-	UpdateStatusOUTDATED         UpdateStatus = "OUTDATED"
-	UpdateStatusSCHEDULED        UpdateStatus = "SCHEDULED"
-	UpdateStatusSUPPRESSED       UpdateStatus = "SUPPRESSED"
-	UpdateStatusUNKNOWN          UpdateStatus = "UNKNOWN"
-	UpdateStatusUP2DATE          UpdateStatus = "UP2DATE"
+	UpdateStatusINCOMPATIBLE UpdateStatus = "INCOMPATIBLE"
+	UpdateStatusOUTDATED UpdateStatus = "OUTDATED"
+	UpdateStatusSCHEDULED UpdateStatus = "SCHEDULED"
+	UpdateStatusSUPPRESSED UpdateStatus = "SUPPRESSED"
+	UpdateStatusUNKNOWN UpdateStatus = "UNKNOWN"
+	UpdateStatusUP2DATE UpdateStatus = "UP2DATE"
 	UpdateStatusUPDATEINPROGRESS UpdateStatus = "UPDATE_IN_PROGRESS"
-	UpdateStatusUPDATEPENDING    UpdateStatus = "UPDATE_PENDING"
-	UpdateStatusUPDATEPROBLEM    UpdateStatus = "UPDATE_PROBLEM"
+	UpdateStatusUPDATEPENDING UpdateStatus = "UPDATE_PENDING"
+	UpdateStatusUPDATEPROBLEM UpdateStatus = "UPDATE_PROBLEM"
 )
 
 // PossibleUpdateStatusValues returns the possible values for the UpdateStatus const type.
 func PossibleUpdateStatusValues() []UpdateStatus {
-	return []UpdateStatus{
+	return []UpdateStatus{	
 		UpdateStatusINCOMPATIBLE,
 		UpdateStatusOUTDATED,
 		UpdateStatusSCHEDULED,
@@ -400,3 +400,4 @@ func PossibleUpdateStatusValues() []UpdateStatus {
 		UpdateStatusUPDATEPROBLEM,
 	}
 }
+

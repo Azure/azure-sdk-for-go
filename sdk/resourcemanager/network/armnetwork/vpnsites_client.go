@@ -23,7 +23,7 @@ import (
 // VPNSitesClient contains the methods for the VPNSites group.
 // Don't use this type directly, use NewVPNSitesClient() instead.
 type VPNSitesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVPNSitesClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &VPNSitesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *VPNSitesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnSiteParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -251,7 +251,7 @@ func (client *VPNSitesClient) getHandleResponse(resp *http.Response) (VPNSitesCl
 //
 // Generated from API version 2023-05-01
 //   - options - VPNSitesClientListOptions contains the optional parameters for the VPNSitesClient.NewListPager method.
-func (client *VPNSitesClient) NewListPager(options *VPNSitesClientListOptions) *runtime.Pager[VPNSitesClientListResponse] {
+func (client *VPNSitesClient) NewListPager(options *VPNSitesClientListOptions) (*runtime.Pager[VPNSitesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VPNSitesClientListResponse]{
 		More: func(page VPNSitesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -312,7 +312,7 @@ func (client *VPNSitesClient) listHandleResponse(resp *http.Response) (VPNSitesC
 //   - resourceGroupName - The resource group name of the VpnSite.
 //   - options - VPNSitesClientListByResourceGroupOptions contains the optional parameters for the VPNSitesClient.NewListByResourceGroupPager
 //     method.
-func (client *VPNSitesClient) NewListByResourceGroupPager(resourceGroupName string, options *VPNSitesClientListByResourceGroupOptions) *runtime.Pager[VPNSitesClientListByResourceGroupResponse] {
+func (client *VPNSitesClient) NewListByResourceGroupPager(resourceGroupName string, options *VPNSitesClientListByResourceGroupOptions) (*runtime.Pager[VPNSitesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VPNSitesClientListByResourceGroupResponse]{
 		More: func(page VPNSitesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -421,8 +421,8 @@ func (client *VPNSitesClient) updateTagsCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnSiteParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -434,3 +434,4 @@ func (client *VPNSitesClient) updateTagsHandleResponse(resp *http.Response) (VPN
 	}
 	return result, nil
 }
+

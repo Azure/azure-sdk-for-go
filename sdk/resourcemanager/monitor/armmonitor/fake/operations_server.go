@@ -20,10 +20,11 @@ import (
 )
 
 // OperationsServer is a fake server for instances of the armmonitor.OperationsClient type.
-type OperationsServer struct {
+type OperationsServer struct{
 	// List is the fake for method OperationsClient.List
 	// HTTP status codes to indicate success: http.StatusOK
 	List func(ctx context.Context, options *armmonitor.OperationsClientListOptions) (resp azfake.Responder[armmonitor.OperationsClientListResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewOperationsServerTransport creates a new instance of OperationsServerTransport with the provided implementation.
@@ -77,8 +78,8 @@ func (o *OperationsServerTransport) dispatchList(req *http.Request) (*http.Respo
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OperationListResult, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

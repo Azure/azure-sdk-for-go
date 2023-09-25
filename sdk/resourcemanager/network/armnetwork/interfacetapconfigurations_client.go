@@ -23,7 +23,7 @@ import (
 // InterfaceTapConfigurationsClient contains the methods for the NetworkInterfaceTapConfigurations group.
 // Don't use this type directly, use NewInterfaceTapConfigurationsClient() instead.
 type InterfaceTapConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewInterfaceTapConfigurationsClient(subscriptionID string, credential azcor
 	}
 	client := &InterfaceTapConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *InterfaceTapConfigurationsClient) createOrUpdateCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, tapConfigurationParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *InterfaceTapConfigurationsClient) getHandleResponse(resp *http.Res
 //   - networkInterfaceName - The name of the network interface.
 //   - options - InterfaceTapConfigurationsClientListOptions contains the optional parameters for the InterfaceTapConfigurationsClient.NewListPager
 //     method.
-func (client *InterfaceTapConfigurationsClient) NewListPager(resourceGroupName string, networkInterfaceName string, options *InterfaceTapConfigurationsClientListOptions) *runtime.Pager[InterfaceTapConfigurationsClientListResponse] {
+func (client *InterfaceTapConfigurationsClient) NewListPager(resourceGroupName string, networkInterfaceName string, options *InterfaceTapConfigurationsClientListOptions) (*runtime.Pager[InterfaceTapConfigurationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InterfaceTapConfigurationsClientListResponse]{
 		More: func(page InterfaceTapConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *InterfaceTapConfigurationsClient) listHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

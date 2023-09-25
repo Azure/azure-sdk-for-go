@@ -23,7 +23,7 @@ import (
 // ApplicationSecurityGroupsClient contains the methods for the ApplicationSecurityGroups group.
 // Don't use this type directly, use NewApplicationSecurityGroupsClient() instead.
 type ApplicationSecurityGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewApplicationSecurityGroupsClient(subscriptionID string, credential azcore
 	}
 	client := &ApplicationSecurityGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *ApplicationSecurityGroupsClient) createOrUpdateCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -255,7 +255,7 @@ func (client *ApplicationSecurityGroupsClient) getHandleResponse(resp *http.Resp
 //   - resourceGroupName - The name of the resource group.
 //   - options - ApplicationSecurityGroupsClientListOptions contains the optional parameters for the ApplicationSecurityGroupsClient.NewListPager
 //     method.
-func (client *ApplicationSecurityGroupsClient) NewListPager(resourceGroupName string, options *ApplicationSecurityGroupsClientListOptions) *runtime.Pager[ApplicationSecurityGroupsClientListResponse] {
+func (client *ApplicationSecurityGroupsClient) NewListPager(resourceGroupName string, options *ApplicationSecurityGroupsClientListOptions) (*runtime.Pager[ApplicationSecurityGroupsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationSecurityGroupsClientListResponse]{
 		More: func(page ApplicationSecurityGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -319,7 +319,7 @@ func (client *ApplicationSecurityGroupsClient) listHandleResponse(resp *http.Res
 // Generated from API version 2023-05-01
 //   - options - ApplicationSecurityGroupsClientListAllOptions contains the optional parameters for the ApplicationSecurityGroupsClient.NewListAllPager
 //     method.
-func (client *ApplicationSecurityGroupsClient) NewListAllPager(options *ApplicationSecurityGroupsClientListAllOptions) *runtime.Pager[ApplicationSecurityGroupsClientListAllResponse] {
+func (client *ApplicationSecurityGroupsClient) NewListAllPager(options *ApplicationSecurityGroupsClientListAllOptions) (*runtime.Pager[ApplicationSecurityGroupsClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationSecurityGroupsClientListAllResponse]{
 		More: func(page ApplicationSecurityGroupsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -425,8 +425,8 @@ func (client *ApplicationSecurityGroupsClient) updateTagsCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -438,3 +438,4 @@ func (client *ApplicationSecurityGroupsClient) updateTagsHandleResponse(resp *ht
 	}
 	return result, nil
 }
+

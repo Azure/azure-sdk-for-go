@@ -23,7 +23,7 @@ import (
 // VirtualWansClient contains the methods for the VirtualWans group.
 // Don't use this type directly, use NewVirtualWansClient() instead.
 type VirtualWansClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualWansClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &VirtualWansClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *VirtualWansClient) createOrUpdateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, wanParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -251,7 +251,7 @@ func (client *VirtualWansClient) getHandleResponse(resp *http.Response) (Virtual
 //
 // Generated from API version 2023-05-01
 //   - options - VirtualWansClientListOptions contains the optional parameters for the VirtualWansClient.NewListPager method.
-func (client *VirtualWansClient) NewListPager(options *VirtualWansClientListOptions) *runtime.Pager[VirtualWansClientListResponse] {
+func (client *VirtualWansClient) NewListPager(options *VirtualWansClientListOptions) (*runtime.Pager[VirtualWansClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualWansClientListResponse]{
 		More: func(page VirtualWansClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -312,7 +312,7 @@ func (client *VirtualWansClient) listHandleResponse(resp *http.Response) (Virtua
 //   - resourceGroupName - The resource group name of the VirtualWan.
 //   - options - VirtualWansClientListByResourceGroupOptions contains the optional parameters for the VirtualWansClient.NewListByResourceGroupPager
 //     method.
-func (client *VirtualWansClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualWansClientListByResourceGroupOptions) *runtime.Pager[VirtualWansClientListByResourceGroupResponse] {
+func (client *VirtualWansClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualWansClientListByResourceGroupOptions) (*runtime.Pager[VirtualWansClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualWansClientListByResourceGroupResponse]{
 		More: func(page VirtualWansClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -421,8 +421,8 @@ func (client *VirtualWansClient) updateTagsCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, wanParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -434,3 +434,4 @@ func (client *VirtualWansClient) updateTagsHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

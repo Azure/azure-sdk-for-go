@@ -221,3 +221,4 @@ func unmarshalFirewallPolicyRuleCollectionClassificationArray(rawMsg json.RawMes
 	}
 	return fArray, nil
 }
+

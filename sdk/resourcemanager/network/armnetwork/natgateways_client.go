@@ -23,7 +23,7 @@ import (
 // NatGatewaysClient contains the methods for the NatGateways group.
 // Don't use this type directly, use NewNatGatewaysClient() instead.
 type NatGatewaysClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewNatGatewaysClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &NatGatewaysClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *NatGatewaysClient) createOrUpdateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -255,7 +255,7 @@ func (client *NatGatewaysClient) getHandleResponse(resp *http.Response) (NatGate
 // Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - NatGatewaysClientListOptions contains the optional parameters for the NatGatewaysClient.NewListPager method.
-func (client *NatGatewaysClient) NewListPager(resourceGroupName string, options *NatGatewaysClientListOptions) *runtime.Pager[NatGatewaysClientListResponse] {
+func (client *NatGatewaysClient) NewListPager(resourceGroupName string, options *NatGatewaysClientListOptions) (*runtime.Pager[NatGatewaysClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[NatGatewaysClientListResponse]{
 		More: func(page NatGatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -318,7 +318,7 @@ func (client *NatGatewaysClient) listHandleResponse(resp *http.Response) (NatGat
 //
 // Generated from API version 2023-05-01
 //   - options - NatGatewaysClientListAllOptions contains the optional parameters for the NatGatewaysClient.NewListAllPager method.
-func (client *NatGatewaysClient) NewListAllPager(options *NatGatewaysClientListAllOptions) *runtime.Pager[NatGatewaysClientListAllResponse] {
+func (client *NatGatewaysClient) NewListAllPager(options *NatGatewaysClientListAllOptions) (*runtime.Pager[NatGatewaysClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[NatGatewaysClientListAllResponse]{
 		More: func(page NatGatewaysClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -423,8 +423,8 @@ func (client *NatGatewaysClient) updateTagsCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -436,3 +436,4 @@ func (client *NatGatewaysClient) updateTagsHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

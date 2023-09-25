@@ -23,7 +23,7 @@ import (
 // HubVirtualNetworkConnectionsClient contains the methods for the HubVirtualNetworkConnections group.
 // Don't use this type directly, use NewHubVirtualNetworkConnectionsClient() instead.
 type HubVirtualNetworkConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewHubVirtualNetworkConnectionsClient(subscriptionID string, credential azc
 	}
 	client := &HubVirtualNetworkConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdateCreateRequest(ct
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, hubVirtualNetworkConnectionParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *HubVirtualNetworkConnectionsClient) getHandleResponse(resp *http.R
 //   - virtualHubName - The name of the VirtualHub.
 //   - options - HubVirtualNetworkConnectionsClientListOptions contains the optional parameters for the HubVirtualNetworkConnectionsClient.NewListPager
 //     method.
-func (client *HubVirtualNetworkConnectionsClient) NewListPager(resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsClientListOptions) *runtime.Pager[HubVirtualNetworkConnectionsClientListResponse] {
+func (client *HubVirtualNetworkConnectionsClient) NewListPager(resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsClientListOptions) (*runtime.Pager[HubVirtualNetworkConnectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[HubVirtualNetworkConnectionsClientListResponse]{
 		More: func(page HubVirtualNetworkConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *HubVirtualNetworkConnectionsClient) listHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

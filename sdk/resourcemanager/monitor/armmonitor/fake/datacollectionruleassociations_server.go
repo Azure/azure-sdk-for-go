@@ -24,7 +24,7 @@ import (
 )
 
 // DataCollectionRuleAssociationsServer is a fake server for instances of the armmonitor.DataCollectionRuleAssociationsClient type.
-type DataCollectionRuleAssociationsServer struct {
+type DataCollectionRuleAssociationsServer struct{
 	// Create is the fake for method DataCollectionRuleAssociationsClient.Create
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	Create func(ctx context.Context, resourceURI string, associationName string, options *armmonitor.DataCollectionRuleAssociationsClientCreateOptions) (resp azfake.Responder[armmonitor.DataCollectionRuleAssociationsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -48,6 +48,7 @@ type DataCollectionRuleAssociationsServer struct {
 	// NewListByRulePager is the fake for method DataCollectionRuleAssociationsClient.NewListByRulePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByRulePager func(resourceGroupName string, dataCollectionRuleName string, options *armmonitor.DataCollectionRuleAssociationsClientListByRuleOptions) (resp azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByRuleResponse])
+
 }
 
 // NewDataCollectionRuleAssociationsServerTransport creates a new instance of DataCollectionRuleAssociationsServerTransport with the provided implementation.
@@ -55,20 +56,20 @@ type DataCollectionRuleAssociationsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDataCollectionRuleAssociationsServerTransport(srv *DataCollectionRuleAssociationsServer) *DataCollectionRuleAssociationsServerTransport {
 	return &DataCollectionRuleAssociationsServerTransport{
-		srv:                                  srv,
+		srv: srv,
 		newListByDataCollectionEndpointPager: newTracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]](),
-		newListByResourcePager:               newTracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByResourceResponse]](),
-		newListByRulePager:                   newTracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByRuleResponse]](),
+		newListByResourcePager: newTracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByResourceResponse]](),
+		newListByRulePager: newTracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByRuleResponse]](),
 	}
 }
 
 // DataCollectionRuleAssociationsServerTransport connects instances of armmonitor.DataCollectionRuleAssociationsClient to instances of DataCollectionRuleAssociationsServer.
 // Don't use this type directly, use NewDataCollectionRuleAssociationsServerTransport instead.
 type DataCollectionRuleAssociationsServerTransport struct {
-	srv                                  *DataCollectionRuleAssociationsServer
+	srv *DataCollectionRuleAssociationsServer
 	newListByDataCollectionEndpointPager *tracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]]
-	newListByResourcePager               *tracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByResourceResponse]]
-	newListByRulePager                   *tracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByRuleResponse]]
+	newListByResourcePager *tracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByResourceResponse]]
+	newListByRulePager *tracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByRuleResponse]]
 }
 
 // Do implements the policy.Transporter interface for DataCollectionRuleAssociationsServerTransport.
@@ -143,8 +144,7 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchCreate(req *http
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DataCollectionRuleAssociationProxyOnlyResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -176,8 +176,7 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchDelete(req *http
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -209,8 +208,7 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchGet(req *http.Re
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DataCollectionRuleAssociationProxyOnlyResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -221,21 +219,21 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByDataCol
 	}
 	newListByDataCollectionEndpointPager := d.newListByDataCollectionEndpointPager.get(req)
 	if newListByDataCollectionEndpointPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionEndpoints/(?P<dataCollectionEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		dataCollectionEndpointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("dataCollectionEndpointName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByDataCollectionEndpointPager(resourceGroupNameUnescaped, dataCollectionEndpointNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionEndpoints/(?P<dataCollectionEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associations`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	dataCollectionEndpointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("dataCollectionEndpointName")])
+	if err != nil {
+		return nil, err
+	}
+resp := d.srv.NewListByDataCollectionEndpointPager(resourceGroupNameUnescaped, dataCollectionEndpointNameUnescaped, nil)
 		newListByDataCollectionEndpointPager = &resp
 		d.newListByDataCollectionEndpointPager.add(req, newListByDataCollectionEndpointPager)
 		server.PagerResponderInjectNextLinks(newListByDataCollectionEndpointPager, req, func(page *armmonitor.DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse, createLink func() string) {
@@ -262,17 +260,17 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByResourc
 	}
 	newListByResourcePager := d.newListByResourcePager.get(req)
 	if newListByResourcePager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionRuleAssociations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByResourcePager(resourceURIUnescaped, nil)
+	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionRuleAssociations`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+	if err != nil {
+		return nil, err
+	}
+resp := d.srv.NewListByResourcePager(resourceURIUnescaped, nil)
 		newListByResourcePager = &resp
 		d.newListByResourcePager.add(req, newListByResourcePager)
 		server.PagerResponderInjectNextLinks(newListByResourcePager, req, func(page *armmonitor.DataCollectionRuleAssociationsClientListByResourceResponse, createLink func() string) {
@@ -299,21 +297,21 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByRulePag
 	}
 	newListByRulePager := d.newListByRulePager.get(req)
 	if newListByRulePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionRules/(?P<dataCollectionRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		dataCollectionRuleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("dataCollectionRuleName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByRulePager(resourceGroupNameUnescaped, dataCollectionRuleNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionRules/(?P<dataCollectionRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associations`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	dataCollectionRuleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("dataCollectionRuleName")])
+	if err != nil {
+		return nil, err
+	}
+resp := d.srv.NewListByRulePager(resourceGroupNameUnescaped, dataCollectionRuleNameUnescaped, nil)
 		newListByRulePager = &resp
 		d.newListByRulePager.add(req, newListByRulePager)
 		server.PagerResponderInjectNextLinks(newListByRulePager, req, func(page *armmonitor.DataCollectionRuleAssociationsClientListByRuleResponse, createLink func() string) {
@@ -333,3 +331,4 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByRulePag
 	}
 	return resp, nil
 }
+

@@ -211,3 +211,4 @@ type UpdatesClientListResponse struct {
 	// Response for Updates list
 	ListUpdatesResult
 }
+

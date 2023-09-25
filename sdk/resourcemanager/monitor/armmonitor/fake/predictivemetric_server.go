@@ -22,10 +22,11 @@ import (
 )
 
 // PredictiveMetricServer is a fake server for instances of the armmonitor.PredictiveMetricClient type.
-type PredictiveMetricServer struct {
+type PredictiveMetricServer struct{
 	// Get is the fake for method PredictiveMetricClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, autoscaleSettingName string, timespan string, interval string, metricNamespace string, metricName string, aggregation string, options *armmonitor.PredictiveMetricClientGetOptions) (resp azfake.Responder[armmonitor.PredictiveMetricClientGetResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewPredictiveMetricServerTransport creates a new instance of PredictiveMetricServerTransport with the provided implementation.
@@ -114,8 +115,8 @@ func (p *PredictiveMetricServerTransport) dispatchGet(req *http.Request) (*http.
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PredictiveResponse, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

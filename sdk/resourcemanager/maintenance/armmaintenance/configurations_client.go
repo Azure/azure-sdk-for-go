@@ -23,7 +23,7 @@ import (
 // ConfigurationsClient contains the methods for the MaintenanceConfigurations group.
 // Don't use this type directly, use NewConfigurationsClient() instead.
 type ConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &ConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -95,8 +95,8 @@ func (client *ConfigurationsClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configuration); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -233,7 +233,7 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 //
 // Generated from API version 2023-04-01
 //   - options - ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.NewListPager method.
-func (client *ConfigurationsClient) NewListPager(options *ConfigurationsClientListOptions) *runtime.Pager[ConfigurationsClientListResponse] {
+func (client *ConfigurationsClient) NewListPager(options *ConfigurationsClientListOptions) (*runtime.Pager[ConfigurationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationsClientListResponse]{
 		More: func(page ConfigurationsClientListResponse) bool {
 			return false
@@ -332,8 +332,8 @@ func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configuration); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -345,3 +345,4 @@ func (client *ConfigurationsClient) updateHandleResponse(resp *http.Response) (C
 	}
 	return result, nil
 }
+

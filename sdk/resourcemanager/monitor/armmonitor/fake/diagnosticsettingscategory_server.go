@@ -22,7 +22,7 @@ import (
 )
 
 // DiagnosticSettingsCategoryServer is a fake server for instances of the armmonitor.DiagnosticSettingsCategoryClient type.
-type DiagnosticSettingsCategoryServer struct {
+type DiagnosticSettingsCategoryServer struct{
 	// Get is the fake for method DiagnosticSettingsCategoryClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceURI string, name string, options *armmonitor.DiagnosticSettingsCategoryClientGetOptions) (resp azfake.Responder[armmonitor.DiagnosticSettingsCategoryClientGetResponse], errResp azfake.ErrorResponder)
@@ -30,6 +30,7 @@ type DiagnosticSettingsCategoryServer struct {
 	// NewListPager is the fake for method DiagnosticSettingsCategoryClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceURI string, options *armmonitor.DiagnosticSettingsCategoryClientListOptions) (resp azfake.PagerResponder[armmonitor.DiagnosticSettingsCategoryClientListResponse])
+
 }
 
 // NewDiagnosticSettingsCategoryServerTransport creates a new instance of DiagnosticSettingsCategoryServerTransport with the provided implementation.
@@ -37,7 +38,7 @@ type DiagnosticSettingsCategoryServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDiagnosticSettingsCategoryServerTransport(srv *DiagnosticSettingsCategoryServer) *DiagnosticSettingsCategoryServerTransport {
 	return &DiagnosticSettingsCategoryServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armmonitor.DiagnosticSettingsCategoryClientListResponse]](),
 	}
 }
@@ -45,7 +46,7 @@ func NewDiagnosticSettingsCategoryServerTransport(srv *DiagnosticSettingsCategor
 // DiagnosticSettingsCategoryServerTransport connects instances of armmonitor.DiagnosticSettingsCategoryClient to instances of DiagnosticSettingsCategoryServer.
 // Don't use this type directly, use NewDiagnosticSettingsCategoryServerTransport instead.
 type DiagnosticSettingsCategoryServerTransport struct {
-	srv          *DiagnosticSettingsCategoryServer
+	srv *DiagnosticSettingsCategoryServer
 	newListPager *tracker[azfake.PagerResponder[armmonitor.DiagnosticSettingsCategoryClientListResponse]]
 }
 
@@ -103,8 +104,7 @@ func (d *DiagnosticSettingsCategoryServerTransport) dispatchGet(req *http.Reques
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticSettingsCategoryResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -115,17 +115,17 @@ func (d *DiagnosticSettingsCategoryServerTransport) dispatchNewListPager(req *ht
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/diagnosticSettingsCategories`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListPager(resourceURIUnescaped, nil)
+	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/diagnosticSettingsCategories`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+	if err != nil {
+		return nil, err
+	}
+resp := d.srv.NewListPager(resourceURIUnescaped, nil)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)
 	}
@@ -142,3 +142,4 @@ func (d *DiagnosticSettingsCategoryServerTransport) dispatchNewListPager(req *ht
 	}
 	return resp, nil
 }
+

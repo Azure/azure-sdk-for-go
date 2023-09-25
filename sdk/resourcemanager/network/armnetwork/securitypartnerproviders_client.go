@@ -23,7 +23,7 @@ import (
 // SecurityPartnerProvidersClient contains the methods for the SecurityPartnerProviders group.
 // Don't use this type directly, use NewSecurityPartnerProvidersClient() instead.
 type SecurityPartnerProvidersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewSecurityPartnerProvidersClient(subscriptionID string, credential azcore.
 	}
 	client := &SecurityPartnerProvidersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *SecurityPartnerProvidersClient) createOrUpdateCreateRequest(ctx co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -254,7 +254,7 @@ func (client *SecurityPartnerProvidersClient) getHandleResponse(resp *http.Respo
 // Generated from API version 2023-05-01
 //   - options - SecurityPartnerProvidersClientListOptions contains the optional parameters for the SecurityPartnerProvidersClient.NewListPager
 //     method.
-func (client *SecurityPartnerProvidersClient) NewListPager(options *SecurityPartnerProvidersClientListOptions) *runtime.Pager[SecurityPartnerProvidersClientListResponse] {
+func (client *SecurityPartnerProvidersClient) NewListPager(options *SecurityPartnerProvidersClientListOptions) (*runtime.Pager[SecurityPartnerProvidersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SecurityPartnerProvidersClientListResponse]{
 		More: func(page SecurityPartnerProvidersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -315,7 +315,7 @@ func (client *SecurityPartnerProvidersClient) listHandleResponse(resp *http.Resp
 //   - resourceGroupName - The name of the resource group.
 //   - options - SecurityPartnerProvidersClientListByResourceGroupOptions contains the optional parameters for the SecurityPartnerProvidersClient.NewListByResourceGroupPager
 //     method.
-func (client *SecurityPartnerProvidersClient) NewListByResourceGroupPager(resourceGroupName string, options *SecurityPartnerProvidersClientListByResourceGroupOptions) *runtime.Pager[SecurityPartnerProvidersClientListByResourceGroupResponse] {
+func (client *SecurityPartnerProvidersClient) NewListByResourceGroupPager(resourceGroupName string, options *SecurityPartnerProvidersClientListByResourceGroupOptions) (*runtime.Pager[SecurityPartnerProvidersClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SecurityPartnerProvidersClientListByResourceGroupResponse]{
 		More: func(page SecurityPartnerProvidersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -425,8 +425,8 @@ func (client *SecurityPartnerProvidersClient) updateTagsCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -438,3 +438,4 @@ func (client *SecurityPartnerProvidersClient) updateTagsHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

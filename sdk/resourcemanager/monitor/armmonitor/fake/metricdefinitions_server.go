@@ -21,7 +21,7 @@ import (
 )
 
 // MetricDefinitionsServer is a fake server for instances of the armmonitor.MetricDefinitionsClient type.
-type MetricDefinitionsServer struct {
+type MetricDefinitionsServer struct{
 	// NewListPager is the fake for method MetricDefinitionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceURI string, options *armmonitor.MetricDefinitionsClientListOptions) (resp azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse])
@@ -29,6 +29,7 @@ type MetricDefinitionsServer struct {
 	// NewListAtSubscriptionScopePager is the fake for method MetricDefinitionsClient.NewListAtSubscriptionScopePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAtSubscriptionScopePager func(region string, options *armmonitor.MetricDefinitionsClientListAtSubscriptionScopeOptions) (resp azfake.PagerResponder[armmonitor.MetricDefinitionsClientListAtSubscriptionScopeResponse])
+
 }
 
 // NewMetricDefinitionsServerTransport creates a new instance of MetricDefinitionsServerTransport with the provided implementation.
@@ -36,8 +37,8 @@ type MetricDefinitionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMetricDefinitionsServerTransport(srv *MetricDefinitionsServer) *MetricDefinitionsServerTransport {
 	return &MetricDefinitionsServerTransport{
-		srv:                             srv,
-		newListPager:                    newTracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse]](),
+		srv: srv,
+		newListPager: newTracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse]](),
 		newListAtSubscriptionScopePager: newTracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListAtSubscriptionScopeResponse]](),
 	}
 }
@@ -45,8 +46,8 @@ func NewMetricDefinitionsServerTransport(srv *MetricDefinitionsServer) *MetricDe
 // MetricDefinitionsServerTransport connects instances of armmonitor.MetricDefinitionsClient to instances of MetricDefinitionsServer.
 // Don't use this type directly, use NewMetricDefinitionsServerTransport instead.
 type MetricDefinitionsServerTransport struct {
-	srv                             *MetricDefinitionsServer
-	newListPager                    *tracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse]]
+	srv *MetricDefinitionsServer
+	newListPager *tracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse]]
 	newListAtSubscriptionScopePager *tracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListAtSubscriptionScopeResponse]]
 }
 
@@ -83,29 +84,29 @@ func (m *MetricDefinitionsServerTransport) dispatchNewListPager(req *http.Reques
 	}
 	newListPager := m.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricDefinitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricDefinitions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+	if err != nil {
+		return nil, err
+	}
+	metricnamespaceUnescaped, err := url.QueryUnescape(qp.Get("metricnamespace"))
+	if err != nil {
+		return nil, err
+	}
+	metricnamespaceParam := getOptional(metricnamespaceUnescaped)
+	var options *armmonitor.MetricDefinitionsClientListOptions
+	if metricnamespaceParam != nil {
+		options = &armmonitor.MetricDefinitionsClientListOptions{
+			Metricnamespace: metricnamespaceParam,
 		}
-		qp := req.URL.Query()
-		resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
-		metricnamespaceUnescaped, err := url.QueryUnescape(qp.Get("metricnamespace"))
-		if err != nil {
-			return nil, err
-		}
-		metricnamespaceParam := getOptional(metricnamespaceUnescaped)
-		var options *armmonitor.MetricDefinitionsClientListOptions
-		if metricnamespaceParam != nil {
-			options = &armmonitor.MetricDefinitionsClientListOptions{
-				Metricnamespace: metricnamespaceParam,
-			}
-		}
-		resp := m.srv.NewListPager(resourceURIUnescaped, options)
+	}
+resp := m.srv.NewListPager(resourceURIUnescaped, options)
 		newListPager = &resp
 		m.newListPager.add(req, newListPager)
 	}
@@ -129,29 +130,29 @@ func (m *MetricDefinitionsServerTransport) dispatchNewListAtSubscriptionScopePag
 	}
 	newListAtSubscriptionScopePager := m.newListAtSubscriptionScopePager.get(req)
 	if newListAtSubscriptionScopePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricDefinitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricDefinitions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	regionUnescaped, err := url.QueryUnescape(qp.Get("region"))
+	if err != nil {
+		return nil, err
+	}
+	metricnamespaceUnescaped, err := url.QueryUnescape(qp.Get("metricnamespace"))
+	if err != nil {
+		return nil, err
+	}
+	metricnamespaceParam := getOptional(metricnamespaceUnescaped)
+	var options *armmonitor.MetricDefinitionsClientListAtSubscriptionScopeOptions
+	if metricnamespaceParam != nil {
+		options = &armmonitor.MetricDefinitionsClientListAtSubscriptionScopeOptions{
+			Metricnamespace: metricnamespaceParam,
 		}
-		qp := req.URL.Query()
-		regionUnescaped, err := url.QueryUnescape(qp.Get("region"))
-		if err != nil {
-			return nil, err
-		}
-		metricnamespaceUnescaped, err := url.QueryUnescape(qp.Get("metricnamespace"))
-		if err != nil {
-			return nil, err
-		}
-		metricnamespaceParam := getOptional(metricnamespaceUnescaped)
-		var options *armmonitor.MetricDefinitionsClientListAtSubscriptionScopeOptions
-		if metricnamespaceParam != nil {
-			options = &armmonitor.MetricDefinitionsClientListAtSubscriptionScopeOptions{
-				Metricnamespace: metricnamespaceParam,
-			}
-		}
-		resp := m.srv.NewListAtSubscriptionScopePager(regionUnescaped, options)
+	}
+resp := m.srv.NewListAtSubscriptionScopePager(regionUnescaped, options)
 		newListAtSubscriptionScopePager = &resp
 		m.newListAtSubscriptionScopePager.add(req, newListAtSubscriptionScopePager)
 	}
@@ -168,3 +169,4 @@ func (m *MetricDefinitionsServerTransport) dispatchNewListAtSubscriptionScopePag
 	}
 	return resp, nil
 }
+

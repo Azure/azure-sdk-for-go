@@ -23,7 +23,7 @@ import (
 // ScheduledQueryRulesClient contains the methods for the ScheduledQueryRules group.
 // Don't use this type directly, use NewScheduledQueryRulesClient() instead.
 type ScheduledQueryRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewScheduledQueryRulesClient(subscriptionID string, credential azcore.Token
 	}
 	client := &ScheduledQueryRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -98,8 +98,8 @@ func (client *ScheduledQueryRulesClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -237,13 +237,13 @@ func (client *ScheduledQueryRulesClient) getHandleResponse(resp *http.Response) 
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ScheduledQueryRulesClientListByResourceGroupOptions contains the optional parameters for the ScheduledQueryRulesClient.NewListByResourceGroupPager
 //     method.
-func (client *ScheduledQueryRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *ScheduledQueryRulesClientListByResourceGroupOptions) *runtime.Pager[ScheduledQueryRulesClientListByResourceGroupResponse] {
+func (client *ScheduledQueryRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *ScheduledQueryRulesClientListByResourceGroupOptions) (*runtime.Pager[ScheduledQueryRulesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ScheduledQueryRulesClientListByResourceGroupResponse]{
 		More: func(page ScheduledQueryRulesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScheduledQueryRulesClientListByResourceGroupResponse) (ScheduledQueryRulesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScheduledQueryRulesClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScheduledQueryRulesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -303,13 +303,13 @@ func (client *ScheduledQueryRulesClient) listByResourceGroupHandleResponse(resp 
 // Generated from API version 2022-08-01-preview
 //   - options - ScheduledQueryRulesClientListBySubscriptionOptions contains the optional parameters for the ScheduledQueryRulesClient.NewListBySubscriptionPager
 //     method.
-func (client *ScheduledQueryRulesClient) NewListBySubscriptionPager(options *ScheduledQueryRulesClientListBySubscriptionOptions) *runtime.Pager[ScheduledQueryRulesClientListBySubscriptionResponse] {
+func (client *ScheduledQueryRulesClient) NewListBySubscriptionPager(options *ScheduledQueryRulesClientListBySubscriptionOptions) (*runtime.Pager[ScheduledQueryRulesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ScheduledQueryRulesClientListBySubscriptionResponse]{
 		More: func(page ScheduledQueryRulesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScheduledQueryRulesClientListBySubscriptionResponse) (ScheduledQueryRulesClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScheduledQueryRulesClient.NewListBySubscriptionPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScheduledQueryRulesClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -415,8 +415,8 @@ func (client *ScheduledQueryRulesClient) updateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -428,3 +428,4 @@ func (client *ScheduledQueryRulesClient) updateHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

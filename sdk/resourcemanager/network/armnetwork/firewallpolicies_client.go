@@ -23,7 +23,7 @@ import (
 // FirewallPoliciesClient contains the methods for the FirewallPolicies group.
 // Don't use this type directly, use NewFirewallPoliciesClient() instead.
 type FirewallPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewFirewallPoliciesClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &FirewallPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *FirewallPoliciesClient) createOrUpdateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -257,7 +257,7 @@ func (client *FirewallPoliciesClient) getHandleResponse(resp *http.Response) (Fi
 //   - resourceGroupName - The name of the resource group.
 //   - options - FirewallPoliciesClientListOptions contains the optional parameters for the FirewallPoliciesClient.NewListPager
 //     method.
-func (client *FirewallPoliciesClient) NewListPager(resourceGroupName string, options *FirewallPoliciesClientListOptions) *runtime.Pager[FirewallPoliciesClientListResponse] {
+func (client *FirewallPoliciesClient) NewListPager(resourceGroupName string, options *FirewallPoliciesClientListOptions) (*runtime.Pager[FirewallPoliciesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[FirewallPoliciesClientListResponse]{
 		More: func(page FirewallPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -321,7 +321,7 @@ func (client *FirewallPoliciesClient) listHandleResponse(resp *http.Response) (F
 // Generated from API version 2023-05-01
 //   - options - FirewallPoliciesClientListAllOptions contains the optional parameters for the FirewallPoliciesClient.NewListAllPager
 //     method.
-func (client *FirewallPoliciesClient) NewListAllPager(options *FirewallPoliciesClientListAllOptions) *runtime.Pager[FirewallPoliciesClientListAllResponse] {
+func (client *FirewallPoliciesClient) NewListAllPager(options *FirewallPoliciesClientListAllOptions) (*runtime.Pager[FirewallPoliciesClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[FirewallPoliciesClientListAllResponse]{
 		More: func(page FirewallPoliciesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -427,8 +427,8 @@ func (client *FirewallPoliciesClient) updateTagsCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -440,3 +440,4 @@ func (client *FirewallPoliciesClient) updateTagsHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

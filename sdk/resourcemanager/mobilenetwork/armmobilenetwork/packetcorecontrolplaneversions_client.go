@@ -35,7 +35,7 @@ func NewPacketCoreControlPlaneVersionsClient(credential azcore.TokenCredential, 
 		return nil, err
 	}
 	client := &PacketCoreControlPlaneVersionsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -151,7 +151,7 @@ func (client *PacketCoreControlPlaneVersionsClient) getBySubscriptionHandleRespo
 // Generated from API version 2023-06-01
 //   - options - PacketCoreControlPlaneVersionsClientListOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.NewListPager
 //     method.
-func (client *PacketCoreControlPlaneVersionsClient) NewListPager(options *PacketCoreControlPlaneVersionsClientListOptions) *runtime.Pager[PacketCoreControlPlaneVersionsClientListResponse] {
+func (client *PacketCoreControlPlaneVersionsClient) NewListPager(options *PacketCoreControlPlaneVersionsClientListOptions) (*runtime.Pager[PacketCoreControlPlaneVersionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PacketCoreControlPlaneVersionsClientListResponse]{
 		More: func(page PacketCoreControlPlaneVersionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -208,7 +208,7 @@ func (client *PacketCoreControlPlaneVersionsClient) listHandleResponse(resp *htt
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - options - PacketCoreControlPlaneVersionsClientListBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.NewListBySubscriptionPager
 //     method.
-func (client *PacketCoreControlPlaneVersionsClient) NewListBySubscriptionPager(subscriptionID string, options *PacketCoreControlPlaneVersionsClientListBySubscriptionOptions) *runtime.Pager[PacketCoreControlPlaneVersionsClientListBySubscriptionResponse] {
+func (client *PacketCoreControlPlaneVersionsClient) NewListBySubscriptionPager(subscriptionID string, options *PacketCoreControlPlaneVersionsClientListBySubscriptionOptions) (*runtime.Pager[PacketCoreControlPlaneVersionsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PacketCoreControlPlaneVersionsClientListBySubscriptionResponse]{
 		More: func(page PacketCoreControlPlaneVersionsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -259,3 +259,4 @@ func (client *PacketCoreControlPlaneVersionsClient) listBySubscriptionHandleResp
 	}
 	return result, nil
 }
+

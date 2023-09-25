@@ -23,7 +23,7 @@ import (
 // DefaultSecurityRulesClient contains the methods for the DefaultSecurityRules group.
 // Don't use this type directly, use NewDefaultSecurityRulesClient() instead.
 type DefaultSecurityRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewDefaultSecurityRulesClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &DefaultSecurityRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,7 +117,7 @@ func (client *DefaultSecurityRulesClient) getHandleResponse(resp *http.Response)
 //   - networkSecurityGroupName - The name of the network security group.
 //   - options - DefaultSecurityRulesClientListOptions contains the optional parameters for the DefaultSecurityRulesClient.NewListPager
 //     method.
-func (client *DefaultSecurityRulesClient) NewListPager(resourceGroupName string, networkSecurityGroupName string, options *DefaultSecurityRulesClientListOptions) *runtime.Pager[DefaultSecurityRulesClientListResponse] {
+func (client *DefaultSecurityRulesClient) NewListPager(resourceGroupName string, networkSecurityGroupName string, options *DefaultSecurityRulesClientListOptions) (*runtime.Pager[DefaultSecurityRulesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DefaultSecurityRulesClientListResponse]{
 		More: func(page DefaultSecurityRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -179,3 +179,4 @@ func (client *DefaultSecurityRulesClient) listHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

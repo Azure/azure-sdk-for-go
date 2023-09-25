@@ -23,7 +23,7 @@ import (
 // VirtualNetworkGatewayNatRulesClient contains the methods for the VirtualNetworkGatewayNatRules group.
 // Don't use this type directly, use NewVirtualNetworkGatewayNatRulesClient() instead.
 type VirtualNetworkGatewayNatRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualNetworkGatewayNatRulesClient(subscriptionID string, credential az
 	}
 	client := &VirtualNetworkGatewayNatRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -120,8 +120,8 @@ func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdateCreateRequest(c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, natRuleParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -273,7 +273,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) getHandleResponse(resp *http.
 //   - virtualNetworkGatewayName - The name of the gateway.
 //   - options - VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions contains the optional parameters for the
 //     VirtualNetworkGatewayNatRulesClient.NewListByVirtualNetworkGatewayPager method.
-func (client *VirtualNetworkGatewayNatRulesClient) NewListByVirtualNetworkGatewayPager(resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions) *runtime.Pager[VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse] {
+func (client *VirtualNetworkGatewayNatRulesClient) NewListByVirtualNetworkGatewayPager(resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions) (*runtime.Pager[VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse]{
 		More: func(page VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -335,3 +335,4 @@ func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayHa
 	}
 	return result, nil
 }
+

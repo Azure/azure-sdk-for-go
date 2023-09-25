@@ -23,7 +23,7 @@ import (
 // LoadBalancerOutboundRulesClient contains the methods for the LoadBalancerOutboundRules group.
 // Don't use this type directly, use NewLoadBalancerOutboundRulesClient() instead.
 type LoadBalancerOutboundRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewLoadBalancerOutboundRulesClient(subscriptionID string, credential azcore
 	}
 	client := &LoadBalancerOutboundRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,7 +117,7 @@ func (client *LoadBalancerOutboundRulesClient) getHandleResponse(resp *http.Resp
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerOutboundRulesClientListOptions contains the optional parameters for the LoadBalancerOutboundRulesClient.NewListPager
 //     method.
-func (client *LoadBalancerOutboundRulesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerOutboundRulesClientListOptions) *runtime.Pager[LoadBalancerOutboundRulesClientListResponse] {
+func (client *LoadBalancerOutboundRulesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerOutboundRulesClientListOptions) (*runtime.Pager[LoadBalancerOutboundRulesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LoadBalancerOutboundRulesClientListResponse]{
 		More: func(page LoadBalancerOutboundRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -179,3 +179,4 @@ func (client *LoadBalancerOutboundRulesClient) listHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

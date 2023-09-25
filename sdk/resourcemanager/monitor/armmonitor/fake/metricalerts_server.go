@@ -22,7 +22,7 @@ import (
 )
 
 // MetricAlertsServer is a fake server for instances of the armmonitor.MetricAlertsClient type.
-type MetricAlertsServer struct {
+type MetricAlertsServer struct{
 	// CreateOrUpdate is the fake for method MetricAlertsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, ruleName string, parameters armmonitor.MetricAlertResource, options *armmonitor.MetricAlertsClientCreateOrUpdateOptions) (resp azfake.Responder[armmonitor.MetricAlertsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -46,6 +46,7 @@ type MetricAlertsServer struct {
 	// Update is the fake for method MetricAlertsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, ruleName string, parameters armmonitor.MetricAlertResourcePatch, options *armmonitor.MetricAlertsClientUpdateOptions) (resp azfake.Responder[armmonitor.MetricAlertsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewMetricAlertsServerTransport creates a new instance of MetricAlertsServerTransport with the provided implementation.
@@ -53,18 +54,18 @@ type MetricAlertsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMetricAlertsServerTransport(srv *MetricAlertsServer) *MetricAlertsServerTransport {
 	return &MetricAlertsServerTransport{
-		srv:                         srv,
+		srv: srv,
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.MetricAlertsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmonitor.MetricAlertsClientListBySubscriptionResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armmonitor.MetricAlertsClientListBySubscriptionResponse]](),
 	}
 }
 
 // MetricAlertsServerTransport connects instances of armmonitor.MetricAlertsClient to instances of MetricAlertsServer.
 // Don't use this type directly, use NewMetricAlertsServerTransport instead.
 type MetricAlertsServerTransport struct {
-	srv                         *MetricAlertsServer
+	srv *MetricAlertsServer
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.MetricAlertsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmonitor.MetricAlertsClientListBySubscriptionResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armmonitor.MetricAlertsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for MetricAlertsServerTransport.
@@ -133,8 +134,7 @@ func (m *MetricAlertsServerTransport) dispatchCreateOrUpdate(req *http.Request) 
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MetricAlertResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -166,8 +166,7 @@ func (m *MetricAlertsServerTransport) dispatchDelete(req *http.Request) (*http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -199,8 +198,7 @@ func (m *MetricAlertsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MetricAlertResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -211,17 +209,17 @@ func (m *MetricAlertsServerTransport) dispatchNewListByResourceGroupPager(req *h
 	}
 	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricAlerts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricAlerts`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := m.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		m.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 	}
@@ -245,13 +243,13 @@ func (m *MetricAlertsServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	}
 	newListBySubscriptionPager := m.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricAlerts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := m.srv.NewListBySubscriptionPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricAlerts`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := m.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		m.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 	}
@@ -300,8 +298,8 @@ func (m *MetricAlertsServerTransport) dispatchUpdate(req *http.Request) (*http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MetricAlertResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

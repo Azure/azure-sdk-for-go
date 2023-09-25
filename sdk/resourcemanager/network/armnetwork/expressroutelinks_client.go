@@ -23,7 +23,7 @@ import (
 // ExpressRouteLinksClient contains the methods for the ExpressRouteLinks group.
 // Don't use this type directly, use NewExpressRouteLinksClient() instead.
 type ExpressRouteLinksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRouteLinksClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &ExpressRouteLinksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,7 +116,7 @@ func (client *ExpressRouteLinksClient) getHandleResponse(resp *http.Response) (E
 //   - expressRoutePortName - The name of the ExpressRoutePort resource.
 //   - options - ExpressRouteLinksClientListOptions contains the optional parameters for the ExpressRouteLinksClient.NewListPager
 //     method.
-func (client *ExpressRouteLinksClient) NewListPager(resourceGroupName string, expressRoutePortName string, options *ExpressRouteLinksClientListOptions) *runtime.Pager[ExpressRouteLinksClientListResponse] {
+func (client *ExpressRouteLinksClient) NewListPager(resourceGroupName string, expressRoutePortName string, options *ExpressRouteLinksClientListOptions) (*runtime.Pager[ExpressRouteLinksClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteLinksClientListResponse]{
 		More: func(page ExpressRouteLinksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -178,3 +178,4 @@ func (client *ExpressRouteLinksClient) listHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

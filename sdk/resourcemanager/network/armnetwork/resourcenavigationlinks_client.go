@@ -23,7 +23,7 @@ import (
 // ResourceNavigationLinksClient contains the methods for the ResourceNavigationLinks group.
 // Don't use this type directly, use NewResourceNavigationLinksClient() instead.
 type ResourceNavigationLinksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewResourceNavigationLinksClient(subscriptionID string, credential azcore.T
 	}
 	client := &ResourceNavigationLinksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,3 +109,4 @@ func (client *ResourceNavigationLinksClient) listHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

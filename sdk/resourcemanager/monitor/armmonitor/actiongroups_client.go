@@ -23,7 +23,7 @@ import (
 // ActionGroupsClient contains the methods for the ActionGroups group.
 // Don't use this type directly, use NewActionGroupsClient() instead.
 type ActionGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewActionGroupsClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &ActionGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *ActionGroupsClient) createNotificationsAtActionGroupResourceLevelC
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, notificationRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -176,8 +176,8 @@ func (client *ActionGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, actionGroup); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -299,8 +299,8 @@ func (client *ActionGroupsClient) enableReceiverCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, enableRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -444,13 +444,13 @@ func (client *ActionGroupsClient) getTestNotificationsAtActionGroupResourceLevel
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ActionGroupsClientListByResourceGroupOptions contains the optional parameters for the ActionGroupsClient.NewListByResourceGroupPager
 //     method.
-func (client *ActionGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ActionGroupsClientListByResourceGroupOptions) *runtime.Pager[ActionGroupsClientListByResourceGroupResponse] {
+func (client *ActionGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ActionGroupsClientListByResourceGroupOptions) (*runtime.Pager[ActionGroupsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ActionGroupsClientListByResourceGroupResponse]{
 		More: func(page ActionGroupsClientListByResourceGroupResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ActionGroupsClientListByResourceGroupResponse) (ActionGroupsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ActionGroupsClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ActionGroupsClient.NewListByResourceGroupPager")
 			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 			if err != nil {
 				return ActionGroupsClientListByResourceGroupResponse{}, err
@@ -504,13 +504,13 @@ func (client *ActionGroupsClient) listByResourceGroupHandleResponse(resp *http.R
 // Generated from API version 2023-01-01
 //   - options - ActionGroupsClientListBySubscriptionIDOptions contains the optional parameters for the ActionGroupsClient.NewListBySubscriptionIDPager
 //     method.
-func (client *ActionGroupsClient) NewListBySubscriptionIDPager(options *ActionGroupsClientListBySubscriptionIDOptions) *runtime.Pager[ActionGroupsClientListBySubscriptionIDResponse] {
+func (client *ActionGroupsClient) NewListBySubscriptionIDPager(options *ActionGroupsClientListBySubscriptionIDOptions) (*runtime.Pager[ActionGroupsClientListBySubscriptionIDResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ActionGroupsClientListBySubscriptionIDResponse]{
 		More: func(page ActionGroupsClientListBySubscriptionIDResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ActionGroupsClientListBySubscriptionIDResponse) (ActionGroupsClientListBySubscriptionIDResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ActionGroupsClient.NewListBySubscriptionIDPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ActionGroupsClient.NewListBySubscriptionIDPager")
 			req, err := client.listBySubscriptionIDCreateRequest(ctx, options)
 			if err != nil {
 				return ActionGroupsClientListBySubscriptionIDResponse{}, err
@@ -609,8 +609,8 @@ func (client *ActionGroupsClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, actionGroupPatch); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -622,3 +622,4 @@ func (client *ActionGroupsClient) updateHandleResponse(resp *http.Response) (Act
 	}
 	return result, nil
 }
+

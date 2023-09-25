@@ -24,7 +24,7 @@ import (
 // VirtualNetworksClient contains the methods for the VirtualNetworks group.
 // Don't use this type directly, use NewVirtualNetworksClient() instead.
 type VirtualNetworksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewVirtualNetworksClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &VirtualNetworksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -177,8 +177,8 @@ func (client *VirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -321,7 +321,7 @@ func (client *VirtualNetworksClient) getHandleResponse(resp *http.Response) (Vir
 //   - resourceGroupName - The name of the resource group.
 //   - options - VirtualNetworksClientListOptions contains the optional parameters for the VirtualNetworksClient.NewListPager
 //     method.
-func (client *VirtualNetworksClient) NewListPager(resourceGroupName string, options *VirtualNetworksClientListOptions) *runtime.Pager[VirtualNetworksClientListResponse] {
+func (client *VirtualNetworksClient) NewListPager(resourceGroupName string, options *VirtualNetworksClientListOptions) (*runtime.Pager[VirtualNetworksClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworksClientListResponse]{
 		More: func(page VirtualNetworksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -385,7 +385,7 @@ func (client *VirtualNetworksClient) listHandleResponse(resp *http.Response) (Vi
 // Generated from API version 2023-05-01
 //   - options - VirtualNetworksClientListAllOptions contains the optional parameters for the VirtualNetworksClient.NewListAllPager
 //     method.
-func (client *VirtualNetworksClient) NewListAllPager(options *VirtualNetworksClientListAllOptions) *runtime.Pager[VirtualNetworksClientListAllResponse] {
+func (client *VirtualNetworksClient) NewListAllPager(options *VirtualNetworksClientListAllOptions) (*runtime.Pager[VirtualNetworksClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworksClientListAllResponse]{
 		More: func(page VirtualNetworksClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -453,7 +453,7 @@ func (client *VirtualNetworksClient) BeginListDdosProtectionStatus(ctx context.C
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VirtualNetworksClientListDdosProtectionStatusResponse) (VirtualNetworksClientListDdosProtectionStatusResponse, error) {
-			req, err := runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+				req, err := runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			if err != nil {
 				return VirtualNetworksClientListDdosProtectionStatusResponse{}, err
 			}
@@ -474,7 +474,7 @@ func (client *VirtualNetworksClient) BeginListDdosProtectionStatus(ctx context.C
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[VirtualNetworksClientListDdosProtectionStatusResponse]]{
 			FinalStateVia: runtime.FinalStateViaLocation,
-			Response:      &pager,
+			Response: &pager,
 		})
 		return poller, err
 	} else {
@@ -552,7 +552,7 @@ func (client *VirtualNetworksClient) listDdosProtectionStatusHandleResponse(resp
 //   - virtualNetworkName - The name of the virtual network.
 //   - options - VirtualNetworksClientListUsageOptions contains the optional parameters for the VirtualNetworksClient.NewListUsagePager
 //     method.
-func (client *VirtualNetworksClient) NewListUsagePager(resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientListUsageOptions) *runtime.Pager[VirtualNetworksClientListUsageResponse] {
+func (client *VirtualNetworksClient) NewListUsagePager(resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientListUsageOptions) (*runtime.Pager[VirtualNetworksClientListUsageResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworksClientListUsageResponse]{
 		More: func(page VirtualNetworksClientListUsageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -666,8 +666,8 @@ func (client *VirtualNetworksClient) updateTagsCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -679,3 +679,4 @@ func (client *VirtualNetworksClient) updateTagsHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

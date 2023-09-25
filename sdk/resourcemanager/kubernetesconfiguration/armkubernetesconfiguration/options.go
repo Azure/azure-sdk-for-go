@@ -118,3 +118,4 @@ type SourceControlConfigurationsClientGetOptions struct {
 type SourceControlConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
+

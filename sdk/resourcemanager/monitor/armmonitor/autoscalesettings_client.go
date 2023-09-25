@@ -23,7 +23,7 @@ import (
 // AutoscaleSettingsClient contains the methods for the AutoscaleSettings group.
 // Don't use this type directly, use NewAutoscaleSettingsClient() instead.
 type AutoscaleSettingsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAutoscaleSettingsClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &AutoscaleSettingsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -98,8 +98,8 @@ func (client *AutoscaleSettingsClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -237,13 +237,13 @@ func (client *AutoscaleSettingsClient) getHandleResponse(resp *http.Response) (A
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AutoscaleSettingsClientListByResourceGroupOptions contains the optional parameters for the AutoscaleSettingsClient.NewListByResourceGroupPager
 //     method.
-func (client *AutoscaleSettingsClient) NewListByResourceGroupPager(resourceGroupName string, options *AutoscaleSettingsClientListByResourceGroupOptions) *runtime.Pager[AutoscaleSettingsClientListByResourceGroupResponse] {
+func (client *AutoscaleSettingsClient) NewListByResourceGroupPager(resourceGroupName string, options *AutoscaleSettingsClientListByResourceGroupOptions) (*runtime.Pager[AutoscaleSettingsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AutoscaleSettingsClientListByResourceGroupResponse]{
 		More: func(page AutoscaleSettingsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AutoscaleSettingsClientListByResourceGroupResponse) (AutoscaleSettingsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AutoscaleSettingsClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AutoscaleSettingsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -303,13 +303,13 @@ func (client *AutoscaleSettingsClient) listByResourceGroupHandleResponse(resp *h
 // Generated from API version 2022-10-01
 //   - options - AutoscaleSettingsClientListBySubscriptionOptions contains the optional parameters for the AutoscaleSettingsClient.NewListBySubscriptionPager
 //     method.
-func (client *AutoscaleSettingsClient) NewListBySubscriptionPager(options *AutoscaleSettingsClientListBySubscriptionOptions) *runtime.Pager[AutoscaleSettingsClientListBySubscriptionResponse] {
+func (client *AutoscaleSettingsClient) NewListBySubscriptionPager(options *AutoscaleSettingsClientListBySubscriptionOptions) (*runtime.Pager[AutoscaleSettingsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AutoscaleSettingsClientListBySubscriptionResponse]{
 		More: func(page AutoscaleSettingsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AutoscaleSettingsClientListBySubscriptionResponse) (AutoscaleSettingsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AutoscaleSettingsClient.NewListBySubscriptionPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AutoscaleSettingsClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -415,8 +415,8 @@ func (client *AutoscaleSettingsClient) updateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, autoscaleSettingResource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -428,3 +428,4 @@ func (client *AutoscaleSettingsClient) updateHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

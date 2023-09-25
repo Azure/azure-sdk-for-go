@@ -166,3 +166,4 @@ func unmarshalRuleDataSourceClassification(rawMsg json.RawMessage) (RuleDataSour
 	}
 	return b, nil
 }
+

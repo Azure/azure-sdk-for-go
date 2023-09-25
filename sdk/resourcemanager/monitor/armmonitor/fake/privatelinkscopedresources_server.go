@@ -23,7 +23,7 @@ import (
 )
 
 // PrivateLinkScopedResourcesServer is a fake server for instances of the armmonitor.PrivateLinkScopedResourcesClient type.
-type PrivateLinkScopedResourcesServer struct {
+type PrivateLinkScopedResourcesServer struct{
 	// BeginCreateOrUpdate is the fake for method PrivateLinkScopedResourcesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, scopeName string, name string, parameters armmonitor.ScopedResource, options *armmonitor.PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -39,6 +39,7 @@ type PrivateLinkScopedResourcesServer struct {
 	// NewListByPrivateLinkScopePager is the fake for method PrivateLinkScopedResourcesClient.NewListByPrivateLinkScopePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByPrivateLinkScopePager func(resourceGroupName string, scopeName string, options *armmonitor.PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions) (resp azfake.PagerResponder[armmonitor.PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse])
+
 }
 
 // NewPrivateLinkScopedResourcesServerTransport creates a new instance of PrivateLinkScopedResourcesServerTransport with the provided implementation.
@@ -46,9 +47,9 @@ type PrivateLinkScopedResourcesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateLinkScopedResourcesServerTransport(srv *PrivateLinkScopedResourcesServer) *PrivateLinkScopedResourcesServerTransport {
 	return &PrivateLinkScopedResourcesServerTransport{
-		srv:                            srv,
-		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientCreateOrUpdateResponse]](),
-		beginDelete:                    newTracker[azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientDeleteResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientDeleteResponse]](),
 		newListByPrivateLinkScopePager: newTracker[azfake.PagerResponder[armmonitor.PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse]](),
 	}
 }
@@ -56,9 +57,9 @@ func NewPrivateLinkScopedResourcesServerTransport(srv *PrivateLinkScopedResource
 // PrivateLinkScopedResourcesServerTransport connects instances of armmonitor.PrivateLinkScopedResourcesClient to instances of PrivateLinkScopedResourcesServer.
 // Don't use this type directly, use NewPrivateLinkScopedResourcesServerTransport instead.
 type PrivateLinkScopedResourcesServerTransport struct {
-	srv                            *PrivateLinkScopedResourcesServer
-	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientCreateOrUpdateResponse]]
-	beginDelete                    *tracker[azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientDeleteResponse]]
+	srv *PrivateLinkScopedResourcesServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientDeleteResponse]]
 	newListByPrivateLinkScopePager *tracker[azfake.PagerResponder[armmonitor.PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse]]
 }
 
@@ -99,32 +100,32 @@ func (p *PrivateLinkScopedResourcesServerTransport) dispatchBeginCreateOrUpdate(
 	}
 	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopedResources/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmonitor.ScopedResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		scopeNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
-		if err != nil {
-			return nil, err
-		}
-		nameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, scopeNameUnescaped, nameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopedResources/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmonitor.ScopedResource](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	scopeNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
+	if err != nil {
+		return nil, err
+	}
+	nameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, scopeNameUnescaped, nameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		p.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -151,28 +152,28 @@ func (p *PrivateLinkScopedResourcesServerTransport) dispatchBeginDelete(req *htt
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopedResources/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		scopeNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
-		if err != nil {
-			return nil, err
-		}
-		nameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, scopeNameUnescaped, nameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopedResources/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	scopeNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
+	if err != nil {
+		return nil, err
+	}
+	nameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, scopeNameUnescaped, nameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		p.beginDelete.add(req, beginDelete)
 	}
@@ -224,8 +225,7 @@ func (p *PrivateLinkScopedResourcesServerTransport) dispatchGet(req *http.Reques
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ScopedResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -236,21 +236,21 @@ func (p *PrivateLinkScopedResourcesServerTransport) dispatchNewListByPrivateLink
 	}
 	newListByPrivateLinkScopePager := p.newListByPrivateLinkScopePager.get(req)
 	if newListByPrivateLinkScopePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopedResources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		scopeNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListByPrivateLinkScopePager(resourceGroupNameUnescaped, scopeNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopedResources`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	scopeNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
+	if err != nil {
+		return nil, err
+	}
+resp := p.srv.NewListByPrivateLinkScopePager(resourceGroupNameUnescaped, scopeNameUnescaped, nil)
 		newListByPrivateLinkScopePager = &resp
 		p.newListByPrivateLinkScopePager.add(req, newListByPrivateLinkScopePager)
 		server.PagerResponderInjectNextLinks(newListByPrivateLinkScopePager, req, func(page *armmonitor.PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse, createLink func() string) {
@@ -270,3 +270,4 @@ func (p *PrivateLinkScopedResourcesServerTransport) dispatchNewListByPrivateLink
 	}
 	return resp, nil
 }
+

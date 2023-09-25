@@ -51,7 +51,7 @@ type ClientManualFailoverResponse struct {
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// Result of the request to list IoT Hub operations. It contains a list of operations and a URL link to get the next set of
-	// results.
+// results.
 	OperationListResult
 }
 
@@ -233,3 +233,4 @@ type ResourceProviderCommonClientGetSubscriptionQuotaResponse struct {
 	// Json-serialized array of User subscription quota response
 	UserSubscriptionQuotaListResult
 }
+

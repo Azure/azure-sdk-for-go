@@ -23,7 +23,7 @@ import (
 // LogProfilesClient contains the methods for the LogProfiles group.
 // Don't use this type directly, use NewLogProfilesClient() instead.
 type LogProfilesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewLogProfilesClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &LogProfilesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -93,8 +93,8 @@ func (client *LogProfilesClient) createOrUpdateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -218,13 +218,13 @@ func (client *LogProfilesClient) getHandleResponse(resp *http.Response) (LogProf
 //
 // Generated from API version 2016-03-01
 //   - options - LogProfilesClientListOptions contains the optional parameters for the LogProfilesClient.NewListPager method.
-func (client *LogProfilesClient) NewListPager(options *LogProfilesClientListOptions) *runtime.Pager[LogProfilesClientListResponse] {
+func (client *LogProfilesClient) NewListPager(options *LogProfilesClientListOptions) (*runtime.Pager[LogProfilesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LogProfilesClientListResponse]{
 		More: func(page LogProfilesClientListResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *LogProfilesClientListResponse) (LogProfilesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LogProfilesClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LogProfilesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
 				return LogProfilesClientListResponse{}, err
@@ -318,8 +318,8 @@ func (client *LogProfilesClient) updateCreateRequest(ctx context.Context, logPro
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, logProfilesResource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -331,3 +331,4 @@ func (client *LogProfilesClient) updateHandleResponse(resp *http.Response) (LogP
 	}
 	return result, nil
 }
+

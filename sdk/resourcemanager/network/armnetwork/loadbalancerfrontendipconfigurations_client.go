@@ -23,7 +23,7 @@ import (
 // LoadBalancerFrontendIPConfigurationsClient contains the methods for the LoadBalancerFrontendIPConfigurations group.
 // Don't use this type directly, use NewLoadBalancerFrontendIPConfigurationsClient() instead.
 type LoadBalancerFrontendIPConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewLoadBalancerFrontendIPConfigurationsClient(subscriptionID string, creden
 	}
 	client := &LoadBalancerFrontendIPConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,7 +117,7 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) getHandleResponse(resp
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerFrontendIPConfigurationsClientListOptions contains the optional parameters for the LoadBalancerFrontendIPConfigurationsClient.NewListPager
 //     method.
-func (client *LoadBalancerFrontendIPConfigurationsClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsClientListOptions) *runtime.Pager[LoadBalancerFrontendIPConfigurationsClientListResponse] {
+func (client *LoadBalancerFrontendIPConfigurationsClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsClientListOptions) (*runtime.Pager[LoadBalancerFrontendIPConfigurationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LoadBalancerFrontendIPConfigurationsClientListResponse]{
 		More: func(page LoadBalancerFrontendIPConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -179,3 +179,4 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) listHandleResponse(res
 	}
 	return result, nil
 }
+

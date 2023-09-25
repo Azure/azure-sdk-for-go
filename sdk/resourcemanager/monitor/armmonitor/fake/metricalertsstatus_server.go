@@ -22,7 +22,7 @@ import (
 )
 
 // MetricAlertsStatusServer is a fake server for instances of the armmonitor.MetricAlertsStatusClient type.
-type MetricAlertsStatusServer struct {
+type MetricAlertsStatusServer struct{
 	// List is the fake for method MetricAlertsStatusClient.List
 	// HTTP status codes to indicate success: http.StatusOK
 	List func(ctx context.Context, resourceGroupName string, ruleName string, options *armmonitor.MetricAlertsStatusClientListOptions) (resp azfake.Responder[armmonitor.MetricAlertsStatusClientListResponse], errResp azfake.ErrorResponder)
@@ -30,6 +30,7 @@ type MetricAlertsStatusServer struct {
 	// ListByName is the fake for method MetricAlertsStatusClient.ListByName
 	// HTTP status codes to indicate success: http.StatusOK
 	ListByName func(ctx context.Context, resourceGroupName string, ruleName string, statusName string, options *armmonitor.MetricAlertsStatusClientListByNameOptions) (resp azfake.Responder[armmonitor.MetricAlertsStatusClientListByNameResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewMetricAlertsStatusServerTransport creates a new instance of MetricAlertsStatusServerTransport with the provided implementation.
@@ -99,8 +100,7 @@ func (m *MetricAlertsStatusServerTransport) dispatchList(req *http.Request) (*ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MetricAlertStatusCollection, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -136,8 +136,8 @@ func (m *MetricAlertsStatusServerTransport) dispatchListByName(req *http.Request
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MetricAlertStatusCollection, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // PublicIPPrefixesClient contains the methods for the PublicIPPrefixes group.
 // Don't use this type directly, use NewPublicIPPrefixesClient() instead.
 type PublicIPPrefixesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewPublicIPPrefixesClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &PublicIPPrefixesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *PublicIPPrefixesClient) createOrUpdateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -257,7 +257,7 @@ func (client *PublicIPPrefixesClient) getHandleResponse(resp *http.Response) (Pu
 //   - resourceGroupName - The name of the resource group.
 //   - options - PublicIPPrefixesClientListOptions contains the optional parameters for the PublicIPPrefixesClient.NewListPager
 //     method.
-func (client *PublicIPPrefixesClient) NewListPager(resourceGroupName string, options *PublicIPPrefixesClientListOptions) *runtime.Pager[PublicIPPrefixesClientListResponse] {
+func (client *PublicIPPrefixesClient) NewListPager(resourceGroupName string, options *PublicIPPrefixesClientListOptions) (*runtime.Pager[PublicIPPrefixesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PublicIPPrefixesClientListResponse]{
 		More: func(page PublicIPPrefixesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -321,7 +321,7 @@ func (client *PublicIPPrefixesClient) listHandleResponse(resp *http.Response) (P
 // Generated from API version 2023-05-01
 //   - options - PublicIPPrefixesClientListAllOptions contains the optional parameters for the PublicIPPrefixesClient.NewListAllPager
 //     method.
-func (client *PublicIPPrefixesClient) NewListAllPager(options *PublicIPPrefixesClientListAllOptions) *runtime.Pager[PublicIPPrefixesClientListAllResponse] {
+func (client *PublicIPPrefixesClient) NewListAllPager(options *PublicIPPrefixesClientListAllOptions) (*runtime.Pager[PublicIPPrefixesClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PublicIPPrefixesClientListAllResponse]{
 		More: func(page PublicIPPrefixesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -427,8 +427,8 @@ func (client *PublicIPPrefixesClient) updateTagsCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -440,3 +440,4 @@ func (client *PublicIPPrefixesClient) updateTagsHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

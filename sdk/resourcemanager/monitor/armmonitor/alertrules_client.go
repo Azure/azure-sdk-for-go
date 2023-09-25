@@ -23,7 +23,7 @@ import (
 // AlertRulesClient contains the methods for the AlertRules group.
 // Don't use this type directly, use NewAlertRulesClient() instead.
 type AlertRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAlertRulesClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &AlertRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -98,8 +98,8 @@ func (client *AlertRulesClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -236,13 +236,13 @@ func (client *AlertRulesClient) getHandleResponse(resp *http.Response) (AlertRul
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AlertRulesClientListByResourceGroupOptions contains the optional parameters for the AlertRulesClient.NewListByResourceGroupPager
 //     method.
-func (client *AlertRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *AlertRulesClientListByResourceGroupOptions) *runtime.Pager[AlertRulesClientListByResourceGroupResponse] {
+func (client *AlertRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *AlertRulesClientListByResourceGroupOptions) (*runtime.Pager[AlertRulesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AlertRulesClientListByResourceGroupResponse]{
 		More: func(page AlertRulesClientListByResourceGroupResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *AlertRulesClientListByResourceGroupResponse) (AlertRulesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AlertRulesClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AlertRulesClient.NewListByResourceGroupPager")
 			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 			if err != nil {
 				return AlertRulesClientListByResourceGroupResponse{}, err
@@ -296,13 +296,13 @@ func (client *AlertRulesClient) listByResourceGroupHandleResponse(resp *http.Res
 // Generated from API version 2016-03-01
 //   - options - AlertRulesClientListBySubscriptionOptions contains the optional parameters for the AlertRulesClient.NewListBySubscriptionPager
 //     method.
-func (client *AlertRulesClient) NewListBySubscriptionPager(options *AlertRulesClientListBySubscriptionOptions) *runtime.Pager[AlertRulesClientListBySubscriptionResponse] {
+func (client *AlertRulesClient) NewListBySubscriptionPager(options *AlertRulesClientListBySubscriptionOptions) (*runtime.Pager[AlertRulesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AlertRulesClientListBySubscriptionResponse]{
 		More: func(page AlertRulesClientListBySubscriptionResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *AlertRulesClientListBySubscriptionResponse) (AlertRulesClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AlertRulesClient.NewListBySubscriptionPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AlertRulesClient.NewListBySubscriptionPager")
 			req, err := client.listBySubscriptionCreateRequest(ctx, options)
 			if err != nil {
 				return AlertRulesClientListBySubscriptionResponse{}, err
@@ -401,8 +401,8 @@ func (client *AlertRulesClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, alertRulesResource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -414,3 +414,4 @@ func (client *AlertRulesClient) updateHandleResponse(resp *http.Response) (Alert
 	}
 	return result, nil
 }
+

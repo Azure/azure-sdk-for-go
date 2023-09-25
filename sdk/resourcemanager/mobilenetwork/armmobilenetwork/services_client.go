@@ -23,7 +23,7 @@ import (
 // ServicesClient contains the methods for the Services group.
 // Don't use this type directly, use NewServicesClient() instead.
 type ServicesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &ServicesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -259,7 +259,7 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 //   - mobileNetworkName - The name of the mobile network.
 //   - options - ServicesClientListByMobileNetworkOptions contains the optional parameters for the ServicesClient.NewListByMobileNetworkPager
 //     method.
-func (client *ServicesClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *ServicesClientListByMobileNetworkOptions) *runtime.Pager[ServicesClientListByMobileNetworkResponse] {
+func (client *ServicesClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *ServicesClientListByMobileNetworkOptions) (*runtime.Pager[ServicesClientListByMobileNetworkResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServicesClientListByMobileNetworkResponse]{
 		More: func(page ServicesClientListByMobileNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -371,8 +371,8 @@ func (client *ServicesClient) updateTagsCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -384,3 +384,4 @@ func (client *ServicesClient) updateTagsHandleResponse(resp *http.Response) (Ser
 	}
 	return result, nil
 }
+

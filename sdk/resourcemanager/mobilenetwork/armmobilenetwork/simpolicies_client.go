@@ -23,7 +23,7 @@ import (
 // SimPoliciesClient contains the methods for the SimPolicies group.
 // Don't use this type directly, use NewSimPoliciesClient() instead.
 type SimPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSimPoliciesClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &SimPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *SimPoliciesClient) createOrUpdateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -259,7 +259,7 @@ func (client *SimPoliciesClient) getHandleResponse(resp *http.Response) (SimPoli
 //   - mobileNetworkName - The name of the mobile network.
 //   - options - SimPoliciesClientListByMobileNetworkOptions contains the optional parameters for the SimPoliciesClient.NewListByMobileNetworkPager
 //     method.
-func (client *SimPoliciesClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *SimPoliciesClientListByMobileNetworkOptions) *runtime.Pager[SimPoliciesClientListByMobileNetworkResponse] {
+func (client *SimPoliciesClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *SimPoliciesClientListByMobileNetworkOptions) (*runtime.Pager[SimPoliciesClientListByMobileNetworkResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SimPoliciesClientListByMobileNetworkResponse]{
 		More: func(page SimPoliciesClientListByMobileNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -371,8 +371,8 @@ func (client *SimPoliciesClient) updateTagsCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -384,3 +384,4 @@ func (client *SimPoliciesClient) updateTagsHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

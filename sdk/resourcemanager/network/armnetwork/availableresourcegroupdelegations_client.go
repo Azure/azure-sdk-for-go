@@ -23,7 +23,7 @@ import (
 // AvailableResourceGroupDelegationsClient contains the methods for the AvailableResourceGroupDelegations group.
 // Don't use this type directly, use NewAvailableResourceGroupDelegationsClient() instead.
 type AvailableResourceGroupDelegationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAvailableResourceGroupDelegationsClient(subscriptionID string, credentia
 	}
 	client := &AvailableResourceGroupDelegationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewAvailableResourceGroupDelegationsClient(subscriptionID string, credentia
 //   - resourceGroupName - The name of the resource group.
 //   - options - AvailableResourceGroupDelegationsClientListOptions contains the optional parameters for the AvailableResourceGroupDelegationsClient.NewListPager
 //     method.
-func (client *AvailableResourceGroupDelegationsClient) NewListPager(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsClientListOptions) *runtime.Pager[AvailableResourceGroupDelegationsClientListResponse] {
+func (client *AvailableResourceGroupDelegationsClient) NewListPager(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsClientListOptions) (*runtime.Pager[AvailableResourceGroupDelegationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AvailableResourceGroupDelegationsClientListResponse]{
 		More: func(page AvailableResourceGroupDelegationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -113,3 +113,4 @@ func (client *AvailableResourceGroupDelegationsClient) listHandleResponse(resp *
 	}
 	return result, nil
 }
+

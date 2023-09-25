@@ -23,7 +23,7 @@ import (
 // ExpressRouteServiceProvidersClient contains the methods for the ExpressRouteServiceProviders group.
 // Don't use this type directly, use NewExpressRouteServiceProvidersClient() instead.
 type ExpressRouteServiceProvidersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRouteServiceProvidersClient(subscriptionID string, credential azc
 	}
 	client := &ExpressRouteServiceProvidersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewExpressRouteServiceProvidersClient(subscriptionID string, credential azc
 // Generated from API version 2023-05-01
 //   - options - ExpressRouteServiceProvidersClientListOptions contains the optional parameters for the ExpressRouteServiceProvidersClient.NewListPager
 //     method.
-func (client *ExpressRouteServiceProvidersClient) NewListPager(options *ExpressRouteServiceProvidersClientListOptions) *runtime.Pager[ExpressRouteServiceProvidersClientListResponse] {
+func (client *ExpressRouteServiceProvidersClient) NewListPager(options *ExpressRouteServiceProvidersClientListOptions) (*runtime.Pager[ExpressRouteServiceProvidersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteServiceProvidersClientListResponse]{
 		More: func(page ExpressRouteServiceProvidersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -103,3 +103,4 @@ func (client *ExpressRouteServiceProvidersClient) listHandleResponse(resp *http.
 	}
 	return result, nil
 }
+

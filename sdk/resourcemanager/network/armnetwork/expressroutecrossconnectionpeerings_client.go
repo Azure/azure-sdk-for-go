@@ -23,7 +23,7 @@ import (
 // ExpressRouteCrossConnectionPeeringsClient contains the methods for the ExpressRouteCrossConnectionPeerings group.
 // Don't use this type directly, use NewExpressRouteCrossConnectionPeeringsClient() instead.
 type ExpressRouteCrossConnectionPeeringsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRouteCrossConnectionPeeringsClient(subscriptionID string, credent
 	}
 	client := &ExpressRouteCrossConnectionPeeringsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) createOrUpdateCreateReq
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, peeringParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) getHandleResponse(resp 
 //   - crossConnectionName - The name of the ExpressRouteCrossConnection.
 //   - options - ExpressRouteCrossConnectionPeeringsClientListOptions contains the optional parameters for the ExpressRouteCrossConnectionPeeringsClient.NewListPager
 //     method.
-func (client *ExpressRouteCrossConnectionPeeringsClient) NewListPager(resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsClientListOptions) *runtime.Pager[ExpressRouteCrossConnectionPeeringsClientListResponse] {
+func (client *ExpressRouteCrossConnectionPeeringsClient) NewListPager(resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsClientListOptions) (*runtime.Pager[ExpressRouteCrossConnectionPeeringsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteCrossConnectionPeeringsClientListResponse]{
 		More: func(page ExpressRouteCrossConnectionPeeringsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) listHandleResponse(resp
 	}
 	return result, nil
 }
+

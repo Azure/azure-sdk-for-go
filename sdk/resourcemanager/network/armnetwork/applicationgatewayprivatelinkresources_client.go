@@ -23,7 +23,7 @@ import (
 // ApplicationGatewayPrivateLinkResourcesClient contains the methods for the ApplicationGatewayPrivateLinkResources group.
 // Don't use this type directly, use NewApplicationGatewayPrivateLinkResourcesClient() instead.
 type ApplicationGatewayPrivateLinkResourcesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewApplicationGatewayPrivateLinkResourcesClient(subscriptionID string, cred
 	}
 	client := &ApplicationGatewayPrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewApplicationGatewayPrivateLinkResourcesClient(subscriptionID string, cred
 //   - applicationGatewayName - The name of the application gateway.
 //   - options - ApplicationGatewayPrivateLinkResourcesClientListOptions contains the optional parameters for the ApplicationGatewayPrivateLinkResourcesClient.NewListPager
 //     method.
-func (client *ApplicationGatewayPrivateLinkResourcesClient) NewListPager(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesClientListOptions) *runtime.Pager[ApplicationGatewayPrivateLinkResourcesClientListResponse] {
+func (client *ApplicationGatewayPrivateLinkResourcesClient) NewListPager(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesClientListOptions) (*runtime.Pager[ApplicationGatewayPrivateLinkResourcesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewayPrivateLinkResourcesClientListResponse]{
 		More: func(page ApplicationGatewayPrivateLinkResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -113,3 +113,4 @@ func (client *ApplicationGatewayPrivateLinkResourcesClient) listHandleResponse(r
 	}
 	return result, nil
 }
+

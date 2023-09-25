@@ -23,7 +23,7 @@ import (
 )
 
 // ActivityLogAlertsServer is a fake server for instances of the armmonitor.ActivityLogAlertsClient type.
-type ActivityLogAlertsServer struct {
+type ActivityLogAlertsServer struct{
 	// CreateOrUpdate is the fake for method ActivityLogAlertsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertRule armmonitor.ActivityLogAlertResource, options *armmonitor.ActivityLogAlertsClientCreateOrUpdateOptions) (resp azfake.Responder[armmonitor.ActivityLogAlertsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -47,6 +47,7 @@ type ActivityLogAlertsServer struct {
 	// Update is the fake for method ActivityLogAlertsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertRulePatch armmonitor.AlertRulePatchObject, options *armmonitor.ActivityLogAlertsClientUpdateOptions) (resp azfake.Responder[armmonitor.ActivityLogAlertsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewActivityLogAlertsServerTransport creates a new instance of ActivityLogAlertsServerTransport with the provided implementation.
@@ -54,8 +55,8 @@ type ActivityLogAlertsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewActivityLogAlertsServerTransport(srv *ActivityLogAlertsServer) *ActivityLogAlertsServerTransport {
 	return &ActivityLogAlertsServerTransport{
-		srv:                          srv,
-		newListByResourceGroupPager:  newTracker[azfake.PagerResponder[armmonitor.ActivityLogAlertsClientListByResourceGroupResponse]](),
+		srv: srv,
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.ActivityLogAlertsClientListByResourceGroupResponse]](),
 		newListBySubscriptionIDPager: newTracker[azfake.PagerResponder[armmonitor.ActivityLogAlertsClientListBySubscriptionIDResponse]](),
 	}
 }
@@ -63,8 +64,8 @@ func NewActivityLogAlertsServerTransport(srv *ActivityLogAlertsServer) *Activity
 // ActivityLogAlertsServerTransport connects instances of armmonitor.ActivityLogAlertsClient to instances of ActivityLogAlertsServer.
 // Don't use this type directly, use NewActivityLogAlertsServerTransport instead.
 type ActivityLogAlertsServerTransport struct {
-	srv                          *ActivityLogAlertsServer
-	newListByResourceGroupPager  *tracker[azfake.PagerResponder[armmonitor.ActivityLogAlertsClientListByResourceGroupResponse]]
+	srv *ActivityLogAlertsServer
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.ActivityLogAlertsClientListByResourceGroupResponse]]
 	newListBySubscriptionIDPager *tracker[azfake.PagerResponder[armmonitor.ActivityLogAlertsClientListBySubscriptionIDResponse]]
 }
 
@@ -134,8 +135,7 @@ func (a *ActivityLogAlertsServerTransport) dispatchCreateOrUpdate(req *http.Requ
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ActivityLogAlertResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -167,8 +167,7 @@ func (a *ActivityLogAlertsServerTransport) dispatchDelete(req *http.Request) (*h
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -200,8 +199,7 @@ func (a *ActivityLogAlertsServerTransport) dispatchGet(req *http.Request) (*http
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ActivityLogAlertResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -212,17 +210,17 @@ func (a *ActivityLogAlertsServerTransport) dispatchNewListByResourceGroupPager(r
 	}
 	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/activityLogAlerts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/activityLogAlerts`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmonitor.ActivityLogAlertsClientListByResourceGroupResponse, createLink func() string) {
@@ -249,13 +247,13 @@ func (a *ActivityLogAlertsServerTransport) dispatchNewListBySubscriptionIDPager(
 	}
 	newListBySubscriptionIDPager := a.newListBySubscriptionIDPager.get(req)
 	if newListBySubscriptionIDPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/activityLogAlerts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListBySubscriptionIDPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/activityLogAlerts`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := a.srv.NewListBySubscriptionIDPager(nil)
 		newListBySubscriptionIDPager = &resp
 		a.newListBySubscriptionIDPager.add(req, newListBySubscriptionIDPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionIDPager, req, func(page *armmonitor.ActivityLogAlertsClientListBySubscriptionIDResponse, createLink func() string) {
@@ -307,8 +305,8 @@ func (a *ActivityLogAlertsServerTransport) dispatchUpdate(req *http.Request) (*h
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ActivityLogAlertResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

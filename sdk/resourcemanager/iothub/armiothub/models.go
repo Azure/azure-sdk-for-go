@@ -12,8 +12,8 @@ import "time"
 
 type ArmIdentity struct {
 	// The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
-	// identity and a set of user assigned identities. The type 'None' will remove any
-	// identities from the service.
+// identity and a set of user assigned identities. The type 'None' will remove any
+// identities from the service.
 	Type *ResourceIdentityType
 
 	// Dictionary of
@@ -179,7 +179,7 @@ type Description struct {
 	SKU *SKUInfo
 
 	// The Etag field is not required. If it is provided in the response body, it must also be provided as a header per the normal
-	// ETag convention.
+// ETag convention.
 	Etag *string
 
 	// The managed identities for the IotHub.
@@ -219,13 +219,13 @@ type EndpointHealthData struct {
 	EndpointID *string
 
 	// Health statuses have following meanings. The 'healthy' status shows that the endpoint is accepting messages as expected.
-	// The 'unhealthy' status shows that the endpoint is not accepting messages as
-	// expected and IoT Hub is retrying to send data to this endpoint. The status of an unhealthy endpoint will be updated to
-	// healthy when IoT Hub has established an eventually consistent state of health.
-	// The 'dead' status shows that the endpoint is not accepting messages, after IoT Hub retried sending messages for the retrial
-	// period. See IoT Hub metrics to identify errors and monitor issues with
-	// endpoints. The 'unknown' status shows that the IoT Hub has not established a connection with the endpoint. No messages
-	// have been delivered to or rejected from this endpoint
+// The 'unhealthy' status shows that the endpoint is not accepting messages as
+// expected and IoT Hub is retrying to send data to this endpoint. The status of an unhealthy endpoint will be updated to
+// healthy when IoT Hub has established an eventually consistent state of health.
+// The 'dead' status shows that the endpoint is not accepting messages, after IoT Hub retried sending messages for the retrial
+// period. See IoT Hub metrics to identify errors and monitor issues with
+// endpoints. The 'unknown' status shows that the IoT Hub has not established a connection with the endpoint. No messages
+// have been delivered to or rejected from this endpoint
 	HealthStatus *EndpointHealthStatus
 
 	// Last error obtained when a message failed to be delivered to iot hub
@@ -346,11 +346,11 @@ type ExportDevicesRequest struct {
 	AuthenticationType *AuthenticationType
 
 	// The name of the blob that will be created in the provided output blob container. This blob will contain the exported configurations
-	// for the Iot Hub.
+// for the Iot Hub.
 	ConfigurationsBlobName *string
 
 	// The name of the blob that will be created in the provided output blob container. This blob will contain the exported device
-	// registry information for the IoT Hub.
+// registry information for the IoT Hub.
 	ExportBlobName *string
 
 	// Managed identity properties of storage endpoint for export devices.
@@ -370,7 +370,7 @@ type FailoverInput struct {
 // the fallback endpoint.
 type FallbackRouteProperties struct {
 	// REQUIRED; The list of endpoints to which the messages that satisfy the condition are routed to. Currently only 1 endpoint
-	// is allowed.
+// is allowed.
 	EndpointNames []*string
 
 	// REQUIRED; Used to specify whether the fallback route is enabled.
@@ -380,12 +380,12 @@ type FallbackRouteProperties struct {
 	Source *RoutingSource
 
 	// The condition which is evaluated in order to apply the fallback route. If the condition is not provided it will evaluate
-	// to true by default. For grammar, See:
-	// https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
+// to true by default. For grammar, See:
+// https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
 	Condition *string
 
 	// The name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum
-	// length of 64 characters, and must be unique.
+// length of 64 characters, and must be unique.
 	Name *string
 }
 
@@ -509,8 +509,8 @@ type LocationDescription struct {
 	Location *string
 
 	// The role of the region, can be either primary or secondary. The primary region is where the IoT hub is currently provisioned.
-	// The secondary region is the Azure disaster recovery (DR) paired region and
-	// also the region where the IoT hub can failover to.
+// The secondary region is the Azure disaster recovery (DR) paired region and
+// also the region where the IoT hub can failover to.
 	Role *IotHubReplicaRoleType
 }
 
@@ -701,7 +701,7 @@ type Properties struct {
 	EnableFileUploadNotifications *bool
 
 	// The Event Hub-compatible endpoint properties. The only possible keys to this dictionary is events. This key has to be present
-	// in the dictionary while making create or update calls for the IoT hub.
+// in the dictionary while making create or update calls for the IoT hub.
 	EventHubEndpoints map[string]*EventHubProperties
 
 	// The capabilities and features enabled for the IoT hub.
@@ -714,7 +714,7 @@ type Properties struct {
 	MessagingEndpoints map[string]*MessagingEndpointProperties
 
 	// Specifies the minimum TLS version to support for this hub. Can be set to "1.2" to have clients that use a TLS version below
-	// 1.2 to be rejected.
+// 1.2 to be rejected.
 	MinTLSVersion *string
 
 	// Network Rule Set Properties of IotHub
@@ -733,9 +733,9 @@ type Properties struct {
 	Routing *RoutingProperties
 
 	// The list of Azure Storage endpoints where you can upload files. Currently you can configure only one Azure Storage account
-	// and that MUST have its key as $default. Specifying more than one storage
-	// account causes an error to be thrown. Not specifying a value for this property when the enableFileUploadNotifications property
-	// is set to True, causes an error to be thrown.
+// and that MUST have its key as $default. Specifying more than one storage
+// account causes an error to be thrown. Not specifying a value for this property when the enableFileUploadNotifications property
+// is set to True, causes an error to be thrown.
 	StorageEndpoints map[string]*StorageEndpointProperties
 
 	// READ-ONLY; The name of the host.
@@ -835,22 +835,22 @@ type RouteErrorRange struct {
 // RouteProperties - The properties of a routing rule that your IoT hub uses to route messages to endpoints.
 type RouteProperties struct {
 	// REQUIRED; The list of endpoints to which messages that satisfy the condition are routed. Currently only one endpoint is
-	// allowed.
+// allowed.
 	EndpointNames []*string
 
 	// REQUIRED; Used to specify whether a route is enabled.
 	IsEnabled *bool
 
 	// REQUIRED; The name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has
-	// a maximum length of 64 characters, and must be unique.
+// a maximum length of 64 characters, and must be unique.
 	Name *string
 
 	// REQUIRED; The source that the routing rule is to be applied to, such as DeviceMessages.
 	Source *RoutingSource
 
 	// The condition that is evaluated to apply the routing rule. If no condition is provided, it evaluates to true by default.
-	// For grammar, see:
-	// https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
+// For grammar, see:
+// https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
 	Condition *string
 }
 
@@ -866,8 +866,8 @@ type RoutingCosmosDBSQLAPIProperties struct {
 	EndpointURI *string
 
 	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
-	// hyphens and has a maximum length of 64 characters. The following names are reserved:
-	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
+// hyphens and has a maximum length of 64 characters. The following names are reserved:
+// events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
 	Name *string
 
 	// Method used to authenticate against the cosmos DB sql container endpoint
@@ -880,9 +880,9 @@ type RoutingCosmosDBSQLAPIProperties struct {
 	PartitionKeyName *string
 
 	// The template for generating a synthetic partition key value for use with this cosmos DB sql container. The template must
-	// include at least one of the following placeholders: {iothub}, {deviceid}, {DD},
-	// {MM}, and {YYYY}. Any one placeholder may be specified at most once, but order and non-placeholder components are arbitrary.
-	// This parameter is only required if PartitionKeyName is specified.
+// include at least one of the following placeholders: {iothub}, {deviceid}, {DD},
+// {MM}, and {YYYY}. Any one placeholder may be specified at most once, but order and non-placeholder components are arbitrary.
+// This parameter is only required if PartitionKeyName is specified.
 	PartitionKeyTemplate *string
 
 	// The primary key of the cosmos DB account.
@@ -909,7 +909,7 @@ type RoutingEndpoints struct {
 	CosmosDBSQLContainers []*RoutingCosmosDBSQLAPIProperties
 
 	// The list of Event Hubs endpoints that IoT hub routes messages to, based on the routing rules. This list does not include
-	// the built-in Event Hubs endpoint.
+// the built-in Event Hubs endpoint.
 	EventHubs []*RoutingEventHubProperties
 
 	// The list of Service Bus queue endpoints that IoT hub routes the messages to, based on the routing rules.
@@ -925,8 +925,8 @@ type RoutingEndpoints struct {
 // RoutingEventHubProperties - The properties related to an event hub endpoint.
 type RoutingEventHubProperties struct {
 	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
-	// hyphens and has a maximum length of 64 characters. The following names are reserved:
-	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
+// hyphens and has a maximum length of 64 characters. The following names are reserved:
+// events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
 	Name *string
 
 	// Method used to authenticate against the event hub endpoint
@@ -969,31 +969,31 @@ type RoutingMessage struct {
 // RoutingProperties - The routing related properties of the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging
 type RoutingProperties struct {
 	// The properties related to the custom endpoints to which your IoT hub routes messages based on the routing rules. A maximum
-	// of 10 custom endpoints are allowed across all endpoint types for paid hubs
-	// and only 1 custom endpoint is allowed across all endpoint types for free hubs.
+// of 10 custom endpoints are allowed across all endpoint types for paid hubs
+// and only 1 custom endpoint is allowed across all endpoint types for free hubs.
 	Endpoints *RoutingEndpoints
 
 	// The list of user-provided enrichments that the IoT hub applies to messages to be delivered to built-in and custom endpoints.
-	// See: https://aka.ms/telemetryoneventgrid
+// See: https://aka.ms/telemetryoneventgrid
 	Enrichments []*EnrichmentProperties
 
 	// The properties of the route that is used as a fall-back route when none of the conditions specified in the 'routes' section
-	// are met. This is an optional parameter. When this property is not present in
-	// the template, the fallback route is disabled by default.
+// are met. This is an optional parameter. When this property is not present in
+// the template, the fallback route is disabled by default.
 	FallbackRoute *FallbackRouteProperties
 
 	// The list of user-provided routing rules that the IoT hub uses to route messages to built-in and custom endpoints. A maximum
-	// of 100 routing rules are allowed for paid hubs and a maximum of 5 routing
-	// rules are allowed for free hubs.
+// of 100 routing rules are allowed for paid hubs and a maximum of 5 routing
+// rules are allowed for free hubs.
 	Routes []*RouteProperties
 }
 
 // RoutingServiceBusQueueEndpointProperties - The properties related to service bus queue endpoint types.
 type RoutingServiceBusQueueEndpointProperties struct {
 	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
-	// hyphens and has a maximum length of 64 characters. The following names are reserved:
-	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types. The name need not be the same
-	// as the actual queue name.
+// hyphens and has a maximum length of 64 characters. The following names are reserved:
+// events, fileNotifications, $default. Endpoint names must be unique across endpoint types. The name need not be the same
+// as the actual queue name.
 	Name *string
 
 	// Method used to authenticate against the service bus queue endpoint
@@ -1024,9 +1024,9 @@ type RoutingServiceBusQueueEndpointProperties struct {
 // RoutingServiceBusTopicEndpointProperties - The properties related to service bus topic endpoint types.
 type RoutingServiceBusTopicEndpointProperties struct {
 	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
-	// hyphens and has a maximum length of 64 characters. The following names are reserved:
-	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types. The name need not be the same
-	// as the actual topic name.
+// hyphens and has a maximum length of 64 characters. The following names are reserved:
+// events, fileNotifications, $default. Endpoint names must be unique across endpoint types. The name need not be the same
+// as the actual topic name.
 	Name *string
 
 	// Method used to authenticate against the service bus topic endpoint
@@ -1060,8 +1060,8 @@ type RoutingStorageContainerProperties struct {
 	ContainerName *string
 
 	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
-	// hyphens and has a maximum length of 64 characters. The following names are reserved:
-	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
+// hyphens and has a maximum length of 64 characters. The following names are reserved:
+// events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
 	Name *string
 
 	// Method used to authenticate against the storage endpoint
@@ -1074,14 +1074,14 @@ type RoutingStorageContainerProperties struct {
 	ConnectionString *string
 
 	// Encoding that is used to serialize messages to blobs. Supported values are 'avro', 'avrodeflate', and 'JSON'. Default value
-	// is 'avro'.
+// is 'avro'.
 	Encoding *RoutingStorageContainerPropertiesEncoding
 
 	// The url of the storage endpoint. It must include the protocol https://
 	EndpointURI *string
 
 	// File name format for the blob. Default format is {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters are mandatory
-	// but can be reordered.
+// but can be reordered.
 	FileNameFormat *string
 
 	// Id of the storage container endpoint
@@ -1091,7 +1091,7 @@ type RoutingStorageContainerProperties struct {
 	Identity *ManagedIdentity
 
 	// Maximum number of bytes for each blob written to storage. Value should be between 10485760(10MB) and 524288000(500MB).
-	// Default value is 314572800(300MB).
+// Default value is 314572800(300MB).
 	MaxChunkSizeInBytes *int32
 
 	// The name of the resource group of the storage account.
@@ -1180,7 +1180,7 @@ type StorageEndpointProperties struct {
 	ConnectionString *string
 
 	// REQUIRED; The name of the root container where you upload files. The container need not exist but should be creatable using
-	// the connectionString specified.
+// the connectionString specified.
 	ContainerName *string
 
 	// Specifies authentication type being used for connecting to the storage account.
@@ -1190,7 +1190,7 @@ type StorageEndpointProperties struct {
 	Identity *ManagedIdentity
 
 	// The period of time for which the SAS URI generated by IoT Hub for file upload is valid. See:
-	// https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload#file-upload-notification-configuration-options.
+// https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload#file-upload-notification-configuration-options.
 	SasTTLAsIso8601 *string
 }
 
@@ -1294,3 +1294,4 @@ type UserSubscriptionQuotaListResult struct {
 	// READ-ONLY
 	NextLink *string
 }
+

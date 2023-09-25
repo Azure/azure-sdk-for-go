@@ -34,7 +34,7 @@ func NewEndpointsClient(credential azcore.TokenCredential, options *arm.ClientOp
 		return nil, err
 	}
 	client := &EndpointsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -80,8 +80,8 @@ func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, endpointResource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -189,7 +189,7 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response) (Endpoints
 // Generated from API version 2023-03-15
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - options - EndpointsClientListOptions contains the optional parameters for the EndpointsClient.NewListPager method.
-func (client *EndpointsClient) NewListPager(resourceURI string, options *EndpointsClientListOptions) *runtime.Pager[EndpointsClientListResponse] {
+func (client *EndpointsClient) NewListPager(resourceURI string, options *EndpointsClientListOptions) (*runtime.Pager[EndpointsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EndpointsClientListResponse]{
 		More: func(page EndpointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -285,8 +285,8 @@ func (client *EndpointsClient) listCredentialsCreateRequest(ctx context.Context,
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ListCredentialsRequest != nil {
 		if err := runtime.MarshalAsJSON(req, *options.ListCredentialsRequest); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -345,8 +345,8 @@ func (client *EndpointsClient) listIngressGatewayCredentialsCreateRequest(ctx co
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ListIngressGatewayCredentialsRequest != nil {
 		if err := runtime.MarshalAsJSON(req, *options.ListIngressGatewayCredentialsRequest); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -402,8 +402,8 @@ func (client *EndpointsClient) listManagedProxyDetailsCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, managedProxyRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -456,8 +456,8 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, endpointResource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -469,3 +469,4 @@ func (client *EndpointsClient) updateHandleResponse(resp *http.Response) (Endpoi
 	}
 	return result, nil
 }
+

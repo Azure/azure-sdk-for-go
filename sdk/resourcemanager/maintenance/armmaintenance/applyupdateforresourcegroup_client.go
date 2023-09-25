@@ -23,7 +23,7 @@ import (
 // ApplyUpdateForResourceGroupClient contains the methods for the ApplyUpdateForResourceGroup group.
 // Don't use this type directly, use NewApplyUpdateForResourceGroupClient() instead.
 type ApplyUpdateForResourceGroupClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewApplyUpdateForResourceGroupClient(subscriptionID string, credential azco
 	}
 	client := &ApplyUpdateForResourceGroupClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewApplyUpdateForResourceGroupClient(subscriptionID string, credential azco
 //   - resourceGroupName - Resource Group Name
 //   - options - ApplyUpdateForResourceGroupClientListOptions contains the optional parameters for the ApplyUpdateForResourceGroupClient.NewListPager
 //     method.
-func (client *ApplyUpdateForResourceGroupClient) NewListPager(resourceGroupName string, options *ApplyUpdateForResourceGroupClientListOptions) *runtime.Pager[ApplyUpdateForResourceGroupClientListResponse] {
+func (client *ApplyUpdateForResourceGroupClient) NewListPager(resourceGroupName string, options *ApplyUpdateForResourceGroupClientListOptions) (*runtime.Pager[ApplyUpdateForResourceGroupClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplyUpdateForResourceGroupClientListResponse]{
 		More: func(page ApplyUpdateForResourceGroupClientListResponse) bool {
 			return false
@@ -102,3 +102,4 @@ func (client *ApplyUpdateForResourceGroupClient) listHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

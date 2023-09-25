@@ -23,7 +23,7 @@ import (
 // L3NetworksClient contains the methods for the L3Networks group.
 // Don't use this type directly, use NewL3NetworksClient() instead.
 type L3NetworksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewL3NetworksClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &L3NetworksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *L3NetworksClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, l3NetworkParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -243,7 +243,7 @@ func (client *L3NetworksClient) getHandleResponse(resp *http.Response) (L3Networ
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - L3NetworksClientListByResourceGroupOptions contains the optional parameters for the L3NetworksClient.NewListByResourceGroupPager
 //     method.
-func (client *L3NetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *L3NetworksClientListByResourceGroupOptions) *runtime.Pager[L3NetworksClientListByResourceGroupResponse] {
+func (client *L3NetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *L3NetworksClientListByResourceGroupOptions) (*runtime.Pager[L3NetworksClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[L3NetworksClientListByResourceGroupResponse]{
 		More: func(page L3NetworksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -304,7 +304,7 @@ func (client *L3NetworksClient) listByResourceGroupHandleResponse(resp *http.Res
 // Generated from API version 2023-07-01
 //   - options - L3NetworksClientListBySubscriptionOptions contains the optional parameters for the L3NetworksClient.NewListBySubscriptionPager
 //     method.
-func (client *L3NetworksClient) NewListBySubscriptionPager(options *L3NetworksClientListBySubscriptionOptions) *runtime.Pager[L3NetworksClientListBySubscriptionResponse] {
+func (client *L3NetworksClient) NewListBySubscriptionPager(options *L3NetworksClientListBySubscriptionOptions) (*runtime.Pager[L3NetworksClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[L3NetworksClientListBySubscriptionResponse]{
 		More: func(page L3NetworksClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -362,11 +362,10 @@ func (client *L3NetworksClient) listBySubscriptionHandleResponse(resp *http.Resp
 // Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3NetworkName - The name of the L3 network.
-//   - l3NetworkUpdateParameters - The request body.
 //   - options - L3NetworksClientUpdateOptions contains the optional parameters for the L3NetworksClient.Update method.
-func (client *L3NetworksClient) Update(ctx context.Context, resourceGroupName string, l3NetworkName string, l3NetworkUpdateParameters L3NetworkPatchParameters, options *L3NetworksClientUpdateOptions) (L3NetworksClientUpdateResponse, error) {
+func (client *L3NetworksClient) Update(ctx context.Context, resourceGroupName string, l3NetworkName string, options *L3NetworksClientUpdateOptions) (L3NetworksClientUpdateResponse, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, l3NetworkName, l3NetworkUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, l3NetworkName, options)
 	if err != nil {
 		return L3NetworksClientUpdateResponse{}, err
 	}
@@ -383,7 +382,7 @@ func (client *L3NetworksClient) Update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *L3NetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, l3NetworkName string, l3NetworkUpdateParameters L3NetworkPatchParameters, options *L3NetworksClientUpdateOptions) (*policy.Request, error) {
+func (client *L3NetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, l3NetworkName string, options *L3NetworksClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -402,8 +401,11 @@ func (client *L3NetworksClient) updateCreateRequest(ctx context.Context, resourc
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, l3NetworkUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.L3NetworkUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.L3NetworkUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
@@ -416,3 +418,4 @@ func (client *L3NetworksClient) updateHandleResponse(resp *http.Response) (L3Net
 	}
 	return result, nil
 }
+

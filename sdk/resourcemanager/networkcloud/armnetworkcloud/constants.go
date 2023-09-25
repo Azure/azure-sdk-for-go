@@ -9,7 +9,7 @@
 package armnetworkcloud
 
 const (
-	moduleName    = "armnetworkcloud"
+	moduleName = "armnetworkcloud"
 	moduleVersion = "v1.0.0"
 )
 
@@ -22,7 +22,7 @@ const (
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
+	return []ActionType{	
 		ActionTypeInternal,
 	}
 }
@@ -33,12 +33,12 @@ type AdvertiseToFabric string
 
 const (
 	AdvertiseToFabricFalse AdvertiseToFabric = "False"
-	AdvertiseToFabricTrue  AdvertiseToFabric = "True"
+	AdvertiseToFabricTrue AdvertiseToFabric = "True"
 )
 
 // PossibleAdvertiseToFabricValues returns the possible values for the AdvertiseToFabric const type.
 func PossibleAdvertiseToFabricValues() []AdvertiseToFabric {
-	return []AdvertiseToFabric{
+	return []AdvertiseToFabric{	
 		AdvertiseToFabricFalse,
 		AdvertiseToFabricTrue,
 	}
@@ -48,14 +48,14 @@ func PossibleAdvertiseToFabricValues() []AdvertiseToFabric {
 type AgentPoolDetailedStatus string
 
 const (
-	AgentPoolDetailedStatusAvailable    AgentPoolDetailedStatus = "Available"
-	AgentPoolDetailedStatusError        AgentPoolDetailedStatus = "Error"
+	AgentPoolDetailedStatusAvailable AgentPoolDetailedStatus = "Available"
+	AgentPoolDetailedStatusError AgentPoolDetailedStatus = "Error"
 	AgentPoolDetailedStatusProvisioning AgentPoolDetailedStatus = "Provisioning"
 )
 
 // PossibleAgentPoolDetailedStatusValues returns the possible values for the AgentPoolDetailedStatus const type.
 func PossibleAgentPoolDetailedStatusValues() []AgentPoolDetailedStatus {
-	return []AgentPoolDetailedStatus{
+	return []AgentPoolDetailedStatus{	
 		AgentPoolDetailedStatusAvailable,
 		AgentPoolDetailedStatusError,
 		AgentPoolDetailedStatusProvisioning,
@@ -69,13 +69,13 @@ type AgentPoolMode string
 
 const (
 	AgentPoolModeNotApplicable AgentPoolMode = "NotApplicable"
-	AgentPoolModeSystem        AgentPoolMode = "System"
-	AgentPoolModeUser          AgentPoolMode = "User"
+	AgentPoolModeSystem AgentPoolMode = "System"
+	AgentPoolModeUser AgentPoolMode = "User"
 )
 
 // PossibleAgentPoolModeValues returns the possible values for the AgentPoolMode const type.
 func PossibleAgentPoolModeValues() []AgentPoolMode {
-	return []AgentPoolMode{
+	return []AgentPoolMode{	
 		AgentPoolModeNotApplicable,
 		AgentPoolModeSystem,
 		AgentPoolModeUser,
@@ -86,18 +86,18 @@ func PossibleAgentPoolModeValues() []AgentPoolMode {
 type AgentPoolProvisioningState string
 
 const (
-	AgentPoolProvisioningStateAccepted   AgentPoolProvisioningState = "Accepted"
-	AgentPoolProvisioningStateCanceled   AgentPoolProvisioningState = "Canceled"
-	AgentPoolProvisioningStateDeleting   AgentPoolProvisioningState = "Deleting"
-	AgentPoolProvisioningStateFailed     AgentPoolProvisioningState = "Failed"
+	AgentPoolProvisioningStateAccepted AgentPoolProvisioningState = "Accepted"
+	AgentPoolProvisioningStateCanceled AgentPoolProvisioningState = "Canceled"
+	AgentPoolProvisioningStateDeleting AgentPoolProvisioningState = "Deleting"
+	AgentPoolProvisioningStateFailed AgentPoolProvisioningState = "Failed"
 	AgentPoolProvisioningStateInProgress AgentPoolProvisioningState = "InProgress"
-	AgentPoolProvisioningStateSucceeded  AgentPoolProvisioningState = "Succeeded"
-	AgentPoolProvisioningStateUpdating   AgentPoolProvisioningState = "Updating"
+	AgentPoolProvisioningStateSucceeded AgentPoolProvisioningState = "Succeeded"
+	AgentPoolProvisioningStateUpdating AgentPoolProvisioningState = "Updating"
 )
 
 // PossibleAgentPoolProvisioningStateValues returns the possible values for the AgentPoolProvisioningState const type.
 func PossibleAgentPoolProvisioningStateValues() []AgentPoolProvisioningState {
-	return []AgentPoolProvisioningState{
+	return []AgentPoolProvisioningState{	
 		AgentPoolProvisioningStateAccepted,
 		AgentPoolProvisioningStateCanceled,
 		AgentPoolProvisioningStateDeleting,
@@ -113,12 +113,12 @@ type AvailabilityLifecycle string
 
 const (
 	AvailabilityLifecycleGenerallyAvailable AvailabilityLifecycle = "GenerallyAvailable"
-	AvailabilityLifecyclePreview            AvailabilityLifecycle = "Preview"
+	AvailabilityLifecyclePreview AvailabilityLifecycle = "Preview"
 )
 
 // PossibleAvailabilityLifecycleValues returns the possible values for the AvailabilityLifecycle const type.
 func PossibleAvailabilityLifecycleValues() []AvailabilityLifecycle {
-	return []AvailabilityLifecycle{
+	return []AvailabilityLifecycle{	
 		AvailabilityLifecycleGenerallyAvailable,
 		AvailabilityLifecyclePreview,
 	}
@@ -128,13 +128,13 @@ func PossibleAvailabilityLifecycleValues() []AvailabilityLifecycle {
 type BareMetalMachineCordonStatus string
 
 const (
-	BareMetalMachineCordonStatusCordoned   BareMetalMachineCordonStatus = "Cordoned"
+	BareMetalMachineCordonStatusCordoned BareMetalMachineCordonStatus = "Cordoned"
 	BareMetalMachineCordonStatusUncordoned BareMetalMachineCordonStatus = "Uncordoned"
 )
 
 // PossibleBareMetalMachineCordonStatusValues returns the possible values for the BareMetalMachineCordonStatus const type.
 func PossibleBareMetalMachineCordonStatusValues() []BareMetalMachineCordonStatus {
-	return []BareMetalMachineCordonStatus{
+	return []BareMetalMachineCordonStatus{	
 		BareMetalMachineCordonStatusCordoned,
 		BareMetalMachineCordonStatusUncordoned,
 	}
@@ -144,17 +144,17 @@ func PossibleBareMetalMachineCordonStatusValues() []BareMetalMachineCordonStatus
 type BareMetalMachineDetailedStatus string
 
 const (
-	BareMetalMachineDetailedStatusAvailable      BareMetalMachineDetailedStatus = "Available"
+	BareMetalMachineDetailedStatusAvailable BareMetalMachineDetailedStatus = "Available"
 	BareMetalMachineDetailedStatusDeprovisioning BareMetalMachineDetailedStatus = "Deprovisioning"
-	BareMetalMachineDetailedStatusError          BareMetalMachineDetailedStatus = "Error"
-	BareMetalMachineDetailedStatusPreparing      BareMetalMachineDetailedStatus = "Preparing"
-	BareMetalMachineDetailedStatusProvisioned    BareMetalMachineDetailedStatus = "Provisioned"
-	BareMetalMachineDetailedStatusProvisioning   BareMetalMachineDetailedStatus = "Provisioning"
+	BareMetalMachineDetailedStatusError BareMetalMachineDetailedStatus = "Error"
+	BareMetalMachineDetailedStatusPreparing BareMetalMachineDetailedStatus = "Preparing"
+	BareMetalMachineDetailedStatusProvisioned BareMetalMachineDetailedStatus = "Provisioned"
+	BareMetalMachineDetailedStatusProvisioning BareMetalMachineDetailedStatus = "Provisioning"
 )
 
 // PossibleBareMetalMachineDetailedStatusValues returns the possible values for the BareMetalMachineDetailedStatus const type.
 func PossibleBareMetalMachineDetailedStatusValues() []BareMetalMachineDetailedStatus {
-	return []BareMetalMachineDetailedStatus{
+	return []BareMetalMachineDetailedStatus{	
 		BareMetalMachineDetailedStatusAvailable,
 		BareMetalMachineDetailedStatusDeprovisioning,
 		BareMetalMachineDetailedStatusError,
@@ -169,12 +169,12 @@ type BareMetalMachineEvacuate string
 
 const (
 	BareMetalMachineEvacuateFalse BareMetalMachineEvacuate = "False"
-	BareMetalMachineEvacuateTrue  BareMetalMachineEvacuate = "True"
+	BareMetalMachineEvacuateTrue BareMetalMachineEvacuate = "True"
 )
 
 // PossibleBareMetalMachineEvacuateValues returns the possible values for the BareMetalMachineEvacuate const type.
 func PossibleBareMetalMachineEvacuateValues() []BareMetalMachineEvacuate {
-	return []BareMetalMachineEvacuate{
+	return []BareMetalMachineEvacuate{	
 		BareMetalMachineEvacuateFalse,
 		BareMetalMachineEvacuateTrue,
 	}
@@ -190,7 +190,7 @@ const (
 
 // PossibleBareMetalMachineHardwareValidationResultValues returns the possible values for the BareMetalMachineHardwareValidationResult const type.
 func PossibleBareMetalMachineHardwareValidationResultValues() []BareMetalMachineHardwareValidationResult {
-	return []BareMetalMachineHardwareValidationResult{
+	return []BareMetalMachineHardwareValidationResult{	
 		BareMetalMachineHardwareValidationResultFail,
 		BareMetalMachineHardwareValidationResultPass,
 	}
@@ -200,15 +200,15 @@ func PossibleBareMetalMachineHardwareValidationResultValues() []BareMetalMachine
 type BareMetalMachineKeySetDetailedStatus string
 
 const (
-	BareMetalMachineKeySetDetailedStatusAllActive   BareMetalMachineKeySetDetailedStatus = "AllActive"
-	BareMetalMachineKeySetDetailedStatusAllInvalid  BareMetalMachineKeySetDetailedStatus = "AllInvalid"
+	BareMetalMachineKeySetDetailedStatusAllActive BareMetalMachineKeySetDetailedStatus = "AllActive"
+	BareMetalMachineKeySetDetailedStatusAllInvalid BareMetalMachineKeySetDetailedStatus = "AllInvalid"
 	BareMetalMachineKeySetDetailedStatusSomeInvalid BareMetalMachineKeySetDetailedStatus = "SomeInvalid"
-	BareMetalMachineKeySetDetailedStatusValidating  BareMetalMachineKeySetDetailedStatus = "Validating"
+	BareMetalMachineKeySetDetailedStatusValidating BareMetalMachineKeySetDetailedStatus = "Validating"
 )
 
 // PossibleBareMetalMachineKeySetDetailedStatusValues returns the possible values for the BareMetalMachineKeySetDetailedStatus const type.
 func PossibleBareMetalMachineKeySetDetailedStatusValues() []BareMetalMachineKeySetDetailedStatus {
-	return []BareMetalMachineKeySetDetailedStatus{
+	return []BareMetalMachineKeySetDetailedStatus{	
 		BareMetalMachineKeySetDetailedStatusAllActive,
 		BareMetalMachineKeySetDetailedStatusAllInvalid,
 		BareMetalMachineKeySetDetailedStatusSomeInvalid,
@@ -220,13 +220,13 @@ func PossibleBareMetalMachineKeySetDetailedStatusValues() []BareMetalMachineKeyS
 type BareMetalMachineKeySetPrivilegeLevel string
 
 const (
-	BareMetalMachineKeySetPrivilegeLevelStandard  BareMetalMachineKeySetPrivilegeLevel = "Standard"
+	BareMetalMachineKeySetPrivilegeLevelStandard BareMetalMachineKeySetPrivilegeLevel = "Standard"
 	BareMetalMachineKeySetPrivilegeLevelSuperuser BareMetalMachineKeySetPrivilegeLevel = "Superuser"
 )
 
 // PossibleBareMetalMachineKeySetPrivilegeLevelValues returns the possible values for the BareMetalMachineKeySetPrivilegeLevel const type.
 func PossibleBareMetalMachineKeySetPrivilegeLevelValues() []BareMetalMachineKeySetPrivilegeLevel {
-	return []BareMetalMachineKeySetPrivilegeLevel{
+	return []BareMetalMachineKeySetPrivilegeLevel{	
 		BareMetalMachineKeySetPrivilegeLevelStandard,
 		BareMetalMachineKeySetPrivilegeLevelSuperuser,
 	}
@@ -236,16 +236,16 @@ func PossibleBareMetalMachineKeySetPrivilegeLevelValues() []BareMetalMachineKeyS
 type BareMetalMachineKeySetProvisioningState string
 
 const (
-	BareMetalMachineKeySetProvisioningStateAccepted     BareMetalMachineKeySetProvisioningState = "Accepted"
-	BareMetalMachineKeySetProvisioningStateCanceled     BareMetalMachineKeySetProvisioningState = "Canceled"
-	BareMetalMachineKeySetProvisioningStateFailed       BareMetalMachineKeySetProvisioningState = "Failed"
+	BareMetalMachineKeySetProvisioningStateAccepted BareMetalMachineKeySetProvisioningState = "Accepted"
+	BareMetalMachineKeySetProvisioningStateCanceled BareMetalMachineKeySetProvisioningState = "Canceled"
+	BareMetalMachineKeySetProvisioningStateFailed BareMetalMachineKeySetProvisioningState = "Failed"
 	BareMetalMachineKeySetProvisioningStateProvisioning BareMetalMachineKeySetProvisioningState = "Provisioning"
-	BareMetalMachineKeySetProvisioningStateSucceeded    BareMetalMachineKeySetProvisioningState = "Succeeded"
+	BareMetalMachineKeySetProvisioningStateSucceeded BareMetalMachineKeySetProvisioningState = "Succeeded"
 )
 
 // PossibleBareMetalMachineKeySetProvisioningStateValues returns the possible values for the BareMetalMachineKeySetProvisioningState const type.
 func PossibleBareMetalMachineKeySetProvisioningStateValues() []BareMetalMachineKeySetProvisioningState {
-	return []BareMetalMachineKeySetProvisioningState{
+	return []BareMetalMachineKeySetProvisioningState{	
 		BareMetalMachineKeySetProvisioningStateAccepted,
 		BareMetalMachineKeySetProvisioningStateCanceled,
 		BareMetalMachineKeySetProvisioningStateFailed,
@@ -258,13 +258,13 @@ func PossibleBareMetalMachineKeySetProvisioningStateValues() []BareMetalMachineK
 type BareMetalMachineKeySetUserSetupStatus string
 
 const (
-	BareMetalMachineKeySetUserSetupStatusActive  BareMetalMachineKeySetUserSetupStatus = "Active"
+	BareMetalMachineKeySetUserSetupStatusActive BareMetalMachineKeySetUserSetupStatus = "Active"
 	BareMetalMachineKeySetUserSetupStatusInvalid BareMetalMachineKeySetUserSetupStatus = "Invalid"
 )
 
 // PossibleBareMetalMachineKeySetUserSetupStatusValues returns the possible values for the BareMetalMachineKeySetUserSetupStatus const type.
 func PossibleBareMetalMachineKeySetUserSetupStatusValues() []BareMetalMachineKeySetUserSetupStatus {
-	return []BareMetalMachineKeySetUserSetupStatus{
+	return []BareMetalMachineKeySetUserSetupStatus{	
 		BareMetalMachineKeySetUserSetupStatusActive,
 		BareMetalMachineKeySetUserSetupStatusInvalid,
 	}
@@ -275,12 +275,12 @@ type BareMetalMachinePowerState string
 
 const (
 	BareMetalMachinePowerStateOff BareMetalMachinePowerState = "Off"
-	BareMetalMachinePowerStateOn  BareMetalMachinePowerState = "On"
+	BareMetalMachinePowerStateOn BareMetalMachinePowerState = "On"
 )
 
 // PossibleBareMetalMachinePowerStateValues returns the possible values for the BareMetalMachinePowerState const type.
 func PossibleBareMetalMachinePowerStateValues() []BareMetalMachinePowerState {
-	return []BareMetalMachinePowerState{
+	return []BareMetalMachinePowerState{	
 		BareMetalMachinePowerStateOff,
 		BareMetalMachinePowerStateOn,
 	}
@@ -290,16 +290,16 @@ func PossibleBareMetalMachinePowerStateValues() []BareMetalMachinePowerState {
 type BareMetalMachineProvisioningState string
 
 const (
-	BareMetalMachineProvisioningStateAccepted     BareMetalMachineProvisioningState = "Accepted"
-	BareMetalMachineProvisioningStateCanceled     BareMetalMachineProvisioningState = "Canceled"
-	BareMetalMachineProvisioningStateFailed       BareMetalMachineProvisioningState = "Failed"
+	BareMetalMachineProvisioningStateAccepted BareMetalMachineProvisioningState = "Accepted"
+	BareMetalMachineProvisioningStateCanceled BareMetalMachineProvisioningState = "Canceled"
+	BareMetalMachineProvisioningStateFailed BareMetalMachineProvisioningState = "Failed"
 	BareMetalMachineProvisioningStateProvisioning BareMetalMachineProvisioningState = "Provisioning"
-	BareMetalMachineProvisioningStateSucceeded    BareMetalMachineProvisioningState = "Succeeded"
+	BareMetalMachineProvisioningStateSucceeded BareMetalMachineProvisioningState = "Succeeded"
 )
 
 // PossibleBareMetalMachineProvisioningStateValues returns the possible values for the BareMetalMachineProvisioningState const type.
 func PossibleBareMetalMachineProvisioningStateValues() []BareMetalMachineProvisioningState {
-	return []BareMetalMachineProvisioningState{
+	return []BareMetalMachineProvisioningState{	
 		BareMetalMachineProvisioningStateAccepted,
 		BareMetalMachineProvisioningStateCanceled,
 		BareMetalMachineProvisioningStateFailed,
@@ -313,12 +313,12 @@ type BareMetalMachineReadyState string
 
 const (
 	BareMetalMachineReadyStateFalse BareMetalMachineReadyState = "False"
-	BareMetalMachineReadyStateTrue  BareMetalMachineReadyState = "True"
+	BareMetalMachineReadyStateTrue BareMetalMachineReadyState = "True"
 )
 
 // PossibleBareMetalMachineReadyStateValues returns the possible values for the BareMetalMachineReadyState const type.
 func PossibleBareMetalMachineReadyStateValues() []BareMetalMachineReadyState {
-	return []BareMetalMachineReadyState{
+	return []BareMetalMachineReadyState{	
 		BareMetalMachineReadyStateFalse,
 		BareMetalMachineReadyStateTrue,
 	}
@@ -330,12 +330,12 @@ type BareMetalMachineSkipShutdown string
 
 const (
 	BareMetalMachineSkipShutdownFalse BareMetalMachineSkipShutdown = "False"
-	BareMetalMachineSkipShutdownTrue  BareMetalMachineSkipShutdown = "True"
+	BareMetalMachineSkipShutdownTrue BareMetalMachineSkipShutdown = "True"
 )
 
 // PossibleBareMetalMachineSkipShutdownValues returns the possible values for the BareMetalMachineSkipShutdown const type.
 func PossibleBareMetalMachineSkipShutdownValues() []BareMetalMachineSkipShutdown {
-	return []BareMetalMachineSkipShutdown{
+	return []BareMetalMachineSkipShutdown{	
 		BareMetalMachineSkipShutdownFalse,
 		BareMetalMachineSkipShutdownTrue,
 	}
@@ -346,12 +346,12 @@ type BfdEnabled string
 
 const (
 	BfdEnabledFalse BfdEnabled = "False"
-	BfdEnabledTrue  BfdEnabled = "True"
+	BfdEnabledTrue BfdEnabled = "True"
 )
 
 // PossibleBfdEnabledValues returns the possible values for the BfdEnabled const type.
 func PossibleBfdEnabledValues() []BfdEnabled {
-	return []BfdEnabled{
+	return []BfdEnabled{	
 		BfdEnabledFalse,
 		BfdEnabledTrue,
 	}
@@ -362,12 +362,12 @@ type BgpMultiHop string
 
 const (
 	BgpMultiHopFalse BgpMultiHop = "False"
-	BgpMultiHopTrue  BgpMultiHop = "True"
+	BgpMultiHopTrue BgpMultiHop = "True"
 )
 
 // PossibleBgpMultiHopValues returns the possible values for the BgpMultiHop const type.
 func PossibleBgpMultiHopValues() []BgpMultiHop {
-	return []BgpMultiHop{
+	return []BgpMultiHop{	
 		BgpMultiHopFalse,
 		BgpMultiHopTrue,
 	}
@@ -377,15 +377,15 @@ func PossibleBgpMultiHopValues() []BgpMultiHop {
 type BmcKeySetDetailedStatus string
 
 const (
-	BmcKeySetDetailedStatusAllActive   BmcKeySetDetailedStatus = "AllActive"
-	BmcKeySetDetailedStatusAllInvalid  BmcKeySetDetailedStatus = "AllInvalid"
+	BmcKeySetDetailedStatusAllActive BmcKeySetDetailedStatus = "AllActive"
+	BmcKeySetDetailedStatusAllInvalid BmcKeySetDetailedStatus = "AllInvalid"
 	BmcKeySetDetailedStatusSomeInvalid BmcKeySetDetailedStatus = "SomeInvalid"
-	BmcKeySetDetailedStatusValidating  BmcKeySetDetailedStatus = "Validating"
+	BmcKeySetDetailedStatusValidating BmcKeySetDetailedStatus = "Validating"
 )
 
 // PossibleBmcKeySetDetailedStatusValues returns the possible values for the BmcKeySetDetailedStatus const type.
 func PossibleBmcKeySetDetailedStatusValues() []BmcKeySetDetailedStatus {
-	return []BmcKeySetDetailedStatus{
+	return []BmcKeySetDetailedStatus{	
 		BmcKeySetDetailedStatusAllActive,
 		BmcKeySetDetailedStatusAllInvalid,
 		BmcKeySetDetailedStatusSomeInvalid,
@@ -398,12 +398,12 @@ type BmcKeySetPrivilegeLevel string
 
 const (
 	BmcKeySetPrivilegeLevelAdministrator BmcKeySetPrivilegeLevel = "Administrator"
-	BmcKeySetPrivilegeLevelReadOnly      BmcKeySetPrivilegeLevel = "ReadOnly"
+	BmcKeySetPrivilegeLevelReadOnly BmcKeySetPrivilegeLevel = "ReadOnly"
 )
 
 // PossibleBmcKeySetPrivilegeLevelValues returns the possible values for the BmcKeySetPrivilegeLevel const type.
 func PossibleBmcKeySetPrivilegeLevelValues() []BmcKeySetPrivilegeLevel {
-	return []BmcKeySetPrivilegeLevel{
+	return []BmcKeySetPrivilegeLevel{	
 		BmcKeySetPrivilegeLevelAdministrator,
 		BmcKeySetPrivilegeLevelReadOnly,
 	}
@@ -413,16 +413,16 @@ func PossibleBmcKeySetPrivilegeLevelValues() []BmcKeySetPrivilegeLevel {
 type BmcKeySetProvisioningState string
 
 const (
-	BmcKeySetProvisioningStateAccepted     BmcKeySetProvisioningState = "Accepted"
-	BmcKeySetProvisioningStateCanceled     BmcKeySetProvisioningState = "Canceled"
-	BmcKeySetProvisioningStateFailed       BmcKeySetProvisioningState = "Failed"
+	BmcKeySetProvisioningStateAccepted BmcKeySetProvisioningState = "Accepted"
+	BmcKeySetProvisioningStateCanceled BmcKeySetProvisioningState = "Canceled"
+	BmcKeySetProvisioningStateFailed BmcKeySetProvisioningState = "Failed"
 	BmcKeySetProvisioningStateProvisioning BmcKeySetProvisioningState = "Provisioning"
-	BmcKeySetProvisioningStateSucceeded    BmcKeySetProvisioningState = "Succeeded"
+	BmcKeySetProvisioningStateSucceeded BmcKeySetProvisioningState = "Succeeded"
 )
 
 // PossibleBmcKeySetProvisioningStateValues returns the possible values for the BmcKeySetProvisioningState const type.
 func PossibleBmcKeySetProvisioningStateValues() []BmcKeySetProvisioningState {
-	return []BmcKeySetProvisioningState{
+	return []BmcKeySetProvisioningState{	
 		BmcKeySetProvisioningStateAccepted,
 		BmcKeySetProvisioningStateCanceled,
 		BmcKeySetProvisioningStateFailed,
@@ -440,7 +440,7 @@ const (
 
 // PossibleBootstrapProtocolValues returns the possible values for the BootstrapProtocol const type.
 func PossibleBootstrapProtocolValues() []BootstrapProtocol {
-	return []BootstrapProtocol{
+	return []BootstrapProtocol{	
 		BootstrapProtocolPXE,
 	}
 }
@@ -449,14 +449,14 @@ func PossibleBootstrapProtocolValues() []BootstrapProtocol {
 type CloudServicesNetworkDetailedStatus string
 
 const (
-	CloudServicesNetworkDetailedStatusAvailable    CloudServicesNetworkDetailedStatus = "Available"
-	CloudServicesNetworkDetailedStatusError        CloudServicesNetworkDetailedStatus = "Error"
+	CloudServicesNetworkDetailedStatusAvailable CloudServicesNetworkDetailedStatus = "Available"
+	CloudServicesNetworkDetailedStatusError CloudServicesNetworkDetailedStatus = "Error"
 	CloudServicesNetworkDetailedStatusProvisioning CloudServicesNetworkDetailedStatus = "Provisioning"
 )
 
 // PossibleCloudServicesNetworkDetailedStatusValues returns the possible values for the CloudServicesNetworkDetailedStatus const type.
 func PossibleCloudServicesNetworkDetailedStatusValues() []CloudServicesNetworkDetailedStatus {
-	return []CloudServicesNetworkDetailedStatus{
+	return []CloudServicesNetworkDetailedStatus{	
 		CloudServicesNetworkDetailedStatusAvailable,
 		CloudServicesNetworkDetailedStatusError,
 		CloudServicesNetworkDetailedStatusProvisioning,
@@ -469,12 +469,12 @@ type CloudServicesNetworkEnableDefaultEgressEndpoints string
 
 const (
 	CloudServicesNetworkEnableDefaultEgressEndpointsFalse CloudServicesNetworkEnableDefaultEgressEndpoints = "False"
-	CloudServicesNetworkEnableDefaultEgressEndpointsTrue  CloudServicesNetworkEnableDefaultEgressEndpoints = "True"
+	CloudServicesNetworkEnableDefaultEgressEndpointsTrue CloudServicesNetworkEnableDefaultEgressEndpoints = "True"
 )
 
 // PossibleCloudServicesNetworkEnableDefaultEgressEndpointsValues returns the possible values for the CloudServicesNetworkEnableDefaultEgressEndpoints const type.
 func PossibleCloudServicesNetworkEnableDefaultEgressEndpointsValues() []CloudServicesNetworkEnableDefaultEgressEndpoints {
-	return []CloudServicesNetworkEnableDefaultEgressEndpoints{
+	return []CloudServicesNetworkEnableDefaultEgressEndpoints{	
 		CloudServicesNetworkEnableDefaultEgressEndpointsFalse,
 		CloudServicesNetworkEnableDefaultEgressEndpointsTrue,
 	}
@@ -484,16 +484,16 @@ func PossibleCloudServicesNetworkEnableDefaultEgressEndpointsValues() []CloudSer
 type CloudServicesNetworkProvisioningState string
 
 const (
-	CloudServicesNetworkProvisioningStateAccepted     CloudServicesNetworkProvisioningState = "Accepted"
-	CloudServicesNetworkProvisioningStateCanceled     CloudServicesNetworkProvisioningState = "Canceled"
-	CloudServicesNetworkProvisioningStateFailed       CloudServicesNetworkProvisioningState = "Failed"
+	CloudServicesNetworkProvisioningStateAccepted CloudServicesNetworkProvisioningState = "Accepted"
+	CloudServicesNetworkProvisioningStateCanceled CloudServicesNetworkProvisioningState = "Canceled"
+	CloudServicesNetworkProvisioningStateFailed CloudServicesNetworkProvisioningState = "Failed"
 	CloudServicesNetworkProvisioningStateProvisioning CloudServicesNetworkProvisioningState = "Provisioning"
-	CloudServicesNetworkProvisioningStateSucceeded    CloudServicesNetworkProvisioningState = "Succeeded"
+	CloudServicesNetworkProvisioningStateSucceeded CloudServicesNetworkProvisioningState = "Succeeded"
 )
 
 // PossibleCloudServicesNetworkProvisioningStateValues returns the possible values for the CloudServicesNetworkProvisioningState const type.
 func PossibleCloudServicesNetworkProvisioningStateValues() []CloudServicesNetworkProvisioningState {
-	return []CloudServicesNetworkProvisioningState{
+	return []CloudServicesNetworkProvisioningState{	
 		CloudServicesNetworkProvisioningStateAccepted,
 		CloudServicesNetworkProvisioningStateCanceled,
 		CloudServicesNetworkProvisioningStateFailed,
@@ -507,13 +507,13 @@ type ClusterConnectionStatus string
 
 const (
 	ClusterConnectionStatusConnected ClusterConnectionStatus = "Connected"
-	ClusterConnectionStatusTimeout   ClusterConnectionStatus = "Timeout"
+	ClusterConnectionStatusTimeout ClusterConnectionStatus = "Timeout"
 	ClusterConnectionStatusUndefined ClusterConnectionStatus = "Undefined"
 )
 
 // PossibleClusterConnectionStatusValues returns the possible values for the ClusterConnectionStatus const type.
 func PossibleClusterConnectionStatusValues() []ClusterConnectionStatus {
-	return []ClusterConnectionStatus{
+	return []ClusterConnectionStatus{	
 		ClusterConnectionStatusConnected,
 		ClusterConnectionStatusTimeout,
 		ClusterConnectionStatusUndefined,
@@ -524,19 +524,19 @@ func PossibleClusterConnectionStatusValues() []ClusterConnectionStatus {
 type ClusterDetailedStatus string
 
 const (
-	ClusterDetailedStatusDegraded          ClusterDetailedStatus = "Degraded"
-	ClusterDetailedStatusDeleting          ClusterDetailedStatus = "Deleting"
-	ClusterDetailedStatusDeploying         ClusterDetailedStatus = "Deploying"
-	ClusterDetailedStatusDisconnected      ClusterDetailedStatus = "Disconnected"
-	ClusterDetailedStatusFailed            ClusterDetailedStatus = "Failed"
+	ClusterDetailedStatusDegraded ClusterDetailedStatus = "Degraded"
+	ClusterDetailedStatusDeleting ClusterDetailedStatus = "Deleting"
+	ClusterDetailedStatusDeploying ClusterDetailedStatus = "Deploying"
+	ClusterDetailedStatusDisconnected ClusterDetailedStatus = "Disconnected"
+	ClusterDetailedStatusFailed ClusterDetailedStatus = "Failed"
 	ClusterDetailedStatusPendingDeployment ClusterDetailedStatus = "PendingDeployment"
-	ClusterDetailedStatusRunning           ClusterDetailedStatus = "Running"
-	ClusterDetailedStatusUpdating          ClusterDetailedStatus = "Updating"
+	ClusterDetailedStatusRunning ClusterDetailedStatus = "Running"
+	ClusterDetailedStatusUpdating ClusterDetailedStatus = "Updating"
 )
 
 // PossibleClusterDetailedStatusValues returns the possible values for the ClusterDetailedStatus const type.
 func PossibleClusterDetailedStatusValues() []ClusterDetailedStatus {
-	return []ClusterDetailedStatus{
+	return []ClusterDetailedStatus{	
 		ClusterDetailedStatusDegraded,
 		ClusterDetailedStatusDeleting,
 		ClusterDetailedStatusDeploying,
@@ -552,13 +552,13 @@ func PossibleClusterDetailedStatusValues() []ClusterDetailedStatus {
 type ClusterManagerConnectionStatus string
 
 const (
-	ClusterManagerConnectionStatusConnected   ClusterManagerConnectionStatus = "Connected"
+	ClusterManagerConnectionStatusConnected ClusterManagerConnectionStatus = "Connected"
 	ClusterManagerConnectionStatusUnreachable ClusterManagerConnectionStatus = "Unreachable"
 )
 
 // PossibleClusterManagerConnectionStatusValues returns the possible values for the ClusterManagerConnectionStatus const type.
 func PossibleClusterManagerConnectionStatusValues() []ClusterManagerConnectionStatus {
-	return []ClusterManagerConnectionStatus{
+	return []ClusterManagerConnectionStatus{	
 		ClusterManagerConnectionStatusConnected,
 		ClusterManagerConnectionStatusUnreachable,
 	}
@@ -568,17 +568,17 @@ func PossibleClusterManagerConnectionStatusValues() []ClusterManagerConnectionSt
 type ClusterManagerDetailedStatus string
 
 const (
-	ClusterManagerDetailedStatusAvailable          ClusterManagerDetailedStatus = "Available"
-	ClusterManagerDetailedStatusError              ClusterManagerDetailedStatus = "Error"
-	ClusterManagerDetailedStatusProvisioning       ClusterManagerDetailedStatus = "Provisioning"
+	ClusterManagerDetailedStatusAvailable ClusterManagerDetailedStatus = "Available"
+	ClusterManagerDetailedStatusError ClusterManagerDetailedStatus = "Error"
+	ClusterManagerDetailedStatusProvisioning ClusterManagerDetailedStatus = "Provisioning"
 	ClusterManagerDetailedStatusProvisioningFailed ClusterManagerDetailedStatus = "ProvisioningFailed"
-	ClusterManagerDetailedStatusUpdateFailed       ClusterManagerDetailedStatus = "UpdateFailed"
-	ClusterManagerDetailedStatusUpdating           ClusterManagerDetailedStatus = "Updating"
+	ClusterManagerDetailedStatusUpdateFailed ClusterManagerDetailedStatus = "UpdateFailed"
+	ClusterManagerDetailedStatusUpdating ClusterManagerDetailedStatus = "Updating"
 )
 
 // PossibleClusterManagerDetailedStatusValues returns the possible values for the ClusterManagerDetailedStatus const type.
 func PossibleClusterManagerDetailedStatusValues() []ClusterManagerDetailedStatus {
-	return []ClusterManagerDetailedStatus{
+	return []ClusterManagerDetailedStatus{	
 		ClusterManagerDetailedStatusAvailable,
 		ClusterManagerDetailedStatusError,
 		ClusterManagerDetailedStatusProvisioning,
@@ -592,17 +592,17 @@ func PossibleClusterManagerDetailedStatusValues() []ClusterManagerDetailedStatus
 type ClusterManagerProvisioningState string
 
 const (
-	ClusterManagerProvisioningStateAccepted     ClusterManagerProvisioningState = "Accepted"
-	ClusterManagerProvisioningStateCanceled     ClusterManagerProvisioningState = "Canceled"
-	ClusterManagerProvisioningStateFailed       ClusterManagerProvisioningState = "Failed"
+	ClusterManagerProvisioningStateAccepted ClusterManagerProvisioningState = "Accepted"
+	ClusterManagerProvisioningStateCanceled ClusterManagerProvisioningState = "Canceled"
+	ClusterManagerProvisioningStateFailed ClusterManagerProvisioningState = "Failed"
 	ClusterManagerProvisioningStateProvisioning ClusterManagerProvisioningState = "Provisioning"
-	ClusterManagerProvisioningStateSucceeded    ClusterManagerProvisioningState = "Succeeded"
-	ClusterManagerProvisioningStateUpdating     ClusterManagerProvisioningState = "Updating"
+	ClusterManagerProvisioningStateSucceeded ClusterManagerProvisioningState = "Succeeded"
+	ClusterManagerProvisioningStateUpdating ClusterManagerProvisioningState = "Updating"
 )
 
 // PossibleClusterManagerProvisioningStateValues returns the possible values for the ClusterManagerProvisioningState const type.
 func PossibleClusterManagerProvisioningStateValues() []ClusterManagerProvisioningState {
-	return []ClusterManagerProvisioningState{
+	return []ClusterManagerProvisioningState{	
 		ClusterManagerProvisioningStateAccepted,
 		ClusterManagerProvisioningStateCanceled,
 		ClusterManagerProvisioningStateFailed,
@@ -616,14 +616,14 @@ func PossibleClusterManagerProvisioningStateValues() []ClusterManagerProvisionin
 type ClusterMetricsConfigurationDetailedStatus string
 
 const (
-	ClusterMetricsConfigurationDetailedStatusApplied    ClusterMetricsConfigurationDetailedStatus = "Applied"
-	ClusterMetricsConfigurationDetailedStatusError      ClusterMetricsConfigurationDetailedStatus = "Error"
+	ClusterMetricsConfigurationDetailedStatusApplied ClusterMetricsConfigurationDetailedStatus = "Applied"
+	ClusterMetricsConfigurationDetailedStatusError ClusterMetricsConfigurationDetailedStatus = "Error"
 	ClusterMetricsConfigurationDetailedStatusProcessing ClusterMetricsConfigurationDetailedStatus = "Processing"
 )
 
 // PossibleClusterMetricsConfigurationDetailedStatusValues returns the possible values for the ClusterMetricsConfigurationDetailedStatus const type.
 func PossibleClusterMetricsConfigurationDetailedStatusValues() []ClusterMetricsConfigurationDetailedStatus {
-	return []ClusterMetricsConfigurationDetailedStatus{
+	return []ClusterMetricsConfigurationDetailedStatus{	
 		ClusterMetricsConfigurationDetailedStatusApplied,
 		ClusterMetricsConfigurationDetailedStatusError,
 		ClusterMetricsConfigurationDetailedStatusProcessing,
@@ -634,16 +634,16 @@ func PossibleClusterMetricsConfigurationDetailedStatusValues() []ClusterMetricsC
 type ClusterMetricsConfigurationProvisioningState string
 
 const (
-	ClusterMetricsConfigurationProvisioningStateAccepted     ClusterMetricsConfigurationProvisioningState = "Accepted"
-	ClusterMetricsConfigurationProvisioningStateCanceled     ClusterMetricsConfigurationProvisioningState = "Canceled"
-	ClusterMetricsConfigurationProvisioningStateFailed       ClusterMetricsConfigurationProvisioningState = "Failed"
+	ClusterMetricsConfigurationProvisioningStateAccepted ClusterMetricsConfigurationProvisioningState = "Accepted"
+	ClusterMetricsConfigurationProvisioningStateCanceled ClusterMetricsConfigurationProvisioningState = "Canceled"
+	ClusterMetricsConfigurationProvisioningStateFailed ClusterMetricsConfigurationProvisioningState = "Failed"
 	ClusterMetricsConfigurationProvisioningStateProvisioning ClusterMetricsConfigurationProvisioningState = "Provisioning"
-	ClusterMetricsConfigurationProvisioningStateSucceeded    ClusterMetricsConfigurationProvisioningState = "Succeeded"
+	ClusterMetricsConfigurationProvisioningStateSucceeded ClusterMetricsConfigurationProvisioningState = "Succeeded"
 )
 
 // PossibleClusterMetricsConfigurationProvisioningStateValues returns the possible values for the ClusterMetricsConfigurationProvisioningState const type.
 func PossibleClusterMetricsConfigurationProvisioningStateValues() []ClusterMetricsConfigurationProvisioningState {
-	return []ClusterMetricsConfigurationProvisioningState{
+	return []ClusterMetricsConfigurationProvisioningState{	
 		ClusterMetricsConfigurationProvisioningStateAccepted,
 		ClusterMetricsConfigurationProvisioningStateCanceled,
 		ClusterMetricsConfigurationProvisioningStateFailed,
@@ -656,17 +656,17 @@ func PossibleClusterMetricsConfigurationProvisioningStateValues() []ClusterMetri
 type ClusterProvisioningState string
 
 const (
-	ClusterProvisioningStateAccepted   ClusterProvisioningState = "Accepted"
-	ClusterProvisioningStateCanceled   ClusterProvisioningState = "Canceled"
-	ClusterProvisioningStateFailed     ClusterProvisioningState = "Failed"
-	ClusterProvisioningStateSucceeded  ClusterProvisioningState = "Succeeded"
-	ClusterProvisioningStateUpdating   ClusterProvisioningState = "Updating"
+	ClusterProvisioningStateAccepted ClusterProvisioningState = "Accepted"
+	ClusterProvisioningStateCanceled ClusterProvisioningState = "Canceled"
+	ClusterProvisioningStateFailed ClusterProvisioningState = "Failed"
+	ClusterProvisioningStateSucceeded ClusterProvisioningState = "Succeeded"
+	ClusterProvisioningStateUpdating ClusterProvisioningState = "Updating"
 	ClusterProvisioningStateValidating ClusterProvisioningState = "Validating"
 )
 
 // PossibleClusterProvisioningStateValues returns the possible values for the ClusterProvisioningState const type.
 func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
-	return []ClusterProvisioningState{
+	return []ClusterProvisioningState{	
 		ClusterProvisioningStateAccepted,
 		ClusterProvisioningStateCanceled,
 		ClusterProvisioningStateFailed,
@@ -680,13 +680,13 @@ func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 type ClusterType string
 
 const (
-	ClusterTypeMultiRack  ClusterType = "MultiRack"
+	ClusterTypeMultiRack ClusterType = "MultiRack"
 	ClusterTypeSingleRack ClusterType = "SingleRack"
 )
 
 // PossibleClusterTypeValues returns the possible values for the ClusterType const type.
 func PossibleClusterTypeValues() []ClusterType {
-	return []ClusterType{
+	return []ClusterType{	
 		ClusterTypeMultiRack,
 		ClusterTypeSingleRack,
 	}
@@ -702,7 +702,7 @@ const (
 
 // PossibleConsoleDetailedStatusValues returns the possible values for the ConsoleDetailedStatus const type.
 func PossibleConsoleDetailedStatusValues() []ConsoleDetailedStatus {
-	return []ConsoleDetailedStatus{
+	return []ConsoleDetailedStatus{	
 		ConsoleDetailedStatusError,
 		ConsoleDetailedStatusReady,
 	}
@@ -713,12 +713,12 @@ type ConsoleEnabled string
 
 const (
 	ConsoleEnabledFalse ConsoleEnabled = "False"
-	ConsoleEnabledTrue  ConsoleEnabled = "True"
+	ConsoleEnabledTrue ConsoleEnabled = "True"
 )
 
 // PossibleConsoleEnabledValues returns the possible values for the ConsoleEnabled const type.
 func PossibleConsoleEnabledValues() []ConsoleEnabled {
-	return []ConsoleEnabled{
+	return []ConsoleEnabled{	
 		ConsoleEnabledFalse,
 		ConsoleEnabledTrue,
 	}
@@ -728,16 +728,16 @@ func PossibleConsoleEnabledValues() []ConsoleEnabled {
 type ConsoleProvisioningState string
 
 const (
-	ConsoleProvisioningStateAccepted     ConsoleProvisioningState = "Accepted"
-	ConsoleProvisioningStateCanceled     ConsoleProvisioningState = "Canceled"
-	ConsoleProvisioningStateFailed       ConsoleProvisioningState = "Failed"
+	ConsoleProvisioningStateAccepted ConsoleProvisioningState = "Accepted"
+	ConsoleProvisioningStateCanceled ConsoleProvisioningState = "Canceled"
+	ConsoleProvisioningStateFailed ConsoleProvisioningState = "Failed"
 	ConsoleProvisioningStateProvisioning ConsoleProvisioningState = "Provisioning"
-	ConsoleProvisioningStateSucceeded    ConsoleProvisioningState = "Succeeded"
+	ConsoleProvisioningStateSucceeded ConsoleProvisioningState = "Succeeded"
 )
 
 // PossibleConsoleProvisioningStateValues returns the possible values for the ConsoleProvisioningState const type.
 func PossibleConsoleProvisioningStateValues() []ConsoleProvisioningState {
-	return []ConsoleProvisioningState{
+	return []ConsoleProvisioningState{	
 		ConsoleProvisioningStateAccepted,
 		ConsoleProvisioningStateCanceled,
 		ConsoleProvisioningStateFailed,
@@ -751,12 +751,12 @@ type ControlImpact string
 
 const (
 	ControlImpactFalse ControlImpact = "False"
-	ControlImpactTrue  ControlImpact = "True"
+	ControlImpactTrue ControlImpact = "True"
 )
 
 // PossibleControlImpactValues returns the possible values for the ControlImpact const type.
 func PossibleControlImpactValues() []ControlImpact {
-	return []ControlImpact{
+	return []ControlImpact{	
 		ControlImpactFalse,
 		ControlImpactTrue,
 	}
@@ -766,15 +766,15 @@ func PossibleControlImpactValues() []ControlImpact {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -788,12 +788,12 @@ type DefaultGateway string
 
 const (
 	DefaultGatewayFalse DefaultGateway = "False"
-	DefaultGatewayTrue  DefaultGateway = "True"
+	DefaultGatewayTrue DefaultGateway = "True"
 )
 
 // PossibleDefaultGatewayValues returns the possible values for the DefaultGateway const type.
 func PossibleDefaultGatewayValues() []DefaultGateway {
-	return []DefaultGateway{
+	return []DefaultGateway{	
 		DefaultGatewayFalse,
 		DefaultGatewayTrue,
 	}
@@ -808,7 +808,7 @@ const (
 
 // PossibleDeviceConnectionTypeValues returns the possible values for the DeviceConnectionType const type.
 func PossibleDeviceConnectionTypeValues() []DeviceConnectionType {
-	return []DeviceConnectionType{
+	return []DeviceConnectionType{	
 		DeviceConnectionTypePCI,
 	}
 }
@@ -823,7 +823,7 @@ const (
 
 // PossibleDiskTypeValues returns the possible values for the DiskType const type.
 func PossibleDiskTypeValues() []DiskType {
-	return []DiskType{
+	return []DiskType{	
 		DiskTypeHDD,
 		DiskTypeSSD,
 	}
@@ -834,12 +834,12 @@ type FabricPeeringEnabled string
 
 const (
 	FabricPeeringEnabledFalse FabricPeeringEnabled = "False"
-	FabricPeeringEnabledTrue  FabricPeeringEnabled = "True"
+	FabricPeeringEnabledTrue FabricPeeringEnabled = "True"
 )
 
 // PossibleFabricPeeringEnabledValues returns the possible values for the FabricPeeringEnabled const type.
 func PossibleFabricPeeringEnabledValues() []FabricPeeringEnabled {
-	return []FabricPeeringEnabled{
+	return []FabricPeeringEnabled{	
 		FabricPeeringEnabledFalse,
 		FabricPeeringEnabledTrue,
 	}
@@ -849,14 +849,14 @@ func PossibleFabricPeeringEnabledValues() []FabricPeeringEnabled {
 type FeatureDetailedStatus string
 
 const (
-	FeatureDetailedStatusFailed  FeatureDetailedStatus = "Failed"
+	FeatureDetailedStatusFailed FeatureDetailedStatus = "Failed"
 	FeatureDetailedStatusRunning FeatureDetailedStatus = "Running"
 	FeatureDetailedStatusUnknown FeatureDetailedStatus = "Unknown"
 )
 
 // PossibleFeatureDetailedStatusValues returns the possible values for the FeatureDetailedStatus const type.
 func PossibleFeatureDetailedStatusValues() []FeatureDetailedStatus {
-	return []FeatureDetailedStatus{
+	return []FeatureDetailedStatus{	
 		FeatureDetailedStatusFailed,
 		FeatureDetailedStatusRunning,
 		FeatureDetailedStatusUnknown,
@@ -873,7 +873,7 @@ const (
 
 // PossibleHugepagesSizeValues returns the possible values for the HugepagesSize const type.
 func PossibleHugepagesSizeValues() []HugepagesSize {
-	return []HugepagesSize{
+	return []HugepagesSize{	
 		HugepagesSizeOneG,
 		HugepagesSizeTwoM,
 	}
@@ -886,12 +886,12 @@ type HybridAksIpamEnabled string
 
 const (
 	HybridAksIpamEnabledFalse HybridAksIpamEnabled = "False"
-	HybridAksIpamEnabledTrue  HybridAksIpamEnabled = "True"
+	HybridAksIpamEnabledTrue HybridAksIpamEnabled = "True"
 )
 
 // PossibleHybridAksIpamEnabledValues returns the possible values for the HybridAksIpamEnabled const type.
 func PossibleHybridAksIpamEnabledValues() []HybridAksIpamEnabled {
-	return []HybridAksIpamEnabled{
+	return []HybridAksIpamEnabled{	
 		HybridAksIpamEnabledFalse,
 		HybridAksIpamEnabledTrue,
 	}
@@ -902,14 +902,14 @@ func PossibleHybridAksIpamEnabledValues() []HybridAksIpamEnabled {
 type HybridAksPluginType string
 
 const (
-	HybridAksPluginTypeDPDK     HybridAksPluginType = "DPDK"
+	HybridAksPluginTypeDPDK HybridAksPluginType = "DPDK"
 	HybridAksPluginTypeOSDevice HybridAksPluginType = "OSDevice"
-	HybridAksPluginTypeSRIOV    HybridAksPluginType = "SRIOV"
+	HybridAksPluginTypeSRIOV HybridAksPluginType = "SRIOV"
 )
 
 // PossibleHybridAksPluginTypeValues returns the possible values for the HybridAksPluginType const type.
 func PossibleHybridAksPluginTypeValues() []HybridAksPluginType {
-	return []HybridAksPluginType{
+	return []HybridAksPluginType{	
 		HybridAksPluginTypeDPDK,
 		HybridAksPluginTypeOSDevice,
 		HybridAksPluginTypeSRIOV,
@@ -921,13 +921,13 @@ type IPAllocationType string
 
 const (
 	IPAllocationTypeDualStack IPAllocationType = "DualStack"
-	IPAllocationTypeIPV4      IPAllocationType = "IPV4"
-	IPAllocationTypeIPV6      IPAllocationType = "IPV6"
+	IPAllocationTypeIPV4 IPAllocationType = "IPV4"
+	IPAllocationTypeIPV6 IPAllocationType = "IPV6"
 )
 
 // PossibleIPAllocationTypeValues returns the possible values for the IPAllocationType const type.
 func PossibleIPAllocationTypeValues() []IPAllocationType {
-	return []IPAllocationType{
+	return []IPAllocationType{	
 		IPAllocationTypeDualStack,
 		IPAllocationTypeIPV4,
 		IPAllocationTypeIPV6,
@@ -938,14 +938,14 @@ func PossibleIPAllocationTypeValues() []IPAllocationType {
 type KubernetesClusterDetailedStatus string
 
 const (
-	KubernetesClusterDetailedStatusAvailable    KubernetesClusterDetailedStatus = "Available"
-	KubernetesClusterDetailedStatusError        KubernetesClusterDetailedStatus = "Error"
+	KubernetesClusterDetailedStatusAvailable KubernetesClusterDetailedStatus = "Available"
+	KubernetesClusterDetailedStatusError KubernetesClusterDetailedStatus = "Error"
 	KubernetesClusterDetailedStatusProvisioning KubernetesClusterDetailedStatus = "Provisioning"
 )
 
 // PossibleKubernetesClusterDetailedStatusValues returns the possible values for the KubernetesClusterDetailedStatus const type.
 func PossibleKubernetesClusterDetailedStatusValues() []KubernetesClusterDetailedStatus {
-	return []KubernetesClusterDetailedStatus{
+	return []KubernetesClusterDetailedStatus{	
 		KubernetesClusterDetailedStatusAvailable,
 		KubernetesClusterDetailedStatusError,
 		KubernetesClusterDetailedStatusProvisioning,
@@ -956,19 +956,19 @@ func PossibleKubernetesClusterDetailedStatusValues() []KubernetesClusterDetailed
 type KubernetesClusterNodeDetailedStatus string
 
 const (
-	KubernetesClusterNodeDetailedStatusAvailable    KubernetesClusterNodeDetailedStatus = "Available"
-	KubernetesClusterNodeDetailedStatusError        KubernetesClusterNodeDetailedStatus = "Error"
+	KubernetesClusterNodeDetailedStatusAvailable KubernetesClusterNodeDetailedStatus = "Available"
+	KubernetesClusterNodeDetailedStatusError KubernetesClusterNodeDetailedStatus = "Error"
 	KubernetesClusterNodeDetailedStatusProvisioning KubernetesClusterNodeDetailedStatus = "Provisioning"
-	KubernetesClusterNodeDetailedStatusRunning      KubernetesClusterNodeDetailedStatus = "Running"
-	KubernetesClusterNodeDetailedStatusScheduling   KubernetesClusterNodeDetailedStatus = "Scheduling"
-	KubernetesClusterNodeDetailedStatusStopped      KubernetesClusterNodeDetailedStatus = "Stopped"
-	KubernetesClusterNodeDetailedStatusTerminating  KubernetesClusterNodeDetailedStatus = "Terminating"
-	KubernetesClusterNodeDetailedStatusUnknown      KubernetesClusterNodeDetailedStatus = "Unknown"
+	KubernetesClusterNodeDetailedStatusRunning KubernetesClusterNodeDetailedStatus = "Running"
+	KubernetesClusterNodeDetailedStatusScheduling KubernetesClusterNodeDetailedStatus = "Scheduling"
+	KubernetesClusterNodeDetailedStatusStopped KubernetesClusterNodeDetailedStatus = "Stopped"
+	KubernetesClusterNodeDetailedStatusTerminating KubernetesClusterNodeDetailedStatus = "Terminating"
+	KubernetesClusterNodeDetailedStatusUnknown KubernetesClusterNodeDetailedStatus = "Unknown"
 )
 
 // PossibleKubernetesClusterNodeDetailedStatusValues returns the possible values for the KubernetesClusterNodeDetailedStatus const type.
 func PossibleKubernetesClusterNodeDetailedStatusValues() []KubernetesClusterNodeDetailedStatus {
-	return []KubernetesClusterNodeDetailedStatus{
+	return []KubernetesClusterNodeDetailedStatus{	
 		KubernetesClusterNodeDetailedStatusAvailable,
 		KubernetesClusterNodeDetailedStatusError,
 		KubernetesClusterNodeDetailedStatusProvisioning,
@@ -984,19 +984,19 @@ func PossibleKubernetesClusterNodeDetailedStatusValues() []KubernetesClusterNode
 type KubernetesClusterProvisioningState string
 
 const (
-	KubernetesClusterProvisioningStateAccepted   KubernetesClusterProvisioningState = "Accepted"
-	KubernetesClusterProvisioningStateCanceled   KubernetesClusterProvisioningState = "Canceled"
-	KubernetesClusterProvisioningStateCreated    KubernetesClusterProvisioningState = "Created"
-	KubernetesClusterProvisioningStateDeleting   KubernetesClusterProvisioningState = "Deleting"
-	KubernetesClusterProvisioningStateFailed     KubernetesClusterProvisioningState = "Failed"
+	KubernetesClusterProvisioningStateAccepted KubernetesClusterProvisioningState = "Accepted"
+	KubernetesClusterProvisioningStateCanceled KubernetesClusterProvisioningState = "Canceled"
+	KubernetesClusterProvisioningStateCreated KubernetesClusterProvisioningState = "Created"
+	KubernetesClusterProvisioningStateDeleting KubernetesClusterProvisioningState = "Deleting"
+	KubernetesClusterProvisioningStateFailed KubernetesClusterProvisioningState = "Failed"
 	KubernetesClusterProvisioningStateInProgress KubernetesClusterProvisioningState = "InProgress"
-	KubernetesClusterProvisioningStateSucceeded  KubernetesClusterProvisioningState = "Succeeded"
-	KubernetesClusterProvisioningStateUpdating   KubernetesClusterProvisioningState = "Updating"
+	KubernetesClusterProvisioningStateSucceeded KubernetesClusterProvisioningState = "Succeeded"
+	KubernetesClusterProvisioningStateUpdating KubernetesClusterProvisioningState = "Updating"
 )
 
 // PossibleKubernetesClusterProvisioningStateValues returns the possible values for the KubernetesClusterProvisioningState const type.
 func PossibleKubernetesClusterProvisioningStateValues() []KubernetesClusterProvisioningState {
-	return []KubernetesClusterProvisioningState{
+	return []KubernetesClusterProvisioningState{	
 		KubernetesClusterProvisioningStateAccepted,
 		KubernetesClusterProvisioningStateCanceled,
 		KubernetesClusterProvisioningStateCreated,
@@ -1012,14 +1012,14 @@ func PossibleKubernetesClusterProvisioningStateValues() []KubernetesClusterProvi
 type KubernetesNodePowerState string
 
 const (
-	KubernetesNodePowerStateOff     KubernetesNodePowerState = "Off"
-	KubernetesNodePowerStateOn      KubernetesNodePowerState = "On"
+	KubernetesNodePowerStateOff KubernetesNodePowerState = "Off"
+	KubernetesNodePowerStateOn KubernetesNodePowerState = "On"
 	KubernetesNodePowerStateUnknown KubernetesNodePowerState = "Unknown"
 )
 
 // PossibleKubernetesNodePowerStateValues returns the possible values for the KubernetesNodePowerState const type.
 func PossibleKubernetesNodePowerStateValues() []KubernetesNodePowerState {
-	return []KubernetesNodePowerState{
+	return []KubernetesNodePowerState{	
 		KubernetesNodePowerStateOff,
 		KubernetesNodePowerStateOn,
 		KubernetesNodePowerStateUnknown,
@@ -1031,12 +1031,12 @@ type KubernetesNodeRole string
 
 const (
 	KubernetesNodeRoleControlPlane KubernetesNodeRole = "ControlPlane"
-	KubernetesNodeRoleWorker       KubernetesNodeRole = "Worker"
+	KubernetesNodeRoleWorker KubernetesNodeRole = "Worker"
 )
 
 // PossibleKubernetesNodeRoleValues returns the possible values for the KubernetesNodeRole const type.
 func PossibleKubernetesNodeRoleValues() []KubernetesNodeRole {
-	return []KubernetesNodeRole{
+	return []KubernetesNodeRole{	
 		KubernetesNodeRoleControlPlane,
 		KubernetesNodeRoleWorker,
 	}
@@ -1046,16 +1046,16 @@ func PossibleKubernetesNodeRoleValues() []KubernetesNodeRole {
 type KubernetesPluginType string
 
 const (
-	KubernetesPluginTypeDPDK     KubernetesPluginType = "DPDK"
-	KubernetesPluginTypeIPVLAN   KubernetesPluginType = "IPVLAN"
-	KubernetesPluginTypeMACVLAN  KubernetesPluginType = "MACVLAN"
+	KubernetesPluginTypeDPDK KubernetesPluginType = "DPDK"
+	KubernetesPluginTypeIPVLAN KubernetesPluginType = "IPVLAN"
+	KubernetesPluginTypeMACVLAN KubernetesPluginType = "MACVLAN"
 	KubernetesPluginTypeOSDevice KubernetesPluginType = "OSDevice"
-	KubernetesPluginTypeSRIOV    KubernetesPluginType = "SRIOV"
+	KubernetesPluginTypeSRIOV KubernetesPluginType = "SRIOV"
 )
 
 // PossibleKubernetesPluginTypeValues returns the possible values for the KubernetesPluginType const type.
 func PossibleKubernetesPluginTypeValues() []KubernetesPluginType {
-	return []KubernetesPluginType{
+	return []KubernetesPluginType{	
 		KubernetesPluginTypeDPDK,
 		KubernetesPluginTypeIPVLAN,
 		KubernetesPluginTypeMACVLAN,
@@ -1068,14 +1068,14 @@ func PossibleKubernetesPluginTypeValues() []KubernetesPluginType {
 type L2NetworkDetailedStatus string
 
 const (
-	L2NetworkDetailedStatusAvailable    L2NetworkDetailedStatus = "Available"
-	L2NetworkDetailedStatusError        L2NetworkDetailedStatus = "Error"
+	L2NetworkDetailedStatusAvailable L2NetworkDetailedStatus = "Available"
+	L2NetworkDetailedStatusError L2NetworkDetailedStatus = "Error"
 	L2NetworkDetailedStatusProvisioning L2NetworkDetailedStatus = "Provisioning"
 )
 
 // PossibleL2NetworkDetailedStatusValues returns the possible values for the L2NetworkDetailedStatus const type.
 func PossibleL2NetworkDetailedStatusValues() []L2NetworkDetailedStatus {
-	return []L2NetworkDetailedStatus{
+	return []L2NetworkDetailedStatus{	
 		L2NetworkDetailedStatusAvailable,
 		L2NetworkDetailedStatusError,
 		L2NetworkDetailedStatusProvisioning,
@@ -1086,16 +1086,16 @@ func PossibleL2NetworkDetailedStatusValues() []L2NetworkDetailedStatus {
 type L2NetworkProvisioningState string
 
 const (
-	L2NetworkProvisioningStateAccepted     L2NetworkProvisioningState = "Accepted"
-	L2NetworkProvisioningStateCanceled     L2NetworkProvisioningState = "Canceled"
-	L2NetworkProvisioningStateFailed       L2NetworkProvisioningState = "Failed"
+	L2NetworkProvisioningStateAccepted L2NetworkProvisioningState = "Accepted"
+	L2NetworkProvisioningStateCanceled L2NetworkProvisioningState = "Canceled"
+	L2NetworkProvisioningStateFailed L2NetworkProvisioningState = "Failed"
 	L2NetworkProvisioningStateProvisioning L2NetworkProvisioningState = "Provisioning"
-	L2NetworkProvisioningStateSucceeded    L2NetworkProvisioningState = "Succeeded"
+	L2NetworkProvisioningStateSucceeded L2NetworkProvisioningState = "Succeeded"
 )
 
 // PossibleL2NetworkProvisioningStateValues returns the possible values for the L2NetworkProvisioningState const type.
 func PossibleL2NetworkProvisioningStateValues() []L2NetworkProvisioningState {
-	return []L2NetworkProvisioningState{
+	return []L2NetworkProvisioningState{	
 		L2NetworkProvisioningStateAccepted,
 		L2NetworkProvisioningStateCanceled,
 		L2NetworkProvisioningStateFailed,
@@ -1110,12 +1110,12 @@ type L3NetworkConfigurationIpamEnabled string
 
 const (
 	L3NetworkConfigurationIpamEnabledFalse L3NetworkConfigurationIpamEnabled = "False"
-	L3NetworkConfigurationIpamEnabledTrue  L3NetworkConfigurationIpamEnabled = "True"
+	L3NetworkConfigurationIpamEnabledTrue L3NetworkConfigurationIpamEnabled = "True"
 )
 
 // PossibleL3NetworkConfigurationIpamEnabledValues returns the possible values for the L3NetworkConfigurationIpamEnabled const type.
 func PossibleL3NetworkConfigurationIpamEnabledValues() []L3NetworkConfigurationIpamEnabled {
-	return []L3NetworkConfigurationIpamEnabled{
+	return []L3NetworkConfigurationIpamEnabled{	
 		L3NetworkConfigurationIpamEnabledFalse,
 		L3NetworkConfigurationIpamEnabledTrue,
 	}
@@ -1125,14 +1125,14 @@ func PossibleL3NetworkConfigurationIpamEnabledValues() []L3NetworkConfigurationI
 type L3NetworkDetailedStatus string
 
 const (
-	L3NetworkDetailedStatusAvailable    L3NetworkDetailedStatus = "Available"
-	L3NetworkDetailedStatusError        L3NetworkDetailedStatus = "Error"
+	L3NetworkDetailedStatusAvailable L3NetworkDetailedStatus = "Available"
+	L3NetworkDetailedStatusError L3NetworkDetailedStatus = "Error"
 	L3NetworkDetailedStatusProvisioning L3NetworkDetailedStatus = "Provisioning"
 )
 
 // PossibleL3NetworkDetailedStatusValues returns the possible values for the L3NetworkDetailedStatus const type.
 func PossibleL3NetworkDetailedStatusValues() []L3NetworkDetailedStatus {
-	return []L3NetworkDetailedStatus{
+	return []L3NetworkDetailedStatus{	
 		L3NetworkDetailedStatusAvailable,
 		L3NetworkDetailedStatusError,
 		L3NetworkDetailedStatusProvisioning,
@@ -1143,16 +1143,16 @@ func PossibleL3NetworkDetailedStatusValues() []L3NetworkDetailedStatus {
 type L3NetworkProvisioningState string
 
 const (
-	L3NetworkProvisioningStateAccepted     L3NetworkProvisioningState = "Accepted"
-	L3NetworkProvisioningStateCanceled     L3NetworkProvisioningState = "Canceled"
-	L3NetworkProvisioningStateFailed       L3NetworkProvisioningState = "Failed"
+	L3NetworkProvisioningStateAccepted L3NetworkProvisioningState = "Accepted"
+	L3NetworkProvisioningStateCanceled L3NetworkProvisioningState = "Canceled"
+	L3NetworkProvisioningStateFailed L3NetworkProvisioningState = "Failed"
 	L3NetworkProvisioningStateProvisioning L3NetworkProvisioningState = "Provisioning"
-	L3NetworkProvisioningStateSucceeded    L3NetworkProvisioningState = "Succeeded"
+	L3NetworkProvisioningStateSucceeded L3NetworkProvisioningState = "Succeeded"
 )
 
 // PossibleL3NetworkProvisioningStateValues returns the possible values for the L3NetworkProvisioningState const type.
 func PossibleL3NetworkProvisioningStateValues() []L3NetworkProvisioningState {
-	return []L3NetworkProvisioningState{
+	return []L3NetworkProvisioningState{	
 		L3NetworkProvisioningStateAccepted,
 		L3NetworkProvisioningStateCanceled,
 		L3NetworkProvisioningStateFailed,
@@ -1167,13 +1167,13 @@ type MachineSKUDiskConnectionType string
 const (
 	MachineSKUDiskConnectionTypePCIE MachineSKUDiskConnectionType = "PCIE"
 	MachineSKUDiskConnectionTypeRAID MachineSKUDiskConnectionType = "RAID"
-	MachineSKUDiskConnectionTypeSAS  MachineSKUDiskConnectionType = "SAS"
+	MachineSKUDiskConnectionTypeSAS MachineSKUDiskConnectionType = "SAS"
 	MachineSKUDiskConnectionTypeSATA MachineSKUDiskConnectionType = "SATA"
 )
 
 // PossibleMachineSKUDiskConnectionTypeValues returns the possible values for the MachineSKUDiskConnectionType const type.
 func PossibleMachineSKUDiskConnectionTypeValues() []MachineSKUDiskConnectionType {
-	return []MachineSKUDiskConnectionType{
+	return []MachineSKUDiskConnectionType{	
 		MachineSKUDiskConnectionTypePCIE,
 		MachineSKUDiskConnectionTypeRAID,
 		MachineSKUDiskConnectionTypeSAS,
@@ -1186,14 +1186,14 @@ func PossibleMachineSKUDiskConnectionTypeValues() []MachineSKUDiskConnectionType
 type Origin string
 
 const (
-	OriginSystem     Origin = "system"
-	OriginUser       Origin = "user"
+	OriginSystem Origin = "system"
+	OriginUser Origin = "user"
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{
+	return []Origin{	
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -1209,7 +1209,7 @@ const (
 
 // PossibleOsDiskCreateOptionValues returns the possible values for the OsDiskCreateOption const type.
 func PossibleOsDiskCreateOptionValues() []OsDiskCreateOption {
-	return []OsDiskCreateOption{
+	return []OsDiskCreateOption{	
 		OsDiskCreateOptionEphemeral,
 	}
 }
@@ -1223,7 +1223,7 @@ const (
 
 // PossibleOsDiskDeleteOptionValues returns the possible values for the OsDiskDeleteOption const type.
 func PossibleOsDiskDeleteOptionValues() []OsDiskDeleteOption {
-	return []OsDiskDeleteOption{
+	return []OsDiskDeleteOption{	
 		OsDiskDeleteOptionDelete,
 	}
 }
@@ -1232,14 +1232,14 @@ func PossibleOsDiskDeleteOptionValues() []OsDiskDeleteOption {
 type RackDetailedStatus string
 
 const (
-	RackDetailedStatusAvailable    RackDetailedStatus = "Available"
-	RackDetailedStatusError        RackDetailedStatus = "Error"
+	RackDetailedStatusAvailable RackDetailedStatus = "Available"
+	RackDetailedStatusError RackDetailedStatus = "Error"
 	RackDetailedStatusProvisioning RackDetailedStatus = "Provisioning"
 )
 
 // PossibleRackDetailedStatusValues returns the possible values for the RackDetailedStatus const type.
 func PossibleRackDetailedStatusValues() []RackDetailedStatus {
-	return []RackDetailedStatus{
+	return []RackDetailedStatus{	
 		RackDetailedStatusAvailable,
 		RackDetailedStatusError,
 		RackDetailedStatusProvisioning,
@@ -1250,16 +1250,16 @@ func PossibleRackDetailedStatusValues() []RackDetailedStatus {
 type RackProvisioningState string
 
 const (
-	RackProvisioningStateAccepted     RackProvisioningState = "Accepted"
-	RackProvisioningStateCanceled     RackProvisioningState = "Canceled"
-	RackProvisioningStateFailed       RackProvisioningState = "Failed"
+	RackProvisioningStateAccepted RackProvisioningState = "Accepted"
+	RackProvisioningStateCanceled RackProvisioningState = "Canceled"
+	RackProvisioningStateFailed RackProvisioningState = "Failed"
 	RackProvisioningStateProvisioning RackProvisioningState = "Provisioning"
-	RackProvisioningStateSucceeded    RackProvisioningState = "Succeeded"
+	RackProvisioningStateSucceeded RackProvisioningState = "Succeeded"
 )
 
 // PossibleRackProvisioningStateValues returns the possible values for the RackProvisioningState const type.
 func PossibleRackProvisioningStateValues() []RackProvisioningState {
-	return []RackProvisioningState{
+	return []RackProvisioningState{	
 		RackProvisioningStateAccepted,
 		RackProvisioningStateCanceled,
 		RackProvisioningStateFailed,
@@ -1277,7 +1277,7 @@ const (
 
 // PossibleRackSKUProvisioningStateValues returns the possible values for the RackSKUProvisioningState const type.
 func PossibleRackSKUProvisioningStateValues() []RackSKUProvisioningState {
-	return []RackSKUProvisioningState{
+	return []RackSKUProvisioningState{	
 		RackSKUProvisioningStateSucceeded,
 	}
 }
@@ -1287,13 +1287,13 @@ type RackSKUType string
 
 const (
 	RackSKUTypeAggregator RackSKUType = "Aggregator"
-	RackSKUTypeCompute    RackSKUType = "Compute"
-	RackSKUTypeSingle     RackSKUType = "Single"
+	RackSKUTypeCompute RackSKUType = "Compute"
+	RackSKUTypeSingle RackSKUType = "Single"
 )
 
 // PossibleRackSKUTypeValues returns the possible values for the RackSKUType const type.
 func PossibleRackSKUTypeValues() []RackSKUType {
-	return []RackSKUType{
+	return []RackSKUType{	
 		RackSKUTypeAggregator,
 		RackSKUTypeCompute,
 		RackSKUTypeSingle,
@@ -1304,13 +1304,13 @@ func PossibleRackSKUTypeValues() []RackSKUType {
 type RemoteVendorManagementFeature string
 
 const (
-	RemoteVendorManagementFeatureSupported   RemoteVendorManagementFeature = "Supported"
+	RemoteVendorManagementFeatureSupported RemoteVendorManagementFeature = "Supported"
 	RemoteVendorManagementFeatureUnsupported RemoteVendorManagementFeature = "Unsupported"
 )
 
 // PossibleRemoteVendorManagementFeatureValues returns the possible values for the RemoteVendorManagementFeature const type.
 func PossibleRemoteVendorManagementFeatureValues() []RemoteVendorManagementFeature {
-	return []RemoteVendorManagementFeature{
+	return []RemoteVendorManagementFeature{	
 		RemoteVendorManagementFeatureSupported,
 		RemoteVendorManagementFeatureUnsupported,
 	}
@@ -1321,14 +1321,14 @@ func PossibleRemoteVendorManagementFeatureValues() []RemoteVendorManagementFeatu
 type RemoteVendorManagementStatus string
 
 const (
-	RemoteVendorManagementStatusDisabled    RemoteVendorManagementStatus = "Disabled"
-	RemoteVendorManagementStatusEnabled     RemoteVendorManagementStatus = "Enabled"
+	RemoteVendorManagementStatusDisabled RemoteVendorManagementStatus = "Disabled"
+	RemoteVendorManagementStatusEnabled RemoteVendorManagementStatus = "Enabled"
 	RemoteVendorManagementStatusUnsupported RemoteVendorManagementStatus = "Unsupported"
 )
 
 // PossibleRemoteVendorManagementStatusValues returns the possible values for the RemoteVendorManagementStatus const type.
 func PossibleRemoteVendorManagementStatusValues() []RemoteVendorManagementStatus {
-	return []RemoteVendorManagementStatus{
+	return []RemoteVendorManagementStatus{	
 		RemoteVendorManagementStatusDisabled,
 		RemoteVendorManagementStatusEnabled,
 		RemoteVendorManagementStatusUnsupported,
@@ -1340,12 +1340,12 @@ type SkipShutdown string
 
 const (
 	SkipShutdownFalse SkipShutdown = "False"
-	SkipShutdownTrue  SkipShutdown = "True"
+	SkipShutdownTrue SkipShutdown = "True"
 )
 
 // PossibleSkipShutdownValues returns the possible values for the SkipShutdown const type.
 func PossibleSkipShutdownValues() []SkipShutdown {
-	return []SkipShutdown{
+	return []SkipShutdown{	
 		SkipShutdownFalse,
 		SkipShutdownTrue,
 	}
@@ -1355,14 +1355,14 @@ func PossibleSkipShutdownValues() []SkipShutdown {
 type StorageApplianceDetailedStatus string
 
 const (
-	StorageApplianceDetailedStatusAvailable    StorageApplianceDetailedStatus = "Available"
-	StorageApplianceDetailedStatusError        StorageApplianceDetailedStatus = "Error"
+	StorageApplianceDetailedStatusAvailable StorageApplianceDetailedStatus = "Available"
+	StorageApplianceDetailedStatusError StorageApplianceDetailedStatus = "Error"
 	StorageApplianceDetailedStatusProvisioning StorageApplianceDetailedStatus = "Provisioning"
 )
 
 // PossibleStorageApplianceDetailedStatusValues returns the possible values for the StorageApplianceDetailedStatus const type.
 func PossibleStorageApplianceDetailedStatusValues() []StorageApplianceDetailedStatus {
-	return []StorageApplianceDetailedStatus{
+	return []StorageApplianceDetailedStatus{	
 		StorageApplianceDetailedStatusAvailable,
 		StorageApplianceDetailedStatusError,
 		StorageApplianceDetailedStatusProvisioning,
@@ -1373,16 +1373,16 @@ func PossibleStorageApplianceDetailedStatusValues() []StorageApplianceDetailedSt
 type StorageApplianceProvisioningState string
 
 const (
-	StorageApplianceProvisioningStateAccepted     StorageApplianceProvisioningState = "Accepted"
-	StorageApplianceProvisioningStateCanceled     StorageApplianceProvisioningState = "Canceled"
-	StorageApplianceProvisioningStateFailed       StorageApplianceProvisioningState = "Failed"
+	StorageApplianceProvisioningStateAccepted StorageApplianceProvisioningState = "Accepted"
+	StorageApplianceProvisioningStateCanceled StorageApplianceProvisioningState = "Canceled"
+	StorageApplianceProvisioningStateFailed StorageApplianceProvisioningState = "Failed"
 	StorageApplianceProvisioningStateProvisioning StorageApplianceProvisioningState = "Provisioning"
-	StorageApplianceProvisioningStateSucceeded    StorageApplianceProvisioningState = "Succeeded"
+	StorageApplianceProvisioningStateSucceeded StorageApplianceProvisioningState = "Succeeded"
 )
 
 // PossibleStorageApplianceProvisioningStateValues returns the possible values for the StorageApplianceProvisioningState const type.
 func PossibleStorageApplianceProvisioningStateValues() []StorageApplianceProvisioningState {
-	return []StorageApplianceProvisioningState{
+	return []StorageApplianceProvisioningState{	
 		StorageApplianceProvisioningStateAccepted,
 		StorageApplianceProvisioningStateCanceled,
 		StorageApplianceProvisioningStateFailed,
@@ -1395,14 +1395,14 @@ func PossibleStorageApplianceProvisioningStateValues() []StorageApplianceProvisi
 type TrunkedNetworkDetailedStatus string
 
 const (
-	TrunkedNetworkDetailedStatusAvailable    TrunkedNetworkDetailedStatus = "Available"
-	TrunkedNetworkDetailedStatusError        TrunkedNetworkDetailedStatus = "Error"
+	TrunkedNetworkDetailedStatusAvailable TrunkedNetworkDetailedStatus = "Available"
+	TrunkedNetworkDetailedStatusError TrunkedNetworkDetailedStatus = "Error"
 	TrunkedNetworkDetailedStatusProvisioning TrunkedNetworkDetailedStatus = "Provisioning"
 )
 
 // PossibleTrunkedNetworkDetailedStatusValues returns the possible values for the TrunkedNetworkDetailedStatus const type.
 func PossibleTrunkedNetworkDetailedStatusValues() []TrunkedNetworkDetailedStatus {
-	return []TrunkedNetworkDetailedStatus{
+	return []TrunkedNetworkDetailedStatus{	
 		TrunkedNetworkDetailedStatusAvailable,
 		TrunkedNetworkDetailedStatusError,
 		TrunkedNetworkDetailedStatusProvisioning,
@@ -1413,16 +1413,16 @@ func PossibleTrunkedNetworkDetailedStatusValues() []TrunkedNetworkDetailedStatus
 type TrunkedNetworkProvisioningState string
 
 const (
-	TrunkedNetworkProvisioningStateAccepted     TrunkedNetworkProvisioningState = "Accepted"
-	TrunkedNetworkProvisioningStateCanceled     TrunkedNetworkProvisioningState = "Canceled"
-	TrunkedNetworkProvisioningStateFailed       TrunkedNetworkProvisioningState = "Failed"
+	TrunkedNetworkProvisioningStateAccepted TrunkedNetworkProvisioningState = "Accepted"
+	TrunkedNetworkProvisioningStateCanceled TrunkedNetworkProvisioningState = "Canceled"
+	TrunkedNetworkProvisioningStateFailed TrunkedNetworkProvisioningState = "Failed"
 	TrunkedNetworkProvisioningStateProvisioning TrunkedNetworkProvisioningState = "Provisioning"
-	TrunkedNetworkProvisioningStateSucceeded    TrunkedNetworkProvisioningState = "Succeeded"
+	TrunkedNetworkProvisioningStateSucceeded TrunkedNetworkProvisioningState = "Succeeded"
 )
 
 // PossibleTrunkedNetworkProvisioningStateValues returns the possible values for the TrunkedNetworkProvisioningState const type.
 func PossibleTrunkedNetworkProvisioningStateValues() []TrunkedNetworkProvisioningState {
-	return []TrunkedNetworkProvisioningState{
+	return []TrunkedNetworkProvisioningState{	
 		TrunkedNetworkProvisioningStateAccepted,
 		TrunkedNetworkProvisioningStateCanceled,
 		TrunkedNetworkProvisioningStateFailed,
@@ -1436,12 +1436,12 @@ type ValidationThresholdGrouping string
 
 const (
 	ValidationThresholdGroupingPerCluster ValidationThresholdGrouping = "PerCluster"
-	ValidationThresholdGroupingPerRack    ValidationThresholdGrouping = "PerRack"
+	ValidationThresholdGroupingPerRack ValidationThresholdGrouping = "PerRack"
 )
 
 // PossibleValidationThresholdGroupingValues returns the possible values for the ValidationThresholdGrouping const type.
 func PossibleValidationThresholdGroupingValues() []ValidationThresholdGrouping {
-	return []ValidationThresholdGrouping{
+	return []ValidationThresholdGrouping{	
 		ValidationThresholdGroupingPerCluster,
 		ValidationThresholdGroupingPerRack,
 	}
@@ -1451,13 +1451,13 @@ func PossibleValidationThresholdGroupingValues() []ValidationThresholdGrouping {
 type ValidationThresholdType string
 
 const (
-	ValidationThresholdTypeCountSuccess   ValidationThresholdType = "CountSuccess"
+	ValidationThresholdTypeCountSuccess ValidationThresholdType = "CountSuccess"
 	ValidationThresholdTypePercentSuccess ValidationThresholdType = "PercentSuccess"
 )
 
 // PossibleValidationThresholdTypeValues returns the possible values for the ValidationThresholdType const type.
 func PossibleValidationThresholdTypeValues() []ValidationThresholdType {
-	return []ValidationThresholdType{
+	return []ValidationThresholdType{	
 		ValidationThresholdTypeCountSuccess,
 		ValidationThresholdTypePercentSuccess,
 	}
@@ -1473,7 +1473,7 @@ const (
 
 // PossibleVirtualMachineBootMethodValues returns the possible values for the VirtualMachineBootMethod const type.
 func PossibleVirtualMachineBootMethodValues() []VirtualMachineBootMethod {
-	return []VirtualMachineBootMethod{
+	return []VirtualMachineBootMethod{	
 		VirtualMachineBootMethodBIOS,
 		VirtualMachineBootMethodUEFI,
 	}
@@ -1483,19 +1483,19 @@ func PossibleVirtualMachineBootMethodValues() []VirtualMachineBootMethod {
 type VirtualMachineDetailedStatus string
 
 const (
-	VirtualMachineDetailedStatusAvailable    VirtualMachineDetailedStatus = "Available"
-	VirtualMachineDetailedStatusError        VirtualMachineDetailedStatus = "Error"
+	VirtualMachineDetailedStatusAvailable VirtualMachineDetailedStatus = "Available"
+	VirtualMachineDetailedStatusError VirtualMachineDetailedStatus = "Error"
 	VirtualMachineDetailedStatusProvisioning VirtualMachineDetailedStatus = "Provisioning"
-	VirtualMachineDetailedStatusRunning      VirtualMachineDetailedStatus = "Running"
-	VirtualMachineDetailedStatusScheduling   VirtualMachineDetailedStatus = "Scheduling"
-	VirtualMachineDetailedStatusStopped      VirtualMachineDetailedStatus = "Stopped"
-	VirtualMachineDetailedStatusTerminating  VirtualMachineDetailedStatus = "Terminating"
-	VirtualMachineDetailedStatusUnknown      VirtualMachineDetailedStatus = "Unknown"
+	VirtualMachineDetailedStatusRunning VirtualMachineDetailedStatus = "Running"
+	VirtualMachineDetailedStatusScheduling VirtualMachineDetailedStatus = "Scheduling"
+	VirtualMachineDetailedStatusStopped VirtualMachineDetailedStatus = "Stopped"
+	VirtualMachineDetailedStatusTerminating VirtualMachineDetailedStatus = "Terminating"
+	VirtualMachineDetailedStatusUnknown VirtualMachineDetailedStatus = "Unknown"
 )
 
 // PossibleVirtualMachineDetailedStatusValues returns the possible values for the VirtualMachineDetailedStatus const type.
 func PossibleVirtualMachineDetailedStatusValues() []VirtualMachineDetailedStatus {
-	return []VirtualMachineDetailedStatus{
+	return []VirtualMachineDetailedStatus{	
 		VirtualMachineDetailedStatusAvailable,
 		VirtualMachineDetailedStatusError,
 		VirtualMachineDetailedStatusProvisioning,
@@ -1517,7 +1517,7 @@ const (
 
 // PossibleVirtualMachineDeviceModelTypeValues returns the possible values for the VirtualMachineDeviceModelType const type.
 func PossibleVirtualMachineDeviceModelTypeValues() []VirtualMachineDeviceModelType {
-	return []VirtualMachineDeviceModelType{
+	return []VirtualMachineDeviceModelType{	
 		VirtualMachineDeviceModelTypeT1,
 		VirtualMachineDeviceModelTypeT2,
 	}
@@ -1529,13 +1529,13 @@ type VirtualMachineIPAllocationMethod string
 
 const (
 	VirtualMachineIPAllocationMethodDisabled VirtualMachineIPAllocationMethod = "Disabled"
-	VirtualMachineIPAllocationMethodDynamic  VirtualMachineIPAllocationMethod = "Dynamic"
-	VirtualMachineIPAllocationMethodStatic   VirtualMachineIPAllocationMethod = "Static"
+	VirtualMachineIPAllocationMethodDynamic VirtualMachineIPAllocationMethod = "Dynamic"
+	VirtualMachineIPAllocationMethodStatic VirtualMachineIPAllocationMethod = "Static"
 )
 
 // PossibleVirtualMachineIPAllocationMethodValues returns the possible values for the VirtualMachineIPAllocationMethod const type.
 func PossibleVirtualMachineIPAllocationMethodValues() []VirtualMachineIPAllocationMethod {
-	return []VirtualMachineIPAllocationMethod{
+	return []VirtualMachineIPAllocationMethod{	
 		VirtualMachineIPAllocationMethodDisabled,
 		VirtualMachineIPAllocationMethodDynamic,
 		VirtualMachineIPAllocationMethodStatic,
@@ -1548,12 +1548,12 @@ type VirtualMachineIsolateEmulatorThread string
 
 const (
 	VirtualMachineIsolateEmulatorThreadFalse VirtualMachineIsolateEmulatorThread = "False"
-	VirtualMachineIsolateEmulatorThreadTrue  VirtualMachineIsolateEmulatorThread = "True"
+	VirtualMachineIsolateEmulatorThreadTrue VirtualMachineIsolateEmulatorThread = "True"
 )
 
 // PossibleVirtualMachineIsolateEmulatorThreadValues returns the possible values for the VirtualMachineIsolateEmulatorThread const type.
 func PossibleVirtualMachineIsolateEmulatorThreadValues() []VirtualMachineIsolateEmulatorThread {
-	return []VirtualMachineIsolateEmulatorThread{
+	return []VirtualMachineIsolateEmulatorThread{	
 		VirtualMachineIsolateEmulatorThreadFalse,
 		VirtualMachineIsolateEmulatorThreadTrue,
 	}
@@ -1565,12 +1565,12 @@ type VirtualMachinePlacementHintPodAffinityScope string
 
 const (
 	VirtualMachinePlacementHintPodAffinityScopeMachine VirtualMachinePlacementHintPodAffinityScope = "Machine"
-	VirtualMachinePlacementHintPodAffinityScopeRack    VirtualMachinePlacementHintPodAffinityScope = "Rack"
+	VirtualMachinePlacementHintPodAffinityScopeRack VirtualMachinePlacementHintPodAffinityScope = "Rack"
 )
 
 // PossibleVirtualMachinePlacementHintPodAffinityScopeValues returns the possible values for the VirtualMachinePlacementHintPodAffinityScope const type.
 func PossibleVirtualMachinePlacementHintPodAffinityScopeValues() []VirtualMachinePlacementHintPodAffinityScope {
-	return []VirtualMachinePlacementHintPodAffinityScope{
+	return []VirtualMachinePlacementHintPodAffinityScope{	
 		VirtualMachinePlacementHintPodAffinityScopeMachine,
 		VirtualMachinePlacementHintPodAffinityScopeRack,
 	}
@@ -1581,13 +1581,13 @@ func PossibleVirtualMachinePlacementHintPodAffinityScopeValues() []VirtualMachin
 type VirtualMachinePlacementHintType string
 
 const (
-	VirtualMachinePlacementHintTypeAffinity     VirtualMachinePlacementHintType = "Affinity"
+	VirtualMachinePlacementHintTypeAffinity VirtualMachinePlacementHintType = "Affinity"
 	VirtualMachinePlacementHintTypeAntiAffinity VirtualMachinePlacementHintType = "AntiAffinity"
 )
 
 // PossibleVirtualMachinePlacementHintTypeValues returns the possible values for the VirtualMachinePlacementHintType const type.
 func PossibleVirtualMachinePlacementHintTypeValues() []VirtualMachinePlacementHintType {
-	return []VirtualMachinePlacementHintType{
+	return []VirtualMachinePlacementHintType{	
 		VirtualMachinePlacementHintTypeAffinity,
 		VirtualMachinePlacementHintTypeAntiAffinity,
 	}
@@ -1597,14 +1597,14 @@ func PossibleVirtualMachinePlacementHintTypeValues() []VirtualMachinePlacementHi
 type VirtualMachinePowerState string
 
 const (
-	VirtualMachinePowerStateOff     VirtualMachinePowerState = "Off"
-	VirtualMachinePowerStateOn      VirtualMachinePowerState = "On"
+	VirtualMachinePowerStateOff VirtualMachinePowerState = "Off"
+	VirtualMachinePowerStateOn VirtualMachinePowerState = "On"
 	VirtualMachinePowerStateUnknown VirtualMachinePowerState = "Unknown"
 )
 
 // PossibleVirtualMachinePowerStateValues returns the possible values for the VirtualMachinePowerState const type.
 func PossibleVirtualMachinePowerStateValues() []VirtualMachinePowerState {
-	return []VirtualMachinePowerState{
+	return []VirtualMachinePowerState{	
 		VirtualMachinePowerStateOff,
 		VirtualMachinePowerStateOn,
 		VirtualMachinePowerStateUnknown,
@@ -1615,16 +1615,16 @@ func PossibleVirtualMachinePowerStateValues() []VirtualMachinePowerState {
 type VirtualMachineProvisioningState string
 
 const (
-	VirtualMachineProvisioningStateAccepted     VirtualMachineProvisioningState = "Accepted"
-	VirtualMachineProvisioningStateCanceled     VirtualMachineProvisioningState = "Canceled"
-	VirtualMachineProvisioningStateFailed       VirtualMachineProvisioningState = "Failed"
+	VirtualMachineProvisioningStateAccepted VirtualMachineProvisioningState = "Accepted"
+	VirtualMachineProvisioningStateCanceled VirtualMachineProvisioningState = "Canceled"
+	VirtualMachineProvisioningStateFailed VirtualMachineProvisioningState = "Failed"
 	VirtualMachineProvisioningStateProvisioning VirtualMachineProvisioningState = "Provisioning"
-	VirtualMachineProvisioningStateSucceeded    VirtualMachineProvisioningState = "Succeeded"
+	VirtualMachineProvisioningStateSucceeded VirtualMachineProvisioningState = "Succeeded"
 )
 
 // PossibleVirtualMachineProvisioningStateValues returns the possible values for the VirtualMachineProvisioningState const type.
 func PossibleVirtualMachineProvisioningStateValues() []VirtualMachineProvisioningState {
-	return []VirtualMachineProvisioningState{
+	return []VirtualMachineProvisioningState{	
 		VirtualMachineProvisioningStateAccepted,
 		VirtualMachineProvisioningStateCanceled,
 		VirtualMachineProvisioningStateFailed,
@@ -1643,7 +1643,7 @@ const (
 
 // PossibleVirtualMachineSchedulingExecutionValues returns the possible values for the VirtualMachineSchedulingExecution const type.
 func PossibleVirtualMachineSchedulingExecutionValues() []VirtualMachineSchedulingExecution {
-	return []VirtualMachineSchedulingExecution{
+	return []VirtualMachineSchedulingExecution{	
 		VirtualMachineSchedulingExecutionHard,
 		VirtualMachineSchedulingExecutionSoft,
 	}
@@ -1653,13 +1653,13 @@ func PossibleVirtualMachineSchedulingExecutionValues() []VirtualMachineSchedulin
 type VirtualMachineVirtioInterfaceType string
 
 const (
-	VirtualMachineVirtioInterfaceTypeModern       VirtualMachineVirtioInterfaceType = "Modern"
+	VirtualMachineVirtioInterfaceTypeModern VirtualMachineVirtioInterfaceType = "Modern"
 	VirtualMachineVirtioInterfaceTypeTransitional VirtualMachineVirtioInterfaceType = "Transitional"
 )
 
 // PossibleVirtualMachineVirtioInterfaceTypeValues returns the possible values for the VirtualMachineVirtioInterfaceType const type.
 func PossibleVirtualMachineVirtioInterfaceTypeValues() []VirtualMachineVirtioInterfaceType {
-	return []VirtualMachineVirtioInterfaceType{
+	return []VirtualMachineVirtioInterfaceType{	
 		VirtualMachineVirtioInterfaceTypeModern,
 		VirtualMachineVirtioInterfaceTypeTransitional,
 	}
@@ -1669,14 +1669,14 @@ func PossibleVirtualMachineVirtioInterfaceTypeValues() []VirtualMachineVirtioInt
 type VolumeDetailedStatus string
 
 const (
-	VolumeDetailedStatusActive       VolumeDetailedStatus = "Active"
-	VolumeDetailedStatusError        VolumeDetailedStatus = "Error"
+	VolumeDetailedStatusActive VolumeDetailedStatus = "Active"
+	VolumeDetailedStatusError VolumeDetailedStatus = "Error"
 	VolumeDetailedStatusProvisioning VolumeDetailedStatus = "Provisioning"
 )
 
 // PossibleVolumeDetailedStatusValues returns the possible values for the VolumeDetailedStatus const type.
 func PossibleVolumeDetailedStatusValues() []VolumeDetailedStatus {
-	return []VolumeDetailedStatus{
+	return []VolumeDetailedStatus{	
 		VolumeDetailedStatusActive,
 		VolumeDetailedStatusError,
 		VolumeDetailedStatusProvisioning,
@@ -1687,16 +1687,16 @@ func PossibleVolumeDetailedStatusValues() []VolumeDetailedStatus {
 type VolumeProvisioningState string
 
 const (
-	VolumeProvisioningStateAccepted     VolumeProvisioningState = "Accepted"
-	VolumeProvisioningStateCanceled     VolumeProvisioningState = "Canceled"
-	VolumeProvisioningStateFailed       VolumeProvisioningState = "Failed"
+	VolumeProvisioningStateAccepted VolumeProvisioningState = "Accepted"
+	VolumeProvisioningStateCanceled VolumeProvisioningState = "Canceled"
+	VolumeProvisioningStateFailed VolumeProvisioningState = "Failed"
 	VolumeProvisioningStateProvisioning VolumeProvisioningState = "Provisioning"
-	VolumeProvisioningStateSucceeded    VolumeProvisioningState = "Succeeded"
+	VolumeProvisioningStateSucceeded VolumeProvisioningState = "Succeeded"
 )
 
 // PossibleVolumeProvisioningStateValues returns the possible values for the VolumeProvisioningState const type.
 func PossibleVolumeProvisioningStateValues() []VolumeProvisioningState {
-	return []VolumeProvisioningState{
+	return []VolumeProvisioningState{	
 		VolumeProvisioningStateAccepted,
 		VolumeProvisioningStateCanceled,
 		VolumeProvisioningStateFailed,
@@ -1710,13 +1710,14 @@ type WorkloadImpact string
 
 const (
 	WorkloadImpactFalse WorkloadImpact = "False"
-	WorkloadImpactTrue  WorkloadImpact = "True"
+	WorkloadImpactTrue WorkloadImpact = "True"
 )
 
 // PossibleWorkloadImpactValues returns the possible values for the WorkloadImpact const type.
 func PossibleWorkloadImpactValues() []WorkloadImpact {
-	return []WorkloadImpact{
+	return []WorkloadImpact{	
 		WorkloadImpactFalse,
 		WorkloadImpactTrue,
 	}
 }
+

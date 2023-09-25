@@ -23,7 +23,7 @@ import (
 // FlowLogsClient contains the methods for the FlowLogs group.
 // Don't use this type directly, use NewFlowLogsClient() instead.
 type FlowLogsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewFlowLogsClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &FlowLogsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *FlowLogsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -268,7 +268,7 @@ func (client *FlowLogsClient) getHandleResponse(resp *http.Response) (FlowLogsCl
 //   - resourceGroupName - The name of the resource group containing Network Watcher.
 //   - networkWatcherName - The name of the Network Watcher resource.
 //   - options - FlowLogsClientListOptions contains the optional parameters for the FlowLogsClient.NewListPager method.
-func (client *FlowLogsClient) NewListPager(resourceGroupName string, networkWatcherName string, options *FlowLogsClientListOptions) *runtime.Pager[FlowLogsClientListResponse] {
+func (client *FlowLogsClient) NewListPager(resourceGroupName string, networkWatcherName string, options *FlowLogsClientListOptions) (*runtime.Pager[FlowLogsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[FlowLogsClientListResponse]{
 		More: func(page FlowLogsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -386,8 +386,8 @@ func (client *FlowLogsClient) updateTagsCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -399,3 +399,4 @@ func (client *FlowLogsClient) updateTagsHandleResponse(resp *http.Response) (Flo
 	}
 	return result, nil
 }
+

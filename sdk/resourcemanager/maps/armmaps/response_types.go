@@ -46,7 +46,7 @@ type AccountsClientListKeysResponse struct {
 // AccountsClientListSasResponse contains the response from method AccountsClient.ListSas.
 type AccountsClientListSasResponse struct {
 	// A new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed identity permissions
-	// on Azure (IAM) Role Based Access Control.
+// on Azure (IAM) Role Based Access Control.
 	AccountSasToken
 }
 
@@ -102,3 +102,4 @@ type CreatorsClientUpdateResponse struct {
 	// An Azure resource which represents Maps Creator product and provides ability to manage private location data.
 	Creator
 }
+

@@ -23,7 +23,7 @@ import (
 // VirtualAppliancesClient contains the methods for the NetworkVirtualAppliances group.
 // Don't use this type directly, use NewVirtualAppliancesClient() instead.
 type VirtualAppliancesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualAppliancesClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &VirtualAppliancesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *VirtualAppliancesClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -256,7 +256,7 @@ func (client *VirtualAppliancesClient) getHandleResponse(resp *http.Response) (V
 // Generated from API version 2023-05-01
 //   - options - VirtualAppliancesClientListOptions contains the optional parameters for the VirtualAppliancesClient.NewListPager
 //     method.
-func (client *VirtualAppliancesClient) NewListPager(options *VirtualAppliancesClientListOptions) *runtime.Pager[VirtualAppliancesClientListResponse] {
+func (client *VirtualAppliancesClient) NewListPager(options *VirtualAppliancesClientListOptions) (*runtime.Pager[VirtualAppliancesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualAppliancesClientListResponse]{
 		More: func(page VirtualAppliancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -317,7 +317,7 @@ func (client *VirtualAppliancesClient) listHandleResponse(resp *http.Response) (
 //   - resourceGroupName - The name of the resource group.
 //   - options - VirtualAppliancesClientListByResourceGroupOptions contains the optional parameters for the VirtualAppliancesClient.NewListByResourceGroupPager
 //     method.
-func (client *VirtualAppliancesClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualAppliancesClientListByResourceGroupOptions) *runtime.Pager[VirtualAppliancesClientListByResourceGroupResponse] {
+func (client *VirtualAppliancesClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualAppliancesClientListByResourceGroupOptions) (*runtime.Pager[VirtualAppliancesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualAppliancesClientListByResourceGroupResponse]{
 		More: func(page VirtualAppliancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -427,8 +427,8 @@ func (client *VirtualAppliancesClient) updateTagsCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -440,3 +440,4 @@ func (client *VirtualAppliancesClient) updateTagsHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

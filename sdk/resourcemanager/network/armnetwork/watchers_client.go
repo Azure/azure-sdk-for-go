@@ -23,7 +23,7 @@ import (
 // WatchersClient contains the methods for the NetworkWatchers group.
 // Don't use this type directly, use NewWatchersClient() instead.
 type WatchersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewWatchersClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &WatchersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *WatchersClient) checkConnectivityCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -170,8 +170,8 @@ func (client *WatchersClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -384,8 +384,8 @@ func (client *WatchersClient) getAzureReachabilityReportCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -458,8 +458,8 @@ func (client *WatchersClient) getFlowLogStatusCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -540,8 +540,8 @@ func (client *WatchersClient) getNetworkConfigurationDiagnosticCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -614,8 +614,8 @@ func (client *WatchersClient) getNextHopCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -669,8 +669,8 @@ func (client *WatchersClient) getTopologyCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -752,8 +752,8 @@ func (client *WatchersClient) getTroubleshootingCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -826,8 +826,8 @@ func (client *WatchersClient) getTroubleshootingResultCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -900,8 +900,8 @@ func (client *WatchersClient) getVMSecurityRulesCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -910,7 +910,7 @@ func (client *WatchersClient) getVMSecurityRulesCreateRequest(ctx context.Contex
 // Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - WatchersClientListOptions contains the optional parameters for the WatchersClient.NewListPager method.
-func (client *WatchersClient) NewListPager(resourceGroupName string, options *WatchersClientListOptions) *runtime.Pager[WatchersClientListResponse] {
+func (client *WatchersClient) NewListPager(resourceGroupName string, options *WatchersClientListOptions) (*runtime.Pager[WatchersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WatchersClientListResponse]{
 		More: func(page WatchersClientListResponse) bool {
 			return false
@@ -967,7 +967,7 @@ func (client *WatchersClient) listHandleResponse(resp *http.Response) (WatchersC
 //
 // Generated from API version 2023-05-01
 //   - options - WatchersClientListAllOptions contains the optional parameters for the WatchersClient.NewListAllPager method.
-func (client *WatchersClient) NewListAllPager(options *WatchersClientListAllOptions) *runtime.Pager[WatchersClientListAllResponse] {
+func (client *WatchersClient) NewListAllPager(options *WatchersClientListAllOptions) (*runtime.Pager[WatchersClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WatchersClientListAllResponse]{
 		More: func(page WatchersClientListAllResponse) bool {
 			return false
@@ -1087,8 +1087,8 @@ func (client *WatchersClient) listAvailableProvidersCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1161,8 +1161,8 @@ func (client *WatchersClient) setFlowLogConfigurationCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1216,8 +1216,8 @@ func (client *WatchersClient) updateTagsCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1299,7 +1299,8 @@ func (client *WatchersClient) verifyIPFlowCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

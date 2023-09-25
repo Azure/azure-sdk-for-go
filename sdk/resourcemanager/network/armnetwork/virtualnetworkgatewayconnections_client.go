@@ -23,7 +23,7 @@ import (
 // VirtualNetworkGatewayConnectionsClient contains the methods for the VirtualNetworkGatewayConnections group.
 // Don't use this type directly, use NewVirtualNetworkGatewayConnectionsClient() instead.
 type VirtualNetworkGatewayConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string, credential
 	}
 	client := &VirtualNetworkGatewayConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdateCreateReques
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -388,7 +388,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleResponse
 //   - resourceGroupName - The name of the resource group.
 //   - options - VirtualNetworkGatewayConnectionsClientListOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.NewListPager
 //     method.
-func (client *VirtualNetworkGatewayConnectionsClient) NewListPager(resourceGroupName string, options *VirtualNetworkGatewayConnectionsClientListOptions) *runtime.Pager[VirtualNetworkGatewayConnectionsClientListResponse] {
+func (client *VirtualNetworkGatewayConnectionsClient) NewListPager(resourceGroupName string, options *VirtualNetworkGatewayConnectionsClientListOptions) (*runtime.Pager[VirtualNetworkGatewayConnectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkGatewayConnectionsClientListResponse]{
 		More: func(page VirtualNetworkGatewayConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -591,8 +591,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKeyCreateReques
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -670,8 +670,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) setSharedKeyCreateRequest(
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -744,8 +744,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) startPacketCaptureCreateRe
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -820,8 +820,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCaptureCreateReq
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -894,7 +894,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) updateTagsCreateRequest(ct
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

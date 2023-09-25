@@ -33,7 +33,7 @@ func NewMetricNamespacesClient(credential azcore.TokenCredential, options *arm.C
 		return nil, err
 	}
 	client := &MetricNamespacesClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -44,13 +44,13 @@ func NewMetricNamespacesClient(credential azcore.TokenCredential, options *arm.C
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricNamespacesClientListOptions contains the optional parameters for the MetricNamespacesClient.NewListPager
 //     method.
-func (client *MetricNamespacesClient) NewListPager(resourceURI string, options *MetricNamespacesClientListOptions) *runtime.Pager[MetricNamespacesClientListResponse] {
+func (client *MetricNamespacesClient) NewListPager(resourceURI string, options *MetricNamespacesClientListOptions) (*runtime.Pager[MetricNamespacesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MetricNamespacesClientListResponse]{
 		More: func(page MetricNamespacesClientListResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *MetricNamespacesClientListResponse) (MetricNamespacesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetricNamespacesClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetricNamespacesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceURI, options)
 			if err != nil {
 				return MetricNamespacesClientListResponse{}, err
@@ -94,3 +94,4 @@ func (client *MetricNamespacesClient) listHandleResponse(resp *http.Response) (M
 	}
 	return result, nil
 }
+

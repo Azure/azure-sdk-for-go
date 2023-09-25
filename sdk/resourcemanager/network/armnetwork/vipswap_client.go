@@ -23,7 +23,7 @@ import (
 // VipSwapClient contains the methods for the VipSwap group.
 // Don't use this type directly, use NewVipSwapClient() instead.
 type VipSwapClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVipSwapClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &VipSwapClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -111,8 +111,8 @@ func (client *VipSwapClient) createCreateRequest(ctx context.Context, groupName 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -238,3 +238,4 @@ func (client *VipSwapClient) listHandleResponse(resp *http.Response) (VipSwapCli
 	}
 	return result, nil
 }
+

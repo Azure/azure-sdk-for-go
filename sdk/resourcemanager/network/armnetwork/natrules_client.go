@@ -23,7 +23,7 @@ import (
 // NatRulesClient contains the methods for the NatRules group.
 // Don't use this type directly, use NewNatRulesClient() instead.
 type NatRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewNatRulesClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &NatRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *NatRulesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, natRuleParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,7 +269,7 @@ func (client *NatRulesClient) getHandleResponse(resp *http.Response) (NatRulesCl
 //   - gatewayName - The name of the gateway.
 //   - options - NatRulesClientListByVPNGatewayOptions contains the optional parameters for the NatRulesClient.NewListByVPNGatewayPager
 //     method.
-func (client *NatRulesClient) NewListByVPNGatewayPager(resourceGroupName string, gatewayName string, options *NatRulesClientListByVPNGatewayOptions) *runtime.Pager[NatRulesClientListByVPNGatewayResponse] {
+func (client *NatRulesClient) NewListByVPNGatewayPager(resourceGroupName string, gatewayName string, options *NatRulesClientListByVPNGatewayOptions) (*runtime.Pager[NatRulesClientListByVPNGatewayResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[NatRulesClientListByVPNGatewayResponse]{
 		More: func(page NatRulesClientListByVPNGatewayResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -331,3 +331,4 @@ func (client *NatRulesClient) listByVPNGatewayHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

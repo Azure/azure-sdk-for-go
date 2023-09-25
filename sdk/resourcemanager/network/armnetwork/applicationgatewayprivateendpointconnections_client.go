@@ -23,7 +23,7 @@ import (
 // ApplicationGatewayPrivateEndpointConnectionsClient contains the methods for the ApplicationGatewayPrivateEndpointConnections group.
 // Don't use this type directly, use NewApplicationGatewayPrivateEndpointConnectionsClient() instead.
 type ApplicationGatewayPrivateEndpointConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewApplicationGatewayPrivateEndpointConnectionsClient(subscriptionID string
 	}
 	client := &ApplicationGatewayPrivateEndpointConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -192,7 +192,7 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) getHandleRespo
 //   - applicationGatewayName - The name of the application gateway.
 //   - options - ApplicationGatewayPrivateEndpointConnectionsClientListOptions contains the optional parameters for the ApplicationGatewayPrivateEndpointConnectionsClient.NewListPager
 //     method.
-func (client *ApplicationGatewayPrivateEndpointConnectionsClient) NewListPager(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateEndpointConnectionsClientListOptions) *runtime.Pager[ApplicationGatewayPrivateEndpointConnectionsClientListResponse] {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) NewListPager(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateEndpointConnectionsClientListOptions) (*runtime.Pager[ApplicationGatewayPrivateEndpointConnectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewayPrivateEndpointConnectionsClientListResponse]{
 		More: func(page ApplicationGatewayPrivateEndpointConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -329,7 +329,8 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) updateCreateRe
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

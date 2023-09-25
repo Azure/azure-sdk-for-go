@@ -169,3 +169,4 @@ func unmarshalRuleDataSourceClassification(rawMsg json.RawMessage) (armmonitor.R
 	}
 	return b, nil
 }
+

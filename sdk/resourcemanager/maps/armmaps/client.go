@@ -23,7 +23,7 @@ import (
 // Client contains the methods for the Maps group.
 // Don't use this type directly, use NewClient() instead.
 type Client struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -47,7 +47,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 //
 // Generated from API version 2023-06-01
 //   - options - ClientListOperationsOptions contains the optional parameters for the Client.NewListOperationsPager method.
-func (client *Client) NewListOperationsPager(options *ClientListOperationsOptions) *runtime.Pager[ClientListOperationsResponse] {
+func (client *Client) NewListOperationsPager(options *ClientListOperationsOptions) (*runtime.Pager[ClientListOperationsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClientListOperationsResponse]{
 		More: func(page ClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -103,7 +103,7 @@ func (client *Client) listOperationsHandleResponse(resp *http.Response) (ClientL
 // Generated from API version 2023-06-01
 //   - options - ClientListSubscriptionOperationsOptions contains the optional parameters for the Client.NewListSubscriptionOperationsPager
 //     method.
-func (client *Client) NewListSubscriptionOperationsPager(options *ClientListSubscriptionOperationsOptions) *runtime.Pager[ClientListSubscriptionOperationsResponse] {
+func (client *Client) NewListSubscriptionOperationsPager(options *ClientListSubscriptionOperationsOptions) (*runtime.Pager[ClientListSubscriptionOperationsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClientListSubscriptionOperationsResponse]{
 		More: func(page ClientListSubscriptionOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -157,3 +157,4 @@ func (client *Client) listSubscriptionOperationsHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

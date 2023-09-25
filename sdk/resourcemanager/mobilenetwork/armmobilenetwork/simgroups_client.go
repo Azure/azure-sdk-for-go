@@ -23,7 +23,7 @@ import (
 // SimGroupsClient contains the methods for the SimGroups group.
 // Don't use this type directly, use NewSimGroupsClient() instead.
 type SimGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSimGroupsClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &SimGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *SimGroupsClient) createOrUpdateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -243,7 +243,7 @@ func (client *SimGroupsClient) getHandleResponse(resp *http.Response) (SimGroups
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SimGroupsClientListByResourceGroupOptions contains the optional parameters for the SimGroupsClient.NewListByResourceGroupPager
 //     method.
-func (client *SimGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *SimGroupsClientListByResourceGroupOptions) *runtime.Pager[SimGroupsClientListByResourceGroupResponse] {
+func (client *SimGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *SimGroupsClientListByResourceGroupOptions) (*runtime.Pager[SimGroupsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SimGroupsClientListByResourceGroupResponse]{
 		More: func(page SimGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -304,7 +304,7 @@ func (client *SimGroupsClient) listByResourceGroupHandleResponse(resp *http.Resp
 // Generated from API version 2023-06-01
 //   - options - SimGroupsClientListBySubscriptionOptions contains the optional parameters for the SimGroupsClient.NewListBySubscriptionPager
 //     method.
-func (client *SimGroupsClient) NewListBySubscriptionPager(options *SimGroupsClientListBySubscriptionOptions) *runtime.Pager[SimGroupsClientListBySubscriptionResponse] {
+func (client *SimGroupsClient) NewListBySubscriptionPager(options *SimGroupsClientListBySubscriptionOptions) (*runtime.Pager[SimGroupsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SimGroupsClientListBySubscriptionResponse]{
 		More: func(page SimGroupsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -403,8 +403,8 @@ func (client *SimGroupsClient) updateTagsCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -416,3 +416,4 @@ func (client *SimGroupsClient) updateTagsHandleResponse(resp *http.Response) (Si
 	}
 	return result, nil
 }
+

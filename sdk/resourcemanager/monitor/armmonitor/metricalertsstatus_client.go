@@ -23,7 +23,7 @@ import (
 // MetricAlertsStatusClient contains the methods for the MetricAlertsStatus group.
 // Don't use this type directly, use NewMetricAlertsStatusClient() instead.
 type MetricAlertsStatusClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewMetricAlertsStatusClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &MetricAlertsStatusClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -176,3 +176,4 @@ func (client *MetricAlertsStatusClient) listByNameHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

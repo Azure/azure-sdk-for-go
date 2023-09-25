@@ -23,7 +23,7 @@ import (
 // RoutesClient contains the methods for the Routes group.
 // Don't use this type directly, use NewRoutesClient() instead.
 type RoutesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewRoutesClient(subscriptionID string, credential azcore.TokenCredential, o
 	}
 	client := &RoutesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *RoutesClient) createOrUpdateCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, routeParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -268,7 +268,7 @@ func (client *RoutesClient) getHandleResponse(resp *http.Response) (RoutesClient
 //   - resourceGroupName - The name of the resource group.
 //   - routeTableName - The name of the route table.
 //   - options - RoutesClientListOptions contains the optional parameters for the RoutesClient.NewListPager method.
-func (client *RoutesClient) NewListPager(resourceGroupName string, routeTableName string, options *RoutesClientListOptions) *runtime.Pager[RoutesClientListResponse] {
+func (client *RoutesClient) NewListPager(resourceGroupName string, routeTableName string, options *RoutesClientListOptions) (*runtime.Pager[RoutesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RoutesClientListResponse]{
 		More: func(page RoutesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -330,3 +330,4 @@ func (client *RoutesClient) listHandleResponse(resp *http.Response) (RoutesClien
 	}
 	return result, nil
 }
+

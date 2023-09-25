@@ -23,7 +23,7 @@ import (
 // InterfacesClient contains the methods for the NetworkInterfaces group.
 // Don't use this type directly, use NewInterfacesClient() instead.
 type InterfacesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewInterfacesClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &InterfacesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *InterfacesClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -553,7 +553,7 @@ func (client *InterfacesClient) getVirtualMachineScaleSetNetworkInterfaceHandleR
 // Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - InterfacesClientListOptions contains the optional parameters for the InterfacesClient.NewListPager method.
-func (client *InterfacesClient) NewListPager(resourceGroupName string, options *InterfacesClientListOptions) *runtime.Pager[InterfacesClientListResponse] {
+func (client *InterfacesClient) NewListPager(resourceGroupName string, options *InterfacesClientListOptions) (*runtime.Pager[InterfacesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListResponse]{
 		More: func(page InterfacesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -616,7 +616,7 @@ func (client *InterfacesClient) listHandleResponse(resp *http.Response) (Interfa
 //
 // Generated from API version 2023-05-01
 //   - options - InterfacesClientListAllOptions contains the optional parameters for the InterfacesClient.NewListAllPager method.
-func (client *InterfacesClient) NewListAllPager(options *InterfacesClientListAllOptions) *runtime.Pager[InterfacesClientListAllResponse] {
+func (client *InterfacesClient) NewListAllPager(options *InterfacesClientListAllOptions) (*runtime.Pager[InterfacesClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListAllResponse]{
 		More: func(page InterfacesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -678,7 +678,7 @@ func (client *InterfacesClient) listAllHandleResponse(resp *http.Response) (Inte
 //   - cloudServiceName - The name of the cloud service.
 //   - options - InterfacesClientListCloudServiceNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.NewListCloudServiceNetworkInterfacesPager
 //     method.
-func (client *InterfacesClient) NewListCloudServiceNetworkInterfacesPager(resourceGroupName string, cloudServiceName string, options *InterfacesClientListCloudServiceNetworkInterfacesOptions) *runtime.Pager[InterfacesClientListCloudServiceNetworkInterfacesResponse] {
+func (client *InterfacesClient) NewListCloudServiceNetworkInterfacesPager(resourceGroupName string, cloudServiceName string, options *InterfacesClientListCloudServiceNetworkInterfacesOptions) (*runtime.Pager[InterfacesClientListCloudServiceNetworkInterfacesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListCloudServiceNetworkInterfacesResponse]{
 		More: func(page InterfacesClientListCloudServiceNetworkInterfacesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -750,7 +750,7 @@ func (client *InterfacesClient) listCloudServiceNetworkInterfacesHandleResponse(
 //   - roleInstanceName - The name of role instance.
 //   - options - InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions contains the optional parameters for the
 //     InterfacesClient.NewListCloudServiceRoleInstanceNetworkInterfacesPager method.
-func (client *InterfacesClient) NewListCloudServiceRoleInstanceNetworkInterfacesPager(resourceGroupName string, cloudServiceName string, roleInstanceName string, options *InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions) *runtime.Pager[InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse] {
+func (client *InterfacesClient) NewListCloudServiceRoleInstanceNetworkInterfacesPager(resourceGroupName string, cloudServiceName string, roleInstanceName string, options *InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions) (*runtime.Pager[InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse]{
 		More: func(page InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -897,7 +897,7 @@ func (client *InterfacesClient) listEffectiveNetworkSecurityGroupsCreateRequest(
 //   - networkInterfaceName - The name of the network interface.
 //   - options - InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions contains the optional parameters for the InterfacesClient.NewListVirtualMachineScaleSetIPConfigurationsPager
 //     method.
-func (client *InterfacesClient) NewListVirtualMachineScaleSetIPConfigurationsPager(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, options *InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions) *runtime.Pager[InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse] {
+func (client *InterfacesClient) NewListVirtualMachineScaleSetIPConfigurationsPager(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, options *InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions) (*runtime.Pager[InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse]{
 		More: func(page InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -978,7 +978,7 @@ func (client *InterfacesClient) listVirtualMachineScaleSetIPConfigurationsHandle
 //   - virtualMachineScaleSetName - The name of the virtual machine scale set.
 //   - options - InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions contains the optional parameters for the InterfacesClient.NewListVirtualMachineScaleSetNetworkInterfacesPager
 //     method.
-func (client *InterfacesClient) NewListVirtualMachineScaleSetNetworkInterfacesPager(resourceGroupName string, virtualMachineScaleSetName string, options *InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions) *runtime.Pager[InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse] {
+func (client *InterfacesClient) NewListVirtualMachineScaleSetNetworkInterfacesPager(resourceGroupName string, virtualMachineScaleSetName string, options *InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions) (*runtime.Pager[InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse]{
 		More: func(page InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1050,7 +1050,7 @@ func (client *InterfacesClient) listVirtualMachineScaleSetNetworkInterfacesHandl
 //   - virtualmachineIndex - The virtual machine index.
 //   - options - InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions contains the optional parameters for the
 //     InterfacesClient.NewListVirtualMachineScaleSetVMNetworkInterfacesPager method.
-func (client *InterfacesClient) NewListVirtualMachineScaleSetVMNetworkInterfacesPager(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, options *InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions) *runtime.Pager[InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse] {
+func (client *InterfacesClient) NewListVirtualMachineScaleSetVMNetworkInterfacesPager(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, options *InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions) (*runtime.Pager[InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse]{
 		More: func(page InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1167,8 +1167,8 @@ func (client *InterfacesClient) updateTagsCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1180,3 +1180,4 @@ func (client *InterfacesClient) updateTagsHandleResponse(resp *http.Response) (I
 	}
 	return result, nil
 }
+

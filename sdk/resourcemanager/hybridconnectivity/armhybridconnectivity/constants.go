@@ -9,7 +9,7 @@
 package armhybridconnectivity
 
 const (
-	moduleName    = "armhybridconnectivity"
+	moduleName = "armhybridconnectivity"
 	moduleVersion = "v1.0.0"
 )
 
@@ -22,7 +22,7 @@ const (
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
+	return []ActionType{	
 		ActionTypeInternal,
 	}
 }
@@ -31,15 +31,15 @@ func PossibleActionTypeValues() []ActionType {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -52,14 +52,14 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type Origin string
 
 const (
-	OriginSystem     Origin = "system"
-	OriginUser       Origin = "user"
+	OriginSystem Origin = "system"
+	OriginUser Origin = "user"
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{
+	return []Origin{	
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -70,16 +70,16 @@ func PossibleOriginValues() []Origin {
 type ProvisioningState string
 
 const (
-	ProvisioningStateCanceled  ProvisioningState = "Canceled"
-	ProvisioningStateCreating  ProvisioningState = "Creating"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	ProvisioningStateFailed ProvisioningState = "Failed"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	ProvisioningStateUpdating  ProvisioningState = "Updating"
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateCanceled,
 		ProvisioningStateCreating,
 		ProvisioningStateFailed,
@@ -98,7 +98,7 @@ const (
 
 // PossibleServiceNameValues returns the possible values for the ServiceName const type.
 func PossibleServiceNameValues() []ServiceName {
-	return []ServiceName{
+	return []ServiceName{	
 		ServiceNameSSH,
 		ServiceNameWAC,
 	}
@@ -108,14 +108,15 @@ func PossibleServiceNameValues() []ServiceName {
 type Type string
 
 const (
-	TypeCustom  Type = "custom"
+	TypeCustom Type = "custom"
 	TypeDefault Type = "default"
 )
 
 // PossibleTypeValues returns the possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{
+	return []Type{	
 		TypeCustom,
 		TypeDefault,
 	}
 }
+

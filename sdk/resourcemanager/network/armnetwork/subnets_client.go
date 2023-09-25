@@ -23,7 +23,7 @@ import (
 // SubnetsClient contains the methods for the Subnets group.
 // Don't use this type directly, use NewSubnetsClient() instead.
 type SubnetsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewSubnetsClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &SubnetsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *SubnetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, subnetParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *SubnetsClient) getHandleResponse(resp *http.Response) (SubnetsClie
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkName - The name of the virtual network.
 //   - options - SubnetsClientListOptions contains the optional parameters for the SubnetsClient.NewListPager method.
-func (client *SubnetsClient) NewListPager(resourceGroupName string, virtualNetworkName string, options *SubnetsClientListOptions) *runtime.Pager[SubnetsClientListResponse] {
+func (client *SubnetsClient) NewListPager(resourceGroupName string, virtualNetworkName string, options *SubnetsClientListOptions) (*runtime.Pager[SubnetsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SubnetsClientListResponse]{
 		More: func(page SubnetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -408,8 +408,8 @@ func (client *SubnetsClient) prepareNetworkPoliciesCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, prepareNetworkPoliciesRequestParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -487,7 +487,8 @@ func (client *SubnetsClient) unprepareNetworkPoliciesCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, unprepareNetworkPoliciesRequestParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

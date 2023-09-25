@@ -23,7 +23,7 @@ import (
 // PacketCoreDataPlanesClient contains the methods for the PacketCoreDataPlanes group.
 // Don't use this type directly, use NewPacketCoreDataPlanesClient() instead.
 type PacketCoreDataPlanesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPacketCoreDataPlanesClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &PacketCoreDataPlanesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *PacketCoreDataPlanesClient) createOrUpdateCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -263,7 +263,7 @@ func (client *PacketCoreDataPlanesClient) getHandleResponse(resp *http.Response)
 //   - packetCoreControlPlaneName - The name of the packet core control plane.
 //   - options - PacketCoreDataPlanesClientListByPacketCoreControlPlaneOptions contains the optional parameters for the PacketCoreDataPlanesClient.NewListByPacketCoreControlPlanePager
 //     method.
-func (client *PacketCoreDataPlanesClient) NewListByPacketCoreControlPlanePager(resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreDataPlanesClientListByPacketCoreControlPlaneOptions) *runtime.Pager[PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse] {
+func (client *PacketCoreDataPlanesClient) NewListByPacketCoreControlPlanePager(resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreDataPlanesClientListByPacketCoreControlPlaneOptions) (*runtime.Pager[PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse]{
 		More: func(page PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -376,8 +376,8 @@ func (client *PacketCoreDataPlanesClient) updateTagsCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -389,3 +389,4 @@ func (client *PacketCoreDataPlanesClient) updateTagsHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

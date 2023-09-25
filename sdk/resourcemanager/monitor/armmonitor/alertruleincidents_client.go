@@ -23,7 +23,7 @@ import (
 // AlertRuleIncidentsClient contains the methods for the AlertRuleIncidents group.
 // Don't use this type directly, use NewAlertRuleIncidentsClient() instead.
 type AlertRuleIncidentsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAlertRuleIncidentsClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &AlertRuleIncidentsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -119,13 +119,13 @@ func (client *AlertRuleIncidentsClient) getHandleResponse(resp *http.Response) (
 //   - ruleName - The name of the rule.
 //   - options - AlertRuleIncidentsClientListByAlertRuleOptions contains the optional parameters for the AlertRuleIncidentsClient.NewListByAlertRulePager
 //     method.
-func (client *AlertRuleIncidentsClient) NewListByAlertRulePager(resourceGroupName string, ruleName string, options *AlertRuleIncidentsClientListByAlertRuleOptions) *runtime.Pager[AlertRuleIncidentsClientListByAlertRuleResponse] {
+func (client *AlertRuleIncidentsClient) NewListByAlertRulePager(resourceGroupName string, ruleName string, options *AlertRuleIncidentsClientListByAlertRuleOptions) (*runtime.Pager[AlertRuleIncidentsClientListByAlertRuleResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AlertRuleIncidentsClientListByAlertRuleResponse]{
 		More: func(page AlertRuleIncidentsClientListByAlertRuleResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *AlertRuleIncidentsClientListByAlertRuleResponse) (AlertRuleIncidentsClientListByAlertRuleResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AlertRuleIncidentsClient.NewListByAlertRulePager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AlertRuleIncidentsClient.NewListByAlertRulePager")
 			req, err := client.listByAlertRuleCreateRequest(ctx, resourceGroupName, ruleName, options)
 			if err != nil {
 				return AlertRuleIncidentsClientListByAlertRuleResponse{}, err
@@ -177,3 +177,4 @@ func (client *AlertRuleIncidentsClient) listByAlertRuleHandleResponse(resp *http
 	}
 	return result, nil
 }
+

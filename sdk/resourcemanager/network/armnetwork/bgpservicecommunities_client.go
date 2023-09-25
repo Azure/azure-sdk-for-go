@@ -23,7 +23,7 @@ import (
 // BgpServiceCommunitiesClient contains the methods for the BgpServiceCommunities group.
 // Don't use this type directly, use NewBgpServiceCommunitiesClient() instead.
 type BgpServiceCommunitiesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewBgpServiceCommunitiesClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &BgpServiceCommunitiesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewBgpServiceCommunitiesClient(subscriptionID string, credential azcore.Tok
 // Generated from API version 2023-05-01
 //   - options - BgpServiceCommunitiesClientListOptions contains the optional parameters for the BgpServiceCommunitiesClient.NewListPager
 //     method.
-func (client *BgpServiceCommunitiesClient) NewListPager(options *BgpServiceCommunitiesClientListOptions) *runtime.Pager[BgpServiceCommunitiesClientListResponse] {
+func (client *BgpServiceCommunitiesClient) NewListPager(options *BgpServiceCommunitiesClientListOptions) (*runtime.Pager[BgpServiceCommunitiesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BgpServiceCommunitiesClientListResponse]{
 		More: func(page BgpServiceCommunitiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -103,3 +103,4 @@ func (client *BgpServiceCommunitiesClient) listHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

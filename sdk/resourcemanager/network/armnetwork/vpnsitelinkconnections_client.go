@@ -23,7 +23,7 @@ import (
 // VPNSiteLinkConnectionsClient contains the methods for the VPNSiteLinkConnections group.
 // Don't use this type directly, use NewVPNSiteLinkConnectionsClient() instead.
 type VPNSiteLinkConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVPNSiteLinkConnectionsClient(subscriptionID string, credential azcore.To
 	}
 	client := &VPNSiteLinkConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,3 +114,4 @@ func (client *VPNSiteLinkConnectionsClient) getHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

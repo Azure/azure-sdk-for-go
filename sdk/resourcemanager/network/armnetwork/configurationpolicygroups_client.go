@@ -23,7 +23,7 @@ import (
 // ConfigurationPolicyGroupsClient contains the methods for the ConfigurationPolicyGroups group.
 // Don't use this type directly, use NewConfigurationPolicyGroupsClient() instead.
 type ConfigurationPolicyGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewConfigurationPolicyGroupsClient(subscriptionID string, credential azcore
 	}
 	client := &ConfigurationPolicyGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ConfigurationPolicyGroupsClient) createOrUpdateCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnServerConfigurationPolicyGroupParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *ConfigurationPolicyGroupsClient) getHandleResponse(resp *http.Resp
 //   - vpnServerConfigurationName - The name of the VpnServerConfiguration.
 //   - options - ConfigurationPolicyGroupsClientListByVPNServerConfigurationOptions contains the optional parameters for the ConfigurationPolicyGroupsClient.NewListByVPNServerConfigurationPager
 //     method.
-func (client *ConfigurationPolicyGroupsClient) NewListByVPNServerConfigurationPager(resourceGroupName string, vpnServerConfigurationName string, options *ConfigurationPolicyGroupsClientListByVPNServerConfigurationOptions) *runtime.Pager[ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse] {
+func (client *ConfigurationPolicyGroupsClient) NewListByVPNServerConfigurationPager(resourceGroupName string, vpnServerConfigurationName string, options *ConfigurationPolicyGroupsClientListByVPNServerConfigurationOptions) (*runtime.Pager[ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse]{
 		More: func(page ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *ConfigurationPolicyGroupsClient) listByVPNServerConfigurationHandl
 	}
 	return result, nil
 }
+

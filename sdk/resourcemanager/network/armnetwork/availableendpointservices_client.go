@@ -23,7 +23,7 @@ import (
 // AvailableEndpointServicesClient contains the methods for the AvailableEndpointServices group.
 // Don't use this type directly, use NewAvailableEndpointServicesClient() instead.
 type AvailableEndpointServicesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAvailableEndpointServicesClient(subscriptionID string, credential azcore
 	}
 	client := &AvailableEndpointServicesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewAvailableEndpointServicesClient(subscriptionID string, credential azcore
 //   - location - The location to check available endpoint services.
 //   - options - AvailableEndpointServicesClientListOptions contains the optional parameters for the AvailableEndpointServicesClient.NewListPager
 //     method.
-func (client *AvailableEndpointServicesClient) NewListPager(location string, options *AvailableEndpointServicesClientListOptions) *runtime.Pager[AvailableEndpointServicesClientListResponse] {
+func (client *AvailableEndpointServicesClient) NewListPager(location string, options *AvailableEndpointServicesClientListOptions) (*runtime.Pager[AvailableEndpointServicesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AvailableEndpointServicesClientListResponse]{
 		More: func(page AvailableEndpointServicesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -108,3 +108,4 @@ func (client *AvailableEndpointServicesClient) listHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

@@ -24,7 +24,7 @@ import (
 )
 
 // DataCollectionEndpointsServer is a fake server for instances of the armmonitor.DataCollectionEndpointsClient type.
-type DataCollectionEndpointsServer struct {
+type DataCollectionEndpointsServer struct{
 	// Create is the fake for method DataCollectionEndpointsClient.Create
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	Create func(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *armmonitor.DataCollectionEndpointsClientCreateOptions) (resp azfake.Responder[armmonitor.DataCollectionEndpointsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -48,6 +48,7 @@ type DataCollectionEndpointsServer struct {
 	// Update is the fake for method DataCollectionEndpointsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *armmonitor.DataCollectionEndpointsClientUpdateOptions) (resp azfake.Responder[armmonitor.DataCollectionEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewDataCollectionEndpointsServerTransport creates a new instance of DataCollectionEndpointsServerTransport with the provided implementation.
@@ -55,18 +56,18 @@ type DataCollectionEndpointsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDataCollectionEndpointsServerTransport(srv *DataCollectionEndpointsServer) *DataCollectionEndpointsServerTransport {
 	return &DataCollectionEndpointsServerTransport{
-		srv:                         srv,
+		srv: srv,
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.DataCollectionEndpointsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmonitor.DataCollectionEndpointsClientListBySubscriptionResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armmonitor.DataCollectionEndpointsClientListBySubscriptionResponse]](),
 	}
 }
 
 // DataCollectionEndpointsServerTransport connects instances of armmonitor.DataCollectionEndpointsClient to instances of DataCollectionEndpointsServer.
 // Don't use this type directly, use NewDataCollectionEndpointsServerTransport instead.
 type DataCollectionEndpointsServerTransport struct {
-	srv                         *DataCollectionEndpointsServer
+	srv *DataCollectionEndpointsServer
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.DataCollectionEndpointsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmonitor.DataCollectionEndpointsClientListBySubscriptionResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armmonitor.DataCollectionEndpointsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for DataCollectionEndpointsServerTransport.
@@ -141,8 +142,7 @@ func (d *DataCollectionEndpointsServerTransport) dispatchCreate(req *http.Reques
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DataCollectionEndpointResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -174,8 +174,7 @@ func (d *DataCollectionEndpointsServerTransport) dispatchDelete(req *http.Reques
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -207,8 +206,7 @@ func (d *DataCollectionEndpointsServerTransport) dispatchGet(req *http.Request) 
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DataCollectionEndpointResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -219,17 +217,17 @@ func (d *DataCollectionEndpointsServerTransport) dispatchNewListByResourceGroupP
 	}
 	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionEndpoints`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmonitor.DataCollectionEndpointsClientListByResourceGroupResponse, createLink func() string) {
@@ -256,13 +254,13 @@ func (d *DataCollectionEndpointsServerTransport) dispatchNewListBySubscriptionPa
 	}
 	newListBySubscriptionPager := d.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := d.srv.NewListBySubscriptionPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionEndpoints`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := d.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		d.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmonitor.DataCollectionEndpointsClientListBySubscriptionResponse, createLink func() string) {
@@ -320,8 +318,8 @@ func (d *DataCollectionEndpointsServerTransport) dispatchUpdate(req *http.Reques
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DataCollectionEndpointResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

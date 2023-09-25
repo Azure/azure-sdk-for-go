@@ -23,7 +23,7 @@ import (
 // AvailablePrivateEndpointTypesClient contains the methods for the AvailablePrivateEndpointTypes group.
 // Don't use this type directly, use NewAvailablePrivateEndpointTypesClient() instead.
 type AvailablePrivateEndpointTypesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAvailablePrivateEndpointTypesClient(subscriptionID string, credential az
 	}
 	client := &AvailablePrivateEndpointTypesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewAvailablePrivateEndpointTypesClient(subscriptionID string, credential az
 //   - location - The location of the domain name.
 //   - options - AvailablePrivateEndpointTypesClientListOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.NewListPager
 //     method.
-func (client *AvailablePrivateEndpointTypesClient) NewListPager(location string, options *AvailablePrivateEndpointTypesClientListOptions) *runtime.Pager[AvailablePrivateEndpointTypesClientListResponse] {
+func (client *AvailablePrivateEndpointTypesClient) NewListPager(location string, options *AvailablePrivateEndpointTypesClientListOptions) (*runtime.Pager[AvailablePrivateEndpointTypesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AvailablePrivateEndpointTypesClientListResponse]{
 		More: func(page AvailablePrivateEndpointTypesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -118,7 +118,7 @@ func (client *AvailablePrivateEndpointTypesClient) listHandleResponse(resp *http
 //   - resourceGroupName - The name of the resource group.
 //   - options - AvailablePrivateEndpointTypesClientListByResourceGroupOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.NewListByResourceGroupPager
 //     method.
-func (client *AvailablePrivateEndpointTypesClient) NewListByResourceGroupPager(location string, resourceGroupName string, options *AvailablePrivateEndpointTypesClientListByResourceGroupOptions) *runtime.Pager[AvailablePrivateEndpointTypesClientListByResourceGroupResponse] {
+func (client *AvailablePrivateEndpointTypesClient) NewListByResourceGroupPager(location string, resourceGroupName string, options *AvailablePrivateEndpointTypesClientListByResourceGroupOptions) (*runtime.Pager[AvailablePrivateEndpointTypesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AvailablePrivateEndpointTypesClientListByResourceGroupResponse]{
 		More: func(page AvailablePrivateEndpointTypesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -180,3 +180,4 @@ func (client *AvailablePrivateEndpointTypesClient) listByResourceGroupHandleResp
 	}
 	return result, nil
 }
+

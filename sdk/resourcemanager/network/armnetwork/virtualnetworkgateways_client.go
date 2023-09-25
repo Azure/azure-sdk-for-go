@@ -23,7 +23,7 @@ import (
 // VirtualNetworkGatewaysClient contains the methods for the VirtualNetworkGateways group.
 // Don't use this type directly, use NewVirtualNetworkGatewaysClient() instead.
 type VirtualNetworkGatewaysClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualNetworkGatewaysClient(subscriptionID string, credential azcore.To
 	}
 	client := &VirtualNetworkGatewaysClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *VirtualNetworkGatewaysClient) createOrUpdateCreateRequest(ctx cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -259,8 +259,8 @@ func (client *VirtualNetworkGatewaysClient) disconnectVirtualNetworkGatewayVPNCo
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -335,8 +335,8 @@ func (client *VirtualNetworkGatewaysClient) generateVPNProfileCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -411,8 +411,8 @@ func (client *VirtualNetworkGatewaysClient) generatevpnclientpackageCreateReques
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -920,7 +920,7 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientIPSecParametersCreateReq
 //   - resourceGroupName - The name of the resource group.
 //   - options - VirtualNetworkGatewaysClientListOptions contains the optional parameters for the VirtualNetworkGatewaysClient.NewListPager
 //     method.
-func (client *VirtualNetworkGatewaysClient) NewListPager(resourceGroupName string, options *VirtualNetworkGatewaysClientListOptions) *runtime.Pager[VirtualNetworkGatewaysClientListResponse] {
+func (client *VirtualNetworkGatewaysClient) NewListPager(resourceGroupName string, options *VirtualNetworkGatewaysClientListOptions) (*runtime.Pager[VirtualNetworkGatewaysClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkGatewaysClientListResponse]{
 		More: func(page VirtualNetworkGatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -986,7 +986,7 @@ func (client *VirtualNetworkGatewaysClient) listHandleResponse(resp *http.Respon
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - options - VirtualNetworkGatewaysClientListConnectionsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.NewListConnectionsPager
 //     method.
-func (client *VirtualNetworkGatewaysClient) NewListConnectionsPager(resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientListConnectionsOptions) *runtime.Pager[VirtualNetworkGatewaysClientListConnectionsResponse] {
+func (client *VirtualNetworkGatewaysClient) NewListConnectionsPager(resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientListConnectionsOptions) (*runtime.Pager[VirtualNetworkGatewaysClientListConnectionsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkGatewaysClientListConnectionsResponse]{
 		More: func(page VirtualNetworkGatewaysClientListConnectionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1265,8 +1265,8 @@ func (client *VirtualNetworkGatewaysClient) setVpnclientIPSecParametersCreateReq
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnclientIPSecParams); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1339,8 +1339,8 @@ func (client *VirtualNetworkGatewaysClient) startPacketCaptureCreateRequest(ctx 
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -1415,8 +1415,8 @@ func (client *VirtualNetworkGatewaysClient) stopPacketCaptureCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1550,8 +1550,8 @@ func (client *VirtualNetworkGatewaysClient) updateTagsCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1607,8 +1607,8 @@ func (client *VirtualNetworkGatewaysClient) vpnDeviceConfigurationScriptCreateRe
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1620,3 +1620,4 @@ func (client *VirtualNetworkGatewaysClient) vpnDeviceConfigurationScriptHandleRe
 	}
 	return result, nil
 }
+

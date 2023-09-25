@@ -32,7 +32,7 @@ func NewEventCategoriesClient(credential azcore.TokenCredential, options *arm.Cl
 		return nil, err
 	}
 	client := &EventCategoriesClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -43,13 +43,13 @@ func NewEventCategoriesClient(credential azcore.TokenCredential, options *arm.Cl
 // Generated from API version 2015-04-01
 //   - options - EventCategoriesClientListOptions contains the optional parameters for the EventCategoriesClient.NewListPager
 //     method.
-func (client *EventCategoriesClient) NewListPager(options *EventCategoriesClientListOptions) *runtime.Pager[EventCategoriesClientListResponse] {
+func (client *EventCategoriesClient) NewListPager(options *EventCategoriesClientListOptions) (*runtime.Pager[EventCategoriesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EventCategoriesClientListResponse]{
 		More: func(page EventCategoriesClientListResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *EventCategoriesClientListResponse) (EventCategoriesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventCategoriesClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventCategoriesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
 				return EventCategoriesClientListResponse{}, err
@@ -89,3 +89,4 @@ func (client *EventCategoriesClient) listHandleResponse(resp *http.Response) (Ev
 	}
 	return result, nil
 }
+

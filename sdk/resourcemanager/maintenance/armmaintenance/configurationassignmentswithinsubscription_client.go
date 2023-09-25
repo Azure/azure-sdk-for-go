@@ -23,7 +23,7 @@ import (
 // ConfigurationAssignmentsWithinSubscriptionClient contains the methods for the ConfigurationAssignmentsWithinSubscription group.
 // Don't use this type directly, use NewConfigurationAssignmentsWithinSubscriptionClient() instead.
 type ConfigurationAssignmentsWithinSubscriptionClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewConfigurationAssignmentsWithinSubscriptionClient(subscriptionID string, 
 	}
 	client := &ConfigurationAssignmentsWithinSubscriptionClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewConfigurationAssignmentsWithinSubscriptionClient(subscriptionID string, 
 // Generated from API version 2023-04-01
 //   - options - ConfigurationAssignmentsWithinSubscriptionClientListOptions contains the optional parameters for the ConfigurationAssignmentsWithinSubscriptionClient.NewListPager
 //     method.
-func (client *ConfigurationAssignmentsWithinSubscriptionClient) NewListPager(options *ConfigurationAssignmentsWithinSubscriptionClientListOptions) *runtime.Pager[ConfigurationAssignmentsWithinSubscriptionClientListResponse] {
+func (client *ConfigurationAssignmentsWithinSubscriptionClient) NewListPager(options *ConfigurationAssignmentsWithinSubscriptionClientListOptions) (*runtime.Pager[ConfigurationAssignmentsWithinSubscriptionClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationAssignmentsWithinSubscriptionClientListResponse]{
 		More: func(page ConfigurationAssignmentsWithinSubscriptionClientListResponse) bool {
 			return false
@@ -97,3 +97,4 @@ func (client *ConfigurationAssignmentsWithinSubscriptionClient) listHandleRespon
 	}
 	return result, nil
 }
+

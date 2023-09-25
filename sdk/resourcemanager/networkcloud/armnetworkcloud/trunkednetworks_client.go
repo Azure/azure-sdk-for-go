@@ -23,7 +23,7 @@ import (
 // TrunkedNetworksClient contains the methods for the TrunkedNetworks group.
 // Don't use this type directly, use NewTrunkedNetworksClient() instead.
 type TrunkedNetworksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTrunkedNetworksClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &TrunkedNetworksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *TrunkedNetworksClient) createOrUpdateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, trunkedNetworkParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -244,7 +244,7 @@ func (client *TrunkedNetworksClient) getHandleResponse(resp *http.Response) (Tru
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - TrunkedNetworksClientListByResourceGroupOptions contains the optional parameters for the TrunkedNetworksClient.NewListByResourceGroupPager
 //     method.
-func (client *TrunkedNetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *TrunkedNetworksClientListByResourceGroupOptions) *runtime.Pager[TrunkedNetworksClientListByResourceGroupResponse] {
+func (client *TrunkedNetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *TrunkedNetworksClientListByResourceGroupOptions) (*runtime.Pager[TrunkedNetworksClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TrunkedNetworksClientListByResourceGroupResponse]{
 		More: func(page TrunkedNetworksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -305,7 +305,7 @@ func (client *TrunkedNetworksClient) listByResourceGroupHandleResponse(resp *htt
 // Generated from API version 2023-07-01
 //   - options - TrunkedNetworksClientListBySubscriptionOptions contains the optional parameters for the TrunkedNetworksClient.NewListBySubscriptionPager
 //     method.
-func (client *TrunkedNetworksClient) NewListBySubscriptionPager(options *TrunkedNetworksClientListBySubscriptionOptions) *runtime.Pager[TrunkedNetworksClientListBySubscriptionResponse] {
+func (client *TrunkedNetworksClient) NewListBySubscriptionPager(options *TrunkedNetworksClientListBySubscriptionOptions) (*runtime.Pager[TrunkedNetworksClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TrunkedNetworksClientListBySubscriptionResponse]{
 		More: func(page TrunkedNetworksClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -363,11 +363,10 @@ func (client *TrunkedNetworksClient) listBySubscriptionHandleResponse(resp *http
 // Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trunkedNetworkName - The name of the trunked network.
-//   - trunkedNetworkUpdateParameters - The request body.
 //   - options - TrunkedNetworksClientUpdateOptions contains the optional parameters for the TrunkedNetworksClient.Update method.
-func (client *TrunkedNetworksClient) Update(ctx context.Context, resourceGroupName string, trunkedNetworkName string, trunkedNetworkUpdateParameters TrunkedNetworkPatchParameters, options *TrunkedNetworksClientUpdateOptions) (TrunkedNetworksClientUpdateResponse, error) {
+func (client *TrunkedNetworksClient) Update(ctx context.Context, resourceGroupName string, trunkedNetworkName string, options *TrunkedNetworksClientUpdateOptions) (TrunkedNetworksClientUpdateResponse, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, trunkedNetworkName, trunkedNetworkUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, trunkedNetworkName, options)
 	if err != nil {
 		return TrunkedNetworksClientUpdateResponse{}, err
 	}
@@ -384,7 +383,7 @@ func (client *TrunkedNetworksClient) Update(ctx context.Context, resourceGroupNa
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TrunkedNetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, trunkedNetworkName string, trunkedNetworkUpdateParameters TrunkedNetworkPatchParameters, options *TrunkedNetworksClientUpdateOptions) (*policy.Request, error) {
+func (client *TrunkedNetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, trunkedNetworkName string, options *TrunkedNetworksClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -403,8 +402,11 @@ func (client *TrunkedNetworksClient) updateCreateRequest(ctx context.Context, re
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, trunkedNetworkUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.TrunkedNetworkUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.TrunkedNetworkUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
@@ -417,3 +419,4 @@ func (client *TrunkedNetworksClient) updateHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

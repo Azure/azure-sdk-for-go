@@ -23,7 +23,7 @@ import (
 // CloudServicesNetworksClient contains the methods for the CloudServicesNetworks group.
 // Don't use this type directly, use NewCloudServicesNetworksClient() instead.
 type CloudServicesNetworksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewCloudServicesNetworksClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &CloudServicesNetworksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *CloudServicesNetworksClient) createOrUpdateCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cloudServicesNetworkParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -245,7 +245,7 @@ func (client *CloudServicesNetworksClient) getHandleResponse(resp *http.Response
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - CloudServicesNetworksClientListByResourceGroupOptions contains the optional parameters for the CloudServicesNetworksClient.NewListByResourceGroupPager
 //     method.
-func (client *CloudServicesNetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *CloudServicesNetworksClientListByResourceGroupOptions) *runtime.Pager[CloudServicesNetworksClientListByResourceGroupResponse] {
+func (client *CloudServicesNetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *CloudServicesNetworksClientListByResourceGroupOptions) (*runtime.Pager[CloudServicesNetworksClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CloudServicesNetworksClientListByResourceGroupResponse]{
 		More: func(page CloudServicesNetworksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -306,7 +306,7 @@ func (client *CloudServicesNetworksClient) listByResourceGroupHandleResponse(res
 // Generated from API version 2023-07-01
 //   - options - CloudServicesNetworksClientListBySubscriptionOptions contains the optional parameters for the CloudServicesNetworksClient.NewListBySubscriptionPager
 //     method.
-func (client *CloudServicesNetworksClient) NewListBySubscriptionPager(options *CloudServicesNetworksClientListBySubscriptionOptions) *runtime.Pager[CloudServicesNetworksClientListBySubscriptionResponse] {
+func (client *CloudServicesNetworksClient) NewListBySubscriptionPager(options *CloudServicesNetworksClientListBySubscriptionOptions) (*runtime.Pager[CloudServicesNetworksClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CloudServicesNetworksClientListBySubscriptionResponse]{
 		More: func(page CloudServicesNetworksClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -365,12 +365,11 @@ func (client *CloudServicesNetworksClient) listBySubscriptionHandleResponse(resp
 // Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudServicesNetworkName - The name of the cloud services network.
-//   - cloudServicesNetworkUpdateParameters - The request body.
 //   - options - CloudServicesNetworksClientBeginUpdateOptions contains the optional parameters for the CloudServicesNetworksClient.BeginUpdate
 //     method.
-func (client *CloudServicesNetworksClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkUpdateParameters CloudServicesNetworkPatchParameters, options *CloudServicesNetworksClientBeginUpdateOptions) (*runtime.Poller[CloudServicesNetworksClientUpdateResponse], error) {
+func (client *CloudServicesNetworksClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, options *CloudServicesNetworksClientBeginUpdateOptions) (*runtime.Poller[CloudServicesNetworksClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, options)
+		resp, err := client.update(ctx, resourceGroupName, cloudServicesNetworkName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -388,9 +387,9 @@ func (client *CloudServicesNetworksClient) BeginUpdate(ctx context.Context, reso
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
-func (client *CloudServicesNetworksClient) update(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkUpdateParameters CloudServicesNetworkPatchParameters, options *CloudServicesNetworksClientBeginUpdateOptions) (*http.Response, error) {
+func (client *CloudServicesNetworksClient) update(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, options *CloudServicesNetworksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudServicesNetworkName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -406,7 +405,7 @@ func (client *CloudServicesNetworksClient) update(ctx context.Context, resourceG
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CloudServicesNetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkUpdateParameters CloudServicesNetworkPatchParameters, options *CloudServicesNetworksClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *CloudServicesNetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, options *CloudServicesNetworksClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -425,8 +424,12 @@ func (client *CloudServicesNetworksClient) updateCreateRequest(ctx context.Conte
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, cloudServicesNetworkUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.CloudServicesNetworkUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.CloudServicesNetworkUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
+

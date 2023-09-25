@@ -23,7 +23,7 @@ import (
 // LoadBalancerLoadBalancingRulesClient contains the methods for the LoadBalancerLoadBalancingRules group.
 // Don't use this type directly, use NewLoadBalancerLoadBalancingRulesClient() instead.
 type LoadBalancerLoadBalancingRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewLoadBalancerLoadBalancingRulesClient(subscriptionID string, credential a
 	}
 	client := &LoadBalancerLoadBalancingRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,7 +117,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) getHandleResponse(resp *http
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerLoadBalancingRulesClientListOptions contains the optional parameters for the LoadBalancerLoadBalancingRulesClient.NewListPager
 //     method.
-func (client *LoadBalancerLoadBalancingRulesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerLoadBalancingRulesClientListOptions) *runtime.Pager[LoadBalancerLoadBalancingRulesClientListResponse] {
+func (client *LoadBalancerLoadBalancingRulesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerLoadBalancingRulesClientListOptions) (*runtime.Pager[LoadBalancerLoadBalancingRulesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LoadBalancerLoadBalancingRulesClientListResponse]{
 		More: func(page LoadBalancerLoadBalancingRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -179,3 +179,4 @@ func (client *LoadBalancerLoadBalancingRulesClient) listHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

@@ -21,10 +21,11 @@ import (
 )
 
 // BaselinesServer is a fake server for instances of the armmonitor.BaselinesClient type.
-type BaselinesServer struct {
+type BaselinesServer struct{
 	// NewListPager is the fake for method BaselinesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceURI string, options *armmonitor.BaselinesClientListOptions) (resp azfake.PagerResponder[armmonitor.BaselinesClientListResponse])
+
 }
 
 // NewBaselinesServerTransport creates a new instance of BaselinesServerTransport with the provided implementation.
@@ -32,7 +33,7 @@ type BaselinesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewBaselinesServerTransport(srv *BaselinesServer) *BaselinesServerTransport {
 	return &BaselinesServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armmonitor.BaselinesClientListResponse]](),
 	}
 }
@@ -40,7 +41,7 @@ func NewBaselinesServerTransport(srv *BaselinesServer) *BaselinesServerTransport
 // BaselinesServerTransport connects instances of armmonitor.BaselinesClient to instances of BaselinesServer.
 // Don't use this type directly, use NewBaselinesServerTransport instead.
 type BaselinesServerTransport struct {
-	srv          *BaselinesServer
+	srv *BaselinesServer
 	newListPager *tracker[azfake.PagerResponder[armmonitor.BaselinesClientListResponse]]
 }
 
@@ -75,71 +76,71 @@ func (b *BaselinesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	newListPager := b.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricBaselines`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricBaselines`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+	if err != nil {
+		return nil, err
+	}
+	metricnamesUnescaped, err := url.QueryUnescape(qp.Get("metricnames"))
+	if err != nil {
+		return nil, err
+	}
+	metricnamesParam := getOptional(metricnamesUnescaped)
+	metricnamespaceUnescaped, err := url.QueryUnescape(qp.Get("metricnamespace"))
+	if err != nil {
+		return nil, err
+	}
+	metricnamespaceParam := getOptional(metricnamespaceUnescaped)
+	timespanUnescaped, err := url.QueryUnescape(qp.Get("timespan"))
+	if err != nil {
+		return nil, err
+	}
+	timespanParam := getOptional(timespanUnescaped)
+	intervalUnescaped, err := url.QueryUnescape(qp.Get("interval"))
+	if err != nil {
+		return nil, err
+	}
+	intervalParam := getOptional(intervalUnescaped)
+	aggregationUnescaped, err := url.QueryUnescape(qp.Get("aggregation"))
+	if err != nil {
+		return nil, err
+	}
+	aggregationParam := getOptional(aggregationUnescaped)
+	sensitivitiesUnescaped, err := url.QueryUnescape(qp.Get("sensitivities"))
+	if err != nil {
+		return nil, err
+	}
+	sensitivitiesParam := getOptional(sensitivitiesUnescaped)
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	resultTypeUnescaped, err := url.QueryUnescape(qp.Get("resultType"))
+	if err != nil {
+		return nil, err
+	}
+	resultTypeParam := getOptional(armmonitor.ResultType(resultTypeUnescaped))
+	var options *armmonitor.BaselinesClientListOptions
+	if metricnamesParam != nil || metricnamespaceParam != nil || timespanParam != nil || intervalParam != nil || aggregationParam != nil || sensitivitiesParam != nil || filterParam != nil || resultTypeParam != nil {
+		options = &armmonitor.BaselinesClientListOptions{
+			Metricnames: metricnamesParam,
+			Metricnamespace: metricnamespaceParam,
+			Timespan: timespanParam,
+			Interval: intervalParam,
+			Aggregation: aggregationParam,
+			Sensitivities: sensitivitiesParam,
+			Filter: filterParam,
+			ResultType: resultTypeParam,
 		}
-		qp := req.URL.Query()
-		resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
-		metricnamesUnescaped, err := url.QueryUnescape(qp.Get("metricnames"))
-		if err != nil {
-			return nil, err
-		}
-		metricnamesParam := getOptional(metricnamesUnescaped)
-		metricnamespaceUnescaped, err := url.QueryUnescape(qp.Get("metricnamespace"))
-		if err != nil {
-			return nil, err
-		}
-		metricnamespaceParam := getOptional(metricnamespaceUnescaped)
-		timespanUnescaped, err := url.QueryUnescape(qp.Get("timespan"))
-		if err != nil {
-			return nil, err
-		}
-		timespanParam := getOptional(timespanUnescaped)
-		intervalUnescaped, err := url.QueryUnescape(qp.Get("interval"))
-		if err != nil {
-			return nil, err
-		}
-		intervalParam := getOptional(intervalUnescaped)
-		aggregationUnescaped, err := url.QueryUnescape(qp.Get("aggregation"))
-		if err != nil {
-			return nil, err
-		}
-		aggregationParam := getOptional(aggregationUnescaped)
-		sensitivitiesUnescaped, err := url.QueryUnescape(qp.Get("sensitivities"))
-		if err != nil {
-			return nil, err
-		}
-		sensitivitiesParam := getOptional(sensitivitiesUnescaped)
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		resultTypeUnescaped, err := url.QueryUnescape(qp.Get("resultType"))
-		if err != nil {
-			return nil, err
-		}
-		resultTypeParam := getOptional(armmonitor.ResultType(resultTypeUnescaped))
-		var options *armmonitor.BaselinesClientListOptions
-		if metricnamesParam != nil || metricnamespaceParam != nil || timespanParam != nil || intervalParam != nil || aggregationParam != nil || sensitivitiesParam != nil || filterParam != nil || resultTypeParam != nil {
-			options = &armmonitor.BaselinesClientListOptions{
-				Metricnames:     metricnamesParam,
-				Metricnamespace: metricnamespaceParam,
-				Timespan:        timespanParam,
-				Interval:        intervalParam,
-				Aggregation:     aggregationParam,
-				Sensitivities:   sensitivitiesParam,
-				Filter:          filterParam,
-				ResultType:      resultTypeParam,
-			}
-		}
-		resp := b.srv.NewListPager(resourceURIUnescaped, options)
+	}
+resp := b.srv.NewListPager(resourceURIUnescaped, options)
 		newListPager = &resp
 		b.newListPager.add(req, newListPager)
 	}
@@ -156,3 +157,4 @@ func (b *BaselinesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	return resp, nil
 }
+

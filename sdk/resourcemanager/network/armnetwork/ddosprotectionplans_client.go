@@ -23,7 +23,7 @@ import (
 // DdosProtectionPlansClient contains the methods for the DdosProtectionPlans group.
 // Don't use this type directly, use NewDdosProtectionPlansClient() instead.
 type DdosProtectionPlansClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewDdosProtectionPlansClient(subscriptionID string, credential azcore.Token
 	}
 	client := &DdosProtectionPlansClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *DdosProtectionPlansClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -253,7 +253,7 @@ func (client *DdosProtectionPlansClient) getHandleResponse(resp *http.Response) 
 // Generated from API version 2023-05-01
 //   - options - DdosProtectionPlansClientListOptions contains the optional parameters for the DdosProtectionPlansClient.NewListPager
 //     method.
-func (client *DdosProtectionPlansClient) NewListPager(options *DdosProtectionPlansClientListOptions) *runtime.Pager[DdosProtectionPlansClientListResponse] {
+func (client *DdosProtectionPlansClient) NewListPager(options *DdosProtectionPlansClientListOptions) (*runtime.Pager[DdosProtectionPlansClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DdosProtectionPlansClientListResponse]{
 		More: func(page DdosProtectionPlansClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -314,7 +314,7 @@ func (client *DdosProtectionPlansClient) listHandleResponse(resp *http.Response)
 //   - resourceGroupName - The name of the resource group.
 //   - options - DdosProtectionPlansClientListByResourceGroupOptions contains the optional parameters for the DdosProtectionPlansClient.NewListByResourceGroupPager
 //     method.
-func (client *DdosProtectionPlansClient) NewListByResourceGroupPager(resourceGroupName string, options *DdosProtectionPlansClientListByResourceGroupOptions) *runtime.Pager[DdosProtectionPlansClientListByResourceGroupResponse] {
+func (client *DdosProtectionPlansClient) NewListByResourceGroupPager(resourceGroupName string, options *DdosProtectionPlansClientListByResourceGroupOptions) (*runtime.Pager[DdosProtectionPlansClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DdosProtectionPlansClientListByResourceGroupResponse]{
 		More: func(page DdosProtectionPlansClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -424,8 +424,8 @@ func (client *DdosProtectionPlansClient) updateTagsCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -437,3 +437,4 @@ func (client *DdosProtectionPlansClient) updateTagsHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

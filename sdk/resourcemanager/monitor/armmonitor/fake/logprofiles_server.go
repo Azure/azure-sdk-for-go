@@ -22,7 +22,7 @@ import (
 )
 
 // LogProfilesServer is a fake server for instances of the armmonitor.LogProfilesClient type.
-type LogProfilesServer struct {
+type LogProfilesServer struct{
 	// CreateOrUpdate is the fake for method LogProfilesClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	CreateOrUpdate func(ctx context.Context, logProfileName string, parameters armmonitor.LogProfileResource, options *armmonitor.LogProfilesClientCreateOrUpdateOptions) (resp azfake.Responder[armmonitor.LogProfilesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -42,6 +42,7 @@ type LogProfilesServer struct {
 	// Update is the fake for method LogProfilesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, logProfileName string, logProfilesResource armmonitor.LogProfileResourcePatch, options *armmonitor.LogProfilesClientUpdateOptions) (resp azfake.Responder[armmonitor.LogProfilesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewLogProfilesServerTransport creates a new instance of LogProfilesServerTransport with the provided implementation.
@@ -49,7 +50,7 @@ type LogProfilesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLogProfilesServerTransport(srv *LogProfilesServer) *LogProfilesServerTransport {
 	return &LogProfilesServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armmonitor.LogProfilesClientListResponse]](),
 	}
 }
@@ -57,7 +58,7 @@ func NewLogProfilesServerTransport(srv *LogProfilesServer) *LogProfilesServerTra
 // LogProfilesServerTransport connects instances of armmonitor.LogProfilesClient to instances of LogProfilesServer.
 // Don't use this type directly, use NewLogProfilesServerTransport instead.
 type LogProfilesServerTransport struct {
-	srv          *LogProfilesServer
+	srv *LogProfilesServer
 	newListPager *tracker[azfake.PagerResponder[armmonitor.LogProfilesClientListResponse]]
 }
 
@@ -121,8 +122,7 @@ func (l *LogProfilesServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogProfileResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -150,8 +150,7 @@ func (l *LogProfilesServerTransport) dispatchDelete(req *http.Request) (*http.Re
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -179,8 +178,7 @@ func (l *LogProfilesServerTransport) dispatchGet(req *http.Request) (*http.Respo
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogProfileResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -191,13 +189,13 @@ func (l *LogProfilesServerTransport) dispatchNewListPager(req *http.Request) (*h
 	}
 	newListPager := l.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/logprofiles`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := l.srv.NewListPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/logprofiles`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := l.srv.NewListPager(nil)
 		newListPager = &resp
 		l.newListPager.add(req, newListPager)
 	}
@@ -242,8 +240,8 @@ func (l *LogProfilesServerTransport) dispatchUpdate(req *http.Request) (*http.Re
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogProfileResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

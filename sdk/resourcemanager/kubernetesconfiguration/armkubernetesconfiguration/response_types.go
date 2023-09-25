@@ -28,7 +28,7 @@ type ExtensionsClientGetResponse struct {
 // ExtensionsClientListResponse contains the response from method ExtensionsClient.NewListPager.
 type ExtensionsClientListResponse struct {
 	// Result of the request to list Extensions. It contains a list of Extension objects and a URL link to get the next set of
-	// results.
+// results.
 	ExtensionsList
 }
 
@@ -64,7 +64,7 @@ type FluxConfigurationsClientGetResponse struct {
 // FluxConfigurationsClientListResponse contains the response from method FluxConfigurationsClient.NewListPager.
 type FluxConfigurationsClientListResponse struct {
 	// Result of the request to list Flux Configurations. It contains a list of FluxConfiguration objects and a URL link to get
-	// the next set of results.
+// the next set of results.
 	FluxConfigurationsList
 }
 
@@ -112,6 +112,7 @@ type SourceControlConfigurationsClientGetResponse struct {
 // SourceControlConfigurationsClientListResponse contains the response from method SourceControlConfigurationsClient.NewListPager.
 type SourceControlConfigurationsClientListResponse struct {
 	// Result of the request to list Source Control Configurations. It contains a list of SourceControlConfiguration objects and
-	// a URL link to get the next set of results.
+// a URL link to get the next set of results.
 	SourceControlConfigurationList
 }
+

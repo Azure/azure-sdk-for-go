@@ -23,7 +23,7 @@ import (
 // DiagnosticsPackagesClient contains the methods for the DiagnosticsPackages group.
 // Don't use this type directly, use NewDiagnosticsPackagesClient() instead.
 type DiagnosticsPackagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDiagnosticsPackagesClient(subscriptionID string, credential azcore.Token
 	}
 	client := &DiagnosticsPackagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -256,7 +256,7 @@ func (client *DiagnosticsPackagesClient) getHandleResponse(resp *http.Response) 
 //   - packetCoreControlPlaneName - The name of the packet core control plane.
 //   - options - DiagnosticsPackagesClientListByPacketCoreControlPlaneOptions contains the optional parameters for the DiagnosticsPackagesClient.NewListByPacketCoreControlPlanePager
 //     method.
-func (client *DiagnosticsPackagesClient) NewListByPacketCoreControlPlanePager(resourceGroupName string, packetCoreControlPlaneName string, options *DiagnosticsPackagesClientListByPacketCoreControlPlaneOptions) *runtime.Pager[DiagnosticsPackagesClientListByPacketCoreControlPlaneResponse] {
+func (client *DiagnosticsPackagesClient) NewListByPacketCoreControlPlanePager(resourceGroupName string, packetCoreControlPlaneName string, options *DiagnosticsPackagesClientListByPacketCoreControlPlaneOptions) (*runtime.Pager[DiagnosticsPackagesClientListByPacketCoreControlPlaneResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticsPackagesClientListByPacketCoreControlPlaneResponse]{
 		More: func(page DiagnosticsPackagesClientListByPacketCoreControlPlaneResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -315,3 +315,4 @@ func (client *DiagnosticsPackagesClient) listByPacketCoreControlPlaneHandleRespo
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // VPNServerConfigurationsClient contains the methods for the VPNServerConfigurations group.
 // Don't use this type directly, use NewVPNServerConfigurationsClient() instead.
 type VPNServerConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVPNServerConfigurationsClient(subscriptionID string, credential azcore.T
 	}
 	client := &VPNServerConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *VPNServerConfigurationsClient) createOrUpdateCreateRequest(ctx con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnServerConfigurationParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -254,7 +254,7 @@ func (client *VPNServerConfigurationsClient) getHandleResponse(resp *http.Respon
 // Generated from API version 2023-05-01
 //   - options - VPNServerConfigurationsClientListOptions contains the optional parameters for the VPNServerConfigurationsClient.NewListPager
 //     method.
-func (client *VPNServerConfigurationsClient) NewListPager(options *VPNServerConfigurationsClientListOptions) *runtime.Pager[VPNServerConfigurationsClientListResponse] {
+func (client *VPNServerConfigurationsClient) NewListPager(options *VPNServerConfigurationsClientListOptions) (*runtime.Pager[VPNServerConfigurationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VPNServerConfigurationsClientListResponse]{
 		More: func(page VPNServerConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -315,7 +315,7 @@ func (client *VPNServerConfigurationsClient) listHandleResponse(resp *http.Respo
 //   - resourceGroupName - The resource group name of the VpnServerConfiguration.
 //   - options - VPNServerConfigurationsClientListByResourceGroupOptions contains the optional parameters for the VPNServerConfigurationsClient.NewListByResourceGroupPager
 //     method.
-func (client *VPNServerConfigurationsClient) NewListByResourceGroupPager(resourceGroupName string, options *VPNServerConfigurationsClientListByResourceGroupOptions) *runtime.Pager[VPNServerConfigurationsClientListByResourceGroupResponse] {
+func (client *VPNServerConfigurationsClient) NewListByResourceGroupPager(resourceGroupName string, options *VPNServerConfigurationsClientListByResourceGroupOptions) (*runtime.Pager[VPNServerConfigurationsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VPNServerConfigurationsClientListByResourceGroupResponse]{
 		More: func(page VPNServerConfigurationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -425,8 +425,8 @@ func (client *VPNServerConfigurationsClient) updateTagsCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnServerConfigurationParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -438,3 +438,4 @@ func (client *VPNServerConfigurationsClient) updateTagsHandleResponse(resp *http
 	}
 	return result, nil
 }
+

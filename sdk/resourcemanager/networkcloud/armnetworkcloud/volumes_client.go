@@ -23,7 +23,7 @@ import (
 // VolumesClient contains the methods for the Volumes group.
 // Don't use this type directly, use NewVolumesClient() instead.
 type VolumesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &VolumesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *VolumesClient) createOrUpdateCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, volumeParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -243,7 +243,7 @@ func (client *VolumesClient) getHandleResponse(resp *http.Response) (VolumesClie
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - VolumesClientListByResourceGroupOptions contains the optional parameters for the VolumesClient.NewListByResourceGroupPager
 //     method.
-func (client *VolumesClient) NewListByResourceGroupPager(resourceGroupName string, options *VolumesClientListByResourceGroupOptions) *runtime.Pager[VolumesClientListByResourceGroupResponse] {
+func (client *VolumesClient) NewListByResourceGroupPager(resourceGroupName string, options *VolumesClientListByResourceGroupOptions) (*runtime.Pager[VolumesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VolumesClientListByResourceGroupResponse]{
 		More: func(page VolumesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -304,7 +304,7 @@ func (client *VolumesClient) listByResourceGroupHandleResponse(resp *http.Respon
 // Generated from API version 2023-07-01
 //   - options - VolumesClientListBySubscriptionOptions contains the optional parameters for the VolumesClient.NewListBySubscriptionPager
 //     method.
-func (client *VolumesClient) NewListBySubscriptionPager(options *VolumesClientListBySubscriptionOptions) *runtime.Pager[VolumesClientListBySubscriptionResponse] {
+func (client *VolumesClient) NewListBySubscriptionPager(options *VolumesClientListBySubscriptionOptions) (*runtime.Pager[VolumesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VolumesClientListBySubscriptionResponse]{
 		More: func(page VolumesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -362,11 +362,10 @@ func (client *VolumesClient) listBySubscriptionHandleResponse(resp *http.Respons
 // Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - volumeName - The name of the volume.
-//   - volumeUpdateParameters - The request body.
 //   - options - VolumesClientUpdateOptions contains the optional parameters for the VolumesClient.Update method.
-func (client *VolumesClient) Update(ctx context.Context, resourceGroupName string, volumeName string, volumeUpdateParameters VolumePatchParameters, options *VolumesClientUpdateOptions) (VolumesClientUpdateResponse, error) {
+func (client *VolumesClient) Update(ctx context.Context, resourceGroupName string, volumeName string, options *VolumesClientUpdateOptions) (VolumesClientUpdateResponse, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, volumeName, volumeUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, volumeName, options)
 	if err != nil {
 		return VolumesClientUpdateResponse{}, err
 	}
@@ -383,7 +382,7 @@ func (client *VolumesClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, volumeName string, volumeUpdateParameters VolumePatchParameters, options *VolumesClientUpdateOptions) (*policy.Request, error) {
+func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, volumeName string, options *VolumesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/volumes/{volumeName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -402,8 +401,11 @@ func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGr
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, volumeUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.VolumeUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.VolumeUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
@@ -416,3 +418,4 @@ func (client *VolumesClient) updateHandleResponse(resp *http.Response) (VolumesC
 	}
 	return result, nil
 }
+

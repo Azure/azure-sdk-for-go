@@ -32,7 +32,7 @@ func NewOperationsForMonitorClient(credential azcore.TokenCredential, options *a
 		return nil, err
 	}
 	client := &OperationsForMonitorClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -42,13 +42,13 @@ func NewOperationsForMonitorClient(credential azcore.TokenCredential, options *a
 // Generated from API version 2021-06-03-preview
 //   - options - OperationsForMonitorClientListOptions contains the optional parameters for the OperationsForMonitorClient.NewListPager
 //     method.
-func (client *OperationsForMonitorClient) NewListPager(options *OperationsForMonitorClientListOptions) *runtime.Pager[OperationsForMonitorClientListResponse] {
+func (client *OperationsForMonitorClient) NewListPager(options *OperationsForMonitorClientListOptions) (*runtime.Pager[OperationsForMonitorClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[OperationsForMonitorClientListResponse]{
 		More: func(page OperationsForMonitorClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *OperationsForMonitorClientListResponse) (OperationsForMonitorClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationsForMonitorClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationsForMonitorClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -94,3 +94,4 @@ func (client *OperationsForMonitorClient) listHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

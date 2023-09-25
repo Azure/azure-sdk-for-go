@@ -9,7 +9,7 @@
 package armiothub
 
 const (
-	moduleName    = "armiothub"
+	moduleName = "armiothub"
 	moduleVersion = "v1.2.0"
 )
 
@@ -17,26 +17,26 @@ const (
 type AccessRights string
 
 const (
-	AccessRightsDeviceConnect                                        AccessRights = "DeviceConnect"
-	AccessRightsRegistryRead                                         AccessRights = "RegistryRead"
-	AccessRightsRegistryReadDeviceConnect                            AccessRights = "RegistryRead, DeviceConnect"
-	AccessRightsRegistryReadRegistryWrite                            AccessRights = "RegistryRead, RegistryWrite"
-	AccessRightsRegistryReadRegistryWriteDeviceConnect               AccessRights = "RegistryRead, RegistryWrite, DeviceConnect"
-	AccessRightsRegistryReadRegistryWriteServiceConnect              AccessRights = "RegistryRead, RegistryWrite, ServiceConnect"
+	AccessRightsDeviceConnect AccessRights = "DeviceConnect"
+	AccessRightsRegistryRead AccessRights = "RegistryRead"
+	AccessRightsRegistryReadDeviceConnect AccessRights = "RegistryRead, DeviceConnect"
+	AccessRightsRegistryReadRegistryWrite AccessRights = "RegistryRead, RegistryWrite"
+	AccessRightsRegistryReadRegistryWriteDeviceConnect AccessRights = "RegistryRead, RegistryWrite, DeviceConnect"
+	AccessRightsRegistryReadRegistryWriteServiceConnect AccessRights = "RegistryRead, RegistryWrite, ServiceConnect"
 	AccessRightsRegistryReadRegistryWriteServiceConnectDeviceConnect AccessRights = "RegistryRead, RegistryWrite, ServiceConnect, DeviceConnect"
-	AccessRightsRegistryReadServiceConnect                           AccessRights = "RegistryRead, ServiceConnect"
-	AccessRightsRegistryReadServiceConnectDeviceConnect              AccessRights = "RegistryRead, ServiceConnect, DeviceConnect"
-	AccessRightsRegistryWrite                                        AccessRights = "RegistryWrite"
-	AccessRightsRegistryWriteDeviceConnect                           AccessRights = "RegistryWrite, DeviceConnect"
-	AccessRightsRegistryWriteServiceConnect                          AccessRights = "RegistryWrite, ServiceConnect"
-	AccessRightsRegistryWriteServiceConnectDeviceConnect             AccessRights = "RegistryWrite, ServiceConnect, DeviceConnect"
-	AccessRightsServiceConnect                                       AccessRights = "ServiceConnect"
-	AccessRightsServiceConnectDeviceConnect                          AccessRights = "ServiceConnect, DeviceConnect"
+	AccessRightsRegistryReadServiceConnect AccessRights = "RegistryRead, ServiceConnect"
+	AccessRightsRegistryReadServiceConnectDeviceConnect AccessRights = "RegistryRead, ServiceConnect, DeviceConnect"
+	AccessRightsRegistryWrite AccessRights = "RegistryWrite"
+	AccessRightsRegistryWriteDeviceConnect AccessRights = "RegistryWrite, DeviceConnect"
+	AccessRightsRegistryWriteServiceConnect AccessRights = "RegistryWrite, ServiceConnect"
+	AccessRightsRegistryWriteServiceConnectDeviceConnect AccessRights = "RegistryWrite, ServiceConnect, DeviceConnect"
+	AccessRightsServiceConnect AccessRights = "ServiceConnect"
+	AccessRightsServiceConnectDeviceConnect AccessRights = "ServiceConnect, DeviceConnect"
 )
 
 // PossibleAccessRightsValues returns the possible values for the AccessRights const type.
 func PossibleAccessRightsValues() []AccessRights {
-	return []AccessRights{
+	return []AccessRights{	
 		AccessRightsDeviceConnect,
 		AccessRightsRegistryRead,
 		AccessRightsRegistryReadDeviceConnect,
@@ -60,12 +60,12 @@ type AuthenticationType string
 
 const (
 	AuthenticationTypeIdentityBased AuthenticationType = "identityBased"
-	AuthenticationTypeKeyBased      AuthenticationType = "keyBased"
+	AuthenticationTypeKeyBased AuthenticationType = "keyBased"
 )
 
 // PossibleAuthenticationTypeValues returns the possible values for the AuthenticationType const type.
 func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return []AuthenticationType{
+	return []AuthenticationType{	
 		AuthenticationTypeIdentityBased,
 		AuthenticationTypeKeyBased,
 	}
@@ -76,12 +76,12 @@ type Capabilities string
 
 const (
 	CapabilitiesDeviceManagement Capabilities = "DeviceManagement"
-	CapabilitiesNone             Capabilities = "None"
+	CapabilitiesNone Capabilities = "None"
 )
 
 // PossibleCapabilitiesValues returns the possible values for the Capabilities const type.
 func PossibleCapabilitiesValues() []Capabilities {
-	return []Capabilities{
+	return []Capabilities{	
 		CapabilitiesDeviceManagement,
 		CapabilitiesNone,
 	}
@@ -91,15 +91,15 @@ func PossibleCapabilitiesValues() []Capabilities {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -112,12 +112,12 @@ type DefaultAction string
 
 const (
 	DefaultActionAllow DefaultAction = "Allow"
-	DefaultActionDeny  DefaultAction = "Deny"
+	DefaultActionDeny DefaultAction = "Deny"
 )
 
 // PossibleDefaultActionValues returns the possible values for the DefaultAction const type.
 func PossibleDefaultActionValues() []DefaultAction {
-	return []DefaultAction{
+	return []DefaultAction{	
 		DefaultActionAllow,
 		DefaultActionDeny,
 	}
@@ -134,16 +134,16 @@ func PossibleDefaultActionValues() []DefaultAction {
 type EndpointHealthStatus string
 
 const (
-	EndpointHealthStatusDead      EndpointHealthStatus = "dead"
-	EndpointHealthStatusDegraded  EndpointHealthStatus = "degraded"
-	EndpointHealthStatusHealthy   EndpointHealthStatus = "healthy"
+	EndpointHealthStatusDead EndpointHealthStatus = "dead"
+	EndpointHealthStatusDegraded EndpointHealthStatus = "degraded"
+	EndpointHealthStatusHealthy EndpointHealthStatus = "healthy"
 	EndpointHealthStatusUnhealthy EndpointHealthStatus = "unhealthy"
-	EndpointHealthStatusUnknown   EndpointHealthStatus = "unknown"
+	EndpointHealthStatusUnknown EndpointHealthStatus = "unknown"
 )
 
 // PossibleEndpointHealthStatusValues returns the possible values for the EndpointHealthStatus const type.
 func PossibleEndpointHealthStatusValues() []EndpointHealthStatus {
-	return []EndpointHealthStatus{
+	return []EndpointHealthStatus{	
 		EndpointHealthStatusDead,
 		EndpointHealthStatusDegraded,
 		EndpointHealthStatusHealthy,
@@ -162,7 +162,7 @@ const (
 
 // PossibleIPFilterActionTypeValues returns the possible values for the IPFilterActionType const type.
 func PossibleIPFilterActionTypeValues() []IPFilterActionType {
-	return []IPFilterActionType{
+	return []IPFilterActionType{	
 		IPFilterActionTypeAccept,
 		IPFilterActionTypeReject,
 	}
@@ -173,12 +173,12 @@ type IotHubNameUnavailabilityReason string
 
 const (
 	IotHubNameUnavailabilityReasonAlreadyExists IotHubNameUnavailabilityReason = "AlreadyExists"
-	IotHubNameUnavailabilityReasonInvalid       IotHubNameUnavailabilityReason = "Invalid"
+	IotHubNameUnavailabilityReasonInvalid IotHubNameUnavailabilityReason = "Invalid"
 )
 
 // PossibleIotHubNameUnavailabilityReasonValues returns the possible values for the IotHubNameUnavailabilityReason const type.
 func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityReason {
-	return []IotHubNameUnavailabilityReason{
+	return []IotHubNameUnavailabilityReason{	
 		IotHubNameUnavailabilityReasonAlreadyExists,
 		IotHubNameUnavailabilityReasonInvalid,
 	}
@@ -190,13 +190,13 @@ func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityRe
 type IotHubReplicaRoleType string
 
 const (
-	IotHubReplicaRoleTypePrimary   IotHubReplicaRoleType = "primary"
+	IotHubReplicaRoleTypePrimary IotHubReplicaRoleType = "primary"
 	IotHubReplicaRoleTypeSecondary IotHubReplicaRoleType = "secondary"
 )
 
 // PossibleIotHubReplicaRoleTypeValues returns the possible values for the IotHubReplicaRoleType const type.
 func PossibleIotHubReplicaRoleTypeValues() []IotHubReplicaRoleType {
-	return []IotHubReplicaRoleType{
+	return []IotHubReplicaRoleType{	
 		IotHubReplicaRoleTypePrimary,
 		IotHubReplicaRoleTypeSecondary,
 	}
@@ -217,7 +217,7 @@ const (
 
 // PossibleIotHubSKUValues returns the possible values for the IotHubSKU const type.
 func PossibleIotHubSKUValues() []IotHubSKU {
-	return []IotHubSKU{
+	return []IotHubSKU{	
 		IotHubSKUB1,
 		IotHubSKUB2,
 		IotHubSKUB3,
@@ -232,14 +232,14 @@ func PossibleIotHubSKUValues() []IotHubSKU {
 type IotHubSKUTier string
 
 const (
-	IotHubSKUTierBasic    IotHubSKUTier = "Basic"
-	IotHubSKUTierFree     IotHubSKUTier = "Free"
+	IotHubSKUTierBasic IotHubSKUTier = "Basic"
+	IotHubSKUTierFree IotHubSKUTier = "Free"
 	IotHubSKUTierStandard IotHubSKUTier = "Standard"
 )
 
 // PossibleIotHubSKUTierValues returns the possible values for the IotHubSKUTier const type.
 func PossibleIotHubSKUTierValues() []IotHubSKUTier {
-	return []IotHubSKUTier{
+	return []IotHubSKUTier{	
 		IotHubSKUTierBasic,
 		IotHubSKUTierFree,
 		IotHubSKUTierStandard,
@@ -251,13 +251,13 @@ type IotHubScaleType string
 
 const (
 	IotHubScaleTypeAutomatic IotHubScaleType = "Automatic"
-	IotHubScaleTypeManual    IotHubScaleType = "Manual"
-	IotHubScaleTypeNone      IotHubScaleType = "None"
+	IotHubScaleTypeManual IotHubScaleType = "Manual"
+	IotHubScaleTypeNone IotHubScaleType = "None"
 )
 
 // PossibleIotHubScaleTypeValues returns the possible values for the IotHubScaleType const type.
 func PossibleIotHubScaleTypeValues() []IotHubScaleType {
-	return []IotHubScaleType{
+	return []IotHubScaleType{	
 		IotHubScaleTypeAutomatic,
 		IotHubScaleTypeManual,
 		IotHubScaleTypeNone,
@@ -270,15 +270,15 @@ type JobStatus string
 const (
 	JobStatusCancelled JobStatus = "cancelled"
 	JobStatusCompleted JobStatus = "completed"
-	JobStatusEnqueued  JobStatus = "enqueued"
-	JobStatusFailed    JobStatus = "failed"
-	JobStatusRunning   JobStatus = "running"
-	JobStatusUnknown   JobStatus = "unknown"
+	JobStatusEnqueued JobStatus = "enqueued"
+	JobStatusFailed JobStatus = "failed"
+	JobStatusRunning JobStatus = "running"
+	JobStatusUnknown JobStatus = "unknown"
 )
 
 // PossibleJobStatusValues returns the possible values for the JobStatus const type.
 func PossibleJobStatusValues() []JobStatus {
-	return []JobStatus{
+	return []JobStatus{	
 		JobStatusCancelled,
 		JobStatusCompleted,
 		JobStatusEnqueued,
@@ -292,21 +292,21 @@ func PossibleJobStatusValues() []JobStatus {
 type JobType string
 
 const (
-	JobTypeBackup                    JobType = "backup"
-	JobTypeExport                    JobType = "export"
-	JobTypeFactoryResetDevice        JobType = "factoryResetDevice"
-	JobTypeFirmwareUpdate            JobType = "firmwareUpdate"
-	JobTypeImport                    JobType = "import"
-	JobTypeReadDeviceProperties      JobType = "readDeviceProperties"
-	JobTypeRebootDevice              JobType = "rebootDevice"
-	JobTypeUnknown                   JobType = "unknown"
+	JobTypeBackup JobType = "backup"
+	JobTypeExport JobType = "export"
+	JobTypeFactoryResetDevice JobType = "factoryResetDevice"
+	JobTypeFirmwareUpdate JobType = "firmwareUpdate"
+	JobTypeImport JobType = "import"
+	JobTypeReadDeviceProperties JobType = "readDeviceProperties"
+	JobTypeRebootDevice JobType = "rebootDevice"
+	JobTypeUnknown JobType = "unknown"
 	JobTypeUpdateDeviceConfiguration JobType = "updateDeviceConfiguration"
-	JobTypeWriteDeviceProperties     JobType = "writeDeviceProperties"
+	JobTypeWriteDeviceProperties JobType = "writeDeviceProperties"
 )
 
 // PossibleJobTypeValues returns the possible values for the JobType const type.
 func PossibleJobTypeValues() []JobType {
-	return []JobType{
+	return []JobType{	
 		JobTypeBackup,
 		JobTypeExport,
 		JobTypeFactoryResetDevice,
@@ -329,7 +329,7 @@ const (
 
 // PossibleNetworkRuleIPActionValues returns the possible values for the NetworkRuleIPAction const type.
 func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
-	return []NetworkRuleIPAction{
+	return []NetworkRuleIPAction{	
 		NetworkRuleIPActionAllow,
 	}
 }
@@ -338,15 +338,15 @@ func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
 type PrivateLinkServiceConnectionStatus string
 
 const (
-	PrivateLinkServiceConnectionStatusApproved     PrivateLinkServiceConnectionStatus = "Approved"
+	PrivateLinkServiceConnectionStatusApproved PrivateLinkServiceConnectionStatus = "Approved"
 	PrivateLinkServiceConnectionStatusDisconnected PrivateLinkServiceConnectionStatus = "Disconnected"
-	PrivateLinkServiceConnectionStatusPending      PrivateLinkServiceConnectionStatus = "Pending"
-	PrivateLinkServiceConnectionStatusRejected     PrivateLinkServiceConnectionStatus = "Rejected"
+	PrivateLinkServiceConnectionStatusPending PrivateLinkServiceConnectionStatus = "Pending"
+	PrivateLinkServiceConnectionStatusRejected PrivateLinkServiceConnectionStatus = "Rejected"
 )
 
 // PossiblePrivateLinkServiceConnectionStatusValues returns the possible values for the PrivateLinkServiceConnectionStatus const type.
 func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
-	return []PrivateLinkServiceConnectionStatus{
+	return []PrivateLinkServiceConnectionStatus{	
 		PrivateLinkServiceConnectionStatusApproved,
 		PrivateLinkServiceConnectionStatusDisconnected,
 		PrivateLinkServiceConnectionStatusPending,
@@ -359,12 +359,12 @@ type PublicNetworkAccess string
 
 const (
 	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{
+	return []PublicNetworkAccess{	
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
@@ -376,15 +376,15 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 type ResourceIdentityType string
 
 const (
-	ResourceIdentityTypeNone                       ResourceIdentityType = "None"
-	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = "SystemAssigned"
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
 	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
-	ResourceIdentityTypeUserAssigned               ResourceIdentityType = "UserAssigned"
+	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
 )
 
 // PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{
+	return []ResourceIdentityType{	
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 		ResourceIdentityTypeSystemAssignedUserAssigned,
@@ -396,13 +396,13 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type RouteErrorSeverity string
 
 const (
-	RouteErrorSeverityError   RouteErrorSeverity = "error"
+	RouteErrorSeverityError RouteErrorSeverity = "error"
 	RouteErrorSeverityWarning RouteErrorSeverity = "warning"
 )
 
 // PossibleRouteErrorSeverityValues returns the possible values for the RouteErrorSeverity const type.
 func PossibleRouteErrorSeverityValues() []RouteErrorSeverity {
-	return []RouteErrorSeverity{
+	return []RouteErrorSeverity{	
 		RouteErrorSeverityError,
 		RouteErrorSeverityWarning,
 	}
@@ -413,16 +413,16 @@ type RoutingSource string
 
 const (
 	RoutingSourceDeviceConnectionStateEvents RoutingSource = "DeviceConnectionStateEvents"
-	RoutingSourceDeviceJobLifecycleEvents    RoutingSource = "DeviceJobLifecycleEvents"
-	RoutingSourceDeviceLifecycleEvents       RoutingSource = "DeviceLifecycleEvents"
-	RoutingSourceDeviceMessages              RoutingSource = "DeviceMessages"
-	RoutingSourceInvalid                     RoutingSource = "Invalid"
-	RoutingSourceTwinChangeEvents            RoutingSource = "TwinChangeEvents"
+	RoutingSourceDeviceJobLifecycleEvents RoutingSource = "DeviceJobLifecycleEvents"
+	RoutingSourceDeviceLifecycleEvents RoutingSource = "DeviceLifecycleEvents"
+	RoutingSourceDeviceMessages RoutingSource = "DeviceMessages"
+	RoutingSourceInvalid RoutingSource = "Invalid"
+	RoutingSourceTwinChangeEvents RoutingSource = "TwinChangeEvents"
 )
 
 // PossibleRoutingSourceValues returns the possible values for the RoutingSource const type.
 func PossibleRoutingSourceValues() []RoutingSource {
-	return []RoutingSource{
+	return []RoutingSource{	
 		RoutingSourceDeviceConnectionStateEvents,
 		RoutingSourceDeviceJobLifecycleEvents,
 		RoutingSourceDeviceLifecycleEvents,
@@ -437,14 +437,14 @@ func PossibleRoutingSourceValues() []RoutingSource {
 type RoutingStorageContainerPropertiesEncoding string
 
 const (
-	RoutingStorageContainerPropertiesEncodingAvro        RoutingStorageContainerPropertiesEncoding = "Avro"
+	RoutingStorageContainerPropertiesEncodingAvro RoutingStorageContainerPropertiesEncoding = "Avro"
 	RoutingStorageContainerPropertiesEncodingAvroDeflate RoutingStorageContainerPropertiesEncoding = "AvroDeflate"
-	RoutingStorageContainerPropertiesEncodingJSON        RoutingStorageContainerPropertiesEncoding = "JSON"
+	RoutingStorageContainerPropertiesEncodingJSON RoutingStorageContainerPropertiesEncoding = "JSON"
 )
 
 // PossibleRoutingStorageContainerPropertiesEncodingValues returns the possible values for the RoutingStorageContainerPropertiesEncoding const type.
 func PossibleRoutingStorageContainerPropertiesEncodingValues() []RoutingStorageContainerPropertiesEncoding {
-	return []RoutingStorageContainerPropertiesEncoding{
+	return []RoutingStorageContainerPropertiesEncoding{	
 		RoutingStorageContainerPropertiesEncodingAvro,
 		RoutingStorageContainerPropertiesEncodingAvroDeflate,
 		RoutingStorageContainerPropertiesEncodingJSON,
@@ -455,16 +455,17 @@ func PossibleRoutingStorageContainerPropertiesEncodingValues() []RoutingStorageC
 type TestResultStatus string
 
 const (
-	TestResultStatusFalse     TestResultStatus = "false"
-	TestResultStatusTrue      TestResultStatus = "true"
+	TestResultStatusFalse TestResultStatus = "false"
+	TestResultStatusTrue TestResultStatus = "true"
 	TestResultStatusUndefined TestResultStatus = "undefined"
 )
 
 // PossibleTestResultStatusValues returns the possible values for the TestResultStatus const type.
 func PossibleTestResultStatusValues() []TestResultStatus {
-	return []TestResultStatus{
+	return []TestResultStatus{	
 		TestResultStatusFalse,
 		TestResultStatusTrue,
 		TestResultStatusUndefined,
 	}
 }
+

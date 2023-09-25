@@ -23,7 +23,7 @@ import (
 // ActivityLogAlertsClient contains the methods for the ActivityLogAlerts group.
 // Don't use this type directly, use NewActivityLogAlertsClient() instead.
 type ActivityLogAlertsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewActivityLogAlertsClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &ActivityLogAlertsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -98,8 +98,8 @@ func (client *ActivityLogAlertsClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, activityLogAlertRule); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -237,13 +237,13 @@ func (client *ActivityLogAlertsClient) getHandleResponse(resp *http.Response) (A
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ActivityLogAlertsClientListByResourceGroupOptions contains the optional parameters for the ActivityLogAlertsClient.NewListByResourceGroupPager
 //     method.
-func (client *ActivityLogAlertsClient) NewListByResourceGroupPager(resourceGroupName string, options *ActivityLogAlertsClientListByResourceGroupOptions) *runtime.Pager[ActivityLogAlertsClientListByResourceGroupResponse] {
+func (client *ActivityLogAlertsClient) NewListByResourceGroupPager(resourceGroupName string, options *ActivityLogAlertsClientListByResourceGroupOptions) (*runtime.Pager[ActivityLogAlertsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ActivityLogAlertsClientListByResourceGroupResponse]{
 		More: func(page ActivityLogAlertsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ActivityLogAlertsClientListByResourceGroupResponse) (ActivityLogAlertsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ActivityLogAlertsClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ActivityLogAlertsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -303,13 +303,13 @@ func (client *ActivityLogAlertsClient) listByResourceGroupHandleResponse(resp *h
 // Generated from API version 2020-10-01
 //   - options - ActivityLogAlertsClientListBySubscriptionIDOptions contains the optional parameters for the ActivityLogAlertsClient.NewListBySubscriptionIDPager
 //     method.
-func (client *ActivityLogAlertsClient) NewListBySubscriptionIDPager(options *ActivityLogAlertsClientListBySubscriptionIDOptions) *runtime.Pager[ActivityLogAlertsClientListBySubscriptionIDResponse] {
+func (client *ActivityLogAlertsClient) NewListBySubscriptionIDPager(options *ActivityLogAlertsClientListBySubscriptionIDOptions) (*runtime.Pager[ActivityLogAlertsClientListBySubscriptionIDResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ActivityLogAlertsClientListBySubscriptionIDResponse]{
 		More: func(page ActivityLogAlertsClientListBySubscriptionIDResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ActivityLogAlertsClientListBySubscriptionIDResponse) (ActivityLogAlertsClientListBySubscriptionIDResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ActivityLogAlertsClient.NewListBySubscriptionIDPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ActivityLogAlertsClient.NewListBySubscriptionIDPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -417,8 +417,8 @@ func (client *ActivityLogAlertsClient) updateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, activityLogAlertRulePatch); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -430,3 +430,4 @@ func (client *ActivityLogAlertsClient) updateHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

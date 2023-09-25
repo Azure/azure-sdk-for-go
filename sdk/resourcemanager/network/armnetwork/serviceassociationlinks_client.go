@@ -23,7 +23,7 @@ import (
 // ServiceAssociationLinksClient contains the methods for the ServiceAssociationLinks group.
 // Don't use this type directly, use NewServiceAssociationLinksClient() instead.
 type ServiceAssociationLinksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewServiceAssociationLinksClient(subscriptionID string, credential azcore.T
 	}
 	client := &ServiceAssociationLinksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,3 +109,4 @@ func (client *ServiceAssociationLinksClient) listHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

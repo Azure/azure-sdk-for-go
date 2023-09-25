@@ -22,7 +22,7 @@ import (
 )
 
 // MarketplaceAgreementsServer is a fake server for instances of the armmarketplaceordering.MarketplaceAgreementsClient type.
-type MarketplaceAgreementsServer struct {
+type MarketplaceAgreementsServer struct{
 	// Cancel is the fake for method MarketplaceAgreementsClient.Cancel
 	// HTTP status codes to indicate success: http.StatusOK
 	Cancel func(ctx context.Context, publisherID string, offerID string, planID string, options *armmarketplaceordering.MarketplaceAgreementsClientCancelOptions) (resp azfake.Responder[armmarketplaceordering.MarketplaceAgreementsClientCancelResponse], errResp azfake.ErrorResponder)
@@ -46,6 +46,7 @@ type MarketplaceAgreementsServer struct {
 	// Sign is the fake for method MarketplaceAgreementsClient.Sign
 	// HTTP status codes to indicate success: http.StatusOK
 	Sign func(ctx context.Context, publisherID string, offerID string, planID string, options *armmarketplaceordering.MarketplaceAgreementsClientSignOptions) (resp azfake.Responder[armmarketplaceordering.MarketplaceAgreementsClientSignResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewMarketplaceAgreementsServerTransport creates a new instance of MarketplaceAgreementsServerTransport with the provided implementation.
@@ -127,8 +128,7 @@ func (m *MarketplaceAgreementsServerTransport) dispatchCancel(req *http.Request)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AgreementTerms, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -172,8 +172,7 @@ func (m *MarketplaceAgreementsServerTransport) dispatchCreate(req *http.Request)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AgreementTerms, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -213,8 +212,7 @@ func (m *MarketplaceAgreementsServerTransport) dispatchGet(req *http.Request) (*
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AgreementTerms, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -250,8 +248,7 @@ func (m *MarketplaceAgreementsServerTransport) dispatchGetAgreement(req *http.Re
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AgreementTerms, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -275,8 +272,7 @@ func (m *MarketplaceAgreementsServerTransport) dispatchList(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AgreementTermsArray, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -312,8 +308,8 @@ func (m *MarketplaceAgreementsServerTransport) dispatchSign(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AgreementTerms, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

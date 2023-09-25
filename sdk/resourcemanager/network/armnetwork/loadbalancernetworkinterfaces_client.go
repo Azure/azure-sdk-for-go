@@ -23,7 +23,7 @@ import (
 // LoadBalancerNetworkInterfacesClient contains the methods for the LoadBalancerNetworkInterfaces group.
 // Don't use this type directly, use NewLoadBalancerNetworkInterfacesClient() instead.
 type LoadBalancerNetworkInterfacesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewLoadBalancerNetworkInterfacesClient(subscriptionID string, credential az
 	}
 	client := &LoadBalancerNetworkInterfacesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewLoadBalancerNetworkInterfacesClient(subscriptionID string, credential az
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerNetworkInterfacesClientListOptions contains the optional parameters for the LoadBalancerNetworkInterfacesClient.NewListPager
 //     method.
-func (client *LoadBalancerNetworkInterfacesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesClientListOptions) *runtime.Pager[LoadBalancerNetworkInterfacesClientListResponse] {
+func (client *LoadBalancerNetworkInterfacesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesClientListOptions) (*runtime.Pager[LoadBalancerNetworkInterfacesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LoadBalancerNetworkInterfacesClientListResponse]{
 		More: func(page LoadBalancerNetworkInterfacesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -113,3 +113,4 @@ func (client *LoadBalancerNetworkInterfacesClient) listHandleResponse(resp *http
 	}
 	return result, nil
 }
+

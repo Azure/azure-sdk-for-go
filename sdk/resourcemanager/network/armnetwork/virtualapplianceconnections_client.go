@@ -23,7 +23,7 @@ import (
 // VirtualApplianceConnectionsClient contains the methods for the NetworkVirtualApplianceConnections group.
 // Don't use this type directly, use NewVirtualApplianceConnectionsClient() instead.
 type VirtualApplianceConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualApplianceConnectionsClient(subscriptionID string, credential azco
 	}
 	client := &VirtualApplianceConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -119,8 +119,8 @@ func (client *VirtualApplianceConnectionsClient) createOrUpdateCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, networkVirtualApplianceConnectionParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -272,7 +272,7 @@ func (client *VirtualApplianceConnectionsClient) getHandleResponse(resp *http.Re
 //   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
 //   - options - VirtualApplianceConnectionsClientListOptions contains the optional parameters for the VirtualApplianceConnectionsClient.NewListPager
 //     method.
-func (client *VirtualApplianceConnectionsClient) NewListPager(resourceGroupName string, networkVirtualApplianceName string, options *VirtualApplianceConnectionsClientListOptions) *runtime.Pager[VirtualApplianceConnectionsClientListResponse] {
+func (client *VirtualApplianceConnectionsClient) NewListPager(resourceGroupName string, networkVirtualApplianceName string, options *VirtualApplianceConnectionsClientListOptions) (*runtime.Pager[VirtualApplianceConnectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualApplianceConnectionsClientListResponse]{
 		More: func(page VirtualApplianceConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -334,3 +334,4 @@ func (client *VirtualApplianceConnectionsClient) listHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // MobileNetworksClient contains the methods for the MobileNetworks group.
 // Don't use this type directly, use NewMobileNetworksClient() instead.
 type MobileNetworksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewMobileNetworksClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &MobileNetworksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *MobileNetworksClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -244,7 +244,7 @@ func (client *MobileNetworksClient) getHandleResponse(resp *http.Response) (Mobi
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MobileNetworksClientListByResourceGroupOptions contains the optional parameters for the MobileNetworksClient.NewListByResourceGroupPager
 //     method.
-func (client *MobileNetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *MobileNetworksClientListByResourceGroupOptions) *runtime.Pager[MobileNetworksClientListByResourceGroupResponse] {
+func (client *MobileNetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *MobileNetworksClientListByResourceGroupOptions) (*runtime.Pager[MobileNetworksClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MobileNetworksClientListByResourceGroupResponse]{
 		More: func(page MobileNetworksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -305,7 +305,7 @@ func (client *MobileNetworksClient) listByResourceGroupHandleResponse(resp *http
 // Generated from API version 2023-06-01
 //   - options - MobileNetworksClientListBySubscriptionOptions contains the optional parameters for the MobileNetworksClient.NewListBySubscriptionPager
 //     method.
-func (client *MobileNetworksClient) NewListBySubscriptionPager(options *MobileNetworksClientListBySubscriptionOptions) *runtime.Pager[MobileNetworksClientListBySubscriptionResponse] {
+func (client *MobileNetworksClient) NewListBySubscriptionPager(options *MobileNetworksClientListBySubscriptionOptions) (*runtime.Pager[MobileNetworksClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MobileNetworksClientListBySubscriptionResponse]{
 		More: func(page MobileNetworksClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -405,8 +405,8 @@ func (client *MobileNetworksClient) updateTagsCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -418,3 +418,4 @@ func (client *MobileNetworksClient) updateTagsHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

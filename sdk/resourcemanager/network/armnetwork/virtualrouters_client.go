@@ -23,7 +23,7 @@ import (
 // VirtualRoutersClient contains the methods for the VirtualRouters group.
 // Don't use this type directly, use NewVirtualRoutersClient() instead.
 type VirtualRoutersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualRoutersClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &VirtualRoutersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *VirtualRoutersClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -255,7 +255,7 @@ func (client *VirtualRoutersClient) getHandleResponse(resp *http.Response) (Virt
 //
 // Generated from API version 2023-05-01
 //   - options - VirtualRoutersClientListOptions contains the optional parameters for the VirtualRoutersClient.NewListPager method.
-func (client *VirtualRoutersClient) NewListPager(options *VirtualRoutersClientListOptions) *runtime.Pager[VirtualRoutersClientListResponse] {
+func (client *VirtualRoutersClient) NewListPager(options *VirtualRoutersClientListOptions) (*runtime.Pager[VirtualRoutersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualRoutersClientListResponse]{
 		More: func(page VirtualRoutersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -316,7 +316,7 @@ func (client *VirtualRoutersClient) listHandleResponse(resp *http.Response) (Vir
 //   - resourceGroupName - The name of the resource group.
 //   - options - VirtualRoutersClientListByResourceGroupOptions contains the optional parameters for the VirtualRoutersClient.NewListByResourceGroupPager
 //     method.
-func (client *VirtualRoutersClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualRoutersClientListByResourceGroupOptions) *runtime.Pager[VirtualRoutersClientListByResourceGroupResponse] {
+func (client *VirtualRoutersClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualRoutersClientListByResourceGroupOptions) (*runtime.Pager[VirtualRoutersClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualRoutersClientListByResourceGroupResponse]{
 		More: func(page VirtualRoutersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -374,3 +374,4 @@ func (client *VirtualRoutersClient) listByResourceGroupHandleResponse(resp *http
 	}
 	return result, nil
 }
+

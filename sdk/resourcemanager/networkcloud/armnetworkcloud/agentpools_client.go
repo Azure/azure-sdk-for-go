@@ -23,7 +23,7 @@ import (
 // AgentPoolsClient contains the methods for the AgentPools group.
 // Don't use this type directly, use NewAgentPoolsClient() instead.
 type AgentPoolsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &AgentPoolsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *AgentPoolsClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, agentPoolParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -259,7 +259,7 @@ func (client *AgentPoolsClient) getHandleResponse(resp *http.Response) (AgentPoo
 //   - kubernetesClusterName - The name of the Kubernetes cluster.
 //   - options - AgentPoolsClientListByKubernetesClusterOptions contains the optional parameters for the AgentPoolsClient.NewListByKubernetesClusterPager
 //     method.
-func (client *AgentPoolsClient) NewListByKubernetesClusterPager(resourceGroupName string, kubernetesClusterName string, options *AgentPoolsClientListByKubernetesClusterOptions) *runtime.Pager[AgentPoolsClientListByKubernetesClusterResponse] {
+func (client *AgentPoolsClient) NewListByKubernetesClusterPager(resourceGroupName string, kubernetesClusterName string, options *AgentPoolsClientListByKubernetesClusterOptions) (*runtime.Pager[AgentPoolsClientListByKubernetesClusterResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AgentPoolsClientListByKubernetesClusterResponse]{
 		More: func(page AgentPoolsClientListByKubernetesClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -327,11 +327,10 @@ func (client *AgentPoolsClient) listByKubernetesClusterHandleResponse(resp *http
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - kubernetesClusterName - The name of the Kubernetes cluster.
 //   - agentPoolName - The name of the Kubernetes cluster agent pool.
-//   - agentPoolUpdateParameters - The request body.
 //   - options - AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
-func (client *AgentPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, agentPoolUpdateParameters AgentPoolPatchParameters, options *AgentPoolsClientBeginUpdateOptions) (*runtime.Poller[AgentPoolsClientUpdateResponse], error) {
+func (client *AgentPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, options *AgentPoolsClientBeginUpdateOptions) (*runtime.Poller[AgentPoolsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters, options)
+		resp, err := client.update(ctx, resourceGroupName, kubernetesClusterName, agentPoolName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -349,9 +348,9 @@ func (client *AgentPoolsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
-func (client *AgentPoolsClient) update(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, agentPoolUpdateParameters AgentPoolPatchParameters, options *AgentPoolsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *AgentPoolsClient) update(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, options *AgentPoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, kubernetesClusterName, agentPoolName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -367,7 +366,7 @@ func (client *AgentPoolsClient) update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, agentPoolUpdateParameters AgentPoolPatchParameters, options *AgentPoolsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, options *AgentPoolsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -390,8 +389,12 @@ func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourc
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, agentPoolUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.AgentPoolUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.AgentPoolUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
+

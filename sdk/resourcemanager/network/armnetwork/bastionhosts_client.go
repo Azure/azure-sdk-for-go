@@ -23,7 +23,7 @@ import (
 // BastionHostsClient contains the methods for the BastionHosts group.
 // Don't use this type directly, use NewBastionHostsClient() instead.
 type BastionHostsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewBastionHostsClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &BastionHostsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *BastionHostsClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -252,7 +252,7 @@ func (client *BastionHostsClient) getHandleResponse(resp *http.Response) (Bastio
 //
 // Generated from API version 2023-05-01
 //   - options - BastionHostsClientListOptions contains the optional parameters for the BastionHostsClient.NewListPager method.
-func (client *BastionHostsClient) NewListPager(options *BastionHostsClientListOptions) *runtime.Pager[BastionHostsClientListResponse] {
+func (client *BastionHostsClient) NewListPager(options *BastionHostsClientListOptions) (*runtime.Pager[BastionHostsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BastionHostsClientListResponse]{
 		More: func(page BastionHostsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -313,7 +313,7 @@ func (client *BastionHostsClient) listHandleResponse(resp *http.Response) (Basti
 //   - resourceGroupName - The name of the resource group.
 //   - options - BastionHostsClientListByResourceGroupOptions contains the optional parameters for the BastionHostsClient.NewListByResourceGroupPager
 //     method.
-func (client *BastionHostsClient) NewListByResourceGroupPager(resourceGroupName string, options *BastionHostsClientListByResourceGroupOptions) *runtime.Pager[BastionHostsClientListByResourceGroupResponse] {
+func (client *BastionHostsClient) NewListByResourceGroupPager(resourceGroupName string, options *BastionHostsClientListByResourceGroupOptions) (*runtime.Pager[BastionHostsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BastionHostsClientListByResourceGroupResponse]{
 		More: func(page BastionHostsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -441,7 +441,8 @@ func (client *BastionHostsClient) updateTagsCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

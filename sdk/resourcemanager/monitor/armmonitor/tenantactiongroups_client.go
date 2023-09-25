@@ -35,7 +35,7 @@ func NewTenantActionGroupsClient(credential azcore.TokenCredential, options *arm
 		return nil, err
 	}
 	client := &TenantActionGroupsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -93,8 +93,8 @@ func (client *TenantActionGroupsClient) createOrUpdateCreateRequest(ctx context.
 	req.Raw().Header["x-ms-client-tenant-id"] = []string{xmsClientTenantID}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, actionGroup); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -229,13 +229,13 @@ func (client *TenantActionGroupsClient) getHandleResponse(resp *http.Response) (
 //   - xmsClientTenantID - The tenant ID of the client making the request.
 //   - options - TenantActionGroupsClientListByManagementGroupIDOptions contains the optional parameters for the TenantActionGroupsClient.NewListByManagementGroupIDPager
 //     method.
-func (client *TenantActionGroupsClient) NewListByManagementGroupIDPager(managementGroupID string, xmsClientTenantID string, options *TenantActionGroupsClientListByManagementGroupIDOptions) *runtime.Pager[TenantActionGroupsClientListByManagementGroupIDResponse] {
+func (client *TenantActionGroupsClient) NewListByManagementGroupIDPager(managementGroupID string, xmsClientTenantID string, options *TenantActionGroupsClientListByManagementGroupIDOptions) (*runtime.Pager[TenantActionGroupsClientListByManagementGroupIDResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TenantActionGroupsClientListByManagementGroupIDResponse]{
 		More: func(page TenantActionGroupsClientListByManagementGroupIDResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *TenantActionGroupsClientListByManagementGroupIDResponse) (TenantActionGroupsClientListByManagementGroupIDResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TenantActionGroupsClient.NewListByManagementGroupIDPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TenantActionGroupsClient.NewListByManagementGroupIDPager")
 			req, err := client.listByManagementGroupIDCreateRequest(ctx, managementGroupID, xmsClientTenantID, options)
 			if err != nil {
 				return TenantActionGroupsClientListByManagementGroupIDResponse{}, err
@@ -334,8 +334,8 @@ func (client *TenantActionGroupsClient) updateCreateRequest(ctx context.Context,
 	req.Raw().Header["x-ms-client-tenant-id"] = []string{xmsClientTenantID}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, tenantActionGroupPatch); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -347,3 +347,4 @@ func (client *TenantActionGroupsClient) updateHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

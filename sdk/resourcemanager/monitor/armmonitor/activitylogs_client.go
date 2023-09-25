@@ -23,7 +23,7 @@ import (
 // ActivityLogsClient contains the methods for the ActivityLogs group.
 // Don't use this type directly, use NewActivityLogsClient() instead.
 type ActivityLogsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewActivityLogsClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &ActivityLogsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,25 +49,25 @@ func NewActivityLogsClient(subscriptionID string, credential azcore.TokenCredent
 //   - filter - Reduces the set of data collected.
 //     This argument is required and it also requires at least the start date/time.
 //     The $filter argument is very restricted and allows only the following patterns.
-//   - List events for a resource group: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'
+//     - List events for a resource group: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'
 //     and resourceGroupName eq 'resourceGroupName'.
-//   - List events for resource: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'
+//     - List events for resource: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'
 //     and resourceUri eq 'resourceURI'.
-//   - List events for a subscription in a time range: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp
+//     - List events for a subscription in a time range: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp
 //     le '2014-07-20T04:36:37.6407898Z'.
-//   - List events for a resource provider: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'
+//     - List events for a resource provider: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'
 //     and resourceProvider eq 'resourceProviderName'.
-//   - List events for a correlation Id: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'
+//     - List events for a correlation Id: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'
 //     and correlationId eq 'correlationID'.
 //     NOTE: No other syntax is allowed.
 //   - options - ActivityLogsClientListOptions contains the optional parameters for the ActivityLogsClient.NewListPager method.
-func (client *ActivityLogsClient) NewListPager(filter string, options *ActivityLogsClientListOptions) *runtime.Pager[ActivityLogsClientListResponse] {
+func (client *ActivityLogsClient) NewListPager(filter string, options *ActivityLogsClientListOptions) (*runtime.Pager[ActivityLogsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ActivityLogsClientListResponse]{
 		More: func(page ActivityLogsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ActivityLogsClientListResponse) (ActivityLogsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ActivityLogsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ActivityLogsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -121,3 +121,4 @@ func (client *ActivityLogsClient) listHandleResponse(resp *http.Response) (Activ
 	}
 	return result, nil
 }
+

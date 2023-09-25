@@ -23,7 +23,7 @@ import (
 )
 
 // AutoscaleSettingsServer is a fake server for instances of the armmonitor.AutoscaleSettingsClient type.
-type AutoscaleSettingsServer struct {
+type AutoscaleSettingsServer struct{
 	// CreateOrUpdate is the fake for method AutoscaleSettingsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters armmonitor.AutoscaleSettingResource, options *armmonitor.AutoscaleSettingsClientCreateOrUpdateOptions) (resp azfake.Responder[armmonitor.AutoscaleSettingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -47,6 +47,7 @@ type AutoscaleSettingsServer struct {
 	// Update is the fake for method AutoscaleSettingsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource armmonitor.AutoscaleSettingResourcePatch, options *armmonitor.AutoscaleSettingsClientUpdateOptions) (resp azfake.Responder[armmonitor.AutoscaleSettingsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewAutoscaleSettingsServerTransport creates a new instance of AutoscaleSettingsServerTransport with the provided implementation.
@@ -54,18 +55,18 @@ type AutoscaleSettingsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAutoscaleSettingsServerTransport(srv *AutoscaleSettingsServer) *AutoscaleSettingsServerTransport {
 	return &AutoscaleSettingsServerTransport{
-		srv:                         srv,
+		srv: srv,
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.AutoscaleSettingsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmonitor.AutoscaleSettingsClientListBySubscriptionResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armmonitor.AutoscaleSettingsClientListBySubscriptionResponse]](),
 	}
 }
 
 // AutoscaleSettingsServerTransport connects instances of armmonitor.AutoscaleSettingsClient to instances of AutoscaleSettingsServer.
 // Don't use this type directly, use NewAutoscaleSettingsServerTransport instead.
 type AutoscaleSettingsServerTransport struct {
-	srv                         *AutoscaleSettingsServer
+	srv *AutoscaleSettingsServer
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.AutoscaleSettingsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmonitor.AutoscaleSettingsClientListBySubscriptionResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armmonitor.AutoscaleSettingsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for AutoscaleSettingsServerTransport.
@@ -134,8 +135,7 @@ func (a *AutoscaleSettingsServerTransport) dispatchCreateOrUpdate(req *http.Requ
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AutoscaleSettingResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -167,8 +167,7 @@ func (a *AutoscaleSettingsServerTransport) dispatchDelete(req *http.Request) (*h
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -200,8 +199,7 @@ func (a *AutoscaleSettingsServerTransport) dispatchGet(req *http.Request) (*http
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AutoscaleSettingResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -212,17 +210,17 @@ func (a *AutoscaleSettingsServerTransport) dispatchNewListByResourceGroupPager(r
 	}
 	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/autoscalesettings`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/autoscalesettings`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmonitor.AutoscaleSettingsClientListByResourceGroupResponse, createLink func() string) {
@@ -249,13 +247,13 @@ func (a *AutoscaleSettingsServerTransport) dispatchNewListBySubscriptionPager(re
 	}
 	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/autoscalesettings`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListBySubscriptionPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/autoscalesettings`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := a.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmonitor.AutoscaleSettingsClientListBySubscriptionResponse, createLink func() string) {
@@ -307,8 +305,8 @@ func (a *AutoscaleSettingsServerTransport) dispatchUpdate(req *http.Request) (*h
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AutoscaleSettingResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

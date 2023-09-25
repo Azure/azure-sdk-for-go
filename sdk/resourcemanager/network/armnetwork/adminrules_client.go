@@ -24,7 +24,7 @@ import (
 // AdminRulesClient contains the methods for the AdminRules group.
 // Don't use this type directly, use NewAdminRulesClient() instead.
 type AdminRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewAdminRulesClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &AdminRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -111,8 +111,8 @@ func (client *AdminRulesClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, adminRule); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -295,7 +295,7 @@ func (client *AdminRulesClient) getHandleResponse(resp *http.Response) (AdminRul
 //   - configurationName - The name of the network manager Security Configuration.
 //   - ruleCollectionName - The name of the network manager security Configuration rule collection.
 //   - options - AdminRulesClientListOptions contains the optional parameters for the AdminRulesClient.NewListPager method.
-func (client *AdminRulesClient) NewListPager(resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *AdminRulesClientListOptions) *runtime.Pager[AdminRulesClientListResponse] {
+func (client *AdminRulesClient) NewListPager(resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *AdminRulesClientListOptions) (*runtime.Pager[AdminRulesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AdminRulesClientListResponse]{
 		More: func(page AdminRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -371,3 +371,4 @@ func (client *AdminRulesClient) listHandleResponse(resp *http.Response) (AdminRu
 	}
 	return result, nil
 }
+

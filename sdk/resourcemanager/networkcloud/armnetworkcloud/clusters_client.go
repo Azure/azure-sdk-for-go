@@ -23,7 +23,7 @@ import (
 // ClustersClient contains the methods for the Clusters group.
 // Don't use this type directly, use NewClustersClient() instead.
 type ClustersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &ClustersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -245,8 +245,8 @@ func (client *ClustersClient) deployCreateRequest(ctx context.Context, resourceG
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClusterDeployParameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.ClusterDeployParameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -315,7 +315,7 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
 //     method.
-func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
+func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) (*runtime.Pager[ClustersClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClustersClientListByResourceGroupResponse]{
 		More: func(page ClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -376,7 +376,7 @@ func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Respo
 // Generated from API version 2023-07-01
 //   - options - ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.NewListBySubscriptionPager
 //     method.
-func (client *ClustersClient) NewListBySubscriptionPager(options *ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse] {
+func (client *ClustersClient) NewListBySubscriptionPager(options *ClustersClientListBySubscriptionOptions) (*runtime.Pager[ClustersClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClustersClientListBySubscriptionResponse]{
 		More: func(page ClustersClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -435,11 +435,10 @@ func (client *ClustersClient) listBySubscriptionHandleResponse(resp *http.Respon
 // Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
-//   - clusterUpdateParameters - The request body.
 //   - options - ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
-func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, clusterUpdateParameters ClusterPatchParameters, options *ClustersClientBeginUpdateOptions) (*runtime.Poller[ClustersClientUpdateResponse], error) {
+func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginUpdateOptions) (*runtime.Poller[ClustersClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, clusterName, clusterUpdateParameters, options)
+		resp, err := client.update(ctx, resourceGroupName, clusterName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -457,9 +456,9 @@ func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
-func (client *ClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, clusterUpdateParameters ClusterPatchParameters, options *ClustersClientBeginUpdateOptions) (*http.Response, error) {
+func (client *ClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, clusterUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -475,7 +474,7 @@ func (client *ClustersClient) update(ctx context.Context, resourceGroupName stri
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, clusterUpdateParameters ClusterPatchParameters, options *ClustersClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -494,8 +493,11 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, clusterUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.ClusterUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.ClusterUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
@@ -566,7 +568,8 @@ func (client *ClustersClient) updateVersionCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterUpdateVersionParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

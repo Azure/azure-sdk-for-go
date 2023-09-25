@@ -23,7 +23,7 @@ import (
 // MetricsConfigurationsClient contains the methods for the MetricsConfigurations group.
 // Don't use this type directly, use NewMetricsConfigurationsClient() instead.
 type MetricsConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewMetricsConfigurationsClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &MetricsConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *MetricsConfigurationsClient) createOrUpdateCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, metricsConfigurationParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -261,7 +261,7 @@ func (client *MetricsConfigurationsClient) getHandleResponse(resp *http.Response
 //   - clusterName - The name of the cluster.
 //   - options - MetricsConfigurationsClientListByClusterOptions contains the optional parameters for the MetricsConfigurationsClient.NewListByClusterPager
 //     method.
-func (client *MetricsConfigurationsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *MetricsConfigurationsClientListByClusterOptions) *runtime.Pager[MetricsConfigurationsClientListByClusterResponse] {
+func (client *MetricsConfigurationsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *MetricsConfigurationsClientListByClusterOptions) (*runtime.Pager[MetricsConfigurationsClientListByClusterResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MetricsConfigurationsClientListByClusterResponse]{
 		More: func(page MetricsConfigurationsClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -329,12 +329,11 @@ func (client *MetricsConfigurationsClient) listByClusterHandleResponse(resp *htt
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - metricsConfigurationName - The name of the metrics configuration for the cluster.
-//   - metricsConfigurationUpdateParameters - The request body.
 //   - options - MetricsConfigurationsClientBeginUpdateOptions contains the optional parameters for the MetricsConfigurationsClient.BeginUpdate
 //     method.
-func (client *MetricsConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationUpdateParameters ClusterMetricsConfigurationPatchParameters, options *MetricsConfigurationsClientBeginUpdateOptions) (*runtime.Poller[MetricsConfigurationsClientUpdateResponse], error) {
+func (client *MetricsConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, options *MetricsConfigurationsClientBeginUpdateOptions) (*runtime.Poller[MetricsConfigurationsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters, options)
+		resp, err := client.update(ctx, resourceGroupName, clusterName, metricsConfigurationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -352,9 +351,9 @@ func (client *MetricsConfigurationsClient) BeginUpdate(ctx context.Context, reso
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
-func (client *MetricsConfigurationsClient) update(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationUpdateParameters ClusterMetricsConfigurationPatchParameters, options *MetricsConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *MetricsConfigurationsClient) update(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, options *MetricsConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, metricsConfigurationName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -370,7 +369,7 @@ func (client *MetricsConfigurationsClient) update(ctx context.Context, resourceG
 }
 
 // updateCreateRequest creates the Update request.
-func (client *MetricsConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationUpdateParameters ClusterMetricsConfigurationPatchParameters, options *MetricsConfigurationsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *MetricsConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, options *MetricsConfigurationsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -393,8 +392,12 @@ func (client *MetricsConfigurationsClient) updateCreateRequest(ctx context.Conte
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, metricsConfigurationUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.MetricsConfigurationUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.MetricsConfigurationUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
+

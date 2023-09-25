@@ -23,7 +23,7 @@ import (
 // VirtualNetworkPeeringsClient contains the methods for the VirtualNetworkPeerings group.
 // Don't use this type directly, use NewVirtualNetworkPeeringsClient() instead.
 type VirtualNetworkPeeringsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualNetworkPeeringsClient(subscriptionID string, credential azcore.To
 	}
 	client := &VirtualNetworkPeeringsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *VirtualNetworkPeeringsClient) createOrUpdateCreateRequest(ctx cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, virtualNetworkPeeringParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -274,7 +274,7 @@ func (client *VirtualNetworkPeeringsClient) getHandleResponse(resp *http.Respons
 //   - virtualNetworkName - The name of the virtual network.
 //   - options - VirtualNetworkPeeringsClientListOptions contains the optional parameters for the VirtualNetworkPeeringsClient.NewListPager
 //     method.
-func (client *VirtualNetworkPeeringsClient) NewListPager(resourceGroupName string, virtualNetworkName string, options *VirtualNetworkPeeringsClientListOptions) *runtime.Pager[VirtualNetworkPeeringsClientListResponse] {
+func (client *VirtualNetworkPeeringsClient) NewListPager(resourceGroupName string, virtualNetworkName string, options *VirtualNetworkPeeringsClientListOptions) (*runtime.Pager[VirtualNetworkPeeringsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkPeeringsClientListResponse]{
 		More: func(page VirtualNetworkPeeringsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -336,3 +336,4 @@ func (client *VirtualNetworkPeeringsClient) listHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

@@ -24,7 +24,7 @@ import (
 )
 
 // MetricsServer is a fake server for instances of the armmonitor.MetricsClient type.
-type MetricsServer struct {
+type MetricsServer struct{
 	// List is the fake for method MetricsClient.List
 	// HTTP status codes to indicate success: http.StatusOK
 	List func(ctx context.Context, resourceURI string, options *armmonitor.MetricsClientListOptions) (resp azfake.Responder[armmonitor.MetricsClientListResponse], errResp azfake.ErrorResponder)
@@ -36,6 +36,7 @@ type MetricsServer struct {
 	// ListAtSubscriptionScopePost is the fake for method MetricsClient.ListAtSubscriptionScopePost
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAtSubscriptionScopePost func(ctx context.Context, region string, options *armmonitor.MetricsClientListAtSubscriptionScopePostOptions) (resp azfake.Responder[armmonitor.MetricsClientListAtSubscriptionScopePostResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewMetricsServerTransport creates a new instance of MetricsServerTransport with the provided implementation.
@@ -168,17 +169,17 @@ func (m *MetricsServerTransport) dispatchList(req *http.Request) (*http.Response
 	var options *armmonitor.MetricsClientListOptions
 	if timespanParam != nil || intervalParam != nil || metricnamesParam != nil || aggregationParam != nil || topParam != nil || orderbyParam != nil || filterParam != nil || resultTypeParam != nil || metricnamespaceParam != nil || autoAdjustTimegrainParam != nil || validateDimensionsParam != nil {
 		options = &armmonitor.MetricsClientListOptions{
-			Timespan:            timespanParam,
-			Interval:            intervalParam,
-			Metricnames:         metricnamesParam,
-			Aggregation:         aggregationParam,
-			Top:                 topParam,
-			Orderby:             orderbyParam,
-			Filter:              filterParam,
-			ResultType:          resultTypeParam,
-			Metricnamespace:     metricnamespaceParam,
+			Timespan: timespanParam,
+			Interval: intervalParam,
+			Metricnames: metricnamesParam,
+			Aggregation: aggregationParam,
+			Top: topParam,
+			Orderby: orderbyParam,
+			Filter: filterParam,
+			ResultType: resultTypeParam,
+			Metricnamespace: metricnamespaceParam,
 			AutoAdjustTimegrain: autoAdjustTimegrainParam,
-			ValidateDimensions:  validateDimensionsParam,
+			ValidateDimensions: validateDimensionsParam,
 		}
 	}
 	respr, errRespr := m.srv.List(req.Context(), resourceURIUnescaped, options)
@@ -190,8 +191,7 @@ func (m *MetricsServerTransport) dispatchList(req *http.Request) (*http.Response
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Response, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -284,17 +284,17 @@ func (m *MetricsServerTransport) dispatchListAtSubscriptionScope(req *http.Reque
 	var options *armmonitor.MetricsClientListAtSubscriptionScopeOptions
 	if timespanParam != nil || intervalParam != nil || metricnamesParam != nil || aggregationParam != nil || topParam != nil || orderbyParam != nil || filterParam != nil || resultTypeParam != nil || metricnamespaceParam != nil || autoAdjustTimegrainParam != nil || validateDimensionsParam != nil {
 		options = &armmonitor.MetricsClientListAtSubscriptionScopeOptions{
-			Timespan:            timespanParam,
-			Interval:            intervalParam,
-			Metricnames:         metricnamesParam,
-			Aggregation:         aggregationParam,
-			Top:                 topParam,
-			Orderby:             orderbyParam,
-			Filter:              filterParam,
-			ResultType:          resultTypeParam,
-			Metricnamespace:     metricnamespaceParam,
+			Timespan: timespanParam,
+			Interval: intervalParam,
+			Metricnames: metricnamesParam,
+			Aggregation: aggregationParam,
+			Top: topParam,
+			Orderby: orderbyParam,
+			Filter: filterParam,
+			ResultType: resultTypeParam,
+			Metricnamespace: metricnamespaceParam,
 			AutoAdjustTimegrain: autoAdjustTimegrainParam,
-			ValidateDimensions:  validateDimensionsParam,
+			ValidateDimensions: validateDimensionsParam,
 		}
 	}
 	respr, errRespr := m.srv.ListAtSubscriptionScope(req.Context(), regionUnescaped, options)
@@ -306,8 +306,7 @@ func (m *MetricsServerTransport) dispatchListAtSubscriptionScope(req *http.Reque
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SubscriptionScopeMetricResponse, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -404,18 +403,18 @@ func (m *MetricsServerTransport) dispatchListAtSubscriptionScopePost(req *http.R
 	var options *armmonitor.MetricsClientListAtSubscriptionScopePostOptions
 	if timespanParam != nil || intervalParam != nil || metricnamesParam != nil || aggregationParam != nil || topParam != nil || orderbyParam != nil || filterParam != nil || resultTypeParam != nil || metricnamespaceParam != nil || autoAdjustTimegrainParam != nil || validateDimensionsParam != nil || !reflect.ValueOf(body).IsZero() {
 		options = &armmonitor.MetricsClientListAtSubscriptionScopePostOptions{
-			Timespan:            timespanParam,
-			Interval:            intervalParam,
-			Metricnames:         metricnamesParam,
-			Aggregation:         aggregationParam,
-			Top:                 topParam,
-			Orderby:             orderbyParam,
-			Filter:              filterParam,
-			ResultType:          resultTypeParam,
-			Metricnamespace:     metricnamespaceParam,
+			Timespan: timespanParam,
+			Interval: intervalParam,
+			Metricnames: metricnamesParam,
+			Aggregation: aggregationParam,
+			Top: topParam,
+			Orderby: orderbyParam,
+			Filter: filterParam,
+			ResultType: resultTypeParam,
+			Metricnamespace: metricnamespaceParam,
 			AutoAdjustTimegrain: autoAdjustTimegrainParam,
-			ValidateDimensions:  validateDimensionsParam,
-			Body:                &body,
+			ValidateDimensions: validateDimensionsParam,
+			Body: &body,
 		}
 	}
 	respr, errRespr := m.srv.ListAtSubscriptionScopePost(req.Context(), regionUnescaped, options)
@@ -427,8 +426,8 @@ func (m *MetricsServerTransport) dispatchListAtSubscriptionScopePost(req *http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SubscriptionScopeMetricResponse, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

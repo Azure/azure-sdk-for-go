@@ -367,7 +367,7 @@ type DiagnosticSettingsClientListResponse struct {
 // EventCategoriesClientListResponse contains the response from method EventCategoriesClient.NewListPager.
 type EventCategoriesClientListResponse struct {
 	// A collection of event categories. Currently possible values are: Administrative, Security, ServiceHealth, Alert, Recommendation,
-	// Policy.
+// Policy.
 	EventCategoryCollection
 }
 
@@ -486,7 +486,7 @@ type MetricsClientListResponse struct {
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
 	// Result of the request to list Microsoft.Insights operations. It contains a list of operations and a URL link to get the
-	// next set of results.
+// next set of results.
 	OperationListResult
 }
 
@@ -676,3 +676,4 @@ type VMInsightsClientGetOnboardingStatusResponse struct {
 	// VM Insights onboarding status for a resource.
 	VMInsightsOnboardingStatus
 }
+

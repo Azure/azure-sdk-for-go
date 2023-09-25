@@ -23,7 +23,7 @@ import (
 // ExpressRouteProviderPortsLocationClient contains the methods for the ExpressRouteProviderPortsLocation group.
 // Don't use this type directly, use NewExpressRouteProviderPortsLocationClient() instead.
 type ExpressRouteProviderPortsLocationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRouteProviderPortsLocationClient(subscriptionID string, credentia
 	}
 	client := &ExpressRouteProviderPortsLocationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -97,3 +97,4 @@ func (client *ExpressRouteProviderPortsLocationClient) listHandleResponse(resp *
 	}
 	return result, nil
 }
+

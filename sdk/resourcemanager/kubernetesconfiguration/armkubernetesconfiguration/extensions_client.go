@@ -24,7 +24,7 @@ import (
 // ExtensionsClient contains the methods for the Extensions group.
 // Don't use this type directly, use NewExtensionsClient() instead.
 type ExtensionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &ExtensionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -127,8 +127,8 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, extension); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -302,7 +302,7 @@ func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (Extensio
 //   - clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
 //   - clusterName - The name of the kubernetes cluster.
 //   - options - ExtensionsClientListOptions contains the optional parameters for the ExtensionsClient.NewListPager method.
-func (client *ExtensionsClient) NewListPager(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *ExtensionsClientListOptions) *runtime.Pager[ExtensionsClientListResponse] {
+func (client *ExtensionsClient) NewListPager(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *ExtensionsClientListOptions) (*runtime.Pager[ExtensionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExtensionsClientListResponse]{
 		More: func(page ExtensionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -456,7 +456,8 @@ func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, patchExtension); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

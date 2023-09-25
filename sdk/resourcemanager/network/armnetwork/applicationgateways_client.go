@@ -23,7 +23,7 @@ import (
 // ApplicationGatewaysClient contains the methods for the ApplicationGateways group.
 // Don't use this type directly, use NewApplicationGatewaysClient() instead.
 type ApplicationGatewaysClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewApplicationGatewaysClient(subscriptionID string, credential azcore.Token
 	}
 	client := &ApplicationGatewaysClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -191,8 +191,8 @@ func (client *ApplicationGatewaysClient) backendHealthOnDemandCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, probeRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -265,8 +265,8 @@ func (client *ApplicationGatewaysClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -462,7 +462,7 @@ func (client *ApplicationGatewaysClient) getSSLPredefinedPolicyHandleResponse(re
 //   - resourceGroupName - The name of the resource group.
 //   - options - ApplicationGatewaysClientListOptions contains the optional parameters for the ApplicationGatewaysClient.NewListPager
 //     method.
-func (client *ApplicationGatewaysClient) NewListPager(resourceGroupName string, options *ApplicationGatewaysClientListOptions) *runtime.Pager[ApplicationGatewaysClientListResponse] {
+func (client *ApplicationGatewaysClient) NewListPager(resourceGroupName string, options *ApplicationGatewaysClientListOptions) (*runtime.Pager[ApplicationGatewaysClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewaysClientListResponse]{
 		More: func(page ApplicationGatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -526,7 +526,7 @@ func (client *ApplicationGatewaysClient) listHandleResponse(resp *http.Response)
 // Generated from API version 2023-05-01
 //   - options - ApplicationGatewaysClientListAllOptions contains the optional parameters for the ApplicationGatewaysClient.NewListAllPager
 //     method.
-func (client *ApplicationGatewaysClient) NewListAllPager(options *ApplicationGatewaysClientListAllOptions) *runtime.Pager[ApplicationGatewaysClientListAllResponse] {
+func (client *ApplicationGatewaysClient) NewListAllPager(options *ApplicationGatewaysClientListAllOptions) (*runtime.Pager[ApplicationGatewaysClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewaysClientListAllResponse]{
 		More: func(page ApplicationGatewaysClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -739,7 +739,7 @@ func (client *ApplicationGatewaysClient) listAvailableSSLOptionsHandleResponse(r
 // Generated from API version 2023-05-01
 //   - options - ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions contains the optional parameters for the ApplicationGatewaysClient.NewListAvailableSSLPredefinedPoliciesPager
 //     method.
-func (client *ApplicationGatewaysClient) NewListAvailableSSLPredefinedPoliciesPager(options *ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions) *runtime.Pager[ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse] {
+func (client *ApplicationGatewaysClient) NewListAvailableSSLPredefinedPoliciesPager(options *ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions) (*runtime.Pager[ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse]{
 		More: func(page ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1087,8 +1087,8 @@ func (client *ApplicationGatewaysClient) updateTagsCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1100,3 +1100,4 @@ func (client *ApplicationGatewaysClient) updateTagsHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

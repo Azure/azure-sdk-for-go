@@ -23,7 +23,7 @@ import (
 // L2NetworksClient contains the methods for the L2Networks group.
 // Don't use this type directly, use NewL2NetworksClient() instead.
 type L2NetworksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewL2NetworksClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &L2NetworksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *L2NetworksClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, l2NetworkParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -243,7 +243,7 @@ func (client *L2NetworksClient) getHandleResponse(resp *http.Response) (L2Networ
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - L2NetworksClientListByResourceGroupOptions contains the optional parameters for the L2NetworksClient.NewListByResourceGroupPager
 //     method.
-func (client *L2NetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *L2NetworksClientListByResourceGroupOptions) *runtime.Pager[L2NetworksClientListByResourceGroupResponse] {
+func (client *L2NetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *L2NetworksClientListByResourceGroupOptions) (*runtime.Pager[L2NetworksClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[L2NetworksClientListByResourceGroupResponse]{
 		More: func(page L2NetworksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -304,7 +304,7 @@ func (client *L2NetworksClient) listByResourceGroupHandleResponse(resp *http.Res
 // Generated from API version 2023-07-01
 //   - options - L2NetworksClientListBySubscriptionOptions contains the optional parameters for the L2NetworksClient.NewListBySubscriptionPager
 //     method.
-func (client *L2NetworksClient) NewListBySubscriptionPager(options *L2NetworksClientListBySubscriptionOptions) *runtime.Pager[L2NetworksClientListBySubscriptionResponse] {
+func (client *L2NetworksClient) NewListBySubscriptionPager(options *L2NetworksClientListBySubscriptionOptions) (*runtime.Pager[L2NetworksClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[L2NetworksClientListBySubscriptionResponse]{
 		More: func(page L2NetworksClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -362,11 +362,10 @@ func (client *L2NetworksClient) listBySubscriptionHandleResponse(resp *http.Resp
 // Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l2NetworkName - The name of the L2 network.
-//   - l2NetworkUpdateParameters - The request body.
 //   - options - L2NetworksClientUpdateOptions contains the optional parameters for the L2NetworksClient.Update method.
-func (client *L2NetworksClient) Update(ctx context.Context, resourceGroupName string, l2NetworkName string, l2NetworkUpdateParameters L2NetworkPatchParameters, options *L2NetworksClientUpdateOptions) (L2NetworksClientUpdateResponse, error) {
+func (client *L2NetworksClient) Update(ctx context.Context, resourceGroupName string, l2NetworkName string, options *L2NetworksClientUpdateOptions) (L2NetworksClientUpdateResponse, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, l2NetworkName, l2NetworkUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, l2NetworkName, options)
 	if err != nil {
 		return L2NetworksClientUpdateResponse{}, err
 	}
@@ -383,7 +382,7 @@ func (client *L2NetworksClient) Update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *L2NetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, l2NetworkName string, l2NetworkUpdateParameters L2NetworkPatchParameters, options *L2NetworksClientUpdateOptions) (*policy.Request, error) {
+func (client *L2NetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, l2NetworkName string, options *L2NetworksClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l2Networks/{l2NetworkName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -402,8 +401,11 @@ func (client *L2NetworksClient) updateCreateRequest(ctx context.Context, resourc
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, l2NetworkUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.L2NetworkUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.L2NetworkUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
@@ -416,3 +418,4 @@ func (client *L2NetworksClient) updateHandleResponse(resp *http.Response) (L2Net
 	}
 	return result, nil
 }
+

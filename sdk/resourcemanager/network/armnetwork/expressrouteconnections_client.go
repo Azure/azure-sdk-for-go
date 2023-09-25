@@ -23,7 +23,7 @@ import (
 // ExpressRouteConnectionsClient contains the methods for the ExpressRouteConnections group.
 // Don't use this type directly, use NewExpressRouteConnectionsClient() instead.
 type ExpressRouteConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRouteConnectionsClient(subscriptionID string, credential azcore.T
 	}
 	client := &ExpressRouteConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ExpressRouteConnectionsClient) createOrUpdateCreateRequest(ctx con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, putExpressRouteConnectionParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -324,3 +324,4 @@ func (client *ExpressRouteConnectionsClient) listHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

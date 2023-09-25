@@ -23,7 +23,7 @@ import (
 // VirtualNetworkTapsClient contains the methods for the VirtualNetworkTaps group.
 // Don't use this type directly, use NewVirtualNetworkTapsClient() instead.
 type VirtualNetworkTapsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualNetworkTapsClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &VirtualNetworkTapsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *VirtualNetworkTapsClient) createOrUpdateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -253,7 +253,7 @@ func (client *VirtualNetworkTapsClient) getHandleResponse(resp *http.Response) (
 // Generated from API version 2023-05-01
 //   - options - VirtualNetworkTapsClientListAllOptions contains the optional parameters for the VirtualNetworkTapsClient.NewListAllPager
 //     method.
-func (client *VirtualNetworkTapsClient) NewListAllPager(options *VirtualNetworkTapsClientListAllOptions) *runtime.Pager[VirtualNetworkTapsClientListAllResponse] {
+func (client *VirtualNetworkTapsClient) NewListAllPager(options *VirtualNetworkTapsClientListAllOptions) (*runtime.Pager[VirtualNetworkTapsClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkTapsClientListAllResponse]{
 		More: func(page VirtualNetworkTapsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -314,7 +314,7 @@ func (client *VirtualNetworkTapsClient) listAllHandleResponse(resp *http.Respons
 //   - resourceGroupName - The name of the resource group.
 //   - options - VirtualNetworkTapsClientListByResourceGroupOptions contains the optional parameters for the VirtualNetworkTapsClient.NewListByResourceGroupPager
 //     method.
-func (client *VirtualNetworkTapsClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualNetworkTapsClientListByResourceGroupOptions) *runtime.Pager[VirtualNetworkTapsClientListByResourceGroupResponse] {
+func (client *VirtualNetworkTapsClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualNetworkTapsClientListByResourceGroupOptions) (*runtime.Pager[VirtualNetworkTapsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkTapsClientListByResourceGroupResponse]{
 		More: func(page VirtualNetworkTapsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -424,8 +424,8 @@ func (client *VirtualNetworkTapsClient) updateTagsCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, tapParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -437,3 +437,4 @@ func (client *VirtualNetworkTapsClient) updateTagsHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

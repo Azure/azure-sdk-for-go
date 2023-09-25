@@ -23,7 +23,7 @@ import (
 // ExpressRoutePortsClient contains the methods for the ExpressRoutePorts group.
 // Don't use this type directly, use NewExpressRoutePortsClient() instead.
 type ExpressRoutePortsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRoutePortsClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &ExpressRoutePortsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *ExpressRoutePortsClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -239,8 +239,8 @@ func (client *ExpressRoutePortsClient) generateLOACreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -318,7 +318,7 @@ func (client *ExpressRoutePortsClient) getHandleResponse(resp *http.Response) (E
 // Generated from API version 2023-05-01
 //   - options - ExpressRoutePortsClientListOptions contains the optional parameters for the ExpressRoutePortsClient.NewListPager
 //     method.
-func (client *ExpressRoutePortsClient) NewListPager(options *ExpressRoutePortsClientListOptions) *runtime.Pager[ExpressRoutePortsClientListResponse] {
+func (client *ExpressRoutePortsClient) NewListPager(options *ExpressRoutePortsClientListOptions) (*runtime.Pager[ExpressRoutePortsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRoutePortsClientListResponse]{
 		More: func(page ExpressRoutePortsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -379,7 +379,7 @@ func (client *ExpressRoutePortsClient) listHandleResponse(resp *http.Response) (
 //   - resourceGroupName - The name of the resource group.
 //   - options - ExpressRoutePortsClientListByResourceGroupOptions contains the optional parameters for the ExpressRoutePortsClient.NewListByResourceGroupPager
 //     method.
-func (client *ExpressRoutePortsClient) NewListByResourceGroupPager(resourceGroupName string, options *ExpressRoutePortsClientListByResourceGroupOptions) *runtime.Pager[ExpressRoutePortsClientListByResourceGroupResponse] {
+func (client *ExpressRoutePortsClient) NewListByResourceGroupPager(resourceGroupName string, options *ExpressRoutePortsClientListByResourceGroupOptions) (*runtime.Pager[ExpressRoutePortsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRoutePortsClientListByResourceGroupResponse]{
 		More: func(page ExpressRoutePortsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -489,8 +489,8 @@ func (client *ExpressRoutePortsClient) updateTagsCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -502,3 +502,4 @@ func (client *ExpressRoutePortsClient) updateTagsHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

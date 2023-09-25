@@ -23,7 +23,7 @@ import (
 // VPNSiteLinksClient contains the methods for the VPNSiteLinks group.
 // Don't use this type directly, use NewVPNSiteLinksClient() instead.
 type VPNSiteLinksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVPNSiteLinksClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &VPNSiteLinksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,7 +116,7 @@ func (client *VPNSiteLinksClient) getHandleResponse(resp *http.Response) (VPNSit
 //   - vpnSiteName - The name of the VpnSite.
 //   - options - VPNSiteLinksClientListByVPNSiteOptions contains the optional parameters for the VPNSiteLinksClient.NewListByVPNSitePager
 //     method.
-func (client *VPNSiteLinksClient) NewListByVPNSitePager(resourceGroupName string, vpnSiteName string, options *VPNSiteLinksClientListByVPNSiteOptions) *runtime.Pager[VPNSiteLinksClientListByVPNSiteResponse] {
+func (client *VPNSiteLinksClient) NewListByVPNSitePager(resourceGroupName string, vpnSiteName string, options *VPNSiteLinksClientListByVPNSiteOptions) (*runtime.Pager[VPNSiteLinksClientListByVPNSiteResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VPNSiteLinksClientListByVPNSiteResponse]{
 		More: func(page VPNSiteLinksClientListByVPNSiteResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -178,3 +178,4 @@ func (client *VPNSiteLinksClient) listByVPNSiteHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

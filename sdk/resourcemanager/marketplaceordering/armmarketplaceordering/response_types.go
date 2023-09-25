@@ -47,6 +47,7 @@ type MarketplaceAgreementsClientSignResponse struct {
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// Result of the request to list MarketplaceOrdering operations. It contains a list of operations and a URL link to get the
-	// next set of results.
+// next set of results.
 	OperationListResult
 }
+

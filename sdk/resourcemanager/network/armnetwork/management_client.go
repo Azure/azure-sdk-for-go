@@ -24,7 +24,7 @@ import (
 // ManagementClient contains the methods for the NetworkManagementClient group.
 // Don't use this type directly, use NewManagementClient() instead.
 type ManagementClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &ManagementClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -172,8 +172,8 @@ func (client *ManagementClient) deleteBastionShareableLinkCreateRequest(ctx cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, bslRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -185,7 +185,7 @@ func (client *ManagementClient) deleteBastionShareableLinkCreateRequest(ctx cont
 //   - sessionIDs - The list of sessionids to disconnect.
 //   - options - ManagementClientDisconnectActiveSessionsOptions contains the optional parameters for the ManagementClient.NewDisconnectActiveSessionsPager
 //     method.
-func (client *ManagementClient) NewDisconnectActiveSessionsPager(resourceGroupName string, bastionHostName string, sessionIDs SessionIDs, options *ManagementClientDisconnectActiveSessionsOptions) *runtime.Pager[ManagementClientDisconnectActiveSessionsResponse] {
+func (client *ManagementClient) NewDisconnectActiveSessionsPager(resourceGroupName string, bastionHostName string, sessionIDs SessionIDs, options *ManagementClientDisconnectActiveSessionsOptions) (*runtime.Pager[ManagementClientDisconnectActiveSessionsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagementClientDisconnectActiveSessionsResponse]{
 		More: func(page ManagementClientDisconnectActiveSessionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -237,8 +237,8 @@ func (client *ManagementClient) disconnectActiveSessionsCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sessionIDs); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -378,8 +378,8 @@ func (client *ManagementClient) generatevirtualwanvpnserverconfigurationvpnprofi
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnClientParams); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -396,7 +396,7 @@ func (client *ManagementClient) BeginGetActiveSessions(ctx context.Context, reso
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagementClientGetActiveSessionsResponse) (ManagementClientGetActiveSessionsResponse, error) {
-			req, err := runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+				req, err := runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			if err != nil {
 				return ManagementClientGetActiveSessionsResponse{}, err
 			}
@@ -417,7 +417,7 @@ func (client *ManagementClient) BeginGetActiveSessions(ctx context.Context, reso
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[ManagementClientGetActiveSessionsResponse]]{
 			FinalStateVia: runtime.FinalStateViaLocation,
-			Response:      &pager,
+			Response: &pager,
 		})
 		return poller, err
 	} else {
@@ -490,7 +490,7 @@ func (client *ManagementClient) getActiveSessionsHandleResponse(resp *http.Respo
 //   - bslRequest - Post request for all the Bastion Shareable Link endpoints.
 //   - options - ManagementClientGetBastionShareableLinkOptions contains the optional parameters for the ManagementClient.NewGetBastionShareableLinkPager
 //     method.
-func (client *ManagementClient) NewGetBastionShareableLinkPager(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *ManagementClientGetBastionShareableLinkOptions) *runtime.Pager[ManagementClientGetBastionShareableLinkResponse] {
+func (client *ManagementClient) NewGetBastionShareableLinkPager(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *ManagementClientGetBastionShareableLinkOptions) (*runtime.Pager[ManagementClientGetBastionShareableLinkResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagementClientGetBastionShareableLinkResponse]{
 		More: func(page ManagementClientGetBastionShareableLinkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -542,8 +542,8 @@ func (client *ManagementClient) getBastionShareableLinkCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, bslRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -610,8 +610,8 @@ func (client *ManagementClient) listActiveConnectivityConfigurationsCreateReques
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -678,8 +678,8 @@ func (client *ManagementClient) listActiveSecurityAdminRulesCreateRequest(ctx co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -747,8 +747,8 @@ func (client *ManagementClient) listNetworkManagerEffectiveConnectivityConfigura
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -815,8 +815,8 @@ func (client *ManagementClient) listNetworkManagerEffectiveSecurityAdminRulesCre
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -843,7 +843,7 @@ func (client *ManagementClient) BeginPutBastionShareableLink(ctx context.Context
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagementClientPutBastionShareableLinkResponse) (ManagementClientPutBastionShareableLinkResponse, error) {
-			req, err := runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+				req, err := runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			if err != nil {
 				return ManagementClientPutBastionShareableLinkResponse{}, err
 			}
@@ -864,7 +864,7 @@ func (client *ManagementClient) BeginPutBastionShareableLink(ctx context.Context
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[ManagementClientPutBastionShareableLinkResponse]]{
 			FinalStateVia: runtime.FinalStateViaLocation,
-			Response:      &pager,
+			Response: &pager,
 		})
 		return poller, err
 	} else {
@@ -918,8 +918,8 @@ func (client *ManagementClient) putBastionShareableLinkCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, bslRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -992,3 +992,4 @@ func (client *ManagementClient) supportedSecurityProvidersHandleResponse(resp *h
 	}
 	return result, nil
 }
+

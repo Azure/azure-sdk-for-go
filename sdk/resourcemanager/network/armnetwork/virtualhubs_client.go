@@ -23,7 +23,7 @@ import (
 // VirtualHubsClient contains the methods for the VirtualHubs group.
 // Don't use this type directly, use NewVirtualHubsClient() instead.
 type VirtualHubsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualHubsClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &VirtualHubsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *VirtualHubsClient) createOrUpdateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, virtualHubParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -318,8 +318,8 @@ func (client *VirtualHubsClient) getEffectiveVirtualHubRoutesCreateRequest(ctx c
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.EffectiveRoutesParameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.EffectiveRoutesParameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -394,8 +394,8 @@ func (client *VirtualHubsClient) getInboundRoutesCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, getInboundRoutesParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -468,8 +468,8 @@ func (client *VirtualHubsClient) getOutboundRoutesCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, getOutboundRoutesParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -477,7 +477,7 @@ func (client *VirtualHubsClient) getOutboundRoutesCreateRequest(ctx context.Cont
 //
 // Generated from API version 2023-05-01
 //   - options - VirtualHubsClientListOptions contains the optional parameters for the VirtualHubsClient.NewListPager method.
-func (client *VirtualHubsClient) NewListPager(options *VirtualHubsClientListOptions) *runtime.Pager[VirtualHubsClientListResponse] {
+func (client *VirtualHubsClient) NewListPager(options *VirtualHubsClientListOptions) (*runtime.Pager[VirtualHubsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualHubsClientListResponse]{
 		More: func(page VirtualHubsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -538,7 +538,7 @@ func (client *VirtualHubsClient) listHandleResponse(resp *http.Response) (Virtua
 //   - resourceGroupName - The resource group name of the VirtualHub.
 //   - options - VirtualHubsClientListByResourceGroupOptions contains the optional parameters for the VirtualHubsClient.NewListByResourceGroupPager
 //     method.
-func (client *VirtualHubsClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualHubsClientListByResourceGroupOptions) *runtime.Pager[VirtualHubsClientListByResourceGroupResponse] {
+func (client *VirtualHubsClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualHubsClientListByResourceGroupOptions) (*runtime.Pager[VirtualHubsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualHubsClientListByResourceGroupResponse]{
 		More: func(page VirtualHubsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -647,8 +647,8 @@ func (client *VirtualHubsClient) updateTagsCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, virtualHubParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -660,3 +660,4 @@ func (client *VirtualHubsClient) updateTagsHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

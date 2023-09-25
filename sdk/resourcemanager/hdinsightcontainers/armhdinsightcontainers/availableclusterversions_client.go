@@ -23,7 +23,7 @@ import (
 // AvailableClusterVersionsClient contains the methods for the AvailableClusterVersions group.
 // Don't use this type directly, use NewAvailableClusterVersionsClient() instead.
 type AvailableClusterVersionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAvailableClusterVersionsClient(subscriptionID string, credential azcore.
 	}
 	client := &AvailableClusterVersionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewAvailableClusterVersionsClient(subscriptionID string, credential azcore.
 //   - location - The name of the Azure region.
 //   - options - AvailableClusterVersionsClientListByLocationOptions contains the optional parameters for the AvailableClusterVersionsClient.NewListByLocationPager
 //     method.
-func (client *AvailableClusterVersionsClient) NewListByLocationPager(location string, options *AvailableClusterVersionsClientListByLocationOptions) *runtime.Pager[AvailableClusterVersionsClientListByLocationResponse] {
+func (client *AvailableClusterVersionsClient) NewListByLocationPager(location string, options *AvailableClusterVersionsClientListByLocationOptions) (*runtime.Pager[AvailableClusterVersionsClientListByLocationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AvailableClusterVersionsClientListByLocationResponse]{
 		More: func(page AvailableClusterVersionsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -104,3 +104,4 @@ func (client *AvailableClusterVersionsClient) listByLocationHandleResponse(resp 
 	}
 	return result, nil
 }
+

@@ -24,7 +24,7 @@ import (
 // SubscriptionNetworkManagerConnectionsClient contains the methods for the SubscriptionNetworkManagerConnections group.
 // Don't use this type directly, use NewSubscriptionNetworkManagerConnectionsClient() instead.
 type SubscriptionNetworkManagerConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewSubscriptionNetworkManagerConnectionsClient(subscriptionID string, crede
 	}
 	client := &SubscriptionNetworkManagerConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -91,8 +91,8 @@ func (client *SubscriptionNetworkManagerConnectionsClient) createOrUpdateCreateR
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -212,7 +212,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) getHandleResponse(res
 // Generated from API version 2023-05-01
 //   - options - SubscriptionNetworkManagerConnectionsClientListOptions contains the optional parameters for the SubscriptionNetworkManagerConnectionsClient.NewListPager
 //     method.
-func (client *SubscriptionNetworkManagerConnectionsClient) NewListPager(options *SubscriptionNetworkManagerConnectionsClientListOptions) *runtime.Pager[SubscriptionNetworkManagerConnectionsClientListResponse] {
+func (client *SubscriptionNetworkManagerConnectionsClient) NewListPager(options *SubscriptionNetworkManagerConnectionsClientListOptions) (*runtime.Pager[SubscriptionNetworkManagerConnectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SubscriptionNetworkManagerConnectionsClientListResponse]{
 		More: func(page SubscriptionNetworkManagerConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -272,3 +272,4 @@ func (client *SubscriptionNetworkManagerConnectionsClient) listHandleResponse(re
 	}
 	return result, nil
 }
+

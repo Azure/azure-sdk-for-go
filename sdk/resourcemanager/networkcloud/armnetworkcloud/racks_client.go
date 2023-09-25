@@ -23,7 +23,7 @@ import (
 // RacksClient contains the methods for the Racks group.
 // Don't use this type directly, use NewRacksClient() instead.
 type RacksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRacksClient(subscriptionID string, credential azcore.TokenCredential, op
 	}
 	client := &RacksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -111,8 +111,8 @@ func (client *RacksClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, rackParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -247,7 +247,7 @@ func (client *RacksClient) getHandleResponse(resp *http.Response) (RacksClientGe
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RacksClientListByResourceGroupOptions contains the optional parameters for the RacksClient.NewListByResourceGroupPager
 //     method.
-func (client *RacksClient) NewListByResourceGroupPager(resourceGroupName string, options *RacksClientListByResourceGroupOptions) *runtime.Pager[RacksClientListByResourceGroupResponse] {
+func (client *RacksClient) NewListByResourceGroupPager(resourceGroupName string, options *RacksClientListByResourceGroupOptions) (*runtime.Pager[RacksClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RacksClientListByResourceGroupResponse]{
 		More: func(page RacksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -308,7 +308,7 @@ func (client *RacksClient) listByResourceGroupHandleResponse(resp *http.Response
 // Generated from API version 2023-07-01
 //   - options - RacksClientListBySubscriptionOptions contains the optional parameters for the RacksClient.NewListBySubscriptionPager
 //     method.
-func (client *RacksClient) NewListBySubscriptionPager(options *RacksClientListBySubscriptionOptions) *runtime.Pager[RacksClientListBySubscriptionResponse] {
+func (client *RacksClient) NewListBySubscriptionPager(options *RacksClientListBySubscriptionOptions) (*runtime.Pager[RacksClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RacksClientListBySubscriptionResponse]{
 		More: func(page RacksClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -367,11 +367,10 @@ func (client *RacksClient) listBySubscriptionHandleResponse(resp *http.Response)
 // Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - rackName - The name of the rack.
-//   - rackUpdateParameters - The request body.
 //   - options - RacksClientBeginUpdateOptions contains the optional parameters for the RacksClient.BeginUpdate method.
-func (client *RacksClient) BeginUpdate(ctx context.Context, resourceGroupName string, rackName string, rackUpdateParameters RackPatchParameters, options *RacksClientBeginUpdateOptions) (*runtime.Poller[RacksClientUpdateResponse], error) {
+func (client *RacksClient) BeginUpdate(ctx context.Context, resourceGroupName string, rackName string, options *RacksClientBeginUpdateOptions) (*runtime.Poller[RacksClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, rackName, rackUpdateParameters, options)
+		resp, err := client.update(ctx, resourceGroupName, rackName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -389,9 +388,9 @@ func (client *RacksClient) BeginUpdate(ctx context.Context, resourceGroupName st
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
-func (client *RacksClient) update(ctx context.Context, resourceGroupName string, rackName string, rackUpdateParameters RackPatchParameters, options *RacksClientBeginUpdateOptions) (*http.Response, error) {
+func (client *RacksClient) update(ctx context.Context, resourceGroupName string, rackName string, options *RacksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, rackName, rackUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, rackName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -407,7 +406,7 @@ func (client *RacksClient) update(ctx context.Context, resourceGroupName string,
 }
 
 // updateCreateRequest creates the Update request.
-func (client *RacksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, rackName string, rackUpdateParameters RackPatchParameters, options *RacksClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *RacksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, rackName string, options *RacksClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -426,8 +425,12 @@ func (client *RacksClient) updateCreateRequest(ctx context.Context, resourceGrou
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, rackUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.RackUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.RackUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
+

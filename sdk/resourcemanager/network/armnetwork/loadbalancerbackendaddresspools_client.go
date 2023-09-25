@@ -23,7 +23,7 @@ import (
 // LoadBalancerBackendAddressPoolsClient contains the methods for the LoadBalancerBackendAddressPools group.
 // Don't use this type directly, use NewLoadBalancerBackendAddressPoolsClient() instead.
 type LoadBalancerBackendAddressPoolsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewLoadBalancerBackendAddressPoolsClient(subscriptionID string, credential 
 	}
 	client := &LoadBalancerBackendAddressPoolsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdateCreateRequest
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) getHandleResponse(resp *htt
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerBackendAddressPoolsClientListOptions contains the optional parameters for the LoadBalancerBackendAddressPoolsClient.NewListPager
 //     method.
-func (client *LoadBalancerBackendAddressPoolsClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerBackendAddressPoolsClientListOptions) *runtime.Pager[LoadBalancerBackendAddressPoolsClientListResponse] {
+func (client *LoadBalancerBackendAddressPoolsClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerBackendAddressPoolsClientListOptions) (*runtime.Pager[LoadBalancerBackendAddressPoolsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LoadBalancerBackendAddressPoolsClientListResponse]{
 		More: func(page LoadBalancerBackendAddressPoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *LoadBalancerBackendAddressPoolsClient) listHandleResponse(resp *ht
 	}
 	return result, nil
 }
+

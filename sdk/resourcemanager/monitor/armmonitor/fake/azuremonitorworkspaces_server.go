@@ -24,7 +24,7 @@ import (
 )
 
 // AzureMonitorWorkspacesServer is a fake server for instances of the armmonitor.AzureMonitorWorkspacesClient type.
-type AzureMonitorWorkspacesServer struct {
+type AzureMonitorWorkspacesServer struct{
 	// Create is the fake for method AzureMonitorWorkspacesClient.Create
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	Create func(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, azureMonitorWorkspaceProperties armmonitor.AzureMonitorWorkspaceResource, options *armmonitor.AzureMonitorWorkspacesClientCreateOptions) (resp azfake.Responder[armmonitor.AzureMonitorWorkspacesClientCreateResponse], errResp azfake.ErrorResponder)
@@ -48,6 +48,7 @@ type AzureMonitorWorkspacesServer struct {
 	// Update is the fake for method AzureMonitorWorkspacesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *armmonitor.AzureMonitorWorkspacesClientUpdateOptions) (resp azfake.Responder[armmonitor.AzureMonitorWorkspacesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewAzureMonitorWorkspacesServerTransport creates a new instance of AzureMonitorWorkspacesServerTransport with the provided implementation.
@@ -55,18 +56,18 @@ type AzureMonitorWorkspacesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAzureMonitorWorkspacesServerTransport(srv *AzureMonitorWorkspacesServer) *AzureMonitorWorkspacesServerTransport {
 	return &AzureMonitorWorkspacesServerTransport{
-		srv:                         srv,
+		srv: srv,
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.AzureMonitorWorkspacesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmonitor.AzureMonitorWorkspacesClientListBySubscriptionResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armmonitor.AzureMonitorWorkspacesClientListBySubscriptionResponse]](),
 	}
 }
 
 // AzureMonitorWorkspacesServerTransport connects instances of armmonitor.AzureMonitorWorkspacesClient to instances of AzureMonitorWorkspacesServer.
 // Don't use this type directly, use NewAzureMonitorWorkspacesServerTransport instead.
 type AzureMonitorWorkspacesServerTransport struct {
-	srv                         *AzureMonitorWorkspacesServer
+	srv *AzureMonitorWorkspacesServer
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.AzureMonitorWorkspacesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmonitor.AzureMonitorWorkspacesClientListBySubscriptionResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armmonitor.AzureMonitorWorkspacesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for AzureMonitorWorkspacesServerTransport.
@@ -135,8 +136,7 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchCreate(req *http.Request
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AzureMonitorWorkspaceResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -168,8 +168,7 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchDelete(req *http.Request
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -201,8 +200,7 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchGet(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AzureMonitorWorkspaceResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -213,17 +211,17 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchNewListByResourceGroupPa
 	}
 	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Monitor/accounts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Monitor/accounts`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmonitor.AzureMonitorWorkspacesClientListByResourceGroupResponse, createLink func() string) {
@@ -250,13 +248,13 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchNewListBySubscriptionPag
 	}
 	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Monitor/accounts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListBySubscriptionPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Monitor/accounts`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := a.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmonitor.AzureMonitorWorkspacesClientListBySubscriptionResponse, createLink func() string) {
@@ -314,8 +312,8 @@ func (a *AzureMonitorWorkspacesServerTransport) dispatchUpdate(req *http.Request
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AzureMonitorWorkspaceResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

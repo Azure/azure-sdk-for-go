@@ -23,7 +23,7 @@ import (
 // ExpressRouteCircuitPeeringsClient contains the methods for the ExpressRouteCircuitPeerings group.
 // Don't use this type directly, use NewExpressRouteCircuitPeeringsClient() instead.
 type ExpressRouteCircuitPeeringsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRouteCircuitPeeringsClient(subscriptionID string, credential azco
 	}
 	client := &ExpressRouteCircuitPeeringsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ExpressRouteCircuitPeeringsClient) createOrUpdateCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, peeringParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *ExpressRouteCircuitPeeringsClient) getHandleResponse(resp *http.Re
 //   - circuitName - The name of the express route circuit.
 //   - options - ExpressRouteCircuitPeeringsClientListOptions contains the optional parameters for the ExpressRouteCircuitPeeringsClient.NewListPager
 //     method.
-func (client *ExpressRouteCircuitPeeringsClient) NewListPager(resourceGroupName string, circuitName string, options *ExpressRouteCircuitPeeringsClientListOptions) *runtime.Pager[ExpressRouteCircuitPeeringsClientListResponse] {
+func (client *ExpressRouteCircuitPeeringsClient) NewListPager(resourceGroupName string, circuitName string, options *ExpressRouteCircuitPeeringsClientListOptions) (*runtime.Pager[ExpressRouteCircuitPeeringsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteCircuitPeeringsClientListResponse]{
 		More: func(page ExpressRouteCircuitPeeringsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *ExpressRouteCircuitPeeringsClient) listHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

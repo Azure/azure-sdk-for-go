@@ -23,7 +23,7 @@ import (
 // WebCategoriesClient contains the methods for the WebCategories group.
 // Don't use this type directly, use NewWebCategoriesClient() instead.
 type WebCategoriesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewWebCategoriesClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &WebCategoriesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -107,7 +107,7 @@ func (client *WebCategoriesClient) getHandleResponse(resp *http.Response) (WebCa
 // Generated from API version 2023-05-01
 //   - options - WebCategoriesClientListBySubscriptionOptions contains the optional parameters for the WebCategoriesClient.NewListBySubscriptionPager
 //     method.
-func (client *WebCategoriesClient) NewListBySubscriptionPager(options *WebCategoriesClientListBySubscriptionOptions) *runtime.Pager[WebCategoriesClientListBySubscriptionResponse] {
+func (client *WebCategoriesClient) NewListBySubscriptionPager(options *WebCategoriesClientListBySubscriptionOptions) (*runtime.Pager[WebCategoriesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WebCategoriesClientListBySubscriptionResponse]{
 		More: func(page WebCategoriesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -161,3 +161,4 @@ func (client *WebCategoriesClient) listBySubscriptionHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

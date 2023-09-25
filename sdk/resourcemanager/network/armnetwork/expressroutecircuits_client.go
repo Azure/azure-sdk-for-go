@@ -23,7 +23,7 @@ import (
 // ExpressRouteCircuitsClient contains the methods for the ExpressRouteCircuits group.
 // Don't use this type directly, use NewExpressRouteCircuitsClient() instead.
 type ExpressRouteCircuitsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRouteCircuitsClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &ExpressRouteCircuitsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *ExpressRouteCircuitsClient) createOrUpdateCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -382,7 +382,7 @@ func (client *ExpressRouteCircuitsClient) getStatsHandleResponse(resp *http.Resp
 //   - resourceGroupName - The name of the resource group.
 //   - options - ExpressRouteCircuitsClientListOptions contains the optional parameters for the ExpressRouteCircuitsClient.NewListPager
 //     method.
-func (client *ExpressRouteCircuitsClient) NewListPager(resourceGroupName string, options *ExpressRouteCircuitsClientListOptions) *runtime.Pager[ExpressRouteCircuitsClientListResponse] {
+func (client *ExpressRouteCircuitsClient) NewListPager(resourceGroupName string, options *ExpressRouteCircuitsClientListOptions) (*runtime.Pager[ExpressRouteCircuitsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteCircuitsClientListResponse]{
 		More: func(page ExpressRouteCircuitsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -446,7 +446,7 @@ func (client *ExpressRouteCircuitsClient) listHandleResponse(resp *http.Response
 // Generated from API version 2023-05-01
 //   - options - ExpressRouteCircuitsClientListAllOptions contains the optional parameters for the ExpressRouteCircuitsClient.NewListAllPager
 //     method.
-func (client *ExpressRouteCircuitsClient) NewListAllPager(options *ExpressRouteCircuitsClientListAllOptions) *runtime.Pager[ExpressRouteCircuitsClientListAllResponse] {
+func (client *ExpressRouteCircuitsClient) NewListAllPager(options *ExpressRouteCircuitsClientListAllOptions) (*runtime.Pager[ExpressRouteCircuitsClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteCircuitsClientListAllResponse]{
 		More: func(page ExpressRouteCircuitsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -795,8 +795,8 @@ func (client *ExpressRouteCircuitsClient) updateTagsCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -808,3 +808,4 @@ func (client *ExpressRouteCircuitsClient) updateTagsHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

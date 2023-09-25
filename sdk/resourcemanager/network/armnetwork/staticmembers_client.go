@@ -24,7 +24,7 @@ import (
 // StaticMembersClient contains the methods for the StaticMembers group.
 // Don't use this type directly, use NewStaticMembersClient() instead.
 type StaticMembersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewStaticMembersClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &StaticMembersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -106,8 +106,8 @@ func (client *StaticMembersClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -257,7 +257,7 @@ func (client *StaticMembersClient) getHandleResponse(resp *http.Response) (Stati
 //   - networkManagerName - The name of the network manager.
 //   - networkGroupName - The name of the network group.
 //   - options - StaticMembersClientListOptions contains the optional parameters for the StaticMembersClient.NewListPager method.
-func (client *StaticMembersClient) NewListPager(resourceGroupName string, networkManagerName string, networkGroupName string, options *StaticMembersClientListOptions) *runtime.Pager[StaticMembersClientListResponse] {
+func (client *StaticMembersClient) NewListPager(resourceGroupName string, networkManagerName string, networkGroupName string, options *StaticMembersClientListOptions) (*runtime.Pager[StaticMembersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[StaticMembersClientListResponse]{
 		More: func(page StaticMembersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -329,3 +329,4 @@ func (client *StaticMembersClient) listHandleResponse(resp *http.Response) (Stat
 	}
 	return result, nil
 }
+

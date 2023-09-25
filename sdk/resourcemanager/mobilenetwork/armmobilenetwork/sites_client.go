@@ -23,7 +23,7 @@ import (
 // SitesClient contains the methods for the Sites group.
 // Don't use this type directly, use NewSitesClient() instead.
 type SitesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSitesClient(subscriptionID string, credential azcore.TokenCredential, op
 	}
 	client := &SitesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -264,8 +264,8 @@ func (client *SitesClient) deletePacketCoreCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -338,7 +338,7 @@ func (client *SitesClient) getHandleResponse(resp *http.Response) (SitesClientGe
 //   - mobileNetworkName - The name of the mobile network.
 //   - options - SitesClientListByMobileNetworkOptions contains the optional parameters for the SitesClient.NewListByMobileNetworkPager
 //     method.
-func (client *SitesClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *SitesClientListByMobileNetworkOptions) *runtime.Pager[SitesClientListByMobileNetworkResponse] {
+func (client *SitesClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *SitesClientListByMobileNetworkOptions) (*runtime.Pager[SitesClientListByMobileNetworkResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SitesClientListByMobileNetworkResponse]{
 		More: func(page SitesClientListByMobileNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -450,8 +450,8 @@ func (client *SitesClient) updateTagsCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -463,3 +463,4 @@ func (client *SitesClient) updateTagsHandleResponse(resp *http.Response) (SitesC
 	}
 	return result, nil
 }
+

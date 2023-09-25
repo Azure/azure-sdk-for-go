@@ -23,7 +23,7 @@ import (
 // VirtualRouterPeeringsClient contains the methods for the VirtualRouterPeerings group.
 // Don't use this type directly, use NewVirtualRouterPeeringsClient() instead.
 type VirtualRouterPeeringsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualRouterPeeringsClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &VirtualRouterPeeringsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *VirtualRouterPeeringsClient) createOrUpdateCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *VirtualRouterPeeringsClient) getHandleResponse(resp *http.Response
 //   - virtualRouterName - The name of the Virtual Router.
 //   - options - VirtualRouterPeeringsClientListOptions contains the optional parameters for the VirtualRouterPeeringsClient.NewListPager
 //     method.
-func (client *VirtualRouterPeeringsClient) NewListPager(resourceGroupName string, virtualRouterName string, options *VirtualRouterPeeringsClientListOptions) *runtime.Pager[VirtualRouterPeeringsClientListResponse] {
+func (client *VirtualRouterPeeringsClient) NewListPager(resourceGroupName string, virtualRouterName string, options *VirtualRouterPeeringsClientListOptions) (*runtime.Pager[VirtualRouterPeeringsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualRouterPeeringsClientListResponse]{
 		More: func(page VirtualRouterPeeringsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *VirtualRouterPeeringsClient) listHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

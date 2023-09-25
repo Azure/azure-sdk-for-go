@@ -23,7 +23,7 @@ import (
 // ExpressRoutePortsLocationsClient contains the methods for the ExpressRoutePortsLocations group.
 // Don't use this type directly, use NewExpressRoutePortsLocationsClient() instead.
 type ExpressRoutePortsLocationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRoutePortsLocationsClient(subscriptionID string, credential azcor
 	}
 	client := &ExpressRoutePortsLocationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -107,7 +107,7 @@ func (client *ExpressRoutePortsLocationsClient) getHandleResponse(resp *http.Res
 // Generated from API version 2023-05-01
 //   - options - ExpressRoutePortsLocationsClientListOptions contains the optional parameters for the ExpressRoutePortsLocationsClient.NewListPager
 //     method.
-func (client *ExpressRoutePortsLocationsClient) NewListPager(options *ExpressRoutePortsLocationsClientListOptions) *runtime.Pager[ExpressRoutePortsLocationsClientListResponse] {
+func (client *ExpressRoutePortsLocationsClient) NewListPager(options *ExpressRoutePortsLocationsClientListOptions) (*runtime.Pager[ExpressRoutePortsLocationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRoutePortsLocationsClientListResponse]{
 		More: func(page ExpressRoutePortsLocationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -161,3 +161,4 @@ func (client *ExpressRoutePortsLocationsClient) listHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

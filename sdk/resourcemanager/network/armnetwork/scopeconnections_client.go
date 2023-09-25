@@ -24,7 +24,7 @@ import (
 // ScopeConnectionsClient contains the methods for the ScopeConnections group.
 // Don't use this type directly, use NewScopeConnectionsClient() instead.
 type ScopeConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewScopeConnectionsClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &ScopeConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,8 +101,8 @@ func (client *ScopeConnectionsClient) createOrUpdateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -242,7 +242,7 @@ func (client *ScopeConnectionsClient) getHandleResponse(resp *http.Response) (Sc
 //   - networkManagerName - The name of the network manager.
 //   - options - ScopeConnectionsClientListOptions contains the optional parameters for the ScopeConnectionsClient.NewListPager
 //     method.
-func (client *ScopeConnectionsClient) NewListPager(resourceGroupName string, networkManagerName string, options *ScopeConnectionsClientListOptions) *runtime.Pager[ScopeConnectionsClientListResponse] {
+func (client *ScopeConnectionsClient) NewListPager(resourceGroupName string, networkManagerName string, options *ScopeConnectionsClientListOptions) (*runtime.Pager[ScopeConnectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ScopeConnectionsClientListResponse]{
 		More: func(page ScopeConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -310,3 +310,4 @@ func (client *ScopeConnectionsClient) listHandleResponse(resp *http.Response) (S
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // UpdatesClient contains the methods for the Updates group.
 // Don't use this type directly, use NewUpdatesClient() instead.
 type UpdatesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &UpdatesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -52,7 +52,7 @@ func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - resourceType - Resource type
 //   - resourceName - Resource identifier
 //   - options - UpdatesClientListOptions contains the optional parameters for the UpdatesClient.NewListPager method.
-func (client *UpdatesClient) NewListPager(resourceGroupName string, providerName string, resourceType string, resourceName string, options *UpdatesClientListOptions) *runtime.Pager[UpdatesClientListResponse] {
+func (client *UpdatesClient) NewListPager(resourceGroupName string, providerName string, resourceType string, resourceName string, options *UpdatesClientListOptions) (*runtime.Pager[UpdatesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[UpdatesClientListResponse]{
 		More: func(page UpdatesClientListResponse) bool {
 			return false
@@ -127,7 +127,7 @@ func (client *UpdatesClient) listHandleResponse(resp *http.Response) (UpdatesCli
 //   - resourceType - Resource type
 //   - resourceName - Resource identifier
 //   - options - UpdatesClientListParentOptions contains the optional parameters for the UpdatesClient.NewListParentPager method.
-func (client *UpdatesClient) NewListParentPager(resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *UpdatesClientListParentOptions) *runtime.Pager[UpdatesClientListParentResponse] {
+func (client *UpdatesClient) NewListParentPager(resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *UpdatesClientListParentOptions) (*runtime.Pager[UpdatesClientListParentResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[UpdatesClientListParentResponse]{
 		More: func(page UpdatesClientListParentResponse) bool {
 			return false
@@ -199,3 +199,4 @@ func (client *UpdatesClient) listParentHandleResponse(resp *http.Response) (Upda
 	}
 	return result, nil
 }
+

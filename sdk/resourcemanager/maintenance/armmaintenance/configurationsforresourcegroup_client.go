@@ -23,7 +23,7 @@ import (
 // ConfigurationsForResourceGroupClient contains the methods for the MaintenanceConfigurationsForResourceGroup group.
 // Don't use this type directly, use NewConfigurationsForResourceGroupClient() instead.
 type ConfigurationsForResourceGroupClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewConfigurationsForResourceGroupClient(subscriptionID string, credential a
 	}
 	client := &ConfigurationsForResourceGroupClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewConfigurationsForResourceGroupClient(subscriptionID string, credential a
 //   - resourceGroupName - Resource Group Name
 //   - options - ConfigurationsForResourceGroupClientListOptions contains the optional parameters for the ConfigurationsForResourceGroupClient.NewListPager
 //     method.
-func (client *ConfigurationsForResourceGroupClient) NewListPager(resourceGroupName string, options *ConfigurationsForResourceGroupClientListOptions) *runtime.Pager[ConfigurationsForResourceGroupClientListResponse] {
+func (client *ConfigurationsForResourceGroupClient) NewListPager(resourceGroupName string, options *ConfigurationsForResourceGroupClientListOptions) (*runtime.Pager[ConfigurationsForResourceGroupClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationsForResourceGroupClientListResponse]{
 		More: func(page ConfigurationsForResourceGroupClientListResponse) bool {
 			return false
@@ -102,3 +102,4 @@ func (client *ConfigurationsForResourceGroupClient) listHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

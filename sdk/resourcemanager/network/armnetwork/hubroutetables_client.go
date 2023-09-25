@@ -23,7 +23,7 @@ import (
 // HubRouteTablesClient contains the methods for the HubRouteTables group.
 // Don't use this type directly, use NewHubRouteTablesClient() instead.
 type HubRouteTablesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewHubRouteTablesClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &HubRouteTablesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *HubRouteTablesClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, routeTableParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,7 +269,7 @@ func (client *HubRouteTablesClient) getHandleResponse(resp *http.Response) (HubR
 //   - resourceGroupName - The resource group name of the VirtualHub.
 //   - virtualHubName - The name of the VirtualHub.
 //   - options - HubRouteTablesClientListOptions contains the optional parameters for the HubRouteTablesClient.NewListPager method.
-func (client *HubRouteTablesClient) NewListPager(resourceGroupName string, virtualHubName string, options *HubRouteTablesClientListOptions) *runtime.Pager[HubRouteTablesClientListResponse] {
+func (client *HubRouteTablesClient) NewListPager(resourceGroupName string, virtualHubName string, options *HubRouteTablesClientListOptions) (*runtime.Pager[HubRouteTablesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[HubRouteTablesClientListResponse]{
 		More: func(page HubRouteTablesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -331,3 +331,4 @@ func (client *HubRouteTablesClient) listHandleResponse(resp *http.Response) (Hub
 	}
 	return result, nil
 }
+

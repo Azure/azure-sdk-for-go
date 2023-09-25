@@ -89,3 +89,4 @@ type ServiceConfigurationsClientUpdateResponse struct {
 	// The service configuration details associated with the target resource.
 	ServiceConfigurationResource
 }
+

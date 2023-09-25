@@ -62,27 +62,27 @@ type AccountKeys struct {
 // AccountProperties - Additional Map account properties
 type AccountProperties struct {
 	// Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule
-	// elements are included in the request body, all CORS rules will be deleted, and
-	// CORS will be disabled for the Blob service.
+// elements are included in the request body, all CORS rules will be deleted, and
+// CORS will be disabled for the Blob service.
 	Cors *CorsRules
 
 	// Allows toggle functionality on Azure Policy to disable Azure Maps local authentication support. This will disable Shared
-	// Keys and Shared Access Signature Token authentication from any usage.
+// Keys and Shared Access Signature Token authentication from any usage.
 	DisableLocalAuth *bool
 
 	// (Optional) Discouraged to include in resource definition. Only needed where it is possible to disable platform (AKA infrastructure)
-	// encryption. Azure SQL TDE is an example of this. Values are enabled
-	// and disabled.
+// encryption. Azure SQL TDE is an example of this. Values are enabled
+// and disabled.
 	Encryption *Encryption
 
 	// The array of associated resources to the Map account. Linked resource in the array cannot individually update, you must
-	// update all linked resources in the array together. These resources may be used
-	// on operations on the Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s) permissions to those
-	// resource(s).
+// update all linked resources in the array together. These resources may be used
+// on operations on the Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s) permissions to those
+// resource(s).
 	LinkedResources []*LinkedResource
 
 	// READ-ONLY; The provisioning state of the Map account resource, Account updates can only be performed on terminal states.
-	// Terminal states: Succeeded and Failed
+// Terminal states: Succeeded and Failed
 	ProvisioningState *string
 
 	// READ-ONLY; A unique identifier for the maps account
@@ -93,30 +93,30 @@ type AccountProperties struct {
 // is provided by Azure Maps Role Based Access (RBAC) identity and access.
 type AccountSasParameters struct {
 	// REQUIRED; The date time offset of when the token validity expires. For example "2017-05-24T10:42:03.1567373Z". Maximum
-	// duration allowed is 24 hours between start and expiry.
+// duration allowed is 24 hours between start and expiry.
 	Expiry *string
 
 	// REQUIRED; Required parameter which represents the desired maximum request per second to allowed for the given SAS token.
-	// This does not guarantee perfect accuracy in measurements but provides application safe
-	// guards of abuse with eventual enforcement.
+// This does not guarantee perfect accuracy in measurements but provides application safe
+// guards of abuse with eventual enforcement.
 	MaxRatePerSecond *int32
 
 	// REQUIRED; The principal Id also known as the object Id of a User Assigned Managed Identity currently assigned to the Map
-	// Account. To assign a Managed Identity of the account, use operation Create or Update an
-	// assign a User Assigned Identity resource Id.
+// Account. To assign a Managed Identity of the account, use operation Create or Update an
+// assign a User Assigned Identity resource Id.
 	PrincipalID *string
 
 	// REQUIRED; The Map account key to use for signing. Picking primaryKey or secondaryKey will use the Map account Shared Keys,
-	// and using managedIdentity will use the auto-renewed private key to sign the SAS.
+// and using managedIdentity will use the auto-renewed private key to sign the SAS.
 	SigningKey *SigningKey
 
 	// REQUIRED; The date time offset of when the token validity begins. For example "2017-05-24T10:42:03.1567373Z". Maximum duration
-	// allowed is 24 hours between start and expiry.
+// allowed is 24 hours between start and expiry.
 	Start *string
 
 	// Optional, allows control of which region locations are permitted access to Azure Maps REST APIs with the SAS token. Example:
-	// "eastus", "westus2". Omitting this parameter will allow all region
-	// locations to be accessible.
+// "eastus", "westus2". Omitting this parameter will allow all region
+// locations to be accessible.
 	Regions []*string
 }
 
@@ -142,8 +142,8 @@ type AccountUpdateParameters struct {
 	SKU *SKU
 
 	// Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this
-	// resource (across resource groups). A maximum of 15 tags can be provided for a
-	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
+// resource (across resource groups). A maximum of 15 tags can be provided for a
+// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
 	Tags map[string]*string
 }
 
@@ -159,7 +159,7 @@ type Accounts struct {
 // CorsRule - Specifies a CORS rule for the Map Account.
 type CorsRule struct {
 	// REQUIRED; Required if CorsRule element is present. A list of origin domains that will be allowed via CORS, or "*" to allow
-	// all domains
+// all domains
 	AllowedOrigins []*string
 }
 
@@ -217,8 +217,8 @@ type CreatorUpdateParameters struct {
 	Properties *CreatorProperties
 
 	// Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this
-	// resource (across resource groups). A maximum of 15 tags can be provided for a
-	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
+// resource (across resource groups). A maximum of 15 tags can be provided for a
+// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
 	Tags map[string]*string
 }
 
@@ -228,7 +228,7 @@ type CustomerManagedKeyEncryption struct {
 	KeyEncryptionKeyIdentity *CustomerManagedKeyEncryptionKeyIdentity
 
 	// key encryption key Url, versioned or non-versioned. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
-	// or https://contosovault.vault.azure.net/keys/contosokek.
+// or https://contosovault.vault.azure.net/keys/contosokek.
 	KeyEncryptionKeyURL *string
 }
 
@@ -236,15 +236,15 @@ type CustomerManagedKeyEncryption struct {
 // should be used to auth to Key Vault.
 type CustomerManagedKeyEncryptionKeyIdentity struct {
 	// delegated identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups//providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.
-	// Mutually exclusive with identityType systemAssignedIdentity and userAssignedIdentity - internal use only.
+// Mutually exclusive with identityType systemAssignedIdentity and userAssignedIdentity - internal use only.
 	DelegatedIdentityClientID *string
 
 	// Values can be systemAssignedIdentity or userAssignedIdentity
 	IdentityType *IdentityType
 
 	// user assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/
-	// /providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity
-	// and delegatedResourceIdentity.
+// /providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity
+// and delegatedResourceIdentity.
 	UserAssignedIdentityResourceID *string
 }
 
@@ -336,14 +336,14 @@ type ManagedServiceIdentity struct {
 	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
-	// resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
-	// The dictionary values can be empty objects ({}) in
-	// requests.
+// resource ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+// The dictionary values can be empty objects ({}) in
+// requests.
 	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
-	// identity.
+// identity.
 	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
@@ -518,3 +518,4 @@ type UserAssignedIdentity struct {
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
 }
+

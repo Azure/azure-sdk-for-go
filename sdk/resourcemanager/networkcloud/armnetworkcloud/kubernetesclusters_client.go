@@ -23,7 +23,7 @@ import (
 // KubernetesClustersClient contains the methods for the KubernetesClusters group.
 // Don't use this type directly, use NewKubernetesClustersClient() instead.
 type KubernetesClustersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewKubernetesClustersClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &KubernetesClustersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *KubernetesClustersClient) createOrUpdateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, kubernetesClusterParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -244,7 +244,7 @@ func (client *KubernetesClustersClient) getHandleResponse(resp *http.Response) (
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - KubernetesClustersClientListByResourceGroupOptions contains the optional parameters for the KubernetesClustersClient.NewListByResourceGroupPager
 //     method.
-func (client *KubernetesClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *KubernetesClustersClientListByResourceGroupOptions) *runtime.Pager[KubernetesClustersClientListByResourceGroupResponse] {
+func (client *KubernetesClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *KubernetesClustersClientListByResourceGroupOptions) (*runtime.Pager[KubernetesClustersClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[KubernetesClustersClientListByResourceGroupResponse]{
 		More: func(page KubernetesClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -305,7 +305,7 @@ func (client *KubernetesClustersClient) listByResourceGroupHandleResponse(resp *
 // Generated from API version 2023-07-01
 //   - options - KubernetesClustersClientListBySubscriptionOptions contains the optional parameters for the KubernetesClustersClient.NewListBySubscriptionPager
 //     method.
-func (client *KubernetesClustersClient) NewListBySubscriptionPager(options *KubernetesClustersClientListBySubscriptionOptions) *runtime.Pager[KubernetesClustersClientListBySubscriptionResponse] {
+func (client *KubernetesClustersClient) NewListBySubscriptionPager(options *KubernetesClustersClientListBySubscriptionOptions) (*runtime.Pager[KubernetesClustersClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[KubernetesClustersClientListBySubscriptionResponse]{
 		More: func(page KubernetesClustersClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -423,8 +423,8 @@ func (client *KubernetesClustersClient) restartNodeCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, kubernetesClusterRestartNodeParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -435,12 +435,11 @@ func (client *KubernetesClustersClient) restartNodeCreateRequest(ctx context.Con
 // Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - kubernetesClusterName - The name of the Kubernetes cluster.
-//   - kubernetesClusterUpdateParameters - The request body.
 //   - options - KubernetesClustersClientBeginUpdateOptions contains the optional parameters for the KubernetesClustersClient.BeginUpdate
 //     method.
-func (client *KubernetesClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters KubernetesClusterPatchParameters, options *KubernetesClustersClientBeginUpdateOptions) (*runtime.Poller[KubernetesClustersClientUpdateResponse], error) {
+func (client *KubernetesClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, kubernetesClusterName string, options *KubernetesClustersClientBeginUpdateOptions) (*runtime.Poller[KubernetesClustersClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterUpdateParameters, options)
+		resp, err := client.update(ctx, resourceGroupName, kubernetesClusterName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -458,9 +457,9 @@ func (client *KubernetesClustersClient) BeginUpdate(ctx context.Context, resourc
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
-func (client *KubernetesClustersClient) update(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters KubernetesClusterPatchParameters, options *KubernetesClustersClientBeginUpdateOptions) (*http.Response, error) {
+func (client *KubernetesClustersClient) update(ctx context.Context, resourceGroupName string, kubernetesClusterName string, options *KubernetesClustersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, kubernetesClusterName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -476,7 +475,7 @@ func (client *KubernetesClustersClient) update(ctx context.Context, resourceGrou
 }
 
 // updateCreateRequest creates the Update request.
-func (client *KubernetesClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters KubernetesClusterPatchParameters, options *KubernetesClustersClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *KubernetesClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, options *KubernetesClustersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -495,8 +494,12 @@ func (client *KubernetesClustersClient) updateCreateRequest(ctx context.Context,
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, kubernetesClusterUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.KubernetesClusterUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.KubernetesClusterUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
+

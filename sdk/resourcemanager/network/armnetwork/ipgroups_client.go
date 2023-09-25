@@ -23,7 +23,7 @@ import (
 // IPGroupsClient contains the methods for the IPGroups group.
 // Don't use this type directly, use NewIPGroupsClient() instead.
 type IPGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewIPGroupsClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &IPGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *IPGroupsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -254,7 +254,7 @@ func (client *IPGroupsClient) getHandleResponse(resp *http.Response) (IPGroupsCl
 //
 // Generated from API version 2023-05-01
 //   - options - IPGroupsClientListOptions contains the optional parameters for the IPGroupsClient.NewListPager method.
-func (client *IPGroupsClient) NewListPager(options *IPGroupsClientListOptions) *runtime.Pager[IPGroupsClientListResponse] {
+func (client *IPGroupsClient) NewListPager(options *IPGroupsClientListOptions) (*runtime.Pager[IPGroupsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[IPGroupsClientListResponse]{
 		More: func(page IPGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -315,7 +315,7 @@ func (client *IPGroupsClient) listHandleResponse(resp *http.Response) (IPGroupsC
 //   - resourceGroupName - The name of the resource group.
 //   - options - IPGroupsClientListByResourceGroupOptions contains the optional parameters for the IPGroupsClient.NewListByResourceGroupPager
 //     method.
-func (client *IPGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *IPGroupsClientListByResourceGroupOptions) *runtime.Pager[IPGroupsClientListByResourceGroupResponse] {
+func (client *IPGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *IPGroupsClientListByResourceGroupOptions) (*runtime.Pager[IPGroupsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[IPGroupsClientListByResourceGroupResponse]{
 		More: func(page IPGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -424,8 +424,8 @@ func (client *IPGroupsClient) updateGroupsCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -437,3 +437,4 @@ func (client *IPGroupsClient) updateGroupsHandleResponse(resp *http.Response) (I
 	}
 	return result, nil
 }
+

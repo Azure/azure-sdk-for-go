@@ -22,7 +22,7 @@ import (
 )
 
 // ActionGroupsServer is a fake server for instances of the armmonitor.ActionGroupsClient type.
-type ActionGroupsServer struct {
+type ActionGroupsServer struct{
 	// BeginCreateNotificationsAtActionGroupResourceLevel is the fake for method ActionGroupsClient.BeginCreateNotificationsAtActionGroupResourceLevel
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateNotificationsAtActionGroupResourceLevel func(ctx context.Context, resourceGroupName string, actionGroupName string, notificationRequest armmonitor.NotificationRequestBody, options *armmonitor.ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions) (resp azfake.PollerResponder[armmonitor.ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse], errResp azfake.ErrorResponder)
@@ -58,6 +58,7 @@ type ActionGroupsServer struct {
 	// Update is the fake for method ActionGroupsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch armmonitor.ActionGroupPatchBody, options *armmonitor.ActionGroupsClientUpdateOptions) (resp azfake.Responder[armmonitor.ActionGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewActionGroupsServerTransport creates a new instance of ActionGroupsServerTransport with the provided implementation.
@@ -67,18 +68,18 @@ func NewActionGroupsServerTransport(srv *ActionGroupsServer) *ActionGroupsServer
 	return &ActionGroupsServerTransport{
 		srv: srv,
 		beginCreateNotificationsAtActionGroupResourceLevel: newTracker[azfake.PollerResponder[armmonitor.ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse]](),
-		newListByResourceGroupPager:                        newTracker[azfake.PagerResponder[armmonitor.ActionGroupsClientListByResourceGroupResponse]](),
-		newListBySubscriptionIDPager:                       newTracker[azfake.PagerResponder[armmonitor.ActionGroupsClientListBySubscriptionIDResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.ActionGroupsClientListByResourceGroupResponse]](),
+		newListBySubscriptionIDPager: newTracker[azfake.PagerResponder[armmonitor.ActionGroupsClientListBySubscriptionIDResponse]](),
 	}
 }
 
 // ActionGroupsServerTransport connects instances of armmonitor.ActionGroupsClient to instances of ActionGroupsServer.
 // Don't use this type directly, use NewActionGroupsServerTransport instead.
 type ActionGroupsServerTransport struct {
-	srv                                                *ActionGroupsServer
+	srv *ActionGroupsServer
 	beginCreateNotificationsAtActionGroupResourceLevel *tracker[azfake.PollerResponder[armmonitor.ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse]]
-	newListByResourceGroupPager                        *tracker[azfake.PagerResponder[armmonitor.ActionGroupsClientListByResourceGroupResponse]]
-	newListBySubscriptionIDPager                       *tracker[azfake.PagerResponder[armmonitor.ActionGroupsClientListBySubscriptionIDResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.ActionGroupsClientListByResourceGroupResponse]]
+	newListBySubscriptionIDPager *tracker[azfake.PagerResponder[armmonitor.ActionGroupsClientListBySubscriptionIDResponse]]
 }
 
 // Do implements the policy.Transporter interface for ActionGroupsServerTransport.
@@ -128,28 +129,28 @@ func (a *ActionGroupsServerTransport) dispatchBeginCreateNotificationsAtActionGr
 	}
 	beginCreateNotificationsAtActionGroupResourceLevel := a.beginCreateNotificationsAtActionGroupResourceLevel.get(req)
 	if beginCreateNotificationsAtActionGroupResourceLevel == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/actionGroups/(?P<actionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createNotifications`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmonitor.NotificationRequestBody](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		actionGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("actionGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginCreateNotificationsAtActionGroupResourceLevel(req.Context(), resourceGroupNameUnescaped, actionGroupNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/actionGroups/(?P<actionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createNotifications`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmonitor.NotificationRequestBody](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	actionGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("actionGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.BeginCreateNotificationsAtActionGroupResourceLevel(req.Context(), resourceGroupNameUnescaped, actionGroupNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateNotificationsAtActionGroupResourceLevel = &respr
 		a.beginCreateNotificationsAtActionGroupResourceLevel.add(req, beginCreateNotificationsAtActionGroupResourceLevel)
 	}
@@ -201,8 +202,7 @@ func (a *ActionGroupsServerTransport) dispatchCreateOrUpdate(req *http.Request) 
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ActionGroupResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -234,8 +234,7 @@ func (a *ActionGroupsServerTransport) dispatchDelete(req *http.Request) (*http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -271,8 +270,7 @@ func (a *ActionGroupsServerTransport) dispatchEnableReceiver(req *http.Request) 
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -304,8 +302,7 @@ func (a *ActionGroupsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ActionGroupResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -341,8 +338,7 @@ func (a *ActionGroupsServerTransport) dispatchGetTestNotificationsAtActionGroupR
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TestNotificationDetailsResponse, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -353,17 +349,17 @@ func (a *ActionGroupsServerTransport) dispatchNewListByResourceGroupPager(req *h
 	}
 	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/actionGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/actionGroups`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 	}
@@ -387,13 +383,13 @@ func (a *ActionGroupsServerTransport) dispatchNewListBySubscriptionIDPager(req *
 	}
 	newListBySubscriptionIDPager := a.newListBySubscriptionIDPager.get(req)
 	if newListBySubscriptionIDPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/actionGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListBySubscriptionIDPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/actionGroups`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := a.srv.NewListBySubscriptionIDPager(nil)
 		newListBySubscriptionIDPager = &resp
 		a.newListBySubscriptionIDPager.add(req, newListBySubscriptionIDPager)
 	}
@@ -442,8 +438,8 @@ func (a *ActionGroupsServerTransport) dispatchUpdate(req *http.Request) (*http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ActionGroupResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

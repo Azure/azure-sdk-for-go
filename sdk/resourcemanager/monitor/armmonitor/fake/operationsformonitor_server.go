@@ -20,10 +20,11 @@ import (
 )
 
 // OperationsForMonitorServer is a fake server for instances of the armmonitor.OperationsForMonitorClient type.
-type OperationsForMonitorServer struct {
+type OperationsForMonitorServer struct{
 	// NewListPager is the fake for method OperationsForMonitorClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armmonitor.OperationsForMonitorClientListOptions) (resp azfake.PagerResponder[armmonitor.OperationsForMonitorClientListResponse])
+
 }
 
 // NewOperationsForMonitorServerTransport creates a new instance of OperationsForMonitorServerTransport with the provided implementation.
@@ -31,7 +32,7 @@ type OperationsForMonitorServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewOperationsForMonitorServerTransport(srv *OperationsForMonitorServer) *OperationsForMonitorServerTransport {
 	return &OperationsForMonitorServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armmonitor.OperationsForMonitorClientListResponse]](),
 	}
 }
@@ -39,7 +40,7 @@ func NewOperationsForMonitorServerTransport(srv *OperationsForMonitorServer) *Op
 // OperationsForMonitorServerTransport connects instances of armmonitor.OperationsForMonitorClient to instances of OperationsForMonitorServer.
 // Don't use this type directly, use NewOperationsForMonitorServerTransport instead.
 type OperationsForMonitorServerTransport struct {
-	srv          *OperationsForMonitorServer
+	srv *OperationsForMonitorServer
 	newListPager *tracker[azfake.PagerResponder[armmonitor.OperationsForMonitorClientListResponse]]
 }
 
@@ -74,7 +75,7 @@ func (o *OperationsForMonitorServerTransport) dispatchNewListPager(req *http.Req
 	}
 	newListPager := o.newListPager.get(req)
 	if newListPager == nil {
-		resp := o.srv.NewListPager(nil)
+resp := o.srv.NewListPager(nil)
 		newListPager = &resp
 		o.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmonitor.OperationsForMonitorClientListResponse, createLink func() string) {
@@ -94,3 +95,4 @@ func (o *OperationsForMonitorServerTransport) dispatchNewListPager(req *http.Req
 	}
 	return resp, nil
 }
+

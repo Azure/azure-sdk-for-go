@@ -23,7 +23,7 @@ import (
 // VPNConnectionsClient contains the methods for the VPNConnections group.
 // Don't use this type directly, use NewVPNConnectionsClient() instead.
 type VPNConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVPNConnectionsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &VPNConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -119,8 +119,8 @@ func (client *VPNConnectionsClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnConnectionParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *VPNConnectionsClient) getHandleResponse(resp *http.Response) (VPNC
 //   - gatewayName - The name of the gateway.
 //   - options - VPNConnectionsClientListByVPNGatewayOptions contains the optional parameters for the VPNConnectionsClient.NewListByVPNGatewayPager
 //     method.
-func (client *VPNConnectionsClient) NewListByVPNGatewayPager(resourceGroupName string, gatewayName string, options *VPNConnectionsClientListByVPNGatewayOptions) *runtime.Pager[VPNConnectionsClientListByVPNGatewayResponse] {
+func (client *VPNConnectionsClient) NewListByVPNGatewayPager(resourceGroupName string, gatewayName string, options *VPNConnectionsClientListByVPNGatewayOptions) (*runtime.Pager[VPNConnectionsClientListByVPNGatewayResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VPNConnectionsClientListByVPNGatewayResponse]{
 		More: func(page VPNConnectionsClientListByVPNGatewayResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -408,8 +408,8 @@ func (client *VPNConnectionsClient) startPacketCaptureCreateRequest(ctx context.
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -489,9 +489,10 @@ func (client *VPNConnectionsClient) stopPacketCaptureCreateRequest(ctx context.C
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
 }
+

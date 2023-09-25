@@ -22,7 +22,7 @@ import (
 )
 
 // PrivateLinkResourcesServer is a fake server for instances of the armmonitor.PrivateLinkResourcesClient type.
-type PrivateLinkResourcesServer struct {
+type PrivateLinkResourcesServer struct{
 	// Get is the fake for method PrivateLinkResourcesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, scopeName string, groupName string, options *armmonitor.PrivateLinkResourcesClientGetOptions) (resp azfake.Responder[armmonitor.PrivateLinkResourcesClientGetResponse], errResp azfake.ErrorResponder)
@@ -30,6 +30,7 @@ type PrivateLinkResourcesServer struct {
 	// ListByPrivateLinkScope is the fake for method PrivateLinkResourcesClient.ListByPrivateLinkScope
 	// HTTP status codes to indicate success: http.StatusOK
 	ListByPrivateLinkScope func(ctx context.Context, resourceGroupName string, scopeName string, options *armmonitor.PrivateLinkResourcesClientListByPrivateLinkScopeOptions) (resp azfake.Responder[armmonitor.PrivateLinkResourcesClientListByPrivateLinkScopeResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewPrivateLinkResourcesServerTransport creates a new instance of PrivateLinkResourcesServerTransport with the provided implementation.
@@ -103,8 +104,7 @@ func (p *PrivateLinkResourcesServerTransport) dispatchGet(req *http.Request) (*h
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateLinkResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -136,8 +136,8 @@ func (p *PrivateLinkResourcesServerTransport) dispatchListByPrivateLinkScope(req
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateLinkResourceListResult, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

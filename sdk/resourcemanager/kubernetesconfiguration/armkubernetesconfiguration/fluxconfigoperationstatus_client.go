@@ -23,7 +23,7 @@ import (
 // FluxConfigOperationStatusClient contains the methods for the FluxConfigOperationStatus group.
 // Don't use this type directly, use NewFluxConfigOperationStatusClient() instead.
 type FluxConfigOperationStatusClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewFluxConfigOperationStatusClient(subscriptionID string, credential azcore
 	}
 	client := &FluxConfigOperationStatusClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -123,3 +123,4 @@ func (client *FluxConfigOperationStatusClient) getHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

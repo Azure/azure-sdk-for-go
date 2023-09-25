@@ -23,7 +23,7 @@ import (
 // RouteTablesClient contains the methods for the RouteTables group.
 // Don't use this type directly, use NewRouteTablesClient() instead.
 type RouteTablesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewRouteTablesClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &RouteTablesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *RouteTablesClient) createOrUpdateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -255,7 +255,7 @@ func (client *RouteTablesClient) getHandleResponse(resp *http.Response) (RouteTa
 // Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - RouteTablesClientListOptions contains the optional parameters for the RouteTablesClient.NewListPager method.
-func (client *RouteTablesClient) NewListPager(resourceGroupName string, options *RouteTablesClientListOptions) *runtime.Pager[RouteTablesClientListResponse] {
+func (client *RouteTablesClient) NewListPager(resourceGroupName string, options *RouteTablesClientListOptions) (*runtime.Pager[RouteTablesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RouteTablesClientListResponse]{
 		More: func(page RouteTablesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -318,7 +318,7 @@ func (client *RouteTablesClient) listHandleResponse(resp *http.Response) (RouteT
 //
 // Generated from API version 2023-05-01
 //   - options - RouteTablesClientListAllOptions contains the optional parameters for the RouteTablesClient.NewListAllPager method.
-func (client *RouteTablesClient) NewListAllPager(options *RouteTablesClientListAllOptions) *runtime.Pager[RouteTablesClientListAllResponse] {
+func (client *RouteTablesClient) NewListAllPager(options *RouteTablesClientListAllOptions) (*runtime.Pager[RouteTablesClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RouteTablesClientListAllResponse]{
 		More: func(page RouteTablesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -423,8 +423,8 @@ func (client *RouteTablesClient) updateTagsCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -436,3 +436,4 @@ func (client *RouteTablesClient) updateTagsHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

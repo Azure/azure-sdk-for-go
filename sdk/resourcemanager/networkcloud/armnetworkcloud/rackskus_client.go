@@ -23,7 +23,7 @@ import (
 // RackSKUsClient contains the methods for the RackSKUs group.
 // Don't use this type directly, use NewRackSKUsClient() instead.
 type RackSKUsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRackSKUsClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &RackSKUsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -100,7 +100,7 @@ func (client *RackSKUsClient) getHandleResponse(resp *http.Response) (RackSKUsCl
 // Generated from API version 2023-07-01
 //   - options - RackSKUsClientListBySubscriptionOptions contains the optional parameters for the RackSKUsClient.NewListBySubscriptionPager
 //     method.
-func (client *RackSKUsClient) NewListBySubscriptionPager(options *RackSKUsClientListBySubscriptionOptions) *runtime.Pager[RackSKUsClientListBySubscriptionResponse] {
+func (client *RackSKUsClient) NewListBySubscriptionPager(options *RackSKUsClientListBySubscriptionOptions) (*runtime.Pager[RackSKUsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RackSKUsClientListBySubscriptionResponse]{
 		More: func(page RackSKUsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -151,3 +151,4 @@ func (client *RackSKUsClient) listBySubscriptionHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

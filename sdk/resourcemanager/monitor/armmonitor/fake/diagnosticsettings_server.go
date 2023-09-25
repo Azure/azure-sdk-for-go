@@ -22,7 +22,7 @@ import (
 )
 
 // DiagnosticSettingsServer is a fake server for instances of the armmonitor.DiagnosticSettingsClient type.
-type DiagnosticSettingsServer struct {
+type DiagnosticSettingsServer struct{
 	// CreateOrUpdate is the fake for method DiagnosticSettingsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	CreateOrUpdate func(ctx context.Context, resourceURI string, name string, parameters armmonitor.DiagnosticSettingsResource, options *armmonitor.DiagnosticSettingsClientCreateOrUpdateOptions) (resp azfake.Responder[armmonitor.DiagnosticSettingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -38,6 +38,7 @@ type DiagnosticSettingsServer struct {
 	// NewListPager is the fake for method DiagnosticSettingsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceURI string, options *armmonitor.DiagnosticSettingsClientListOptions) (resp azfake.PagerResponder[armmonitor.DiagnosticSettingsClientListResponse])
+
 }
 
 // NewDiagnosticSettingsServerTransport creates a new instance of DiagnosticSettingsServerTransport with the provided implementation.
@@ -45,7 +46,7 @@ type DiagnosticSettingsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDiagnosticSettingsServerTransport(srv *DiagnosticSettingsServer) *DiagnosticSettingsServerTransport {
 	return &DiagnosticSettingsServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armmonitor.DiagnosticSettingsClientListResponse]](),
 	}
 }
@@ -53,7 +54,7 @@ func NewDiagnosticSettingsServerTransport(srv *DiagnosticSettingsServer) *Diagno
 // DiagnosticSettingsServerTransport connects instances of armmonitor.DiagnosticSettingsClient to instances of DiagnosticSettingsServer.
 // Don't use this type directly, use NewDiagnosticSettingsServerTransport instead.
 type DiagnosticSettingsServerTransport struct {
-	srv          *DiagnosticSettingsServer
+	srv *DiagnosticSettingsServer
 	newListPager *tracker[azfake.PagerResponder[armmonitor.DiagnosticSettingsClientListResponse]]
 }
 
@@ -119,8 +120,7 @@ func (d *DiagnosticSettingsServerTransport) dispatchCreateOrUpdate(req *http.Req
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticSettingsResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -152,8 +152,7 @@ func (d *DiagnosticSettingsServerTransport) dispatchDelete(req *http.Request) (*
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -185,8 +184,7 @@ func (d *DiagnosticSettingsServerTransport) dispatchGet(req *http.Request) (*htt
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticSettingsResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -197,17 +195,17 @@ func (d *DiagnosticSettingsServerTransport) dispatchNewListPager(req *http.Reque
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/diagnosticSettings`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListPager(resourceURIUnescaped, nil)
+	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/diagnosticSettings`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+	if err != nil {
+		return nil, err
+	}
+resp := d.srv.NewListPager(resourceURIUnescaped, nil)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)
 	}
@@ -224,3 +222,4 @@ func (d *DiagnosticSettingsServerTransport) dispatchNewListPager(req *http.Reque
 	}
 	return resp, nil
 }
+

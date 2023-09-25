@@ -23,7 +23,7 @@ import (
 // FirewallPolicyIdpsSignaturesOverridesClient contains the methods for the FirewallPolicyIdpsSignaturesOverrides group.
 // Don't use this type directly, use NewFirewallPolicyIdpsSignaturesOverridesClient() instead.
 type FirewallPolicyIdpsSignaturesOverridesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewFirewallPolicyIdpsSignaturesOverridesClient(subscriptionID string, crede
 	}
 	client := &FirewallPolicyIdpsSignaturesOverridesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -217,8 +217,8 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) patchCreateRequest(ct
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -282,8 +282,8 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) putCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -295,3 +295,4 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) putHandleResponse(res
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // DscpConfigurationClient contains the methods for the DscpConfiguration group.
 // Don't use this type directly, use NewDscpConfigurationClient() instead.
 type DscpConfigurationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewDscpConfigurationClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &DscpConfigurationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -254,7 +254,7 @@ func (client *DscpConfigurationClient) getHandleResponse(resp *http.Response) (D
 //   - resourceGroupName - The name of the resource group.
 //   - options - DscpConfigurationClientListOptions contains the optional parameters for the DscpConfigurationClient.NewListPager
 //     method.
-func (client *DscpConfigurationClient) NewListPager(resourceGroupName string, options *DscpConfigurationClientListOptions) *runtime.Pager[DscpConfigurationClientListResponse] {
+func (client *DscpConfigurationClient) NewListPager(resourceGroupName string, options *DscpConfigurationClientListOptions) (*runtime.Pager[DscpConfigurationClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DscpConfigurationClientListResponse]{
 		More: func(page DscpConfigurationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -318,7 +318,7 @@ func (client *DscpConfigurationClient) listHandleResponse(resp *http.Response) (
 // Generated from API version 2023-05-01
 //   - options - DscpConfigurationClientListAllOptions contains the optional parameters for the DscpConfigurationClient.NewListAllPager
 //     method.
-func (client *DscpConfigurationClient) NewListAllPager(options *DscpConfigurationClientListAllOptions) *runtime.Pager[DscpConfigurationClientListAllResponse] {
+func (client *DscpConfigurationClient) NewListAllPager(options *DscpConfigurationClientListAllOptions) (*runtime.Pager[DscpConfigurationClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DscpConfigurationClientListAllResponse]{
 		More: func(page DscpConfigurationClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -372,3 +372,4 @@ func (client *DscpConfigurationClient) listAllHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

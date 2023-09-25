@@ -24,7 +24,7 @@ import (
 // ManagersClient contains the methods for the NetworkManagers group.
 // Don't use this type directly, use NewManagersClient() instead.
 type ManagersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewManagersClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &ManagersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -95,8 +95,8 @@ func (client *ManagersClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -246,7 +246,7 @@ func (client *ManagersClient) getHandleResponse(resp *http.Response) (ManagersCl
 // Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - ManagersClientListOptions contains the optional parameters for the ManagersClient.NewListPager method.
-func (client *ManagersClient) NewListPager(resourceGroupName string, options *ManagersClientListOptions) *runtime.Pager[ManagersClientListResponse] {
+func (client *ManagersClient) NewListPager(resourceGroupName string, options *ManagersClientListOptions) (*runtime.Pager[ManagersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagersClientListResponse]{
 		More: func(page ManagersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -316,7 +316,7 @@ func (client *ManagersClient) listHandleResponse(resp *http.Response) (ManagersC
 // Generated from API version 2023-05-01
 //   - options - ManagersClientListBySubscriptionOptions contains the optional parameters for the ManagersClient.NewListBySubscriptionPager
 //     method.
-func (client *ManagersClient) NewListBySubscriptionPager(options *ManagersClientListBySubscriptionOptions) *runtime.Pager[ManagersClientListBySubscriptionResponse] {
+func (client *ManagersClient) NewListBySubscriptionPager(options *ManagersClientListBySubscriptionOptions) (*runtime.Pager[ManagersClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagersClientListBySubscriptionResponse]{
 		More: func(page ManagersClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -427,8 +427,8 @@ func (client *ManagersClient) patchCreateRequest(ctx context.Context, resourceGr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -440,3 +440,4 @@ func (client *ManagersClient) patchHandleResponse(resp *http.Response) (Managers
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // VPNServerConfigurationsAssociatedWithVirtualWanClient contains the methods for the VPNServerConfigurationsAssociatedWithVirtualWan group.
 // Don't use this type directly, use NewVPNServerConfigurationsAssociatedWithVirtualWanClient() instead.
 type VPNServerConfigurationsAssociatedWithVirtualWanClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVPNServerConfigurationsAssociatedWithVirtualWanClient(subscriptionID str
 	}
 	client := &VPNServerConfigurationsAssociatedWithVirtualWanClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,3 +113,4 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listCreateR
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // RouteMapsClient contains the methods for the RouteMaps group.
 // Don't use this type directly, use NewRouteMapsClient() instead.
 type RouteMapsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewRouteMapsClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &RouteMapsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *RouteMapsClient) createOrUpdateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, routeMapParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -268,7 +268,7 @@ func (client *RouteMapsClient) getHandleResponse(resp *http.Response) (RouteMaps
 //   - resourceGroupName - The resource group name of the RouteMap's resource group'.
 //   - virtualHubName - The name of the VirtualHub containing the RouteMap.
 //   - options - RouteMapsClientListOptions contains the optional parameters for the RouteMapsClient.NewListPager method.
-func (client *RouteMapsClient) NewListPager(resourceGroupName string, virtualHubName string, options *RouteMapsClientListOptions) *runtime.Pager[RouteMapsClientListResponse] {
+func (client *RouteMapsClient) NewListPager(resourceGroupName string, virtualHubName string, options *RouteMapsClientListOptions) (*runtime.Pager[RouteMapsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RouteMapsClientListResponse]{
 		More: func(page RouteMapsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -330,3 +330,4 @@ func (client *RouteMapsClient) listHandleResponse(resp *http.Response) (RouteMap
 	}
 	return result, nil
 }
+

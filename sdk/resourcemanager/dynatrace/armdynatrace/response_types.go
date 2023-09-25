@@ -137,3 +137,4 @@ type TagRulesClientListResponse struct {
 	// The response of a TagRule list operation.
 	TagRuleListResult
 }
+

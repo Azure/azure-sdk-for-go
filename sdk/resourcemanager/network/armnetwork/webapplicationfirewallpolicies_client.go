@@ -23,7 +23,7 @@ import (
 // WebApplicationFirewallPoliciesClient contains the methods for the WebApplicationFirewallPolicies group.
 // Don't use this type directly, use NewWebApplicationFirewallPoliciesClient() instead.
 type WebApplicationFirewallPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewWebApplicationFirewallPoliciesClient(subscriptionID string, credential a
 	}
 	client := &WebApplicationFirewallPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -95,8 +95,8 @@ func (client *WebApplicationFirewallPoliciesClient) createOrUpdateCreateRequest(
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -246,7 +246,7 @@ func (client *WebApplicationFirewallPoliciesClient) getHandleResponse(resp *http
 //   - resourceGroupName - The name of the resource group.
 //   - options - WebApplicationFirewallPoliciesClientListOptions contains the optional parameters for the WebApplicationFirewallPoliciesClient.NewListPager
 //     method.
-func (client *WebApplicationFirewallPoliciesClient) NewListPager(resourceGroupName string, options *WebApplicationFirewallPoliciesClientListOptions) *runtime.Pager[WebApplicationFirewallPoliciesClientListResponse] {
+func (client *WebApplicationFirewallPoliciesClient) NewListPager(resourceGroupName string, options *WebApplicationFirewallPoliciesClientListOptions) (*runtime.Pager[WebApplicationFirewallPoliciesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WebApplicationFirewallPoliciesClientListResponse]{
 		More: func(page WebApplicationFirewallPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -310,7 +310,7 @@ func (client *WebApplicationFirewallPoliciesClient) listHandleResponse(resp *htt
 // Generated from API version 2023-05-01
 //   - options - WebApplicationFirewallPoliciesClientListAllOptions contains the optional parameters for the WebApplicationFirewallPoliciesClient.NewListAllPager
 //     method.
-func (client *WebApplicationFirewallPoliciesClient) NewListAllPager(options *WebApplicationFirewallPoliciesClientListAllOptions) *runtime.Pager[WebApplicationFirewallPoliciesClientListAllResponse] {
+func (client *WebApplicationFirewallPoliciesClient) NewListAllPager(options *WebApplicationFirewallPoliciesClientListAllOptions) (*runtime.Pager[WebApplicationFirewallPoliciesClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WebApplicationFirewallPoliciesClientListAllResponse]{
 		More: func(page WebApplicationFirewallPoliciesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -364,3 +364,4 @@ func (client *WebApplicationFirewallPoliciesClient) listAllHandleResponse(resp *
 	}
 	return result, nil
 }
+

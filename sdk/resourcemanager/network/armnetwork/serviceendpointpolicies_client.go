@@ -23,7 +23,7 @@ import (
 // ServiceEndpointPoliciesClient contains the methods for the ServiceEndpointPolicies group.
 // Don't use this type directly, use NewServiceEndpointPoliciesClient() instead.
 type ServiceEndpointPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewServiceEndpointPoliciesClient(subscriptionID string, credential azcore.T
 	}
 	client := &ServiceEndpointPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *ServiceEndpointPoliciesClient) createOrUpdateCreateRequest(ctx con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -257,7 +257,7 @@ func (client *ServiceEndpointPoliciesClient) getHandleResponse(resp *http.Respon
 // Generated from API version 2023-05-01
 //   - options - ServiceEndpointPoliciesClientListOptions contains the optional parameters for the ServiceEndpointPoliciesClient.NewListPager
 //     method.
-func (client *ServiceEndpointPoliciesClient) NewListPager(options *ServiceEndpointPoliciesClientListOptions) *runtime.Pager[ServiceEndpointPoliciesClientListResponse] {
+func (client *ServiceEndpointPoliciesClient) NewListPager(options *ServiceEndpointPoliciesClientListOptions) (*runtime.Pager[ServiceEndpointPoliciesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServiceEndpointPoliciesClientListResponse]{
 		More: func(page ServiceEndpointPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -318,7 +318,7 @@ func (client *ServiceEndpointPoliciesClient) listHandleResponse(resp *http.Respo
 //   - resourceGroupName - The name of the resource group.
 //   - options - ServiceEndpointPoliciesClientListByResourceGroupOptions contains the optional parameters for the ServiceEndpointPoliciesClient.NewListByResourceGroupPager
 //     method.
-func (client *ServiceEndpointPoliciesClient) NewListByResourceGroupPager(resourceGroupName string, options *ServiceEndpointPoliciesClientListByResourceGroupOptions) *runtime.Pager[ServiceEndpointPoliciesClientListByResourceGroupResponse] {
+func (client *ServiceEndpointPoliciesClient) NewListByResourceGroupPager(resourceGroupName string, options *ServiceEndpointPoliciesClientListByResourceGroupOptions) (*runtime.Pager[ServiceEndpointPoliciesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServiceEndpointPoliciesClientListByResourceGroupResponse]{
 		More: func(page ServiceEndpointPoliciesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -428,8 +428,8 @@ func (client *ServiceEndpointPoliciesClient) updateTagsCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -441,3 +441,4 @@ func (client *ServiceEndpointPoliciesClient) updateTagsHandleResponse(resp *http
 	}
 	return result, nil
 }
+

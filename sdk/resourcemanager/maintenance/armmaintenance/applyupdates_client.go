@@ -23,7 +23,7 @@ import (
 // ApplyUpdatesClient contains the methods for the ApplyUpdates group.
 // Don't use this type directly, use NewApplyUpdatesClient() instead.
 type ApplyUpdatesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewApplyUpdatesClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &ApplyUpdatesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -360,7 +360,7 @@ func (client *ApplyUpdatesClient) getParentHandleResponse(resp *http.Response) (
 //
 // Generated from API version 2023-04-01
 //   - options - ApplyUpdatesClientListOptions contains the optional parameters for the ApplyUpdatesClient.NewListPager method.
-func (client *ApplyUpdatesClient) NewListPager(options *ApplyUpdatesClientListOptions) *runtime.Pager[ApplyUpdatesClientListResponse] {
+func (client *ApplyUpdatesClient) NewListPager(options *ApplyUpdatesClientListOptions) (*runtime.Pager[ApplyUpdatesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplyUpdatesClientListResponse]{
 		More: func(page ApplyUpdatesClientListResponse) bool {
 			return false
@@ -408,3 +408,4 @@ func (client *ApplyUpdatesClient) listHandleResponse(resp *http.Response) (Apply
 	}
 	return result, nil
 }
+

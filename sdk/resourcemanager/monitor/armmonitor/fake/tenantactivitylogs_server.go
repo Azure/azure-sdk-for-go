@@ -21,10 +21,11 @@ import (
 )
 
 // TenantActivityLogsServer is a fake server for instances of the armmonitor.TenantActivityLogsClient type.
-type TenantActivityLogsServer struct {
+type TenantActivityLogsServer struct{
 	// NewListPager is the fake for method TenantActivityLogsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armmonitor.TenantActivityLogsClientListOptions) (resp azfake.PagerResponder[armmonitor.TenantActivityLogsClientListResponse])
+
 }
 
 // NewTenantActivityLogsServerTransport creates a new instance of TenantActivityLogsServerTransport with the provided implementation.
@@ -32,7 +33,7 @@ type TenantActivityLogsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTenantActivityLogsServerTransport(srv *TenantActivityLogsServer) *TenantActivityLogsServerTransport {
 	return &TenantActivityLogsServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armmonitor.TenantActivityLogsClientListResponse]](),
 	}
 }
@@ -40,7 +41,7 @@ func NewTenantActivityLogsServerTransport(srv *TenantActivityLogsServer) *Tenant
 // TenantActivityLogsServerTransport connects instances of armmonitor.TenantActivityLogsClient to instances of TenantActivityLogsServer.
 // Don't use this type directly, use NewTenantActivityLogsServerTransport instead.
 type TenantActivityLogsServerTransport struct {
-	srv          *TenantActivityLogsServer
+	srv *TenantActivityLogsServer
 	newListPager *tracker[azfake.PagerResponder[armmonitor.TenantActivityLogsClientListResponse]]
 }
 
@@ -75,25 +76,25 @@ func (t *TenantActivityLogsServerTransport) dispatchNewListPager(req *http.Reque
 	}
 	newListPager := t.newListPager.get(req)
 	if newListPager == nil {
-		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
+	qp := req.URL.Query()
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
+	if err != nil {
+		return nil, err
+	}
+	selectParam := getOptional(selectUnescaped)
+	var options *armmonitor.TenantActivityLogsClientListOptions
+	if filterParam != nil || selectParam != nil {
+		options = &armmonitor.TenantActivityLogsClientListOptions{
+			Filter: filterParam,
+			Select: selectParam,
 		}
-		filterParam := getOptional(filterUnescaped)
-		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
-		if err != nil {
-			return nil, err
-		}
-		selectParam := getOptional(selectUnescaped)
-		var options *armmonitor.TenantActivityLogsClientListOptions
-		if filterParam != nil || selectParam != nil {
-			options = &armmonitor.TenantActivityLogsClientListOptions{
-				Filter: filterParam,
-				Select: selectParam,
-			}
-		}
-		resp := t.srv.NewListPager(options)
+	}
+resp := t.srv.NewListPager(options)
 		newListPager = &resp
 		t.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmonitor.TenantActivityLogsClientListResponse, createLink func() string) {
@@ -113,3 +114,4 @@ func (t *TenantActivityLogsServerTransport) dispatchNewListPager(req *http.Reque
 	}
 	return resp, nil
 }
+

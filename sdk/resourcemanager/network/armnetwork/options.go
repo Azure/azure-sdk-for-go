@@ -12,7 +12,7 @@ package armnetwork
 // method.
 type AdminRuleCollectionsClientBeginDeleteOptions struct {
 	// Deletes the resource even if it is part of a deployed configuration. If the configuration has been deployed, the service
-	// will do a cleanup deployment in the background, prior to the delete.
+// will do a cleanup deployment in the background, prior to the delete.
 	Force *bool
 
 	// Resumes the LRO from the provided token.
@@ -34,8 +34,8 @@ type AdminRuleCollectionsClientGetOptions struct {
 // method.
 type AdminRuleCollectionsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skipToken parameter that
-	// specifies a starting point to use for subsequent calls.
+// the value of the nextLink element will include a skipToken parameter that
+// specifies a starting point to use for subsequent calls.
 	SkipToken *string
 
 	// An optional query parameter which specifies the maximum number of records to be returned by the server.
@@ -45,7 +45,7 @@ type AdminRuleCollectionsClientListOptions struct {
 // AdminRulesClientBeginDeleteOptions contains the optional parameters for the AdminRulesClient.BeginDelete method.
 type AdminRulesClientBeginDeleteOptions struct {
 	// Deletes the resource even if it is part of a deployed configuration. If the configuration has been deployed, the service
-	// will do a cleanup deployment in the background, prior to the delete.
+// will do a cleanup deployment in the background, prior to the delete.
 	Force *bool
 
 	// Resumes the LRO from the provided token.
@@ -65,8 +65,8 @@ type AdminRulesClientGetOptions struct {
 // AdminRulesClientListOptions contains the optional parameters for the AdminRulesClient.NewListPager method.
 type AdminRulesClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skipToken parameter that
-	// specifies a starting point to use for subsequent calls.
+// the value of the nextLink element will include a skipToken parameter that
+// specifies a starting point to use for subsequent calls.
 	SkipToken *string
 
 	// An optional query parameter which specifies the maximum number of records to be returned by the server.
@@ -488,7 +488,7 @@ type ConnectionMonitorsClientUpdateTagsOptions struct {
 // method.
 type ConnectivityConfigurationsClientBeginDeleteOptions struct {
 	// Deletes the resource even if it is part of a deployed configuration. If the configuration has been deployed, the service
-	// will do a cleanup deployment in the background, prior to the delete.
+// will do a cleanup deployment in the background, prior to the delete.
 	Force *bool
 
 	// Resumes the LRO from the provided token.
@@ -511,8 +511,8 @@ type ConnectivityConfigurationsClientGetOptions struct {
 // method.
 type ConnectivityConfigurationsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skipToken parameter that
-	// specifies a starting point to use for subsequent calls.
+// the value of the nextLink element will include a skipToken parameter that
+// specifies a starting point to use for subsequent calls.
 	SkipToken *string
 
 	// An optional query parameter which specifies the maximum number of records to be returned by the server.
@@ -1171,7 +1171,7 @@ type FlowLogsClientUpdateTagsOptions struct {
 // GroupsClientBeginDeleteOptions contains the optional parameters for the GroupsClient.BeginDelete method.
 type GroupsClientBeginDeleteOptions struct {
 	// Deletes the resource even if it is part of a deployed configuration. If the configuration has been deployed, the service
-	// will do a cleanup deployment in the background, prior to the delete.
+// will do a cleanup deployment in the background, prior to the delete.
 	Force *bool
 
 	// Resumes the LRO from the provided token.
@@ -1181,7 +1181,7 @@ type GroupsClientBeginDeleteOptions struct {
 // GroupsClientCreateOrUpdateOptions contains the optional parameters for the GroupsClient.CreateOrUpdate method.
 type GroupsClientCreateOrUpdateOptions struct {
 	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
-	// to prevent accidentally overwriting concurrent changes.
+// to prevent accidentally overwriting concurrent changes.
 	IfMatch *string
 }
 
@@ -1193,8 +1193,8 @@ type GroupsClientGetOptions struct {
 // GroupsClientListOptions contains the optional parameters for the GroupsClient.NewListPager method.
 type GroupsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skipToken parameter that
-	// specifies a starting point to use for subsequent calls.
+// the value of the nextLink element will include a skipToken parameter that
+// specifies a starting point to use for subsequent calls.
 	SkipToken *string
 
 	// An optional query parameter which specifies the maximum number of records to be returned by the server.
@@ -1766,8 +1766,8 @@ type ManagementGroupNetworkManagerConnectionsClientGetOptions struct {
 // method.
 type ManagementGroupNetworkManagerConnectionsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skipToken parameter that
-	// specifies a starting point to use for subsequent calls.
+// the value of the nextLink element will include a skipToken parameter that
+// specifies a starting point to use for subsequent calls.
 	SkipToken *string
 
 	// An optional query parameter which specifies the maximum number of records to be returned by the server.
@@ -1789,7 +1789,7 @@ type ManagerDeploymentStatusClientListOptions struct {
 // ManagersClientBeginDeleteOptions contains the optional parameters for the ManagersClient.BeginDelete method.
 type ManagersClientBeginDeleteOptions struct {
 	// Deletes the resource even if it is part of a deployed configuration. If the configuration has been deployed, the service
-	// will do a cleanup deployment in the background, prior to the delete.
+// will do a cleanup deployment in the background, prior to the delete.
 	Force *bool
 
 	// Resumes the LRO from the provided token.
@@ -1810,8 +1810,8 @@ type ManagersClientGetOptions struct {
 // method.
 type ManagersClientListBySubscriptionOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skipToken parameter that
-	// specifies a starting point to use for subsequent calls.
+// the value of the nextLink element will include a skipToken parameter that
+// specifies a starting point to use for subsequent calls.
 	SkipToken *string
 
 	// An optional query parameter which specifies the maximum number of records to be returned by the server.
@@ -1821,8 +1821,8 @@ type ManagersClientListBySubscriptionOptions struct {
 // ManagersClientListOptions contains the optional parameters for the ManagersClient.NewListPager method.
 type ManagersClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skipToken parameter that
-	// specifies a starting point to use for subsequent calls.
+// the value of the nextLink element will include a skipToken parameter that
+// specifies a starting point to use for subsequent calls.
 	SkipToken *string
 
 	// An optional query parameter which specifies the maximum number of records to be returned by the server.
@@ -2483,8 +2483,8 @@ type ScopeConnectionsClientGetOptions struct {
 // ScopeConnectionsClientListOptions contains the optional parameters for the ScopeConnectionsClient.NewListPager method.
 type ScopeConnectionsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skipToken parameter that
-	// specifies a starting point to use for subsequent calls.
+// the value of the nextLink element will include a skipToken parameter that
+// specifies a starting point to use for subsequent calls.
 	SkipToken *string
 
 	// An optional query parameter which specifies the maximum number of records to be returned by the server.
@@ -2495,7 +2495,7 @@ type ScopeConnectionsClientListOptions struct {
 // method.
 type SecurityAdminConfigurationsClientBeginDeleteOptions struct {
 	// Deletes the resource even if it is part of a deployed configuration. If the configuration has been deployed, the service
-	// will do a cleanup deployment in the background, prior to the delete.
+// will do a cleanup deployment in the background, prior to the delete.
 	Force *bool
 
 	// Resumes the LRO from the provided token.
@@ -2518,8 +2518,8 @@ type SecurityAdminConfigurationsClientGetOptions struct {
 // method.
 type SecurityAdminConfigurationsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skipToken parameter that
-	// specifies a starting point to use for subsequent calls.
+// the value of the nextLink element will include a skipToken parameter that
+// specifies a starting point to use for subsequent calls.
 	SkipToken *string
 
 	// An optional query parameter which specifies the maximum number of records to be returned by the server.
@@ -2722,8 +2722,8 @@ type StaticMembersClientGetOptions struct {
 // StaticMembersClientListOptions contains the optional parameters for the StaticMembersClient.NewListPager method.
 type StaticMembersClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skipToken parameter that
-	// specifies a starting point to use for subsequent calls.
+// the value of the nextLink element will include a skipToken parameter that
+// specifies a starting point to use for subsequent calls.
 	SkipToken *string
 
 	// An optional query parameter which specifies the maximum number of records to be returned by the server.
@@ -2789,8 +2789,8 @@ type SubscriptionNetworkManagerConnectionsClientGetOptions struct {
 // method.
 type SubscriptionNetworkManagerConnectionsClientListOptions struct {
 	// SkipToken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skipToken parameter that
-	// specifies a starting point to use for subsequent calls.
+// the value of the nextLink element will include a skipToken parameter that
+// specifies a starting point to use for subsequent calls.
 	SkipToken *string
 
 	// An optional query parameter which specifies the maximum number of records to be returned by the server.
@@ -3925,3 +3925,4 @@ type WebCategoriesClientGetOptions struct {
 type WebCategoriesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
+

@@ -23,7 +23,7 @@ import (
 // AzureFirewallFqdnTagsClient contains the methods for the AzureFirewallFqdnTags group.
 // Don't use this type directly, use NewAzureFirewallFqdnTagsClient() instead.
 type AzureFirewallFqdnTagsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAzureFirewallFqdnTagsClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &AzureFirewallFqdnTagsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewAzureFirewallFqdnTagsClient(subscriptionID string, credential azcore.Tok
 // Generated from API version 2023-05-01
 //   - options - AzureFirewallFqdnTagsClientListAllOptions contains the optional parameters for the AzureFirewallFqdnTagsClient.NewListAllPager
 //     method.
-func (client *AzureFirewallFqdnTagsClient) NewListAllPager(options *AzureFirewallFqdnTagsClientListAllOptions) *runtime.Pager[AzureFirewallFqdnTagsClientListAllResponse] {
+func (client *AzureFirewallFqdnTagsClient) NewListAllPager(options *AzureFirewallFqdnTagsClientListAllOptions) (*runtime.Pager[AzureFirewallFqdnTagsClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AzureFirewallFqdnTagsClientListAllResponse]{
 		More: func(page AzureFirewallFqdnTagsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -103,3 +103,4 @@ func (client *AzureFirewallFqdnTagsClient) listAllHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

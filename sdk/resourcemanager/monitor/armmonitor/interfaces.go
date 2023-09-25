@@ -53,3 +53,4 @@ type RuleDataSourceClassification interface {
 	// GetRuleDataSource returns the RuleDataSource content of the underlying type.
 	GetRuleDataSource() *RuleDataSource
 }
+

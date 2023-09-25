@@ -33,7 +33,7 @@ func NewServiceConfigurationsClient(credential azcore.TokenCredential, options *
 		return nil, err
 	}
 	client := &ServiceConfigurationsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -81,8 +81,8 @@ func (client *ServiceConfigurationsClient) createOrupdateCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, serviceConfigurationResource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -198,7 +198,7 @@ func (client *ServiceConfigurationsClient) getHandleResponse(resp *http.Response
 //   - endpointName - The endpoint name.
 //   - options - ServiceConfigurationsClientListByEndpointResourceOptions contains the optional parameters for the ServiceConfigurationsClient.NewListByEndpointResourcePager
 //     method.
-func (client *ServiceConfigurationsClient) NewListByEndpointResourcePager(resourceURI string, endpointName string, options *ServiceConfigurationsClientListByEndpointResourceOptions) *runtime.Pager[ServiceConfigurationsClientListByEndpointResourceResponse] {
+func (client *ServiceConfigurationsClient) NewListByEndpointResourcePager(resourceURI string, endpointName string, options *ServiceConfigurationsClientListByEndpointResourceOptions) (*runtime.Pager[ServiceConfigurationsClientListByEndpointResourceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServiceConfigurationsClientListByEndpointResourceResponse]{
 		More: func(page ServiceConfigurationsClientListByEndpointResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -294,8 +294,8 @@ func (client *ServiceConfigurationsClient) updateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, serviceConfigurationResource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -307,3 +307,4 @@ func (client *ServiceConfigurationsClient) updateHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

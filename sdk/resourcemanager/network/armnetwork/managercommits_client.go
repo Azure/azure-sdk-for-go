@@ -23,7 +23,7 @@ import (
 // ManagerCommitsClient contains the methods for the NetworkManagerCommits group.
 // Don't use this type directly, use NewManagerCommitsClient() instead.
 type ManagerCommitsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewManagerCommitsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &ManagerCommitsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,7 +113,8 @@ func (client *ManagerCommitsClient) postCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

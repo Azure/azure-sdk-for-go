@@ -22,10 +22,11 @@ import (
 )
 
 // PrivateLinkScopeOperationStatusServer is a fake server for instances of the armmonitor.PrivateLinkScopeOperationStatusClient type.
-type PrivateLinkScopeOperationStatusServer struct {
+type PrivateLinkScopeOperationStatusServer struct{
 	// Get is the fake for method PrivateLinkScopeOperationStatusClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, asyncOperationID string, resourceGroupName string, options *armmonitor.PrivateLinkScopeOperationStatusClientGetOptions) (resp azfake.Responder[armmonitor.PrivateLinkScopeOperationStatusClientGetResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewPrivateLinkScopeOperationStatusServerTransport creates a new instance of PrivateLinkScopeOperationStatusServerTransport with the provided implementation.
@@ -93,8 +94,8 @@ func (p *PrivateLinkScopeOperationStatusServerTransport) dispatchGet(req *http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OperationStatus, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

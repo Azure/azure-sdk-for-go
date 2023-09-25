@@ -23,7 +23,7 @@ import (
 // ApplicationGatewayWafDynamicManifestsClient contains the methods for the ApplicationGatewayWafDynamicManifests group.
 // Don't use this type directly, use NewApplicationGatewayWafDynamicManifestsClient() instead.
 type ApplicationGatewayWafDynamicManifestsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewApplicationGatewayWafDynamicManifestsClient(subscriptionID string, crede
 	}
 	client := &ApplicationGatewayWafDynamicManifestsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewApplicationGatewayWafDynamicManifestsClient(subscriptionID string, crede
 //   - location - The region where the nrp are located at.
 //   - options - ApplicationGatewayWafDynamicManifestsClientGetOptions contains the optional parameters for the ApplicationGatewayWafDynamicManifestsClient.NewGetPager
 //     method.
-func (client *ApplicationGatewayWafDynamicManifestsClient) NewGetPager(location string, options *ApplicationGatewayWafDynamicManifestsClientGetOptions) *runtime.Pager[ApplicationGatewayWafDynamicManifestsClientGetResponse] {
+func (client *ApplicationGatewayWafDynamicManifestsClient) NewGetPager(location string, options *ApplicationGatewayWafDynamicManifestsClientGetOptions) (*runtime.Pager[ApplicationGatewayWafDynamicManifestsClientGetResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationGatewayWafDynamicManifestsClientGetResponse]{
 		More: func(page ApplicationGatewayWafDynamicManifestsClientGetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -108,3 +108,4 @@ func (client *ApplicationGatewayWafDynamicManifestsClient) getHandleResponse(res
 	}
 	return result, nil
 }
+

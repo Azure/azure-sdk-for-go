@@ -24,7 +24,7 @@ import (
 // ServiceTagInformationClient contains the methods for the ServiceTagInformation group.
 // Don't use this type directly, use NewServiceTagInformationClient() instead.
 type ServiceTagInformationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewServiceTagInformationClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &ServiceTagInformationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -53,7 +53,7 @@ func NewServiceTagInformationClient(subscriptionID string, credential azcore.Tok
 //     your subscription belongs to).
 //   - options - ServiceTagInformationClientListOptions contains the optional parameters for the ServiceTagInformationClient.NewListPager
 //     method.
-func (client *ServiceTagInformationClient) NewListPager(location string, options *ServiceTagInformationClientListOptions) *runtime.Pager[ServiceTagInformationClientListResponse] {
+func (client *ServiceTagInformationClient) NewListPager(location string, options *ServiceTagInformationClientListOptions) (*runtime.Pager[ServiceTagInformationClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServiceTagInformationClientListResponse]{
 		More: func(page ServiceTagInformationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -117,3 +117,4 @@ func (client *ServiceTagInformationClient) listHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

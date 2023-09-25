@@ -23,7 +23,7 @@ import (
 // ProfilesClient contains the methods for the NetworkProfiles group.
 // Don't use this type directly, use NewProfilesClient() instead.
 type ProfilesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewProfilesClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &ProfilesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -94,8 +94,8 @@ func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -245,7 +245,7 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesCl
 // Generated from API version 2023-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - ProfilesClientListOptions contains the optional parameters for the ProfilesClient.NewListPager method.
-func (client *ProfilesClient) NewListPager(resourceGroupName string, options *ProfilesClientListOptions) *runtime.Pager[ProfilesClientListResponse] {
+func (client *ProfilesClient) NewListPager(resourceGroupName string, options *ProfilesClientListOptions) (*runtime.Pager[ProfilesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProfilesClientListResponse]{
 		More: func(page ProfilesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -308,7 +308,7 @@ func (client *ProfilesClient) listHandleResponse(resp *http.Response) (ProfilesC
 //
 // Generated from API version 2023-05-01
 //   - options - ProfilesClientListAllOptions contains the optional parameters for the ProfilesClient.NewListAllPager method.
-func (client *ProfilesClient) NewListAllPager(options *ProfilesClientListAllOptions) *runtime.Pager[ProfilesClientListAllResponse] {
+func (client *ProfilesClient) NewListAllPager(options *ProfilesClientListAllOptions) (*runtime.Pager[ProfilesClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProfilesClientListAllResponse]{
 		More: func(page ProfilesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -413,8 +413,8 @@ func (client *ProfilesClient) updateTagsCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -426,3 +426,4 @@ func (client *ProfilesClient) updateTagsHandleResponse(resp *http.Response) (Pro
 	}
 	return result, nil
 }
+

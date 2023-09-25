@@ -23,7 +23,7 @@ import (
 // InterfaceLoadBalancersClient contains the methods for the NetworkInterfaceLoadBalancers group.
 // Don't use this type directly, use NewInterfaceLoadBalancersClient() instead.
 type InterfaceLoadBalancersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewInterfaceLoadBalancersClient(subscriptionID string, credential azcore.To
 	}
 	client := &InterfaceLoadBalancersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewInterfaceLoadBalancersClient(subscriptionID string, credential azcore.To
 //   - networkInterfaceName - The name of the network interface.
 //   - options - InterfaceLoadBalancersClientListOptions contains the optional parameters for the InterfaceLoadBalancersClient.NewListPager
 //     method.
-func (client *InterfaceLoadBalancersClient) NewListPager(resourceGroupName string, networkInterfaceName string, options *InterfaceLoadBalancersClientListOptions) *runtime.Pager[InterfaceLoadBalancersClientListResponse] {
+func (client *InterfaceLoadBalancersClient) NewListPager(resourceGroupName string, networkInterfaceName string, options *InterfaceLoadBalancersClientListOptions) (*runtime.Pager[InterfaceLoadBalancersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[InterfaceLoadBalancersClientListResponse]{
 		More: func(page InterfaceLoadBalancersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -113,3 +113,4 @@ func (client *InterfaceLoadBalancersClient) listHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

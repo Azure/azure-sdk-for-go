@@ -21,10 +21,11 @@ import (
 )
 
 // MetricNamespacesServer is a fake server for instances of the armmonitor.MetricNamespacesClient type.
-type MetricNamespacesServer struct {
+type MetricNamespacesServer struct{
 	// NewListPager is the fake for method MetricNamespacesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceURI string, options *armmonitor.MetricNamespacesClientListOptions) (resp azfake.PagerResponder[armmonitor.MetricNamespacesClientListResponse])
+
 }
 
 // NewMetricNamespacesServerTransport creates a new instance of MetricNamespacesServerTransport with the provided implementation.
@@ -32,7 +33,7 @@ type MetricNamespacesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMetricNamespacesServerTransport(srv *MetricNamespacesServer) *MetricNamespacesServerTransport {
 	return &MetricNamespacesServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armmonitor.MetricNamespacesClientListResponse]](),
 	}
 }
@@ -40,7 +41,7 @@ func NewMetricNamespacesServerTransport(srv *MetricNamespacesServer) *MetricName
 // MetricNamespacesServerTransport connects instances of armmonitor.MetricNamespacesClient to instances of MetricNamespacesServer.
 // Don't use this type directly, use NewMetricNamespacesServerTransport instead.
 type MetricNamespacesServerTransport struct {
-	srv          *MetricNamespacesServer
+	srv *MetricNamespacesServer
 	newListPager *tracker[azfake.PagerResponder[armmonitor.MetricNamespacesClientListResponse]]
 }
 
@@ -75,29 +76,29 @@ func (m *MetricNamespacesServerTransport) dispatchNewListPager(req *http.Request
 	}
 	newListPager := m.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.insights/metricNamespaces`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.insights/metricNamespaces`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+	if err != nil {
+		return nil, err
+	}
+	startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
+	if err != nil {
+		return nil, err
+	}
+	startTimeParam := getOptional(startTimeUnescaped)
+	var options *armmonitor.MetricNamespacesClientListOptions
+	if startTimeParam != nil {
+		options = &armmonitor.MetricNamespacesClientListOptions{
+			StartTime: startTimeParam,
 		}
-		qp := req.URL.Query()
-		resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
-		startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
-		if err != nil {
-			return nil, err
-		}
-		startTimeParam := getOptional(startTimeUnescaped)
-		var options *armmonitor.MetricNamespacesClientListOptions
-		if startTimeParam != nil {
-			options = &armmonitor.MetricNamespacesClientListOptions{
-				StartTime: startTimeParam,
-			}
-		}
-		resp := m.srv.NewListPager(resourceURIUnescaped, options)
+	}
+resp := m.srv.NewListPager(resourceURIUnescaped, options)
 		newListPager = &resp
 		m.newListPager.add(req, newListPager)
 	}
@@ -114,3 +115,4 @@ func (m *MetricNamespacesServerTransport) dispatchNewListPager(req *http.Request
 	}
 	return resp, nil
 }
+

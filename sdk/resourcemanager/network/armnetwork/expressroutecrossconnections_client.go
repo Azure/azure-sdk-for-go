@@ -23,7 +23,7 @@ import (
 // ExpressRouteCrossConnectionsClient contains the methods for the ExpressRouteCrossConnections group.
 // Don't use this type directly, use NewExpressRouteCrossConnectionsClient() instead.
 type ExpressRouteCrossConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExpressRouteCrossConnectionsClient(subscriptionID string, credential azc
 	}
 	client := &ExpressRouteCrossConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *ExpressRouteCrossConnectionsClient) createOrUpdateCreateRequest(ct
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -184,7 +184,7 @@ func (client *ExpressRouteCrossConnectionsClient) getHandleResponse(resp *http.R
 // Generated from API version 2023-05-01
 //   - options - ExpressRouteCrossConnectionsClientListOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.NewListPager
 //     method.
-func (client *ExpressRouteCrossConnectionsClient) NewListPager(options *ExpressRouteCrossConnectionsClientListOptions) *runtime.Pager[ExpressRouteCrossConnectionsClientListResponse] {
+func (client *ExpressRouteCrossConnectionsClient) NewListPager(options *ExpressRouteCrossConnectionsClientListOptions) (*runtime.Pager[ExpressRouteCrossConnectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteCrossConnectionsClientListResponse]{
 		More: func(page ExpressRouteCrossConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -327,7 +327,7 @@ func (client *ExpressRouteCrossConnectionsClient) listArpTableCreateRequest(ctx 
 //   - resourceGroupName - The name of the resource group.
 //   - options - ExpressRouteCrossConnectionsClientListByResourceGroupOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.NewListByResourceGroupPager
 //     method.
-func (client *ExpressRouteCrossConnectionsClient) NewListByResourceGroupPager(resourceGroupName string, options *ExpressRouteCrossConnectionsClientListByResourceGroupOptions) *runtime.Pager[ExpressRouteCrossConnectionsClientListByResourceGroupResponse] {
+func (client *ExpressRouteCrossConnectionsClient) NewListByResourceGroupPager(resourceGroupName string, options *ExpressRouteCrossConnectionsClientListByResourceGroupOptions) (*runtime.Pager[ExpressRouteCrossConnectionsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteCrossConnectionsClientListByResourceGroupResponse]{
 		More: func(page ExpressRouteCrossConnectionsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -601,8 +601,8 @@ func (client *ExpressRouteCrossConnectionsClient) updateTagsCreateRequest(ctx co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, crossConnectionParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -614,3 +614,4 @@ func (client *ExpressRouteCrossConnectionsClient) updateTagsHandleResponse(resp 
 	}
 	return result, nil
 }
+

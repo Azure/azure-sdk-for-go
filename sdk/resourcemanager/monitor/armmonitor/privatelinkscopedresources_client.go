@@ -23,7 +23,7 @@ import (
 // PrivateLinkScopedResourcesClient contains the methods for the PrivateLinkScopedResources group.
 // Don't use this type directly, use NewPrivateLinkScopedResourcesClient() instead.
 type PrivateLinkScopedResourcesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPrivateLinkScopedResourcesClient(subscriptionID string, credential azcor
 	}
 	client := &PrivateLinkScopedResourcesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *PrivateLinkScopedResourcesClient) createOrUpdateCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -277,13 +277,13 @@ func (client *PrivateLinkScopedResourcesClient) getHandleResponse(resp *http.Res
 //   - scopeName - The name of the Azure Monitor PrivateLinkScope resource.
 //   - options - PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.NewListByPrivateLinkScopePager
 //     method.
-func (client *PrivateLinkScopedResourcesClient) NewListByPrivateLinkScopePager(resourceGroupName string, scopeName string, options *PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions) *runtime.Pager[PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse] {
+func (client *PrivateLinkScopedResourcesClient) NewListByPrivateLinkScopePager(resourceGroupName string, scopeName string, options *PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions) (*runtime.Pager[PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse]{
 		More: func(page PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse) (PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkScopedResourcesClient.NewListByPrivateLinkScopePager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkScopedResourcesClient.NewListByPrivateLinkScopePager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -341,3 +341,4 @@ func (client *PrivateLinkScopedResourcesClient) listByPrivateLinkScopeHandleResp
 	}
 	return result, nil
 }
+

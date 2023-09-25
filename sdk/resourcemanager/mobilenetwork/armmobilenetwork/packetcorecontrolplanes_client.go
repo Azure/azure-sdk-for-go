@@ -23,7 +23,7 @@ import (
 // PacketCoreControlPlanesClient contains the methods for the PacketCoreControlPlanes group.
 // Don't use this type directly, use NewPacketCoreControlPlanesClient() instead.
 type PacketCoreControlPlanesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPacketCoreControlPlanesClient(subscriptionID string, credential azcore.T
 	}
 	client := &PacketCoreControlPlanesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -111,8 +111,8 @@ func (client *PacketCoreControlPlanesClient) collectDiagnosticsPackageCreateRequ
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -182,8 +182,8 @@ func (client *PacketCoreControlPlanesClient) createOrUpdateCreateRequest(ctx con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -318,7 +318,7 @@ func (client *PacketCoreControlPlanesClient) getHandleResponse(resp *http.Respon
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PacketCoreControlPlanesClientListByResourceGroupOptions contains the optional parameters for the PacketCoreControlPlanesClient.NewListByResourceGroupPager
 //     method.
-func (client *PacketCoreControlPlanesClient) NewListByResourceGroupPager(resourceGroupName string, options *PacketCoreControlPlanesClientListByResourceGroupOptions) *runtime.Pager[PacketCoreControlPlanesClientListByResourceGroupResponse] {
+func (client *PacketCoreControlPlanesClient) NewListByResourceGroupPager(resourceGroupName string, options *PacketCoreControlPlanesClientListByResourceGroupOptions) (*runtime.Pager[PacketCoreControlPlanesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PacketCoreControlPlanesClientListByResourceGroupResponse]{
 		More: func(page PacketCoreControlPlanesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -379,7 +379,7 @@ func (client *PacketCoreControlPlanesClient) listByResourceGroupHandleResponse(r
 // Generated from API version 2023-06-01
 //   - options - PacketCoreControlPlanesClientListBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlanesClient.NewListBySubscriptionPager
 //     method.
-func (client *PacketCoreControlPlanesClient) NewListBySubscriptionPager(options *PacketCoreControlPlanesClientListBySubscriptionOptions) *runtime.Pager[PacketCoreControlPlanesClientListBySubscriptionResponse] {
+func (client *PacketCoreControlPlanesClient) NewListBySubscriptionPager(options *PacketCoreControlPlanesClientListBySubscriptionOptions) (*runtime.Pager[PacketCoreControlPlanesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PacketCoreControlPlanesClientListBySubscriptionResponse]{
 		More: func(page PacketCoreControlPlanesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -617,8 +617,8 @@ func (client *PacketCoreControlPlanesClient) updateTagsCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -630,3 +630,4 @@ func (client *PacketCoreControlPlanesClient) updateTagsHandleResponse(resp *http
 	}
 	return result, nil
 }
+

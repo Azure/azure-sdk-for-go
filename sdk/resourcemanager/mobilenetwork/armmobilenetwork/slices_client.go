@@ -23,7 +23,7 @@ import (
 // SlicesClient contains the methods for the Slices group.
 // Don't use this type directly, use NewSlicesClient() instead.
 type SlicesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSlicesClient(subscriptionID string, credential azcore.TokenCredential, o
 	}
 	client := &SlicesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *SlicesClient) createOrUpdateCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -259,7 +259,7 @@ func (client *SlicesClient) getHandleResponse(resp *http.Response) (SlicesClient
 //   - mobileNetworkName - The name of the mobile network.
 //   - options - SlicesClientListByMobileNetworkOptions contains the optional parameters for the SlicesClient.NewListByMobileNetworkPager
 //     method.
-func (client *SlicesClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *SlicesClientListByMobileNetworkOptions) *runtime.Pager[SlicesClientListByMobileNetworkResponse] {
+func (client *SlicesClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *SlicesClientListByMobileNetworkOptions) (*runtime.Pager[SlicesClientListByMobileNetworkResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SlicesClientListByMobileNetworkResponse]{
 		More: func(page SlicesClientListByMobileNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -371,8 +371,8 @@ func (client *SlicesClient) updateTagsCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -384,3 +384,4 @@ func (client *SlicesClient) updateTagsHandleResponse(resp *http.Response) (Slice
 	}
 	return result, nil
 }
+

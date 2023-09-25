@@ -9,7 +9,7 @@
 package armkubernetesconfiguration
 
 const (
-	moduleName    = "armkubernetesconfiguration"
+	moduleName = "armkubernetesconfiguration"
 	moduleVersion = "v2.1.0"
 )
 
@@ -18,12 +18,12 @@ type AKSIdentityType string
 
 const (
 	AKSIdentityTypeSystemAssigned AKSIdentityType = "SystemAssigned"
-	AKSIdentityTypeUserAssigned   AKSIdentityType = "UserAssigned"
+	AKSIdentityTypeUserAssigned AKSIdentityType = "UserAssigned"
 )
 
 // PossibleAKSIdentityTypeValues returns the possible values for the AKSIdentityType const type.
 func PossibleAKSIdentityTypeValues() []AKSIdentityType {
-	return []AKSIdentityType{
+	return []AKSIdentityType{	
 		AKSIdentityTypeSystemAssigned,
 		AKSIdentityTypeUserAssigned,
 	}
@@ -33,16 +33,16 @@ func PossibleAKSIdentityTypeValues() []AKSIdentityType {
 type ComplianceStateType string
 
 const (
-	ComplianceStateTypeCompliant    ComplianceStateType = "Compliant"
-	ComplianceStateTypeFailed       ComplianceStateType = "Failed"
-	ComplianceStateTypeInstalled    ComplianceStateType = "Installed"
+	ComplianceStateTypeCompliant ComplianceStateType = "Compliant"
+	ComplianceStateTypeFailed ComplianceStateType = "Failed"
+	ComplianceStateTypeInstalled ComplianceStateType = "Installed"
 	ComplianceStateTypeNoncompliant ComplianceStateType = "Noncompliant"
-	ComplianceStateTypePending      ComplianceStateType = "Pending"
+	ComplianceStateTypePending ComplianceStateType = "Pending"
 )
 
 // PossibleComplianceStateTypeValues returns the possible values for the ComplianceStateType const type.
 func PossibleComplianceStateTypeValues() []ComplianceStateType {
-	return []ComplianceStateType{
+	return []ComplianceStateType{	
 		ComplianceStateTypeCompliant,
 		ComplianceStateTypeFailed,
 		ComplianceStateTypeInstalled,
@@ -55,15 +55,15 @@ func PossibleComplianceStateTypeValues() []ComplianceStateType {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -75,16 +75,16 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type FluxComplianceState string
 
 const (
-	FluxComplianceStateCompliant    FluxComplianceState = "Compliant"
+	FluxComplianceStateCompliant FluxComplianceState = "Compliant"
 	FluxComplianceStateNonCompliant FluxComplianceState = "Non-Compliant"
-	FluxComplianceStatePending      FluxComplianceState = "Pending"
-	FluxComplianceStateSuspended    FluxComplianceState = "Suspended"
-	FluxComplianceStateUnknown      FluxComplianceState = "Unknown"
+	FluxComplianceStatePending FluxComplianceState = "Pending"
+	FluxComplianceStateSuspended FluxComplianceState = "Suspended"
+	FluxComplianceStateUnknown FluxComplianceState = "Unknown"
 )
 
 // PossibleFluxComplianceStateValues returns the possible values for the FluxComplianceState const type.
 func PossibleFluxComplianceStateValues() []FluxComplianceState {
-	return []FluxComplianceState{
+	return []FluxComplianceState{	
 		FluxComplianceStateCompliant,
 		FluxComplianceStateNonCompliant,
 		FluxComplianceStatePending,
@@ -99,13 +99,13 @@ type KustomizationValidationType string
 
 const (
 	KustomizationValidationTypeClient KustomizationValidationType = "client"
-	KustomizationValidationTypeNone   KustomizationValidationType = "none"
+	KustomizationValidationTypeNone KustomizationValidationType = "none"
 	KustomizationValidationTypeServer KustomizationValidationType = "server"
 )
 
 // PossibleKustomizationValidationTypeValues returns the possible values for the KustomizationValidationType const type.
 func PossibleKustomizationValidationTypeValues() []KustomizationValidationType {
-	return []KustomizationValidationType{
+	return []KustomizationValidationType{	
 		KustomizationValidationTypeClient,
 		KustomizationValidationTypeNone,
 		KustomizationValidationTypeServer,
@@ -116,14 +116,14 @@ func PossibleKustomizationValidationTypeValues() []KustomizationValidationType {
 type LevelType string
 
 const (
-	LevelTypeError       LevelType = "Error"
+	LevelTypeError LevelType = "Error"
 	LevelTypeInformation LevelType = "Information"
-	LevelTypeWarning     LevelType = "Warning"
+	LevelTypeWarning LevelType = "Warning"
 )
 
 // PossibleLevelTypeValues returns the possible values for the LevelType const type.
 func PossibleLevelTypeValues() []LevelType {
-	return []LevelType{
+	return []LevelType{	
 		LevelTypeError,
 		LevelTypeInformation,
 		LevelTypeWarning,
@@ -134,14 +134,14 @@ func PossibleLevelTypeValues() []LevelType {
 type MessageLevelType string
 
 const (
-	MessageLevelTypeError       MessageLevelType = "Error"
+	MessageLevelTypeError MessageLevelType = "Error"
 	MessageLevelTypeInformation MessageLevelType = "Information"
-	MessageLevelTypeWarning     MessageLevelType = "Warning"
+	MessageLevelTypeWarning MessageLevelType = "Warning"
 )
 
 // PossibleMessageLevelTypeValues returns the possible values for the MessageLevelType const type.
 func PossibleMessageLevelTypeValues() []MessageLevelType {
-	return []MessageLevelType{
+	return []MessageLevelType{	
 		MessageLevelTypeError,
 		MessageLevelTypeInformation,
 		MessageLevelTypeWarning,
@@ -152,13 +152,13 @@ func PossibleMessageLevelTypeValues() []MessageLevelType {
 type OperatorScopeType string
 
 const (
-	OperatorScopeTypeCluster   OperatorScopeType = "cluster"
+	OperatorScopeTypeCluster OperatorScopeType = "cluster"
 	OperatorScopeTypeNamespace OperatorScopeType = "namespace"
 )
 
 // PossibleOperatorScopeTypeValues returns the possible values for the OperatorScopeType const type.
 func PossibleOperatorScopeTypeValues() []OperatorScopeType {
-	return []OperatorScopeType{
+	return []OperatorScopeType{	
 		OperatorScopeTypeCluster,
 		OperatorScopeTypeNamespace,
 	}
@@ -173,7 +173,7 @@ const (
 
 // PossibleOperatorTypeValues returns the possible values for the OperatorType const type.
 func PossibleOperatorTypeValues() []OperatorType {
-	return []OperatorType{
+	return []OperatorType{	
 		OperatorTypeFlux,
 	}
 }
@@ -182,17 +182,17 @@ func PossibleOperatorTypeValues() []OperatorType {
 type ProvisioningState string
 
 const (
-	ProvisioningStateCanceled  ProvisioningState = "Canceled"
-	ProvisioningStateCreating  ProvisioningState = "Creating"
-	ProvisioningStateDeleting  ProvisioningState = "Deleting"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	ProvisioningStateFailed ProvisioningState = "Failed"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	ProvisioningStateUpdating  ProvisioningState = "Updating"
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateCanceled,
 		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
@@ -206,16 +206,16 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type ProvisioningStateType string
 
 const (
-	ProvisioningStateTypeAccepted  ProvisioningStateType = "Accepted"
-	ProvisioningStateTypeDeleting  ProvisioningStateType = "Deleting"
-	ProvisioningStateTypeFailed    ProvisioningStateType = "Failed"
-	ProvisioningStateTypeRunning   ProvisioningStateType = "Running"
+	ProvisioningStateTypeAccepted ProvisioningStateType = "Accepted"
+	ProvisioningStateTypeDeleting ProvisioningStateType = "Deleting"
+	ProvisioningStateTypeFailed ProvisioningStateType = "Failed"
+	ProvisioningStateTypeRunning ProvisioningStateType = "Running"
 	ProvisioningStateTypeSucceeded ProvisioningStateType = "Succeeded"
 )
 
 // PossibleProvisioningStateTypeValues returns the possible values for the ProvisioningStateType const type.
 func PossibleProvisioningStateTypeValues() []ProvisioningStateType {
-	return []ProvisioningStateType{
+	return []ProvisioningStateType{	
 		ProvisioningStateTypeAccepted,
 		ProvisioningStateTypeDeleting,
 		ProvisioningStateTypeFailed,
@@ -228,13 +228,13 @@ func PossibleProvisioningStateTypeValues() []ProvisioningStateType {
 type ScopeType string
 
 const (
-	ScopeTypeCluster   ScopeType = "cluster"
+	ScopeTypeCluster ScopeType = "cluster"
 	ScopeTypeNamespace ScopeType = "namespace"
 )
 
 // PossibleScopeTypeValues returns the possible values for the ScopeType const type.
 func PossibleScopeTypeValues() []ScopeType {
-	return []ScopeType{
+	return []ScopeType{	
 		ScopeTypeCluster,
 		ScopeTypeNamespace,
 	}
@@ -244,16 +244,17 @@ func PossibleScopeTypeValues() []ScopeType {
 type SourceKindType string
 
 const (
-	SourceKindTypeAzureBlob     SourceKindType = "AzureBlob"
-	SourceKindTypeBucket        SourceKindType = "Bucket"
+	SourceKindTypeAzureBlob SourceKindType = "AzureBlob"
+	SourceKindTypeBucket SourceKindType = "Bucket"
 	SourceKindTypeGitRepository SourceKindType = "GitRepository"
 )
 
 // PossibleSourceKindTypeValues returns the possible values for the SourceKindType const type.
 func PossibleSourceKindTypeValues() []SourceKindType {
-	return []SourceKindType{
+	return []SourceKindType{	
 		SourceKindTypeAzureBlob,
 		SourceKindTypeBucket,
 		SourceKindTypeGitRepository,
 	}
 }
+

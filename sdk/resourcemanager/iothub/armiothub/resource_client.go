@@ -23,7 +23,7 @@ import (
 // ResourceClient contains the methods for the IotHubResource group.
 // Don't use this type directly, use NewResourceClient() instead.
 type ResourceClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewResourceClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &ResourceClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -84,8 +84,8 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, operationInputs); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -159,8 +159,8 @@ func (client *ResourceClient) createEventHubConsumerGroupCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, consumerGroupBody); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -249,8 +249,8 @@ func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, r
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, iotHubDescription); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -434,8 +434,8 @@ func (client *ResourceClient) exportDevicesCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, exportDevicesParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -513,7 +513,7 @@ func (client *ResourceClient) getHandleResponse(resp *http.Response) (ResourceCl
 // Generated from API version 2023-06-30
 //   - options - ResourceClientGetEndpointHealthOptions contains the optional parameters for the ResourceClient.NewGetEndpointHealthPager
 //     method.
-func (client *ResourceClient) NewGetEndpointHealthPager(resourceGroupName string, iotHubName string, options *ResourceClientGetEndpointHealthOptions) *runtime.Pager[ResourceClientGetEndpointHealthResponse] {
+func (client *ResourceClient) NewGetEndpointHealthPager(resourceGroupName string, iotHubName string, options *ResourceClientGetEndpointHealthOptions) (*runtime.Pager[ResourceClientGetEndpointHealthResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ResourceClientGetEndpointHealthResponse]{
 		More: func(page ResourceClientGetEndpointHealthResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -785,7 +785,7 @@ func (client *ResourceClient) getKeysForKeyNameHandleResponse(resp *http.Respons
 //   - resourceName - The name of the IoT hub.
 //   - options - ResourceClientGetQuotaMetricsOptions contains the optional parameters for the ResourceClient.NewGetQuotaMetricsPager
 //     method.
-func (client *ResourceClient) NewGetQuotaMetricsPager(resourceGroupName string, resourceName string, options *ResourceClientGetQuotaMetricsOptions) *runtime.Pager[ResourceClientGetQuotaMetricsResponse] {
+func (client *ResourceClient) NewGetQuotaMetricsPager(resourceGroupName string, resourceName string, options *ResourceClientGetQuotaMetricsOptions) (*runtime.Pager[ResourceClientGetQuotaMetricsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ResourceClientGetQuotaMetricsResponse]{
 		More: func(page ResourceClientGetQuotaMetricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -915,7 +915,7 @@ func (client *ResourceClient) getStatsHandleResponse(resp *http.Response) (Resou
 //   - resourceName - The name of the IoT hub.
 //   - options - ResourceClientGetValidSKUsOptions contains the optional parameters for the ResourceClient.NewGetValidSKUsPager
 //     method.
-func (client *ResourceClient) NewGetValidSKUsPager(resourceGroupName string, resourceName string, options *ResourceClientGetValidSKUsOptions) *runtime.Pager[ResourceClientGetValidSKUsResponse] {
+func (client *ResourceClient) NewGetValidSKUsPager(resourceGroupName string, resourceName string, options *ResourceClientGetValidSKUsOptions) (*runtime.Pager[ResourceClientGetValidSKUsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ResourceClientGetValidSKUsResponse]{
 		More: func(page ResourceClientGetValidSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1030,8 +1030,8 @@ func (client *ResourceClient) importDevicesCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, importDevicesParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1050,7 +1050,7 @@ func (client *ResourceClient) importDevicesHandleResponse(resp *http.Response) (
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - options - ResourceClientListByResourceGroupOptions contains the optional parameters for the ResourceClient.NewListByResourceGroupPager
 //     method.
-func (client *ResourceClient) NewListByResourceGroupPager(resourceGroupName string, options *ResourceClientListByResourceGroupOptions) *runtime.Pager[ResourceClientListByResourceGroupResponse] {
+func (client *ResourceClient) NewListByResourceGroupPager(resourceGroupName string, options *ResourceClientListByResourceGroupOptions) (*runtime.Pager[ResourceClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ResourceClientListByResourceGroupResponse]{
 		More: func(page ResourceClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1114,7 +1114,7 @@ func (client *ResourceClient) listByResourceGroupHandleResponse(resp *http.Respo
 // Generated from API version 2023-06-30
 //   - options - ResourceClientListBySubscriptionOptions contains the optional parameters for the ResourceClient.NewListBySubscriptionPager
 //     method.
-func (client *ResourceClient) NewListBySubscriptionPager(options *ResourceClientListBySubscriptionOptions) *runtime.Pager[ResourceClientListBySubscriptionResponse] {
+func (client *ResourceClient) NewListBySubscriptionPager(options *ResourceClientListBySubscriptionOptions) (*runtime.Pager[ResourceClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ResourceClientListBySubscriptionResponse]{
 		More: func(page ResourceClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1178,7 +1178,7 @@ func (client *ResourceClient) listBySubscriptionHandleResponse(resp *http.Respon
 //   - eventHubEndpointName - The name of the Event Hub-compatible endpoint.
 //   - options - ResourceClientListEventHubConsumerGroupsOptions contains the optional parameters for the ResourceClient.NewListEventHubConsumerGroupsPager
 //     method.
-func (client *ResourceClient) NewListEventHubConsumerGroupsPager(resourceGroupName string, resourceName string, eventHubEndpointName string, options *ResourceClientListEventHubConsumerGroupsOptions) *runtime.Pager[ResourceClientListEventHubConsumerGroupsResponse] {
+func (client *ResourceClient) NewListEventHubConsumerGroupsPager(resourceGroupName string, resourceName string, eventHubEndpointName string, options *ResourceClientListEventHubConsumerGroupsOptions) (*runtime.Pager[ResourceClientListEventHubConsumerGroupsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ResourceClientListEventHubConsumerGroupsResponse]{
 		More: func(page ResourceClientListEventHubConsumerGroupsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1251,7 +1251,7 @@ func (client *ResourceClient) listEventHubConsumerGroupsHandleResponse(resp *htt
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - options - ResourceClientListJobsOptions contains the optional parameters for the ResourceClient.NewListJobsPager method.
-func (client *ResourceClient) NewListJobsPager(resourceGroupName string, resourceName string, options *ResourceClientListJobsOptions) *runtime.Pager[ResourceClientListJobsResponse] {
+func (client *ResourceClient) NewListJobsPager(resourceGroupName string, resourceName string, options *ResourceClientListJobsOptions) (*runtime.Pager[ResourceClientListJobsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ResourceClientListJobsResponse]{
 		More: func(page ResourceClientListJobsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1320,7 +1320,7 @@ func (client *ResourceClient) listJobsHandleResponse(resp *http.Response) (Resou
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - options - ResourceClientListKeysOptions contains the optional parameters for the ResourceClient.NewListKeysPager method.
-func (client *ResourceClient) NewListKeysPager(resourceGroupName string, resourceName string, options *ResourceClientListKeysOptions) *runtime.Pager[ResourceClientListKeysResponse] {
+func (client *ResourceClient) NewListKeysPager(resourceGroupName string, resourceName string, options *ResourceClientListKeysOptions) (*runtime.Pager[ResourceClientListKeysResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ResourceClientListKeysResponse]{
 		More: func(page ResourceClientListKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1433,8 +1433,8 @@ func (client *ResourceClient) testAllRoutesCreateRequest(ctx context.Context, io
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1497,8 +1497,8 @@ func (client *ResourceClient) testRouteCreateRequest(ctx context.Context, iotHub
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1577,7 +1577,8 @@ func (client *ResourceClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, iotHubTags); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

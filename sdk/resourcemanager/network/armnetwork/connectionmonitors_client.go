@@ -23,7 +23,7 @@ import (
 // ConnectionMonitorsClient contains the methods for the ConnectionMonitors group.
 // Don't use this type directly, use NewConnectionMonitorsClient() instead.
 type ConnectionMonitorsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewConnectionMonitorsClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &ConnectionMonitorsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *ConnectionMonitorsClient) createOrUpdateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -273,7 +273,7 @@ func (client *ConnectionMonitorsClient) getHandleResponse(resp *http.Response) (
 //   - networkWatcherName - The name of the Network Watcher resource.
 //   - options - ConnectionMonitorsClientListOptions contains the optional parameters for the ConnectionMonitorsClient.NewListPager
 //     method.
-func (client *ConnectionMonitorsClient) NewListPager(resourceGroupName string, networkWatcherName string, options *ConnectionMonitorsClientListOptions) *runtime.Pager[ConnectionMonitorsClientListResponse] {
+func (client *ConnectionMonitorsClient) NewListPager(resourceGroupName string, networkWatcherName string, options *ConnectionMonitorsClientListOptions) (*runtime.Pager[ConnectionMonitorsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConnectionMonitorsClientListResponse]{
 		More: func(page ConnectionMonitorsClientListResponse) bool {
 			return false
@@ -611,8 +611,8 @@ func (client *ConnectionMonitorsClient) updateTagsCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -624,3 +624,4 @@ func (client *ConnectionMonitorsClient) updateTagsHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

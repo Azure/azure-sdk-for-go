@@ -129,3 +129,4 @@ type TagRulesClientGetOptions struct {
 type TagRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
+

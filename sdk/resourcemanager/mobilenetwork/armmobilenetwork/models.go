@@ -104,29 +104,29 @@ type AttachedDataNetworkListResult struct {
 // AttachedDataNetworkPropertiesFormat - Data network properties.
 type AttachedDataNetworkPropertiesFormat struct {
 	// REQUIRED; The DNS servers to signal to UEs to use for this attached data network. This configuration is mandatory - if
-	// you don't want DNS servers, you must provide an empty array.
+// you don't want DNS servers, you must provide an empty array.
 	DNSAddresses []*string
 
 	// REQUIRED; The user plane interface on the data network. For 5G networks, this is the N6 interface. For 4G networks, this
-	// is the SGi interface.
+// is the SGi interface.
 	UserPlaneDataInterface *InterfaceProperties
 
 	// The network address and port translation (NAPT) configuration. If this is not specified, the attached data network will
-	// use a default NAPT configuration with NAPT enabled.
+// use a default NAPT configuration with NAPT enabled.
 	NaptConfiguration *NaptConfiguration
 
 	// The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance will dynamically
-	// assign IP addresses to UEs. The packet core instance assigns an IP
-	// address to a UE when the UE sets up a PDU session. You must define at least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix.
-	// If you define both, they must be of the same
-	// size.
+// assign IP addresses to UEs. The packet core instance assigns an IP
+// address to a UE when the UE sets up a PDU session. You must define at least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix.
+// If you define both, they must be of the same
+// size.
 	UserEquipmentAddressPoolPrefix []*string
 
 	// The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance will assign
-	// static IP addresses to UEs. The packet core instance assigns an IP address
-	// to a UE when the UE sets up a PDU session. The static IP address for a specific UE is set in StaticIPConfiguration on the
-	// corresponding SIM resource. At least one of userEquipmentAddressPoolPrefix and
-	// userEquipmentStaticAddressPoolPrefix must be defined. If both are defined, they must be of the same size.
+// static IP addresses to UEs. The packet core instance assigns an IP address
+// to a UE when the UE sets up a PDU session. The static IP address for a specific UE is set in StaticIPConfiguration on the
+// corresponding SIM resource. At least one of userEquipmentAddressPoolPrefix and
+// userEquipmentStaticAddressPoolPrefix must be defined. If both are defined, they must be of the same size.
 	UserEquipmentStaticAddressPoolPrefix []*string
 
 	// READ-ONLY; The provisioning state of the attached data network resource.
@@ -166,8 +166,8 @@ type CommonSimPropertiesFormat struct {
 	InternationalMobileSubscriberIdentity *string
 
 	// An optional free-form text field that can be used to record the device type this SIM is associated with, for example 'Video
-	// camera'. The Azure portal allows SIMs to be grouped and filtered based on
-	// this value.
+// camera'. The Azure portal allows SIMs to be grouped and filtered based on
+// this value.
 	DeviceType *string
 
 	// The integrated circuit card ID (ICCID) for the SIM.
@@ -177,7 +177,7 @@ type CommonSimPropertiesFormat struct {
 	SimPolicy *SimPolicyResourceID
 
 	// A list of static IP addresses assigned to this SIM. Each address is assigned at a defined network scope, made up of {attached
-	// data network, slice}.
+// data network, slice}.
 	StaticIPConfiguration []*SimStaticIPProperties
 
 	// READ-ONLY; The provisioning state of the SIM resource.
@@ -235,47 +235,47 @@ type DataNetwork struct {
 // DataNetworkConfiguration - Settings controlling data network use
 type DataNetworkConfiguration struct {
 	// REQUIRED; List of services that can be used as part of this SIM policy. The list must not contain duplicate items and must
-	// contain at least one item. The services must be in the same location as the SIM policy.
+// contain at least one item. The services must be in the same location as the SIM policy.
 	AllowedServices []*ServiceResourceID
 
 	// REQUIRED; A reference to the data network that these settings apply to. The data network must be in the same location as
-	// the SIM policy.
+// the SIM policy.
 	DataNetwork *DataNetworkResourceID
 
 	// REQUIRED; Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session. See 3GPP TS23.501 section 5.7.2.6
-	// for a full description of the Session-AMBR.
+// for a full description of the Session-AMBR.
 	SessionAmbr *Ambr
 
 	// Allowed session types in addition to the default session type. Must not duplicate the default session type.
 	AdditionalAllowedSessionTypes []*PduSessionType
 
 	// Default QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower priority,
-	// if the settings of preemptionCapability and preemptionVulnerability allow
-	// it. 1 is the highest level of priority. If this field is not specified then 5qi is used to derive the ARP value. See 3GPP
-	// TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
+// if the settings of preemptionCapability and preemptionVulnerability allow
+// it. 1 is the highest level of priority. If this field is not specified then 5qi is used to derive the ARP value. See 3GPP
+// TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
 	AllocationAndRetentionPriorityLevel *int32
 
 	// The default PDU session type, which is used if the UE does not request a specific session type.
 	DefaultSessionType *PduSessionType
 
 	// Default 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. See
-	// 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and
-	// table 5.7.4-1 for the definition the 5QI values.
+// 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and
+// table 5.7.4-1 for the definition the 5QI values.
 	FiveQi *int32
 
 	// The maximum number of downlink packets to buffer at the user plane for High Latency Communication - Extended Buffering.
-	// See 3GPP TS29.272 v15.10.0 section 7.3.188 for a full description. This maximum
-	// is not guaranteed because there is a internal limit on buffered packets across all PDU sessions.
+// See 3GPP TS29.272 v15.10.0 section 7.3.188 for a full description. This maximum
+// is not guaranteed because there is a internal limit on buffered packets across all PDU sessions.
 	MaximumNumberOfBufferedPackets *int32
 
 	// Default QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another
-	// QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a
-	// full description of the ARP parameters.
+// QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a
+// full description of the ARP parameters.
 	PreemptionCapability *PreemptionCapability
 
 	// Default QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be preempted
-	// by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2
-	// for a full description of the ARP parameters.
+// by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2
+// for a full description of the ARP parameters.
 	PreemptionVulnerability *PreemptionVulnerability
 }
 
@@ -306,7 +306,7 @@ type DataNetworkResourceID struct {
 // DiagnosticsPackage - Diagnostics package resource.
 type DiagnosticsPackage struct {
 	// REQUIRED; Diagnostics package properties. A diagnostics package file derived from the name of this resource will be uploaded
-	// to the Storage Account Container URL in the packet core control plane properties
+// to the Storage Account Container URL in the packet core control plane properties
 	Properties *DiagnosticsPackagePropertiesFormat
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -355,8 +355,8 @@ type EncryptedSimPropertiesFormat struct {
 	InternationalMobileSubscriberIdentity *string
 
 	// An optional free-form text field that can be used to record the device type this SIM is associated with, for example 'Video
-	// camera'. The Azure portal allows SIMs to be grouped and filtered based on
-	// this value.
+// camera'. The Azure portal allows SIMs to be grouped and filtered based on
+// this value.
 	DeviceType *string
 
 	// The encrypted SIM credentials.
@@ -369,7 +369,7 @@ type EncryptedSimPropertiesFormat struct {
 	SimPolicy *SimPolicyResourceID
 
 	// A list of static IP addresses assigned to this SIM. Each address is assigned at a defined network scope, made up of {attached
-	// data network, slice}.
+// data network, slice}.
 	StaticIPConfiguration []*SimStaticIPProperties
 
 	// READ-ONLY; The provisioning state of the SIM resource.
@@ -403,7 +403,7 @@ type EncryptedSimUploadList struct {
 	Sims []*SimNameAndEncryptedProperties
 
 	// REQUIRED; The fingerprint of the SIM vendor public key. The private counterpart is used for signing the encrypted transport
-	// key.
+// key.
 	VendorKeyFingerprint *string
 
 	// REQUIRED; The upload file format version.
@@ -526,10 +526,10 @@ type ManagedServiceIdentity struct {
 	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
-	// resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
-	// The dictionary values can be empty objects ({}) in
-	// requests.
+// resource ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+// The dictionary values can be empty objects ({}) in
+// requests.
 	UserAssignedIdentities map[string]*UserAssignedIdentity
 }
 
@@ -563,19 +563,19 @@ type NaptConfiguration struct {
 	Enabled *NaptEnabled
 
 	// Maximum number of UDP and TCP pinholes that can be open simultaneously on the core interface. For 5G networks, this is
-	// the N6 interface. For 4G networks, this is the SGi interface.
+// the N6 interface. For 4G networks, this is the SGi interface.
 	PinholeLimits *int32
 
 	// Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least 1 second.
 	PinholeTimeouts *PinholeTimeouts
 
 	// Range of port numbers to use as translated ports on each translated address. If not specified and NAPT is enabled, this
-	// range defaults to 1,024 - 49,999. (Ports under 1,024 should not be used because
-	// these are special purpose ports reserved by IANA. Ports 50,000 and above are reserved for non-NAPT use.)
+// range defaults to 1,024 - 49,999. (Ports under 1,024 should not be used because
+// these are special purpose ports reserved by IANA. Ports 50,000 and above are reserved for non-NAPT use.)
 	PortRange *PortRange
 
 	// The minimum time (in seconds) that will pass before a port that was used by a closed pinhole can be recycled for use by
-	// another pinhole. All hold times must be at least 1 second.
+// another pinhole. All hold times must be at least 1 second.
 	PortReuseHoldTime *PortReuseHoldTimes
 }
 
@@ -618,7 +618,7 @@ type OperationList struct {
 // PacketCapture - Packet capture session resource.
 type PacketCapture struct {
 	// REQUIRED; Packet capture session properties. Packet capture file(s) derived from the name of this session will be uploaded
-	// to the Storage Account Container URL in the packet core control plane properties
+// to the Storage Account Container URL in the packet core control plane properties
 	Properties *PacketCapturePropertiesFormat
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -715,7 +715,7 @@ type PacketCoreControlPlaneListResult struct {
 // PacketCoreControlPlanePropertiesFormat - Packet core control plane properties.
 type PacketCoreControlPlanePropertiesFormat struct {
 	// REQUIRED; The control plane interface on the access network. For 5G networks, this is the N2 interface. For 4G networks,
-	// this is the S1-MME interface.
+// this is the S1-MME interface.
 	ControlPlaneAccessInterface *InterfaceProperties
 
 	// REQUIRED; The kubernetes ingress configuration to control access to packet core diagnostics over local APIs.
@@ -728,7 +728,7 @@ type PacketCoreControlPlanePropertiesFormat struct {
 	SKU *BillingSKU
 
 	// REQUIRED; Site(s) under which this packet core control plane should be deployed. The sites must be in the same location
-	// as the packet core control plane.
+// as the packet core control plane.
 	Sites []*SiteResourceID
 
 	// The core network technology generation (5G core or EPC / 4G core).
@@ -744,8 +744,8 @@ type PacketCoreControlPlanePropertiesFormat struct {
 	InteropSettings any
 
 	// The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links for all data networks. The MTU
-	// set on the user plane access link is calculated to be 60 bytes greater than this
-	// value to allow for GTP encapsulation.
+// set on the user plane access link is calculated to be 60 bytes greater than this
+// value to allow for GTP encapsulation.
 	UeMtu *int32
 
 	// The desired version of the packet core software.
@@ -840,7 +840,7 @@ type PacketCoreDataPlaneListResult struct {
 // PacketCoreDataPlanePropertiesFormat - Packet core data plane properties.
 type PacketCoreDataPlanePropertiesFormat struct {
 	// REQUIRED; The user plane interface on the access network. For 5G networks, this is the N3 interface. For 4G networks, this
-	// is the S1-U interface.
+// is the S1-U interface.
 	UserPlaneAccessInterface *InterfaceProperties
 
 	// READ-ONLY; The provisioning state of the packet core data plane resource.
@@ -850,19 +850,19 @@ type PacketCoreDataPlanePropertiesFormat struct {
 // PccRuleConfiguration - Data flow policy rule configuration
 type PccRuleConfiguration struct {
 	// REQUIRED; The name of the rule. This must be unique within the parent service. You must not use any of the following reserved
-	// strings - default, requested or service.
+// strings - default, requested or service.
 	RuleName *string
 
 	// REQUIRED; A precedence value that is used to decide between data flow policy rules when identifying the QoS values to use
-	// for a particular SIM. A lower value means a higher priority. This value should be unique
-	// among all data flow policy rules configured in the mobile network.
+// for a particular SIM. A lower value means a higher priority. This value should be unique
+// among all data flow policy rules configured in the mobile network.
 	RulePrecedence *int32
 
 	// REQUIRED; The set of data flow templates to use for this data flow policy rule.
 	ServiceDataFlowTemplates []*ServiceDataFlowTemplate
 
 	// The QoS policy to use for packets matching this rule. If this field is null then the parent service will define the QoS
-	// settings.
+// settings.
 	RuleQosPolicy *PccRuleQosPolicy
 
 	// Determines whether flows that match this data flow policy rule are permitted.
@@ -875,29 +875,29 @@ type PccRuleQosPolicy struct {
 	MaximumBitRate *Ambr
 
 	// QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower priority, if
-	// the settings of preemptionCapability and preemptionVulnerability allow it. 1 is
-	// the highest level of priority. If this field is not specified then 5qi is used to derive the ARP value. See 3GPP TS23.501
-	// section 5.7.2.2 for a full description of the ARP parameters.
+// the settings of preemptionCapability and preemptionVulnerability allow it. 1 is
+// the highest level of priority. If this field is not specified then 5qi is used to derive the ARP value. See 3GPP TS23.501
+// section 5.7.2.2 for a full description of the ARP parameters.
 	AllocationAndRetentionPriorityLevel *int32
 
 	// 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. See 3GPP
-	// TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table
-	// 5.7.4-1 for the definition the 5QI values.
+// TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table
+// 5.7.4-1 for the definition the 5QI values.
 	FiveQi *int32
 
 	// The guaranteed bit rate (GBR) for all service data flows that use this data flow policy rule. This is an optional setting.
-	// If you do not provide a value, there will be no GBR set for the data flow
-	// policy rule that uses this QoS definition.
+// If you do not provide a value, there will be no GBR set for the data flow
+// policy rule that uses this QoS definition.
 	GuaranteedBitRate *Ambr
 
 	// QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another QoS Flow
-	// with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full
-	// description of the ARP parameters.
+// with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full
+// description of the ARP parameters.
 	PreemptionCapability *PreemptionCapability
 
 	// QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be preempted by a
-	// QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a
-	// full description of the ARP parameters.
+// QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a
+// full description of the ARP parameters.
 	PreemptionVulnerability *PreemptionVulnerability
 }
 
@@ -940,7 +940,7 @@ type PlatformConfiguration struct {
 	Type *PlatformType
 
 	// The Azure Stack Edge device where the packet core is deployed. If the device is part of a fault tolerant pair, either device
-	// in the pair can be specified.
+// in the pair can be specified.
 	AzureStackEdgeDevice *AzureStackEdgeDeviceResourceID
 
 	// The Azure Stack HCI cluster where the packet core is deployed.
@@ -953,7 +953,7 @@ type PlatformConfiguration struct {
 	CustomLocation *CustomLocationResourceID
 
 	// READ-ONLY; The Azure Stack Edge devices where the packet core is deployed. If the packet core is deployed across multiple
-	// devices, all devices will appear in this list.
+// devices, all devices will appear in this list.
 	AzureStackEdgeDevices []*AzureStackEdgeDeviceResourceID
 }
 
@@ -981,19 +981,19 @@ type PortRange struct {
 // recycled for use by another pinhole. All hold times must be minimum 1 second.
 type PortReuseHoldTimes struct {
 	// Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole can be reused. Default for TCP
-	// is 2 minutes.
+// is 2 minutes.
 	TCP *int32
 
 	// Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole can be reused. Default for UDP
-	// is 1 minute.
+// is 1 minute.
 	UDP *int32
 }
 
 // PropertiesFormat - Mobile network properties.
 type PropertiesFormat struct {
 	// REQUIRED; The unique public land mobile network identifier for the network. This is made up of the mobile country code
-	// and mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values
-	// 001-01 and 001-001 can be used for testing and the values 999-99 and 999-999 can be used on internal private networks.
+// and mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values
+// 001-01 and 001-001 can be used for testing and the values 999-99 and 999-999 can be used on internal private networks.
 	PublicLandMobileNetworkIdentifier *PlmnID
 
 	// READ-ONLY; The provisioning state of the mobile network resource.
@@ -1025,24 +1025,24 @@ type QosPolicy struct {
 	MaximumBitRate *Ambr
 
 	// QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower priority, if
-	// the settings of preemptionCapability and preemptionVulnerability allow it. 1 is
-	// the highest level of priority. If this field is not specified then 5qi is used to derive the ARP value. See 3GPP TS23.501
-	// section 5.7.2.2 for a full description of the ARP parameters.
+// the settings of preemptionCapability and preemptionVulnerability allow it. 1 is
+// the highest level of priority. If this field is not specified then 5qi is used to derive the ARP value. See 3GPP TS23.501
+// section 5.7.2.2 for a full description of the ARP parameters.
 	AllocationAndRetentionPriorityLevel *int32
 
 	// 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. See 3GPP
-	// TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table
-	// 5.7.4-1 for the definition the 5QI values.
+// TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table
+// 5.7.4-1 for the definition the 5QI values.
 	FiveQi *int32
 
 	// QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another QoS Flow
-	// with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full
-	// description of the ARP parameters.
+// with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full
+// description of the ARP parameters.
 	PreemptionCapability *PreemptionCapability
 
 	// QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be preempted by a
-	// QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a
-	// full description of the ARP parameters.
+// QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a
+// full description of the ARP parameters.
 	PreemptionVulnerability *PreemptionVulnerability
 }
 
@@ -1097,26 +1097,26 @@ type ServiceDataFlowTemplate struct {
 	Direction *SdfDirection
 
 	// REQUIRED; A list of the allowed protocol(s) for this flow. If you want this flow to be able to use any protocol within
-	// the internet protocol suite, use the value ip. If you only want to allow a selection of
-	// protocols, you must use the corresponding IANA Assigned Internet Protocol Number for each protocol, as described in https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml.
-	// For
-	// example, for UDP, you must use 17. If you use the value ip then you must leave the field port unspecified.
+// the internet protocol suite, use the value ip. If you only want to allow a selection of
+// protocols, you must use the corresponding IANA Assigned Internet Protocol Number for each protocol, as described in https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml.
+// For
+// example, for UDP, you must use 17. If you use the value ip then you must leave the field port unspecified.
 	Protocol []*string
 
 	// REQUIRED; The remote IP address(es) to which UEs will connect for this flow. If you want to allow connections on any IP
-	// address, use the value any. Otherwise, you must provide each of the remote IP addresses to
-	// which the packet core instance will connect for this flow. You must provide each IP address in CIDR notation, including
-	// the netmask (for example, 192.0.2.54/24).
+// address, use the value any. Otherwise, you must provide each of the remote IP addresses to
+// which the packet core instance will connect for this flow. You must provide each IP address in CIDR notation, including
+// the netmask (for example, 192.0.2.54/24).
 	RemoteIPList []*string
 
 	// REQUIRED; The name of the data flow template. This must be unique within the parent data flow policy rule. You must not
-	// use any of the following reserved strings - default, requested or service.
+// use any of the following reserved strings - default, requested or service.
 	TemplateName *string
 
 	// The port(s) to which UEs will connect for this flow. You can specify zero or more ports or port ranges. If you specify
-	// one or more ports or port ranges then you must specify a value other than ip in
-	// the protocol field. This is an optional setting. If you do not specify it then connections will be allowed on all ports.
-	// Port ranges must be specified as -. For example: [8080, 8082-8085].
+// one or more ports or port ranges then you must specify a value other than ip in
+// the protocol field. This is an optional setting. If you do not specify it then connections will be allowed on all ports.
+// Port ranges must be specified as -. For example: [8080, 8082-8085].
 	Ports []*string
 }
 
@@ -1135,13 +1135,13 @@ type ServicePropertiesFormat struct {
 	PccRules []*PccRuleConfiguration
 
 	// REQUIRED; A precedence value that is used to decide between services when identifying the QoS values to use for a particular
-	// SIM. A lower value means a higher priority. This value should be unique among all
-	// services configured in the mobile network.
+// SIM. A lower value means a higher priority. This value should be unique among all
+// services configured in the mobile network.
 	ServicePrecedence *int32
 
 	// The QoS policy to use for packets matching this service. This can be overridden for particular flows using the ruleQosPolicy
-	// field in a PccRuleConfiguration. If this field is null then the UE's SIM
-	// policy will define the QoS settings.
+// field in a PccRuleConfiguration. If this field is null then the UE's SIM
+// policy will define the QoS settings.
 	ServiceQosPolicy *QosPolicy
 
 	// READ-ONLY; The provisioning state of the service resource.
@@ -1295,15 +1295,15 @@ type SimPolicyListResult struct {
 // SimPolicyPropertiesFormat - SIM policy properties. Must be created in the same location as its parent mobile network.
 type SimPolicyPropertiesFormat struct {
 	// REQUIRED; The default slice to use if the UE does not explicitly specify it. This slice must exist in the sliceConfigurations
-	// map. The slice must be in the same location as the SIM policy.
+// map. The slice must be in the same location as the SIM policy.
 	DefaultSlice *SliceResourceID
 
 	// REQUIRED; The allowed slices and the settings to use for them. The list must not contain duplicate items and must contain
-	// at least one item.
+// at least one item.
 	SliceConfigurations []*SliceConfiguration
 
 	// REQUIRED; Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given UE. See 3GPP TS23.501
-	// section 5.7.2.6 for a full description of the UE-AMBR.
+// section 5.7.2.6 for a full description of the UE-AMBR.
 	UeAmbr *Ambr
 
 	// UE periodic registration update timer (5G) or UE periodic tracking area update timer (4G), in seconds.
@@ -1334,8 +1334,8 @@ type SimPropertiesFormat struct {
 	AuthenticationKey *string
 
 	// An optional free-form text field that can be used to record the device type this SIM is associated with, for example 'Video
-	// camera'. The Azure portal allows SIMs to be grouped and filtered based on
-	// this value.
+// camera'. The Azure portal allows SIMs to be grouped and filtered based on
+// this value.
 	DeviceType *string
 
 	// The integrated circuit card ID (ICCID) for the SIM.
@@ -1348,7 +1348,7 @@ type SimPropertiesFormat struct {
 	SimPolicy *SimPolicyResourceID
 
 	// A list of static IP addresses assigned to this SIM. Each address is assigned at a defined network scope, made up of {attached
-	// data network, slice}.
+// data network, slice}.
 	StaticIPConfiguration []*SimStaticIPProperties
 
 	// READ-ONLY; The provisioning state of the SIM resource.
@@ -1370,13 +1370,13 @@ type SimPropertiesFormat struct {
 // SimStaticIPProperties - Static IP configuration for a SIM, scoped to a particular attached data network and slice.
 type SimStaticIPProperties struct {
 	// The attached data network on which the static IP address will be used. The combination of attached data network and slice
-	// defines the network scope of the IP address. The attached data network must be
-	// in the same location as the SIM.
+// defines the network scope of the IP address. The attached data network must be
+// in the same location as the SIM.
 	AttachedDataNetwork *AttachedDataNetworkResourceID
 
 	// The network slice on which the static IP address will be used. The combination of attached data network and slice defines
-	// the network scope of the IP address. The slice must be in the same location as
-	// the SIM.
+// the network scope of the IP address. The slice must be in the same location as
+// the SIM.
 	Slice *SliceResourceID
 
 	// The static IP configuration for the SIM to use at the defined network scope.
@@ -1386,7 +1386,7 @@ type SimStaticIPProperties struct {
 // SimStaticIPPropertiesStaticIP - The static IP configuration for the SIM to use at the defined network scope.
 type SimStaticIPPropertiesStaticIP struct {
 	// The IPv4 address assigned to the SIM at this network scope. This address must be in the userEquipmentStaticAddressPoolPrefix
-	// defined in the attached data network.
+// defined in the attached data network.
 	IPv4Address *string
 }
 
@@ -1438,7 +1438,7 @@ type SiteListResult struct {
 // SitePropertiesFormat - Site properties.
 type SitePropertiesFormat struct {
 	// READ-ONLY; An array of IDs of the network functions deployed in the site. Deleting the site will delete any network functions
-	// that are deployed in the site.
+// that are deployed in the site.
 	NetworkFunctions []*SubResource
 
 	// READ-ONLY; The provisioning state of the site resource.
@@ -1478,12 +1478,12 @@ type Slice struct {
 // SliceConfiguration - Per-slice settings
 type SliceConfiguration struct {
 	// REQUIRED; The allowed data networks and the settings to use for them. The list must not contain duplicate items and must
-	// contain at least one item.
+// contain at least one item.
 	DataNetworkConfigurations []*DataNetworkConfiguration
 
 	// REQUIRED; The default data network to use if the UE does not explicitly specify it. Configuration for this object must
-	// exist in the dataNetworkConfigurations map. The data network must be in the same location
-	// as the SIM policy.
+// exist in the dataNetworkConfigurations map. The data network must be in the same location
+// as the SIM policy.
 	DefaultDataNetwork *DataNetworkResourceID
 
 	// REQUIRED; A reference to the slice that these settings apply to. The slice must be in the same location as the SIM policy.
@@ -1589,3 +1589,4 @@ type UserAssignedIdentity struct {
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
 }
+

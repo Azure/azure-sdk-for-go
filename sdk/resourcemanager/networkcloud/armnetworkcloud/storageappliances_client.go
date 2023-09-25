@@ -23,7 +23,7 @@ import (
 // StorageAppliancesClient contains the methods for the StorageAppliances group.
 // Don't use this type directly, use NewStorageAppliancesClient() instead.
 type StorageAppliancesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewStorageAppliancesClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &StorageAppliancesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -111,8 +111,8 @@ func (client *StorageAppliancesClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, storageApplianceParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -318,8 +318,8 @@ func (client *StorageAppliancesClient) enableRemoteVendorManagementCreateRequest
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.StorageApplianceEnableRemoteVendorManagementParameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.StorageApplianceEnableRemoteVendorManagementParameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -388,7 +388,7 @@ func (client *StorageAppliancesClient) getHandleResponse(resp *http.Response) (S
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - StorageAppliancesClientListByResourceGroupOptions contains the optional parameters for the StorageAppliancesClient.NewListByResourceGroupPager
 //     method.
-func (client *StorageAppliancesClient) NewListByResourceGroupPager(resourceGroupName string, options *StorageAppliancesClientListByResourceGroupOptions) *runtime.Pager[StorageAppliancesClientListByResourceGroupResponse] {
+func (client *StorageAppliancesClient) NewListByResourceGroupPager(resourceGroupName string, options *StorageAppliancesClientListByResourceGroupOptions) (*runtime.Pager[StorageAppliancesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[StorageAppliancesClientListByResourceGroupResponse]{
 		More: func(page StorageAppliancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -449,7 +449,7 @@ func (client *StorageAppliancesClient) listByResourceGroupHandleResponse(resp *h
 // Generated from API version 2023-07-01
 //   - options - StorageAppliancesClientListBySubscriptionOptions contains the optional parameters for the StorageAppliancesClient.NewListBySubscriptionPager
 //     method.
-func (client *StorageAppliancesClient) NewListBySubscriptionPager(options *StorageAppliancesClientListBySubscriptionOptions) *runtime.Pager[StorageAppliancesClientListBySubscriptionResponse] {
+func (client *StorageAppliancesClient) NewListBySubscriptionPager(options *StorageAppliancesClientListBySubscriptionOptions) (*runtime.Pager[StorageAppliancesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[StorageAppliancesClientListBySubscriptionResponse]{
 		More: func(page StorageAppliancesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -508,12 +508,11 @@ func (client *StorageAppliancesClient) listBySubscriptionHandleResponse(resp *ht
 // Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageApplianceName - The name of the storage appliance.
-//   - storageApplianceUpdateParameters - The request body.
 //   - options - StorageAppliancesClientBeginUpdateOptions contains the optional parameters for the StorageAppliancesClient.BeginUpdate
 //     method.
-func (client *StorageAppliancesClient) BeginUpdate(ctx context.Context, resourceGroupName string, storageApplianceName string, storageApplianceUpdateParameters StorageAppliancePatchParameters, options *StorageAppliancesClientBeginUpdateOptions) (*runtime.Poller[StorageAppliancesClientUpdateResponse], error) {
+func (client *StorageAppliancesClient) BeginUpdate(ctx context.Context, resourceGroupName string, storageApplianceName string, options *StorageAppliancesClientBeginUpdateOptions) (*runtime.Poller[StorageAppliancesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, storageApplianceName, storageApplianceUpdateParameters, options)
+		resp, err := client.update(ctx, resourceGroupName, storageApplianceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -531,9 +530,9 @@ func (client *StorageAppliancesClient) BeginUpdate(ctx context.Context, resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
-func (client *StorageAppliancesClient) update(ctx context.Context, resourceGroupName string, storageApplianceName string, storageApplianceUpdateParameters StorageAppliancePatchParameters, options *StorageAppliancesClientBeginUpdateOptions) (*http.Response, error) {
+func (client *StorageAppliancesClient) update(ctx context.Context, resourceGroupName string, storageApplianceName string, options *StorageAppliancesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, storageApplianceName, storageApplianceUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, storageApplianceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -549,7 +548,7 @@ func (client *StorageAppliancesClient) update(ctx context.Context, resourceGroup
 }
 
 // updateCreateRequest creates the Update request.
-func (client *StorageAppliancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storageApplianceName string, storageApplianceUpdateParameters StorageAppliancePatchParameters, options *StorageAppliancesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *StorageAppliancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storageApplianceName string, options *StorageAppliancesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -568,8 +567,12 @@ func (client *StorageAppliancesClient) updateCreateRequest(ctx context.Context, 
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, storageApplianceUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.StorageApplianceUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.StorageApplianceUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
+

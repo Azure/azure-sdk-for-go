@@ -23,7 +23,7 @@ import (
 // FirewallPolicyRuleCollectionGroupsClient contains the methods for the FirewallPolicyRuleCollectionGroups group.
 // Don't use this type directly, use NewFirewallPolicyRuleCollectionGroupsClient() instead.
 type FirewallPolicyRuleCollectionGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewFirewallPolicyRuleCollectionGroupsClient(subscriptionID string, credenti
 	}
 	client := &FirewallPolicyRuleCollectionGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateCreateRequ
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) getHandleResponse(resp *
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - options - FirewallPolicyRuleCollectionGroupsClientListOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroupsClient.NewListPager
 //     method.
-func (client *FirewallPolicyRuleCollectionGroupsClient) NewListPager(resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleCollectionGroupsClientListOptions) *runtime.Pager[FirewallPolicyRuleCollectionGroupsClientListResponse] {
+func (client *FirewallPolicyRuleCollectionGroupsClient) NewListPager(resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleCollectionGroupsClientListOptions) (*runtime.Pager[FirewallPolicyRuleCollectionGroupsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[FirewallPolicyRuleCollectionGroupsClientListResponse]{
 		More: func(page FirewallPolicyRuleCollectionGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) listHandleResponse(resp 
 	}
 	return result, nil
 }
+

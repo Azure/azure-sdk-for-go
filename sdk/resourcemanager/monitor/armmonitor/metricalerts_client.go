@@ -23,7 +23,7 @@ import (
 // MetricAlertsClient contains the methods for the MetricAlerts group.
 // Don't use this type directly, use NewMetricAlertsClient() instead.
 type MetricAlertsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewMetricAlertsClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &MetricAlertsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -98,8 +98,8 @@ func (client *MetricAlertsClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -236,13 +236,13 @@ func (client *MetricAlertsClient) getHandleResponse(resp *http.Response) (Metric
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MetricAlertsClientListByResourceGroupOptions contains the optional parameters for the MetricAlertsClient.NewListByResourceGroupPager
 //     method.
-func (client *MetricAlertsClient) NewListByResourceGroupPager(resourceGroupName string, options *MetricAlertsClientListByResourceGroupOptions) *runtime.Pager[MetricAlertsClientListByResourceGroupResponse] {
+func (client *MetricAlertsClient) NewListByResourceGroupPager(resourceGroupName string, options *MetricAlertsClientListByResourceGroupOptions) (*runtime.Pager[MetricAlertsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MetricAlertsClientListByResourceGroupResponse]{
 		More: func(page MetricAlertsClientListByResourceGroupResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *MetricAlertsClientListByResourceGroupResponse) (MetricAlertsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetricAlertsClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetricAlertsClient.NewListByResourceGroupPager")
 			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 			if err != nil {
 				return MetricAlertsClientListByResourceGroupResponse{}, err
@@ -296,13 +296,13 @@ func (client *MetricAlertsClient) listByResourceGroupHandleResponse(resp *http.R
 // Generated from API version 2018-03-01
 //   - options - MetricAlertsClientListBySubscriptionOptions contains the optional parameters for the MetricAlertsClient.NewListBySubscriptionPager
 //     method.
-func (client *MetricAlertsClient) NewListBySubscriptionPager(options *MetricAlertsClientListBySubscriptionOptions) *runtime.Pager[MetricAlertsClientListBySubscriptionResponse] {
+func (client *MetricAlertsClient) NewListBySubscriptionPager(options *MetricAlertsClientListBySubscriptionOptions) (*runtime.Pager[MetricAlertsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MetricAlertsClientListBySubscriptionResponse]{
 		More: func(page MetricAlertsClientListBySubscriptionResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *MetricAlertsClientListBySubscriptionResponse) (MetricAlertsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetricAlertsClient.NewListBySubscriptionPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetricAlertsClient.NewListBySubscriptionPager")
 			req, err := client.listBySubscriptionCreateRequest(ctx, options)
 			if err != nil {
 				return MetricAlertsClientListBySubscriptionResponse{}, err
@@ -401,8 +401,8 @@ func (client *MetricAlertsClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -414,3 +414,4 @@ func (client *MetricAlertsClient) updateHandleResponse(resp *http.Response) (Met
 	}
 	return result, nil
 }
+

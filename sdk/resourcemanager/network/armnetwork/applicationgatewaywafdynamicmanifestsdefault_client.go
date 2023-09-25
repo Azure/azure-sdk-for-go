@@ -23,7 +23,7 @@ import (
 // ApplicationGatewayWafDynamicManifestsDefaultClient contains the methods for the ApplicationGatewayWafDynamicManifestsDefault group.
 // Don't use this type directly, use NewApplicationGatewayWafDynamicManifestsDefaultClient() instead.
 type ApplicationGatewayWafDynamicManifestsDefaultClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewApplicationGatewayWafDynamicManifestsDefaultClient(subscriptionID string
 	}
 	client := &ApplicationGatewayWafDynamicManifestsDefaultClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,3 +99,4 @@ func (client *ApplicationGatewayWafDynamicManifestsDefaultClient) getHandleRespo
 	}
 	return result, nil
 }
+

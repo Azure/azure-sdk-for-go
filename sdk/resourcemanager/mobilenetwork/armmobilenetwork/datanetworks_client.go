@@ -23,7 +23,7 @@ import (
 // DataNetworksClient contains the methods for the DataNetworks group.
 // Don't use this type directly, use NewDataNetworksClient() instead.
 type DataNetworksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDataNetworksClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &DataNetworksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *DataNetworksClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -260,7 +260,7 @@ func (client *DataNetworksClient) getHandleResponse(resp *http.Response) (DataNe
 //   - mobileNetworkName - The name of the mobile network.
 //   - options - DataNetworksClientListByMobileNetworkOptions contains the optional parameters for the DataNetworksClient.NewListByMobileNetworkPager
 //     method.
-func (client *DataNetworksClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *DataNetworksClientListByMobileNetworkOptions) *runtime.Pager[DataNetworksClientListByMobileNetworkResponse] {
+func (client *DataNetworksClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *DataNetworksClientListByMobileNetworkOptions) (*runtime.Pager[DataNetworksClientListByMobileNetworkResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DataNetworksClientListByMobileNetworkResponse]{
 		More: func(page DataNetworksClientListByMobileNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -372,8 +372,8 @@ func (client *DataNetworksClient) updateTagsCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -385,3 +385,4 @@ func (client *DataNetworksClient) updateTagsHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

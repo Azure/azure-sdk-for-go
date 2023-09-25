@@ -23,7 +23,7 @@ import (
 )
 
 // ScheduledQueryRulesServer is a fake server for instances of the armmonitor.ScheduledQueryRulesClient type.
-type ScheduledQueryRulesServer struct {
+type ScheduledQueryRulesServer struct{
 	// CreateOrUpdate is the fake for method ScheduledQueryRulesClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, ruleName string, parameters armmonitor.ScheduledQueryRuleResource, options *armmonitor.ScheduledQueryRulesClientCreateOrUpdateOptions) (resp azfake.Responder[armmonitor.ScheduledQueryRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -47,6 +47,7 @@ type ScheduledQueryRulesServer struct {
 	// Update is the fake for method ScheduledQueryRulesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, ruleName string, parameters armmonitor.ScheduledQueryRuleResourcePatch, options *armmonitor.ScheduledQueryRulesClientUpdateOptions) (resp azfake.Responder[armmonitor.ScheduledQueryRulesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewScheduledQueryRulesServerTransport creates a new instance of ScheduledQueryRulesServerTransport with the provided implementation.
@@ -54,18 +55,18 @@ type ScheduledQueryRulesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewScheduledQueryRulesServerTransport(srv *ScheduledQueryRulesServer) *ScheduledQueryRulesServerTransport {
 	return &ScheduledQueryRulesServerTransport{
-		srv:                         srv,
+		srv: srv,
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.ScheduledQueryRulesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmonitor.ScheduledQueryRulesClientListBySubscriptionResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armmonitor.ScheduledQueryRulesClientListBySubscriptionResponse]](),
 	}
 }
 
 // ScheduledQueryRulesServerTransport connects instances of armmonitor.ScheduledQueryRulesClient to instances of ScheduledQueryRulesServer.
 // Don't use this type directly, use NewScheduledQueryRulesServerTransport instead.
 type ScheduledQueryRulesServerTransport struct {
-	srv                         *ScheduledQueryRulesServer
+	srv *ScheduledQueryRulesServer
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.ScheduledQueryRulesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmonitor.ScheduledQueryRulesClientListBySubscriptionResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armmonitor.ScheduledQueryRulesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ScheduledQueryRulesServerTransport.
@@ -134,8 +135,7 @@ func (s *ScheduledQueryRulesServerTransport) dispatchCreateOrUpdate(req *http.Re
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ScheduledQueryRuleResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -167,8 +167,7 @@ func (s *ScheduledQueryRulesServerTransport) dispatchDelete(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -200,8 +199,7 @@ func (s *ScheduledQueryRulesServerTransport) dispatchGet(req *http.Request) (*ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ScheduledQueryRuleResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -212,17 +210,17 @@ func (s *ScheduledQueryRulesServerTransport) dispatchNewListByResourceGroupPager
 	}
 	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/scheduledQueryRules`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/scheduledQueryRules`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := s.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmonitor.ScheduledQueryRulesClientListByResourceGroupResponse, createLink func() string) {
@@ -249,13 +247,13 @@ func (s *ScheduledQueryRulesServerTransport) dispatchNewListBySubscriptionPager(
 	}
 	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/scheduledQueryRules`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListBySubscriptionPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/scheduledQueryRules`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := s.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmonitor.ScheduledQueryRulesClientListBySubscriptionResponse, createLink func() string) {
@@ -307,8 +305,8 @@ func (s *ScheduledQueryRulesServerTransport) dispatchUpdate(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ScheduledQueryRuleResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

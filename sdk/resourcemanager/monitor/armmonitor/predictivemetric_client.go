@@ -23,7 +23,7 @@ import (
 // PredictiveMetricClient contains the methods for the PredictiveMetric group.
 // Don't use this type directly, use NewPredictiveMetricClient() instead.
 type PredictiveMetricClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPredictiveMetricClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &PredictiveMetricClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,3 +117,4 @@ func (client *PredictiveMetricClient) getHandleResponse(resp *http.Response) (Pr
 	}
 	return result, nil
 }
+

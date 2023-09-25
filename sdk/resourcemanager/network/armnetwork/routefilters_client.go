@@ -23,7 +23,7 @@ import (
 // RouteFiltersClient contains the methods for the RouteFilters group.
 // Don't use this type directly, use NewRouteFiltersClient() instead.
 type RouteFiltersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewRouteFiltersClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &RouteFiltersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *RouteFiltersClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, routeFilterParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -255,7 +255,7 @@ func (client *RouteFiltersClient) getHandleResponse(resp *http.Response) (RouteF
 //
 // Generated from API version 2023-05-01
 //   - options - RouteFiltersClientListOptions contains the optional parameters for the RouteFiltersClient.NewListPager method.
-func (client *RouteFiltersClient) NewListPager(options *RouteFiltersClientListOptions) *runtime.Pager[RouteFiltersClientListResponse] {
+func (client *RouteFiltersClient) NewListPager(options *RouteFiltersClientListOptions) (*runtime.Pager[RouteFiltersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RouteFiltersClientListResponse]{
 		More: func(page RouteFiltersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -316,7 +316,7 @@ func (client *RouteFiltersClient) listHandleResponse(resp *http.Response) (Route
 //   - resourceGroupName - The name of the resource group.
 //   - options - RouteFiltersClientListByResourceGroupOptions contains the optional parameters for the RouteFiltersClient.NewListByResourceGroupPager
 //     method.
-func (client *RouteFiltersClient) NewListByResourceGroupPager(resourceGroupName string, options *RouteFiltersClientListByResourceGroupOptions) *runtime.Pager[RouteFiltersClientListByResourceGroupResponse] {
+func (client *RouteFiltersClient) NewListByResourceGroupPager(resourceGroupName string, options *RouteFiltersClientListByResourceGroupOptions) (*runtime.Pager[RouteFiltersClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RouteFiltersClientListByResourceGroupResponse]{
 		More: func(page RouteFiltersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -425,8 +425,8 @@ func (client *RouteFiltersClient) updateTagsCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -438,3 +438,4 @@ func (client *RouteFiltersClient) updateTagsHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

@@ -9,7 +9,7 @@
 package armmarketplaceordering
 
 const (
-	moduleName    = "armmarketplaceordering"
+	moduleName = "armmarketplaceordering"
 	moduleVersion = "v1.2.0-beta.2"
 )
 
@@ -17,15 +17,15 @@ const (
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -41,7 +41,8 @@ const (
 
 // PossibleOfferTypeValues returns the possible values for the OfferType const type.
 func PossibleOfferTypeValues() []OfferType {
-	return []OfferType{
+	return []OfferType{	
 		OfferTypeVirtualmachine,
 	}
 }
+

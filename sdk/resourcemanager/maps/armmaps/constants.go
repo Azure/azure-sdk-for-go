@@ -9,7 +9,7 @@
 package armmaps
 
 const (
-	moduleName    = "armmaps"
+	moduleName = "armmaps"
 	moduleVersion = "v1.0.0"
 )
 
@@ -17,15 +17,15 @@ const (
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -38,13 +38,13 @@ type IdentityType string
 
 const (
 	IdentityTypeDelegatedResourceIdentity IdentityType = "delegatedResourceIdentity"
-	IdentityTypeSystemAssignedIdentity    IdentityType = "systemAssignedIdentity"
-	IdentityTypeUserAssignedIdentity      IdentityType = "userAssignedIdentity"
+	IdentityTypeSystemAssignedIdentity IdentityType = "systemAssignedIdentity"
+	IdentityTypeUserAssignedIdentity IdentityType = "userAssignedIdentity"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{
+	return []IdentityType{	
 		IdentityTypeDelegatedResourceIdentity,
 		IdentityTypeSystemAssignedIdentity,
 		IdentityTypeUserAssignedIdentity,
@@ -56,12 +56,12 @@ type InfrastructureEncryption string
 
 const (
 	InfrastructureEncryptionDisabled InfrastructureEncryption = "disabled"
-	InfrastructureEncryptionEnabled  InfrastructureEncryption = "enabled"
+	InfrastructureEncryptionEnabled InfrastructureEncryption = "enabled"
 )
 
 // PossibleInfrastructureEncryptionValues returns the possible values for the InfrastructureEncryption const type.
 func PossibleInfrastructureEncryptionValues() []InfrastructureEncryption {
-	return []InfrastructureEncryption{
+	return []InfrastructureEncryption{	
 		InfrastructureEncryptionDisabled,
 		InfrastructureEncryptionEnabled,
 	}
@@ -71,13 +71,13 @@ func PossibleInfrastructureEncryptionValues() []InfrastructureEncryption {
 type KeyType string
 
 const (
-	KeyTypePrimary   KeyType = "primary"
+	KeyTypePrimary KeyType = "primary"
 	KeyTypeSecondary KeyType = "secondary"
 )
 
 // PossibleKeyTypeValues returns the possible values for the KeyType const type.
 func PossibleKeyTypeValues() []KeyType {
-	return []KeyType{
+	return []KeyType{	
 		KeyTypePrimary,
 		KeyTypeSecondary,
 	}
@@ -93,7 +93,7 @@ const (
 
 // PossibleKindValues returns the possible values for the Kind const type.
 func PossibleKindValues() []Kind {
-	return []Kind{
+	return []Kind{	
 		KindGen1,
 		KindGen2,
 	}
@@ -103,15 +103,15 @@ func PossibleKindValues() []Kind {
 type ManagedServiceIdentityType string
 
 const (
-	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
-	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
 	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
-	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
 
 // PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{
+	return []ManagedServiceIdentityType{	
 		ManagedServiceIdentityTypeNone,
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
@@ -130,7 +130,7 @@ const (
 
 // PossibleNameValues returns the possible values for the Name const type.
 func PossibleNameValues() []Name {
-	return []Name{
+	return []Name{	
 		NameG2,
 		NameS0,
 		NameS1,
@@ -143,15 +143,16 @@ type SigningKey string
 
 const (
 	SigningKeyManagedIdentity SigningKey = "managedIdentity"
-	SigningKeyPrimaryKey      SigningKey = "primaryKey"
-	SigningKeySecondaryKey    SigningKey = "secondaryKey"
+	SigningKeyPrimaryKey SigningKey = "primaryKey"
+	SigningKeySecondaryKey SigningKey = "secondaryKey"
 )
 
 // PossibleSigningKeyValues returns the possible values for the SigningKey const type.
 func PossibleSigningKeyValues() []SigningKey {
-	return []SigningKey{
+	return []SigningKey{	
 		SigningKeyManagedIdentity,
 		SigningKeyPrimaryKey,
 		SigningKeySecondaryKey,
 	}
 }
+

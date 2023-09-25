@@ -23,7 +23,7 @@ import (
 // PrivateDNSZoneGroupsClient contains the methods for the PrivateDNSZoneGroups group.
 // Don't use this type directly, use NewPrivateDNSZoneGroupsClient() instead.
 type PrivateDNSZoneGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewPrivateDNSZoneGroupsClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &PrivateDNSZoneGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *PrivateDNSZoneGroupsClient) createOrUpdateCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *PrivateDNSZoneGroupsClient) getHandleResponse(resp *http.Response)
 //   - resourceGroupName - The name of the resource group.
 //   - options - PrivateDNSZoneGroupsClientListOptions contains the optional parameters for the PrivateDNSZoneGroupsClient.NewListPager
 //     method.
-func (client *PrivateDNSZoneGroupsClient) NewListPager(privateEndpointName string, resourceGroupName string, options *PrivateDNSZoneGroupsClientListOptions) *runtime.Pager[PrivateDNSZoneGroupsClientListResponse] {
+func (client *PrivateDNSZoneGroupsClient) NewListPager(privateEndpointName string, resourceGroupName string, options *PrivateDNSZoneGroupsClientListOptions) (*runtime.Pager[PrivateDNSZoneGroupsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateDNSZoneGroupsClientListResponse]{
 		More: func(page PrivateDNSZoneGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *PrivateDNSZoneGroupsClient) listHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

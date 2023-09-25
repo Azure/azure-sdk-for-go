@@ -22,7 +22,7 @@ import (
 )
 
 // AlertRuleIncidentsServer is a fake server for instances of the armmonitor.AlertRuleIncidentsClient type.
-type AlertRuleIncidentsServer struct {
+type AlertRuleIncidentsServer struct{
 	// Get is the fake for method AlertRuleIncidentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, ruleName string, incidentName string, options *armmonitor.AlertRuleIncidentsClientGetOptions) (resp azfake.Responder[armmonitor.AlertRuleIncidentsClientGetResponse], errResp azfake.ErrorResponder)
@@ -30,6 +30,7 @@ type AlertRuleIncidentsServer struct {
 	// NewListByAlertRulePager is the fake for method AlertRuleIncidentsClient.NewListByAlertRulePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByAlertRulePager func(resourceGroupName string, ruleName string, options *armmonitor.AlertRuleIncidentsClientListByAlertRuleOptions) (resp azfake.PagerResponder[armmonitor.AlertRuleIncidentsClientListByAlertRuleResponse])
+
 }
 
 // NewAlertRuleIncidentsServerTransport creates a new instance of AlertRuleIncidentsServerTransport with the provided implementation.
@@ -37,7 +38,7 @@ type AlertRuleIncidentsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAlertRuleIncidentsServerTransport(srv *AlertRuleIncidentsServer) *AlertRuleIncidentsServerTransport {
 	return &AlertRuleIncidentsServerTransport{
-		srv:                     srv,
+		srv: srv,
 		newListByAlertRulePager: newTracker[azfake.PagerResponder[armmonitor.AlertRuleIncidentsClientListByAlertRuleResponse]](),
 	}
 }
@@ -45,7 +46,7 @@ func NewAlertRuleIncidentsServerTransport(srv *AlertRuleIncidentsServer) *AlertR
 // AlertRuleIncidentsServerTransport connects instances of armmonitor.AlertRuleIncidentsClient to instances of AlertRuleIncidentsServer.
 // Don't use this type directly, use NewAlertRuleIncidentsServerTransport instead.
 type AlertRuleIncidentsServerTransport struct {
-	srv                     *AlertRuleIncidentsServer
+	srv *AlertRuleIncidentsServer
 	newListByAlertRulePager *tracker[azfake.PagerResponder[armmonitor.AlertRuleIncidentsClientListByAlertRuleResponse]]
 }
 
@@ -107,8 +108,7 @@ func (a *AlertRuleIncidentsServerTransport) dispatchGet(req *http.Request) (*htt
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Incident, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -119,21 +119,21 @@ func (a *AlertRuleIncidentsServerTransport) dispatchNewListByAlertRulePager(req 
 	}
 	newListByAlertRulePager := a.newListByAlertRulePager.get(req)
 	if newListByAlertRulePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.insights/alertrules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/incidents`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		ruleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByAlertRulePager(resourceGroupNameUnescaped, ruleNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.insights/alertrules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/incidents`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+	if err != nil {
+		return nil, err
+	}
+resp := a.srv.NewListByAlertRulePager(resourceGroupNameUnescaped, ruleNameUnescaped, nil)
 		newListByAlertRulePager = &resp
 		a.newListByAlertRulePager.add(req, newListByAlertRulePager)
 	}
@@ -150,3 +150,4 @@ func (a *AlertRuleIncidentsServerTransport) dispatchNewListByAlertRulePager(req 
 	}
 	return resp, nil
 }
+

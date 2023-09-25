@@ -23,7 +23,7 @@ import (
 // PacketCapturesClient contains the methods for the PacketCaptures group.
 // Don't use this type directly, use NewPacketCapturesClient() instead.
 type PacketCapturesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPacketCapturesClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &PacketCapturesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *PacketCapturesClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -260,7 +260,7 @@ func (client *PacketCapturesClient) getHandleResponse(resp *http.Response) (Pack
 //   - packetCoreControlPlaneName - The name of the packet core control plane.
 //   - options - PacketCapturesClientListByPacketCoreControlPlaneOptions contains the optional parameters for the PacketCapturesClient.NewListByPacketCoreControlPlanePager
 //     method.
-func (client *PacketCapturesClient) NewListByPacketCoreControlPlanePager(resourceGroupName string, packetCoreControlPlaneName string, options *PacketCapturesClientListByPacketCoreControlPlaneOptions) *runtime.Pager[PacketCapturesClientListByPacketCoreControlPlaneResponse] {
+func (client *PacketCapturesClient) NewListByPacketCoreControlPlanePager(resourceGroupName string, packetCoreControlPlaneName string, options *PacketCapturesClientListByPacketCoreControlPlaneOptions) (*runtime.Pager[PacketCapturesClientListByPacketCoreControlPlaneResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PacketCapturesClientListByPacketCoreControlPlaneResponse]{
 		More: func(page PacketCapturesClientListByPacketCoreControlPlaneResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -391,3 +391,4 @@ func (client *PacketCapturesClient) stopCreateRequest(ctx context.Context, resou
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

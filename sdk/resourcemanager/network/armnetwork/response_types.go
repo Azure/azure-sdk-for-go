@@ -39,7 +39,7 @@ type AdminRulesClientCreateOrUpdateResponse struct {
 	BaseAdminRuleClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AdminRulesClientCreateOrUpdateResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type AdminRulesClientCreateOrUpdateResponse.
 func (a *AdminRulesClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalBaseAdminRuleClassification(data)
 	if err != nil {
@@ -60,7 +60,7 @@ type AdminRulesClientGetResponse struct {
 	BaseAdminRuleClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AdminRulesClientGetResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type AdminRulesClientGetResponse.
 func (a *AdminRulesClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalBaseAdminRuleClassification(data)
 	if err != nil {
@@ -90,7 +90,7 @@ type ApplicationGatewayPrivateEndpointConnectionsClientGetResponse struct {
 // ApplicationGatewayPrivateEndpointConnectionsClientListResponse contains the response from method ApplicationGatewayPrivateEndpointConnectionsClient.NewListPager.
 type ApplicationGatewayPrivateEndpointConnectionsClientListResponse struct {
 	// Response for ListApplicationGatewayPrivateEndpointConnection API service call. Gets all private endpoint connections for
-	// an application gateway.
+// an application gateway.
 	ApplicationGatewayPrivateEndpointConnectionListResult
 }
 
@@ -103,7 +103,7 @@ type ApplicationGatewayPrivateEndpointConnectionsClientUpdateResponse struct {
 // ApplicationGatewayPrivateLinkResourcesClientListResponse contains the response from method ApplicationGatewayPrivateLinkResourcesClient.NewListPager.
 type ApplicationGatewayPrivateLinkResourcesClientListResponse struct {
 	// Response for ListApplicationGatewayPrivateLinkResources API service call. Gets all private link resources for an application
-	// gateway.
+// gateway.
 	ApplicationGatewayPrivateLinkResourceListResult
 }
 
@@ -408,7 +408,7 @@ type ConfigurationPolicyGroupsClientGetResponse struct {
 // ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse contains the response from method ConfigurationPolicyGroupsClient.NewListByVPNServerConfigurationPager.
 type ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse struct {
 	// Result of the request to list VpnServerConfigurationPolicyGroups. It contains a list of VpnServerConfigurationPolicyGroups
-	// and a URL nextLink to get the next set of results.
+// and a URL nextLink to get the next set of results.
 	ListVPNServerConfigurationPolicyGroupsResult
 }
 
@@ -477,7 +477,7 @@ type ConnectivityConfigurationsClientGetResponse struct {
 // ConnectivityConfigurationsClientListResponse contains the response from method ConnectivityConfigurationsClient.NewListPager.
 type ConnectivityConfigurationsClientListResponse struct {
 	// Result of the request to list network manager connectivity configurations. It contains a list of configurations and a link
-	// to get the next set of results.
+// to get the next set of results.
 	ConnectivityConfigurationListResult
 }
 
@@ -658,7 +658,7 @@ type ExpressRouteCircuitConnectionsClientGetResponse struct {
 // ExpressRouteCircuitConnectionsClientListResponse contains the response from method ExpressRouteCircuitConnectionsClient.NewListPager.
 type ExpressRouteCircuitConnectionsClientListResponse struct {
 	// Response for ListConnections API service call retrieves all global reach connections that belongs to a Private Peering
-	// for an ExpressRouteCircuit.
+// for an ExpressRouteCircuit.
 	ExpressRouteCircuitConnectionListResult
 }
 
@@ -1611,28 +1611,28 @@ type ManagementClientGetBastionShareableLinkResponse struct {
 // ManagementClientListActiveConnectivityConfigurationsResponse contains the response from method ManagementClient.ListActiveConnectivityConfigurations.
 type ManagementClientListActiveConnectivityConfigurationsResponse struct {
 	// Result of the request to list active connectivity configurations. It contains a list of active connectivity configurations
-	// and a skiptoken to get the next set of results.
+// and a skiptoken to get the next set of results.
 	ActiveConnectivityConfigurationsListResult
 }
 
 // ManagementClientListActiveSecurityAdminRulesResponse contains the response from method ManagementClient.ListActiveSecurityAdminRules.
 type ManagementClientListActiveSecurityAdminRulesResponse struct {
 	// Result of the request to list active security admin rules. It contains a list of active security admin rules and a skiptoken
-	// to get the next set of results.
+// to get the next set of results.
 	ActiveSecurityAdminRulesListResult
 }
 
 // ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsResponse contains the response from method ManagementClient.ListNetworkManagerEffectiveConnectivityConfigurations.
 type ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsResponse struct {
 	// Result of the request to list networkManagerEffectiveConnectivityConfiguration. It contains a list of groups and a skiptoken
-	// to get the next set of results.
+// to get the next set of results.
 	ManagerEffectiveConnectivityConfigurationListResult
 }
 
 // ManagementClientListNetworkManagerEffectiveSecurityAdminRulesResponse contains the response from method ManagementClient.ListNetworkManagerEffectiveSecurityAdminRules.
 type ManagementClientListNetworkManagerEffectiveSecurityAdminRulesResponse struct {
 	// Result of the request to list networkManagerEffectiveSecurityAdminRules. It contains a list of groups and a skiptoken to
-	// get the next set of results.
+// get the next set of results.
 	ManagerEffectiveSecurityAdminRulesListResult
 }
 
@@ -1703,14 +1703,14 @@ type ManagersClientGetResponse struct {
 // ManagersClientListBySubscriptionResponse contains the response from method ManagersClient.NewListBySubscriptionPager.
 type ManagersClientListBySubscriptionResponse struct {
 	// Result of the request to list NetworkManager. It contains a list of network managers and a URL link to get the next set
-	// of results.
+// of results.
 	ManagerListResult
 }
 
 // ManagersClientListResponse contains the response from method ManagersClient.NewListPager.
 type ManagersClientListResponse struct {
 	// Result of the request to list NetworkManager. It contains a list of network managers and a URL link to get the next set
-	// of results.
+// of results.
 	ManagerListResult
 }
 
@@ -1775,14 +1775,14 @@ type NatRulesClientGetResponse struct {
 // NatRulesClientListByVPNGatewayResponse contains the response from method NatRulesClient.NewListByVPNGatewayPager.
 type NatRulesClientListByVPNGatewayResponse struct {
 	// Result of the request to list all nat rules to a virtual wan vpn gateway. It contains a list of Nat rules and a URL nextLink
-	// to get the next set of results.
+// to get the next set of results.
 	ListVPNGatewayNatRulesResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// Result of the request to list Network operations. It contains a list of operations and a URL link to get the next set of
-	// results.
+// results.
 	OperationListResult
 }
 
@@ -1829,14 +1829,14 @@ type P2SVPNGatewaysClientGetResponse struct {
 // P2SVPNGatewaysClientListByResourceGroupResponse contains the response from method P2SVPNGatewaysClient.NewListByResourceGroupPager.
 type P2SVPNGatewaysClientListByResourceGroupResponse struct {
 	// Result of the request to list P2SVpnGateways. It contains a list of P2SVpnGateways and a URL nextLink to get the next set
-	// of results.
+// of results.
 	ListP2SVPNGatewaysResult
 }
 
 // P2SVPNGatewaysClientListResponse contains the response from method P2SVPNGatewaysClient.NewListPager.
 type P2SVPNGatewaysClientListResponse struct {
 	// Result of the request to list P2SVpnGateways. It contains a list of P2SVpnGateways and a URL nextLink to get the next set
-	// of results.
+// of results.
 	ListP2SVPNGatewaysResult
 }
 
@@ -1895,7 +1895,7 @@ type PeerExpressRouteCircuitConnectionsClientGetResponse struct {
 // PeerExpressRouteCircuitConnectionsClientListResponse contains the response from method PeerExpressRouteCircuitConnectionsClient.NewListPager.
 type PeerExpressRouteCircuitConnectionsClientListResponse struct {
 	// Response for ListPeeredConnections API service call retrieves all global reach peer circuit connections that belongs to
-	// a Private Peering for an ExpressRouteCircuit.
+// a Private Peering for an ExpressRouteCircuit.
 	PeerExpressRouteCircuitConnectionListResult
 }
 
@@ -2542,7 +2542,7 @@ type ServiceEndpointPolicyDefinitionsClientGetResponse struct {
 // ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse contains the response from method ServiceEndpointPolicyDefinitionsClient.NewListByResourceGroupPager.
 type ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse struct {
 	// Response for ListServiceEndpointPolicyDefinition API service call. Retrieves all service endpoint policy definition that
-	// belongs to a service endpoint policy.
+// belongs to a service endpoint policy.
 	ServiceEndpointPolicyDefinitionListResult
 }
 
@@ -2663,7 +2663,7 @@ type VPNConnectionsClientGetResponse struct {
 // VPNConnectionsClientListByVPNGatewayResponse contains the response from method VPNConnectionsClient.NewListByVPNGatewayPager.
 type VPNConnectionsClientListByVPNGatewayResponse struct {
 	// Result of the request to list all vpn connections to a virtual wan vpn gateway. It contains a list of Vpn Connections and
-	// a URL nextLink to get the next set of results.
+// a URL nextLink to get the next set of results.
 	ListVPNConnectionsResult
 }
 
@@ -2672,7 +2672,7 @@ type VPNConnectionsClientStartPacketCaptureResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VPNConnectionsClientStartPacketCaptureResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VPNConnectionsClientStartPacketCaptureResponse.
 func (v *VPNConnectionsClientStartPacketCaptureResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -2682,7 +2682,7 @@ type VPNConnectionsClientStopPacketCaptureResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VPNConnectionsClientStopPacketCaptureResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VPNConnectionsClientStopPacketCaptureResponse.
 func (v *VPNConnectionsClientStopPacketCaptureResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -2707,14 +2707,14 @@ type VPNGatewaysClientGetResponse struct {
 // VPNGatewaysClientListByResourceGroupResponse contains the response from method VPNGatewaysClient.NewListByResourceGroupPager.
 type VPNGatewaysClientListByResourceGroupResponse struct {
 	// Result of the request to list VpnGateways. It contains a list of VpnGateways and a URL nextLink to get the next set of
-	// results.
+// results.
 	ListVPNGatewaysResult
 }
 
 // VPNGatewaysClientListResponse contains the response from method VPNGatewaysClient.NewListPager.
 type VPNGatewaysClientListResponse struct {
 	// Result of the request to list VpnGateways. It contains a list of VpnGateways and a URL nextLink to get the next set of
-	// results.
+// results.
 	ListVPNGatewaysResult
 }
 
@@ -2729,7 +2729,7 @@ type VPNGatewaysClientStartPacketCaptureResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VPNGatewaysClientStartPacketCaptureResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VPNGatewaysClientStartPacketCaptureResponse.
 func (v *VPNGatewaysClientStartPacketCaptureResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -2739,7 +2739,7 @@ type VPNGatewaysClientStopPacketCaptureResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VPNGatewaysClientStopPacketCaptureResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VPNGatewaysClientStopPacketCaptureResponse.
 func (v *VPNGatewaysClientStopPacketCaptureResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -2755,7 +2755,7 @@ type VPNLinkConnectionsClientGetIkeSasResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VPNLinkConnectionsClientGetIkeSasResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VPNLinkConnectionsClientGetIkeSasResponse.
 func (v *VPNLinkConnectionsClientGetIkeSasResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -2763,7 +2763,7 @@ func (v *VPNLinkConnectionsClientGetIkeSasResponse) UnmarshalJSON(data []byte) e
 // VPNLinkConnectionsClientListByVPNConnectionResponse contains the response from method VPNLinkConnectionsClient.NewListByVPNConnectionPager.
 type VPNLinkConnectionsClientListByVPNConnectionResponse struct {
 	// Result of the request to list all vpn connections to a virtual wan vpn gateway. It contains a list of Vpn Connections and
-	// a URL nextLink to get the next set of results.
+// a URL nextLink to get the next set of results.
 	ListVPNSiteLinkConnectionsResult
 }
 
@@ -2798,14 +2798,14 @@ type VPNServerConfigurationsClientGetResponse struct {
 // VPNServerConfigurationsClientListByResourceGroupResponse contains the response from method VPNServerConfigurationsClient.NewListByResourceGroupPager.
 type VPNServerConfigurationsClientListByResourceGroupResponse struct {
 	// Result of the request to list all VpnServerConfigurations. It contains a list of VpnServerConfigurations and a URL nextLink
-	// to get the next set of results.
+// to get the next set of results.
 	ListVPNServerConfigurationsResult
 }
 
 // VPNServerConfigurationsClientListResponse contains the response from method VPNServerConfigurationsClient.NewListPager.
 type VPNServerConfigurationsClientListResponse struct {
 	// Result of the request to list all VpnServerConfigurations. It contains a list of VpnServerConfigurations and a URL nextLink
-	// to get the next set of results.
+// to get the next set of results.
 	ListVPNServerConfigurationsResult
 }
 
@@ -2830,7 +2830,7 @@ type VPNSiteLinksClientGetResponse struct {
 // VPNSiteLinksClientListByVPNSiteResponse contains the response from method VPNSiteLinksClient.NewListByVPNSitePager.
 type VPNSiteLinksClientListByVPNSiteResponse struct {
 	// Result of the request to list VpnSiteLinks. It contains a list of VpnSiteLinks and a URL nextLink to get the next set of
-	// results.
+// results.
 	ListVPNSiteLinksResult
 }
 
@@ -3007,7 +3007,7 @@ type VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse struct {
 	Value map[string][]*PeerRoute
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse.
 func (v *VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -3018,7 +3018,7 @@ type VirtualHubBgpConnectionsClientListLearnedRoutesResponse struct {
 	Value map[string][]*PeerRoute
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualHubBgpConnectionsClientListLearnedRoutesResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualHubBgpConnectionsClientListLearnedRoutesResponse.
 func (v *VirtualHubBgpConnectionsClientListLearnedRoutesResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -3113,14 +3113,14 @@ type VirtualHubsClientGetResponse struct {
 // VirtualHubsClientListByResourceGroupResponse contains the response from method VirtualHubsClient.NewListByResourceGroupPager.
 type VirtualHubsClientListByResourceGroupResponse struct {
 	// Result of the request to list VirtualHubs. It contains a list of VirtualHubs and a URL nextLink to get the next set of
-	// results.
+// results.
 	ListVirtualHubsResult
 }
 
 // VirtualHubsClientListResponse contains the response from method VirtualHubsClient.NewListPager.
 type VirtualHubsClientListResponse struct {
 	// Result of the request to list VirtualHubs. It contains a list of VirtualHubs and a URL nextLink to get the next set of
-	// results.
+// results.
 	ListVirtualHubsResult
 }
 
@@ -3146,7 +3146,7 @@ type VirtualNetworkGatewayConnectionsClientGetIkeSasResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewayConnectionsClientGetIkeSasResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewayConnectionsClientGetIkeSasResponse.
 func (v *VirtualNetworkGatewayConnectionsClientGetIkeSasResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -3191,7 +3191,7 @@ type VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse.
 func (v *VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -3201,7 +3201,7 @@ type VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse.
 func (v *VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -3232,7 +3232,7 @@ type VirtualNetworkGatewayNatRulesClientGetResponse struct {
 // VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse contains the response from method VirtualNetworkGatewayNatRulesClient.NewListByVirtualNetworkGatewayPager.
 type VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse struct {
 	// Result of the request to list all nat rules to a virtual network gateway. It contains a list of Nat rules and a URL nextLink
-	// to get the next set of results.
+// to get the next set of results.
 	ListVirtualNetworkGatewayNatRulesResult
 }
 
@@ -3257,7 +3257,7 @@ type VirtualNetworkGatewaysClientGenerateVPNProfileResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientGenerateVPNProfileResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientGenerateVPNProfileResponse.
 func (v *VirtualNetworkGatewaysClientGenerateVPNProfileResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -3267,7 +3267,7 @@ type VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse.
 func (v *VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -3301,7 +3301,7 @@ type VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse.
 func (v *VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -3352,7 +3352,7 @@ type VirtualNetworkGatewaysClientStartPacketCaptureResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientStartPacketCaptureResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientStartPacketCaptureResponse.
 func (v *VirtualNetworkGatewaysClientStartPacketCaptureResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -3362,7 +3362,7 @@ type VirtualNetworkGatewaysClientStopPacketCaptureResponse struct {
 	Value *string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientStopPacketCaptureResponse.
+	// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientStopPacketCaptureResponse.
 func (v *VirtualNetworkGatewaysClientStopPacketCaptureResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
@@ -3566,14 +3566,14 @@ type VirtualWansClientGetResponse struct {
 // VirtualWansClientListByResourceGroupResponse contains the response from method VirtualWansClient.NewListByResourceGroupPager.
 type VirtualWansClientListByResourceGroupResponse struct {
 	// Result of the request to list VirtualWANs. It contains a list of VirtualWANs and a URL nextLink to get the next set of
-	// results.
+// results.
 	ListVirtualWANsResult
 }
 
 // VirtualWansClientListResponse contains the response from method VirtualWansClient.NewListPager.
 type VirtualWansClientListResponse struct {
 	// Result of the request to list VirtualWANs. It contains a list of VirtualWANs and a URL nextLink to get the next set of
-	// results.
+// results.
 	ListVirtualWANsResult
 }
 
@@ -3710,14 +3710,14 @@ type WebApplicationFirewallPoliciesClientGetResponse struct {
 // WebApplicationFirewallPoliciesClientListAllResponse contains the response from method WebApplicationFirewallPoliciesClient.NewListAllPager.
 type WebApplicationFirewallPoliciesClientListAllResponse struct {
 	// Result of the request to list WebApplicationFirewallPolicies. It contains a list of WebApplicationFirewallPolicy objects
-	// and a URL link to get the next set of results.
+// and a URL link to get the next set of results.
 	WebApplicationFirewallPolicyListResult
 }
 
 // WebApplicationFirewallPoliciesClientListResponse contains the response from method WebApplicationFirewallPoliciesClient.NewListPager.
 type WebApplicationFirewallPoliciesClientListResponse struct {
 	// Result of the request to list WebApplicationFirewallPolicies. It contains a list of WebApplicationFirewallPolicy objects
-	// and a URL link to get the next set of results.
+// and a URL link to get the next set of results.
 	WebApplicationFirewallPolicyListResult
 }
 
@@ -3732,3 +3732,4 @@ type WebCategoriesClientListBySubscriptionResponse struct {
 	// Response for ListAzureWebCategories API service call.
 	AzureWebCategoryListResult
 }
+

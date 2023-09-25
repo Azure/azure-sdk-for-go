@@ -94,10 +94,10 @@ type ActivityLogAlertsClientUpdateOptions struct {
 // ActivityLogsClientListOptions contains the optional parameters for the ActivityLogsClient.NewListPager method.
 type ActivityLogsClientListOptions struct {
 	// Used to fetch events with only the given properties.
-	// The $select argument is a comma separated list of property names to be returned. Possible values are: authorization, claims,
-	// correlationId, description, eventDataId, eventName, eventTimestamp,
-	// httpRequest, level, operationId, operationName, properties, resourceGroupName, resourceProviderName, resourceId, status,
-	// submissionTimestamp, subStatus, subscriptionId
+// The $select argument is a comma separated list of property names to be returned. Possible values are: authorization, claims,
+// correlationId, description, eventDataId, eventName, eventTimestamp,
+// httpRequest, level, operationId, operationName, properties, resourceGroupName, resourceProviderName, resourceId, status,
+// submissionTimestamp, subStatus, subscriptionId
 	Select *string
 }
 
@@ -219,22 +219,22 @@ type BaselinesClientListOptions struct {
 	Aggregation *string
 
 	// The $filter is used to reduce the set of metric data returned. Example: Metric contains metadata A, B and C. - Return all
-	// time series of C where A = a1 and B = b1 or b2 $filter=A eq 'a1' and B eq 'b1'
-	// or B eq 'b2' and C eq '' - Invalid variant: $filter=A eq 'a1' and B eq 'b1' and C eq '' or B = 'b2' This is invalid because
-	// the logical or operator cannot separate two different metadata names. -
-	// Return all time series where A = a1, B = b1 and C = c1: $filter=A eq 'a1' and B eq 'b1' and C eq 'c1' - Return all time
-	// series where A = a1 $filter=A eq 'a1' and B eq '' and C eq ''. Special case:
-	// When dimension name or dimension value uses round brackets. Eg: When dimension name is dim (test) 1 Instead of using $filter=
-	// "dim (test) 1 eq '' " use $filter= "dim %2528test%2529 1 eq '' " When
-	// dimension name is dim (test) 3 and dimension value is dim3 (test) val Instead of using $filter= "dim (test) 3 eq 'dim3
-	// (test) val' " use $filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "
+// time series of C where A = a1 and B = b1 or b2 $filter=A eq 'a1' and B eq 'b1'
+// or B eq 'b2' and C eq '' - Invalid variant: $filter=A eq 'a1' and B eq 'b1' and C eq '' or B = 'b2' This is invalid because
+// the logical or operator cannot separate two different metadata names. -
+// Return all time series where A = a1, B = b1 and C = c1: $filter=A eq 'a1' and B eq 'b1' and C eq 'c1' - Return all time
+// series where A = a1 $filter=A eq 'a1' and B eq '' and C eq ''. Special case:
+// When dimension name or dimension value uses round brackets. Eg: When dimension name is dim (test) 1 Instead of using $filter=
+// "dim (test) 1 eq '' " use $filter= "dim %2528test%2529 1 eq '' " When
+// dimension name is dim (test) 3 and dimension value is dim3 (test) val Instead of using $filter= "dim (test) 3 eq 'dim3
+// (test) val' " use $filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "
 	Filter *string
 
 	// The interval (i.e. timegrain) of the query.
 	Interval *string
 
 	// The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in it then use
-	// %2 to indicate it. Eg: 'Metric,Name1' should be 'Metric%2Name1'
+// %2 to indicate it. Eg: 'Metric,Name1' should be 'Metric%2Name1'
 	Metricnames *string
 
 	// Metric namespace to query metric definitions for.
@@ -490,22 +490,22 @@ type MetricsClientListAtSubscriptionScopeOptions struct {
 	Aggregation *string
 
 	// When set to true, if the timespan passed in is not supported by this metric, the API will return the result using the closest
-	// supported timespan. When set to false, an error is returned for invalid
-	// timespan parameters. Defaults to false.
+// supported timespan. When set to false, an error is returned for invalid
+// timespan parameters. Defaults to false.
 	AutoAdjustTimegrain *bool
 
 	// The $filter is used to reduce the set of metric data returned.
-	// Example:
-	// Metric contains metadata A, B and C.
-	// - Return all time series of C where A = a1 and B = b1 or b2
-	// $filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘’
-	// - Invalid variant:
-	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘’ or B = ‘b2’
-	// This is invalid because the logical or operator cannot separate two different metadata names.
-	// - Return all time series where A = a1, B = b1 and C = c1:
-	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’
-	// - Return all time series where A = a1
-	// $filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
+// Example:
+// Metric contains metadata A, B and C.
+// - Return all time series of C where A = a1 and B = b1 or b2
+// $filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘’
+// - Invalid variant:
+// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘’ or B = ‘b2’
+// This is invalid because the logical or operator cannot separate two different metadata names.
+// - Return all time series where A = a1, B = b1 and C = c1:
+// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’
+// - Return all time series where A = a1
+// $filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
 	Filter *string
 
 	// The interval (i.e. timegrain) of the query.
@@ -518,7 +518,7 @@ type MetricsClientListAtSubscriptionScopeOptions struct {
 	Metricnamespace *string
 
 	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified. Examples: sum
-	// asc.
+// asc.
 	Orderby *string
 
 	// Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
@@ -531,7 +531,7 @@ type MetricsClientListAtSubscriptionScopeOptions struct {
 	Top *int32
 
 	// When set to false, invalid filter parameter values will be ignored. When set to true, an error is returned for invalid
-	// filter parameters. Defaults to true.
+// filter parameters. Defaults to true.
 	ValidateDimensions *bool
 }
 
@@ -542,25 +542,25 @@ type MetricsClientListAtSubscriptionScopePostOptions struct {
 	Aggregation *string
 
 	// When set to true, if the timespan passed in is not supported by this metric, the API will return the result using the closest
-	// supported timespan. When set to false, an error is returned for invalid
-	// timespan parameters. Defaults to false.
+// supported timespan. When set to false, an error is returned for invalid
+// timespan parameters. Defaults to false.
 	AutoAdjustTimegrain *bool
 
 	// Parameters serialized in the body
 	Body *SubscriptionScopeMetricsRequestBodyParameters
 
 	// The $filter is used to reduce the set of metric data returned.
-	// Example:
-	// Metric contains metadata A, B and C.
-	// - Return all time series of C where A = a1 and B = b1 or b2
-	// $filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘’
-	// - Invalid variant:
-	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘’ or B = ‘b2’
-	// This is invalid because the logical or operator cannot separate two different metadata names.
-	// - Return all time series where A = a1, B = b1 and C = c1:
-	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’
-	// - Return all time series where A = a1
-	// $filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
+// Example:
+// Metric contains metadata A, B and C.
+// - Return all time series of C where A = a1 and B = b1 or b2
+// $filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘’
+// - Invalid variant:
+// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘’ or B = ‘b2’
+// This is invalid because the logical or operator cannot separate two different metadata names.
+// - Return all time series where A = a1, B = b1 and C = c1:
+// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’
+// - Return all time series where A = a1
+// $filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
 	Filter *string
 
 	// The interval (i.e. timegrain) of the query.
@@ -573,7 +573,7 @@ type MetricsClientListAtSubscriptionScopePostOptions struct {
 	Metricnamespace *string
 
 	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified. Examples: sum
-	// asc.
+// asc.
 	Orderby *string
 
 	// Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
@@ -586,7 +586,7 @@ type MetricsClientListAtSubscriptionScopePostOptions struct {
 	Top *int32
 
 	// When set to false, invalid filter parameter values will be ignored. When set to true, an error is returned for invalid
-	// filter parameters. Defaults to true.
+// filter parameters. Defaults to true.
 	ValidateDimensions *bool
 }
 
@@ -596,22 +596,22 @@ type MetricsClientListOptions struct {
 	Aggregation *string
 
 	// When set to true, if the timespan passed in is not supported by this metric, the API will return the result using the closest
-	// supported timespan. When set to false, an error is returned for invalid
-	// timespan parameters. Defaults to false.
+// supported timespan. When set to false, an error is returned for invalid
+// timespan parameters. Defaults to false.
 	AutoAdjustTimegrain *bool
 
 	// The $filter is used to reduce the set of metric data returned.
-	// Example:
-	// Metric contains metadata A, B and C.
-	// - Return all time series of C where A = a1 and B = b1 or b2
-	// $filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘’
-	// - Invalid variant:
-	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘’ or B = ‘b2’
-	// This is invalid because the logical or operator cannot separate two different metadata names.
-	// - Return all time series where A = a1, B = b1 and C = c1:
-	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’
-	// - Return all time series where A = a1
-	// $filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
+// Example:
+// Metric contains metadata A, B and C.
+// - Return all time series of C where A = a1 and B = b1 or b2
+// $filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘’
+// - Invalid variant:
+// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘’ or B = ‘b2’
+// This is invalid because the logical or operator cannot separate two different metadata names.
+// - Return all time series where A = a1, B = b1 and C = c1:
+// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’
+// - Return all time series where A = a1
+// $filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
 	Filter *string
 
 	// The interval (i.e. timegrain) of the query.
@@ -624,7 +624,7 @@ type MetricsClientListOptions struct {
 	Metricnamespace *string
 
 	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified. Examples: sum
-	// asc.
+// asc.
 	Orderby *string
 
 	// Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
@@ -637,7 +637,7 @@ type MetricsClientListOptions struct {
 	Top *int32
 
 	// When set to false, invalid filter parameter values will be ignored. When set to true, an error is returned for invalid
-	// filter parameters. Defaults to true.
+// filter parameters. Defaults to true.
 	ValidateDimensions *bool
 }
 
@@ -823,25 +823,25 @@ type TenantActionGroupsClientUpdateOptions struct {
 // TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.NewListPager method.
 type TenantActivityLogsClientListOptions struct {
 	// Reduces the set of data collected.
-	// The $filter is very restricted and allows only the following patterns.
-	// - List events for a resource group: $filter=eventTimestamp ge '' and eventTimestamp le '' and eventChannels eq 'Admin,
-	// Operation' and resourceGroupName eq ''.
-	// - List events for resource: $filter=eventTimestamp ge '' and eventTimestamp le '' and eventChannels eq 'Admin, Operation'
-	// and resourceUri eq ''.
-	// - List events for a subscription: $filter=eventTimestamp ge '' and eventTimestamp le '' and eventChannels eq 'Admin, Operation'.
-	// - List events for a resource provider: $filter=eventTimestamp ge '' and eventTimestamp le '' and eventChannels eq 'Admin,
-	// Operation' and resourceProvider eq ''.
-	// - List events for a correlation Id: api-version=2014-04-01&$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and
-	// eventTimestamp le '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin,
-	// Operation' and correlationId eq ''.
-	// NOTE: No other syntax is allowed.
+// The $filter is very restricted and allows only the following patterns.
+// - List events for a resource group: $filter=eventTimestamp ge '' and eventTimestamp le '' and eventChannels eq 'Admin,
+// Operation' and resourceGroupName eq ''.
+// - List events for resource: $filter=eventTimestamp ge '' and eventTimestamp le '' and eventChannels eq 'Admin, Operation'
+// and resourceUri eq ''.
+// - List events for a subscription: $filter=eventTimestamp ge '' and eventTimestamp le '' and eventChannels eq 'Admin, Operation'.
+// - List events for a resource provider: $filter=eventTimestamp ge '' and eventTimestamp le '' and eventChannels eq 'Admin,
+// Operation' and resourceProvider eq ''.
+// - List events for a correlation Id: api-version=2014-04-01&$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and
+// eventTimestamp le '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin,
+// Operation' and correlationId eq ''.
+// NOTE: No other syntax is allowed.
 	Filter *string
 
 	// Used to fetch events with only the given properties.
-	// The $select argument is a comma separated list of property names to be returned. Possible values are: authorization, claims,
-	// correlationId, description, eventDataId, eventName, eventTimestamp,
-	// httpRequest, level, operationId, operationName, properties, resourceGroupName, resourceProviderName, resourceId, status,
-	// submissionTimestamp, subStatus, subscriptionId
+// The $select argument is a comma separated list of property names to be returned. Possible values are: authorization, claims,
+// correlationId, description, eventDataId, eventName, eventTimestamp,
+// httpRequest, level, operationId, operationName, properties, resourceGroupName, resourceProviderName, resourceId, status,
+// submissionTimestamp, subStatus, subscriptionId
 	Select *string
 }
 
@@ -850,3 +850,4 @@ type TenantActivityLogsClientListOptions struct {
 type VMInsightsClientGetOnboardingStatusOptions struct {
 	// placeholder for future optional parameters
 }
+

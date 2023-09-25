@@ -23,7 +23,7 @@ import (
 // PeerExpressRouteCircuitConnectionsClient contains the methods for the PeerExpressRouteCircuitConnections group.
 // Don't use this type directly, use NewPeerExpressRouteCircuitConnectionsClient() instead.
 type PeerExpressRouteCircuitConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewPeerExpressRouteCircuitConnectionsClient(subscriptionID string, credenti
 	}
 	client := &PeerExpressRouteCircuitConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -123,7 +123,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) getHandleResponse(resp *
 //   - peeringName - The name of the peering.
 //   - options - PeerExpressRouteCircuitConnectionsClientListOptions contains the optional parameters for the PeerExpressRouteCircuitConnectionsClient.NewListPager
 //     method.
-func (client *PeerExpressRouteCircuitConnectionsClient) NewListPager(resourceGroupName string, circuitName string, peeringName string, options *PeerExpressRouteCircuitConnectionsClientListOptions) *runtime.Pager[PeerExpressRouteCircuitConnectionsClientListResponse] {
+func (client *PeerExpressRouteCircuitConnectionsClient) NewListPager(resourceGroupName string, circuitName string, peeringName string, options *PeerExpressRouteCircuitConnectionsClientListOptions) (*runtime.Pager[PeerExpressRouteCircuitConnectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PeerExpressRouteCircuitConnectionsClientListResponse]{
 		More: func(page PeerExpressRouteCircuitConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -189,3 +189,4 @@ func (client *PeerExpressRouteCircuitConnectionsClient) listHandleResponse(resp 
 	}
 	return result, nil
 }
+

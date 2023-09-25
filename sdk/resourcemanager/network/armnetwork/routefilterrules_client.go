@@ -23,7 +23,7 @@ import (
 // RouteFilterRulesClient contains the methods for the RouteFilterRules group.
 // Don't use this type directly, use NewRouteFilterRulesClient() instead.
 type RouteFilterRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewRouteFilterRulesClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &RouteFilterRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *RouteFilterRulesClient) createOrUpdateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, routeFilterRuleParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -270,7 +270,7 @@ func (client *RouteFilterRulesClient) getHandleResponse(resp *http.Response) (Ro
 //   - routeFilterName - The name of the route filter.
 //   - options - RouteFilterRulesClientListByRouteFilterOptions contains the optional parameters for the RouteFilterRulesClient.NewListByRouteFilterPager
 //     method.
-func (client *RouteFilterRulesClient) NewListByRouteFilterPager(resourceGroupName string, routeFilterName string, options *RouteFilterRulesClientListByRouteFilterOptions) *runtime.Pager[RouteFilterRulesClientListByRouteFilterResponse] {
+func (client *RouteFilterRulesClient) NewListByRouteFilterPager(resourceGroupName string, routeFilterName string, options *RouteFilterRulesClientListByRouteFilterOptions) (*runtime.Pager[RouteFilterRulesClientListByRouteFilterResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RouteFilterRulesClientListByRouteFilterResponse]{
 		More: func(page RouteFilterRulesClientListByRouteFilterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -332,3 +332,4 @@ func (client *RouteFilterRulesClient) listByRouteFilterHandleResponse(resp *http
 	}
 	return result, nil
 }
+

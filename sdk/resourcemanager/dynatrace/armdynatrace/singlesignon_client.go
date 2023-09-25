@@ -23,7 +23,7 @@ import (
 // SingleSignOnClient contains the methods for the SingleSignOn group.
 // Don't use this type directly, use NewSingleSignOnClient() instead.
 type SingleSignOnClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSingleSignOnClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &SingleSignOnClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,8 +117,8 @@ func (client *SingleSignOnClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -193,7 +193,7 @@ func (client *SingleSignOnClient) getHandleResponse(resp *http.Response) (Single
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - SingleSignOnClientListOptions contains the optional parameters for the SingleSignOnClient.NewListPager method.
-func (client *SingleSignOnClient) NewListPager(resourceGroupName string, monitorName string, options *SingleSignOnClientListOptions) *runtime.Pager[SingleSignOnClientListResponse] {
+func (client *SingleSignOnClient) NewListPager(resourceGroupName string, monitorName string, options *SingleSignOnClientListOptions) (*runtime.Pager[SingleSignOnClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SingleSignOnClientListResponse]{
 		More: func(page SingleSignOnClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -255,3 +255,4 @@ func (client *SingleSignOnClient) listHandleResponse(resp *http.Response) (Singl
 	}
 	return result, nil
 }
+

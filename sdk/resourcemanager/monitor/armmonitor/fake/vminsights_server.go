@@ -22,10 +22,11 @@ import (
 )
 
 // VMInsightsServer is a fake server for instances of the armmonitor.VMInsightsClient type.
-type VMInsightsServer struct {
+type VMInsightsServer struct{
 	// GetOnboardingStatus is the fake for method VMInsightsClient.GetOnboardingStatus
 	// HTTP status codes to indicate success: http.StatusOK
 	GetOnboardingStatus func(ctx context.Context, resourceURI string, options *armmonitor.VMInsightsClientGetOnboardingStatusOptions) (resp azfake.Responder[armmonitor.VMInsightsClientGetOnboardingStatusResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewVMInsightsServerTransport creates a new instance of VMInsightsServerTransport with the provided implementation.
@@ -89,8 +90,8 @@ func (v *VMInsightsServerTransport) dispatchGetOnboardingStatus(req *http.Reques
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VMInsightsOnboardingStatus, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

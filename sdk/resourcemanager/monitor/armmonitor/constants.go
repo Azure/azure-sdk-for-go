@@ -9,7 +9,7 @@
 package armmonitor
 
 const (
-	moduleName    = "armmonitor"
+	moduleName = "armmonitor"
 	moduleVersion = "v0.10.1"
 )
 
@@ -17,13 +17,13 @@ const (
 type AccessMode string
 
 const (
-	AccessModeOpen        AccessMode = "Open"
+	AccessModeOpen AccessMode = "Open"
 	AccessModePrivateOnly AccessMode = "PrivateOnly"
 )
 
 // PossibleAccessModeValues returns the possible values for the AccessMode const type.
 func PossibleAccessModeValues() []AccessMode {
-	return []AccessMode{
+	return []AccessMode{	
 		AccessModeOpen,
 		AccessModePrivateOnly,
 	}
@@ -38,7 +38,7 @@ const (
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
+	return []ActionType{	
 		ActionTypeInternal,
 	}
 }
@@ -48,16 +48,16 @@ type AggregationType string
 
 const (
 	AggregationTypeAverage AggregationType = "Average"
-	AggregationTypeCount   AggregationType = "Count"
+	AggregationTypeCount AggregationType = "Count"
 	AggregationTypeMaximum AggregationType = "Maximum"
 	AggregationTypeMinimum AggregationType = "Minimum"
-	AggregationTypeNone    AggregationType = "None"
-	AggregationTypeTotal   AggregationType = "Total"
+	AggregationTypeNone AggregationType = "None"
+	AggregationTypeTotal AggregationType = "Total"
 )
 
 // PossibleAggregationTypeValues returns the possible values for the AggregationType const type.
 func PossibleAggregationTypeValues() []AggregationType {
-	return []AggregationType{
+	return []AggregationType{	
 		AggregationTypeAverage,
 		AggregationTypeCount,
 		AggregationTypeMaximum,
@@ -72,15 +72,15 @@ type AggregationTypeEnum string
 
 const (
 	AggregationTypeEnumAverage AggregationTypeEnum = "Average"
-	AggregationTypeEnumCount   AggregationTypeEnum = "Count"
+	AggregationTypeEnumCount AggregationTypeEnum = "Count"
 	AggregationTypeEnumMaximum AggregationTypeEnum = "Maximum"
 	AggregationTypeEnumMinimum AggregationTypeEnum = "Minimum"
-	AggregationTypeEnumTotal   AggregationTypeEnum = "Total"
+	AggregationTypeEnumTotal AggregationTypeEnum = "Total"
 )
 
 // PossibleAggregationTypeEnumValues returns the possible values for the AggregationTypeEnum const type.
 func PossibleAggregationTypeEnumValues() []AggregationTypeEnum {
-	return []AggregationTypeEnum{
+	return []AggregationTypeEnum{	
 		AggregationTypeEnumAverage,
 		AggregationTypeEnumCount,
 		AggregationTypeEnumMaximum,
@@ -94,16 +94,16 @@ func PossibleAggregationTypeEnumValues() []AggregationTypeEnum {
 type AlertSeverity int64
 
 const (
-	AlertSeverityFour  AlertSeverity = 4
-	AlertSeverityOne   AlertSeverity = 1
+	AlertSeverityFour AlertSeverity = 4
+	AlertSeverityOne AlertSeverity = 1
 	AlertSeverityThree AlertSeverity = 3
-	AlertSeverityTwo   AlertSeverity = 2
-	AlertSeverityZero  AlertSeverity = 0
+	AlertSeverityTwo AlertSeverity = 2
+	AlertSeverityZero AlertSeverity = 0
 )
 
 // PossibleAlertSeverityValues returns the possible values for the AlertSeverity const type.
 func PossibleAlertSeverityValues() []AlertSeverity {
-	return []AlertSeverity{
+	return []AlertSeverity{	
 		AlertSeverityFour,
 		AlertSeverityOne,
 		AlertSeverityThree,
@@ -116,14 +116,14 @@ func PossibleAlertSeverityValues() []AlertSeverity {
 type BaselineSensitivity string
 
 const (
-	BaselineSensitivityHigh   BaselineSensitivity = "High"
-	BaselineSensitivityLow    BaselineSensitivity = "Low"
+	BaselineSensitivityHigh BaselineSensitivity = "High"
+	BaselineSensitivityLow BaselineSensitivity = "Low"
 	BaselineSensitivityMedium BaselineSensitivity = "Medium"
 )
 
 // PossibleBaselineSensitivityValues returns the possible values for the BaselineSensitivity const type.
 func PossibleBaselineSensitivityValues() []BaselineSensitivity {
-	return []BaselineSensitivity{
+	return []BaselineSensitivity{	
 		BaselineSensitivityHigh,
 		BaselineSensitivityLow,
 		BaselineSensitivityMedium,
@@ -134,13 +134,13 @@ func PossibleBaselineSensitivityValues() []BaselineSensitivity {
 type CategoryType string
 
 const (
-	CategoryTypeLogs    CategoryType = "Logs"
+	CategoryTypeLogs CategoryType = "Logs"
 	CategoryTypeMetrics CategoryType = "Metrics"
 )
 
 // PossibleCategoryTypeValues returns the possible values for the CategoryType const type.
 func PossibleCategoryTypeValues() []CategoryType {
-	return []CategoryType{
+	return []CategoryType{	
 		CategoryTypeLogs,
 		CategoryTypeMetrics,
 	}
@@ -150,17 +150,17 @@ func PossibleCategoryTypeValues() []CategoryType {
 type ComparisonOperationType string
 
 const (
-	ComparisonOperationTypeEquals             ComparisonOperationType = "Equals"
-	ComparisonOperationTypeGreaterThan        ComparisonOperationType = "GreaterThan"
+	ComparisonOperationTypeEquals ComparisonOperationType = "Equals"
+	ComparisonOperationTypeGreaterThan ComparisonOperationType = "GreaterThan"
 	ComparisonOperationTypeGreaterThanOrEqual ComparisonOperationType = "GreaterThanOrEqual"
-	ComparisonOperationTypeLessThan           ComparisonOperationType = "LessThan"
-	ComparisonOperationTypeLessThanOrEqual    ComparisonOperationType = "LessThanOrEqual"
-	ComparisonOperationTypeNotEquals          ComparisonOperationType = "NotEquals"
+	ComparisonOperationTypeLessThan ComparisonOperationType = "LessThan"
+	ComparisonOperationTypeLessThanOrEqual ComparisonOperationType = "LessThanOrEqual"
+	ComparisonOperationTypeNotEquals ComparisonOperationType = "NotEquals"
 )
 
 // PossibleComparisonOperationTypeValues returns the possible values for the ComparisonOperationType const type.
 func PossibleComparisonOperationTypeValues() []ComparisonOperationType {
-	return []ComparisonOperationType{
+	return []ComparisonOperationType{	
 		ComparisonOperationTypeEquals,
 		ComparisonOperationTypeGreaterThan,
 		ComparisonOperationTypeGreaterThanOrEqual,
@@ -174,16 +174,16 @@ func PossibleComparisonOperationTypeValues() []ComparisonOperationType {
 type ConditionOperator string
 
 const (
-	ConditionOperatorEquals             ConditionOperator = "Equals"
-	ConditionOperatorGreaterThan        ConditionOperator = "GreaterThan"
+	ConditionOperatorEquals ConditionOperator = "Equals"
+	ConditionOperatorGreaterThan ConditionOperator = "GreaterThan"
 	ConditionOperatorGreaterThanOrEqual ConditionOperator = "GreaterThanOrEqual"
-	ConditionOperatorLessThan           ConditionOperator = "LessThan"
-	ConditionOperatorLessThanOrEqual    ConditionOperator = "LessThanOrEqual"
+	ConditionOperatorLessThan ConditionOperator = "LessThan"
+	ConditionOperatorLessThanOrEqual ConditionOperator = "LessThanOrEqual"
 )
 
 // PossibleConditionOperatorValues returns the possible values for the ConditionOperator const type.
 func PossibleConditionOperatorValues() []ConditionOperator {
-	return []ConditionOperator{
+	return []ConditionOperator{	
 		ConditionOperatorEquals,
 		ConditionOperatorGreaterThan,
 		ConditionOperatorGreaterThanOrEqual,
@@ -196,15 +196,15 @@ func PossibleConditionOperatorValues() []ConditionOperator {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -217,12 +217,12 @@ type CriterionType string
 
 const (
 	CriterionTypeDynamicThresholdCriterion CriterionType = "DynamicThresholdCriterion"
-	CriterionTypeStaticThresholdCriterion  CriterionType = "StaticThresholdCriterion"
+	CriterionTypeStaticThresholdCriterion CriterionType = "StaticThresholdCriterion"
 )
 
 // PossibleCriterionTypeValues returns the possible values for the CriterionType const type.
 func PossibleCriterionTypeValues() []CriterionType {
-	return []CriterionType{
+	return []CriterionType{	
 		CriterionTypeDynamicThresholdCriterion,
 		CriterionTypeStaticThresholdCriterion,
 	}
@@ -234,12 +234,12 @@ type DataStatus string
 
 const (
 	DataStatusNotPresent DataStatus = "notPresent"
-	DataStatusPresent    DataStatus = "present"
+	DataStatusPresent DataStatus = "present"
 )
 
 // PossibleDataStatusValues returns the possible values for the DataStatus const type.
 func PossibleDataStatusValues() []DataStatus {
-	return []DataStatus{
+	return []DataStatus{	
 		DataStatusNotPresent,
 		DataStatusPresent,
 	}
@@ -255,7 +255,7 @@ const (
 
 // PossibleDimensionOperatorValues returns the possible values for the DimensionOperator const type.
 func PossibleDimensionOperatorValues() []DimensionOperator {
-	return []DimensionOperator{
+	return []DimensionOperator{	
 		DimensionOperatorExclude,
 		DimensionOperatorInclude,
 	}
@@ -266,13 +266,13 @@ type DynamicThresholdOperator string
 
 const (
 	DynamicThresholdOperatorGreaterOrLessThan DynamicThresholdOperator = "GreaterOrLessThan"
-	DynamicThresholdOperatorGreaterThan       DynamicThresholdOperator = "GreaterThan"
-	DynamicThresholdOperatorLessThan          DynamicThresholdOperator = "LessThan"
+	DynamicThresholdOperatorGreaterThan DynamicThresholdOperator = "GreaterThan"
+	DynamicThresholdOperatorLessThan DynamicThresholdOperator = "LessThan"
 )
 
 // PossibleDynamicThresholdOperatorValues returns the possible values for the DynamicThresholdOperator const type.
 func PossibleDynamicThresholdOperatorValues() []DynamicThresholdOperator {
-	return []DynamicThresholdOperator{
+	return []DynamicThresholdOperator{	
 		DynamicThresholdOperatorGreaterOrLessThan,
 		DynamicThresholdOperatorGreaterThan,
 		DynamicThresholdOperatorLessThan,
@@ -284,14 +284,14 @@ func PossibleDynamicThresholdOperatorValues() []DynamicThresholdOperator {
 type DynamicThresholdSensitivity string
 
 const (
-	DynamicThresholdSensitivityHigh   DynamicThresholdSensitivity = "High"
-	DynamicThresholdSensitivityLow    DynamicThresholdSensitivity = "Low"
+	DynamicThresholdSensitivityHigh DynamicThresholdSensitivity = "High"
+	DynamicThresholdSensitivityLow DynamicThresholdSensitivity = "Low"
 	DynamicThresholdSensitivityMedium DynamicThresholdSensitivity = "Medium"
 )
 
 // PossibleDynamicThresholdSensitivityValues returns the possible values for the DynamicThresholdSensitivity const type.
 func PossibleDynamicThresholdSensitivityValues() []DynamicThresholdSensitivity {
-	return []DynamicThresholdSensitivity{
+	return []DynamicThresholdSensitivity{	
 		DynamicThresholdSensitivityHigh,
 		DynamicThresholdSensitivityLow,
 		DynamicThresholdSensitivityMedium,
@@ -302,16 +302,16 @@ func PossibleDynamicThresholdSensitivityValues() []DynamicThresholdSensitivity {
 type EventLevel string
 
 const (
-	EventLevelCritical      EventLevel = "Critical"
-	EventLevelError         EventLevel = "Error"
+	EventLevelCritical EventLevel = "Critical"
+	EventLevelError EventLevel = "Error"
 	EventLevelInformational EventLevel = "Informational"
-	EventLevelVerbose       EventLevel = "Verbose"
-	EventLevelWarning       EventLevel = "Warning"
+	EventLevelVerbose EventLevel = "Verbose"
+	EventLevelWarning EventLevel = "Warning"
 )
 
 // PossibleEventLevelValues returns the possible values for the EventLevel const type.
 func PossibleEventLevelValues() []EventLevel {
-	return []EventLevel{
+	return []EventLevel{	
 		EventLevelCritical,
 		EventLevelError,
 		EventLevelInformational,
@@ -324,14 +324,14 @@ func PossibleEventLevelValues() []EventLevel {
 type IdentityType string
 
 const (
-	IdentityTypeNone           IdentityType = "None"
+	IdentityTypeNone IdentityType = "None"
 	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
-	IdentityTypeUserAssigned   IdentityType = "UserAssigned"
+	IdentityTypeUserAssigned IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{
+	return []IdentityType{	
 		IdentityTypeNone,
 		IdentityTypeSystemAssigned,
 		IdentityTypeUserAssigned,
@@ -342,13 +342,13 @@ func PossibleIdentityTypeValues() []IdentityType {
 type Kind string
 
 const (
-	KindLogAlert    Kind = "LogAlert"
+	KindLogAlert Kind = "LogAlert"
 	KindLogToMetric Kind = "LogToMetric"
 )
 
 // PossibleKindValues returns the possible values for the Kind const type.
 func PossibleKindValues() []Kind {
-	return []Kind{
+	return []Kind{	
 		KindLogAlert,
 		KindLogToMetric,
 	}
@@ -358,18 +358,18 @@ func PossibleKindValues() []Kind {
 type KnownColumnDefinitionType string
 
 const (
-	KnownColumnDefinitionTypeBoolean  KnownColumnDefinitionType = "boolean"
+	KnownColumnDefinitionTypeBoolean KnownColumnDefinitionType = "boolean"
 	KnownColumnDefinitionTypeDatetime KnownColumnDefinitionType = "datetime"
-	KnownColumnDefinitionTypeDynamic  KnownColumnDefinitionType = "dynamic"
-	KnownColumnDefinitionTypeInt      KnownColumnDefinitionType = "int"
-	KnownColumnDefinitionTypeLong     KnownColumnDefinitionType = "long"
-	KnownColumnDefinitionTypeReal     KnownColumnDefinitionType = "real"
-	KnownColumnDefinitionTypeString   KnownColumnDefinitionType = "string"
+	KnownColumnDefinitionTypeDynamic KnownColumnDefinitionType = "dynamic"
+	KnownColumnDefinitionTypeInt KnownColumnDefinitionType = "int"
+	KnownColumnDefinitionTypeLong KnownColumnDefinitionType = "long"
+	KnownColumnDefinitionTypeReal KnownColumnDefinitionType = "real"
+	KnownColumnDefinitionTypeString KnownColumnDefinitionType = "string"
 )
 
 // PossibleKnownColumnDefinitionTypeValues returns the possible values for the KnownColumnDefinitionType const type.
 func PossibleKnownColumnDefinitionTypeValues() []KnownColumnDefinitionType {
-	return []KnownColumnDefinitionType{
+	return []KnownColumnDefinitionType{	
 		KnownColumnDefinitionTypeBoolean,
 		KnownColumnDefinitionTypeDatetime,
 		KnownColumnDefinitionTypeDynamic,
@@ -384,17 +384,17 @@ func PossibleKnownColumnDefinitionTypeValues() []KnownColumnDefinitionType {
 type KnownDataCollectionEndpointProvisioningState string
 
 const (
-	KnownDataCollectionEndpointProvisioningStateCanceled  KnownDataCollectionEndpointProvisioningState = "Canceled"
-	KnownDataCollectionEndpointProvisioningStateCreating  KnownDataCollectionEndpointProvisioningState = "Creating"
-	KnownDataCollectionEndpointProvisioningStateDeleting  KnownDataCollectionEndpointProvisioningState = "Deleting"
-	KnownDataCollectionEndpointProvisioningStateFailed    KnownDataCollectionEndpointProvisioningState = "Failed"
+	KnownDataCollectionEndpointProvisioningStateCanceled KnownDataCollectionEndpointProvisioningState = "Canceled"
+	KnownDataCollectionEndpointProvisioningStateCreating KnownDataCollectionEndpointProvisioningState = "Creating"
+	KnownDataCollectionEndpointProvisioningStateDeleting KnownDataCollectionEndpointProvisioningState = "Deleting"
+	KnownDataCollectionEndpointProvisioningStateFailed KnownDataCollectionEndpointProvisioningState = "Failed"
 	KnownDataCollectionEndpointProvisioningStateSucceeded KnownDataCollectionEndpointProvisioningState = "Succeeded"
-	KnownDataCollectionEndpointProvisioningStateUpdating  KnownDataCollectionEndpointProvisioningState = "Updating"
+	KnownDataCollectionEndpointProvisioningStateUpdating KnownDataCollectionEndpointProvisioningState = "Updating"
 )
 
 // PossibleKnownDataCollectionEndpointProvisioningStateValues returns the possible values for the KnownDataCollectionEndpointProvisioningState const type.
 func PossibleKnownDataCollectionEndpointProvisioningStateValues() []KnownDataCollectionEndpointProvisioningState {
-	return []KnownDataCollectionEndpointProvisioningState{
+	return []KnownDataCollectionEndpointProvisioningState{	
 		KnownDataCollectionEndpointProvisioningStateCanceled,
 		KnownDataCollectionEndpointProvisioningStateCreating,
 		KnownDataCollectionEndpointProvisioningStateDeleting,
@@ -408,13 +408,13 @@ func PossibleKnownDataCollectionEndpointProvisioningStateValues() []KnownDataCol
 type KnownDataCollectionEndpointResourceKind string
 
 const (
-	KnownDataCollectionEndpointResourceKindLinux   KnownDataCollectionEndpointResourceKind = "Linux"
+	KnownDataCollectionEndpointResourceKindLinux KnownDataCollectionEndpointResourceKind = "Linux"
 	KnownDataCollectionEndpointResourceKindWindows KnownDataCollectionEndpointResourceKind = "Windows"
 )
 
 // PossibleKnownDataCollectionEndpointResourceKindValues returns the possible values for the KnownDataCollectionEndpointResourceKind const type.
 func PossibleKnownDataCollectionEndpointResourceKindValues() []KnownDataCollectionEndpointResourceKind {
-	return []KnownDataCollectionEndpointResourceKind{
+	return []KnownDataCollectionEndpointResourceKind{	
 		KnownDataCollectionEndpointResourceKindLinux,
 		KnownDataCollectionEndpointResourceKindWindows,
 	}
@@ -424,17 +424,17 @@ func PossibleKnownDataCollectionEndpointResourceKindValues() []KnownDataCollecti
 type KnownDataCollectionRuleAssociationProvisioningState string
 
 const (
-	KnownDataCollectionRuleAssociationProvisioningStateCanceled  KnownDataCollectionRuleAssociationProvisioningState = "Canceled"
-	KnownDataCollectionRuleAssociationProvisioningStateCreating  KnownDataCollectionRuleAssociationProvisioningState = "Creating"
-	KnownDataCollectionRuleAssociationProvisioningStateDeleting  KnownDataCollectionRuleAssociationProvisioningState = "Deleting"
-	KnownDataCollectionRuleAssociationProvisioningStateFailed    KnownDataCollectionRuleAssociationProvisioningState = "Failed"
+	KnownDataCollectionRuleAssociationProvisioningStateCanceled KnownDataCollectionRuleAssociationProvisioningState = "Canceled"
+	KnownDataCollectionRuleAssociationProvisioningStateCreating KnownDataCollectionRuleAssociationProvisioningState = "Creating"
+	KnownDataCollectionRuleAssociationProvisioningStateDeleting KnownDataCollectionRuleAssociationProvisioningState = "Deleting"
+	KnownDataCollectionRuleAssociationProvisioningStateFailed KnownDataCollectionRuleAssociationProvisioningState = "Failed"
 	KnownDataCollectionRuleAssociationProvisioningStateSucceeded KnownDataCollectionRuleAssociationProvisioningState = "Succeeded"
-	KnownDataCollectionRuleAssociationProvisioningStateUpdating  KnownDataCollectionRuleAssociationProvisioningState = "Updating"
+	KnownDataCollectionRuleAssociationProvisioningStateUpdating KnownDataCollectionRuleAssociationProvisioningState = "Updating"
 )
 
 // PossibleKnownDataCollectionRuleAssociationProvisioningStateValues returns the possible values for the KnownDataCollectionRuleAssociationProvisioningState const type.
 func PossibleKnownDataCollectionRuleAssociationProvisioningStateValues() []KnownDataCollectionRuleAssociationProvisioningState {
-	return []KnownDataCollectionRuleAssociationProvisioningState{
+	return []KnownDataCollectionRuleAssociationProvisioningState{	
 		KnownDataCollectionRuleAssociationProvisioningStateCanceled,
 		KnownDataCollectionRuleAssociationProvisioningStateCreating,
 		KnownDataCollectionRuleAssociationProvisioningStateDeleting,
@@ -448,17 +448,17 @@ func PossibleKnownDataCollectionRuleAssociationProvisioningStateValues() []Known
 type KnownDataCollectionRuleProvisioningState string
 
 const (
-	KnownDataCollectionRuleProvisioningStateCanceled  KnownDataCollectionRuleProvisioningState = "Canceled"
-	KnownDataCollectionRuleProvisioningStateCreating  KnownDataCollectionRuleProvisioningState = "Creating"
-	KnownDataCollectionRuleProvisioningStateDeleting  KnownDataCollectionRuleProvisioningState = "Deleting"
-	KnownDataCollectionRuleProvisioningStateFailed    KnownDataCollectionRuleProvisioningState = "Failed"
+	KnownDataCollectionRuleProvisioningStateCanceled KnownDataCollectionRuleProvisioningState = "Canceled"
+	KnownDataCollectionRuleProvisioningStateCreating KnownDataCollectionRuleProvisioningState = "Creating"
+	KnownDataCollectionRuleProvisioningStateDeleting KnownDataCollectionRuleProvisioningState = "Deleting"
+	KnownDataCollectionRuleProvisioningStateFailed KnownDataCollectionRuleProvisioningState = "Failed"
 	KnownDataCollectionRuleProvisioningStateSucceeded KnownDataCollectionRuleProvisioningState = "Succeeded"
-	KnownDataCollectionRuleProvisioningStateUpdating  KnownDataCollectionRuleProvisioningState = "Updating"
+	KnownDataCollectionRuleProvisioningStateUpdating KnownDataCollectionRuleProvisioningState = "Updating"
 )
 
 // PossibleKnownDataCollectionRuleProvisioningStateValues returns the possible values for the KnownDataCollectionRuleProvisioningState const type.
 func PossibleKnownDataCollectionRuleProvisioningStateValues() []KnownDataCollectionRuleProvisioningState {
-	return []KnownDataCollectionRuleProvisioningState{
+	return []KnownDataCollectionRuleProvisioningState{	
 		KnownDataCollectionRuleProvisioningStateCanceled,
 		KnownDataCollectionRuleProvisioningStateCreating,
 		KnownDataCollectionRuleProvisioningStateDeleting,
@@ -472,13 +472,13 @@ func PossibleKnownDataCollectionRuleProvisioningStateValues() []KnownDataCollect
 type KnownDataCollectionRuleResourceKind string
 
 const (
-	KnownDataCollectionRuleResourceKindLinux   KnownDataCollectionRuleResourceKind = "Linux"
+	KnownDataCollectionRuleResourceKindLinux KnownDataCollectionRuleResourceKind = "Linux"
 	KnownDataCollectionRuleResourceKindWindows KnownDataCollectionRuleResourceKind = "Windows"
 )
 
 // PossibleKnownDataCollectionRuleResourceKindValues returns the possible values for the KnownDataCollectionRuleResourceKind const type.
 func PossibleKnownDataCollectionRuleResourceKindValues() []KnownDataCollectionRuleResourceKind {
-	return []KnownDataCollectionRuleResourceKind{
+	return []KnownDataCollectionRuleResourceKind{	
 		KnownDataCollectionRuleResourceKindLinux,
 		KnownDataCollectionRuleResourceKindWindows,
 	}
@@ -487,16 +487,16 @@ func PossibleKnownDataCollectionRuleResourceKindValues() []KnownDataCollectionRu
 type KnownDataFlowStreams string
 
 const (
-	KnownDataFlowStreamsMicrosoftEvent           KnownDataFlowStreams = "Microsoft-Event"
+	KnownDataFlowStreamsMicrosoftEvent KnownDataFlowStreams = "Microsoft-Event"
 	KnownDataFlowStreamsMicrosoftInsightsMetrics KnownDataFlowStreams = "Microsoft-InsightsMetrics"
-	KnownDataFlowStreamsMicrosoftPerf            KnownDataFlowStreams = "Microsoft-Perf"
-	KnownDataFlowStreamsMicrosoftSyslog          KnownDataFlowStreams = "Microsoft-Syslog"
-	KnownDataFlowStreamsMicrosoftWindowsEvent    KnownDataFlowStreams = "Microsoft-WindowsEvent"
+	KnownDataFlowStreamsMicrosoftPerf KnownDataFlowStreams = "Microsoft-Perf"
+	KnownDataFlowStreamsMicrosoftSyslog KnownDataFlowStreams = "Microsoft-Syslog"
+	KnownDataFlowStreamsMicrosoftWindowsEvent KnownDataFlowStreams = "Microsoft-WindowsEvent"
 )
 
 // PossibleKnownDataFlowStreamsValues returns the possible values for the KnownDataFlowStreams const type.
 func PossibleKnownDataFlowStreamsValues() []KnownDataFlowStreams {
-	return []KnownDataFlowStreams{
+	return []KnownDataFlowStreams{	
 		KnownDataFlowStreamsMicrosoftEvent,
 		KnownDataFlowStreamsMicrosoftInsightsMetrics,
 		KnownDataFlowStreamsMicrosoftPerf,
@@ -508,16 +508,16 @@ func PossibleKnownDataFlowStreamsValues() []KnownDataFlowStreams {
 type KnownExtensionDataSourceStreams string
 
 const (
-	KnownExtensionDataSourceStreamsMicrosoftEvent           KnownExtensionDataSourceStreams = "Microsoft-Event"
+	KnownExtensionDataSourceStreamsMicrosoftEvent KnownExtensionDataSourceStreams = "Microsoft-Event"
 	KnownExtensionDataSourceStreamsMicrosoftInsightsMetrics KnownExtensionDataSourceStreams = "Microsoft-InsightsMetrics"
-	KnownExtensionDataSourceStreamsMicrosoftPerf            KnownExtensionDataSourceStreams = "Microsoft-Perf"
-	KnownExtensionDataSourceStreamsMicrosoftSyslog          KnownExtensionDataSourceStreams = "Microsoft-Syslog"
-	KnownExtensionDataSourceStreamsMicrosoftWindowsEvent    KnownExtensionDataSourceStreams = "Microsoft-WindowsEvent"
+	KnownExtensionDataSourceStreamsMicrosoftPerf KnownExtensionDataSourceStreams = "Microsoft-Perf"
+	KnownExtensionDataSourceStreamsMicrosoftSyslog KnownExtensionDataSourceStreams = "Microsoft-Syslog"
+	KnownExtensionDataSourceStreamsMicrosoftWindowsEvent KnownExtensionDataSourceStreams = "Microsoft-WindowsEvent"
 )
 
 // PossibleKnownExtensionDataSourceStreamsValues returns the possible values for the KnownExtensionDataSourceStreams const type.
 func PossibleKnownExtensionDataSourceStreamsValues() []KnownExtensionDataSourceStreams {
-	return []KnownExtensionDataSourceStreams{
+	return []KnownExtensionDataSourceStreams{	
 		KnownExtensionDataSourceStreamsMicrosoftEvent,
 		KnownExtensionDataSourceStreamsMicrosoftInsightsMetrics,
 		KnownExtensionDataSourceStreamsMicrosoftPerf,
@@ -530,17 +530,17 @@ func PossibleKnownExtensionDataSourceStreamsValues() []KnownExtensionDataSourceS
 type KnownLocationSpecProvisioningStatus string
 
 const (
-	KnownLocationSpecProvisioningStatusCanceled  KnownLocationSpecProvisioningStatus = "Canceled"
-	KnownLocationSpecProvisioningStatusCreating  KnownLocationSpecProvisioningStatus = "Creating"
-	KnownLocationSpecProvisioningStatusDeleting  KnownLocationSpecProvisioningStatus = "Deleting"
-	KnownLocationSpecProvisioningStatusFailed    KnownLocationSpecProvisioningStatus = "Failed"
+	KnownLocationSpecProvisioningStatusCanceled KnownLocationSpecProvisioningStatus = "Canceled"
+	KnownLocationSpecProvisioningStatusCreating KnownLocationSpecProvisioningStatus = "Creating"
+	KnownLocationSpecProvisioningStatusDeleting KnownLocationSpecProvisioningStatus = "Deleting"
+	KnownLocationSpecProvisioningStatusFailed KnownLocationSpecProvisioningStatus = "Failed"
 	KnownLocationSpecProvisioningStatusSucceeded KnownLocationSpecProvisioningStatus = "Succeeded"
-	KnownLocationSpecProvisioningStatusUpdating  KnownLocationSpecProvisioningStatus = "Updating"
+	KnownLocationSpecProvisioningStatusUpdating KnownLocationSpecProvisioningStatus = "Updating"
 )
 
 // PossibleKnownLocationSpecProvisioningStatusValues returns the possible values for the KnownLocationSpecProvisioningStatus const type.
 func PossibleKnownLocationSpecProvisioningStatusValues() []KnownLocationSpecProvisioningStatus {
-	return []KnownLocationSpecProvisioningStatus{
+	return []KnownLocationSpecProvisioningStatus{	
 		KnownLocationSpecProvisioningStatusCanceled,
 		KnownLocationSpecProvisioningStatusCreating,
 		KnownLocationSpecProvisioningStatusDeleting,
@@ -555,19 +555,19 @@ type KnownLogFileTextSettingsRecordStartTimestampFormat string
 
 const (
 	KnownLogFileTextSettingsRecordStartTimestampFormatDdMMMYyyyHHMmSsZzz KnownLogFileTextSettingsRecordStartTimestampFormat = "dd/MMM/yyyy:HH:mm:ss zzz"
-	KnownLogFileTextSettingsRecordStartTimestampFormatDdMMyyHHMmSs       KnownLogFileTextSettingsRecordStartTimestampFormat = "ddMMyy HH:mm:ss"
-	KnownLogFileTextSettingsRecordStartTimestampFormatISO8601            KnownLogFileTextSettingsRecordStartTimestampFormat = "ISO 8601"
-	KnownLogFileTextSettingsRecordStartTimestampFormatMDYYYYHHMMSSAMPM   KnownLogFileTextSettingsRecordStartTimestampFormat = "M/D/YYYY HH:MM:SS AM/PM"
-	KnownLogFileTextSettingsRecordStartTimestampFormatMMMDHhMmSs         KnownLogFileTextSettingsRecordStartTimestampFormat = "MMM d hh:mm:ss"
-	KnownLogFileTextSettingsRecordStartTimestampFormatMonDDYYYYHHMMSS    KnownLogFileTextSettingsRecordStartTimestampFormat = "Mon DD, YYYY HH:MM:SS"
-	KnownLogFileTextSettingsRecordStartTimestampFormatYYYYMMDDHHMMSS     KnownLogFileTextSettingsRecordStartTimestampFormat = "YYYY-MM-DD HH:MM:SS"
-	KnownLogFileTextSettingsRecordStartTimestampFormatYyMMddHHMmSs       KnownLogFileTextSettingsRecordStartTimestampFormat = "yyMMdd HH:mm:ss"
-	KnownLogFileTextSettingsRecordStartTimestampFormatYyyyMMDdTHHMmSsK   KnownLogFileTextSettingsRecordStartTimestampFormat = "yyyy-MM-ddTHH:mm:ssK"
+	KnownLogFileTextSettingsRecordStartTimestampFormatDdMMyyHHMmSs KnownLogFileTextSettingsRecordStartTimestampFormat = "ddMMyy HH:mm:ss"
+	KnownLogFileTextSettingsRecordStartTimestampFormatISO8601 KnownLogFileTextSettingsRecordStartTimestampFormat = "ISO 8601"
+	KnownLogFileTextSettingsRecordStartTimestampFormatMDYYYYHHMMSSAMPM KnownLogFileTextSettingsRecordStartTimestampFormat = "M/D/YYYY HH:MM:SS AM/PM"
+	KnownLogFileTextSettingsRecordStartTimestampFormatMMMDHhMmSs KnownLogFileTextSettingsRecordStartTimestampFormat = "MMM d hh:mm:ss"
+	KnownLogFileTextSettingsRecordStartTimestampFormatMonDDYYYYHHMMSS KnownLogFileTextSettingsRecordStartTimestampFormat = "Mon DD, YYYY HH:MM:SS"
+	KnownLogFileTextSettingsRecordStartTimestampFormatYYYYMMDDHHMMSS KnownLogFileTextSettingsRecordStartTimestampFormat = "YYYY-MM-DD HH:MM:SS"
+	KnownLogFileTextSettingsRecordStartTimestampFormatYyMMddHHMmSs KnownLogFileTextSettingsRecordStartTimestampFormat = "yyMMdd HH:mm:ss"
+	KnownLogFileTextSettingsRecordStartTimestampFormatYyyyMMDdTHHMmSsK KnownLogFileTextSettingsRecordStartTimestampFormat = "yyyy-MM-ddTHH:mm:ssK"
 )
 
 // PossibleKnownLogFileTextSettingsRecordStartTimestampFormatValues returns the possible values for the KnownLogFileTextSettingsRecordStartTimestampFormat const type.
 func PossibleKnownLogFileTextSettingsRecordStartTimestampFormatValues() []KnownLogFileTextSettingsRecordStartTimestampFormat {
-	return []KnownLogFileTextSettingsRecordStartTimestampFormat{
+	return []KnownLogFileTextSettingsRecordStartTimestampFormat{	
 		KnownLogFileTextSettingsRecordStartTimestampFormatDdMMMYyyyHHMmSsZzz,
 		KnownLogFileTextSettingsRecordStartTimestampFormatDdMMyyHHMmSs,
 		KnownLogFileTextSettingsRecordStartTimestampFormatISO8601,
@@ -589,7 +589,7 @@ const (
 
 // PossibleKnownLogFilesDataSourceFormatValues returns the possible values for the KnownLogFilesDataSourceFormat const type.
 func PossibleKnownLogFilesDataSourceFormatValues() []KnownLogFilesDataSourceFormat {
-	return []KnownLogFilesDataSourceFormat{
+	return []KnownLogFilesDataSourceFormat{	
 		KnownLogFilesDataSourceFormatText,
 	}
 }
@@ -598,12 +598,12 @@ type KnownPerfCounterDataSourceStreams string
 
 const (
 	KnownPerfCounterDataSourceStreamsMicrosoftInsightsMetrics KnownPerfCounterDataSourceStreams = "Microsoft-InsightsMetrics"
-	KnownPerfCounterDataSourceStreamsMicrosoftPerf            KnownPerfCounterDataSourceStreams = "Microsoft-Perf"
+	KnownPerfCounterDataSourceStreamsMicrosoftPerf KnownPerfCounterDataSourceStreams = "Microsoft-Perf"
 )
 
 // PossibleKnownPerfCounterDataSourceStreamsValues returns the possible values for the KnownPerfCounterDataSourceStreams const type.
 func PossibleKnownPerfCounterDataSourceStreamsValues() []KnownPerfCounterDataSourceStreams {
-	return []KnownPerfCounterDataSourceStreams{
+	return []KnownPerfCounterDataSourceStreams{	
 		KnownPerfCounterDataSourceStreamsMicrosoftInsightsMetrics,
 		KnownPerfCounterDataSourceStreamsMicrosoftPerf,
 	}
@@ -617,7 +617,7 @@ const (
 
 // PossibleKnownPrometheusForwarderDataSourceStreamsValues returns the possible values for the KnownPrometheusForwarderDataSourceStreams const type.
 func PossibleKnownPrometheusForwarderDataSourceStreamsValues() []KnownPrometheusForwarderDataSourceStreams {
-	return []KnownPrometheusForwarderDataSourceStreams{
+	return []KnownPrometheusForwarderDataSourceStreams{	
 		KnownPrometheusForwarderDataSourceStreamsMicrosoftPrometheusMetrics,
 	}
 }
@@ -627,14 +627,14 @@ func PossibleKnownPrometheusForwarderDataSourceStreamsValues() []KnownPrometheus
 type KnownPublicNetworkAccessOptions string
 
 const (
-	KnownPublicNetworkAccessOptionsDisabled           KnownPublicNetworkAccessOptions = "Disabled"
-	KnownPublicNetworkAccessOptionsEnabled            KnownPublicNetworkAccessOptions = "Enabled"
+	KnownPublicNetworkAccessOptionsDisabled KnownPublicNetworkAccessOptions = "Disabled"
+	KnownPublicNetworkAccessOptionsEnabled KnownPublicNetworkAccessOptions = "Enabled"
 	KnownPublicNetworkAccessOptionsSecuredByPerimeter KnownPublicNetworkAccessOptions = "SecuredByPerimeter"
 )
 
 // PossibleKnownPublicNetworkAccessOptionsValues returns the possible values for the KnownPublicNetworkAccessOptions const type.
 func PossibleKnownPublicNetworkAccessOptionsValues() []KnownPublicNetworkAccessOptions {
-	return []KnownPublicNetworkAccessOptions{
+	return []KnownPublicNetworkAccessOptions{	
 		KnownPublicNetworkAccessOptionsDisabled,
 		KnownPublicNetworkAccessOptionsEnabled,
 		KnownPublicNetworkAccessOptionsSecuredByPerimeter,
@@ -645,31 +645,31 @@ type KnownSyslogDataSourceFacilityNames string
 
 const (
 	KnownSyslogDataSourceFacilityNamesAsterisk KnownSyslogDataSourceFacilityNames = "*"
-	KnownSyslogDataSourceFacilityNamesAuth     KnownSyslogDataSourceFacilityNames = "auth"
+	KnownSyslogDataSourceFacilityNamesAuth KnownSyslogDataSourceFacilityNames = "auth"
 	KnownSyslogDataSourceFacilityNamesAuthpriv KnownSyslogDataSourceFacilityNames = "authpriv"
-	KnownSyslogDataSourceFacilityNamesCron     KnownSyslogDataSourceFacilityNames = "cron"
-	KnownSyslogDataSourceFacilityNamesDaemon   KnownSyslogDataSourceFacilityNames = "daemon"
-	KnownSyslogDataSourceFacilityNamesKern     KnownSyslogDataSourceFacilityNames = "kern"
-	KnownSyslogDataSourceFacilityNamesLocal0   KnownSyslogDataSourceFacilityNames = "local0"
-	KnownSyslogDataSourceFacilityNamesLocal1   KnownSyslogDataSourceFacilityNames = "local1"
-	KnownSyslogDataSourceFacilityNamesLocal2   KnownSyslogDataSourceFacilityNames = "local2"
-	KnownSyslogDataSourceFacilityNamesLocal3   KnownSyslogDataSourceFacilityNames = "local3"
-	KnownSyslogDataSourceFacilityNamesLocal4   KnownSyslogDataSourceFacilityNames = "local4"
-	KnownSyslogDataSourceFacilityNamesLocal5   KnownSyslogDataSourceFacilityNames = "local5"
-	KnownSyslogDataSourceFacilityNamesLocal6   KnownSyslogDataSourceFacilityNames = "local6"
-	KnownSyslogDataSourceFacilityNamesLocal7   KnownSyslogDataSourceFacilityNames = "local7"
-	KnownSyslogDataSourceFacilityNamesLpr      KnownSyslogDataSourceFacilityNames = "lpr"
-	KnownSyslogDataSourceFacilityNamesMail     KnownSyslogDataSourceFacilityNames = "mail"
-	KnownSyslogDataSourceFacilityNamesMark     KnownSyslogDataSourceFacilityNames = "mark"
-	KnownSyslogDataSourceFacilityNamesNews     KnownSyslogDataSourceFacilityNames = "news"
-	KnownSyslogDataSourceFacilityNamesSyslog   KnownSyslogDataSourceFacilityNames = "syslog"
-	KnownSyslogDataSourceFacilityNamesUser     KnownSyslogDataSourceFacilityNames = "user"
-	KnownSyslogDataSourceFacilityNamesUucp     KnownSyslogDataSourceFacilityNames = "uucp"
+	KnownSyslogDataSourceFacilityNamesCron KnownSyslogDataSourceFacilityNames = "cron"
+	KnownSyslogDataSourceFacilityNamesDaemon KnownSyslogDataSourceFacilityNames = "daemon"
+	KnownSyslogDataSourceFacilityNamesKern KnownSyslogDataSourceFacilityNames = "kern"
+	KnownSyslogDataSourceFacilityNamesLocal0 KnownSyslogDataSourceFacilityNames = "local0"
+	KnownSyslogDataSourceFacilityNamesLocal1 KnownSyslogDataSourceFacilityNames = "local1"
+	KnownSyslogDataSourceFacilityNamesLocal2 KnownSyslogDataSourceFacilityNames = "local2"
+	KnownSyslogDataSourceFacilityNamesLocal3 KnownSyslogDataSourceFacilityNames = "local3"
+	KnownSyslogDataSourceFacilityNamesLocal4 KnownSyslogDataSourceFacilityNames = "local4"
+	KnownSyslogDataSourceFacilityNamesLocal5 KnownSyslogDataSourceFacilityNames = "local5"
+	KnownSyslogDataSourceFacilityNamesLocal6 KnownSyslogDataSourceFacilityNames = "local6"
+	KnownSyslogDataSourceFacilityNamesLocal7 KnownSyslogDataSourceFacilityNames = "local7"
+	KnownSyslogDataSourceFacilityNamesLpr KnownSyslogDataSourceFacilityNames = "lpr"
+	KnownSyslogDataSourceFacilityNamesMail KnownSyslogDataSourceFacilityNames = "mail"
+	KnownSyslogDataSourceFacilityNamesMark KnownSyslogDataSourceFacilityNames = "mark"
+	KnownSyslogDataSourceFacilityNamesNews KnownSyslogDataSourceFacilityNames = "news"
+	KnownSyslogDataSourceFacilityNamesSyslog KnownSyslogDataSourceFacilityNames = "syslog"
+	KnownSyslogDataSourceFacilityNamesUser KnownSyslogDataSourceFacilityNames = "user"
+	KnownSyslogDataSourceFacilityNamesUucp KnownSyslogDataSourceFacilityNames = "uucp"
 )
 
 // PossibleKnownSyslogDataSourceFacilityNamesValues returns the possible values for the KnownSyslogDataSourceFacilityNames const type.
 func PossibleKnownSyslogDataSourceFacilityNamesValues() []KnownSyslogDataSourceFacilityNames {
-	return []KnownSyslogDataSourceFacilityNames{
+	return []KnownSyslogDataSourceFacilityNames{	
 		KnownSyslogDataSourceFacilityNamesAsterisk,
 		KnownSyslogDataSourceFacilityNamesAuth,
 		KnownSyslogDataSourceFacilityNamesAuthpriv,
@@ -697,20 +697,20 @@ func PossibleKnownSyslogDataSourceFacilityNamesValues() []KnownSyslogDataSourceF
 type KnownSyslogDataSourceLogLevels string
 
 const (
-	KnownSyslogDataSourceLogLevelsAlert     KnownSyslogDataSourceLogLevels = "Alert"
-	KnownSyslogDataSourceLogLevelsAsterisk  KnownSyslogDataSourceLogLevels = "*"
-	KnownSyslogDataSourceLogLevelsCritical  KnownSyslogDataSourceLogLevels = "Critical"
-	KnownSyslogDataSourceLogLevelsDebug     KnownSyslogDataSourceLogLevels = "Debug"
+	KnownSyslogDataSourceLogLevelsAlert KnownSyslogDataSourceLogLevels = "Alert"
+	KnownSyslogDataSourceLogLevelsAsterisk KnownSyslogDataSourceLogLevels = "*"
+	KnownSyslogDataSourceLogLevelsCritical KnownSyslogDataSourceLogLevels = "Critical"
+	KnownSyslogDataSourceLogLevelsDebug KnownSyslogDataSourceLogLevels = "Debug"
 	KnownSyslogDataSourceLogLevelsEmergency KnownSyslogDataSourceLogLevels = "Emergency"
-	KnownSyslogDataSourceLogLevelsError     KnownSyslogDataSourceLogLevels = "Error"
-	KnownSyslogDataSourceLogLevelsInfo      KnownSyslogDataSourceLogLevels = "Info"
-	KnownSyslogDataSourceLogLevelsNotice    KnownSyslogDataSourceLogLevels = "Notice"
-	KnownSyslogDataSourceLogLevelsWarning   KnownSyslogDataSourceLogLevels = "Warning"
+	KnownSyslogDataSourceLogLevelsError KnownSyslogDataSourceLogLevels = "Error"
+	KnownSyslogDataSourceLogLevelsInfo KnownSyslogDataSourceLogLevels = "Info"
+	KnownSyslogDataSourceLogLevelsNotice KnownSyslogDataSourceLogLevels = "Notice"
+	KnownSyslogDataSourceLogLevelsWarning KnownSyslogDataSourceLogLevels = "Warning"
 )
 
 // PossibleKnownSyslogDataSourceLogLevelsValues returns the possible values for the KnownSyslogDataSourceLogLevels const type.
 func PossibleKnownSyslogDataSourceLogLevelsValues() []KnownSyslogDataSourceLogLevels {
-	return []KnownSyslogDataSourceLogLevels{
+	return []KnownSyslogDataSourceLogLevels{	
 		KnownSyslogDataSourceLogLevelsAlert,
 		KnownSyslogDataSourceLogLevelsAsterisk,
 		KnownSyslogDataSourceLogLevelsCritical,
@@ -731,7 +731,7 @@ const (
 
 // PossibleKnownSyslogDataSourceStreamsValues returns the possible values for the KnownSyslogDataSourceStreams const type.
 func PossibleKnownSyslogDataSourceStreamsValues() []KnownSyslogDataSourceStreams {
-	return []KnownSyslogDataSourceStreams{
+	return []KnownSyslogDataSourceStreams{	
 		KnownSyslogDataSourceStreamsMicrosoftSyslog,
 	}
 }
@@ -739,13 +739,13 @@ func PossibleKnownSyslogDataSourceStreamsValues() []KnownSyslogDataSourceStreams
 type KnownWindowsEventLogDataSourceStreams string
 
 const (
-	KnownWindowsEventLogDataSourceStreamsMicrosoftEvent        KnownWindowsEventLogDataSourceStreams = "Microsoft-Event"
+	KnownWindowsEventLogDataSourceStreamsMicrosoftEvent KnownWindowsEventLogDataSourceStreams = "Microsoft-Event"
 	KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent KnownWindowsEventLogDataSourceStreams = "Microsoft-WindowsEvent"
 )
 
 // PossibleKnownWindowsEventLogDataSourceStreamsValues returns the possible values for the KnownWindowsEventLogDataSourceStreams const type.
 func PossibleKnownWindowsEventLogDataSourceStreamsValues() []KnownWindowsEventLogDataSourceStreams {
-	return []KnownWindowsEventLogDataSourceStreams{
+	return []KnownWindowsEventLogDataSourceStreams{	
 		KnownWindowsEventLogDataSourceStreamsMicrosoftEvent,
 		KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent,
 	}
@@ -755,15 +755,15 @@ func PossibleKnownWindowsEventLogDataSourceStreamsValues() []KnownWindowsEventLo
 type ManagedServiceIdentityType string
 
 const (
-	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
-	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
 	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
-	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
 
 // PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{
+	return []ManagedServiceIdentityType{	
 		ManagedServiceIdentityTypeNone,
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
@@ -776,16 +776,16 @@ type MetricAggregationType string
 
 const (
 	MetricAggregationTypeAverage MetricAggregationType = "Average"
-	MetricAggregationTypeCount   MetricAggregationType = "Count"
+	MetricAggregationTypeCount MetricAggregationType = "Count"
 	MetricAggregationTypeMaximum MetricAggregationType = "Maximum"
 	MetricAggregationTypeMinimum MetricAggregationType = "Minimum"
-	MetricAggregationTypeNone    MetricAggregationType = "None"
-	MetricAggregationTypeTotal   MetricAggregationType = "Total"
+	MetricAggregationTypeNone MetricAggregationType = "None"
+	MetricAggregationTypeTotal MetricAggregationType = "Total"
 )
 
 // PossibleMetricAggregationTypeValues returns the possible values for the MetricAggregationType const type.
 func PossibleMetricAggregationTypeValues() []MetricAggregationType {
-	return []MetricAggregationType{
+	return []MetricAggregationType{	
 		MetricAggregationTypeAverage,
 		MetricAggregationTypeCount,
 		MetricAggregationTypeMaximum,
@@ -800,15 +800,15 @@ type MetricClass string
 
 const (
 	MetricClassAvailability MetricClass = "Availability"
-	MetricClassErrors       MetricClass = "Errors"
-	MetricClassLatency      MetricClass = "Latency"
-	MetricClassSaturation   MetricClass = "Saturation"
+	MetricClassErrors MetricClass = "Errors"
+	MetricClassLatency MetricClass = "Latency"
+	MetricClassSaturation MetricClass = "Saturation"
 	MetricClassTransactions MetricClass = "Transactions"
 )
 
 // PossibleMetricClassValues returns the possible values for the MetricClass const type.
 func PossibleMetricClassValues() []MetricClass {
-	return []MetricClass{
+	return []MetricClass{	
 		MetricClassAvailability,
 		MetricClassErrors,
 		MetricClassLatency,
@@ -822,13 +822,13 @@ func PossibleMetricClassValues() []MetricClass {
 type MetricResultType string
 
 const (
-	MetricResultTypeData     MetricResultType = "Data"
+	MetricResultTypeData MetricResultType = "Data"
 	MetricResultTypeMetadata MetricResultType = "Metadata"
 )
 
 // PossibleMetricResultTypeValues returns the possible values for the MetricResultType const type.
 func PossibleMetricResultTypeValues() []MetricResultType {
-	return []MetricResultType{
+	return []MetricResultType{	
 		MetricResultTypeData,
 		MetricResultTypeMetadata,
 	}
@@ -839,15 +839,15 @@ type MetricStatisticType string
 
 const (
 	MetricStatisticTypeAverage MetricStatisticType = "Average"
-	MetricStatisticTypeCount   MetricStatisticType = "Count"
-	MetricStatisticTypeMax     MetricStatisticType = "Max"
-	MetricStatisticTypeMin     MetricStatisticType = "Min"
-	MetricStatisticTypeSum     MetricStatisticType = "Sum"
+	MetricStatisticTypeCount MetricStatisticType = "Count"
+	MetricStatisticTypeMax MetricStatisticType = "Max"
+	MetricStatisticTypeMin MetricStatisticType = "Min"
+	MetricStatisticTypeSum MetricStatisticType = "Sum"
 )
 
 // PossibleMetricStatisticTypeValues returns the possible values for the MetricStatisticType const type.
 func PossibleMetricStatisticTypeValues() []MetricStatisticType {
-	return []MetricStatisticType{
+	return []MetricStatisticType{	
 		MetricStatisticTypeAverage,
 		MetricStatisticTypeCount,
 		MetricStatisticTypeMax,
@@ -860,24 +860,24 @@ func PossibleMetricStatisticTypeValues() []MetricStatisticType {
 type MetricUnit string
 
 const (
-	MetricUnitBitsPerSecond  MetricUnit = "BitsPerSecond"
-	MetricUnitByteSeconds    MetricUnit = "ByteSeconds"
-	MetricUnitBytes          MetricUnit = "Bytes"
+	MetricUnitBitsPerSecond MetricUnit = "BitsPerSecond"
+	MetricUnitByteSeconds MetricUnit = "ByteSeconds"
+	MetricUnitBytes MetricUnit = "Bytes"
 	MetricUnitBytesPerSecond MetricUnit = "BytesPerSecond"
-	MetricUnitCores          MetricUnit = "Cores"
-	MetricUnitCount          MetricUnit = "Count"
+	MetricUnitCores MetricUnit = "Cores"
+	MetricUnitCount MetricUnit = "Count"
 	MetricUnitCountPerSecond MetricUnit = "CountPerSecond"
-	MetricUnitMilliCores     MetricUnit = "MilliCores"
-	MetricUnitMilliSeconds   MetricUnit = "MilliSeconds"
-	MetricUnitNanoCores      MetricUnit = "NanoCores"
-	MetricUnitPercent        MetricUnit = "Percent"
-	MetricUnitSeconds        MetricUnit = "Seconds"
-	MetricUnitUnspecified    MetricUnit = "Unspecified"
+	MetricUnitMilliCores MetricUnit = "MilliCores"
+	MetricUnitMilliSeconds MetricUnit = "MilliSeconds"
+	MetricUnitNanoCores MetricUnit = "NanoCores"
+	MetricUnitPercent MetricUnit = "Percent"
+	MetricUnitSeconds MetricUnit = "Seconds"
+	MetricUnitUnspecified MetricUnit = "Unspecified"
 )
 
 // PossibleMetricUnitValues returns the possible values for the MetricUnit const type.
 func PossibleMetricUnitValues() []MetricUnit {
-	return []MetricUnit{
+	return []MetricUnit{	
 		MetricUnitBitsPerSecond,
 		MetricUnitByteSeconds,
 		MetricUnitBytes,
@@ -898,14 +898,14 @@ func PossibleMetricUnitValues() []MetricUnit {
 type NamespaceClassification string
 
 const (
-	NamespaceClassificationCustom   NamespaceClassification = "Custom"
+	NamespaceClassificationCustom NamespaceClassification = "Custom"
 	NamespaceClassificationPlatform NamespaceClassification = "Platform"
-	NamespaceClassificationQos      NamespaceClassification = "Qos"
+	NamespaceClassificationQos NamespaceClassification = "Qos"
 )
 
 // PossibleNamespaceClassificationValues returns the possible values for the NamespaceClassification const type.
 func PossibleNamespaceClassificationValues() []NamespaceClassification {
-	return []NamespaceClassification{
+	return []NamespaceClassification{	
 		NamespaceClassificationCustom,
 		NamespaceClassificationPlatform,
 		NamespaceClassificationQos,
@@ -917,13 +917,13 @@ type Odatatype string
 
 const (
 	OdatatypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria Odatatype = "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
-	OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria   Odatatype = "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
-	OdatatypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria    Odatatype = "Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria"
+	OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria Odatatype = "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+	OdatatypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria Odatatype = "Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria"
 )
 
 // PossibleOdatatypeValues returns the possible values for the Odatatype const type.
 func PossibleOdatatypeValues() []Odatatype {
-	return []Odatatype{
+	return []Odatatype{	
 		OdatatypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria,
 		OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria,
 		OdatatypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria,
@@ -936,13 +936,13 @@ type OnboardingStatus string
 
 const (
 	OnboardingStatusNotOnboarded OnboardingStatus = "notOnboarded"
-	OnboardingStatusOnboarded    OnboardingStatus = "onboarded"
-	OnboardingStatusUnknown      OnboardingStatus = "unknown"
+	OnboardingStatusOnboarded OnboardingStatus = "onboarded"
+	OnboardingStatusUnknown OnboardingStatus = "unknown"
 )
 
 // PossibleOnboardingStatusValues returns the possible values for the OnboardingStatus const type.
 func PossibleOnboardingStatusValues() []OnboardingStatus {
-	return []OnboardingStatus{
+	return []OnboardingStatus{	
 		OnboardingStatusNotOnboarded,
 		OnboardingStatusOnboarded,
 		OnboardingStatusUnknown,
@@ -953,16 +953,16 @@ func PossibleOnboardingStatusValues() []OnboardingStatus {
 type Operator string
 
 const (
-	OperatorEquals             Operator = "Equals"
-	OperatorGreaterThan        Operator = "GreaterThan"
+	OperatorEquals Operator = "Equals"
+	OperatorGreaterThan Operator = "GreaterThan"
 	OperatorGreaterThanOrEqual Operator = "GreaterThanOrEqual"
-	OperatorLessThan           Operator = "LessThan"
-	OperatorLessThanOrEqual    Operator = "LessThanOrEqual"
+	OperatorLessThan Operator = "LessThan"
+	OperatorLessThanOrEqual Operator = "LessThanOrEqual"
 )
 
 // PossibleOperatorValues returns the possible values for the Operator const type.
 func PossibleOperatorValues() []Operator {
-	return []Operator{
+	return []Operator{	
 		OperatorEquals,
 		OperatorGreaterThan,
 		OperatorGreaterThanOrEqual,
@@ -976,14 +976,14 @@ func PossibleOperatorValues() []Operator {
 type Origin string
 
 const (
-	OriginSystem     Origin = "system"
-	OriginUser       Origin = "user"
+	OriginSystem Origin = "system"
+	OriginUser Origin = "user"
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{
+	return []Origin{	
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -994,14 +994,14 @@ func PossibleOriginValues() []Origin {
 type PredictiveAutoscalePolicyScaleMode string
 
 const (
-	PredictiveAutoscalePolicyScaleModeDisabled     PredictiveAutoscalePolicyScaleMode = "Disabled"
-	PredictiveAutoscalePolicyScaleModeEnabled      PredictiveAutoscalePolicyScaleMode = "Enabled"
+	PredictiveAutoscalePolicyScaleModeDisabled PredictiveAutoscalePolicyScaleMode = "Disabled"
+	PredictiveAutoscalePolicyScaleModeEnabled PredictiveAutoscalePolicyScaleMode = "Enabled"
 	PredictiveAutoscalePolicyScaleModeForecastOnly PredictiveAutoscalePolicyScaleMode = "ForecastOnly"
 )
 
 // PossiblePredictiveAutoscalePolicyScaleModeValues returns the possible values for the PredictiveAutoscalePolicyScaleMode const type.
 func PossiblePredictiveAutoscalePolicyScaleModeValues() []PredictiveAutoscalePolicyScaleMode {
-	return []PredictiveAutoscalePolicyScaleMode{
+	return []PredictiveAutoscalePolicyScaleMode{	
 		PredictiveAutoscalePolicyScaleModeDisabled,
 		PredictiveAutoscalePolicyScaleModeEnabled,
 		PredictiveAutoscalePolicyScaleModeForecastOnly,
@@ -1012,15 +1012,15 @@ func PossiblePredictiveAutoscalePolicyScaleModeValues() []PredictiveAutoscalePol
 type PrivateEndpointConnectionProvisioningState string
 
 const (
-	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
-	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
-	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
+	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
 	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
 )
 
 // PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
-	return []PrivateEndpointConnectionProvisioningState{
+	return []PrivateEndpointConnectionProvisioningState{	
 		PrivateEndpointConnectionProvisioningStateCreating,
 		PrivateEndpointConnectionProvisioningStateDeleting,
 		PrivateEndpointConnectionProvisioningStateFailed,
@@ -1033,13 +1033,13 @@ type PrivateEndpointServiceConnectionStatus string
 
 const (
 	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
-	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
 	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
 )
 
 // PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
-	return []PrivateEndpointServiceConnectionStatus{
+	return []PrivateEndpointServiceConnectionStatus{	
 		PrivateEndpointServiceConnectionStatusApproved,
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
@@ -1050,16 +1050,16 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 type ProvisioningState string
 
 const (
-	ProvisioningStateCanceled  ProvisioningState = "Canceled"
-	ProvisioningStateCreating  ProvisioningState = "Creating"
-	ProvisioningStateDeleting  ProvisioningState = "Deleting"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	ProvisioningStateFailed ProvisioningState = "Failed"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateCanceled,
 		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
@@ -1072,14 +1072,14 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type PublicNetworkAccess string
 
 const (
-	PublicNetworkAccessDisabled           PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled            PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{
+	return []PublicNetworkAccess{	
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 		PublicNetworkAccessSecuredByPerimeter,
@@ -1090,14 +1090,14 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 type ReceiverStatus string
 
 const (
-	ReceiverStatusDisabled     ReceiverStatus = "Disabled"
-	ReceiverStatusEnabled      ReceiverStatus = "Enabled"
+	ReceiverStatusDisabled ReceiverStatus = "Disabled"
+	ReceiverStatusEnabled ReceiverStatus = "Enabled"
 	ReceiverStatusNotSpecified ReceiverStatus = "NotSpecified"
 )
 
 // PossibleReceiverStatusValues returns the possible values for the ReceiverStatus const type.
 func PossibleReceiverStatusValues() []ReceiverStatus {
-	return []ReceiverStatus{
+	return []ReceiverStatus{	
 		ReceiverStatusDisabled,
 		ReceiverStatusEnabled,
 		ReceiverStatusNotSpecified,
@@ -1110,19 +1110,19 @@ func PossibleReceiverStatusValues() []ReceiverStatus {
 type RecurrenceFrequency string
 
 const (
-	RecurrenceFrequencyDay    RecurrenceFrequency = "Day"
-	RecurrenceFrequencyHour   RecurrenceFrequency = "Hour"
+	RecurrenceFrequencyDay RecurrenceFrequency = "Day"
+	RecurrenceFrequencyHour RecurrenceFrequency = "Hour"
 	RecurrenceFrequencyMinute RecurrenceFrequency = "Minute"
-	RecurrenceFrequencyMonth  RecurrenceFrequency = "Month"
-	RecurrenceFrequencyNone   RecurrenceFrequency = "None"
+	RecurrenceFrequencyMonth RecurrenceFrequency = "Month"
+	RecurrenceFrequencyNone RecurrenceFrequency = "None"
 	RecurrenceFrequencySecond RecurrenceFrequency = "Second"
-	RecurrenceFrequencyWeek   RecurrenceFrequency = "Week"
-	RecurrenceFrequencyYear   RecurrenceFrequency = "Year"
+	RecurrenceFrequencyWeek RecurrenceFrequency = "Week"
+	RecurrenceFrequencyYear RecurrenceFrequency = "Year"
 )
 
 // PossibleRecurrenceFrequencyValues returns the possible values for the RecurrenceFrequency const type.
 func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
-	return []RecurrenceFrequency{
+	return []RecurrenceFrequency{	
 		RecurrenceFrequencyDay,
 		RecurrenceFrequencyHour,
 		RecurrenceFrequencyMinute,
@@ -1137,13 +1137,13 @@ func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 type ResultType string
 
 const (
-	ResultTypeData     ResultType = "Data"
+	ResultTypeData ResultType = "Data"
 	ResultTypeMetadata ResultType = "Metadata"
 )
 
 // PossibleResultTypeValues returns the possible values for the ResultType const type.
 func PossibleResultTypeValues() []ResultType {
-	return []ResultType{
+	return []ResultType{	
 		ResultTypeData,
 		ResultTypeMetadata,
 	}
@@ -1155,12 +1155,12 @@ type ScaleDirection string
 const (
 	ScaleDirectionDecrease ScaleDirection = "Decrease"
 	ScaleDirectionIncrease ScaleDirection = "Increase"
-	ScaleDirectionNone     ScaleDirection = "None"
+	ScaleDirectionNone ScaleDirection = "None"
 )
 
 // PossibleScaleDirectionValues returns the possible values for the ScaleDirection const type.
 func PossibleScaleDirectionValues() []ScaleDirection {
-	return []ScaleDirection{
+	return []ScaleDirection{	
 		ScaleDirectionDecrease,
 		ScaleDirectionIncrease,
 		ScaleDirectionNone,
@@ -1172,13 +1172,13 @@ func PossibleScaleDirectionValues() []ScaleDirection {
 type ScaleRuleMetricDimensionOperationType string
 
 const (
-	ScaleRuleMetricDimensionOperationTypeEquals    ScaleRuleMetricDimensionOperationType = "Equals"
+	ScaleRuleMetricDimensionOperationTypeEquals ScaleRuleMetricDimensionOperationType = "Equals"
 	ScaleRuleMetricDimensionOperationTypeNotEquals ScaleRuleMetricDimensionOperationType = "NotEquals"
 )
 
 // PossibleScaleRuleMetricDimensionOperationTypeValues returns the possible values for the ScaleRuleMetricDimensionOperationType const type.
 func PossibleScaleRuleMetricDimensionOperationTypeValues() []ScaleRuleMetricDimensionOperationType {
-	return []ScaleRuleMetricDimensionOperationType{
+	return []ScaleRuleMetricDimensionOperationType{	
 		ScaleRuleMetricDimensionOperationTypeEquals,
 		ScaleRuleMetricDimensionOperationTypeNotEquals,
 	}
@@ -1188,15 +1188,15 @@ func PossibleScaleRuleMetricDimensionOperationTypeValues() []ScaleRuleMetricDime
 type ScaleType string
 
 const (
-	ScaleTypeChangeCount             ScaleType = "ChangeCount"
-	ScaleTypeExactCount              ScaleType = "ExactCount"
-	ScaleTypePercentChangeCount      ScaleType = "PercentChangeCount"
+	ScaleTypeChangeCount ScaleType = "ChangeCount"
+	ScaleTypeExactCount ScaleType = "ExactCount"
+	ScaleTypePercentChangeCount ScaleType = "PercentChangeCount"
 	ScaleTypeServiceAllowedNextValue ScaleType = "ServiceAllowedNextValue"
 )
 
 // PossibleScaleTypeValues returns the possible values for the ScaleType const type.
 func PossibleScaleTypeValues() []ScaleType {
-	return []ScaleType{
+	return []ScaleType{	
 		ScaleTypeChangeCount,
 		ScaleTypeExactCount,
 		ScaleTypePercentChangeCount,
@@ -1209,15 +1209,15 @@ type TimeAggregation string
 
 const (
 	TimeAggregationAverage TimeAggregation = "Average"
-	TimeAggregationCount   TimeAggregation = "Count"
+	TimeAggregationCount TimeAggregation = "Count"
 	TimeAggregationMaximum TimeAggregation = "Maximum"
 	TimeAggregationMinimum TimeAggregation = "Minimum"
-	TimeAggregationTotal   TimeAggregation = "Total"
+	TimeAggregationTotal TimeAggregation = "Total"
 )
 
 // PossibleTimeAggregationValues returns the possible values for the TimeAggregation const type.
 func PossibleTimeAggregationValues() []TimeAggregation {
-	return []TimeAggregation{
+	return []TimeAggregation{	
 		TimeAggregationAverage,
 		TimeAggregationCount,
 		TimeAggregationMaximum,
@@ -1231,15 +1231,15 @@ type TimeAggregationOperator string
 
 const (
 	TimeAggregationOperatorAverage TimeAggregationOperator = "Average"
-	TimeAggregationOperatorLast    TimeAggregationOperator = "Last"
+	TimeAggregationOperatorLast TimeAggregationOperator = "Last"
 	TimeAggregationOperatorMaximum TimeAggregationOperator = "Maximum"
 	TimeAggregationOperatorMinimum TimeAggregationOperator = "Minimum"
-	TimeAggregationOperatorTotal   TimeAggregationOperator = "Total"
+	TimeAggregationOperatorTotal TimeAggregationOperator = "Total"
 )
 
 // PossibleTimeAggregationOperatorValues returns the possible values for the TimeAggregationOperator const type.
 func PossibleTimeAggregationOperatorValues() []TimeAggregationOperator {
-	return []TimeAggregationOperator{
+	return []TimeAggregationOperator{	
 		TimeAggregationOperatorAverage,
 		TimeAggregationOperatorLast,
 		TimeAggregationOperatorMaximum,
@@ -1254,16 +1254,16 @@ type TimeAggregationType string
 
 const (
 	TimeAggregationTypeAverage TimeAggregationType = "Average"
-	TimeAggregationTypeCount   TimeAggregationType = "Count"
-	TimeAggregationTypeLast    TimeAggregationType = "Last"
+	TimeAggregationTypeCount TimeAggregationType = "Count"
+	TimeAggregationTypeLast TimeAggregationType = "Last"
 	TimeAggregationTypeMaximum TimeAggregationType = "Maximum"
 	TimeAggregationTypeMinimum TimeAggregationType = "Minimum"
-	TimeAggregationTypeTotal   TimeAggregationType = "Total"
+	TimeAggregationTypeTotal TimeAggregationType = "Total"
 )
 
 // PossibleTimeAggregationTypeValues returns the possible values for the TimeAggregationType const type.
 func PossibleTimeAggregationTypeValues() []TimeAggregationType {
-	return []TimeAggregationType{
+	return []TimeAggregationType{	
 		TimeAggregationTypeAverage,
 		TimeAggregationTypeCount,
 		TimeAggregationTypeLast,
@@ -1277,24 +1277,24 @@ func PossibleTimeAggregationTypeValues() []TimeAggregationType {
 type Unit string
 
 const (
-	UnitBitsPerSecond  Unit = "BitsPerSecond"
-	UnitByteSeconds    Unit = "ByteSeconds"
-	UnitBytes          Unit = "Bytes"
+	UnitBitsPerSecond Unit = "BitsPerSecond"
+	UnitByteSeconds Unit = "ByteSeconds"
+	UnitBytes Unit = "Bytes"
 	UnitBytesPerSecond Unit = "BytesPerSecond"
-	UnitCores          Unit = "Cores"
-	UnitCount          Unit = "Count"
+	UnitCores Unit = "Cores"
+	UnitCount Unit = "Count"
 	UnitCountPerSecond Unit = "CountPerSecond"
-	UnitMilliCores     Unit = "MilliCores"
-	UnitMilliSeconds   Unit = "MilliSeconds"
-	UnitNanoCores      Unit = "NanoCores"
-	UnitPercent        Unit = "Percent"
-	UnitSeconds        Unit = "Seconds"
-	UnitUnspecified    Unit = "Unspecified"
+	UnitMilliCores Unit = "MilliCores"
+	UnitMilliSeconds Unit = "MilliSeconds"
+	UnitNanoCores Unit = "NanoCores"
+	UnitPercent Unit = "Percent"
+	UnitSeconds Unit = "Seconds"
+	UnitUnspecified Unit = "Unspecified"
 )
 
 // PossibleUnitValues returns the possible values for the Unit const type.
 func PossibleUnitValues() []Unit {
-	return []Unit{
+	return []Unit{	
 		UnitBitsPerSecond,
 		UnitByteSeconds,
 		UnitBytes,
@@ -1310,3 +1310,4 @@ func PossibleUnitValues() []Unit {
 		UnitUnspecified,
 	}
 }
+

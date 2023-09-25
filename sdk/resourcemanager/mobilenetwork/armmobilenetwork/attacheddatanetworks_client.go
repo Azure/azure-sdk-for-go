@@ -23,7 +23,7 @@ import (
 // AttachedDataNetworksClient contains the methods for the AttachedDataNetworks group.
 // Don't use this type directly, use NewAttachedDataNetworksClient() instead.
 type AttachedDataNetworksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAttachedDataNetworksClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &AttachedDataNetworksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *AttachedDataNetworksClient) createOrUpdateCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -279,7 +279,7 @@ func (client *AttachedDataNetworksClient) getHandleResponse(resp *http.Response)
 //   - packetCoreDataPlaneName - The name of the packet core data plane.
 //   - options - AttachedDataNetworksClientListByPacketCoreDataPlaneOptions contains the optional parameters for the AttachedDataNetworksClient.NewListByPacketCoreDataPlanePager
 //     method.
-func (client *AttachedDataNetworksClient) NewListByPacketCoreDataPlanePager(resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, options *AttachedDataNetworksClientListByPacketCoreDataPlaneOptions) *runtime.Pager[AttachedDataNetworksClientListByPacketCoreDataPlaneResponse] {
+func (client *AttachedDataNetworksClient) NewListByPacketCoreDataPlanePager(resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, options *AttachedDataNetworksClientListByPacketCoreDataPlaneOptions) (*runtime.Pager[AttachedDataNetworksClientListByPacketCoreDataPlaneResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AttachedDataNetworksClientListByPacketCoreDataPlaneResponse]{
 		More: func(page AttachedDataNetworksClientListByPacketCoreDataPlaneResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -401,8 +401,8 @@ func (client *AttachedDataNetworksClient) updateTagsCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -414,3 +414,4 @@ func (client *AttachedDataNetworksClient) updateTagsHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

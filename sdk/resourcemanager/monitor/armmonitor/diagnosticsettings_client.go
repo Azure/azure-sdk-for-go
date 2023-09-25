@@ -35,7 +35,7 @@ func NewDiagnosticSettingsClient(credential azcore.TokenCredential, options *arm
 		return nil, err
 	}
 	client := &DiagnosticSettingsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -88,8 +88,8 @@ func (client *DiagnosticSettingsClient) createOrUpdateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -213,13 +213,13 @@ func (client *DiagnosticSettingsClient) getHandleResponse(resp *http.Response) (
 //   - resourceURI - The identifier of the resource.
 //   - options - DiagnosticSettingsClientListOptions contains the optional parameters for the DiagnosticSettingsClient.NewListPager
 //     method.
-func (client *DiagnosticSettingsClient) NewListPager(resourceURI string, options *DiagnosticSettingsClientListOptions) *runtime.Pager[DiagnosticSettingsClientListResponse] {
+func (client *DiagnosticSettingsClient) NewListPager(resourceURI string, options *DiagnosticSettingsClientListOptions) (*runtime.Pager[DiagnosticSettingsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticSettingsClientListResponse]{
 		More: func(page DiagnosticSettingsClientListResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *DiagnosticSettingsClientListResponse) (DiagnosticSettingsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiagnosticSettingsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiagnosticSettingsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceURI, options)
 			if err != nil {
 				return DiagnosticSettingsClientListResponse{}, err
@@ -260,3 +260,4 @@ func (client *DiagnosticSettingsClient) listHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

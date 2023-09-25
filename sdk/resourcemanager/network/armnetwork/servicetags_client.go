@@ -23,7 +23,7 @@ import (
 // ServiceTagsClient contains the methods for the ServiceTags group.
 // Don't use this type directly, use NewServiceTagsClient() instead.
 type ServiceTagsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewServiceTagsClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &ServiceTagsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -100,3 +100,4 @@ func (client *ServiceTagsClient) listHandleResponse(resp *http.Response) (Servic
 	}
 	return result, nil
 }
+

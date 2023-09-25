@@ -23,7 +23,7 @@ import (
 // VirtualApplianceSitesClient contains the methods for the VirtualApplianceSites group.
 // Don't use this type directly, use NewVirtualApplianceSitesClient() instead.
 type VirtualApplianceSitesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualApplianceSitesClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &VirtualApplianceSitesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *VirtualApplianceSitesClient) createOrUpdateCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *VirtualApplianceSitesClient) getHandleResponse(resp *http.Response
 //   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
 //   - options - VirtualApplianceSitesClientListOptions contains the optional parameters for the VirtualApplianceSitesClient.NewListPager
 //     method.
-func (client *VirtualApplianceSitesClient) NewListPager(resourceGroupName string, networkVirtualApplianceName string, options *VirtualApplianceSitesClientListOptions) *runtime.Pager[VirtualApplianceSitesClientListResponse] {
+func (client *VirtualApplianceSitesClient) NewListPager(resourceGroupName string, networkVirtualApplianceName string, options *VirtualApplianceSitesClientListOptions) (*runtime.Pager[VirtualApplianceSitesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualApplianceSitesClientListResponse]{
 		More: func(page VirtualApplianceSitesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *VirtualApplianceSitesClient) listHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

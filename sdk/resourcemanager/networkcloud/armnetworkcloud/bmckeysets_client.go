@@ -23,7 +23,7 @@ import (
 // BmcKeySetsClient contains the methods for the BmcKeySets group.
 // Don't use this type directly, use NewBmcKeySetsClient() instead.
 type BmcKeySetsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBmcKeySetsClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &BmcKeySetsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *BmcKeySetsClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, bmcKeySetParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -260,7 +260,7 @@ func (client *BmcKeySetsClient) getHandleResponse(resp *http.Response) (BmcKeySe
 //   - clusterName - The name of the cluster.
 //   - options - BmcKeySetsClientListByClusterOptions contains the optional parameters for the BmcKeySetsClient.NewListByClusterPager
 //     method.
-func (client *BmcKeySetsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *BmcKeySetsClientListByClusterOptions) *runtime.Pager[BmcKeySetsClientListByClusterResponse] {
+func (client *BmcKeySetsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *BmcKeySetsClientListByClusterOptions) (*runtime.Pager[BmcKeySetsClientListByClusterResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BmcKeySetsClientListByClusterResponse]{
 		More: func(page BmcKeySetsClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -328,11 +328,10 @@ func (client *BmcKeySetsClient) listByClusterHandleResponse(resp *http.Response)
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - bmcKeySetName - The name of the baseboard management controller key set.
-//   - bmcKeySetUpdateParameters - The request body.
 //   - options - BmcKeySetsClientBeginUpdateOptions contains the optional parameters for the BmcKeySetsClient.BeginUpdate method.
-func (client *BmcKeySetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetUpdateParameters BmcKeySetPatchParameters, options *BmcKeySetsClientBeginUpdateOptions) (*runtime.Poller[BmcKeySetsClientUpdateResponse], error) {
+func (client *BmcKeySetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, options *BmcKeySetsClientBeginUpdateOptions) (*runtime.Poller[BmcKeySetsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters, options)
+		resp, err := client.update(ctx, resourceGroupName, clusterName, bmcKeySetName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -350,9 +349,9 @@ func (client *BmcKeySetsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
-func (client *BmcKeySetsClient) update(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetUpdateParameters BmcKeySetPatchParameters, options *BmcKeySetsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *BmcKeySetsClient) update(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, options *BmcKeySetsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, bmcKeySetName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -368,7 +367,7 @@ func (client *BmcKeySetsClient) update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *BmcKeySetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetUpdateParameters BmcKeySetPatchParameters, options *BmcKeySetsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *BmcKeySetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, options *BmcKeySetsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -391,8 +390,12 @@ func (client *BmcKeySetsClient) updateCreateRequest(ctx context.Context, resourc
 	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, bmcKeySetUpdateParameters); err != nil {
-		return nil, err
+	if options != nil && options.BmcKeySetUpdateParameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.BmcKeySetUpdateParameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
+

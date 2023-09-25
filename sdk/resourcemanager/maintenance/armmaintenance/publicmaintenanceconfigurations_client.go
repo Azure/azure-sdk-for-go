@@ -23,7 +23,7 @@ import (
 // PublicMaintenanceConfigurationsClient contains the methods for the PublicMaintenanceConfigurations group.
 // Don't use this type directly, use NewPublicMaintenanceConfigurationsClient() instead.
 type PublicMaintenanceConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewPublicMaintenanceConfigurationsClient(subscriptionID string, credential 
 	}
 	client := &PublicMaintenanceConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -105,7 +105,7 @@ func (client *PublicMaintenanceConfigurationsClient) getHandleResponse(resp *htt
 // Generated from API version 2023-04-01
 //   - options - PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.NewListPager
 //     method.
-func (client *PublicMaintenanceConfigurationsClient) NewListPager(options *PublicMaintenanceConfigurationsClientListOptions) *runtime.Pager[PublicMaintenanceConfigurationsClientListResponse] {
+func (client *PublicMaintenanceConfigurationsClient) NewListPager(options *PublicMaintenanceConfigurationsClientListOptions) (*runtime.Pager[PublicMaintenanceConfigurationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PublicMaintenanceConfigurationsClientListResponse]{
 		More: func(page PublicMaintenanceConfigurationsClientListResponse) bool {
 			return false
@@ -153,3 +153,4 @@ func (client *PublicMaintenanceConfigurationsClient) listHandleResponse(resp *ht
 	}
 	return result, nil
 }
+

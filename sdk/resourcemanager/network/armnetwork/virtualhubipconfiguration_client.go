@@ -23,7 +23,7 @@ import (
 // VirtualHubIPConfigurationClient contains the methods for the VirtualHubIPConfiguration group.
 // Don't use this type directly, use NewVirtualHubIPConfigurationClient() instead.
 type VirtualHubIPConfigurationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualHubIPConfigurationClient(subscriptionID string, credential azcore
 	}
 	client := &VirtualHubIPConfigurationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *VirtualHubIPConfigurationClient) createOrUpdateCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,7 +271,7 @@ func (client *VirtualHubIPConfigurationClient) getHandleResponse(resp *http.Resp
 //   - virtualHubName - The name of the VirtualHub.
 //   - options - VirtualHubIPConfigurationClientListOptions contains the optional parameters for the VirtualHubIPConfigurationClient.NewListPager
 //     method.
-func (client *VirtualHubIPConfigurationClient) NewListPager(resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationClientListOptions) *runtime.Pager[VirtualHubIPConfigurationClientListResponse] {
+func (client *VirtualHubIPConfigurationClient) NewListPager(resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationClientListOptions) (*runtime.Pager[VirtualHubIPConfigurationClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualHubIPConfigurationClientListResponse]{
 		More: func(page VirtualHubIPConfigurationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -333,3 +333,4 @@ func (client *VirtualHubIPConfigurationClient) listHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

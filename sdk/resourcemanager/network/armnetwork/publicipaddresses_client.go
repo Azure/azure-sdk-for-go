@@ -23,7 +23,7 @@ import (
 // PublicIPAddressesClient contains the methods for the PublicIPAddresses group.
 // Don't use this type directly, use NewPublicIPAddressesClient() instead.
 type PublicIPAddressesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewPublicIPAddressesClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &PublicIPAddressesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *PublicIPAddressesClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -495,7 +495,7 @@ func (client *PublicIPAddressesClient) getVirtualMachineScaleSetPublicIPAddressH
 //   - resourceGroupName - The name of the resource group.
 //   - options - PublicIPAddressesClientListOptions contains the optional parameters for the PublicIPAddressesClient.NewListPager
 //     method.
-func (client *PublicIPAddressesClient) NewListPager(resourceGroupName string, options *PublicIPAddressesClientListOptions) *runtime.Pager[PublicIPAddressesClientListResponse] {
+func (client *PublicIPAddressesClient) NewListPager(resourceGroupName string, options *PublicIPAddressesClientListOptions) (*runtime.Pager[PublicIPAddressesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PublicIPAddressesClientListResponse]{
 		More: func(page PublicIPAddressesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -559,7 +559,7 @@ func (client *PublicIPAddressesClient) listHandleResponse(resp *http.Response) (
 // Generated from API version 2023-05-01
 //   - options - PublicIPAddressesClientListAllOptions contains the optional parameters for the PublicIPAddressesClient.NewListAllPager
 //     method.
-func (client *PublicIPAddressesClient) NewListAllPager(options *PublicIPAddressesClientListAllOptions) *runtime.Pager[PublicIPAddressesClientListAllResponse] {
+func (client *PublicIPAddressesClient) NewListAllPager(options *PublicIPAddressesClientListAllOptions) (*runtime.Pager[PublicIPAddressesClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PublicIPAddressesClientListAllResponse]{
 		More: func(page PublicIPAddressesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -621,7 +621,7 @@ func (client *PublicIPAddressesClient) listAllHandleResponse(resp *http.Response
 //   - cloudServiceName - The name of the cloud service.
 //   - options - PublicIPAddressesClientListCloudServicePublicIPAddressesOptions contains the optional parameters for the PublicIPAddressesClient.NewListCloudServicePublicIPAddressesPager
 //     method.
-func (client *PublicIPAddressesClient) NewListCloudServicePublicIPAddressesPager(resourceGroupName string, cloudServiceName string, options *PublicIPAddressesClientListCloudServicePublicIPAddressesOptions) *runtime.Pager[PublicIPAddressesClientListCloudServicePublicIPAddressesResponse] {
+func (client *PublicIPAddressesClient) NewListCloudServicePublicIPAddressesPager(resourceGroupName string, cloudServiceName string, options *PublicIPAddressesClientListCloudServicePublicIPAddressesOptions) (*runtime.Pager[PublicIPAddressesClientListCloudServicePublicIPAddressesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PublicIPAddressesClientListCloudServicePublicIPAddressesResponse]{
 		More: func(page PublicIPAddressesClientListCloudServicePublicIPAddressesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -695,7 +695,7 @@ func (client *PublicIPAddressesClient) listCloudServicePublicIPAddressesHandleRe
 //   - ipConfigurationName - The IP configuration name.
 //   - options - PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesOptions contains the optional parameters
 //     for the PublicIPAddressesClient.NewListCloudServiceRoleInstancePublicIPAddressesPager method.
-func (client *PublicIPAddressesClient) NewListCloudServiceRoleInstancePublicIPAddressesPager(resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesOptions) *runtime.Pager[PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse] {
+func (client *PublicIPAddressesClient) NewListCloudServiceRoleInstancePublicIPAddressesPager(resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesOptions) (*runtime.Pager[PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse]{
 		More: func(page PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -778,7 +778,7 @@ func (client *PublicIPAddressesClient) listCloudServiceRoleInstancePublicIPAddre
 //   - virtualMachineScaleSetName - The name of the virtual machine scale set.
 //   - options - PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions contains the optional parameters for
 //     the PublicIPAddressesClient.NewListVirtualMachineScaleSetPublicIPAddressesPager method.
-func (client *PublicIPAddressesClient) NewListVirtualMachineScaleSetPublicIPAddressesPager(resourceGroupName string, virtualMachineScaleSetName string, options *PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions) *runtime.Pager[PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse] {
+func (client *PublicIPAddressesClient) NewListVirtualMachineScaleSetPublicIPAddressesPager(resourceGroupName string, virtualMachineScaleSetName string, options *PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions) (*runtime.Pager[PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse]{
 		More: func(page PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -852,7 +852,7 @@ func (client *PublicIPAddressesClient) listVirtualMachineScaleSetPublicIPAddress
 //   - ipConfigurationName - The IP configuration name.
 //   - options - PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions contains the optional parameters
 //     for the PublicIPAddressesClient.NewListVirtualMachineScaleSetVMPublicIPAddressesPager method.
-func (client *PublicIPAddressesClient) NewListVirtualMachineScaleSetVMPublicIPAddressesPager(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions) *runtime.Pager[PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse] {
+func (client *PublicIPAddressesClient) NewListVirtualMachineScaleSetVMPublicIPAddressesPager(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions) (*runtime.Pager[PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse]{
 		More: func(page PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -978,8 +978,8 @@ func (client *PublicIPAddressesClient) updateTagsCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -991,3 +991,4 @@ func (client *PublicIPAddressesClient) updateTagsHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

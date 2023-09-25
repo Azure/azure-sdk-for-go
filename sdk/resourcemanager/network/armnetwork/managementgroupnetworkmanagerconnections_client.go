@@ -36,7 +36,7 @@ func NewManagementGroupNetworkManagerConnectionsClient(credential azcore.TokenCr
 		return nil, err
 	}
 	client := &ManagementGroupNetworkManagerConnectionsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -88,8 +88,8 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) createOrUpdateCrea
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -212,7 +212,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) getHandleResponse(
 //   - managementGroupID - The management group Id which uniquely identify the Microsoft Azure management group.
 //   - options - ManagementGroupNetworkManagerConnectionsClientListOptions contains the optional parameters for the ManagementGroupNetworkManagerConnectionsClient.NewListPager
 //     method.
-func (client *ManagementGroupNetworkManagerConnectionsClient) NewListPager(managementGroupID string, options *ManagementGroupNetworkManagerConnectionsClientListOptions) *runtime.Pager[ManagementGroupNetworkManagerConnectionsClientListResponse] {
+func (client *ManagementGroupNetworkManagerConnectionsClient) NewListPager(managementGroupID string, options *ManagementGroupNetworkManagerConnectionsClientListOptions) (*runtime.Pager[ManagementGroupNetworkManagerConnectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagementGroupNetworkManagerConnectionsClientListResponse]{
 		More: func(page ManagementGroupNetworkManagerConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -272,3 +272,4 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) listHandleResponse
 	}
 	return result, nil
 }
+

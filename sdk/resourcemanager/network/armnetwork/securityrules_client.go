@@ -23,7 +23,7 @@ import (
 // SecurityRulesClient contains the methods for the SecurityRules group.
 // Don't use this type directly, use NewSecurityRulesClient() instead.
 type SecurityRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewSecurityRulesClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &SecurityRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *SecurityRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, securityRuleParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,7 +269,7 @@ func (client *SecurityRulesClient) getHandleResponse(resp *http.Response) (Secur
 //   - resourceGroupName - The name of the resource group.
 //   - networkSecurityGroupName - The name of the network security group.
 //   - options - SecurityRulesClientListOptions contains the optional parameters for the SecurityRulesClient.NewListPager method.
-func (client *SecurityRulesClient) NewListPager(resourceGroupName string, networkSecurityGroupName string, options *SecurityRulesClientListOptions) *runtime.Pager[SecurityRulesClientListResponse] {
+func (client *SecurityRulesClient) NewListPager(resourceGroupName string, networkSecurityGroupName string, options *SecurityRulesClientListOptions) (*runtime.Pager[SecurityRulesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SecurityRulesClientListResponse]{
 		More: func(page SecurityRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -331,3 +331,4 @@ func (client *SecurityRulesClient) listHandleResponse(resp *http.Response) (Secu
 	}
 	return result, nil
 }
+

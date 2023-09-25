@@ -24,7 +24,7 @@ import (
 // AdminRuleCollectionsClient contains the methods for the AdminRuleCollections group.
 // Don't use this type directly, use NewAdminRuleCollectionsClient() instead.
 type AdminRuleCollectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewAdminRuleCollectionsClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &AdminRuleCollectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -106,8 +106,8 @@ func (client *AdminRuleCollectionsClient) createOrUpdateCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, ruleCollection); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -282,7 +282,7 @@ func (client *AdminRuleCollectionsClient) getHandleResponse(resp *http.Response)
 //   - configurationName - The name of the network manager Security Configuration.
 //   - options - AdminRuleCollectionsClientListOptions contains the optional parameters for the AdminRuleCollectionsClient.NewListPager
 //     method.
-func (client *AdminRuleCollectionsClient) NewListPager(resourceGroupName string, networkManagerName string, configurationName string, options *AdminRuleCollectionsClientListOptions) *runtime.Pager[AdminRuleCollectionsClientListResponse] {
+func (client *AdminRuleCollectionsClient) NewListPager(resourceGroupName string, networkManagerName string, configurationName string, options *AdminRuleCollectionsClientListOptions) (*runtime.Pager[AdminRuleCollectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AdminRuleCollectionsClientListResponse]{
 		More: func(page AdminRuleCollectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -354,3 +354,4 @@ func (client *AdminRuleCollectionsClient) listHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

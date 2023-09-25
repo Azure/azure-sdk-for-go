@@ -23,7 +23,7 @@ import (
 // PacketCapturesClient contains the methods for the PacketCaptures group.
 // Don't use this type directly, use NewPacketCapturesClient() instead.
 type PacketCapturesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewPacketCapturesClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &PacketCapturesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *PacketCapturesClient) createCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -344,7 +344,7 @@ func (client *PacketCapturesClient) getStatusCreateRequest(ctx context.Context, 
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the Network Watcher resource.
 //   - options - PacketCapturesClientListOptions contains the optional parameters for the PacketCapturesClient.NewListPager method.
-func (client *PacketCapturesClient) NewListPager(resourceGroupName string, networkWatcherName string, options *PacketCapturesClientListOptions) *runtime.Pager[PacketCapturesClientListResponse] {
+func (client *PacketCapturesClient) NewListPager(resourceGroupName string, networkWatcherName string, options *PacketCapturesClientListOptions) (*runtime.Pager[PacketCapturesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PacketCapturesClientListResponse]{
 		More: func(page PacketCapturesClientListResponse) bool {
 			return false
@@ -475,3 +475,4 @@ func (client *PacketCapturesClient) stopCreateRequest(ctx context.Context, resou
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

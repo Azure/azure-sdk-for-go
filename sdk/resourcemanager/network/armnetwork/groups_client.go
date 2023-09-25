@@ -24,7 +24,7 @@ import (
 // GroupsClient contains the methods for the NetworkGroups group.
 // Don't use this type directly, use NewGroupsClient() instead.
 type GroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewGroupsClient(subscriptionID string, credential azcore.TokenCredential, o
 	}
 	client := &GroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,8 +103,8 @@ func (client *GroupsClient) createOrUpdateCreateRequest(ctx context.Context, res
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -268,7 +268,7 @@ func (client *GroupsClient) getHandleResponse(resp *http.Response) (GroupsClient
 //   - resourceGroupName - The name of the resource group.
 //   - networkManagerName - The name of the network manager.
 //   - options - GroupsClientListOptions contains the optional parameters for the GroupsClient.NewListPager method.
-func (client *GroupsClient) NewListPager(resourceGroupName string, networkManagerName string, options *GroupsClientListOptions) *runtime.Pager[GroupsClientListResponse] {
+func (client *GroupsClient) NewListPager(resourceGroupName string, networkManagerName string, options *GroupsClientListOptions) (*runtime.Pager[GroupsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GroupsClientListResponse]{
 		More: func(page GroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -336,3 +336,4 @@ func (client *GroupsClient) listHandleResponse(resp *http.Response) (GroupsClien
 	}
 	return result, nil
 }
+

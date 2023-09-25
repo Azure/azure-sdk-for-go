@@ -23,7 +23,7 @@ import (
 // PrivateLinkScopesClient contains the methods for the PrivateLinkScopes group.
 // Don't use this type directly, use NewPrivateLinkScopesClient() instead.
 type PrivateLinkScopesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPrivateLinkScopesClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &PrivateLinkScopesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *PrivateLinkScopesClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, azureMonitorPrivateLinkScopePayload); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -254,13 +254,13 @@ func (client *PrivateLinkScopesClient) getHandleResponse(resp *http.Response) (P
 // Generated from API version 2021-07-01-preview
 //   - options - PrivateLinkScopesClientListOptions contains the optional parameters for the PrivateLinkScopesClient.NewListPager
 //     method.
-func (client *PrivateLinkScopesClient) NewListPager(options *PrivateLinkScopesClientListOptions) *runtime.Pager[PrivateLinkScopesClientListResponse] {
+func (client *PrivateLinkScopesClient) NewListPager(options *PrivateLinkScopesClientListOptions) (*runtime.Pager[PrivateLinkScopesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkScopesClientListResponse]{
 		More: func(page PrivateLinkScopesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PrivateLinkScopesClientListResponse) (PrivateLinkScopesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkScopesClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkScopesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -317,13 +317,13 @@ func (client *PrivateLinkScopesClient) listHandleResponse(resp *http.Response) (
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PrivateLinkScopesClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkScopesClient.NewListByResourceGroupPager
 //     method.
-func (client *PrivateLinkScopesClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateLinkScopesClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkScopesClientListByResourceGroupResponse] {
+func (client *PrivateLinkScopesClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateLinkScopesClientListByResourceGroupOptions) (*runtime.Pager[PrivateLinkScopesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkScopesClientListByResourceGroupResponse]{
 		More: func(page PrivateLinkScopesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PrivateLinkScopesClientListByResourceGroupResponse) (PrivateLinkScopesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkScopesClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkScopesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -433,8 +433,8 @@ func (client *PrivateLinkScopesClient) updateTagsCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateLinkScopeTags); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -446,3 +446,4 @@ func (client *PrivateLinkScopesClient) updateTagsHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

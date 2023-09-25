@@ -24,7 +24,7 @@ import (
 // SecurityAdminConfigurationsClient contains the methods for the SecurityAdminConfigurations group.
 // Don't use this type directly, use NewSecurityAdminConfigurationsClient() instead.
 type SecurityAdminConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewSecurityAdminConfigurationsClient(subscriptionID string, credential azco
 	}
 	client := &SecurityAdminConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,8 +101,8 @@ func (client *SecurityAdminConfigurationsClient) createOrUpdateCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, securityAdminConfiguration); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -266,7 +266,7 @@ func (client *SecurityAdminConfigurationsClient) getHandleResponse(resp *http.Re
 //   - networkManagerName - The name of the network manager.
 //   - options - SecurityAdminConfigurationsClientListOptions contains the optional parameters for the SecurityAdminConfigurationsClient.NewListPager
 //     method.
-func (client *SecurityAdminConfigurationsClient) NewListPager(resourceGroupName string, networkManagerName string, options *SecurityAdminConfigurationsClientListOptions) *runtime.Pager[SecurityAdminConfigurationsClientListResponse] {
+func (client *SecurityAdminConfigurationsClient) NewListPager(resourceGroupName string, networkManagerName string, options *SecurityAdminConfigurationsClientListOptions) (*runtime.Pager[SecurityAdminConfigurationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SecurityAdminConfigurationsClientListResponse]{
 		More: func(page SecurityAdminConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -334,3 +334,4 @@ func (client *SecurityAdminConfigurationsClient) listHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

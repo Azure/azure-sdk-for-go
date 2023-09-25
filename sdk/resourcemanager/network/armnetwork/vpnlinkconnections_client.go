@@ -23,7 +23,7 @@ import (
 // VPNLinkConnectionsClient contains the methods for the VPNLinkConnections group.
 // Don't use this type directly, use NewVPNLinkConnectionsClient() instead.
 type VPNLinkConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVPNLinkConnectionsClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &VPNLinkConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -132,7 +132,7 @@ func (client *VPNLinkConnectionsClient) getIkeSasCreateRequest(ctx context.Conte
 //   - connectionName - The name of the vpn connection.
 //   - options - VPNLinkConnectionsClientListByVPNConnectionOptions contains the optional parameters for the VPNLinkConnectionsClient.NewListByVPNConnectionPager
 //     method.
-func (client *VPNLinkConnectionsClient) NewListByVPNConnectionPager(resourceGroupName string, gatewayName string, connectionName string, options *VPNLinkConnectionsClientListByVPNConnectionOptions) *runtime.Pager[VPNLinkConnectionsClientListByVPNConnectionResponse] {
+func (client *VPNLinkConnectionsClient) NewListByVPNConnectionPager(resourceGroupName string, gatewayName string, connectionName string, options *VPNLinkConnectionsClientListByVPNConnectionOptions) (*runtime.Pager[VPNLinkConnectionsClientListByVPNConnectionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VPNLinkConnectionsClientListByVPNConnectionResponse]{
 		More: func(page VPNLinkConnectionsClientListByVPNConnectionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -278,3 +278,4 @@ func (client *VPNLinkConnectionsClient) resetConnectionCreateRequest(ctx context
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

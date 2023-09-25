@@ -23,7 +23,7 @@ import (
 // VPNGatewaysClient contains the methods for the VPNGateways group.
 // Don't use this type directly, use NewVPNGatewaysClient() instead.
 type VPNGatewaysClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVPNGatewaysClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &VPNGatewaysClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *VPNGatewaysClient) createOrUpdateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnGatewayParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -251,7 +251,7 @@ func (client *VPNGatewaysClient) getHandleResponse(resp *http.Response) (VPNGate
 //
 // Generated from API version 2023-05-01
 //   - options - VPNGatewaysClientListOptions contains the optional parameters for the VPNGatewaysClient.NewListPager method.
-func (client *VPNGatewaysClient) NewListPager(options *VPNGatewaysClientListOptions) *runtime.Pager[VPNGatewaysClientListResponse] {
+func (client *VPNGatewaysClient) NewListPager(options *VPNGatewaysClientListOptions) (*runtime.Pager[VPNGatewaysClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VPNGatewaysClientListResponse]{
 		More: func(page VPNGatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -312,7 +312,7 @@ func (client *VPNGatewaysClient) listHandleResponse(resp *http.Response) (VPNGat
 //   - resourceGroupName - The resource group name of the VpnGateway.
 //   - options - VPNGatewaysClientListByResourceGroupOptions contains the optional parameters for the VPNGatewaysClient.NewListByResourceGroupPager
 //     method.
-func (client *VPNGatewaysClient) NewListByResourceGroupPager(resourceGroupName string, options *VPNGatewaysClientListByResourceGroupOptions) *runtime.Pager[VPNGatewaysClientListByResourceGroupResponse] {
+func (client *VPNGatewaysClient) NewListByResourceGroupPager(resourceGroupName string, options *VPNGatewaysClientListByResourceGroupOptions) (*runtime.Pager[VPNGatewaysClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VPNGatewaysClientListByResourceGroupResponse]{
 		More: func(page VPNGatewaysClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -512,8 +512,8 @@ func (client *VPNGatewaysClient) startPacketCaptureCreateRequest(ctx context.Con
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -588,8 +588,8 @@ func (client *VPNGatewaysClient) stopPacketCaptureCreateRequest(ctx context.Cont
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -664,7 +664,8 @@ func (client *VPNGatewaysClient) updateTagsCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnGatewayParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

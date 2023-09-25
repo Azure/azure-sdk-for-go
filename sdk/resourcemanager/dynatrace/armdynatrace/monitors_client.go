@@ -23,7 +23,7 @@ import (
 // MonitorsClient contains the methods for the Monitors group.
 // Don't use this type directly, use NewMonitorsClient() instead.
 type MonitorsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewMonitorsClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &MonitorsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -112,8 +112,8 @@ func (client *MonitorsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -287,8 +287,8 @@ func (client *MonitorsClient) getMarketplaceSaaSResourceDetailsCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -412,8 +412,8 @@ func (client *MonitorsClient) getSSODetailsCreateRequest(ctx context.Context, re
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Request != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Request); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -497,7 +497,7 @@ func (client *MonitorsClient) getVMHostPayloadHandleResponse(resp *http.Response
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientListAppServicesOptions contains the optional parameters for the MonitorsClient.NewListAppServicesPager
 //     method.
-func (client *MonitorsClient) NewListAppServicesPager(resourceGroupName string, monitorName string, options *MonitorsClientListAppServicesOptions) *runtime.Pager[MonitorsClientListAppServicesResponse] {
+func (client *MonitorsClient) NewListAppServicesPager(resourceGroupName string, monitorName string, options *MonitorsClientListAppServicesOptions) (*runtime.Pager[MonitorsClientListAppServicesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListAppServicesResponse]{
 		More: func(page MonitorsClientListAppServicesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -566,7 +566,7 @@ func (client *MonitorsClient) listAppServicesHandleResponse(resp *http.Response)
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.NewListByResourceGroupPager
 //     method.
-func (client *MonitorsClient) NewListByResourceGroupPager(resourceGroupName string, options *MonitorsClientListByResourceGroupOptions) *runtime.Pager[MonitorsClientListByResourceGroupResponse] {
+func (client *MonitorsClient) NewListByResourceGroupPager(resourceGroupName string, options *MonitorsClientListByResourceGroupOptions) (*runtime.Pager[MonitorsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListByResourceGroupResponse]{
 		More: func(page MonitorsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -630,7 +630,7 @@ func (client *MonitorsClient) listByResourceGroupHandleResponse(resp *http.Respo
 // Generated from API version 2023-04-27
 //   - options - MonitorsClientListBySubscriptionIDOptions contains the optional parameters for the MonitorsClient.NewListBySubscriptionIDPager
 //     method.
-func (client *MonitorsClient) NewListBySubscriptionIDPager(options *MonitorsClientListBySubscriptionIDOptions) *runtime.Pager[MonitorsClientListBySubscriptionIDResponse] {
+func (client *MonitorsClient) NewListBySubscriptionIDPager(options *MonitorsClientListBySubscriptionIDOptions) (*runtime.Pager[MonitorsClientListBySubscriptionIDResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListBySubscriptionIDResponse]{
 		More: func(page MonitorsClientListBySubscriptionIDResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -691,7 +691,7 @@ func (client *MonitorsClient) listBySubscriptionIDHandleResponse(resp *http.Resp
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientListHostsOptions contains the optional parameters for the MonitorsClient.NewListHostsPager method.
-func (client *MonitorsClient) NewListHostsPager(resourceGroupName string, monitorName string, options *MonitorsClientListHostsOptions) *runtime.Pager[MonitorsClientListHostsResponse] {
+func (client *MonitorsClient) NewListHostsPager(resourceGroupName string, monitorName string, options *MonitorsClientListHostsOptions) (*runtime.Pager[MonitorsClientListHostsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListHostsResponse]{
 		More: func(page MonitorsClientListHostsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -762,7 +762,7 @@ func (client *MonitorsClient) listHostsHandleResponse(resp *http.Response) (Moni
 //   - request - The details of the linkable environment request.
 //   - options - MonitorsClientListLinkableEnvironmentsOptions contains the optional parameters for the MonitorsClient.NewListLinkableEnvironmentsPager
 //     method.
-func (client *MonitorsClient) NewListLinkableEnvironmentsPager(resourceGroupName string, monitorName string, request LinkableEnvironmentRequest, options *MonitorsClientListLinkableEnvironmentsOptions) *runtime.Pager[MonitorsClientListLinkableEnvironmentsResponse] {
+func (client *MonitorsClient) NewListLinkableEnvironmentsPager(resourceGroupName string, monitorName string, request LinkableEnvironmentRequest, options *MonitorsClientListLinkableEnvironmentsOptions) (*runtime.Pager[MonitorsClientListLinkableEnvironmentsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListLinkableEnvironmentsResponse]{
 		More: func(page MonitorsClientListLinkableEnvironmentsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -814,8 +814,8 @@ func (client *MonitorsClient) listLinkableEnvironmentsCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -835,7 +835,7 @@ func (client *MonitorsClient) listLinkableEnvironmentsHandleResponse(resp *http.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientListMonitoredResourcesOptions contains the optional parameters for the MonitorsClient.NewListMonitoredResourcesPager
 //     method.
-func (client *MonitorsClient) NewListMonitoredResourcesPager(resourceGroupName string, monitorName string, options *MonitorsClientListMonitoredResourcesOptions) *runtime.Pager[MonitorsClientListMonitoredResourcesResponse] {
+func (client *MonitorsClient) NewListMonitoredResourcesPager(resourceGroupName string, monitorName string, options *MonitorsClientListMonitoredResourcesOptions) (*runtime.Pager[MonitorsClientListMonitoredResourcesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListMonitoredResourcesResponse]{
 		More: func(page MonitorsClientListMonitoredResourcesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -948,8 +948,8 @@ func (client *MonitorsClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -961,3 +961,4 @@ func (client *MonitorsClient) updateHandleResponse(resp *http.Response) (Monitor
 	}
 	return result, nil
 }
+

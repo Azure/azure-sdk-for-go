@@ -23,7 +23,7 @@ import (
 // DataCollectionRulesClient contains the methods for the DataCollectionRules group.
 // Don't use this type directly, use NewDataCollectionRulesClient() instead.
 type DataCollectionRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDataCollectionRulesClient(subscriptionID string, credential azcore.Token
 	}
 	client := &DataCollectionRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -98,8 +98,8 @@ func (client *DataCollectionRulesClient) createCreateRequest(ctx context.Context
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -239,13 +239,13 @@ func (client *DataCollectionRulesClient) getHandleResponse(resp *http.Response) 
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DataCollectionRulesClientListByResourceGroupOptions contains the optional parameters for the DataCollectionRulesClient.NewListByResourceGroupPager
 //     method.
-func (client *DataCollectionRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *DataCollectionRulesClientListByResourceGroupOptions) *runtime.Pager[DataCollectionRulesClientListByResourceGroupResponse] {
+func (client *DataCollectionRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *DataCollectionRulesClientListByResourceGroupOptions) (*runtime.Pager[DataCollectionRulesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionRulesClientListByResourceGroupResponse]{
 		More: func(page DataCollectionRulesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DataCollectionRulesClientListByResourceGroupResponse) (DataCollectionRulesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionRulesClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionRulesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -305,13 +305,13 @@ func (client *DataCollectionRulesClient) listByResourceGroupHandleResponse(resp 
 // Generated from API version 2022-06-01
 //   - options - DataCollectionRulesClientListBySubscriptionOptions contains the optional parameters for the DataCollectionRulesClient.NewListBySubscriptionPager
 //     method.
-func (client *DataCollectionRulesClient) NewListBySubscriptionPager(options *DataCollectionRulesClientListBySubscriptionOptions) *runtime.Pager[DataCollectionRulesClientListBySubscriptionResponse] {
+func (client *DataCollectionRulesClient) NewListBySubscriptionPager(options *DataCollectionRulesClientListBySubscriptionOptions) (*runtime.Pager[DataCollectionRulesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionRulesClientListBySubscriptionResponse]{
 		More: func(page DataCollectionRulesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DataCollectionRulesClientListBySubscriptionResponse) (DataCollectionRulesClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionRulesClient.NewListBySubscriptionPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionRulesClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -417,8 +417,8 @@ func (client *DataCollectionRulesClient) updateCreateRequest(ctx context.Context
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -432,3 +432,4 @@ func (client *DataCollectionRulesClient) updateHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

@@ -24,7 +24,7 @@ import (
 )
 
 // DataCollectionRulesServer is a fake server for instances of the armmonitor.DataCollectionRulesClient type.
-type DataCollectionRulesServer struct {
+type DataCollectionRulesServer struct{
 	// Create is the fake for method DataCollectionRulesClient.Create
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	Create func(ctx context.Context, resourceGroupName string, dataCollectionRuleName string, options *armmonitor.DataCollectionRulesClientCreateOptions) (resp azfake.Responder[armmonitor.DataCollectionRulesClientCreateResponse], errResp azfake.ErrorResponder)
@@ -48,6 +48,7 @@ type DataCollectionRulesServer struct {
 	// Update is the fake for method DataCollectionRulesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, dataCollectionRuleName string, options *armmonitor.DataCollectionRulesClientUpdateOptions) (resp azfake.Responder[armmonitor.DataCollectionRulesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewDataCollectionRulesServerTransport creates a new instance of DataCollectionRulesServerTransport with the provided implementation.
@@ -55,18 +56,18 @@ type DataCollectionRulesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDataCollectionRulesServerTransport(srv *DataCollectionRulesServer) *DataCollectionRulesServerTransport {
 	return &DataCollectionRulesServerTransport{
-		srv:                         srv,
+		srv: srv,
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.DataCollectionRulesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmonitor.DataCollectionRulesClientListBySubscriptionResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armmonitor.DataCollectionRulesClientListBySubscriptionResponse]](),
 	}
 }
 
 // DataCollectionRulesServerTransport connects instances of armmonitor.DataCollectionRulesClient to instances of DataCollectionRulesServer.
 // Don't use this type directly, use NewDataCollectionRulesServerTransport instead.
 type DataCollectionRulesServerTransport struct {
-	srv                         *DataCollectionRulesServer
+	srv *DataCollectionRulesServer
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.DataCollectionRulesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmonitor.DataCollectionRulesClientListBySubscriptionResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armmonitor.DataCollectionRulesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for DataCollectionRulesServerTransport.
@@ -141,8 +142,7 @@ func (d *DataCollectionRulesServerTransport) dispatchCreate(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DataCollectionRuleResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -174,8 +174,7 @@ func (d *DataCollectionRulesServerTransport) dispatchDelete(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -207,8 +206,7 @@ func (d *DataCollectionRulesServerTransport) dispatchGet(req *http.Request) (*ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DataCollectionRuleResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -219,17 +217,17 @@ func (d *DataCollectionRulesServerTransport) dispatchNewListByResourceGroupPager
 	}
 	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionRules`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionRules`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmonitor.DataCollectionRulesClientListByResourceGroupResponse, createLink func() string) {
@@ -256,13 +254,13 @@ func (d *DataCollectionRulesServerTransport) dispatchNewListBySubscriptionPager(
 	}
 	newListBySubscriptionPager := d.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionRules`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := d.srv.NewListBySubscriptionPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionRules`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := d.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		d.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmonitor.DataCollectionRulesClientListBySubscriptionResponse, createLink func() string) {
@@ -320,8 +318,8 @@ func (d *DataCollectionRulesServerTransport) dispatchUpdate(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DataCollectionRuleResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

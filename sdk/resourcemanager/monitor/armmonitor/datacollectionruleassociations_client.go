@@ -23,7 +23,7 @@ import (
 // DataCollectionRuleAssociationsClient contains the methods for the DataCollectionRuleAssociations group.
 // Don't use this type directly, use NewDataCollectionRuleAssociationsClient() instead.
 type DataCollectionRuleAssociationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential a
 	}
 	client := &DataCollectionRuleAssociationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -91,8 +91,8 @@ func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx cont
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -220,13 +220,13 @@ func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *http
 //   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
 //   - options - DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions contains the optional parameters for
 //     the DataCollectionRuleAssociationsClient.NewListByDataCollectionEndpointPager method.
-func (client *DataCollectionRuleAssociationsClient) NewListByDataCollectionEndpointPager(resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse] {
+func (client *DataCollectionRuleAssociationsClient) NewListByDataCollectionEndpointPager(resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) (*runtime.Pager[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse) (DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionRuleAssociationsClient.NewListByDataCollectionEndpointPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionRuleAssociationsClient.NewListByDataCollectionEndpointPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -291,13 +291,13 @@ func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpoint
 //   - resourceURI - The identifier of the resource.
 //   - options - DataCollectionRuleAssociationsClientListByResourceOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.NewListByResourcePager
 //     method.
-func (client *DataCollectionRuleAssociationsClient) NewListByResourcePager(resourceURI string, options *DataCollectionRuleAssociationsClientListByResourceOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByResourceResponse] {
+func (client *DataCollectionRuleAssociationsClient) NewListByResourcePager(resourceURI string, options *DataCollectionRuleAssociationsClientListByResourceOptions) (*runtime.Pager[DataCollectionRuleAssociationsClientListByResourceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionRuleAssociationsClientListByResourceResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DataCollectionRuleAssociationsClientListByResourceResponse) (DataCollectionRuleAssociationsClientListByResourceResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionRuleAssociationsClient.NewListByResourcePager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionRuleAssociationsClient.NewListByResourcePager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -352,13 +352,13 @@ func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse
 //   - dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
 //   - options - DataCollectionRuleAssociationsClientListByRuleOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.NewListByRulePager
 //     method.
-func (client *DataCollectionRuleAssociationsClient) NewListByRulePager(resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsClientListByRuleOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByRuleResponse] {
+func (client *DataCollectionRuleAssociationsClient) NewListByRulePager(resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsClientListByRuleOptions) (*runtime.Pager[DataCollectionRuleAssociationsClientListByRuleResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionRuleAssociationsClientListByRuleResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByRuleResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DataCollectionRuleAssociationsClientListByRuleResponse) (DataCollectionRuleAssociationsClientListByRuleResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionRuleAssociationsClient.NewListByRulePager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataCollectionRuleAssociationsClient.NewListByRulePager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -416,3 +416,4 @@ func (client *DataCollectionRuleAssociationsClient) listByRuleHandleResponse(res
 	}
 	return result, nil
 }
+

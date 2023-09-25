@@ -146,3 +146,45 @@ function Find-Go-Artifacts-For-Apireview($ArtifactPath, $PackageName)
   }
   return $null
 }
+
+function Get-Go-DirectoriesForGeneration() {
+  # Find directories containing build.go files with "//go:generate" comments
+  $sdkDirectories = Get-ChildItem -Path "$RepoRoot/sdk" -Directory | Get-ChildItem -Directory
+
+  $sdkDirectories | Where-Object {
+    $goGenerateStrings = $_ 
+      | Get-ChildItem -Include "build.go" -Recurse
+      | Get-Content -Raw
+      | Where-Object { $_.Contains("//go:generate") }
+
+    return $goGenerateStrings.Count -gt 0
+  }
+}
+
+function Update-Go-GeneratedSdks([string]$PackageDirectoriesFile) {
+  $packageDirectories = Get-Content $PackageDirectoriesFile | ConvertFrom-Json
+  
+  $directoriesWithErrors = @()
+  foreach ($directory in $packageDirectories) {
+    Push-Location $RepoRoot
+    try {
+      Write-Host 'Generating projects under directory ' -ForegroundColor Green -NoNewline
+      Write-Host "$directory" -ForegroundColor Yellow
+
+      ./eng/scripts/build.ps1 -Filter $directory
+    }
+    catch {
+      $directoriesWithErrors += $directory
+    }
+    finally {
+      Pop-Location
+    }
+  }
+
+  if($directoriesWithErrors.Count -gt 0) {
+    Write-Host "##[error]Generation errors found in $($directoriesWithErrors.Count) directories:"
+    foreach ($directory in $directoriesWithErrors) {
+      Write-Host "  $directory"
+    }
+  }
+}

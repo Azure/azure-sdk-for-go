@@ -23,7 +23,7 @@ import (
 // PipelineRunsClient contains the methods for the PipelineRuns group.
 // Don't use this type directly, use NewPipelineRunsClient() instead.
 type PipelineRunsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPipelineRunsClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &PipelineRunsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *PipelineRunsClient) createCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, pipelineRunCreateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,13 +271,13 @@ func (client *PipelineRunsClient) getHandleResponse(resp *http.Response) (Pipeli
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - PipelineRunsClientListOptions contains the optional parameters for the PipelineRunsClient.NewListPager method.
-func (client *PipelineRunsClient) NewListPager(resourceGroupName string, registryName string, options *PipelineRunsClientListOptions) *runtime.Pager[PipelineRunsClientListResponse] {
+func (client *PipelineRunsClient) NewListPager(resourceGroupName string, registryName string, options *PipelineRunsClientListOptions) (*runtime.Pager[PipelineRunsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PipelineRunsClientListResponse]{
 		More: func(page PipelineRunsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PipelineRunsClientListResponse) (PipelineRunsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PipelineRunsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PipelineRunsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -332,3 +332,4 @@ func (client *PipelineRunsClient) listHandleResponse(resp *http.Response) (Pipel
 	}
 	return result, nil
 }
+

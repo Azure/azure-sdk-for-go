@@ -24,7 +24,7 @@ import (
 // LoggerClient contains the methods for the Logger group.
 // Don't use this type directly, use NewLoggerClient() instead.
 type LoggerClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewLoggerClient(subscriptionID string, credential azcore.TokenCredential, o
 	}
 	client := &LoggerClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -102,8 +102,8 @@ func (client *LoggerClient) createOrUpdateCreateRequest(ctx context.Context, res
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -317,7 +317,7 @@ func (client *LoggerClient) getEntityTagHandleResponse(resp *http.Response) (Log
 //   - serviceName - The name of the API Management service.
 //   - options - LoggerClientListByServiceOptions contains the optional parameters for the LoggerClient.NewListByServicePager
 //     method.
-func (client *LoggerClient) NewListByServicePager(resourceGroupName string, serviceName string, options *LoggerClientListByServiceOptions) *runtime.Pager[LoggerClientListByServiceResponse] {
+func (client *LoggerClient) NewListByServicePager(resourceGroupName string, serviceName string, options *LoggerClientListByServiceOptions) (*runtime.Pager[LoggerClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[LoggerClientListByServiceResponse]{
 		More: func(page LoggerClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -447,8 +447,8 @@ func (client *LoggerClient) updateCreateRequest(ctx context.Context, resourceGro
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -463,3 +463,4 @@ func (client *LoggerClient) updateHandleResponse(resp *http.Response) (LoggerCli
 	}
 	return result, nil
 }
+

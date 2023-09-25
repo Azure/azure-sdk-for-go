@@ -23,7 +23,7 @@ import (
 // DomainsClient contains the methods for the Domains group.
 // Don't use this type directly, use NewDomainsClient() instead.
 type DomainsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &DomainsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *DomainsClient) cancelVerificationCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -190,8 +190,8 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -399,8 +399,8 @@ func (client *DomainsClient) initiateVerificationCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -411,7 +411,7 @@ func (client *DomainsClient) initiateVerificationCreateRequest(ctx context.Conte
 //   - emailServiceName - The name of the EmailService resource.
 //   - options - DomainsClientListByEmailServiceResourceOptions contains the optional parameters for the DomainsClient.NewListByEmailServiceResourcePager
 //     method.
-func (client *DomainsClient) NewListByEmailServiceResourcePager(resourceGroupName string, emailServiceName string, options *DomainsClientListByEmailServiceResourceOptions) *runtime.Pager[DomainsClientListByEmailServiceResourceResponse] {
+func (client *DomainsClient) NewListByEmailServiceResourcePager(resourceGroupName string, emailServiceName string, options *DomainsClientListByEmailServiceResourceOptions) (*runtime.Pager[DomainsClientListByEmailServiceResourceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DomainsClientListByEmailServiceResourceResponse]{
 		More: func(page DomainsClientListByEmailServiceResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -541,7 +541,8 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

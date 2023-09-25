@@ -23,7 +23,7 @@ import (
 // ConnectedEnvironmentsDaprComponentsClient contains the methods for the ConnectedEnvironmentsDaprComponents group.
 // Don't use this type directly, use NewConnectedEnvironmentsDaprComponentsClient() instead.
 type ConnectedEnvironmentsDaprComponentsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewConnectedEnvironmentsDaprComponentsClient(subscriptionID string, credent
 	}
 	client := &ConnectedEnvironmentsDaprComponentsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) createOrUpdateCreateReq
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, daprComponentEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -242,7 +242,7 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) getHandleResponse(resp 
 //   - connectedEnvironmentName - Name of the connected environment.
 //   - options - ConnectedEnvironmentsDaprComponentsClientListOptions contains the optional parameters for the ConnectedEnvironmentsDaprComponentsClient.NewListPager
 //     method.
-func (client *ConnectedEnvironmentsDaprComponentsClient) NewListPager(resourceGroupName string, connectedEnvironmentName string, options *ConnectedEnvironmentsDaprComponentsClientListOptions) *runtime.Pager[ConnectedEnvironmentsDaprComponentsClientListResponse] {
+func (client *ConnectedEnvironmentsDaprComponentsClient) NewListPager(resourceGroupName string, connectedEnvironmentName string, options *ConnectedEnvironmentsDaprComponentsClientListOptions) (*runtime.Pager[ConnectedEnvironmentsDaprComponentsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConnectedEnvironmentsDaprComponentsClientListResponse]{
 		More: func(page ConnectedEnvironmentsDaprComponentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -370,3 +370,4 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) listSecretsHandleRespon
 	}
 	return result, nil
 }
+

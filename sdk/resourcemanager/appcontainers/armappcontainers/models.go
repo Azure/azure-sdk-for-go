@@ -97,7 +97,7 @@ type AuthConfigProperties struct {
 	GlobalValidation *GlobalValidation
 
 	// The configuration settings of the HTTP requests for authentication and authorization requests made against ContainerApp
-	// Service Authentication/Authorization.
+// Service Authentication/Authorization.
 	HTTPSettings *HTTPSettings
 
 	// The configuration settings of each of the identity providers used to configure ContainerApp Service Authentication/Authorization.
@@ -116,8 +116,8 @@ type AuthPlatform struct {
 	Enabled *bool
 
 	// The RuntimeVersion of the Authentication / Authorization feature in use for the current app. The setting in this value
-	// can control the behavior of certain features in the Authentication /
-	// Authorization module.
+// can control the behavior of certain features in the Authentication /
+// Authorization module.
 	RuntimeVersion *string
 }
 
@@ -184,8 +184,8 @@ type AzureActiveDirectory struct {
 	Enabled *bool
 
 	// Gets a value indicating whether the Azure AD configuration was auto-provisioned using 1st party tooling. This is an internal
-	// flag primarily intended to support the Azure Management Portal. Users
-	// should not read or write to this property.
+// flag primarily intended to support the Azure Management Portal. Users
+// should not read or write to this property.
 	IsAutoProvisioned *bool
 
 	// The configuration settings of the Azure Active Directory login flow.
@@ -204,39 +204,39 @@ type AzureActiveDirectoryLogin struct {
 	DisableWWWAuthenticate *bool
 
 	// Login parameters to send to the OpenID Connect authorization endpoint when a user logs in. Each parameter must be in the
-	// form "key=value".
+// form "key=value".
 	LoginParameters []*string
 }
 
 // AzureActiveDirectoryRegistration - The configuration settings of the Azure Active Directory app registration.
 type AzureActiveDirectoryRegistration struct {
 	// The Client ID of this relying party application, known as the clientid. This setting is required for enabling OpenID Connection
-	// authentication with Azure Active Directory or other 3rd party OpenID
-	// Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-10.html
+// authentication with Azure Active Directory or other 3rd party OpenID
+// Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-10.html
 	ClientID *string
 
 	// An alternative to the client secret thumbprint, that is the issuer of a certificate used for signing purposes. This property
-	// acts as a replacement for the Client Secret Certificate Thumbprint. It is
-	// also optional.
+// acts as a replacement for the Client Secret Certificate Thumbprint. It is
+// also optional.
 	ClientSecretCertificateIssuer *string
 
 	// An alternative to the client secret thumbprint, that is the subject alternative name of a certificate used for signing
-	// purposes. This property acts as a replacement for the Client Secret Certificate
-	// Thumbprint. It is also optional.
+// purposes. This property acts as a replacement for the Client Secret Certificate
+// Thumbprint. It is also optional.
 	ClientSecretCertificateSubjectAlternativeName *string
 
 	// An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts
-	// as a replacement for the Client Secret. It is also optional.
+// as a replacement for the Client Secret. It is also optional.
 	ClientSecretCertificateThumbprint *string
 
 	// The app setting name that contains the client secret of the relying party application.
 	ClientSecretSettingName *string
 
 	// The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application. When using Azure
-	// Active Directory, this value is the URI of the directory tenant, e.g.
-	// https://login.microsoftonline.com/v2.0/{tenant-guid}/. This URI is a case-sensitive identifier for the token issuer. More
-	// information on OpenID Connect Discovery:
-	// http://openid.net/specs/openid-connect-discovery-1_0.html
+// Active Directory, this value is the URI of the directory tenant, e.g.
+// https://login.microsoftonline.com/v2.0/{tenant-guid}/. This URI is a case-sensitive identifier for the token issuer. More
+// information on OpenID Connect Discovery:
+// http://openid.net/specs/openid-connect-discovery-1_0.html
 	OpenIDIssuer *string
 }
 
@@ -471,8 +471,8 @@ type ClientRegistration struct {
 // Configuration - Non versioned Container App configuration properties that define the mutable settings of a Container app
 type Configuration struct {
 	// ActiveRevisionsMode controls how active revisions are handled for the Container app:Multiple: multiple revisions can be
-	// active.Single: Only one revision can be active at a time. Revision weights can
-	// not be used in this mode. If no value if provided, this is the default.
+// active.Single: Only one revision can be active at a time. Revision weights can
+// not be used in this mode. If no value if provided, this is the default.
 	ActiveRevisionsMode *ActiveRevisionsMode
 
 	// Dapr configuration for the Container App.
@@ -617,12 +617,12 @@ type ContainerApp struct {
 	ExtendedLocation *ExtendedLocation
 
 	// managed identities for the Container App to interact with other Azure services without maintaining any secrets or credentials
-	// in code.
+// in code.
 	Identity *ManagedServiceIdentity
 
 	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
-	// Azure resource. If this is present, complete mode deployment will not
-	// delete the resource if it is removed from the template since it is managed by another resource.
+// Azure resource. If this is present, complete mode deployment will not
+// delete the resource if it is removed from the template since it is managed by another resource.
 	ManagedBy *string
 
 	// ContainerApp resource specific properties
@@ -699,34 +699,34 @@ type ContainerAppJobExecutions struct {
 // or ready to receive traffic.
 type ContainerAppProbe struct {
 	// Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value
-	// is 1. Maximum value is 10.
+// is 1. Maximum value is 10.
 	FailureThreshold *int32
 
 	// HTTPGet specifies the http request to perform.
 	HTTPGet *ContainerAppProbeHTTPGet
 
 	// Number of seconds after the container has started before liveness probes are initiated. Minimum value is 1. Maximum value
-	// is 60.
+// is 60.
 	InitialDelaySeconds *int32
 
 	// How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value is 240.
 	PeriodSeconds *int32
 
 	// Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for
-	// liveness and startup. Minimum value is 1. Maximum value is 10.
+// liveness and startup. Minimum value is 1. Maximum value is 10.
 	SuccessThreshold *int32
 
 	// TCPSocket specifies an action involving a TCP port. TCP hooks not yet supported.
 	TCPSocket *ContainerAppProbeTCPSocket
 
 	// Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration
-	// in seconds after the processes running in the pod are sent a termination signal
-	// and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup
-	// time for your process. If this value is nil, the pod's
-	// terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must
-	// be non-negative integer. The value zero indicates stop immediately via the
-	// kill signal (no opportunity to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature
-	// gate. Maximum value is 3600 seconds (1 hour)
+// in seconds after the processes running in the pod are sent a termination signal
+// and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup
+// time for your process. If this value is nil, the pod's
+// terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must
+// be non-negative integer. The value zero indicates stop immediately via the
+// kill signal (no opportunity to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature
+// gate. Maximum value is 3600 seconds (1 hour)
 	TerminationGracePeriodSeconds *int64
 
 	// Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 240.
@@ -739,7 +739,7 @@ type ContainerAppProbe struct {
 // ContainerAppProbeHTTPGet - HTTPGet specifies the http request to perform.
 type ContainerAppProbeHTTPGet struct {
 	// REQUIRED; Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an
-	// IANASVCNAME.
+// IANASVCNAME.
 	Port *int32
 
 	// Custom headers to set in the request. HTTP allows repeated headers.
@@ -767,7 +767,7 @@ type ContainerAppProbeHTTPGetHTTPHeadersItem struct {
 // ContainerAppProbeTCPSocket - TCPSocket specifies an action involving a TCP port. TCP hooks not yet supported.
 type ContainerAppProbeTCPSocket struct {
 	// REQUIRED; Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an
-	// IANASVCNAME.
+// IANASVCNAME.
 	Port *int32
 
 	// Optional: Host name to connect to, defaults to the pod IP.
@@ -1014,7 +1014,7 @@ type Dapr struct {
 	Enabled *bool
 
 	// Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is
-	// 4 MB.
+// 4 MB.
 	HTTPMaxRequestSize *int32
 
 	// Dapr max size of http header read buffer in KB to handle when sending multi-KB headers. Default is 65KB.
@@ -1475,8 +1475,8 @@ type GlobalValidation struct {
 	ExcludedPaths []*string
 
 	// The default authentication provider to use when multiple providers are configured. This setting is only needed if multiple
-	// providers are configured and the unauthenticated client action is set to
-	// "RedirectToLoginPage".
+// providers are configured and the unauthenticated client action is set to
+// "RedirectToLoginPage".
 	RedirectToProvider *string
 
 	// The action to take when an unauthenticated client attempts to access the app.
@@ -1554,7 +1554,7 @@ type IdentityProviders struct {
 	AzureStaticWebApps *AzureStaticWebApps
 
 	// The map of the name of the alias of each custom Open ID Connect provider to the configuration settings of the custom Open
-	// ID Connect provider.
+// ID Connect provider.
 	CustomOpenIDConnectProviders map[string]*CustomOpenIDConnectProvider
 
 	// The configuration settings of the Facebook provider.
@@ -1573,12 +1573,12 @@ type IdentityProviders struct {
 // Ingress - Container App Ingress configuration.
 type Ingress struct {
 	// Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS
-	// connections
+// connections
 	AllowInsecure *bool
 
 	// Client certificate mode for mTLS authentication. Ignore indicates server drops client certificate on forwarding. Accept
-	// indicates server forwards client certificate but does not require a client
-	// certificate. Require indicates server requires a client certificate.
+// indicates server forwards client certificate but does not require a client
+// certificate. Require indicates server requires a client certificate.
 	ClientCertificateMode *IngressClientCertificateMode
 
 	// CORS policy for container app
@@ -1648,7 +1648,7 @@ type Job struct {
 	Location *string
 
 	// Managed identities needed by a container app job to interact with other Azure services to not maintain any secrets or credentials
-	// in code.
+// in code.
 	Identity *ManagedServiceIdentity
 
 	// Container Apps Job resource specific properties.
@@ -1682,7 +1682,7 @@ type JobConfiguration struct {
 	EventTriggerConfig *JobConfigurationEventTriggerConfig
 
 	// Manual trigger configuration for a single execution job. Properties replicaCompletionCount and parallelism would be set
-	// to 1 by default
+// to 1 by default
 	ManualTriggerConfig *JobConfigurationManualTriggerConfig
 
 	// Collection of private container registry credentials used by a Container apps job
@@ -1692,7 +1692,7 @@ type JobConfiguration struct {
 	ReplicaRetryLimit *int32
 
 	// Cron formatted repeating trigger schedule ("* * * * *") for cronjobs. Properties completions and parallelism would be set
-	// to 1 by default
+// to 1 by default
 	ScheduleTriggerConfig *JobConfigurationScheduleTriggerConfig
 
 	// Collection of secrets used by a Container Apps Job
@@ -1806,8 +1806,8 @@ type JobExecutionTemplate struct {
 // JobPatchProperties - Container Apps Job resource specific properties.
 type JobPatchProperties struct {
 	// Managed identities needed by a container app job to interact with other Azure services to not maintain any secrets or credentials
-	// in code.
-	Identity   *ManagedServiceIdentity
+// in code.
+	Identity *ManagedServiceIdentity
 	Properties *JobPatchPropertiesProperties
 
 	// Resource tags.
@@ -1940,8 +1940,8 @@ type LogAnalyticsConfiguration struct {
 // Login - The configuration settings of the login flow of users using ContainerApp Service Authentication/Authorization.
 type Login struct {
 	// External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part
-	// of the URL is ignored. This is an advanced setting typically only needed by
-	// Windows Store application backends. Note that URLs within the current domain are always implicitly allowed.
+// of the URL is ignored. This is an advanced setting typically only needed by
+// Windows Store application backends. Note that URLs within the current domain are always implicitly allowed.
 	AllowedExternalRedirectUrls []*string
 
 	// The configuration settings of the session cookie's expiration.
@@ -2056,7 +2056,7 @@ type ManagedEnvironment struct {
 // ManagedEnvironmentProperties - Managed environment resource specific properties
 type ManagedEnvironmentProperties struct {
 	// Cluster configuration which enables the log daemon to export app logs to a destination. Currently only "log-analytics"
-	// is supported
+// is supported
 	AppLogsConfiguration *AppLogsConfiguration
 
 	// Custom domain configuration for the environment
@@ -2072,8 +2072,8 @@ type ManagedEnvironmentProperties struct {
 	DaprConfiguration *DaprConfiguration
 
 	// Name of the platform-managed resource group created for the Managed Environment to host infrastructure resources. If a
-	// subnet ID is provided, this resource group will be created in the same
-	// subscription as the subnet.
+// subnet ID is provided, this resource group will be created in the same
+// subscription as the subnet.
 	InfrastructureResourceGroup *string
 
 	// The configuration of Keda component.
@@ -2158,14 +2158,14 @@ type ManagedServiceIdentity struct {
 	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
-	// resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
-	// The dictionary values can be empty objects ({}) in
-	// requests.
+// resource ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+// The dictionary values can be empty objects ({}) in
+// requests.
 	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
-	// identity.
+// identity.
 	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
@@ -2296,7 +2296,7 @@ type QueueScaleRule struct {
 // RegistryCredentials - Container App Private Registry
 type RegistryCredentials struct {
 	// A Managed Identity to use to authenticate with Azure Container Registry. For user-assigned identities, use the full user-assigned
-	// identity Resource ID. For system-assigned identities, use 'system'
+// identity Resource ID. For system-assigned identities, use 'system'
 	Identity *string
 
 	// The name of the Secret that contains the registry login password
@@ -2465,7 +2465,7 @@ type RevisionProperties struct {
 	RunningState *RevisionRunningState
 
 	// READ-ONLY; Container App Revision Template with all possible settings and the defaults if user did not provide them. The
-	// defaults are populated as they were at the creation time
+// defaults are populated as they were at the creation time
 	Template *Template
 
 	// READ-ONLY; Traffic weight assigned to this revision
@@ -2589,7 +2589,7 @@ type SourceControlProperties struct {
 	Branch *string
 
 	// Container App Revision Template with all possible settings and the defaults if user did not provide them. The defaults
-	// are populated as they were at the creation time
+// are populated as they were at the creation time
 	GithubActionConfiguration *GithubActionConfiguration
 
 	// The repo url which will be integrated to ContainerApp.
@@ -2648,9 +2648,9 @@ type Template struct {
 	ServiceBinds []*ServiceBind
 
 	// Optional duration in seconds the Container App Instance needs to terminate gracefully. Value must be non-negative integer.
-	// The value zero indicates stop immediately via the kill signal (no opportunity
-	// to shut down). If this value is nil, the default grace period will be used instead. Set this value longer than the expected
-	// cleanup time for your process. Defaults to 30 seconds.
+// The value zero indicates stop immediately via the kill signal (no opportunity
+// to shut down). If this value is nil, the default grace period will be used instead. Set this value longer than the expected
+// cleanup time for your process. Defaults to 30 seconds.
 	TerminationGracePeriodSeconds *int64
 
 	// List of volume definitions for the Container App.
@@ -2706,7 +2706,7 @@ type Twitter struct {
 // TwitterRegistration - The configuration settings of the app registration for the Twitter provider.
 type TwitterRegistration struct {
 	// The OAuth 1.0a consumer key of the Twitter application used for sign-in. This setting is required for enabling Twitter
-	// Sign-In. Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
+// Sign-In. Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
 	ConsumerKey *string
 
 	// The app setting name that contains the OAuth 1.0a consumer secret of the Twitter application used for sign-in.
@@ -2731,11 +2731,11 @@ type VnetConfiguration struct {
 	InfrastructureSubnetID *string
 
 	// Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP
-	// resource. They must provide infrastructureSubnetId if enabling this property
+// resource. They must provide infrastructureSubnetId if enabling this property
 	Internal *bool
 
 	// IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with any other
-	// provided IP ranges.
+// provided IP ranges.
 	PlatformReservedCidr *string
 
 	// An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server.
@@ -2825,3 +2825,4 @@ type WorkloadProfileStatesProperties struct {
 	// Minimum count of instances.
 	MinimumCount *int32
 }
+

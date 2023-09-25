@@ -23,7 +23,7 @@ import (
 )
 
 // CacheRulesServer is a fake server for instances of the armcontainerregistry.CacheRulesClient type.
-type CacheRulesServer struct {
+type CacheRulesServer struct{
 	// BeginCreate is the fake for method CacheRulesClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, cacheRuleCreateParameters armcontainerregistry.CacheRule, options *armcontainerregistry.CacheRulesClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.CacheRulesClientCreateResponse], errResp azfake.ErrorResponder)
@@ -43,6 +43,7 @@ type CacheRulesServer struct {
 	// BeginUpdate is the fake for method CacheRulesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, cacheRuleUpdateParameters armcontainerregistry.CacheRuleUpdateParameters, options *armcontainerregistry.CacheRulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.CacheRulesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewCacheRulesServerTransport creates a new instance of CacheRulesServerTransport with the provided implementation.
@@ -50,22 +51,22 @@ type CacheRulesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCacheRulesServerTransport(srv *CacheRulesServer) *CacheRulesServerTransport {
 	return &CacheRulesServerTransport{
-		srv:          srv,
-		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientCreateResponse]](),
-		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientDeleteResponse]](),
+		srv: srv,
+		beginCreate: newTracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientCreateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientDeleteResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.CacheRulesClientListResponse]](),
-		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientUpdateResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientUpdateResponse]](),
 	}
 }
 
 // CacheRulesServerTransport connects instances of armcontainerregistry.CacheRulesClient to instances of CacheRulesServer.
 // Don't use this type directly, use NewCacheRulesServerTransport instead.
 type CacheRulesServerTransport struct {
-	srv          *CacheRulesServer
-	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientCreateResponse]]
-	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientDeleteResponse]]
+	srv *CacheRulesServer
+	beginCreate *tracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientCreateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientDeleteResponse]]
 	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.CacheRulesClientListResponse]]
-	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientUpdateResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CacheRulesServerTransport.
@@ -107,32 +108,32 @@ func (c *CacheRulesServerTransport) dispatchBeginCreate(req *http.Request) (*htt
 	}
 	beginCreate := c.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cacheRules/(?P<cacheRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.CacheRule](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		cacheRuleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cacheRuleName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, cacheRuleNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cacheRules/(?P<cacheRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.CacheRule](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheRuleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cacheRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, cacheRuleNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreate = &respr
 		c.beginCreate.add(req, beginCreate)
 	}
@@ -159,28 +160,28 @@ func (c *CacheRulesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cacheRules/(?P<cacheRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		cacheRuleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cacheRuleName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, cacheRuleNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cacheRules/(?P<cacheRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheRuleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cacheRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, cacheRuleNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		c.beginDelete.add(req, beginDelete)
 	}
@@ -232,8 +233,7 @@ func (c *CacheRulesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CacheRule, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -244,21 +244,21 @@ func (c *CacheRulesServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cacheRules`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cacheRules`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+resp := c.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
 		newListPager = &resp
 		c.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.CacheRulesClientListResponse, createLink func() string) {
@@ -285,32 +285,32 @@ func (c *CacheRulesServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 	}
 	beginUpdate := c.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cacheRules/(?P<cacheRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.CacheRuleUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		cacheRuleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cacheRuleName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, cacheRuleNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cacheRules/(?P<cacheRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.CacheRuleUpdateParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheRuleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cacheRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, cacheRuleNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		c.beginUpdate.add(req, beginUpdate)
 	}
@@ -330,3 +330,4 @@ func (c *CacheRulesServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 
 	return resp, nil
 }
+

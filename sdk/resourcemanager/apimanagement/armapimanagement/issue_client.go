@@ -24,7 +24,7 @@ import (
 // IssueClient contains the methods for the Issue group.
 // Don't use this type directly, use NewIssueClient() instead.
 type IssueClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewIssueClient(subscriptionID string, credential azcore.TokenCredential, op
 	}
 	client := &IssueClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,7 +118,7 @@ func (client *IssueClient) getHandleResponse(resp *http.Response) (IssueClientGe
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - IssueClientListByServiceOptions contains the optional parameters for the IssueClient.NewListByServicePager method.
-func (client *IssueClient) NewListByServicePager(resourceGroupName string, serviceName string, options *IssueClientListByServiceOptions) *runtime.Pager[IssueClientListByServiceResponse] {
+func (client *IssueClient) NewListByServicePager(resourceGroupName string, serviceName string, options *IssueClientListByServiceOptions) (*runtime.Pager[IssueClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[IssueClientListByServiceResponse]{
 		More: func(page IssueClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -189,3 +189,4 @@ func (client *IssueClient) listByServiceHandleResponse(resp *http.Response) (Iss
 	}
 	return result, nil
 }
+

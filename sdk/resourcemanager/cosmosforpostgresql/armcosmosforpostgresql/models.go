@@ -76,26 +76,26 @@ type ClusterProperties struct {
 	CoordinatorServerEdition *string
 
 	// The storage of a server in MB. Required for creation. See https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute
-	// for more information.
+// for more information.
 	CoordinatorStorageQuotaInMb *int32
 
 	// The vCores count of a server (max: 96). Required for creation. See https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute
-	// for more information.
+// for more information.
 	CoordinatorVCores *int32
 
 	// If high availability (HA) is enabled or not for the cluster.
 	EnableHa *bool
 
 	// If distributed tables are placed on coordinator or not. Should be set to 'true' on single node clusters. Requires shard
-	// rebalancing after value is changed.
+// rebalancing after value is changed.
 	EnableShardsOnCoordinator *bool
 
 	// Maintenance window of a cluster.
 	MaintenanceWindow *MaintenanceWindow
 
 	// Worker node count of the cluster. When node count is 0, it represents a single node configuration with the ability to create
-	// distributed tables on that node. 2 or more worker nodes represent
-	// multi-node configuration. Node count value cannot be 1. Required for creation.
+// distributed tables on that node. 2 or more worker nodes represent
+// multi-node configuration. Node count value cannot be 1. Required for creation.
 	NodeCount *int32
 
 	// If public access is enabled on worker nodes.
@@ -105,11 +105,11 @@ type ClusterProperties struct {
 	NodeServerEdition *string
 
 	// The storage in MB on each worker node. See https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for
-	// more information.
+// more information.
 	NodeStorageQuotaInMb *int32
 
 	// The compute in vCores on each worker node (max: 104). See https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute
-	// for more information.
+// for more information.
 	NodeVCores *int32
 
 	// Date and time in UTC (ISO8601 format) for cluster restore.
@@ -173,15 +173,15 @@ type ClusterPropertiesForUpdate struct {
 	EnableHa *bool
 
 	// If distributed tables are placed on coordinator or not. Should be set to 'true' on single node clusters. Requires shard
-	// rebalancing after value is changed.
+// rebalancing after value is changed.
 	EnableShardsOnCoordinator *bool
 
 	// Maintenance window of a cluster.
 	MaintenanceWindow *MaintenanceWindow
 
 	// Worker node count of the cluster. When node count is 0, it represents a single node configuration with the ability to create
-	// distributed tables on that node. 2 or more worker nodes represent
-	// multi-node configuration. Node count value cannot be 1.
+// distributed tables on that node. 2 or more worker nodes represent
+// multi-node configuration. Node count value cannot be 1.
 	NodeCount *int32
 
 	// The edition of a node (default: MemoryOptimized).
@@ -311,6 +311,40 @@ type ConfigurationProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
 // FirewallRule - Represents a cluster firewall rule.
 type FirewallRule struct {
 	// REQUIRED; The properties of a firewall rule.
@@ -383,7 +417,7 @@ type NameAvailabilityRequest struct {
 	Name *string
 
 	// CONSTANT; Resource type used for verification.
-	// Field has constant value "Microsoft.DBforPostgreSQL/serverGroupsv2", any specified value is ignored.
+// Field has constant value "Microsoft.DBforPostgreSQL/serverGroupsv2", any specified value is ignored.
 	Type *string
 }
 
@@ -541,6 +575,37 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // Role - Represents a cluster role.
 type Role struct {
 	// REQUIRED; The properties of a role.
@@ -637,6 +702,30 @@ type ServerNameItem struct {
 	FullyQualifiedDomainName *string
 }
 
+// ServerProperties - The properties of a server.
+type ServerProperties struct {
+	// If high availability (HA) is enabled or not for the server.
+	EnableHa *bool
+
+	// The edition of a server.
+	ServerEdition *string
+
+	// The storage of a server in MB.
+	StorageQuotaInMb *int32
+
+	// The vCores count of a server.
+	VCores *int32
+
+	// READ-ONLY; The administrator's login name of the servers in the cluster.
+	AdministratorLogin *string
+
+	// READ-ONLY; If public access is enabled on server.
+	EnablePublicIPAccess *bool
+
+	// READ-ONLY; If server database is set to read-only by system maintenance depending on high disk space usage.
+	IsReadOnly *bool
+}
+
 // ServerRoleGroupConfiguration - Represents server role group configuration value.
 type ServerRoleGroupConfiguration struct {
 	// REQUIRED; The role of servers in the server role group.
@@ -690,3 +779,26 @@ type SystemData struct {
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
 }
+
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+

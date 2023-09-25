@@ -23,7 +23,7 @@ import (
 // TargetsClient contains the methods for the Targets group.
 // Don't use this type directly, use NewTargetsClient() instead.
 type TargetsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTargetsClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &TargetsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -108,8 +108,8 @@ func (client *TargetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, target); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -270,7 +270,7 @@ func (client *TargetsClient) getHandleResponse(resp *http.Response) (TargetsClie
 //   - parentResourceType - String that represents a resource type.
 //   - parentResourceName - String that represents a resource name.
 //   - options - TargetsClientListOptions contains the optional parameters for the TargetsClient.NewListPager method.
-func (client *TargetsClient) NewListPager(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, options *TargetsClientListOptions) *runtime.Pager[TargetsClientListResponse] {
+func (client *TargetsClient) NewListPager(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, options *TargetsClientListOptions) (*runtime.Pager[TargetsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TargetsClientListResponse]{
 		More: func(page TargetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -343,3 +343,4 @@ func (client *TargetsClient) listHandleResponse(resp *http.Response) (TargetsCli
 	}
 	return result, nil
 }
+

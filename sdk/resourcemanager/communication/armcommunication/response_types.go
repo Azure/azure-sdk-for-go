@@ -175,3 +175,4 @@ type ServicesClientUpdateResponse struct {
 	// A class representing a CommunicationService resource.
 	ServiceResource
 }
+

@@ -23,7 +23,7 @@ import (
 // NamespacesClient contains the methods for the Namespaces group.
 // Don't use this type directly, use NewNamespacesClient() instead.
 type NamespacesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &NamespacesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -94,8 +94,8 @@ func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkNameAvailabilityRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -107,3 +107,4 @@ func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

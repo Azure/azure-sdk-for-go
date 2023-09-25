@@ -23,7 +23,7 @@ import (
 // TrustedAccessRolesClient contains the methods for the TrustedAccessRoles group.
 // Don't use this type directly, use NewTrustedAccessRolesClient() instead.
 type TrustedAccessRolesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTrustedAccessRolesClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &TrustedAccessRolesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewTrustedAccessRolesClient(subscriptionID string, credential azcore.TokenC
 //   - location - The name of Azure region.
 //   - options - TrustedAccessRolesClientListOptions contains the optional parameters for the TrustedAccessRolesClient.NewListPager
 //     method.
-func (client *TrustedAccessRolesClient) NewListPager(location string, options *TrustedAccessRolesClientListOptions) *runtime.Pager[TrustedAccessRolesClientListResponse] {
+func (client *TrustedAccessRolesClient) NewListPager(location string, options *TrustedAccessRolesClientListOptions) (*runtime.Pager[TrustedAccessRolesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TrustedAccessRolesClientListResponse]{
 		More: func(page TrustedAccessRolesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -107,3 +107,4 @@ func (client *TrustedAccessRolesClient) listHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

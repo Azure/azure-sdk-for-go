@@ -24,7 +24,7 @@ import (
 // APIWikisClient contains the methods for the APIWikis group.
 // Don't use this type directly, use NewAPIWikisClient() instead.
 type APIWikisClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAPIWikisClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &APIWikisClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewAPIWikisClient(subscriptionID string, credential azcore.TokenCredential,
 //   - serviceName - The name of the API Management service.
 //   - apiID - API identifier. Must be unique in the current API Management service instance.
 //   - options - APIWikisClientListOptions contains the optional parameters for the APIWikisClient.NewListPager method.
-func (client *APIWikisClient) NewListPager(resourceGroupName string, serviceName string, apiID string, options *APIWikisClientListOptions) *runtime.Pager[APIWikisClientListResponse] {
+func (client *APIWikisClient) NewListPager(resourceGroupName string, serviceName string, apiID string, options *APIWikisClientListOptions) (*runtime.Pager[APIWikisClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APIWikisClientListResponse]{
 		More: func(page APIWikisClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -126,3 +126,4 @@ func (client *APIWikisClient) listHandleResponse(resp *http.Response) (APIWikisC
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ConnectedEnvironmentsStoragesClient contains the methods for the ConnectedEnvironmentsStorages group.
 // Don't use this type directly, use NewConnectedEnvironmentsStoragesClient() instead.
 type ConnectedEnvironmentsStoragesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewConnectedEnvironmentsStoragesClient(subscriptionID string, credential az
 	}
 	client := &ConnectedEnvironmentsStoragesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *ConnectedEnvironmentsStoragesClient) createOrUpdateCreateRequest(c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, storageEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -295,3 +295,4 @@ func (client *ConnectedEnvironmentsStoragesClient) listHandleResponse(resp *http
 	}
 	return result, nil
 }
+

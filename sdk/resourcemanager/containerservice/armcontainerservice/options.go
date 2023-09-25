@@ -276,8 +276,8 @@ type ManagedClustersClientListClusterMonitoringUserCredentialsOptions struct {
 // method.
 type ManagedClustersClientListClusterUserCredentialsOptions struct {
 	// Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider
-	// kubeconfig; format 'exec' will return exec format kubeconfig, which requires
-	// kubelogin binary in the path.
+// kubeconfig; format 'exec' will return exec format kubeconfig, which requires
+// kubelogin binary in the path.
 	Format *Format
 
 	// server fqdn type for credentials to be returned
@@ -419,3 +419,4 @@ type TrustedAccessRoleBindingsClientListOptions struct {
 type TrustedAccessRolesClientListOptions struct {
 	// placeholder for future optional parameters
 }
+

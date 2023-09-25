@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcen
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.4.0
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.6.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.2
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.2.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal v1.1.2

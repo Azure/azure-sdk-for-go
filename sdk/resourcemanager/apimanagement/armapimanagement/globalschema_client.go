@@ -24,7 +24,7 @@ import (
 // GlobalSchemaClient contains the methods for the GlobalSchema group.
 // Don't use this type directly, use NewGlobalSchemaClient() instead.
 type GlobalSchemaClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGlobalSchemaClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &GlobalSchemaClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *GlobalSchemaClient) createOrUpdateCreateRequest(ctx context.Contex
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -325,7 +325,7 @@ func (client *GlobalSchemaClient) getEntityTagHandleResponse(resp *http.Response
 //   - serviceName - The name of the API Management service.
 //   - options - GlobalSchemaClientListByServiceOptions contains the optional parameters for the GlobalSchemaClient.NewListByServicePager
 //     method.
-func (client *GlobalSchemaClient) NewListByServicePager(resourceGroupName string, serviceName string, options *GlobalSchemaClientListByServiceOptions) *runtime.Pager[GlobalSchemaClientListByServiceResponse] {
+func (client *GlobalSchemaClient) NewListByServicePager(resourceGroupName string, serviceName string, options *GlobalSchemaClientListByServiceOptions) (*runtime.Pager[GlobalSchemaClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GlobalSchemaClientListByServiceResponse]{
 		More: func(page GlobalSchemaClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -396,3 +396,4 @@ func (client *GlobalSchemaClient) listByServiceHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

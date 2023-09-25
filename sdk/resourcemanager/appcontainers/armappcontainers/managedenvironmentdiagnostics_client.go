@@ -23,7 +23,7 @@ import (
 // ManagedEnvironmentDiagnosticsClient contains the methods for the ManagedEnvironmentDiagnostics group.
 // Don't use this type directly, use NewManagedEnvironmentDiagnosticsClient() instead.
 type ManagedEnvironmentDiagnosticsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedEnvironmentDiagnosticsClient(subscriptionID string, credential az
 	}
 	client := &ManagedEnvironmentDiagnosticsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -169,3 +169,4 @@ func (client *ManagedEnvironmentDiagnosticsClient) listDetectorsHandleResponse(r
 	}
 	return result, nil
 }
+

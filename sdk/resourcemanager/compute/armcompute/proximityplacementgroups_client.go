@@ -23,7 +23,7 @@ import (
 // ProximityPlacementGroupsClient contains the methods for the ProximityPlacementGroups group.
 // Don't use this type directly, use NewProximityPlacementGroupsClient() instead.
 type ProximityPlacementGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewProximityPlacementGroupsClient(subscriptionID string, credential azcore.
 	}
 	client := &ProximityPlacementGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -95,8 +95,8 @@ func (client *ProximityPlacementGroupsClient) createOrUpdateCreateRequest(ctx co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -230,7 +230,7 @@ func (client *ProximityPlacementGroupsClient) getHandleResponse(resp *http.Respo
 //   - resourceGroupName - The name of the resource group.
 //   - options - ProximityPlacementGroupsClientListByResourceGroupOptions contains the optional parameters for the ProximityPlacementGroupsClient.NewListByResourceGroupPager
 //     method.
-func (client *ProximityPlacementGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ProximityPlacementGroupsClientListByResourceGroupOptions) *runtime.Pager[ProximityPlacementGroupsClientListByResourceGroupResponse] {
+func (client *ProximityPlacementGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ProximityPlacementGroupsClientListByResourceGroupOptions) (*runtime.Pager[ProximityPlacementGroupsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProximityPlacementGroupsClientListByResourceGroupResponse]{
 		More: func(page ProximityPlacementGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -294,7 +294,7 @@ func (client *ProximityPlacementGroupsClient) listByResourceGroupHandleResponse(
 // Generated from API version 2023-07-01
 //   - options - ProximityPlacementGroupsClientListBySubscriptionOptions contains the optional parameters for the ProximityPlacementGroupsClient.NewListBySubscriptionPager
 //     method.
-func (client *ProximityPlacementGroupsClient) NewListBySubscriptionPager(options *ProximityPlacementGroupsClientListBySubscriptionOptions) *runtime.Pager[ProximityPlacementGroupsClientListBySubscriptionResponse] {
+func (client *ProximityPlacementGroupsClient) NewListBySubscriptionPager(options *ProximityPlacementGroupsClientListBySubscriptionOptions) (*runtime.Pager[ProximityPlacementGroupsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProximityPlacementGroupsClientListBySubscriptionResponse]{
 		More: func(page ProximityPlacementGroupsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -400,8 +400,8 @@ func (client *ProximityPlacementGroupsClient) updateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -413,3 +413,4 @@ func (client *ProximityPlacementGroupsClient) updateHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

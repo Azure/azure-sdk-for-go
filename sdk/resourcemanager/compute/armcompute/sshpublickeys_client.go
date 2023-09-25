@@ -23,7 +23,7 @@ import (
 // SSHPublicKeysClient contains the methods for the SSHPublicKeys group.
 // Don't use this type directly, use NewSSHPublicKeysClient() instead.
 type SSHPublicKeysClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewSSHPublicKeysClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &SSHPublicKeysClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -94,8 +94,8 @@ func (client *SSHPublicKeysClient) createCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -288,7 +288,7 @@ func (client *SSHPublicKeysClient) getHandleResponse(resp *http.Response) (SSHPu
 //   - resourceGroupName - The name of the resource group.
 //   - options - SSHPublicKeysClientListByResourceGroupOptions contains the optional parameters for the SSHPublicKeysClient.NewListByResourceGroupPager
 //     method.
-func (client *SSHPublicKeysClient) NewListByResourceGroupPager(resourceGroupName string, options *SSHPublicKeysClientListByResourceGroupOptions) *runtime.Pager[SSHPublicKeysClientListByResourceGroupResponse] {
+func (client *SSHPublicKeysClient) NewListByResourceGroupPager(resourceGroupName string, options *SSHPublicKeysClientListByResourceGroupOptions) (*runtime.Pager[SSHPublicKeysClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SSHPublicKeysClientListByResourceGroupResponse]{
 		More: func(page SSHPublicKeysClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -353,7 +353,7 @@ func (client *SSHPublicKeysClient) listByResourceGroupHandleResponse(resp *http.
 // Generated from API version 2023-07-01
 //   - options - SSHPublicKeysClientListBySubscriptionOptions contains the optional parameters for the SSHPublicKeysClient.NewListBySubscriptionPager
 //     method.
-func (client *SSHPublicKeysClient) NewListBySubscriptionPager(options *SSHPublicKeysClientListBySubscriptionOptions) *runtime.Pager[SSHPublicKeysClientListBySubscriptionResponse] {
+func (client *SSHPublicKeysClient) NewListBySubscriptionPager(options *SSHPublicKeysClientListBySubscriptionOptions) (*runtime.Pager[SSHPublicKeysClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SSHPublicKeysClientListBySubscriptionResponse]{
 		More: func(page SSHPublicKeysClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -458,8 +458,8 @@ func (client *SSHPublicKeysClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -471,3 +471,4 @@ func (client *SSHPublicKeysClient) updateHandleResponse(resp *http.Response) (SS
 	}
 	return result, nil
 }
+

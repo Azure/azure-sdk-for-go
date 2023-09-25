@@ -24,7 +24,7 @@ import (
 // VirtualMachineScaleSetVMsClient contains the methods for the VirtualMachineScaleSetVMs group.
 // Don't use this type directly, use NewVirtualMachineScaleSetVMsClient() instead.
 type VirtualMachineScaleSetVMsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewVirtualMachineScaleSetVMsClient(subscriptionID string, credential azcore
 	}
 	client := &VirtualMachineScaleSetVMsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -340,7 +340,7 @@ func (client *VirtualMachineScaleSetVMsClient) getInstanceViewHandleResponse(res
 //   - virtualMachineScaleSetName - The name of the VM scale set.
 //   - options - VirtualMachineScaleSetVMsClientListOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.NewListPager
 //     method.
-func (client *VirtualMachineScaleSetVMsClient) NewListPager(resourceGroupName string, virtualMachineScaleSetName string, options *VirtualMachineScaleSetVMsClientListOptions) *runtime.Pager[VirtualMachineScaleSetVMsClientListResponse] {
+func (client *VirtualMachineScaleSetVMsClient) NewListPager(resourceGroupName string, virtualMachineScaleSetName string, options *VirtualMachineScaleSetVMsClientListOptions) (*runtime.Pager[VirtualMachineScaleSetVMsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualMachineScaleSetVMsClientListResponse]{
 		More: func(page VirtualMachineScaleSetVMsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -712,8 +712,8 @@ func (client *VirtualMachineScaleSetVMsClient) reimageCreateRequest(ctx context.
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.VMScaleSetVMReimageInput != nil {
 		if err := runtime.MarshalAsJSON(req, *options.VMScaleSetVMReimageInput); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -1011,8 +1011,8 @@ func (client *VirtualMachineScaleSetVMsClient) runCommandCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1217,7 +1217,8 @@ func (client *VirtualMachineScaleSetVMsClient) updateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

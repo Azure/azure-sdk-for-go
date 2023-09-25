@@ -212,3 +212,4 @@ type ServersClientGetOptions struct {
 type ServersClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
+

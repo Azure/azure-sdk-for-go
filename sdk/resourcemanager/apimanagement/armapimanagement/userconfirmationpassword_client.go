@@ -23,7 +23,7 @@ import (
 // UserConfirmationPasswordClient contains the methods for the UserConfirmationPassword group.
 // Don't use this type directly, use NewUserConfirmationPasswordClient() instead.
 type UserConfirmationPasswordClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewUserConfirmationPasswordClient(subscriptionID string, credential azcore.
 	}
 	client := &UserConfirmationPasswordClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,3 +101,4 @@ func (client *UserConfirmationPasswordClient) sendCreateRequest(ctx context.Cont
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

@@ -23,9 +23,9 @@ import (
 // ServicesClient contains the methods for the Services group.
 // Don't use this type directly, use NewServicesClient() instead.
 type ServicesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
-	serviceName    string
+	serviceName string
 }
 
 // NewServicesClient creates a new instance of ServicesClient with the specified values.
@@ -40,8 +40,8 @@ func NewServicesClient(subscriptionID string, serviceName string, credential azc
 	}
 	client := &ServicesClient{
 		subscriptionID: subscriptionID,
-		serviceName:    serviceName,
-		internal:       cl,
+		serviceName: serviceName,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,11 +51,10 @@ func NewServicesClient(subscriptionID string, serviceName string, credential azc
 //
 // Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resource - The service entity.
 //   - options - ServicesClientCreateOrUpdateOptions contains the optional parameters for the ServicesClient.CreateOrUpdate method.
-func (client *ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resource Service, options *ServicesClientCreateOrUpdateOptions) (ServicesClientCreateOrUpdateResponse, error) {
+func (client *ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, options *ServicesClientCreateOrUpdateOptions) (ServicesClientCreateOrUpdateResponse, error) {
 	var err error
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return ServicesClientCreateOrUpdateResponse{}, err
 	}
@@ -72,7 +71,7 @@ func (client *ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resource Service, options *ServicesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, options *ServicesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiCenter/services/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,8 +93,11 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
+	if options != nil && options.Resource != nil {
+		if err := runtime.MarshalAsJSON(req, *options.Resource); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
@@ -223,7 +225,7 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.NewListByResourceGroupPager
 //     method.
-func (client *ServicesClient) NewListByResourceGroupPager(resourceGroupName string, options *ServicesClientListByResourceGroupOptions) *runtime.Pager[ServicesClientListByResourceGroupResponse] {
+func (client *ServicesClient) NewListByResourceGroupPager(resourceGroupName string, options *ServicesClientListByResourceGroupOptions) (*runtime.Pager[ServicesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServicesClientListByResourceGroupResponse]{
 		More: func(page ServicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -287,7 +289,7 @@ func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Respo
 // Generated from API version 2023-07-01-preview
 //   - options - ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.NewListBySubscriptionPager
 //     method.
-func (client *ServicesClient) NewListBySubscriptionPager(options *ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse] {
+func (client *ServicesClient) NewListBySubscriptionPager(options *ServicesClientListBySubscriptionOptions) (*runtime.Pager[ServicesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServicesClientListBySubscriptionResponse]{
 		More: func(page ServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -347,11 +349,10 @@ func (client *ServicesClient) listBySubscriptionHandleResponse(resp *http.Respon
 //
 // Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameters - The service properties to be updated.
 //   - options - ServicesClientUpdateOptions contains the optional parameters for the ServicesClient.Update method.
-func (client *ServicesClient) Update(ctx context.Context, resourceGroupName string, parameters ServiceUpdate, options *ServicesClientUpdateOptions) (ServicesClientUpdateResponse, error) {
+func (client *ServicesClient) Update(ctx context.Context, resourceGroupName string, options *ServicesClientUpdateOptions) (ServicesClientUpdateResponse, error) {
 	var err error
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, parameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return ServicesClientUpdateResponse{}, err
 	}
@@ -368,7 +369,7 @@ func (client *ServicesClient) Update(ctx context.Context, resourceGroupName stri
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, parameters ServiceUpdate, options *ServicesClientUpdateOptions) (*policy.Request, error) {
+func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, options *ServicesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiCenter/services/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -390,8 +391,11 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
+	if options != nil && options.Parameters != nil {
+		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
+	return nil, err
+}
+		return req, nil
 	}
 	return req, nil
 }
@@ -404,3 +408,4 @@ func (client *ServicesClient) updateHandleResponse(resp *http.Response) (Service
 	}
 	return result, nil
 }
+

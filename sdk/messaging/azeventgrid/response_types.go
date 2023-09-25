@@ -36,3 +36,4 @@ type ReleaseCloudEventsResponse struct {
 	// The result of the Release operation.
 	ReleaseResult
 }
+

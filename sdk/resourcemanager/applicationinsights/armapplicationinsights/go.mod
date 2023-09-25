@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.4.0
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.6.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.2
 )
 

@@ -24,7 +24,7 @@ import (
 // NamedValueClient contains the methods for the NamedValue group.
 // Don't use this type directly, use NewNamedValueClient() instead.
 type NamedValueClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewNamedValueClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &NamedValueClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *NamedValueClient) createOrUpdateCreateRequest(ctx context.Context,
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -324,7 +324,7 @@ func (client *NamedValueClient) getEntityTagHandleResponse(resp *http.Response) 
 //   - serviceName - The name of the API Management service.
 //   - options - NamedValueClientListByServiceOptions contains the optional parameters for the NamedValueClient.NewListByServicePager
 //     method.
-func (client *NamedValueClient) NewListByServicePager(resourceGroupName string, serviceName string, options *NamedValueClientListByServiceOptions) *runtime.Pager[NamedValueClientListByServiceResponse] {
+func (client *NamedValueClient) NewListByServicePager(resourceGroupName string, serviceName string, options *NamedValueClientListByServiceOptions) (*runtime.Pager[NamedValueClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[NamedValueClientListByServiceResponse]{
 		More: func(page NamedValueClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -618,7 +618,8 @@ func (client *NamedValueClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

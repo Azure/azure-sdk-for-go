@@ -24,7 +24,7 @@ import (
 // AgentPoolsClient contains the methods for the AgentPools group.
 // Don't use this type directly, use NewAgentPoolsClient() instead.
 type AgentPoolsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &AgentPoolsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -195,8 +195,8 @@ func (client *AgentPoolsClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -474,7 +474,7 @@ func (client *AgentPoolsClient) getUpgradeProfileHandleResponse(resp *http.Respo
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - options - AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.NewListPager method.
-func (client *AgentPoolsClient) NewListPager(resourceGroupName string, resourceName string, options *AgentPoolsClientListOptions) *runtime.Pager[AgentPoolsClientListResponse] {
+func (client *AgentPoolsClient) NewListPager(resourceGroupName string, resourceName string, options *AgentPoolsClientListOptions) (*runtime.Pager[AgentPoolsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AgentPoolsClientListResponse]{
 		More: func(page AgentPoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -615,3 +615,4 @@ func (client *AgentPoolsClient) upgradeNodeImageVersionCreateRequest(ctx context
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

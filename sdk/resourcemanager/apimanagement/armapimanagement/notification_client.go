@@ -24,7 +24,7 @@ import (
 // NotificationClient contains the methods for the Notification group.
 // Don't use this type directly, use NewNotificationClient() instead.
 type NotificationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewNotificationClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &NotificationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -185,7 +185,7 @@ func (client *NotificationClient) getHandleResponse(resp *http.Response) (Notifi
 //   - serviceName - The name of the API Management service.
 //   - options - NotificationClientListByServiceOptions contains the optional parameters for the NotificationClient.NewListByServicePager
 //     method.
-func (client *NotificationClient) NewListByServicePager(resourceGroupName string, serviceName string, options *NotificationClientListByServiceOptions) *runtime.Pager[NotificationClientListByServiceResponse] {
+func (client *NotificationClient) NewListByServicePager(resourceGroupName string, serviceName string, options *NotificationClientListByServiceOptions) (*runtime.Pager[NotificationClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[NotificationClientListByServiceResponse]{
 		More: func(page NotificationClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -253,3 +253,4 @@ func (client *NotificationClient) listByServiceHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

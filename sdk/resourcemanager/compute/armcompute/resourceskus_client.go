@@ -23,7 +23,7 @@ import (
 // ResourceSKUsClient contains the methods for the ResourceSKUs group.
 // Don't use this type directly, use NewResourceSKUsClient() instead.
 type ResourceSKUsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &ResourceSKUsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -48,7 +48,7 @@ func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredent
 //
 // Generated from API version 2021-07-01
 //   - options - ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.NewListPager method.
-func (client *ResourceSKUsClient) NewListPager(options *ResourceSKUsClientListOptions) *runtime.Pager[ResourceSKUsClientListResponse] {
+func (client *ResourceSKUsClient) NewListPager(options *ResourceSKUsClientListOptions) (*runtime.Pager[ResourceSKUsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ResourceSKUsClientListResponse]{
 		More: func(page ResourceSKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -108,3 +108,4 @@ func (client *ResourceSKUsClient) listHandleResponse(resp *http.Response) (Resou
 	}
 	return result, nil
 }
+

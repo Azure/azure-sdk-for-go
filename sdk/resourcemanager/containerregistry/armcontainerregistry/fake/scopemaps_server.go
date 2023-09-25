@@ -23,7 +23,7 @@ import (
 )
 
 // ScopeMapsServer is a fake server for instances of the armcontainerregistry.ScopeMapsClient type.
-type ScopeMapsServer struct {
+type ScopeMapsServer struct{
 	// BeginCreate is the fake for method ScopeMapsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters armcontainerregistry.ScopeMap, options *armcontainerregistry.ScopeMapsClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -43,6 +43,7 @@ type ScopeMapsServer struct {
 	// BeginUpdate is the fake for method ScopeMapsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters armcontainerregistry.ScopeMapUpdateParameters, options *armcontainerregistry.ScopeMapsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewScopeMapsServerTransport creates a new instance of ScopeMapsServerTransport with the provided implementation.
@@ -50,22 +51,22 @@ type ScopeMapsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewScopeMapsServerTransport(srv *ScopeMapsServer) *ScopeMapsServerTransport {
 	return &ScopeMapsServerTransport{
-		srv:          srv,
-		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]](),
-		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]](),
+		srv: srv,
+		beginCreate: newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]](),
-		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]](),
 	}
 }
 
 // ScopeMapsServerTransport connects instances of armcontainerregistry.ScopeMapsClient to instances of ScopeMapsServer.
 // Don't use this type directly, use NewScopeMapsServerTransport instead.
 type ScopeMapsServerTransport struct {
-	srv          *ScopeMapsServer
-	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]]
-	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]]
+	srv *ScopeMapsServer
+	beginCreate *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]]
 	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]]
-	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ScopeMapsServerTransport.
@@ -107,32 +108,32 @@ func (s *ScopeMapsServerTransport) dispatchBeginCreate(req *http.Request) (*http
 	}
 	beginCreate := s.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeMaps/(?P<scopeMapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.ScopeMap](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		scopeMapNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeMapName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, scopeMapNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeMaps/(?P<scopeMapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.ScopeMap](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	scopeMapNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeMapName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, scopeMapNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreate = &respr
 		s.beginCreate.add(req, beginCreate)
 	}
@@ -159,28 +160,28 @@ func (s *ScopeMapsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	}
 	beginDelete := s.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeMaps/(?P<scopeMapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		scopeMapNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeMapName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, scopeMapNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeMaps/(?P<scopeMapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	scopeMapNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeMapName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, scopeMapNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		s.beginDelete.add(req, beginDelete)
 	}
@@ -232,8 +233,7 @@ func (s *ScopeMapsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ScopeMap, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -244,21 +244,21 @@ func (s *ScopeMapsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeMaps`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeMaps`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+resp := s.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
 		newListPager = &resp
 		s.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.ScopeMapsClientListResponse, createLink func() string) {
@@ -285,32 +285,32 @@ func (s *ScopeMapsServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 	}
 	beginUpdate := s.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeMaps/(?P<scopeMapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.ScopeMapUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		scopeMapNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeMapName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, scopeMapNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeMaps/(?P<scopeMapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.ScopeMapUpdateParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	scopeMapNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeMapName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, scopeMapNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		s.beginUpdate.add(req, beginUpdate)
 	}
@@ -330,3 +330,4 @@ func (s *ScopeMapsServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 
 	return resp, nil
 }
+

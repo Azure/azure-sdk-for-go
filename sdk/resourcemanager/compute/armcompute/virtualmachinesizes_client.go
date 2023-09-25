@@ -23,7 +23,7 @@ import (
 // VirtualMachineSizesClient contains the methods for the VirtualMachineSizes group.
 // Don't use this type directly, use NewVirtualMachineSizesClient() instead.
 type VirtualMachineSizesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualMachineSizesClient(subscriptionID string, credential azcore.Token
 	}
 	client := &VirtualMachineSizesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewVirtualMachineSizesClient(subscriptionID string, credential azcore.Token
 //   - location - The location upon which virtual-machine-sizes is queried.
 //   - options - VirtualMachineSizesClientListOptions contains the optional parameters for the VirtualMachineSizesClient.NewListPager
 //     method.
-func (client *VirtualMachineSizesClient) NewListPager(location string, options *VirtualMachineSizesClientListOptions) *runtime.Pager[VirtualMachineSizesClientListResponse] {
+func (client *VirtualMachineSizesClient) NewListPager(location string, options *VirtualMachineSizesClientListOptions) (*runtime.Pager[VirtualMachineSizesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualMachineSizesClientListResponse]{
 		More: func(page VirtualMachineSizesClientListResponse) bool {
 			return false
@@ -102,3 +102,4 @@ func (client *VirtualMachineSizesClient) listHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

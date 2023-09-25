@@ -23,7 +23,7 @@ import (
 // GalleryApplicationVersionsClient contains the methods for the GalleryApplicationVersions group.
 // Don't use this type directly, use NewGalleryApplicationVersionsClient() instead.
 type GalleryApplicationVersionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGalleryApplicationVersionsClient(subscriptionID string, credential azcor
 	}
 	client := &GalleryApplicationVersionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -123,8 +123,8 @@ func (client *GalleryApplicationVersionsClient) createOrUpdateCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, galleryApplicationVersion); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -289,7 +289,7 @@ func (client *GalleryApplicationVersionsClient) getHandleResponse(resp *http.Res
 //     are to be listed.
 //   - options - GalleryApplicationVersionsClientListByGalleryApplicationOptions contains the optional parameters for the GalleryApplicationVersionsClient.NewListByGalleryApplicationPager
 //     method.
-func (client *GalleryApplicationVersionsClient) NewListByGalleryApplicationPager(resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationVersionsClientListByGalleryApplicationOptions) *runtime.Pager[GalleryApplicationVersionsClientListByGalleryApplicationResponse] {
+func (client *GalleryApplicationVersionsClient) NewListByGalleryApplicationPager(resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationVersionsClientListByGalleryApplicationOptions) (*runtime.Pager[GalleryApplicationVersionsClientListByGalleryApplicationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GalleryApplicationVersionsClientListByGalleryApplicationResponse]{
 		More: func(page GalleryApplicationVersionsClientListByGalleryApplicationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -435,7 +435,8 @@ func (client *GalleryApplicationVersionsClient) updateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, galleryApplicationVersion); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

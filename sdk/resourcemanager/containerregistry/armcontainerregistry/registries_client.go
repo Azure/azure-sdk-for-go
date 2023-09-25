@@ -23,7 +23,7 @@ import (
 // RegistriesClient contains the methods for the Registries group.
 // Don't use this type directly, use NewRegistriesClient() instead.
 type RegistriesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRegistriesClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &RegistriesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -86,8 +86,8 @@ func (client *RegistriesClient) checkNameAvailabilityCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, registryNameCheckRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -169,8 +169,8 @@ func (client *RegistriesClient) createCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, registry); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -313,8 +313,8 @@ func (client *RegistriesClient) generateCredentialsCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, generateCredentialsParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -577,8 +577,8 @@ func (client *RegistriesClient) importImageCreateRequest(ctx context.Context, re
 	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -586,13 +586,13 @@ func (client *RegistriesClient) importImageCreateRequest(ctx context.Context, re
 //
 // Generated from API version 2023-08-01-preview
 //   - options - RegistriesClientListOptions contains the optional parameters for the RegistriesClient.NewListPager method.
-func (client *RegistriesClient) NewListPager(options *RegistriesClientListOptions) *runtime.Pager[RegistriesClientListResponse] {
+func (client *RegistriesClient) NewListPager(options *RegistriesClientListOptions) (*runtime.Pager[RegistriesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RegistriesClientListResponse]{
 		More: func(page RegistriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RegistriesClientListResponse) (RegistriesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RegistriesClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RegistriesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -646,13 +646,13 @@ func (client *RegistriesClient) listHandleResponse(resp *http.Response) (Registr
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RegistriesClientListByResourceGroupOptions contains the optional parameters for the RegistriesClient.NewListByResourceGroupPager
 //     method.
-func (client *RegistriesClient) NewListByResourceGroupPager(resourceGroupName string, options *RegistriesClientListByResourceGroupOptions) *runtime.Pager[RegistriesClientListByResourceGroupResponse] {
+func (client *RegistriesClient) NewListByResourceGroupPager(resourceGroupName string, options *RegistriesClientListByResourceGroupOptions) (*runtime.Pager[RegistriesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RegistriesClientListByResourceGroupResponse]{
 		More: func(page RegistriesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RegistriesClientListByResourceGroupResponse) (RegistriesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RegistriesClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RegistriesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -773,13 +773,13 @@ func (client *RegistriesClient) listCredentialsHandleResponse(resp *http.Respons
 //   - registryName - The name of the container registry.
 //   - options - RegistriesClientListPrivateLinkResourcesOptions contains the optional parameters for the RegistriesClient.NewListPrivateLinkResourcesPager
 //     method.
-func (client *RegistriesClient) NewListPrivateLinkResourcesPager(resourceGroupName string, registryName string, options *RegistriesClientListPrivateLinkResourcesOptions) *runtime.Pager[RegistriesClientListPrivateLinkResourcesResponse] {
+func (client *RegistriesClient) NewListPrivateLinkResourcesPager(resourceGroupName string, registryName string, options *RegistriesClientListPrivateLinkResourcesOptions) (*runtime.Pager[RegistriesClientListPrivateLinkResourcesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RegistriesClientListPrivateLinkResourcesResponse]{
 		More: func(page RegistriesClientListPrivateLinkResourcesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RegistriesClientListPrivateLinkResourcesResponse) (RegistriesClientListPrivateLinkResourcesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RegistriesClient.NewListPrivateLinkResourcesPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RegistriesClient.NewListPrivateLinkResourcesPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -948,8 +948,8 @@ func (client *RegistriesClient) regenerateCredentialCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, regenerateCredentialParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1030,8 +1030,8 @@ func (client *RegistriesClient) scheduleRunCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, runRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1104,7 +1104,8 @@ func (client *RegistriesClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, registryUpdateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

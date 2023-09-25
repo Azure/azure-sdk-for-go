@@ -23,7 +23,7 @@ import (
 // NotificationRecipientUserClient contains the methods for the NotificationRecipientUser group.
 // Don't use this type directly, use NewNotificationRecipientUserClient() instead.
 type NotificationRecipientUserClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewNotificationRecipientUserClient(subscriptionID string, credential azcore
 	}
 	client := &NotificationRecipientUserClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -300,3 +300,4 @@ func (client *NotificationRecipientUserClient) listByNotificationHandleResponse(
 	}
 	return result, nil
 }
+

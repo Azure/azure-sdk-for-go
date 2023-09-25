@@ -23,7 +23,7 @@ import (
 // HcxEnterpriseSitesClient contains the methods for the HcxEnterpriseSites group.
 // Don't use this type directly, use NewHcxEnterpriseSitesClient() instead.
 type HcxEnterpriseSitesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewHcxEnterpriseSitesClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &HcxEnterpriseSitesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *HcxEnterpriseSitesClient) createOrUpdateCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, hcxEnterpriseSite); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -241,7 +241,7 @@ func (client *HcxEnterpriseSitesClient) getHandleResponse(resp *http.Response) (
 //   - privateCloudName - Name of the private cloud
 //   - options - HcxEnterpriseSitesClientListOptions contains the optional parameters for the HcxEnterpriseSitesClient.NewListPager
 //     method.
-func (client *HcxEnterpriseSitesClient) NewListPager(resourceGroupName string, privateCloudName string, options *HcxEnterpriseSitesClientListOptions) *runtime.Pager[HcxEnterpriseSitesClientListResponse] {
+func (client *HcxEnterpriseSitesClient) NewListPager(resourceGroupName string, privateCloudName string, options *HcxEnterpriseSitesClientListOptions) (*runtime.Pager[HcxEnterpriseSitesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[HcxEnterpriseSitesClientListResponse]{
 		More: func(page HcxEnterpriseSitesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -303,3 +303,4 @@ func (client *HcxEnterpriseSitesClient) listHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

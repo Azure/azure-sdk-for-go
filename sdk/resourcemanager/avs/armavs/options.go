@@ -600,3 +600,4 @@ type WorkloadNetworksClientListVMGroupsOptions struct {
 type WorkloadNetworksClientListVirtualMachinesOptions struct {
 	// placeholder for future optional parameters
 }
+

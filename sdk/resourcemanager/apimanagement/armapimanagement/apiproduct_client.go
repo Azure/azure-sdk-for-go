@@ -24,7 +24,7 @@ import (
 // APIProductClient contains the methods for the APIProduct group.
 // Don't use this type directly, use NewAPIProductClient() instead.
 type APIProductClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAPIProductClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &APIProductClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -52,7 +52,7 @@ func NewAPIProductClient(subscriptionID string, credential azcore.TokenCredentia
 //   - apiID - API identifier. Must be unique in the current API Management service instance.
 //   - options - APIProductClientListByApisOptions contains the optional parameters for the APIProductClient.NewListByApisPager
 //     method.
-func (client *APIProductClient) NewListByApisPager(resourceGroupName string, serviceName string, apiID string, options *APIProductClientListByApisOptions) *runtime.Pager[APIProductClientListByApisResponse] {
+func (client *APIProductClient) NewListByApisPager(resourceGroupName string, serviceName string, apiID string, options *APIProductClientListByApisOptions) (*runtime.Pager[APIProductClientListByApisResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APIProductClientListByApisResponse]{
 		More: func(page APIProductClientListByApisResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -127,3 +127,4 @@ func (client *APIProductClient) listByApisHandleResponse(resp *http.Response) (A
 	}
 	return result, nil
 }
+

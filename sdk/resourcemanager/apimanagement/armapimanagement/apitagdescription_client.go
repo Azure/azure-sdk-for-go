@@ -24,7 +24,7 @@ import (
 // APITagDescriptionClient contains the methods for the APITagDescription group.
 // Don't use this type directly, use NewAPITagDescriptionClient() instead.
 type APITagDescriptionClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAPITagDescriptionClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &APITagDescriptionClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,8 +110,8 @@ func (client *APITagDescriptionClient) createOrUpdateCreateRequest(ctx context.C
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -351,7 +351,7 @@ func (client *APITagDescriptionClient) getEntityTagHandleResponse(resp *http.Res
 //     ;rev=n as a suffix where n is the revision number.
 //   - options - APITagDescriptionClientListByServiceOptions contains the optional parameters for the APITagDescriptionClient.NewListByServicePager
 //     method.
-func (client *APITagDescriptionClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APITagDescriptionClientListByServiceOptions) *runtime.Pager[APITagDescriptionClientListByServiceResponse] {
+func (client *APITagDescriptionClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APITagDescriptionClientListByServiceOptions) (*runtime.Pager[APITagDescriptionClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APITagDescriptionClientListByServiceResponse]{
 		More: func(page APITagDescriptionClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -426,3 +426,4 @@ func (client *APITagDescriptionClient) listByServiceHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

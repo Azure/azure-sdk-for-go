@@ -517,9 +517,9 @@ type ListSelector struct {
 func (l *ListSelector) GetSelector() *Selector {
 	return &Selector{
 		AdditionalProperties: l.AdditionalProperties,
-		Filter:               l.Filter,
-		ID:                   l.ID,
-		Type:                 l.Type,
+		Filter: l.Filter,
+		ID: l.ID,
+		Type: l.Type,
 	}
 }
 
@@ -532,15 +532,15 @@ type Operation struct {
 	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
-	// operations.
+// operations.
 	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
-	// "Microsoft.Compute/virtualMachines/capture/action"
+// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
-	// value is "user,system"
+// value is "user,system"
 	Origin *Origin
 }
 
@@ -550,15 +550,15 @@ type OperationDisplay struct {
 	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
-	// Machine", "Restart Virtual Machine".
+// Machine", "Restart Virtual Machine".
 	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
-	// Compute".
+// Compute".
 	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
-	// Schedule Collections".
+// Schedule Collections".
 	Resource *string
 }
 
@@ -597,9 +597,9 @@ type QuerySelector struct {
 func (q *QuerySelector) GetSelector() *Selector {
 	return &Selector{
 		AdditionalProperties: q.AdditionalProperties,
-		Filter:               q.Filter,
-		ID:                   q.ID,
-		Type:                 q.Type,
+		Filter: q.Filter,
+		ID: q.ID,
+		Type: q.Type,
 	}
 }
 
@@ -621,8 +621,8 @@ type ResourceIdentity struct {
 	Type *ResourceIdentityType
 
 	// The list of user identities associated with the Experiment. The user identity dictionary key references will be ARM resource
-	// ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+// ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; GUID that represents the principal ID of this resource identity.
@@ -828,3 +828,4 @@ type UserAssignedIdentity struct {
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
 }
+

@@ -24,7 +24,7 @@ import (
 // CertificateClient contains the methods for the Certificate group.
 // Don't use this type directly, use NewCertificateClient() instead.
 type CertificateClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewCertificateClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &CertificateClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,8 +103,8 @@ func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -319,7 +319,7 @@ func (client *CertificateClient) getEntityTagHandleResponse(resp *http.Response)
 //   - serviceName - The name of the API Management service.
 //   - options - CertificateClientListByServiceOptions contains the optional parameters for the CertificateClient.NewListByServicePager
 //     method.
-func (client *CertificateClient) NewListByServicePager(resourceGroupName string, serviceName string, options *CertificateClientListByServiceOptions) *runtime.Pager[CertificateClientListByServiceResponse] {
+func (client *CertificateClient) NewListByServicePager(resourceGroupName string, serviceName string, options *CertificateClientListByServiceOptions) (*runtime.Pager[CertificateClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CertificateClientListByServiceResponse]{
 		More: func(page CertificateClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -462,3 +462,4 @@ func (client *CertificateClient) refreshSecretHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

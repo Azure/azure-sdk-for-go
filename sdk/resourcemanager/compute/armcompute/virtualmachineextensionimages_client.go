@@ -24,7 +24,7 @@ import (
 // VirtualMachineExtensionImagesClient contains the methods for the VirtualMachineExtensionImages group.
 // Don't use this type directly, use NewVirtualMachineExtensionImagesClient() instead.
 type VirtualMachineExtensionImagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewVirtualMachineExtensionImagesClient(subscriptionID string, credential az
 	}
 	client := &VirtualMachineExtensionImagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -245,3 +245,4 @@ func (client *VirtualMachineExtensionImagesClient) listVersionsHandleResponse(re
 	}
 	return result, nil
 }
+

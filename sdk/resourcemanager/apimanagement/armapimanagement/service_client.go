@@ -23,7 +23,7 @@ import (
 // ServiceClient contains the methods for the APIManagementService group.
 // Don't use this type directly, use NewServiceClient() instead.
 type ServiceClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &ServiceClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *ServiceClient) applyNetworkConfigurationUpdatesCreateRequest(ctx c
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -191,8 +191,8 @@ func (client *ServiceClient) backupCreateRequest(ctx context.Context, resourceGr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -237,8 +237,8 @@ func (client *ServiceClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -320,8 +320,8 @@ func (client *ServiceClient) createOrUpdateCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -567,7 +567,7 @@ func (client *ServiceClient) getSsoTokenHandleResponse(resp *http.Response) (Ser
 //
 // Generated from API version 2022-08-01
 //   - options - ServiceClientListOptions contains the optional parameters for the ServiceClient.NewListPager method.
-func (client *ServiceClient) NewListPager(options *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse] {
+func (client *ServiceClient) NewListPager(options *ServiceClientListOptions) (*runtime.Pager[ServiceClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServiceClientListResponse]{
 		More: func(page ServiceClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -628,7 +628,7 @@ func (client *ServiceClient) listHandleResponse(resp *http.Response) (ServiceCli
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ServiceClientListByResourceGroupOptions contains the optional parameters for the ServiceClient.NewListByResourceGroupPager
 //     method.
-func (client *ServiceClient) NewListByResourceGroupPager(resourceGroupName string, options *ServiceClientListByResourceGroupOptions) *runtime.Pager[ServiceClientListByResourceGroupResponse] {
+func (client *ServiceClient) NewListByResourceGroupPager(resourceGroupName string, options *ServiceClientListByResourceGroupOptions) (*runtime.Pager[ServiceClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServiceClientListByResourceGroupResponse]{
 		More: func(page ServiceClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -833,8 +833,8 @@ func (client *ServiceClient) restoreCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -904,7 +904,8 @@ func (client *ServiceClient) updateCreateRequest(ctx context.Context, resourceGr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

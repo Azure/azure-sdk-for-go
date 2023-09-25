@@ -23,7 +23,7 @@ import (
 // SnapshotsClient contains the methods for the Snapshots group.
 // Don't use this type directly, use NewSnapshotsClient() instead.
 type SnapshotsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &SnapshotsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *SnapshotsClient) createOrUpdateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, snapshot); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -319,8 +319,8 @@ func (client *SnapshotsClient) grantAccessCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, grantAccessData); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -328,7 +328,7 @@ func (client *SnapshotsClient) grantAccessCreateRequest(ctx context.Context, res
 //
 // Generated from API version 2023-04-02
 //   - options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.NewListPager method.
-func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
+func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions) (*runtime.Pager[SnapshotsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SnapshotsClientListResponse]{
 		More: func(page SnapshotsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -389,7 +389,7 @@ func (client *SnapshotsClient) listHandleResponse(resp *http.Response) (Snapshot
 //   - resourceGroupName - The name of the resource group.
 //   - options - SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.NewListByResourceGroupPager
 //     method.
-func (client *SnapshotsClient) NewListByResourceGroupPager(resourceGroupName string, options *SnapshotsClientListByResourceGroupOptions) *runtime.Pager[SnapshotsClientListByResourceGroupResponse] {
+func (client *SnapshotsClient) NewListByResourceGroupPager(resourceGroupName string, options *SnapshotsClientListByResourceGroupOptions) (*runtime.Pager[SnapshotsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SnapshotsClientListByResourceGroupResponse]{
 		More: func(page SnapshotsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -587,7 +587,8 @@ func (client *SnapshotsClient) updateCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, snapshot); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

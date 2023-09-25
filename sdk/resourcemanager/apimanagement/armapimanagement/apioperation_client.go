@@ -24,7 +24,7 @@ import (
 // APIOperationClient contains the methods for the APIOperation group.
 // Don't use this type directly, use NewAPIOperationClient() instead.
 type APIOperationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAPIOperationClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &APIOperationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *APIOperationClient) createOrUpdateCreateRequest(ctx context.Contex
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -345,7 +345,7 @@ func (client *APIOperationClient) getEntityTagHandleResponse(resp *http.Response
 //     ;rev=n as a suffix where n is the revision number.
 //   - options - APIOperationClientListByAPIOptions contains the optional parameters for the APIOperationClient.NewListByAPIPager
 //     method.
-func (client *APIOperationClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *APIOperationClientListByAPIOptions) *runtime.Pager[APIOperationClientListByAPIResponse] {
+func (client *APIOperationClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *APIOperationClientListByAPIOptions) (*runtime.Pager[APIOperationClientListByAPIResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APIOperationClientListByAPIResponse]{
 		More: func(page APIOperationClientListByAPIResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -488,8 +488,8 @@ func (client *APIOperationClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -504,3 +504,4 @@ func (client *APIOperationClient) updateHandleResponse(resp *http.Response) (API
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 )
 
 // CredentialSetsServer is a fake server for instances of the armcontainerregistry.CredentialSetsClient type.
-type CredentialSetsServer struct {
+type CredentialSetsServer struct{
 	// BeginCreate is the fake for method CredentialSetsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetCreateParameters armcontainerregistry.CredentialSet, options *armcontainerregistry.CredentialSetsClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.CredentialSetsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -43,6 +43,7 @@ type CredentialSetsServer struct {
 	// BeginUpdate is the fake for method CredentialSetsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetUpdateParameters armcontainerregistry.CredentialSetUpdateParameters, options *armcontainerregistry.CredentialSetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.CredentialSetsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewCredentialSetsServerTransport creates a new instance of CredentialSetsServerTransport with the provided implementation.
@@ -50,22 +51,22 @@ type CredentialSetsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCredentialSetsServerTransport(srv *CredentialSetsServer) *CredentialSetsServerTransport {
 	return &CredentialSetsServerTransport{
-		srv:          srv,
-		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientCreateResponse]](),
-		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientDeleteResponse]](),
+		srv: srv,
+		beginCreate: newTracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientCreateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientDeleteResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.CredentialSetsClientListResponse]](),
-		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientUpdateResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientUpdateResponse]](),
 	}
 }
 
 // CredentialSetsServerTransport connects instances of armcontainerregistry.CredentialSetsClient to instances of CredentialSetsServer.
 // Don't use this type directly, use NewCredentialSetsServerTransport instead.
 type CredentialSetsServerTransport struct {
-	srv          *CredentialSetsServer
-	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientCreateResponse]]
-	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientDeleteResponse]]
+	srv *CredentialSetsServer
+	beginCreate *tracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientCreateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientDeleteResponse]]
 	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.CredentialSetsClientListResponse]]
-	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientUpdateResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CredentialSetsServerTransport.
@@ -107,32 +108,32 @@ func (c *CredentialSetsServerTransport) dispatchBeginCreate(req *http.Request) (
 	}
 	beginCreate := c.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/credentialSets/(?P<credentialSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.CredentialSet](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		credentialSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("credentialSetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, credentialSetNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/credentialSets/(?P<credentialSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.CredentialSet](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	credentialSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("credentialSetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, credentialSetNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreate = &respr
 		c.beginCreate.add(req, beginCreate)
 	}
@@ -159,28 +160,28 @@ func (c *CredentialSetsServerTransport) dispatchBeginDelete(req *http.Request) (
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/credentialSets/(?P<credentialSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		credentialSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("credentialSetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, credentialSetNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/credentialSets/(?P<credentialSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	credentialSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("credentialSetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, credentialSetNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		c.beginDelete.add(req, beginDelete)
 	}
@@ -232,8 +233,7 @@ func (c *CredentialSetsServerTransport) dispatchGet(req *http.Request) (*http.Re
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialSet, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -244,21 +244,21 @@ func (c *CredentialSetsServerTransport) dispatchNewListPager(req *http.Request) 
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/credentialSets`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/credentialSets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+resp := c.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
 		newListPager = &resp
 		c.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.CredentialSetsClientListResponse, createLink func() string) {
@@ -285,32 +285,32 @@ func (c *CredentialSetsServerTransport) dispatchBeginUpdate(req *http.Request) (
 	}
 	beginUpdate := c.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/credentialSets/(?P<credentialSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.CredentialSetUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		credentialSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("credentialSetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, credentialSetNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/credentialSets/(?P<credentialSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.CredentialSetUpdateParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	credentialSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("credentialSetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, credentialSetNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		c.beginUpdate.add(req, beginUpdate)
 	}
@@ -330,3 +330,4 @@ func (c *CredentialSetsServerTransport) dispatchBeginUpdate(req *http.Request) (
 
 	return resp, nil
 }
+

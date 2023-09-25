@@ -23,7 +23,7 @@ import (
 // ContainerAppsAPIClient contains the methods for the ContainerAppsAPIClient group.
 // Don't use this type directly, use NewContainerAppsAPIClient() instead.
 type ContainerAppsAPIClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewContainerAppsAPIClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &ContainerAppsAPIClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -108,3 +108,4 @@ func (client *ContainerAppsAPIClient) jobExecutionHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

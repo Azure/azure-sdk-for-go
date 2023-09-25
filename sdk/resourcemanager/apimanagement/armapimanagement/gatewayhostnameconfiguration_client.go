@@ -24,7 +24,7 @@ import (
 // GatewayHostnameConfigurationClient contains the methods for the GatewayHostnameConfiguration group.
 // Don't use this type directly, use NewGatewayHostnameConfigurationClient() instead.
 type GatewayHostnameConfigurationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGatewayHostnameConfigurationClient(subscriptionID string, credential azc
 	}
 	client := &GatewayHostnameConfigurationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -108,8 +108,8 @@ func (client *GatewayHostnameConfigurationClient) createOrUpdateCreateRequest(ct
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -346,7 +346,7 @@ func (client *GatewayHostnameConfigurationClient) getEntityTagHandleResponse(res
 //     'managed'
 //   - options - GatewayHostnameConfigurationClientListByServiceOptions contains the optional parameters for the GatewayHostnameConfigurationClient.NewListByServicePager
 //     method.
-func (client *GatewayHostnameConfigurationClient) NewListByServicePager(resourceGroupName string, serviceName string, gatewayID string, options *GatewayHostnameConfigurationClientListByServiceOptions) *runtime.Pager[GatewayHostnameConfigurationClientListByServiceResponse] {
+func (client *GatewayHostnameConfigurationClient) NewListByServicePager(resourceGroupName string, serviceName string, gatewayID string, options *GatewayHostnameConfigurationClientListByServiceOptions) (*runtime.Pager[GatewayHostnameConfigurationClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GatewayHostnameConfigurationClientListByServiceResponse]{
 		More: func(page GatewayHostnameConfigurationClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -421,3 +421,4 @@ func (client *GatewayHostnameConfigurationClient) listByServiceHandleResponse(re
 	}
 	return result, nil
 }
+

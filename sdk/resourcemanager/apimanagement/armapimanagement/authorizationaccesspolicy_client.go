@@ -24,7 +24,7 @@ import (
 // AuthorizationAccessPolicyClient contains the methods for the AuthorizationAccessPolicy group.
 // Don't use this type directly, use NewAuthorizationAccessPolicyClient() instead.
 type AuthorizationAccessPolicyClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAuthorizationAccessPolicyClient(subscriptionID string, credential azcore
 	}
 	client := &AuthorizationAccessPolicyClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *AuthorizationAccessPolicyClient) createOrUpdateCreateRequest(ctx c
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -287,7 +287,7 @@ func (client *AuthorizationAccessPolicyClient) getHandleResponse(resp *http.Resp
 //   - authorizationID - Identifier of the authorization.
 //   - options - AuthorizationAccessPolicyClientListByAuthorizationOptions contains the optional parameters for the AuthorizationAccessPolicyClient.NewListByAuthorizationPager
 //     method.
-func (client *AuthorizationAccessPolicyClient) NewListByAuthorizationPager(resourceGroupName string, serviceName string, authorizationProviderID string, authorizationID string, options *AuthorizationAccessPolicyClientListByAuthorizationOptions) *runtime.Pager[AuthorizationAccessPolicyClientListByAuthorizationResponse] {
+func (client *AuthorizationAccessPolicyClient) NewListByAuthorizationPager(resourceGroupName string, serviceName string, authorizationProviderID string, authorizationID string, options *AuthorizationAccessPolicyClientListByAuthorizationOptions) (*runtime.Pager[AuthorizationAccessPolicyClientListByAuthorizationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AuthorizationAccessPolicyClientListByAuthorizationResponse]{
 		More: func(page AuthorizationAccessPolicyClientListByAuthorizationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -366,3 +366,4 @@ func (client *AuthorizationAccessPolicyClient) listByAuthorizationHandleResponse
 	}
 	return result, nil
 }
+

@@ -24,7 +24,7 @@ import (
 // ProductSubscriptionsClient contains the methods for the ProductSubscriptions group.
 // Don't use this type directly, use NewProductSubscriptionsClient() instead.
 type ProductSubscriptionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewProductSubscriptionsClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &ProductSubscriptionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -52,7 +52,7 @@ func NewProductSubscriptionsClient(subscriptionID string, credential azcore.Toke
 //   - productID - Product identifier. Must be unique in the current API Management service instance.
 //   - options - ProductSubscriptionsClientListOptions contains the optional parameters for the ProductSubscriptionsClient.NewListPager
 //     method.
-func (client *ProductSubscriptionsClient) NewListPager(resourceGroupName string, serviceName string, productID string, options *ProductSubscriptionsClientListOptions) *runtime.Pager[ProductSubscriptionsClientListResponse] {
+func (client *ProductSubscriptionsClient) NewListPager(resourceGroupName string, serviceName string, productID string, options *ProductSubscriptionsClientListOptions) (*runtime.Pager[ProductSubscriptionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProductSubscriptionsClientListResponse]{
 		More: func(page ProductSubscriptionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -127,3 +127,4 @@ func (client *ProductSubscriptionsClient) listHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

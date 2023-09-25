@@ -23,7 +23,7 @@ import (
 // GallerySharingProfileClient contains the methods for the GallerySharingProfile group.
 // Don't use this type directly, use NewGallerySharingProfileClient() instead.
 type GallerySharingProfileClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGallerySharingProfileClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &GallerySharingProfileClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -111,7 +111,8 @@ func (client *GallerySharingProfileClient) updateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sharingUpdate); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

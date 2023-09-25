@@ -23,7 +23,7 @@ import (
 // CapabilityTypesClient contains the methods for the CapabilityTypes group.
 // Don't use this type directly, use NewCapabilityTypesClient() instead.
 type CapabilityTypesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewCapabilityTypesClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &CapabilityTypesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,7 +115,7 @@ func (client *CapabilityTypesClient) getHandleResponse(resp *http.Response) (Cap
 //   - targetTypeName - String that represents a Target Type resource name.
 //   - options - CapabilityTypesClientListOptions contains the optional parameters for the CapabilityTypesClient.NewListPager
 //     method.
-func (client *CapabilityTypesClient) NewListPager(locationName string, targetTypeName string, options *CapabilityTypesClientListOptions) *runtime.Pager[CapabilityTypesClientListResponse] {
+func (client *CapabilityTypesClient) NewListPager(locationName string, targetTypeName string, options *CapabilityTypesClientListOptions) (*runtime.Pager[CapabilityTypesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CapabilityTypesClientListResponse]{
 		More: func(page CapabilityTypesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -180,3 +180,4 @@ func (client *CapabilityTypesClient) listHandleResponse(resp *http.Response) (Ca
 	}
 	return result, nil
 }
+

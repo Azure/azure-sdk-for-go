@@ -23,7 +23,7 @@ import (
 // ServicesClient contains the methods for the CommunicationServices group.
 // Don't use this type directly, use NewServicesClient() instead.
 type ServicesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &ServicesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -81,8 +81,8 @@ func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, nameAvailabilityParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -161,8 +161,8 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -337,8 +337,8 @@ func (client *ServicesClient) linkNotificationHubCreateRequest(ctx context.Conte
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.LinkNotificationHubParameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.LinkNotificationHubParameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -359,7 +359,7 @@ func (client *ServicesClient) linkNotificationHubHandleResponse(resp *http.Respo
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.NewListByResourceGroupPager
 //     method.
-func (client *ServicesClient) NewListByResourceGroupPager(resourceGroupName string, options *ServicesClientListByResourceGroupOptions) *runtime.Pager[ServicesClientListByResourceGroupResponse] {
+func (client *ServicesClient) NewListByResourceGroupPager(resourceGroupName string, options *ServicesClientListByResourceGroupOptions) (*runtime.Pager[ServicesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServicesClientListByResourceGroupResponse]{
 		More: func(page ServicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -420,7 +420,7 @@ func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Respo
 // Generated from API version 2023-04-01-preview
 //   - options - ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.NewListBySubscriptionPager
 //     method.
-func (client *ServicesClient) NewListBySubscriptionPager(options *ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse] {
+func (client *ServicesClient) NewListBySubscriptionPager(options *ServicesClientListBySubscriptionOptions) (*runtime.Pager[ServicesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServicesClientListBySubscriptionResponse]{
 		More: func(page ServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -577,8 +577,8 @@ func (client *ServicesClient) regenerateKeyCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -638,8 +638,8 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -651,3 +651,4 @@ func (client *ServicesClient) updateHandleResponse(resp *http.Response) (Service
 	}
 	return result, nil
 }
+

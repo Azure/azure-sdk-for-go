@@ -23,7 +23,7 @@ import (
 // ManagedClusterSnapshotsClient contains the methods for the ManagedClusterSnapshots group.
 // Don't use this type directly, use NewManagedClusterSnapshotsClient() instead.
 type ManagedClusterSnapshotsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedClusterSnapshotsClient(subscriptionID string, credential azcore.T
 	}
 	client := &ManagedClusterSnapshotsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -94,8 +94,8 @@ func (client *ManagedClusterSnapshotsClient) createOrUpdateCreateRequest(ctx con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -225,7 +225,7 @@ func (client *ManagedClusterSnapshotsClient) getHandleResponse(resp *http.Respon
 // Generated from API version 2023-07-02-preview
 //   - options - ManagedClusterSnapshotsClientListOptions contains the optional parameters for the ManagedClusterSnapshotsClient.NewListPager
 //     method.
-func (client *ManagedClusterSnapshotsClient) NewListPager(options *ManagedClusterSnapshotsClientListOptions) *runtime.Pager[ManagedClusterSnapshotsClientListResponse] {
+func (client *ManagedClusterSnapshotsClient) NewListPager(options *ManagedClusterSnapshotsClientListOptions) (*runtime.Pager[ManagedClusterSnapshotsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedClusterSnapshotsClientListResponse]{
 		More: func(page ManagedClusterSnapshotsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -286,7 +286,7 @@ func (client *ManagedClusterSnapshotsClient) listHandleResponse(resp *http.Respo
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ManagedClusterSnapshotsClientListByResourceGroupOptions contains the optional parameters for the ManagedClusterSnapshotsClient.NewListByResourceGroupPager
 //     method.
-func (client *ManagedClusterSnapshotsClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedClusterSnapshotsClientListByResourceGroupOptions) *runtime.Pager[ManagedClusterSnapshotsClientListByResourceGroupResponse] {
+func (client *ManagedClusterSnapshotsClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedClusterSnapshotsClientListByResourceGroupOptions) (*runtime.Pager[ManagedClusterSnapshotsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedClusterSnapshotsClientListByResourceGroupResponse]{
 		More: func(page ManagedClusterSnapshotsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -396,8 +396,8 @@ func (client *ManagedClusterSnapshotsClient) updateTagsCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -409,3 +409,4 @@ func (client *ManagedClusterSnapshotsClient) updateTagsHandleResponse(resp *http
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // DaprComponentsClient contains the methods for the DaprComponents group.
 // Don't use this type directly, use NewDaprComponentsClient() instead.
 type DaprComponentsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDaprComponentsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &DaprComponentsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *DaprComponentsClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, daprComponentEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -239,7 +239,7 @@ func (client *DaprComponentsClient) getHandleResponse(resp *http.Response) (Dapr
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - options - DaprComponentsClientListOptions contains the optional parameters for the DaprComponentsClient.NewListPager method.
-func (client *DaprComponentsClient) NewListPager(resourceGroupName string, environmentName string, options *DaprComponentsClientListOptions) *runtime.Pager[DaprComponentsClientListResponse] {
+func (client *DaprComponentsClient) NewListPager(resourceGroupName string, environmentName string, options *DaprComponentsClientListOptions) (*runtime.Pager[DaprComponentsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DaprComponentsClientListResponse]{
 		More: func(page DaprComponentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -367,3 +367,4 @@ func (client *DaprComponentsClient) listSecretsHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

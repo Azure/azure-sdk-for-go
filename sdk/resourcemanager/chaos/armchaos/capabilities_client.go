@@ -23,7 +23,7 @@ import (
 // CapabilitiesClient contains the methods for the Capabilities group.
 // Don't use this type directly, use NewCapabilitiesClient() instead.
 type CapabilitiesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &CapabilitiesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *CapabilitiesClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, capability); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -287,7 +287,7 @@ func (client *CapabilitiesClient) getHandleResponse(resp *http.Response) (Capabi
 //   - parentResourceName - String that represents a resource name.
 //   - targetName - String that represents a Target resource name.
 //   - options - CapabilitiesClientListOptions contains the optional parameters for the CapabilitiesClient.NewListPager method.
-func (client *CapabilitiesClient) NewListPager(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *CapabilitiesClientListOptions) *runtime.Pager[CapabilitiesClientListResponse] {
+func (client *CapabilitiesClient) NewListPager(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *CapabilitiesClientListOptions) (*runtime.Pager[CapabilitiesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CapabilitiesClientListResponse]{
 		More: func(page CapabilitiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -364,3 +364,4 @@ func (client *CapabilitiesClient) listHandleResponse(resp *http.Response) (Capab
 	}
 	return result, nil
 }
+

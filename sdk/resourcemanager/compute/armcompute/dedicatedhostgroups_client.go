@@ -23,7 +23,7 @@ import (
 // DedicatedHostGroupsClient contains the methods for the DedicatedHostGroups group.
 // Don't use this type directly, use NewDedicatedHostGroupsClient() instead.
 type DedicatedHostGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewDedicatedHostGroupsClient(subscriptionID string, credential azcore.Token
 	}
 	client := &DedicatedHostGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -96,8 +96,8 @@ func (client *DedicatedHostGroupsClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -231,7 +231,7 @@ func (client *DedicatedHostGroupsClient) getHandleResponse(resp *http.Response) 
 //   - resourceGroupName - The name of the resource group.
 //   - options - DedicatedHostGroupsClientListByResourceGroupOptions contains the optional parameters for the DedicatedHostGroupsClient.NewListByResourceGroupPager
 //     method.
-func (client *DedicatedHostGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *DedicatedHostGroupsClientListByResourceGroupOptions) *runtime.Pager[DedicatedHostGroupsClientListByResourceGroupResponse] {
+func (client *DedicatedHostGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *DedicatedHostGroupsClientListByResourceGroupOptions) (*runtime.Pager[DedicatedHostGroupsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DedicatedHostGroupsClientListByResourceGroupResponse]{
 		More: func(page DedicatedHostGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -296,7 +296,7 @@ func (client *DedicatedHostGroupsClient) listByResourceGroupHandleResponse(resp 
 // Generated from API version 2023-07-01
 //   - options - DedicatedHostGroupsClientListBySubscriptionOptions contains the optional parameters for the DedicatedHostGroupsClient.NewListBySubscriptionPager
 //     method.
-func (client *DedicatedHostGroupsClient) NewListBySubscriptionPager(options *DedicatedHostGroupsClientListBySubscriptionOptions) *runtime.Pager[DedicatedHostGroupsClientListBySubscriptionResponse] {
+func (client *DedicatedHostGroupsClient) NewListBySubscriptionPager(options *DedicatedHostGroupsClientListBySubscriptionOptions) (*runtime.Pager[DedicatedHostGroupsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DedicatedHostGroupsClientListBySubscriptionResponse]{
 		More: func(page DedicatedHostGroupsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -402,8 +402,8 @@ func (client *DedicatedHostGroupsClient) updateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -415,3 +415,4 @@ func (client *DedicatedHostGroupsClient) updateHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

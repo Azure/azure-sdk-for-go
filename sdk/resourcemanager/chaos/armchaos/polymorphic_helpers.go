@@ -116,3 +116,4 @@ func unmarshalSelectorClassificationArray(rawMsg json.RawMessage) ([]SelectorCla
 	}
 	return fArray, nil
 }
+

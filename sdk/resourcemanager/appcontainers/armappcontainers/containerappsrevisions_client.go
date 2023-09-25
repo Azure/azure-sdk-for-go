@@ -23,7 +23,7 @@ import (
 // ContainerAppsRevisionsClient contains the methods for the ContainerAppsRevisions group.
 // Don't use this type directly, use NewContainerAppsRevisionsClient() instead.
 type ContainerAppsRevisionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewContainerAppsRevisionsClient(subscriptionID string, credential azcore.To
 	}
 	client := &ContainerAppsRevisionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -228,7 +228,7 @@ func (client *ContainerAppsRevisionsClient) getRevisionHandleResponse(resp *http
 //   - containerAppName - Name of the Container App for which Revisions are needed.
 //   - options - ContainerAppsRevisionsClientListRevisionsOptions contains the optional parameters for the ContainerAppsRevisionsClient.NewListRevisionsPager
 //     method.
-func (client *ContainerAppsRevisionsClient) NewListRevisionsPager(resourceGroupName string, containerAppName string, options *ContainerAppsRevisionsClientListRevisionsOptions) *runtime.Pager[ContainerAppsRevisionsClientListRevisionsResponse] {
+func (client *ContainerAppsRevisionsClient) NewListRevisionsPager(resourceGroupName string, containerAppName string, options *ContainerAppsRevisionsClientListRevisionsOptions) (*runtime.Pager[ContainerAppsRevisionsClientListRevisionsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ContainerAppsRevisionsClientListRevisionsResponse]{
 		More: func(page ContainerAppsRevisionsClientListRevisionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -349,3 +349,4 @@ func (client *ContainerAppsRevisionsClient) restartRevisionCreateRequest(ctx con
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // GalleryApplicationsClient contains the methods for the GalleryApplications group.
 // Don't use this type directly, use NewGalleryApplicationsClient() instead.
 type GalleryApplicationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGalleryApplicationsClient(subscriptionID string, credential azcore.Token
 	}
 	client := &GalleryApplicationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *GalleryApplicationsClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, galleryApplication); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -268,7 +268,7 @@ func (client *GalleryApplicationsClient) getHandleResponse(resp *http.Response) 
 //   - galleryName - The name of the Shared Application Gallery from which Application Definitions are to be listed.
 //   - options - GalleryApplicationsClientListByGalleryOptions contains the optional parameters for the GalleryApplicationsClient.NewListByGalleryPager
 //     method.
-func (client *GalleryApplicationsClient) NewListByGalleryPager(resourceGroupName string, galleryName string, options *GalleryApplicationsClientListByGalleryOptions) *runtime.Pager[GalleryApplicationsClientListByGalleryResponse] {
+func (client *GalleryApplicationsClient) NewListByGalleryPager(resourceGroupName string, galleryName string, options *GalleryApplicationsClientListByGalleryOptions) (*runtime.Pager[GalleryApplicationsClientListByGalleryResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GalleryApplicationsClientListByGalleryResponse]{
 		More: func(page GalleryApplicationsClientListByGalleryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -405,7 +405,8 @@ func (client *GalleryApplicationsClient) updateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, galleryApplication); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

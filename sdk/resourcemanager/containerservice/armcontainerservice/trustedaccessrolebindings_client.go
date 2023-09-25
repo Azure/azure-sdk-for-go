@@ -23,7 +23,7 @@ import (
 // TrustedAccessRoleBindingsClient contains the methods for the TrustedAccessRoleBindings group.
 // Don't use this type directly, use NewTrustedAccessRoleBindingsClient() instead.
 type TrustedAccessRoleBindingsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTrustedAccessRoleBindingsClient(subscriptionID string, credential azcore
 	}
 	client := &TrustedAccessRoleBindingsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *TrustedAccessRoleBindingsClient) createOrUpdateCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, trustedAccessRoleBinding); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -242,7 +242,7 @@ func (client *TrustedAccessRoleBindingsClient) getHandleResponse(resp *http.Resp
 //   - resourceName - The name of the managed cluster resource.
 //   - options - TrustedAccessRoleBindingsClientListOptions contains the optional parameters for the TrustedAccessRoleBindingsClient.NewListPager
 //     method.
-func (client *TrustedAccessRoleBindingsClient) NewListPager(resourceGroupName string, resourceName string, options *TrustedAccessRoleBindingsClientListOptions) *runtime.Pager[TrustedAccessRoleBindingsClientListResponse] {
+func (client *TrustedAccessRoleBindingsClient) NewListPager(resourceGroupName string, resourceName string, options *TrustedAccessRoleBindingsClientListOptions) (*runtime.Pager[TrustedAccessRoleBindingsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TrustedAccessRoleBindingsClientListResponse]{
 		More: func(page TrustedAccessRoleBindingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -304,3 +304,4 @@ func (client *TrustedAccessRoleBindingsClient) listHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

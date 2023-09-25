@@ -23,7 +23,7 @@ import (
 // AvailableWorkloadProfilesClient contains the methods for the AvailableWorkloadProfiles group.
 // Don't use this type directly, use NewAvailableWorkloadProfilesClient() instead.
 type AvailableWorkloadProfilesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAvailableWorkloadProfilesClient(subscriptionID string, credential azcore
 	}
 	client := &AvailableWorkloadProfilesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewAvailableWorkloadProfilesClient(subscriptionID string, credential azcore
 //   - location - The name of Azure region.
 //   - options - AvailableWorkloadProfilesClientGetOptions contains the optional parameters for the AvailableWorkloadProfilesClient.NewGetPager
 //     method.
-func (client *AvailableWorkloadProfilesClient) NewGetPager(location string, options *AvailableWorkloadProfilesClientGetOptions) *runtime.Pager[AvailableWorkloadProfilesClientGetResponse] {
+func (client *AvailableWorkloadProfilesClient) NewGetPager(location string, options *AvailableWorkloadProfilesClientGetOptions) (*runtime.Pager[AvailableWorkloadProfilesClientGetResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AvailableWorkloadProfilesClientGetResponse]{
 		More: func(page AvailableWorkloadProfilesClientGetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -107,3 +107,4 @@ func (client *AvailableWorkloadProfilesClient) getHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

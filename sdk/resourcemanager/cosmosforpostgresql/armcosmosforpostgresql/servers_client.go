@@ -23,7 +23,7 @@ import (
 // ServersClient contains the methods for the Servers group.
 // Don't use this type directly, use NewServersClient() instead.
 type ServersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServersClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &ServersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -112,7 +112,7 @@ func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersClie
 //   - clusterName - The name of the cluster.
 //   - options - ServersClientListByClusterOptions contains the optional parameters for the ServersClient.NewListByClusterPager
 //     method.
-func (client *ServersClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *ServersClientListByClusterOptions) *runtime.Pager[ServersClientListByClusterResponse] {
+func (client *ServersClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *ServersClientListByClusterOptions) (*runtime.Pager[ServersClientListByClusterResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServersClientListByClusterResponse]{
 		More: func(page ServersClientListByClusterResponse) bool {
 			return false
@@ -165,3 +165,4 @@ func (client *ServersClient) listByClusterHandleResponse(resp *http.Response) (S
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // EmailServicesClient contains the methods for the EmailServices group.
 // Don't use this type directly, use NewEmailServicesClient() instead.
 type EmailServicesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewEmailServicesClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &EmailServicesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *EmailServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -244,7 +244,7 @@ func (client *EmailServicesClient) getHandleResponse(resp *http.Response) (Email
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - EmailServicesClientListByResourceGroupOptions contains the optional parameters for the EmailServicesClient.NewListByResourceGroupPager
 //     method.
-func (client *EmailServicesClient) NewListByResourceGroupPager(resourceGroupName string, options *EmailServicesClientListByResourceGroupOptions) *runtime.Pager[EmailServicesClientListByResourceGroupResponse] {
+func (client *EmailServicesClient) NewListByResourceGroupPager(resourceGroupName string, options *EmailServicesClientListByResourceGroupOptions) (*runtime.Pager[EmailServicesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EmailServicesClientListByResourceGroupResponse]{
 		More: func(page EmailServicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -305,7 +305,7 @@ func (client *EmailServicesClient) listByResourceGroupHandleResponse(resp *http.
 // Generated from API version 2023-04-01-preview
 //   - options - EmailServicesClientListBySubscriptionOptions contains the optional parameters for the EmailServicesClient.NewListBySubscriptionPager
 //     method.
-func (client *EmailServicesClient) NewListBySubscriptionPager(options *EmailServicesClientListBySubscriptionOptions) *runtime.Pager[EmailServicesClientListBySubscriptionResponse] {
+func (client *EmailServicesClient) NewListBySubscriptionPager(options *EmailServicesClientListBySubscriptionOptions) (*runtime.Pager[EmailServicesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EmailServicesClientListBySubscriptionResponse]{
 		More: func(page EmailServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -471,7 +471,8 @@ func (client *EmailServicesClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ManagedEnvironmentsStoragesClient contains the methods for the ManagedEnvironmentsStorages group.
 // Don't use this type directly, use NewManagedEnvironmentsStoragesClient() instead.
 type ManagedEnvironmentsStoragesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedEnvironmentsStoragesClient(subscriptionID string, credential azco
 	}
 	client := &ManagedEnvironmentsStoragesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *ManagedEnvironmentsStoragesClient) createOrUpdateCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, storageEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -295,3 +295,4 @@ func (client *ManagedEnvironmentsStoragesClient) listHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

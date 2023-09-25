@@ -23,7 +23,7 @@ import (
 // ContainerAppsClient contains the methods for the ContainerApps group.
 // Don't use this type directly, use NewContainerAppsClient() instead.
 type ContainerAppsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewContainerAppsClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &ContainerAppsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -112,8 +112,8 @@ func (client *ContainerAppsClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, containerAppEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -314,7 +314,7 @@ func (client *ContainerAppsClient) getAuthTokenHandleResponse(resp *http.Respons
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ContainerAppsClientListByResourceGroupOptions contains the optional parameters for the ContainerAppsClient.NewListByResourceGroupPager
 //     method.
-func (client *ContainerAppsClient) NewListByResourceGroupPager(resourceGroupName string, options *ContainerAppsClientListByResourceGroupOptions) *runtime.Pager[ContainerAppsClientListByResourceGroupResponse] {
+func (client *ContainerAppsClient) NewListByResourceGroupPager(resourceGroupName string, options *ContainerAppsClientListByResourceGroupOptions) (*runtime.Pager[ContainerAppsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ContainerAppsClientListByResourceGroupResponse]{
 		More: func(page ContainerAppsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -378,7 +378,7 @@ func (client *ContainerAppsClient) listByResourceGroupHandleResponse(resp *http.
 // Generated from API version 2023-05-01
 //   - options - ContainerAppsClientListBySubscriptionOptions contains the optional parameters for the ContainerAppsClient.NewListBySubscriptionPager
 //     method.
-func (client *ContainerAppsClient) NewListBySubscriptionPager(options *ContainerAppsClientListBySubscriptionOptions) *runtime.Pager[ContainerAppsClientListBySubscriptionResponse] {
+func (client *ContainerAppsClient) NewListBySubscriptionPager(options *ContainerAppsClientListBySubscriptionOptions) (*runtime.Pager[ContainerAppsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ContainerAppsClientListBySubscriptionResponse]{
 		More: func(page ContainerAppsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -764,7 +764,8 @@ func (client *ContainerAppsClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, containerAppEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

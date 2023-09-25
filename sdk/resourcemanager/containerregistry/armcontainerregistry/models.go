@@ -16,6 +16,17 @@ type ActivationProperties struct {
 	Status *ActivationStatus
 }
 
+// ActiveDirectoryObject - The Active Directory Object that will be used for authenticating the token of a container registry.
+type ActiveDirectoryObject struct {
+	// The user/group/application object ID for Active Directory Object that will be used for authenticating the token of a container
+// registry.
+	ObjectID *string
+
+	// The tenant ID of user/group/application object Active Directory Object that will be used for authenticating the token of
+// a container registry.
+	TenantID *string
+}
+
 // Actor - The agent that initiated the event. For most situations, this could be from the authorization context of the request.
 type Actor struct {
 	// The subject or username associated with the request context that generated the event.
@@ -124,7 +135,7 @@ type ArchiveListResult struct {
 	NextLink *string
 
 	// The list of archives. Since this list may be incomplete, the nextLink field should be used to request the next list of
-	// distributions.
+// distributions.
 	Value []*Archive
 }
 
@@ -143,7 +154,7 @@ type ArchiveProperties struct {
 	PackageSource *ArchivePackageSourceProperties
 
 	// The published version of the archive.
-	PublishedVersion         *string
+	PublishedVersion *string
 	RepositoryEndpointPrefix *string
 
 	// READ-ONLY; The provisioning state of the archive at the time the operation was called.
@@ -189,7 +200,7 @@ type ArchiveVersionListResult struct {
 	NextLink *string
 
 	// The list of export pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of export pipelines.
+// list of export pipelines.
 	Value []*ArchiveVersion
 }
 
@@ -415,7 +426,7 @@ type ConnectedRegistryListResult struct {
 	NextLink *string
 
 	// The list of connected registries. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of connected registries.
+// list of connected registries.
 	Value []*ConnectedRegistry
 }
 
@@ -518,7 +529,7 @@ type CredentialSetListResult struct {
 	NextLink *string
 
 	// The list of credential sets. Since this list may be incomplete, the nextLink field should be used to request the next list
-	// of credential sets.
+// of credential sets.
 	Value []*CredentialSet
 }
 
@@ -555,8 +566,8 @@ type CredentialSetUpdateProperties struct {
 // Credentials - The parameters that describes a set of credentials that will be used when a run is invoked.
 type Credentials struct {
 	// Describes the credential parameters for accessing other custom registries. The key for the dictionary item will be the
-	// registry login server (myregistry.azurecr.io) and the value of the item will be
-	// the registry credentials for accessing the registry.
+// registry login server (myregistry.azurecr.io) and the value of the item will be
+// the registry credentials for accessing the registry.
 	CustomRegistries map[string]*CustomRegistryCredentials
 
 	// Describes the credential parameters for accessing the source registry.
@@ -566,18 +577,49 @@ type Credentials struct {
 // CustomRegistryCredentials - Describes the credentials that will be used to access a custom registry during a run.
 type CustomRegistryCredentials struct {
 	// Indicates the managed identity assigned to the custom credential. If a user-assigned identity this value is the Client
-	// ID. If a system-assigned identity, the value will be system. In the case of a
-	// system-assigned identity, the Client ID will be determined by the runner. This identity may be used to authenticate to
-	// key vault to retrieve credentials or it may be the only source of authentication
-	// used for accessing the registry.
+// ID. If a system-assigned identity, the value will be system. In the case of a
+// system-assigned identity, the Client ID will be determined by the runner. This identity may be used to authenticate to
+// key vault to retrieve credentials or it may be the only source of authentication
+// used for accessing the registry.
 	Identity *string
 
 	// The password for logging into the custom registry. The password is a secret object that allows multiple ways of providing
-	// the value for it.
+// the value for it.
 	Password *SecretObject
 
 	// The username for logging into the custom registry.
 	UserName *SecretObject
+}
+
+// DebianArchivePackageSourceProperties - The properties of the archive package source.
+type DebianArchivePackageSourceProperties struct {
+	// Upstream Debian distribution Name.
+	DistributionName *string
+
+	// The type of package source for a archive.
+	Type *PackageSourceType
+
+	// The external repository url.
+	URL *string
+}
+
+// DebianArchiveProperties - The properties of the Debian package Archive.
+type DebianArchiveProperties struct {
+	// Debian distribution Name.
+	DistributionName *string
+
+	// The package source of the archive.
+	PackageSource *ArchivePackageSourceProperties
+
+	// The published version of the archive.
+	PublishedVersion *string
+	RepositoryEndpointPrefix *string
+
+	// READ-ONLY; The provisioning state of the archive at the time the operation was called.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY
+	RepositoryEndpoint *string
 }
 
 // DockerBuildRequest - The parameters for a docker quick build.
@@ -619,7 +661,7 @@ type DockerBuildRequest struct {
 	NoCache *bool
 
 	// The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository. If it is relative URL,
-	// the relative path should be obtained from calling listBuildSourceUploadUrl API.
+// the relative path should be obtained from calling listBuildSourceUploadUrl API.
 	SourceLocation *string
 
 	// The name of the target build stage for the docker build.
@@ -632,10 +674,10 @@ type DockerBuildRequest struct {
 // GetRunRequest implements the RunRequestClassification interface for type DockerBuildRequest.
 func (d *DockerBuildRequest) GetRunRequest() *RunRequest {
 	return &RunRequest{
-		AgentPoolName:    d.AgentPoolName,
+		AgentPoolName: d.AgentPoolName,
 		IsArchiveEnabled: d.IsArchiveEnabled,
-		LogTemplate:      d.LogTemplate,
-		Type:             d.Type,
+		LogTemplate: d.LogTemplate,
+		Type: d.Type,
 	}
 }
 
@@ -676,9 +718,9 @@ type DockerBuildStep struct {
 func (d *DockerBuildStep) GetTaskStepProperties() *TaskStepProperties {
 	return &TaskStepProperties{
 		BaseImageDependencies: d.BaseImageDependencies,
-		ContextAccessToken:    d.ContextAccessToken,
-		ContextPath:           d.ContextPath,
-		Type:                  d.Type,
+		ContextAccessToken: d.ContextAccessToken,
+		ContextPath: d.ContextPath,
+		Type: d.Type,
 	}
 }
 
@@ -716,8 +758,8 @@ type DockerBuildStepUpdateParameters struct {
 func (d *DockerBuildStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters {
 	return &TaskStepUpdateParameters{
 		ContextAccessToken: d.ContextAccessToken,
-		ContextPath:        d.ContextPath,
-		Type:               d.Type,
+		ContextPath: d.ContextPath,
+		Type: d.Type,
 	}
 }
 
@@ -751,7 +793,7 @@ type EncodedTaskRunRequest struct {
 	LogTemplate *string
 
 	// The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository. If it is relative URL,
-	// the relative path should be obtained from calling listBuildSourceUploadUrl API.
+// the relative path should be obtained from calling listBuildSourceUploadUrl API.
 	SourceLocation *string
 
 	// Run timeout in seconds.
@@ -764,10 +806,10 @@ type EncodedTaskRunRequest struct {
 // GetRunRequest implements the RunRequestClassification interface for type EncodedTaskRunRequest.
 func (e *EncodedTaskRunRequest) GetRunRequest() *RunRequest {
 	return &RunRequest{
-		AgentPoolName:    e.AgentPoolName,
+		AgentPoolName: e.AgentPoolName,
 		IsArchiveEnabled: e.IsArchiveEnabled,
-		LogTemplate:      e.LogTemplate,
-		Type:             e.Type,
+		LogTemplate: e.LogTemplate,
+		Type: e.Type,
 	}
 }
 
@@ -799,9 +841,9 @@ type EncodedTaskStep struct {
 func (e *EncodedTaskStep) GetTaskStepProperties() *TaskStepProperties {
 	return &TaskStepProperties{
 		BaseImageDependencies: e.BaseImageDependencies,
-		ContextAccessToken:    e.ContextAccessToken,
-		ContextPath:           e.ContextPath,
-		Type:                  e.Type,
+		ContextAccessToken: e.ContextAccessToken,
+		ContextPath: e.ContextPath,
+		Type: e.Type,
 	}
 }
 
@@ -830,8 +872,8 @@ type EncodedTaskStepUpdateParameters struct {
 func (e *EncodedTaskStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters {
 	return &TaskStepUpdateParameters{
 		ContextAccessToken: e.ContextAccessToken,
-		ContextPath:        e.ContextPath,
-		Type:               e.Type,
+		ContextPath: e.ContextPath,
+		Type: e.Type,
 	}
 }
 
@@ -841,6 +883,61 @@ type EncryptionProperty struct {
 
 	// Indicates whether or not the encryption is enabled for container registry.
 	Status *EncryptionStatus
+}
+
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
+// ErrorResponseBody - An error response from the Azure Container Registry service.
+type ErrorResponseBody struct {
+	// REQUIRED; error code.
+	Code *string
+
+	// REQUIRED; error message.
+	Message *string
+
+	// an array of additional nested error response info objects, as described by this contract.
+	Details []*InnerErrorDescription
+
+	// target of the particular error.
+	Target *string
+}
+
+// ErrorResponseForContainerRegistry - An error response from the Azure Container Registry service.
+type ErrorResponseForContainerRegistry struct {
+	// Azure container registry build API error body.
+	Error *ErrorResponseBody
 }
 
 // Event - The event for a webhook.
@@ -870,7 +967,7 @@ type EventContent struct {
 	Request *Request
 
 	// The registry node that generated the event. Put differently, while the actor initiates the event, the source generates
-	// it.
+// it.
 	Source *Source
 
 	// The target of the event.
@@ -961,7 +1058,7 @@ type ExportPipelineListResult struct {
 	NextLink *string
 
 	// The list of export pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of export pipelines.
+// list of export pipelines.
 	Value []*ExportPipeline
 }
 
@@ -986,8 +1083,8 @@ type ExportPipelineTargetProperties struct {
 	Type *string
 
 	// The target uri of the export pipeline. When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
-	// When 'AzureStorageBlobContainer':
-	// "https://accountName.blob.core.windows.net/containerName"
+// When 'AzureStorageBlobContainer':
+// "https://accountName.blob.core.windows.net/containerName"
 	URI *string
 }
 
@@ -1024,7 +1121,7 @@ type FileTaskRunRequest struct {
 	LogTemplate *string
 
 	// The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository. If it is relative URL,
-	// the relative path should be obtained from calling listBuildSourceUploadUrl API.
+// the relative path should be obtained from calling listBuildSourceUploadUrl API.
 	SourceLocation *string
 
 	// Run timeout in seconds.
@@ -1040,10 +1137,10 @@ type FileTaskRunRequest struct {
 // GetRunRequest implements the RunRequestClassification interface for type FileTaskRunRequest.
 func (f *FileTaskRunRequest) GetRunRequest() *RunRequest {
 	return &RunRequest{
-		AgentPoolName:    f.AgentPoolName,
+		AgentPoolName: f.AgentPoolName,
 		IsArchiveEnabled: f.IsArchiveEnabled,
-		LogTemplate:      f.LogTemplate,
-		Type:             f.Type,
+		LogTemplate: f.LogTemplate,
+		Type: f.Type,
 	}
 }
 
@@ -1075,9 +1172,9 @@ type FileTaskStep struct {
 func (f *FileTaskStep) GetTaskStepProperties() *TaskStepProperties {
 	return &TaskStepProperties{
 		BaseImageDependencies: f.BaseImageDependencies,
-		ContextAccessToken:    f.ContextAccessToken,
-		ContextPath:           f.ContextPath,
-		Type:                  f.Type,
+		ContextAccessToken: f.ContextAccessToken,
+		ContextPath: f.ContextPath,
+		Type: f.Type,
 	}
 }
 
@@ -1106,8 +1203,8 @@ type FileTaskStepUpdateParameters struct {
 func (f *FileTaskStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters {
 	return &TaskStepUpdateParameters{
 		ContextAccessToken: f.ContextAccessToken,
-		ContextPath:        f.ContextPath,
-		Type:               f.Type,
+		ContextPath: f.ContextPath,
+		Type: f.Type,
 	}
 }
 
@@ -1148,8 +1245,8 @@ type IdentityProperties struct {
 	Type *ResourceIdentityType
 
 	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
-	// ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/ providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+// ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/ providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserIdentityProperties
 
 	// READ-ONLY; The principal ID of resource identity.
@@ -1191,11 +1288,11 @@ type ImportImageParameters struct {
 	Source *ImportSource
 
 	// When Force, any existing target tags will be overwritten. When NoForce, any existing target tags will fail the operation
-	// before any copying begins.
+// before any copying begins.
 	Mode *ImportMode
 
 	// List of strings of the form repo[:tag]. When tag is omitted the source will be used (or 'latest' if source tag is also
-	// omitted).
+// omitted).
 	TargetTags []*string
 
 	// List of strings of repository names to do a manifest only copy. No tag will be created.
@@ -1232,7 +1329,7 @@ type ImportPipelineListResult struct {
 	NextLink *string
 
 	// The list of import pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of import pipelines.
+// list of import pipelines.
 	Value []*ImportPipeline
 }
 
@@ -1260,15 +1357,15 @@ type ImportPipelineSourceProperties struct {
 	Type *PipelineSourceType
 
 	// The source uri of the import pipeline. When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
-	// When 'AzureStorageBlobContainer':
-	// "https://accountName.blob.core.windows.net/containerName"
+// When 'AzureStorageBlobContainer':
+// "https://accountName.blob.core.windows.net/containerName"
 	URI *string
 }
 
 type ImportSource struct {
 	// REQUIRED; Repository name of the source image. Specify an image by repository ('hello-world'). This will use the 'latest'
-	// tag. Specify an image by tag ('hello-world:latest'). Specify an image by sha256-based
-	// manifest digest ('hello-world@sha256:abc123').
+// tag. Specify an image by tag ('hello-world:latest'). Specify an image by sha256-based
+// manifest digest ('hello-world@sha256:abc123').
 	SourceImage *string
 
 	// Credentials used when importing from a registry uri.
@@ -1287,6 +1384,18 @@ type ImportSourceCredentials struct {
 
 	// The username to authenticate with the source registry.
 	Username *string
+}
+
+// InnerErrorDescription - inner error.
+type InnerErrorDescription struct {
+	// REQUIRED; error code.
+	Code *string
+
+	// REQUIRED; error message.
+	Message *string
+
+	// target of the particular error.
+	Target *string
 }
 
 type KeyVaultProperties struct {
@@ -1372,7 +1481,7 @@ type OperationListResult struct {
 	NextLink *string
 
 	// The list of container registry operations. Since this list may be incomplete, the nextLink field should be used to request
-	// the next list of operations.
+// the next list of operations.
 	Value []*OperationDefinition
 }
 
@@ -1444,6 +1553,15 @@ type OverrideTaskStepProperties struct {
 	Values []*SetValue
 }
 
+// PackageType - The properties of a package type.
+type PackageType struct {
+	// The name of the package type.
+	Name *string
+
+	// READ-ONLY; The endpoint of the package type.
+	Endpoint *string
+}
+
 // ParentProperties - The properties of the connected registry parent.
 type ParentProperties struct {
 	// REQUIRED; The sync properties of the connected registry with its parent.
@@ -1477,7 +1595,7 @@ type PipelineRunListResult struct {
 	NextLink *string
 
 	// The list of pipeline runs. Since this list may be incomplete, the nextLink field should be used to request the next list
-	// of pipeline runs.
+// of pipeline runs.
 	Value []*PipelineRun
 }
 
@@ -1499,8 +1617,8 @@ type PipelineRunProperties struct {
 // PipelineRunRequest - The request properties provided for a pipeline run.
 type PipelineRunRequest struct {
 	// List of source artifacts to be transferred by the pipeline. Specify an image by repository ('hello-world'). This will use
-	// the 'latest' tag. Specify an image by tag ('hello-world:latest'). Specify an
-	// image by sha256-based manifest digest ('hello-world@sha256:abc123').
+// the 'latest' tag. Specify an image by tag ('hello-world:latest'). Specify an
+// image by sha256-based manifest digest ('hello-world@sha256:abc123').
 	Artifacts []*string
 
 	// The digest of the tar used to transfer the artifacts.
@@ -1660,7 +1778,7 @@ type PrivateEndpointConnectionListResult struct {
 	NextLink *string
 
 	// The list of private endpoint connections. Since this list may be incomplete, the nextLink field should be used to request
-	// the next list of private endpoint connections.
+// the next list of private endpoint connections.
 	Value []*PrivateEndpointConnection
 }
 
@@ -1697,7 +1815,7 @@ type PrivateLinkResourceListResult struct {
 	NextLink *string
 
 	// The list of private link resources. Since this list may be incomplete, the nextLink field should be used to request the
-	// next list of private link resources.
+// next list of private link resources.
 	Value []*PrivateLinkResource
 }
 
@@ -1728,6 +1846,22 @@ type PrivateLinkServiceConnectionState struct {
 type ProgressProperties struct {
 	// The percentage complete of the copy operation.
 	Percentage *string
+}
+
+// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
+// and tags.
+type ProxyResource struct {
+	// READ-ONLY; The resource ID.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
 }
 
 // QuarantinePolicy - The quarantine policy for a container registry.
@@ -1787,7 +1921,7 @@ type RegistryListResult struct {
 	NextLink *string
 
 	// The list of container registries. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of container registries.
+// list of container registries.
 	Value []*Registry
 }
 
@@ -1797,7 +1931,7 @@ type RegistryNameCheckRequest struct {
 	Name *string
 
 	// CONSTANT; The resource type of the container registry. This field must be set to 'Microsoft.ContainerRegistry/registries'.
-	// Field has constant value "Microsoft.ContainerRegistry/registries", any specified value is ignored.
+// Field has constant value "Microsoft.ContainerRegistry/registries", any specified value is ignored.
 	Type *string
 }
 
@@ -1963,15 +2097,15 @@ type ReplicationListResult struct {
 	NextLink *string
 
 	// The list of replications. Since this list may be incomplete, the nextLink field should be used to request the next list
-	// of replications.
+// of replications.
 	Value []*Replication
 }
 
 // ReplicationProperties - The properties of a replication.
 type ReplicationProperties struct {
 	// Specifies whether the replication's regional endpoint is enabled. Requests will not be routed to a replication whose regional
-	// endpoint is disabled, however its data will continue to be synced with
-	// other replications.
+// endpoint is disabled, however its data will continue to be synced with
+// other replications.
 	RegionEndpointEnabled *bool
 
 	// Whether or not zone redundancy is enabled for this container registry replication
@@ -1995,15 +2129,15 @@ type ReplicationUpdateParameters struct {
 
 type ReplicationUpdateParametersProperties struct {
 	// Specifies whether the replication's regional endpoint is enabled. Requests will not be routed to a replication whose regional
-	// endpoint is disabled, however its data will continue to be synced with
-	// other replications.
+// endpoint is disabled, however its data will continue to be synced with
+// other replications.
 	RegionEndpointEnabled *bool
 }
 
 // Request - The request that generated the event.
 type Request struct {
 	// The IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr from the
-	// standard http request.
+// standard http request.
 	Addr *string
 
 	// The externally accessible hostname of the registry instance, as specified by the http host header on incoming requests.
@@ -2017,6 +2151,27 @@ type Request struct {
 
 	// The user agent header of the request.
 	Useragent *string
+}
+
+// Resource - An Azure resource.
+type Resource struct {
+	// REQUIRED; The location of the resource. This cannot be changed after the resource is created.
+	Location *string
+
+	// The tags of the resource.
+	Tags map[string]*string
+
+	// READ-ONLY; The resource ID.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
 }
 
 // RetentionPolicy - The retention policy for a container registry.
@@ -2064,7 +2219,7 @@ type RunFilter struct {
 	IsArchiveEnabled *bool
 
 	// The list of comma-separated image manifests that were generated from the run. This is applicable if the run is of build
-	// type.
+// type.
 	OutputImageManifests *string
 
 	// The unique identifier for the run.
@@ -2224,7 +2379,7 @@ type ScopeMapListResult struct {
 	NextLink *string
 
 	// The list of scope maps. Since this list may be incomplete, the nextLink field should be used to request the next list of
-	// scope maps.
+// scope maps.
 	Value []*ScopeMap
 }
 
@@ -2267,7 +2422,7 @@ type SecretObject struct {
 	Type *SecretObjectType
 
 	// The value of the secret. The format of this value will be determined based on the type of the secret object. If the type
-	// is Opaque, the value will be used as is without any modification.
+// is Opaque, the value will be used as is without any modification.
 	Value *string
 }
 
@@ -2299,7 +2454,7 @@ type SoftDeletePolicy struct {
 // it.
 type Source struct {
 	// The IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved by os.Hostname()
-	// along with the running port.
+// along with the running port.
 	Addr *string
 
 	// The running instance of an application. Changes after each restart.
@@ -2324,8 +2479,8 @@ type SourceProperties struct {
 // SourceRegistryCredentials - Describes the credential parameters for accessing the source registry.
 type SourceRegistryCredentials struct {
 	// The authentication mode which determines the source registry login scope. The credentials for the source registry will
-	// be generated using the given scope. These credentials will be used to login to
-	// the source registry during the run.
+// be generated using the given scope. These credentials will be used to login to
+// the source registry during the run.
 	LoginMode *SourceRegistryLoginMode
 }
 
@@ -2437,10 +2592,16 @@ type StatusDetailProperties struct {
 	Type *string
 }
 
+// StorageAccountProperties - The properties of a storage account for a container registry. Only applicable to Classic SKU.
+type StorageAccountProperties struct {
+	// REQUIRED; The resource ID of the storage account.
+	ID *string
+}
+
 // SyncProperties - The sync properties of the connected registry with its parent.
 type SyncProperties struct {
 	// REQUIRED; The period of time for which a message is available to sync before it is expired. Specify the duration using
-	// the format P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
+// the format P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
 	MessageTTL *string
 
 	// REQUIRED; The resource ID of the ACR token used to authenticate the connected registry to its parent during sync.
@@ -2450,7 +2611,7 @@ type SyncProperties struct {
 	Schedule *string
 
 	// The time window during which sync is enabled for each schedule occurrence. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S
-	// as per ISO8601.
+// as per ISO8601.
 	SyncWindow *string
 
 	// READ-ONLY; The gateway endpoint used by the connected registry to communicate with its parent.
@@ -2463,14 +2624,14 @@ type SyncProperties struct {
 // SyncUpdateProperties - The parameters for updating the sync properties of the connected registry with its parent.
 type SyncUpdateProperties struct {
 	// The period of time for which a message is available to sync before it is expired. Specify the duration using the format
-	// P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
+// P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
 	MessageTTL *string
 
 	// The cron expression indicating the schedule that the connected registry will sync with its parent.
 	Schedule *string
 
 	// The time window during which sync is enabled for each schedule occurrence. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S
-	// as per ISO8601.
+// as per ISO8601.
 	SyncWindow *string
 }
 
@@ -2731,10 +2892,10 @@ type TaskRunRequest struct {
 // GetRunRequest implements the RunRequestClassification interface for type TaskRunRequest.
 func (t *TaskRunRequest) GetRunRequest() *RunRequest {
 	return &RunRequest{
-		AgentPoolName:    t.AgentPoolName,
+		AgentPoolName: t.AgentPoolName,
 		IsArchiveEnabled: t.IsArchiveEnabled,
-		LogTemplate:      t.LogTemplate,
-		Type:             t.Type,
+		LogTemplate: t.LogTemplate,
+		Type: t.Type,
 	}
 }
 
@@ -2855,7 +3016,7 @@ type TokenCertificate struct {
 
 	// The expiry datetime of the certificate.
 	Expiry *time.Time
-	Name   *TokenCertificateName
+	Name *TokenCertificateName
 
 	// The thumbprint of the certificate.
 	Thumbprint *string
@@ -2864,7 +3025,7 @@ type TokenCertificate struct {
 // TokenCredentialsProperties - The properties of the credentials that can be used for authenticating the token.
 type TokenCredentialsProperties struct {
 	Certificates []*TokenCertificate
-	Passwords    []*TokenPassword
+	Passwords []*TokenPassword
 }
 
 // TokenListResult - The result of a request to list tokens for a container registry.
@@ -3010,7 +3171,7 @@ type WebhookListResult struct {
 	NextLink *string
 
 	// The list of webhooks. Since this list may be incomplete, the nextLink field should be used to request the next list of
-	// webhooks.
+// webhooks.
 	Value []*Webhook
 }
 
@@ -3020,8 +3181,8 @@ type WebhookProperties struct {
 	Actions []*WebhookAction
 
 	// The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository
-	// 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
-	// 'foo:latest'. Empty means all events.
+// 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
+// 'foo:latest'. Empty means all events.
 	Scope *string
 
 	// The status of the webhook at the time the operation was called.
@@ -3043,8 +3204,8 @@ type WebhookPropertiesCreateParameters struct {
 	CustomHeaders map[string]*string
 
 	// The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository
-	// 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
-	// 'foo:latest'. Empty means all events.
+// 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
+// 'foo:latest'. Empty means all events.
 	Scope *string
 
 	// The status of the webhook at the time the operation was called.
@@ -3060,8 +3221,8 @@ type WebhookPropertiesUpdateParameters struct {
 	CustomHeaders map[string]*string
 
 	// The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository
-	// 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
-	// 'foo:latest'. Empty means all events.
+// 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
+// 'foo:latest'. Empty means all events.
 	Scope *string
 
 	// The service URI for the webhook to post notifications.
@@ -3079,3 +3240,4 @@ type WebhookUpdateParameters struct {
 	// The tags for the webhook.
 	Tags map[string]*string
 }
+

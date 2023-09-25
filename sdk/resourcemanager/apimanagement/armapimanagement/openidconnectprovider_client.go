@@ -24,7 +24,7 @@ import (
 // OpenIDConnectProviderClient contains the methods for the OpenIDConnectProvider group.
 // Don't use this type directly, use NewOpenIDConnectProviderClient() instead.
 type OpenIDConnectProviderClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewOpenIDConnectProviderClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &OpenIDConnectProviderClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,8 +103,8 @@ func (client *OpenIDConnectProviderClient) createOrUpdateCreateRequest(ctx conte
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -321,7 +321,7 @@ func (client *OpenIDConnectProviderClient) getEntityTagHandleResponse(resp *http
 //   - serviceName - The name of the API Management service.
 //   - options - OpenIDConnectProviderClientListByServiceOptions contains the optional parameters for the OpenIDConnectProviderClient.NewListByServicePager
 //     method.
-func (client *OpenIDConnectProviderClient) NewListByServicePager(resourceGroupName string, serviceName string, options *OpenIDConnectProviderClientListByServiceOptions) *runtime.Pager[OpenIDConnectProviderClientListByServiceResponse] {
+func (client *OpenIDConnectProviderClient) NewListByServicePager(resourceGroupName string, serviceName string, options *OpenIDConnectProviderClientListByServiceOptions) (*runtime.Pager[OpenIDConnectProviderClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[OpenIDConnectProviderClientListByServiceResponse]{
 		More: func(page OpenIDConnectProviderClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -521,8 +521,8 @@ func (client *OpenIDConnectProviderClient) updateCreateRequest(ctx context.Conte
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -537,3 +537,4 @@ func (client *OpenIDConnectProviderClient) updateHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

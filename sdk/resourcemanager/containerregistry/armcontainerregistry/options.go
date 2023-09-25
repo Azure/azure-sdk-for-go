@@ -154,8 +154,8 @@ type ConnectedRegistriesClientGetOptions struct {
 // ConnectedRegistriesClientListOptions contains the optional parameters for the ConnectedRegistriesClient.NewListPager method.
 type ConnectedRegistriesClientListOptions struct {
 	// An OData filter expression that describes a subset of connectedRegistries to return. The parameters that can be filtered
-	// are parent.id (the resource id of the connectedRegistry parent), mode, and
-	// connectionState. The supported operator is eq.
+// are parent.id (the resource id of the connectedRegistry parent), mode, and
+// connectionState. The supported operator is eq.
 	Filter *string
 }
 
@@ -430,7 +430,7 @@ type RunsClientGetOptions struct {
 // RunsClientListOptions contains the optional parameters for the RunsClient.NewListPager method.
 type RunsClientListOptions struct {
 	// The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed string function is 'contains'.
-	// All logical operators except 'Not', 'Has', 'All' are allowed.
+// All logical operators except 'Not', 'Has', 'All' are allowed.
 	Filter *string
 
 	// $top is supported for get list of runs, which limits the maximum number of runs to return.
@@ -601,3 +601,4 @@ type WebhooksClientListOptions struct {
 type WebhooksClientPingOptions struct {
 	// placeholder for future optional parameters
 }
+

@@ -23,7 +23,7 @@ import (
 // CapacityReservationsClient contains the methods for the CapacityReservations group.
 // Don't use this type directly, use NewCapacityReservationsClient() instead.
 type CapacityReservationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewCapacityReservationsClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &CapacityReservationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -120,8 +120,8 @@ func (client *CapacityReservationsClient) createOrUpdateCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -279,7 +279,7 @@ func (client *CapacityReservationsClient) getHandleResponse(resp *http.Response)
 //   - capacityReservationGroupName - The name of the capacity reservation group.
 //   - options - CapacityReservationsClientListByCapacityReservationGroupOptions contains the optional parameters for the CapacityReservationsClient.NewListByCapacityReservationGroupPager
 //     method.
-func (client *CapacityReservationsClient) NewListByCapacityReservationGroupPager(resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationsClientListByCapacityReservationGroupOptions) *runtime.Pager[CapacityReservationsClientListByCapacityReservationGroupResponse] {
+func (client *CapacityReservationsClient) NewListByCapacityReservationGroupPager(resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationsClientListByCapacityReservationGroupOptions) (*runtime.Pager[CapacityReservationsClientListByCapacityReservationGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CapacityReservationsClientListByCapacityReservationGroupResponse]{
 		More: func(page CapacityReservationsClientListByCapacityReservationGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -414,7 +414,8 @@ func (client *CapacityReservationsClient) updateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

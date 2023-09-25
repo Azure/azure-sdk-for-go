@@ -23,7 +23,7 @@ import (
 // CertificatesClient contains the methods for the Certificates group.
 // Don't use this type directly, use NewCertificatesClient() instead.
 type CertificatesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &CertificatesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.CertificateEnvelope != nil {
 		if err := runtime.MarshalAsJSON(req, *options.CertificateEnvelope); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -241,7 +241,7 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response) (Certif
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.NewListPager method.
-func (client *CertificatesClient) NewListPager(resourceGroupName string, environmentName string, options *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse] {
+func (client *CertificatesClient) NewListPager(resourceGroupName string, environmentName string, options *CertificatesClientListOptions) (*runtime.Pager[CertificatesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CertificatesClientListResponse]{
 		More: func(page CertificatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -359,8 +359,8 @@ func (client *CertificatesClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, certificateEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -372,3 +372,4 @@ func (client *CertificatesClient) updateHandleResponse(resp *http.Response) (Cer
 	}
 	return result, nil
 }
+

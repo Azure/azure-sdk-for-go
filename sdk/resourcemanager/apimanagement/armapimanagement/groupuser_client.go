@@ -24,7 +24,7 @@ import (
 // GroupUserClient contains the methods for the GroupUser group.
 // Don't use this type directly, use NewGroupUserClient() instead.
 type GroupUserClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGroupUserClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &GroupUserClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -241,7 +241,7 @@ func (client *GroupUserClient) deleteCreateRequest(ctx context.Context, resource
 //   - serviceName - The name of the API Management service.
 //   - groupID - Group identifier. Must be unique in the current API Management service instance.
 //   - options - GroupUserClientListOptions contains the optional parameters for the GroupUserClient.NewListPager method.
-func (client *GroupUserClient) NewListPager(resourceGroupName string, serviceName string, groupID string, options *GroupUserClientListOptions) *runtime.Pager[GroupUserClientListResponse] {
+func (client *GroupUserClient) NewListPager(resourceGroupName string, serviceName string, groupID string, options *GroupUserClientListOptions) (*runtime.Pager[GroupUserClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GroupUserClientListResponse]{
 		More: func(page GroupUserClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -316,3 +316,4 @@ func (client *GroupUserClient) listHandleResponse(resp *http.Response) (GroupUse
 	}
 	return result, nil
 }
+

@@ -24,7 +24,7 @@ import (
 // GroupClient contains the methods for the Group group.
 // Don't use this type directly, use NewGroupClient() instead.
 type GroupClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGroupClient(subscriptionID string, credential azcore.TokenCredential, op
 	}
 	client := &GroupClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -102,8 +102,8 @@ func (client *GroupClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -316,7 +316,7 @@ func (client *GroupClient) getEntityTagHandleResponse(resp *http.Response) (Grou
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - GroupClientListByServiceOptions contains the optional parameters for the GroupClient.NewListByServicePager method.
-func (client *GroupClient) NewListByServicePager(resourceGroupName string, serviceName string, options *GroupClientListByServiceOptions) *runtime.Pager[GroupClientListByServiceResponse] {
+func (client *GroupClient) NewListByServicePager(resourceGroupName string, serviceName string, options *GroupClientListByServiceOptions) (*runtime.Pager[GroupClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GroupClientListByServiceResponse]{
 		More: func(page GroupClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -446,8 +446,8 @@ func (client *GroupClient) updateCreateRequest(ctx context.Context, resourceGrou
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -462,3 +462,4 @@ func (client *GroupClient) updateHandleResponse(resp *http.Response) (GroupClien
 	}
 	return result, nil
 }
+

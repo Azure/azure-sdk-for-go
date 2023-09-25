@@ -578,3 +578,4 @@ type OperationsClientListResponse struct {
 	// Available operations of the service
 	AvailableOperations
 }
+

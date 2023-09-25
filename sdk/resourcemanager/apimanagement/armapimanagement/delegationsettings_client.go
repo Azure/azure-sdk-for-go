@@ -23,7 +23,7 @@ import (
 // DelegationSettingsClient contains the methods for the DelegationSettings group.
 // Don't use this type directly, use NewDelegationSettingsClient() instead.
 type DelegationSettingsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDelegationSettingsClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &DelegationSettingsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -97,8 +97,8 @@ func (client *DelegationSettingsClient) createOrUpdateCreateRequest(ctx context.
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -349,7 +349,8 @@ func (client *DelegationSettingsClient) updateCreateRequest(ctx context.Context,
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

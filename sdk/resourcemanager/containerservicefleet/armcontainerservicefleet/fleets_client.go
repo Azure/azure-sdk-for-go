@@ -23,7 +23,7 @@ import (
 // FleetsClient contains the methods for the Fleets group.
 // Don't use this type directly, use NewFleetsClient() instead.
 type FleetsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewFleetsClient(subscriptionID string, credential azcore.TokenCredential, o
 	}
 	client := &FleetsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *FleetsClient) createOrUpdateCreateRequest(ctx context.Context, res
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -261,7 +261,7 @@ func (client *FleetsClient) getHandleResponse(resp *http.Response) (FleetsClient
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - FleetsClientListByResourceGroupOptions contains the optional parameters for the FleetsClient.NewListByResourceGroupPager
 //     method.
-func (client *FleetsClient) NewListByResourceGroupPager(resourceGroupName string, options *FleetsClientListByResourceGroupOptions) *runtime.Pager[FleetsClientListByResourceGroupResponse] {
+func (client *FleetsClient) NewListByResourceGroupPager(resourceGroupName string, options *FleetsClientListByResourceGroupOptions) (*runtime.Pager[FleetsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[FleetsClientListByResourceGroupResponse]{
 		More: func(page FleetsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -325,7 +325,7 @@ func (client *FleetsClient) listByResourceGroupHandleResponse(resp *http.Respons
 // Generated from API version 2023-06-15-preview
 //   - options - FleetsClientListBySubscriptionOptions contains the optional parameters for the FleetsClient.NewListBySubscriptionPager
 //     method.
-func (client *FleetsClient) NewListBySubscriptionPager(options *FleetsClientListBySubscriptionOptions) *runtime.Pager[FleetsClientListBySubscriptionResponse] {
+func (client *FleetsClient) NewListBySubscriptionPager(options *FleetsClientListBySubscriptionOptions) (*runtime.Pager[FleetsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[FleetsClientListBySubscriptionResponse]{
 		More: func(page FleetsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -511,7 +511,8 @@ func (client *FleetsClient) updateCreateRequest(ctx context.Context, resourceGro
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

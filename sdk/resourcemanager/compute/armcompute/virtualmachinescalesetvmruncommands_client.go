@@ -23,7 +23,7 @@ import (
 // VirtualMachineScaleSetVMRunCommandsClient contains the methods for the VirtualMachineScaleSetVMRunCommands group.
 // Don't use this type directly, use NewVirtualMachineScaleSetVMRunCommandsClient() instead.
 type VirtualMachineScaleSetVMRunCommandsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualMachineScaleSetVMRunCommandsClient(subscriptionID string, credent
 	}
 	client := &VirtualMachineScaleSetVMRunCommandsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) createOrUpdateCreateReq
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	if err := runtime.MarshalAsJSON(req, runCommand); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -286,7 +286,7 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) getHandleResponse(resp 
 //   - instanceID - The instance ID of the virtual machine.
 //   - options - VirtualMachineScaleSetVMRunCommandsClientListOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.NewListPager
 //     method.
-func (client *VirtualMachineScaleSetVMRunCommandsClient) NewListPager(resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMRunCommandsClientListOptions) *runtime.Pager[VirtualMachineScaleSetVMRunCommandsClientListResponse] {
+func (client *VirtualMachineScaleSetVMRunCommandsClient) NewListPager(resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMRunCommandsClientListOptions) (*runtime.Pager[VirtualMachineScaleSetVMRunCommandsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualMachineScaleSetVMRunCommandsClientListResponse]{
 		More: func(page VirtualMachineScaleSetVMRunCommandsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -433,7 +433,8 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) updateCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	if err := runtime.MarshalAsJSON(req, runCommand); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ConnectedEnvironmentsClient contains the methods for the ConnectedEnvironments group.
 // Don't use this type directly, use NewConnectedEnvironmentsClient() instead.
 type ConnectedEnvironmentsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewConnectedEnvironmentsClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &ConnectedEnvironmentsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -94,8 +94,8 @@ func (client *ConnectedEnvironmentsClient) checkNameAvailabilityCreateRequest(ct
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkNameAvailabilityRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -177,8 +177,8 @@ func (client *ConnectedEnvironmentsClient) createOrUpdateCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, environmentEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -319,7 +319,7 @@ func (client *ConnectedEnvironmentsClient) getHandleResponse(resp *http.Response
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ConnectedEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the ConnectedEnvironmentsClient.NewListByResourceGroupPager
 //     method.
-func (client *ConnectedEnvironmentsClient) NewListByResourceGroupPager(resourceGroupName string, options *ConnectedEnvironmentsClientListByResourceGroupOptions) *runtime.Pager[ConnectedEnvironmentsClientListByResourceGroupResponse] {
+func (client *ConnectedEnvironmentsClient) NewListByResourceGroupPager(resourceGroupName string, options *ConnectedEnvironmentsClientListByResourceGroupOptions) (*runtime.Pager[ConnectedEnvironmentsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConnectedEnvironmentsClientListByResourceGroupResponse]{
 		More: func(page ConnectedEnvironmentsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -383,7 +383,7 @@ func (client *ConnectedEnvironmentsClient) listByResourceGroupHandleResponse(res
 // Generated from API version 2023-05-01
 //   - options - ConnectedEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the ConnectedEnvironmentsClient.NewListBySubscriptionPager
 //     method.
-func (client *ConnectedEnvironmentsClient) NewListBySubscriptionPager(options *ConnectedEnvironmentsClientListBySubscriptionOptions) *runtime.Pager[ConnectedEnvironmentsClientListBySubscriptionResponse] {
+func (client *ConnectedEnvironmentsClient) NewListBySubscriptionPager(options *ConnectedEnvironmentsClientListBySubscriptionOptions) (*runtime.Pager[ConnectedEnvironmentsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConnectedEnvironmentsClientListBySubscriptionResponse]{
 		More: func(page ConnectedEnvironmentsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -498,3 +498,4 @@ func (client *ConnectedEnvironmentsClient) updateHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

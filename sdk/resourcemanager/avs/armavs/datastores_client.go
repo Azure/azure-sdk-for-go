@@ -23,7 +23,7 @@ import (
 // DatastoresClient contains the methods for the Datastores group.
 // Don't use this type directly, use NewDatastoresClient() instead.
 type DatastoresClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDatastoresClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &DatastoresClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -120,8 +120,8 @@ func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, datastore); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -279,7 +279,7 @@ func (client *DatastoresClient) getHandleResponse(resp *http.Response) (Datastor
 //   - privateCloudName - Name of the private cloud
 //   - clusterName - Name of the cluster in the private cloud
 //   - options - DatastoresClientListOptions contains the optional parameters for the DatastoresClient.NewListPager method.
-func (client *DatastoresClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *DatastoresClientListOptions) *runtime.Pager[DatastoresClientListResponse] {
+func (client *DatastoresClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *DatastoresClientListOptions) (*runtime.Pager[DatastoresClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DatastoresClientListResponse]{
 		More: func(page DatastoresClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -345,3 +345,4 @@ func (client *DatastoresClient) listHandleResponse(resp *http.Response) (Datasto
 	}
 	return result, nil
 }
+

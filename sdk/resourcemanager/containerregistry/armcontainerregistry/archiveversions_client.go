@@ -23,7 +23,7 @@ import (
 // ArchiveVersionsClient contains the methods for the ArchiveVersions group.
 // Don't use this type directly, use NewArchiveVersionsClient() instead.
 type ArchiveVersionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewArchiveVersionsClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &ArchiveVersionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -300,13 +300,13 @@ func (client *ArchiveVersionsClient) getHandleResponse(resp *http.Response) (Arc
 //   - archiveName - The name of the archive resource.
 //   - options - ArchiveVersionsClientListOptions contains the optional parameters for the ArchiveVersionsClient.NewListPager
 //     method.
-func (client *ArchiveVersionsClient) NewListPager(resourceGroupName string, registryName string, packageType string, archiveName string, options *ArchiveVersionsClientListOptions) *runtime.Pager[ArchiveVersionsClientListResponse] {
+func (client *ArchiveVersionsClient) NewListPager(resourceGroupName string, registryName string, packageType string, archiveName string, options *ArchiveVersionsClientListOptions) (*runtime.Pager[ArchiveVersionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ArchiveVersionsClientListResponse]{
 		More: func(page ArchiveVersionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ArchiveVersionsClientListResponse) (ArchiveVersionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ArchiveVersionsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ArchiveVersionsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -369,3 +369,4 @@ func (client *ArchiveVersionsClient) listHandleResponse(resp *http.Response) (Ar
 	}
 	return result, nil
 }
+

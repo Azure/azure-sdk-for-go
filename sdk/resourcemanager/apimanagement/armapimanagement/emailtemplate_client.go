@@ -24,7 +24,7 @@ import (
 // EmailTemplateClient contains the methods for the EmailTemplate group.
 // Don't use this type directly, use NewEmailTemplateClient() instead.
 type EmailTemplateClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewEmailTemplateClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &EmailTemplateClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,8 +103,8 @@ func (client *EmailTemplateClient) createOrUpdateCreateRequest(ctx context.Conte
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -316,7 +316,7 @@ func (client *EmailTemplateClient) getEntityTagHandleResponse(resp *http.Respons
 //   - serviceName - The name of the API Management service.
 //   - options - EmailTemplateClientListByServiceOptions contains the optional parameters for the EmailTemplateClient.NewListByServicePager
 //     method.
-func (client *EmailTemplateClient) NewListByServicePager(resourceGroupName string, serviceName string, options *EmailTemplateClientListByServiceOptions) *runtime.Pager[EmailTemplateClientListByServiceResponse] {
+func (client *EmailTemplateClient) NewListByServicePager(resourceGroupName string, serviceName string, options *EmailTemplateClientListByServiceOptions) (*runtime.Pager[EmailTemplateClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EmailTemplateClientListByServiceResponse]{
 		More: func(page EmailTemplateClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -446,8 +446,8 @@ func (client *EmailTemplateClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -462,3 +462,4 @@ func (client *EmailTemplateClient) updateHandleResponse(resp *http.Response) (Em
 	}
 	return result, nil
 }
+

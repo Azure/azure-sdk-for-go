@@ -24,7 +24,7 @@ import (
 // DiagnosticClient contains the methods for the Diagnostic group.
 // Don't use this type directly, use NewDiagnosticClient() instead.
 type DiagnosticClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewDiagnosticClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &DiagnosticClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,8 +103,8 @@ func (client *DiagnosticClient) createOrUpdateCreateRequest(ctx context.Context,
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -318,7 +318,7 @@ func (client *DiagnosticClient) getEntityTagHandleResponse(resp *http.Response) 
 //   - serviceName - The name of the API Management service.
 //   - options - DiagnosticClientListByServiceOptions contains the optional parameters for the DiagnosticClient.NewListByServicePager
 //     method.
-func (client *DiagnosticClient) NewListByServicePager(resourceGroupName string, serviceName string, options *DiagnosticClientListByServiceOptions) *runtime.Pager[DiagnosticClientListByServiceResponse] {
+func (client *DiagnosticClient) NewListByServicePager(resourceGroupName string, serviceName string, options *DiagnosticClientListByServiceOptions) (*runtime.Pager[DiagnosticClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticClientListByServiceResponse]{
 		More: func(page DiagnosticClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -448,8 +448,8 @@ func (client *DiagnosticClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -464,3 +464,4 @@ func (client *DiagnosticClient) updateHandleResponse(resp *http.Response) (Diagn
 	}
 	return result, nil
 }
+

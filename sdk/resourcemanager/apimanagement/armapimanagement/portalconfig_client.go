@@ -23,7 +23,7 @@ import (
 // PortalConfigClient contains the methods for the PortalConfig group.
 // Don't use this type directly, use NewPortalConfigClient() instead.
 type PortalConfigClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPortalConfigClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &PortalConfigClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -102,8 +102,8 @@ func (client *PortalConfigClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -369,8 +369,8 @@ func (client *PortalConfigClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -382,3 +382,4 @@ func (client *PortalConfigClient) updateHandleResponse(resp *http.Response) (Por
 	}
 	return result, nil
 }
+

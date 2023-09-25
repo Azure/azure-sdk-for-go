@@ -24,7 +24,7 @@ import (
 // GraphQLAPIResolverClient contains the methods for the GraphQLAPIResolver group.
 // Don't use this type directly, use NewGraphQLAPIResolverClient() instead.
 type GraphQLAPIResolverClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGraphQLAPIResolverClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &GraphQLAPIResolverClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *GraphQLAPIResolverClient) createOrUpdateCreateRequest(ctx context.
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -346,7 +346,7 @@ func (client *GraphQLAPIResolverClient) getEntityTagHandleResponse(resp *http.Re
 //     ;rev=n as a suffix where n is the revision number.
 //   - options - GraphQLAPIResolverClientListByAPIOptions contains the optional parameters for the GraphQLAPIResolverClient.NewListByAPIPager
 //     method.
-func (client *GraphQLAPIResolverClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *GraphQLAPIResolverClientListByAPIOptions) *runtime.Pager[GraphQLAPIResolverClientListByAPIResponse] {
+func (client *GraphQLAPIResolverClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *GraphQLAPIResolverClientListByAPIOptions) (*runtime.Pager[GraphQLAPIResolverClientListByAPIResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GraphQLAPIResolverClientListByAPIResponse]{
 		More: func(page GraphQLAPIResolverClientListByAPIResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -487,8 +487,8 @@ func (client *GraphQLAPIResolverClient) updateCreateRequest(ctx context.Context,
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -503,3 +503,4 @@ func (client *GraphQLAPIResolverClient) updateHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // NotificationRecipientEmailClient contains the methods for the NotificationRecipientEmail group.
 // Don't use this type directly, use NewNotificationRecipientEmailClient() instead.
 type NotificationRecipientEmailClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewNotificationRecipientEmailClient(subscriptionID string, credential azcor
 	}
 	client := &NotificationRecipientEmailClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -300,3 +300,4 @@ func (client *NotificationRecipientEmailClient) listByNotificationHandleResponse
 	}
 	return result, nil
 }
+

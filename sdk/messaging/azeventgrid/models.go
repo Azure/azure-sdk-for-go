@@ -8,8 +8,6 @@
 
 package azeventgrid
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
-
 // AcknowledgeOptions - Array of lock token strings for the corresponding received Cloud Events to be acknowledged.
 type AcknowledgeOptions struct {
 	// REQUIRED; String array of lock tokens.
@@ -19,7 +17,7 @@ type AcknowledgeOptions struct {
 // AcknowledgeResult - The result of the Acknowledge operation.
 type AcknowledgeResult struct {
 	// REQUIRED; Array of LockToken values for failed cloud events. Each LockToken includes the lock token value along with the
-	// related error information (namely, the error code and description).
+// related error information (namely, the error code and description).
 	FailedLockTokens []FailedLockToken
 
 	// REQUIRED; Array of lock tokens values for the successfully acknowledged cloud events.
@@ -38,8 +36,8 @@ type BrokerProperties struct {
 // FailedLockToken - Failed LockToken information.
 type FailedLockToken struct {
 	// REQUIRED; Error code related to the token. Example of such error codes are BadToken: which indicates the Token is not formatted
-	// correctly, TokenLost: which indicates that token is not found, and
-	// InternalServerError: For any internal server errors.
+// correctly, TokenLost: which indicates that token is not found, and
+// InternalServerError: For any internal server errors.
 	ErrorCode *string
 
 	// REQUIRED; Description of the token error.
@@ -73,7 +71,7 @@ type RejectOptions struct {
 // RejectResult - The result of the Reject operation.
 type RejectResult struct {
 	// REQUIRED; Array of LockToken values for failed cloud events. Each LockToken includes the lock token value along with the
-	// related error information (namely, the error code and description).
+// related error information (namely, the error code and description).
 	FailedLockTokens []FailedLockToken
 
 	// REQUIRED; Array of lock tokens values for the successfully rejected cloud events.
@@ -89,9 +87,10 @@ type ReleaseOptions struct {
 // ReleaseResult - The result of the Release operation.
 type ReleaseResult struct {
 	// REQUIRED; Array of LockToken values for failed cloud events. Each LockToken includes the lock token value along with the
-	// related error information (namely, the error code and description).
+// related error information (namely, the error code and description).
 	FailedLockTokens []FailedLockToken
 
 	// REQUIRED; Array of lock tokens values for the successfully released cloud events.
 	SucceededLockTokens []string
 }
+

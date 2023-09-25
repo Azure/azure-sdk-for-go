@@ -23,7 +23,7 @@ import (
 // PlacementPoliciesClient contains the methods for the PlacementPolicies group.
 // Don't use this type directly, use NewPlacementPoliciesClient() instead.
 type PlacementPoliciesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPlacementPoliciesClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &PlacementPoliciesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -120,8 +120,8 @@ func (client *PlacementPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, placementPolicy); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -281,7 +281,7 @@ func (client *PlacementPoliciesClient) getHandleResponse(resp *http.Response) (P
 //   - clusterName - Name of the cluster in the private cloud
 //   - options - PlacementPoliciesClientListOptions contains the optional parameters for the PlacementPoliciesClient.NewListPager
 //     method.
-func (client *PlacementPoliciesClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *PlacementPoliciesClientListOptions) *runtime.Pager[PlacementPoliciesClientListResponse] {
+func (client *PlacementPoliciesClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *PlacementPoliciesClientListOptions) (*runtime.Pager[PlacementPoliciesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PlacementPoliciesClientListResponse]{
 		More: func(page PlacementPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -425,7 +425,8 @@ func (client *PlacementPoliciesClient) updateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, placementPolicyUpdate); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

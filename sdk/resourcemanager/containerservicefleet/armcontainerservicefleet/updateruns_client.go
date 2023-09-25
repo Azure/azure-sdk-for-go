@@ -23,7 +23,7 @@ import (
 // UpdateRunsClient contains the methods for the UpdateRuns group.
 // Don't use this type directly, use NewUpdateRunsClient() instead.
 type UpdateRunsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewUpdateRunsClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &UpdateRunsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -123,8 +123,8 @@ func (client *UpdateRunsClient) createOrUpdateCreateRequest(ctx context.Context,
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -277,7 +277,7 @@ func (client *UpdateRunsClient) getHandleResponse(resp *http.Response) (UpdateRu
 //   - fleetName - The name of the Fleet resource.
 //   - options - UpdateRunsClientListByFleetOptions contains the optional parameters for the UpdateRunsClient.NewListByFleetPager
 //     method.
-func (client *UpdateRunsClient) NewListByFleetPager(resourceGroupName string, fleetName string, options *UpdateRunsClientListByFleetOptions) *runtime.Pager[UpdateRunsClientListByFleetResponse] {
+func (client *UpdateRunsClient) NewListByFleetPager(resourceGroupName string, fleetName string, options *UpdateRunsClientListByFleetOptions) (*runtime.Pager[UpdateRunsClientListByFleetResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[UpdateRunsClientListByFleetResponse]{
 		More: func(page UpdateRunsClientListByFleetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -493,3 +493,4 @@ func (client *UpdateRunsClient) stopCreateRequest(ctx context.Context, resourceG
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

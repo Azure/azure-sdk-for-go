@@ -23,7 +23,7 @@ import (
 // RestorePointCollectionsClient contains the methods for the RestorePointCollections group.
 // Don't use this type directly, use NewRestorePointCollectionsClient() instead.
 type RestorePointCollectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewRestorePointCollectionsClient(subscriptionID string, credential azcore.T
 	}
 	client := &RestorePointCollectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -96,8 +96,8 @@ func (client *RestorePointCollectionsClient) createOrUpdateCreateRequest(ctx con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -250,7 +250,7 @@ func (client *RestorePointCollectionsClient) getHandleResponse(resp *http.Respon
 //   - resourceGroupName - The name of the resource group.
 //   - options - RestorePointCollectionsClientListOptions contains the optional parameters for the RestorePointCollectionsClient.NewListPager
 //     method.
-func (client *RestorePointCollectionsClient) NewListPager(resourceGroupName string, options *RestorePointCollectionsClientListOptions) *runtime.Pager[RestorePointCollectionsClientListResponse] {
+func (client *RestorePointCollectionsClient) NewListPager(resourceGroupName string, options *RestorePointCollectionsClientListOptions) (*runtime.Pager[RestorePointCollectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RestorePointCollectionsClientListResponse]{
 		More: func(page RestorePointCollectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -316,7 +316,7 @@ func (client *RestorePointCollectionsClient) listHandleResponse(resp *http.Respo
 // Generated from API version 2023-07-01
 //   - options - RestorePointCollectionsClientListAllOptions contains the optional parameters for the RestorePointCollectionsClient.NewListAllPager
 //     method.
-func (client *RestorePointCollectionsClient) NewListAllPager(options *RestorePointCollectionsClientListAllOptions) *runtime.Pager[RestorePointCollectionsClientListAllResponse] {
+func (client *RestorePointCollectionsClient) NewListAllPager(options *RestorePointCollectionsClientListAllOptions) (*runtime.Pager[RestorePointCollectionsClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RestorePointCollectionsClientListAllResponse]{
 		More: func(page RestorePointCollectionsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -422,8 +422,8 @@ func (client *RestorePointCollectionsClient) updateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -435,3 +435,4 @@ func (client *RestorePointCollectionsClient) updateHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // CloudServiceRoleInstancesClient contains the methods for the CloudServiceRoleInstances group.
 // Don't use this type directly, use NewCloudServiceRoleInstancesClient() instead.
 type CloudServiceRoleInstancesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewCloudServiceRoleInstancesClient(subscriptionID string, credential azcore
 	}
 	client := &CloudServiceRoleInstancesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -317,7 +317,7 @@ func (client *CloudServiceRoleInstancesClient) getRemoteDesktopFileCreateRequest
 //   - cloudServiceName - Name of the cloud service.
 //   - options - CloudServiceRoleInstancesClientListOptions contains the optional parameters for the CloudServiceRoleInstancesClient.NewListPager
 //     method.
-func (client *CloudServiceRoleInstancesClient) NewListPager(resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientListOptions) *runtime.Pager[CloudServiceRoleInstancesClientListResponse] {
+func (client *CloudServiceRoleInstancesClient) NewListPager(resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientListOptions) (*runtime.Pager[CloudServiceRoleInstancesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CloudServiceRoleInstancesClientListResponse]{
 		More: func(page CloudServiceRoleInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -607,3 +607,4 @@ func (client *CloudServiceRoleInstancesClient) restartCreateRequest(ctx context.
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

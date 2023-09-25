@@ -9,7 +9,7 @@
 package armcosmosforpostgresql
 
 const (
-	moduleName    = "armcosmosforpostgresql"
+	moduleName = "armcosmosforpostgresql"
 	moduleVersion = "v1.0.0"
 )
 
@@ -17,15 +17,15 @@ const (
 type ConfigurationDataType string
 
 const (
-	ConfigurationDataTypeBoolean     ConfigurationDataType = "Boolean"
+	ConfigurationDataTypeBoolean ConfigurationDataType = "Boolean"
 	ConfigurationDataTypeEnumeration ConfigurationDataType = "Enumeration"
-	ConfigurationDataTypeInteger     ConfigurationDataType = "Integer"
-	ConfigurationDataTypeNumeric     ConfigurationDataType = "Numeric"
+	ConfigurationDataTypeInteger ConfigurationDataType = "Integer"
+	ConfigurationDataTypeNumeric ConfigurationDataType = "Numeric"
 )
 
 // PossibleConfigurationDataTypeValues returns the possible values for the ConfigurationDataType const type.
 func PossibleConfigurationDataTypeValues() []ConfigurationDataType {
-	return []ConfigurationDataType{
+	return []ConfigurationDataType{	
 		ConfigurationDataTypeBoolean,
 		ConfigurationDataTypeEnumeration,
 		ConfigurationDataTypeInteger,
@@ -37,15 +37,15 @@ func PossibleConfigurationDataTypeValues() []ConfigurationDataType {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -58,13 +58,13 @@ type OperationOrigin string
 
 const (
 	OperationOriginNotSpecified OperationOrigin = "NotSpecified"
-	OperationOriginSystem       OperationOrigin = "system"
-	OperationOriginUser         OperationOrigin = "user"
+	OperationOriginSystem OperationOrigin = "system"
+	OperationOriginUser OperationOrigin = "user"
 )
 
 // PossibleOperationOriginValues returns the possible values for the OperationOrigin const type.
 func PossibleOperationOriginValues() []OperationOrigin {
-	return []OperationOrigin{
+	return []OperationOrigin{	
 		OperationOriginNotSpecified,
 		OperationOriginSystem,
 		OperationOriginUser,
@@ -75,15 +75,15 @@ func PossibleOperationOriginValues() []OperationOrigin {
 type PrivateEndpointConnectionProvisioningState string
 
 const (
-	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
-	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
-	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
+	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
 	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
 )
 
 // PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
-	return []PrivateEndpointConnectionProvisioningState{
+	return []PrivateEndpointConnectionProvisioningState{	
 		PrivateEndpointConnectionProvisioningStateCreating,
 		PrivateEndpointConnectionProvisioningStateDeleting,
 		PrivateEndpointConnectionProvisioningStateFailed,
@@ -96,13 +96,13 @@ type PrivateEndpointServiceConnectionStatus string
 
 const (
 	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
-	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
 	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
 )
 
 // PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
-	return []PrivateEndpointServiceConnectionStatus{
+	return []PrivateEndpointServiceConnectionStatus{	
 		PrivateEndpointServiceConnectionStatusApproved,
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
@@ -113,15 +113,15 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 type ProvisioningState string
 
 const (
-	ProvisioningStateCanceled   ProvisioningState = "Canceled"
-	ProvisioningStateFailed     ProvisioningState = "Failed"
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	ProvisioningStateFailed ProvisioningState = "Failed"
 	ProvisioningStateInProgress ProvisioningState = "InProgress"
-	ProvisioningStateSucceeded  ProvisioningState = "Succeeded"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateCanceled,
 		ProvisioningStateFailed,
 		ProvisioningStateInProgress,
@@ -134,13 +134,14 @@ type ServerRole string
 
 const (
 	ServerRoleCoordinator ServerRole = "Coordinator"
-	ServerRoleWorker      ServerRole = "Worker"
+	ServerRoleWorker ServerRole = "Worker"
 )
 
 // PossibleServerRoleValues returns the possible values for the ServerRole const type.
 func PossibleServerRoleValues() []ServerRole {
-	return []ServerRole{
+	return []ServerRole{	
 		ServerRoleCoordinator,
 		ServerRoleWorker,
 	}
 }
+

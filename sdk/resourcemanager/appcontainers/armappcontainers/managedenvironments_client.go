@@ -23,7 +23,7 @@ import (
 // ManagedEnvironmentsClient contains the methods for the ManagedEnvironments group.
 // Don't use this type directly, use NewManagedEnvironmentsClient() instead.
 type ManagedEnvironmentsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedEnvironmentsClient(subscriptionID string, credential azcore.Token
 	}
 	client := &ManagedEnvironmentsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,8 +110,8 @@ func (client *ManagedEnvironmentsClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, environmentEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -310,7 +310,7 @@ func (client *ManagedEnvironmentsClient) getAuthTokenHandleResponse(resp *http.R
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ManagedEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the ManagedEnvironmentsClient.NewListByResourceGroupPager
 //     method.
-func (client *ManagedEnvironmentsClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedEnvironmentsClientListByResourceGroupOptions) *runtime.Pager[ManagedEnvironmentsClientListByResourceGroupResponse] {
+func (client *ManagedEnvironmentsClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedEnvironmentsClientListByResourceGroupOptions) (*runtime.Pager[ManagedEnvironmentsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedEnvironmentsClientListByResourceGroupResponse]{
 		More: func(page ManagedEnvironmentsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -374,7 +374,7 @@ func (client *ManagedEnvironmentsClient) listByResourceGroupHandleResponse(resp 
 // Generated from API version 2023-05-01
 //   - options - ManagedEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the ManagedEnvironmentsClient.NewListBySubscriptionPager
 //     method.
-func (client *ManagedEnvironmentsClient) NewListBySubscriptionPager(options *ManagedEnvironmentsClientListBySubscriptionOptions) *runtime.Pager[ManagedEnvironmentsClientListBySubscriptionResponse] {
+func (client *ManagedEnvironmentsClient) NewListBySubscriptionPager(options *ManagedEnvironmentsClientListBySubscriptionOptions) (*runtime.Pager[ManagedEnvironmentsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedEnvironmentsClientListBySubscriptionResponse]{
 		More: func(page ManagedEnvironmentsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -436,7 +436,7 @@ func (client *ManagedEnvironmentsClient) listBySubscriptionHandleResponse(resp *
 //   - environmentName - Name of the Managed Environment.
 //   - options - ManagedEnvironmentsClientListWorkloadProfileStatesOptions contains the optional parameters for the ManagedEnvironmentsClient.NewListWorkloadProfileStatesPager
 //     method.
-func (client *ManagedEnvironmentsClient) NewListWorkloadProfileStatesPager(resourceGroupName string, environmentName string, options *ManagedEnvironmentsClientListWorkloadProfileStatesOptions) *runtime.Pager[ManagedEnvironmentsClientListWorkloadProfileStatesResponse] {
+func (client *ManagedEnvironmentsClient) NewListWorkloadProfileStatesPager(resourceGroupName string, environmentName string, options *ManagedEnvironmentsClientListWorkloadProfileStatesOptions) (*runtime.Pager[ManagedEnvironmentsClientListWorkloadProfileStatesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedEnvironmentsClientListWorkloadProfileStatesResponse]{
 		More: func(page ManagedEnvironmentsClientListWorkloadProfileStatesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -566,7 +566,8 @@ func (client *ManagedEnvironmentsClient) updateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, environmentEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

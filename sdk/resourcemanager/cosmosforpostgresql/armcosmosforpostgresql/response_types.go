@@ -209,3 +209,4 @@ type ServersClientListByClusterResponse struct {
 	// A list of servers in a cluster.
 	ClusterServerListResult
 }
+

@@ -23,7 +23,7 @@ import (
 // RestorePointsClient contains the methods for the RestorePoints group.
 // Don't use this type directly, use NewRestorePointsClient() instead.
 type RestorePointsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewRestorePointsClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &RestorePointsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *RestorePointsClient) createCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -261,3 +261,4 @@ func (client *RestorePointsClient) getHandleResponse(resp *http.Response) (Resto
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // GalleryImagesClient contains the methods for the GalleryImages group.
 // Don't use this type directly, use NewGalleryImagesClient() instead.
 type GalleryImagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGalleryImagesClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &GalleryImagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *GalleryImagesClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, galleryImage); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -268,7 +268,7 @@ func (client *GalleryImagesClient) getHandleResponse(resp *http.Response) (Galle
 //   - galleryName - The name of the Shared Image Gallery from which Image Definitions are to be listed.
 //   - options - GalleryImagesClientListByGalleryOptions contains the optional parameters for the GalleryImagesClient.NewListByGalleryPager
 //     method.
-func (client *GalleryImagesClient) NewListByGalleryPager(resourceGroupName string, galleryName string, options *GalleryImagesClientListByGalleryOptions) *runtime.Pager[GalleryImagesClientListByGalleryResponse] {
+func (client *GalleryImagesClient) NewListByGalleryPager(resourceGroupName string, galleryName string, options *GalleryImagesClientListByGalleryOptions) (*runtime.Pager[GalleryImagesClientListByGalleryResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GalleryImagesClientListByGalleryResponse]{
 		More: func(page GalleryImagesClientListByGalleryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -404,7 +404,8 @@ func (client *GalleryImagesClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, galleryImage); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

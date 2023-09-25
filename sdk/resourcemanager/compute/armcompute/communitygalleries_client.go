@@ -23,7 +23,7 @@ import (
 // CommunityGalleriesClient contains the methods for the CommunityGalleries group.
 // Don't use this type directly, use NewCommunityGalleriesClient() instead.
 type CommunityGalleriesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewCommunityGalleriesClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &CommunityGalleriesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,3 +103,4 @@ func (client *CommunityGalleriesClient) getHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

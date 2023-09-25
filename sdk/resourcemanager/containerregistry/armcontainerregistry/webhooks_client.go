@@ -23,7 +23,7 @@ import (
 // WebhooksClient contains the methods for the Webhooks group.
 // Don't use this type directly, use NewWebhooksClient() instead.
 type WebhooksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewWebhooksClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &WebhooksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,8 +117,8 @@ func (client *WebhooksClient) createCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, webhookCreateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -335,13 +335,13 @@ func (client *WebhooksClient) getCallbackConfigHandleResponse(resp *http.Respons
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - WebhooksClientListOptions contains the optional parameters for the WebhooksClient.NewListPager method.
-func (client *WebhooksClient) NewListPager(resourceGroupName string, registryName string, options *WebhooksClientListOptions) *runtime.Pager[WebhooksClientListResponse] {
+func (client *WebhooksClient) NewListPager(resourceGroupName string, registryName string, options *WebhooksClientListOptions) (*runtime.Pager[WebhooksClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WebhooksClientListResponse]{
 		More: func(page WebhooksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WebhooksClientListResponse) (WebhooksClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WebhooksClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WebhooksClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -404,13 +404,13 @@ func (client *WebhooksClient) listHandleResponse(resp *http.Response) (WebhooksC
 //   - registryName - The name of the container registry.
 //   - webhookName - The name of the webhook.
 //   - options - WebhooksClientListEventsOptions contains the optional parameters for the WebhooksClient.NewListEventsPager method.
-func (client *WebhooksClient) NewListEventsPager(resourceGroupName string, registryName string, webhookName string, options *WebhooksClientListEventsOptions) *runtime.Pager[WebhooksClientListEventsResponse] {
+func (client *WebhooksClient) NewListEventsPager(resourceGroupName string, registryName string, webhookName string, options *WebhooksClientListEventsOptions) (*runtime.Pager[WebhooksClientListEventsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WebhooksClientListEventsResponse]{
 		More: func(page WebhooksClientListEventsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WebhooksClientListEventsResponse) (WebhooksClientListEventsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WebhooksClient.NewListEventsPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WebhooksClient.NewListEventsPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -610,7 +610,8 @@ func (client *WebhooksClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, webhookUpdateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

@@ -24,7 +24,7 @@ import (
 // UserSubscriptionClient contains the methods for the UserSubscription group.
 // Don't use this type directly, use NewUserSubscriptionClient() instead.
 type UserSubscriptionClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewUserSubscriptionClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &UserSubscriptionClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -125,7 +125,7 @@ func (client *UserSubscriptionClient) getHandleResponse(resp *http.Response) (Us
 //   - userID - User identifier. Must be unique in the current API Management service instance.
 //   - options - UserSubscriptionClientListOptions contains the optional parameters for the UserSubscriptionClient.NewListPager
 //     method.
-func (client *UserSubscriptionClient) NewListPager(resourceGroupName string, serviceName string, userID string, options *UserSubscriptionClientListOptions) *runtime.Pager[UserSubscriptionClientListResponse] {
+func (client *UserSubscriptionClient) NewListPager(resourceGroupName string, serviceName string, userID string, options *UserSubscriptionClientListOptions) (*runtime.Pager[UserSubscriptionClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[UserSubscriptionClientListResponse]{
 		More: func(page UserSubscriptionClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -200,3 +200,4 @@ func (client *UserSubscriptionClient) listHandleResponse(resp *http.Response) (U
 	}
 	return result, nil
 }
+

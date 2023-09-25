@@ -15,7 +15,8 @@ type OperationsClientListOptions struct {
 
 // ServicesClientCreateOrUpdateOptions contains the optional parameters for the ServicesClient.CreateOrUpdate method.
 type ServicesClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The service entity.
+	Resource *Service
 }
 
 // ServicesClientDeleteOptions contains the optional parameters for the ServicesClient.Delete method.
@@ -42,5 +43,7 @@ type ServicesClientListBySubscriptionOptions struct {
 
 // ServicesClientUpdateOptions contains the optional parameters for the ServicesClient.Update method.
 type ServicesClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The service properties to be updated.
+	Parameters *ServiceUpdate
 }
+

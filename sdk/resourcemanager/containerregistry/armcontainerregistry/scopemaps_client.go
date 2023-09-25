@@ -23,7 +23,7 @@ import (
 // ScopeMapsClient contains the methods for the ScopeMaps group.
 // Don't use this type directly, use NewScopeMapsClient() instead.
 type ScopeMapsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewScopeMapsClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &ScopeMapsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,8 +117,8 @@ func (client *ScopeMapsClient) createCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, scopeMapCreateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,13 +269,13 @@ func (client *ScopeMapsClient) getHandleResponse(resp *http.Response) (ScopeMaps
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - ScopeMapsClientListOptions contains the optional parameters for the ScopeMapsClient.NewListPager method.
-func (client *ScopeMapsClient) NewListPager(resourceGroupName string, registryName string, options *ScopeMapsClientListOptions) *runtime.Pager[ScopeMapsClientListResponse] {
+func (client *ScopeMapsClient) NewListPager(resourceGroupName string, registryName string, options *ScopeMapsClientListOptions) (*runtime.Pager[ScopeMapsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ScopeMapsClientListResponse]{
 		More: func(page ScopeMapsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScopeMapsClientListResponse) (ScopeMapsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeMapsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeMapsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -405,7 +405,8 @@ func (client *ScopeMapsClient) updateCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, scopeMapUpdateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

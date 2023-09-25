@@ -34,3 +34,4 @@ type SelectorClassification interface {
 	// GetSelector returns the Selector content of the underlying type.
 	GetSelector() *Selector
 }
+

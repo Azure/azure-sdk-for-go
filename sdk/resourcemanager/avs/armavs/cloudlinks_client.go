@@ -23,7 +23,7 @@ import (
 // CloudLinksClient contains the methods for the CloudLinks group.
 // Don't use this type directly, use NewCloudLinksClient() instead.
 type CloudLinksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewCloudLinksClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &CloudLinksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *CloudLinksClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cloudLink); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -263,7 +263,7 @@ func (client *CloudLinksClient) getHandleResponse(resp *http.Response) (CloudLin
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - CloudLinksClientListOptions contains the optional parameters for the CloudLinksClient.NewListPager method.
-func (client *CloudLinksClient) NewListPager(resourceGroupName string, privateCloudName string, options *CloudLinksClientListOptions) *runtime.Pager[CloudLinksClientListResponse] {
+func (client *CloudLinksClient) NewListPager(resourceGroupName string, privateCloudName string, options *CloudLinksClientListOptions) (*runtime.Pager[CloudLinksClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CloudLinksClientListResponse]{
 		More: func(page CloudLinksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -325,3 +325,4 @@ func (client *CloudLinksClient) listHandleResponse(resp *http.Response) (CloudLi
 	}
 	return result, nil
 }
+

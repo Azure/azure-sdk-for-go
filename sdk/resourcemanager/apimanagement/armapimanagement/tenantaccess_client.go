@@ -23,7 +23,7 @@ import (
 // TenantAccessClient contains the methods for the TenantAccess group.
 // Don't use this type directly, use NewTenantAccessClient() instead.
 type TenantAccessClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTenantAccessClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &TenantAccessClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,8 +101,8 @@ func (client *TenantAccessClient) createCreateRequest(ctx context.Context, resou
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -259,7 +259,7 @@ func (client *TenantAccessClient) getEntityTagHandleResponse(resp *http.Response
 //   - serviceName - The name of the API Management service.
 //   - options - TenantAccessClientListByServiceOptions contains the optional parameters for the TenantAccessClient.NewListByServicePager
 //     method.
-func (client *TenantAccessClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TenantAccessClientListByServiceOptions) *runtime.Pager[TenantAccessClientListByServiceResponse] {
+func (client *TenantAccessClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TenantAccessClientListByServiceOptions) (*runtime.Pager[TenantAccessClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TenantAccessClientListByServiceResponse]{
 		More: func(page TenantAccessClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -564,8 +564,8 @@ func (client *TenantAccessClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -580,3 +580,4 @@ func (client *TenantAccessClient) updateHandleResponse(resp *http.Response) (Ten
 	}
 	return result, nil
 }
+

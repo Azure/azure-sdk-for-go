@@ -25,7 +25,7 @@ type APIServerAccessProfile struct {
 // AgentProfile - Agent profile for the Fleet hub.
 type AgentProfile struct {
 	// The ID of the subnet which the Fleet hub node will join on startup. If this is not specified, a vnet and subnet will be
-	// generated and used.
+// generated and used.
 	SubnetID *string
 }
 
@@ -56,6 +56,13 @@ type ErrorDetail struct {
 	Target *string
 }
 
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
 // Fleet - The Fleet resource.
 type Fleet struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -71,9 +78,9 @@ type Fleet struct {
 	Tags map[string]*string
 
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
-	// Entity tags are used for comparing two or more entities from the same requested resource.
-	// HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range
-	// (section 14.27) header fields.
+// Entity tags are used for comparing two or more entities from the same requested resource.
+// HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range
+// (section 14.27) header fields.
 	ETag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -137,9 +144,9 @@ type FleetMember struct {
 	Properties *FleetMemberProperties
 
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
-	// Entity tags are used for comparing two or more entities from the same requested resource.
-	// HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range
-	// (section 14.27) header fields.
+// Entity tags are used for comparing two or more entities from the same requested resource.
+// HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range
+// (section 14.27) header fields.
 	ETag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -167,7 +174,7 @@ type FleetMemberListResult struct {
 // FleetMemberProperties - A member of the Fleet. It contains a reference to an existing Kubernetes cluster on Azure.
 type FleetMemberProperties struct {
 	// REQUIRED; The ARM resource id of the cluster that joins the Fleet. Must be a valid Azure resource id. e.g.:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{clusterName}'.
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{clusterName}'.
 	ClusterResourceID *string
 
 	// The group this member belongs to for multi-cluster update management.
@@ -219,7 +226,7 @@ type ManagedClusterUpdate struct {
 // ManagedClusterUpgradeSpec - The upgrade to apply to a ManagedCluster.
 type ManagedClusterUpgradeSpec struct {
 	// REQUIRED; The upgrade type. Full requires the KubernetesVersion property to be set. NodeImageOnly requires the KubernetesVersion
-	// property not to be set.
+// property not to be set.
 	Type *ManagedClusterUpgradeType
 
 	// The Kubernetes version to upgrade the member clusters to.
@@ -232,14 +239,14 @@ type ManagedServiceIdentity struct {
 	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
-	// resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
-	// The dictionary values can be empty objects ({}) in
-	// requests.
+// resource ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+// The dictionary values can be empty objects ({}) in
+// requests.
 	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
-	// identity.
+// identity.
 	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
@@ -291,15 +298,15 @@ type Operation struct {
 	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
-	// operations.
+// operations.
 	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
-	// "Microsoft.Compute/virtualMachines/capture/action"
+// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
-	// value is "user,system"
+// value is "user,system"
 	Origin *Origin
 }
 
@@ -309,15 +316,15 @@ type OperationDisplay struct {
 	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
-	// Machine", "Restart Virtual Machine".
+// Machine", "Restart Virtual Machine".
 	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
-	// Compute".
+// Compute".
 	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
-	// Schedule Collections".
+// Schedule Collections".
 	Resource *string
 }
 
@@ -329,6 +336,37 @@ type OperationListResult struct {
 
 	// READ-ONLY; List of operations supported by the resource provider
 	Value []*Operation
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -352,10 +390,32 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // UpdateGroup - A group to be updated.
 type UpdateGroup struct {
 	// REQUIRED; The name of the Fleet member group to update. It should match the name of an existing FleetMember group. A group
-	// can only appear once across all UpdateStages in the UpdateRun.
+// can only appear once across all UpdateStages in the UpdateRun.
 	Name *string
 }
 
@@ -377,9 +437,9 @@ type UpdateRun struct {
 	Properties *UpdateRunProperties
 
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
-	// Entity tags are used for comparing two or more entities from the same requested resource.
-	// HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range
-	// (section 14.27) header fields.
+// Entity tags are used for comparing two or more entities from the same requested resource.
+// HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range
+// (section 14.27) header fields.
 	ETag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -407,12 +467,12 @@ type UpdateRunListResult struct {
 // UpdateRunProperties - The properties of the UpdateRun.
 type UpdateRunProperties struct {
 	// REQUIRED; The update to be applied to all clusters in the UpdateRun. The managedClusterUpdate can be modified until the
-	// run is started.
+// run is started.
 	ManagedClusterUpdate *ManagedClusterUpdate
 
 	// The strategy defines the order in which the clusters will be updated. If not set, all members will be updated sequentially.
-	// The UpdateRun status will show a single UpdateStage and a single UpdateGroup
-	// targeting all members. The strategy of the UpdateRun can be modified until the run is started.
+// The UpdateRun status will show a single UpdateStage and a single UpdateGroup
+// targeting all members. The strategy of the UpdateRun can be modified until the run is started.
 	Strategy *UpdateRunStrategy
 
 	// READ-ONLY; The provisioning state of the UpdateRun resource.
@@ -425,7 +485,7 @@ type UpdateRunProperties struct {
 // UpdateRunStatus - The status of a UpdateRun.
 type UpdateRunStatus struct {
 	// READ-ONLY; The node image upgrade specs for the update run. It is only set in update run when NodeImageSelection.type is
-	// Consistent.
+// Consistent.
 	NodeImageSelection *NodeImageSelectionStatus
 
 	// READ-ONLY; The stages composing an update run. Stages are run sequentially withing an UpdateRun.
@@ -453,7 +513,7 @@ type UpdateStage struct {
 	AfterStageWaitInSeconds *int32
 
 	// A list of group names that compose the stage. The groups will be updated in parallel. Each group name can only appear once
-	// in the UpdateRun.
+// in the UpdateRun.
 	Groups []*UpdateGroup
 }
 
@@ -504,3 +564,4 @@ type WaitStatus struct {
 	// READ-ONLY; The wait duration configured in seconds.
 	WaitDurationInSeconds *int32
 }
+

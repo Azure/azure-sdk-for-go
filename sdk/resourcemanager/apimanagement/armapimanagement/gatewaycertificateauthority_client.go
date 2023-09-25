@@ -24,7 +24,7 @@ import (
 // GatewayCertificateAuthorityClient contains the methods for the GatewayCertificateAuthority group.
 // Don't use this type directly, use NewGatewayCertificateAuthorityClient() instead.
 type GatewayCertificateAuthorityClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGatewayCertificateAuthorityClient(subscriptionID string, credential azco
 	}
 	client := &GatewayCertificateAuthorityClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -108,8 +108,8 @@ func (client *GatewayCertificateAuthorityClient) createOrUpdateCreateRequest(ctx
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -346,7 +346,7 @@ func (client *GatewayCertificateAuthorityClient) getEntityTagHandleResponse(resp
 //     'managed'
 //   - options - GatewayCertificateAuthorityClientListByServiceOptions contains the optional parameters for the GatewayCertificateAuthorityClient.NewListByServicePager
 //     method.
-func (client *GatewayCertificateAuthorityClient) NewListByServicePager(resourceGroupName string, serviceName string, gatewayID string, options *GatewayCertificateAuthorityClientListByServiceOptions) *runtime.Pager[GatewayCertificateAuthorityClientListByServiceResponse] {
+func (client *GatewayCertificateAuthorityClient) NewListByServicePager(resourceGroupName string, serviceName string, gatewayID string, options *GatewayCertificateAuthorityClientListByServiceOptions) (*runtime.Pager[GatewayCertificateAuthorityClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GatewayCertificateAuthorityClientListByServiceResponse]{
 		More: func(page GatewayCertificateAuthorityClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -421,3 +421,4 @@ func (client *GatewayCertificateAuthorityClient) listByServiceHandleResponse(res
 	}
 	return result, nil
 }
+

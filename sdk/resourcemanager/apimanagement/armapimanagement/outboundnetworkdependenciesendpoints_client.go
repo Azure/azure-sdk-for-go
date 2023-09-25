@@ -23,7 +23,7 @@ import (
 // OutboundNetworkDependenciesEndpointsClient contains the methods for the OutboundNetworkDependenciesEndpoints group.
 // Don't use this type directly, use NewOutboundNetworkDependenciesEndpointsClient() instead.
 type OutboundNetworkDependenciesEndpointsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewOutboundNetworkDependenciesEndpointsClient(subscriptionID string, creden
 	}
 	client := &OutboundNetworkDependenciesEndpointsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,3 +103,4 @@ func (client *OutboundNetworkDependenciesEndpointsClient) listByServiceHandleRes
 	}
 	return result, nil
 }
+

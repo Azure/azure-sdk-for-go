@@ -23,7 +23,7 @@ import (
 // AddonsClient contains the methods for the Addons group.
 // Don't use this type directly, use NewAddonsClient() instead.
 type AddonsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAddonsClient(subscriptionID string, credential azcore.TokenCredential, o
 	}
 	client := &AddonsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, addon); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -263,7 +263,7 @@ func (client *AddonsClient) getHandleResponse(resp *http.Response) (AddonsClient
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - AddonsClientListOptions contains the optional parameters for the AddonsClient.NewListPager method.
-func (client *AddonsClient) NewListPager(resourceGroupName string, privateCloudName string, options *AddonsClientListOptions) *runtime.Pager[AddonsClientListResponse] {
+func (client *AddonsClient) NewListPager(resourceGroupName string, privateCloudName string, options *AddonsClientListOptions) (*runtime.Pager[AddonsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AddonsClientListResponse]{
 		More: func(page AddonsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -325,3 +325,4 @@ func (client *AddonsClient) listHandleResponse(resp *http.Response) (AddonsClien
 	}
 	return result, nil
 }
+

@@ -24,7 +24,7 @@ import (
 // ExperimentsClient contains the methods for the Experiments group.
 // Don't use this type directly, use NewExperimentsClient() instead.
 type ExperimentsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewExperimentsClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &ExperimentsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -155,8 +155,8 @@ func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, experiment); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -415,7 +415,7 @@ func (client *ExperimentsClient) getStatusHandleResponse(resp *http.Response) (E
 // Generated from API version 2023-04-15-preview
 //   - resourceGroupName - String that represents an Azure resource group.
 //   - options - ExperimentsClientListOptions contains the optional parameters for the ExperimentsClient.NewListPager method.
-func (client *ExperimentsClient) NewListPager(resourceGroupName string, options *ExperimentsClientListOptions) *runtime.Pager[ExperimentsClientListResponse] {
+func (client *ExperimentsClient) NewListPager(resourceGroupName string, options *ExperimentsClientListOptions) (*runtime.Pager[ExperimentsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExperimentsClientListResponse]{
 		More: func(page ExperimentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -484,7 +484,7 @@ func (client *ExperimentsClient) listHandleResponse(resp *http.Response) (Experi
 //
 // Generated from API version 2023-04-15-preview
 //   - options - ExperimentsClientListAllOptions contains the optional parameters for the ExperimentsClient.NewListAllPager method.
-func (client *ExperimentsClient) NewListAllPager(options *ExperimentsClientListAllOptions) *runtime.Pager[ExperimentsClientListAllResponse] {
+func (client *ExperimentsClient) NewListAllPager(options *ExperimentsClientListAllOptions) (*runtime.Pager[ExperimentsClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExperimentsClientListAllResponse]{
 		More: func(page ExperimentsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -552,7 +552,7 @@ func (client *ExperimentsClient) listAllHandleResponse(resp *http.Response) (Exp
 //   - experimentName - String that represents a Experiment resource name.
 //   - options - ExperimentsClientListAllStatusesOptions contains the optional parameters for the ExperimentsClient.NewListAllStatusesPager
 //     method.
-func (client *ExperimentsClient) NewListAllStatusesPager(resourceGroupName string, experimentName string, options *ExperimentsClientListAllStatusesOptions) *runtime.Pager[ExperimentsClientListAllStatusesResponse] {
+func (client *ExperimentsClient) NewListAllStatusesPager(resourceGroupName string, experimentName string, options *ExperimentsClientListAllStatusesOptions) (*runtime.Pager[ExperimentsClientListAllStatusesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExperimentsClientListAllStatusesResponse]{
 		More: func(page ExperimentsClientListAllStatusesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -622,7 +622,7 @@ func (client *ExperimentsClient) listAllStatusesHandleResponse(resp *http.Respon
 //   - experimentName - String that represents a Experiment resource name.
 //   - options - ExperimentsClientListExecutionDetailsOptions contains the optional parameters for the ExperimentsClient.NewListExecutionDetailsPager
 //     method.
-func (client *ExperimentsClient) NewListExecutionDetailsPager(resourceGroupName string, experimentName string, options *ExperimentsClientListExecutionDetailsOptions) *runtime.Pager[ExperimentsClientListExecutionDetailsResponse] {
+func (client *ExperimentsClient) NewListExecutionDetailsPager(resourceGroupName string, experimentName string, options *ExperimentsClientListExecutionDetailsOptions) (*runtime.Pager[ExperimentsClientListExecutionDetailsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExperimentsClientListExecutionDetailsResponse]{
 		More: func(page ExperimentsClientListExecutionDetailsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -795,8 +795,8 @@ func (client *ExperimentsClient) updateCreateRequest(ctx context.Context, resour
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, experiment); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -808,3 +808,4 @@ func (client *ExperimentsClient) updateHandleResponse(resp *http.Response) (Expe
 	}
 	return result, nil
 }
+

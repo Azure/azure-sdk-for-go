@@ -23,7 +23,7 @@ import (
 // ArchivesClient contains the methods for the Archives group.
 // Don't use this type directly, use NewArchivesClient() instead.
 type ArchivesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewArchivesClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &ArchivesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -122,8 +122,8 @@ func (client *ArchivesClient) createCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, archiveCreateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -285,13 +285,13 @@ func (client *ArchivesClient) getHandleResponse(resp *http.Response) (ArchivesCl
 //   - registryName - The name of the container registry.
 //   - packageType - The type of the package resource.
 //   - options - ArchivesClientListOptions contains the optional parameters for the ArchivesClient.NewListPager method.
-func (client *ArchivesClient) NewListPager(resourceGroupName string, registryName string, packageType string, options *ArchivesClientListOptions) *runtime.Pager[ArchivesClientListResponse] {
+func (client *ArchivesClient) NewListPager(resourceGroupName string, registryName string, packageType string, options *ArchivesClientListOptions) (*runtime.Pager[ArchivesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ArchivesClientListResponse]{
 		More: func(page ArchivesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ArchivesClientListResponse) (ArchivesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ArchivesClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ArchivesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -412,8 +412,8 @@ func (client *ArchivesClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, archiveUpdateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -425,3 +425,4 @@ func (client *ArchivesClient) updateHandleResponse(resp *http.Response) (Archive
 	}
 	return result, nil
 }
+

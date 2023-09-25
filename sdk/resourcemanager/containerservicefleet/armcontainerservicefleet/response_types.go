@@ -118,3 +118,4 @@ type UpdateRunsClientStopResponse struct {
 	// An UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
 	UpdateRun
 }
+

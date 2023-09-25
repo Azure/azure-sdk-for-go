@@ -37,7 +37,7 @@ type DNSRecord struct {
 	Name *string
 
 	// READ-ONLY; Represents an expiry time in seconds to represent how long this entry can be cached by the resolver, default
-	// = 3600sec.
+// = 3600sec.
 	TTL *int32
 
 	// READ-ONLY; Type of the DNS record. Example: TXT
@@ -246,14 +246,14 @@ type ManagedServiceIdentity struct {
 	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
-	// resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
-	// The dictionary values can be empty objects ({}) in
-	// requests.
+// resource ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+// The dictionary values can be empty objects ({}) in
+// requests.
 	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
-	// identity.
+// identity.
 	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
@@ -278,15 +278,15 @@ type Operation struct {
 	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
-	// operations.
+// operations.
 	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
-	// "Microsoft.Compute/virtualMachines/capture/action"
+// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
-	// value is "user,system"
+// value is "user,system"
 	Origin *Origin
 }
 
@@ -296,15 +296,15 @@ type OperationDisplay struct {
 	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
-	// Machine", "Restart Virtual Machine".
+// Machine", "Restart Virtual Machine".
 	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
-	// Compute".
+// Compute".
 	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
-	// Schedule Collections".
+// Schedule Collections".
 	Resource *string
 }
 
@@ -577,3 +577,4 @@ type VerificationStatusRecord struct {
 	// READ-ONLY; Status of the verification operation.
 	Status *VerificationStatus
 }
+

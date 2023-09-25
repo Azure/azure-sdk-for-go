@@ -23,7 +23,7 @@ import (
 // VirtualMachineScaleSetRollingUpgradesClient contains the methods for the VirtualMachineScaleSetRollingUpgrades group.
 // Don't use this type directly, use NewVirtualMachineScaleSetRollingUpgradesClient() instead.
 type VirtualMachineScaleSetRollingUpgradesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID string, crede
 	}
 	client := &VirtualMachineScaleSetRollingUpgradesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -316,3 +316,4 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) startOSUpgradeCreateR
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ContainerAppsSourceControlsClient contains the methods for the ContainerAppsSourceControls group.
 // Don't use this type directly, use NewContainerAppsSourceControlsClient() instead.
 type ContainerAppsSourceControlsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewContainerAppsSourceControlsClient(subscriptionID string, credential azco
 	}
 	client := &ContainerAppsSourceControlsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *ContainerAppsSourceControlsClient) createOrUpdateCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sourceControlEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -266,7 +266,7 @@ func (client *ContainerAppsSourceControlsClient) getHandleResponse(resp *http.Re
 //   - containerAppName - Name of the Container App.
 //   - options - ContainerAppsSourceControlsClientListByContainerAppOptions contains the optional parameters for the ContainerAppsSourceControlsClient.NewListByContainerAppPager
 //     method.
-func (client *ContainerAppsSourceControlsClient) NewListByContainerAppPager(resourceGroupName string, containerAppName string, options *ContainerAppsSourceControlsClientListByContainerAppOptions) *runtime.Pager[ContainerAppsSourceControlsClientListByContainerAppResponse] {
+func (client *ContainerAppsSourceControlsClient) NewListByContainerAppPager(resourceGroupName string, containerAppName string, options *ContainerAppsSourceControlsClientListByContainerAppOptions) (*runtime.Pager[ContainerAppsSourceControlsClientListByContainerAppResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ContainerAppsSourceControlsClientListByContainerAppResponse]{
 		More: func(page ContainerAppsSourceControlsClientListByContainerAppResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -328,3 +328,4 @@ func (client *ContainerAppsSourceControlsClient) listByContainerAppHandleRespons
 	}
 	return result, nil
 }
+

@@ -24,7 +24,7 @@ import (
 // APIIssueCommentClient contains the methods for the APIIssueComment group.
 // Don't use this type directly, use NewAPIIssueCommentClient() instead.
 type APIIssueCommentClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAPIIssueCommentClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &APIIssueCommentClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *APIIssueCommentClient) createOrUpdateCreateRequest(ctx context.Con
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -361,7 +361,7 @@ func (client *APIIssueCommentClient) getEntityTagHandleResponse(resp *http.Respo
 //   - issueID - Issue identifier. Must be unique in the current API Management service instance.
 //   - options - APIIssueCommentClientListByServiceOptions contains the optional parameters for the APIIssueCommentClient.NewListByServicePager
 //     method.
-func (client *APIIssueCommentClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, issueID string, options *APIIssueCommentClientListByServiceOptions) *runtime.Pager[APIIssueCommentClientListByServiceResponse] {
+func (client *APIIssueCommentClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, issueID string, options *APIIssueCommentClientListByServiceOptions) (*runtime.Pager[APIIssueCommentClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APIIssueCommentClientListByServiceResponse]{
 		More: func(page APIIssueCommentClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -440,3 +440,4 @@ func (client *APIIssueCommentClient) listByServiceHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

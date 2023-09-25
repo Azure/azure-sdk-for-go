@@ -23,7 +23,7 @@ import (
 // GalleriesClient contains the methods for the Galleries group.
 // Don't use this type directly, use NewGalleriesClient() instead.
 type GalleriesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGalleriesClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &GalleriesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -112,8 +112,8 @@ func (client *GalleriesClient) createOrUpdateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, gallery); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -254,7 +254,7 @@ func (client *GalleriesClient) getHandleResponse(resp *http.Response) (Galleries
 //
 // Generated from API version 2022-03-03
 //   - options - GalleriesClientListOptions contains the optional parameters for the GalleriesClient.NewListPager method.
-func (client *GalleriesClient) NewListPager(options *GalleriesClientListOptions) *runtime.Pager[GalleriesClientListResponse] {
+func (client *GalleriesClient) NewListPager(options *GalleriesClientListOptions) (*runtime.Pager[GalleriesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GalleriesClientListResponse]{
 		More: func(page GalleriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -315,7 +315,7 @@ func (client *GalleriesClient) listHandleResponse(resp *http.Response) (Gallerie
 //   - resourceGroupName - The name of the resource group.
 //   - options - GalleriesClientListByResourceGroupOptions contains the optional parameters for the GalleriesClient.NewListByResourceGroupPager
 //     method.
-func (client *GalleriesClient) NewListByResourceGroupPager(resourceGroupName string, options *GalleriesClientListByResourceGroupOptions) *runtime.Pager[GalleriesClientListByResourceGroupResponse] {
+func (client *GalleriesClient) NewListByResourceGroupPager(resourceGroupName string, options *GalleriesClientListByResourceGroupOptions) (*runtime.Pager[GalleriesClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GalleriesClientListByResourceGroupResponse]{
 		More: func(page GalleriesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -441,7 +441,8 @@ func (client *GalleriesClient) updateCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, gallery); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

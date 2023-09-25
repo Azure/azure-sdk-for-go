@@ -23,7 +23,7 @@ import (
 // UserIdentitiesClient contains the methods for the UserIdentities group.
 // Don't use this type directly, use NewUserIdentitiesClient() instead.
 type UserIdentitiesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewUserIdentitiesClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &UserIdentitiesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewUserIdentitiesClient(subscriptionID string, credential azcore.TokenCrede
 //   - serviceName - The name of the API Management service.
 //   - userID - User identifier. Must be unique in the current API Management service instance.
 //   - options - UserIdentitiesClientListOptions contains the optional parameters for the UserIdentitiesClient.NewListPager method.
-func (client *UserIdentitiesClient) NewListPager(resourceGroupName string, serviceName string, userID string, options *UserIdentitiesClientListOptions) *runtime.Pager[UserIdentitiesClientListResponse] {
+func (client *UserIdentitiesClient) NewListPager(resourceGroupName string, serviceName string, userID string, options *UserIdentitiesClientListOptions) (*runtime.Pager[UserIdentitiesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[UserIdentitiesClientListResponse]{
 		More: func(page UserIdentitiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -116,3 +116,4 @@ func (client *UserIdentitiesClient) listHandleResponse(resp *http.Response) (Use
 	}
 	return result, nil
 }
+

@@ -34,3 +34,4 @@ type TaskStepUpdateParametersClassification interface {
 	// GetTaskStepUpdateParameters returns the TaskStepUpdateParameters content of the underlying type.
 	GetTaskStepUpdateParameters() *TaskStepUpdateParameters
 }
+

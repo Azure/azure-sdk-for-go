@@ -24,7 +24,7 @@ import (
 // BackendClient contains the methods for the Backend group.
 // Don't use this type directly, use NewBackendClient() instead.
 type BackendClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewBackendClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &BackendClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -102,8 +102,8 @@ func (client *BackendClient) createOrUpdateCreateRequest(ctx context.Context, re
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -317,7 +317,7 @@ func (client *BackendClient) getEntityTagHandleResponse(resp *http.Response) (Ba
 //   - serviceName - The name of the API Management service.
 //   - options - BackendClientListByServiceOptions contains the optional parameters for the BackendClient.NewListByServicePager
 //     method.
-func (client *BackendClient) NewListByServicePager(resourceGroupName string, serviceName string, options *BackendClientListByServiceOptions) *runtime.Pager[BackendClientListByServiceResponse] {
+func (client *BackendClient) NewListByServicePager(resourceGroupName string, serviceName string, options *BackendClientListByServiceOptions) (*runtime.Pager[BackendClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[BackendClientListByServiceResponse]{
 		More: func(page BackendClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -444,8 +444,8 @@ func (client *BackendClient) reconnectCreateRequest(ctx context.Context, resourc
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -509,8 +509,8 @@ func (client *BackendClient) updateCreateRequest(ctx context.Context, resourceGr
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -525,3 +525,4 @@ func (client *BackendClient) updateHandleResponse(resp *http.Response) (BackendC
 	}
 	return result, nil
 }
+

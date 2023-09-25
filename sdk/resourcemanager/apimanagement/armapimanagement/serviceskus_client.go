@@ -23,7 +23,7 @@ import (
 // ServiceSKUsClient contains the methods for the APIManagementServiceSKUs group.
 // Don't use this type directly, use NewServiceSKUsClient() instead.
 type ServiceSKUsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewServiceSKUsClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &ServiceSKUsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewServiceSKUsClient(subscriptionID string, credential azcore.TokenCredenti
 //   - serviceName - The name of the API Management service.
 //   - options - ServiceSKUsClientListAvailableServiceSKUsOptions contains the optional parameters for the ServiceSKUsClient.NewListAvailableServiceSKUsPager
 //     method.
-func (client *ServiceSKUsClient) NewListAvailableServiceSKUsPager(resourceGroupName string, serviceName string, options *ServiceSKUsClientListAvailableServiceSKUsOptions) *runtime.Pager[ServiceSKUsClientListAvailableServiceSKUsResponse] {
+func (client *ServiceSKUsClient) NewListAvailableServiceSKUsPager(resourceGroupName string, serviceName string, options *ServiceSKUsClientListAvailableServiceSKUsOptions) (*runtime.Pager[ServiceSKUsClientListAvailableServiceSKUsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ServiceSKUsClientListAvailableServiceSKUsResponse]{
 		More: func(page ServiceSKUsClientListAvailableServiceSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -112,3 +112,4 @@ func (client *ServiceSKUsClient) listAvailableServiceSKUsHandleResponse(resp *ht
 	}
 	return result, nil
 }
+

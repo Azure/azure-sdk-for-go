@@ -24,7 +24,7 @@ import (
 // OperationClient contains the methods for the Operation group.
 // Don't use this type directly, use NewOperationClient() instead.
 type OperationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewOperationClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &OperationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -53,7 +53,7 @@ func NewOperationClient(subscriptionID string, credential azcore.TokenCredential
 //     ;rev=n as a suffix where n is the revision number.
 //   - options - OperationClientListByTagsOptions contains the optional parameters for the OperationClient.NewListByTagsPager
 //     method.
-func (client *OperationClient) NewListByTagsPager(resourceGroupName string, serviceName string, apiID string, options *OperationClientListByTagsOptions) *runtime.Pager[OperationClientListByTagsResponse] {
+func (client *OperationClient) NewListByTagsPager(resourceGroupName string, serviceName string, apiID string, options *OperationClientListByTagsOptions) (*runtime.Pager[OperationClientListByTagsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[OperationClientListByTagsResponse]{
 		More: func(page OperationClientListByTagsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -131,3 +131,4 @@ func (client *OperationClient) listByTagsHandleResponse(resp *http.Response) (Op
 	}
 	return result, nil
 }
+

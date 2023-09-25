@@ -63,8 +63,8 @@ type CapacityReservationGroupsClientDeleteOptions struct {
 // method.
 type CapacityReservationGroupsClientGetOptions struct {
 	// The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance views of the capacity
-	// reservations under the capacity reservation group which is a snapshot of the
-	// runtime properties of a capacity reservation that is managed by the platform and can change outside of control plane operations.
+// reservations under the capacity reservation group which is a snapshot of the
+// runtime properties of a capacity reservation that is managed by the platform and can change outside of control plane operations.
 	Expand *CapacityReservationGroupInstanceViewTypes
 }
 
@@ -72,8 +72,8 @@ type CapacityReservationGroupsClientGetOptions struct {
 // method.
 type CapacityReservationGroupsClientListByResourceGroupOptions struct {
 	// The expand expression to apply on the operation. Based on the expand param(s) specified we return Virtual Machine or ScaleSet
-	// VM Instance or both resource Ids which are associated to capacity
-	// reservation group in the response.
+// VM Instance or both resource Ids which are associated to capacity
+// reservation group in the response.
 	Expand *ExpandTypesForGetCapacityReservationGroups
 }
 
@@ -81,8 +81,8 @@ type CapacityReservationGroupsClientListByResourceGroupOptions struct {
 // method.
 type CapacityReservationGroupsClientListBySubscriptionOptions struct {
 	// The expand expression to apply on the operation. Based on the expand param(s) specified we return Virtual Machine or ScaleSet
-	// VM Instance or both resource Ids which are associated to capacity
-	// reservation group in the response.
+// VM Instance or both resource Ids which are associated to capacity
+// reservation group in the response.
 	Expand *ExpandTypesForGetCapacityReservationGroups
 }
 
@@ -116,8 +116,8 @@ type CapacityReservationsClientBeginUpdateOptions struct {
 // CapacityReservationsClientGetOptions contains the optional parameters for the CapacityReservationsClient.Get method.
 type CapacityReservationsClientGetOptions struct {
 	// The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime properties of the capacity
-	// reservation that is managed by the platform and can change outside of
-	// control plane operations.
+// reservation that is managed by the platform and can change outside of
+// control plane operations.
 	Expand *CapacityReservationInstanceViewTypes
 }
 
@@ -218,6 +218,9 @@ type CloudServiceRolesClientListOptions struct {
 // CloudServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudServicesClient.BeginCreateOrUpdate
 // method.
 type CloudServicesClientBeginCreateOrUpdateOptions struct {
+	// The cloud service object.
+	Parameters *CloudService
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -279,6 +282,9 @@ type CloudServicesClientBeginStartOptions struct {
 
 // CloudServicesClientBeginUpdateOptions contains the optional parameters for the CloudServicesClient.BeginUpdate method.
 type CloudServicesClientBeginUpdateOptions struct {
+	// The cloud service object.
+	Parameters *CloudServiceUpdate
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -307,6 +313,9 @@ type CloudServicesClientListOptions struct {
 // CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions contains the optional parameters for the CloudServicesUpdateDomainClient.BeginWalkUpdateDomain
 // method.
 type CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions struct {
+	// The update domain object.
+	Parameters *UpdateDomain
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -365,8 +374,8 @@ type DedicatedHostGroupsClientDeleteOptions struct {
 // DedicatedHostGroupsClientGetOptions contains the optional parameters for the DedicatedHostGroupsClient.Get method.
 type DedicatedHostGroupsClientGetOptions struct {
 	// The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance views of the dedicated
-	// hosts under the dedicated host group. 'UserData' is not supported for
-	// dedicated host group.
+// hosts under the dedicated host group. 'UserData' is not supported for
+// dedicated host group.
 	Expand *InstanceViewTypes
 }
 
@@ -415,7 +424,7 @@ type DedicatedHostsClientBeginUpdateOptions struct {
 // DedicatedHostsClientGetOptions contains the optional parameters for the DedicatedHostsClient.Get method.
 type DedicatedHostsClientGetOptions struct {
 	// The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance views of the dedicated
-	// host. 'UserData' is not supported for dedicated host.
+// host. 'UserData' is not supported for dedicated host.
 	Expand *InstanceViewTypes
 }
 
@@ -902,7 +911,7 @@ type RestorePointCollectionsClientCreateOrUpdateOptions struct {
 // RestorePointCollectionsClientGetOptions contains the optional parameters for the RestorePointCollectionsClient.Get method.
 type RestorePointCollectionsClientGetOptions struct {
 	// The expand expression to apply on the operation. If expand=restorePoints, server will return all contained restore points
-	// in the restorePointCollection.
+// in the restorePointCollection.
 	Expand *RestorePointCollectionExpandOptions
 }
 
@@ -939,7 +948,7 @@ type RestorePointsClientBeginDeleteOptions struct {
 // RestorePointsClientGetOptions contains the optional parameters for the RestorePointsClient.Get method.
 type RestorePointsClientGetOptions struct {
 	// The expand expression to apply on the operation. 'InstanceView' retrieves information about the run-time state of a restore
-	// point.
+// point.
 	Expand *RestorePointExpandOptions
 }
 
@@ -1084,9 +1093,9 @@ type VirtualMachineExtensionImagesClientListTypesOptions struct {
 // method.
 type VirtualMachineExtensionImagesClientListVersionsOptions struct {
 	// The filter to apply on the operation.
-	Filter  *string
+	Filter *string
 	Orderby *string
-	Top     *int32
+	Top *int32
 }
 
 // VirtualMachineExtensionsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineExtensionsClient.BeginCreateOrUpdate
@@ -1143,9 +1152,9 @@ type VirtualMachineImagesClientListOffersOptions struct {
 // VirtualMachineImagesClientListOptions contains the optional parameters for the VirtualMachineImagesClient.List method.
 type VirtualMachineImagesClientListOptions struct {
 	// The expand expression to apply on the operation.
-	Expand  *string
+	Expand *string
 	Orderby *string
-	Top     *int32
+	Top *int32
 }
 
 // VirtualMachineImagesClientListPublishersOptions contains the optional parameters for the VirtualMachineImagesClient.ListPublishers
@@ -1406,7 +1415,7 @@ type VirtualMachineScaleSetVMsClientBeginPowerOffOptions struct {
 	ResumeToken string
 
 	// The parameter to request non-graceful VM shutdown. True value for this flag indicates non-graceful shutdown whereas false
-	// indicates otherwise. Default value for this flag is false if not specified
+// indicates otherwise. Default value for this flag is false if not specified
 	SkipShutdown *bool
 }
 
@@ -1472,7 +1481,7 @@ type VirtualMachineScaleSetVMsClientGetInstanceViewOptions struct {
 // method.
 type VirtualMachineScaleSetVMsClientGetOptions struct {
 	// The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of the virtual machine.
-	// 'UserData' will retrieve the UserData of the virtual machine.
+// 'UserData' will retrieve the UserData of the virtual machine.
 	Expand *InstanceViewTypes
 }
 
@@ -1483,8 +1492,8 @@ type VirtualMachineScaleSetVMsClientListOptions struct {
 	Expand *string
 
 	// The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code, 'PowerState') eq true',
-	// 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq
-	// false'.
+// 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq
+// false'.
 	Filter *string
 
 	// The list parameters. Allowed values are 'instanceView', 'instanceView/statuses'.
@@ -1495,7 +1504,7 @@ type VirtualMachineScaleSetVMsClientListOptions struct {
 // method.
 type VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataOptions struct {
 	// Expiration duration in minutes for the SAS URIs with a value between 1 to 1440 minutes. Note: If not specified, SAS URIs
-	// will be generated with a default expiration duration of 120 minutes.
+// will be generated with a default expiration duration of 120 minutes.
 	SasURIExpirationTimeInMinutes *int32
 }
 
@@ -1516,7 +1525,7 @@ type VirtualMachineScaleSetsClientBeginCreateOrUpdateOptions struct {
 // method.
 type VirtualMachineScaleSetsClientBeginDeallocateOptions struct {
 	// Optional parameter to hibernate a virtual machine from the VM scale set. (This feature is available for VMSS with Flexible
-	// OrchestrationMode only)
+// OrchestrationMode only)
 	Hibernate *bool
 
 	// Resumes the LRO from the provided token.
@@ -1563,7 +1572,7 @@ type VirtualMachineScaleSetsClientBeginPowerOffOptions struct {
 	ResumeToken string
 
 	// The parameter to request non-graceful VM shutdown. True value for this flag indicates non-graceful shutdown whereas false
-	// indicates otherwise. Default value for this flag is false if not specified
+// indicates otherwise. Default value for this flag is false if not specified
 	SkipShutdown *bool
 
 	// A list of virtual machine instance IDs from the VM scale set.
@@ -1679,7 +1688,7 @@ type VirtualMachineScaleSetsClientGetOSUpgradeHistoryOptions struct {
 // VirtualMachineScaleSetsClientGetOptions contains the optional parameters for the VirtualMachineScaleSetsClient.Get method.
 type VirtualMachineScaleSetsClientGetOptions struct {
 	// The expand expression to apply on the operation. 'UserData' retrieves the UserData property of the VM scale set that was
-	// provided by the user during the VM scale set Create/Update operation
+// provided by the user during the VM scale set Create/Update operation
 	Expand *ExpandTypesForGetVMScaleSets
 }
 
@@ -1779,7 +1788,7 @@ type VirtualMachinesClientBeginPowerOffOptions struct {
 	ResumeToken string
 
 	// The parameter to request non-graceful VM shutdown. True value for this flag indicates non-graceful shutdown whereas false
-	// indicates otherwise. Default value for this flag is false if not specified
+// indicates otherwise. Default value for this flag is false if not specified
 	SkipShutdown *bool
 }
 
@@ -1838,9 +1847,9 @@ type VirtualMachinesClientGeneralizeOptions struct {
 // VirtualMachinesClientGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
 type VirtualMachinesClientGetOptions struct {
 	// The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime properties of the virtual
-	// machine that is managed by the platform and can change outside of control
-	// plane operations. 'UserData' retrieves the UserData property as part of the VM model view that was provided by the user
-	// during the VM Create/Update operation.
+// machine that is managed by the platform and can change outside of control
+// plane operations. 'UserData' retrieves the UserData property as part of the VM model view that was provided by the user
+// during the VM Create/Update operation.
 	Expand *InstanceViewTypes
 }
 
@@ -1852,11 +1861,11 @@ type VirtualMachinesClientInstanceViewOptions struct {
 // VirtualMachinesClientListAllOptions contains the optional parameters for the VirtualMachinesClient.NewListAllPager method.
 type VirtualMachinesClientListAllOptions struct {
 	// The expand expression to apply on operation. 'instanceView' enables fetching run time status of all Virtual Machines, this
-	// can only be specified if a valid $filter option is specified
+// can only be specified if a valid $filter option is specified
 	Expand *ExpandTypesForListVMs
 
 	// The system query option to filter VMs returned in the response. Allowed value is 'virtualMachineScaleSet/id' eq
-	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}'
+// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}'
 	Filter *string
 
 	// statusOnly=true enables fetching run time status of all Virtual Machines in the subscription.
@@ -1878,11 +1887,11 @@ type VirtualMachinesClientListByLocationOptions struct {
 // VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.NewListPager method.
 type VirtualMachinesClientListOptions struct {
 	// The expand expression to apply on operation. 'instanceView' enables fetching run time status of all Virtual Machines, this
-	// can only be specified if a valid $filter option is specified
+// can only be specified if a valid $filter option is specified
 	Expand *ExpandTypeForListVMs
 
 	// The system query option to filter VMs returned in the response. Allowed value is 'virtualMachineScaleSet/id' eq
-	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}'
+// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}'
 	Filter *string
 }
 
@@ -1890,7 +1899,7 @@ type VirtualMachinesClientListOptions struct {
 // method.
 type VirtualMachinesClientRetrieveBootDiagnosticsDataOptions struct {
 	// Expiration duration in minutes for the SAS URIs with a value between 1 to 1440 minutes. Note: If not specified, SAS URIs
-	// will be generated with a default expiration duration of 120 minutes.
+// will be generated with a default expiration duration of 120 minutes.
 	SasURIExpirationTimeInMinutes *int32
 }
 
@@ -1899,3 +1908,4 @@ type VirtualMachinesClientRetrieveBootDiagnosticsDataOptions struct {
 type VirtualMachinesClientSimulateEvictionOptions struct {
 	// placeholder for future optional parameters
 }
+

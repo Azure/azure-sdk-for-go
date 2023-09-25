@@ -23,7 +23,7 @@ import (
 // APIPolicyClient contains the methods for the APIPolicy group.
 // Don't use this type directly, use NewAPIPolicyClient() instead.
 type APIPolicyClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAPIPolicyClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &APIPolicyClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -108,8 +108,8 @@ func (client *APIPolicyClient) createOrUpdateCreateRequest(ctx context.Context, 
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -402,3 +402,4 @@ func (client *APIPolicyClient) listByAPIHandleResponse(resp *http.Response) (API
 	}
 	return result, nil
 }
+

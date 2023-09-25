@@ -9,21 +9,21 @@
 package armcompute
 
 const (
-	moduleName    = "armcompute"
+	moduleName = "armcompute"
 	moduleVersion = "v5.2.0"
 )
 
 type AccessLevel string
 
 const (
-	AccessLevelNone  AccessLevel = "None"
-	AccessLevelRead  AccessLevel = "Read"
+	AccessLevelNone AccessLevel = "None"
+	AccessLevelRead AccessLevel = "Read"
 	AccessLevelWrite AccessLevel = "Write"
 )
 
 // PossibleAccessLevelValues returns the possible values for the AccessLevel const type.
 func PossibleAccessLevelValues() []AccessLevel {
-	return []AccessLevel{
+	return []AccessLevel{	
 		AccessLevelNone,
 		AccessLevelRead,
 		AccessLevelWrite,
@@ -34,15 +34,15 @@ func PossibleAccessLevelValues() []AccessLevel {
 type AggregatedReplicationState string
 
 const (
-	AggregatedReplicationStateCompleted  AggregatedReplicationState = "Completed"
-	AggregatedReplicationStateFailed     AggregatedReplicationState = "Failed"
+	AggregatedReplicationStateCompleted AggregatedReplicationState = "Completed"
+	AggregatedReplicationStateFailed AggregatedReplicationState = "Failed"
 	AggregatedReplicationStateInProgress AggregatedReplicationState = "InProgress"
-	AggregatedReplicationStateUnknown    AggregatedReplicationState = "Unknown"
+	AggregatedReplicationStateUnknown AggregatedReplicationState = "Unknown"
 )
 
 // PossibleAggregatedReplicationStateValues returns the possible values for the AggregatedReplicationState const type.
 func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
-	return []AggregatedReplicationState{
+	return []AggregatedReplicationState{	
 		AggregatedReplicationStateCompleted,
 		AggregatedReplicationStateFailed,
 		AggregatedReplicationStateInProgress,
@@ -54,14 +54,14 @@ func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
 type AlternativeType string
 
 const (
-	AlternativeTypeNone  AlternativeType = "None"
+	AlternativeTypeNone AlternativeType = "None"
 	AlternativeTypeOffer AlternativeType = "Offer"
-	AlternativeTypePlan  AlternativeType = "Plan"
+	AlternativeTypePlan AlternativeType = "Plan"
 )
 
 // PossibleAlternativeTypeValues returns the possible values for the AlternativeType const type.
 func PossibleAlternativeTypeValues() []AlternativeType {
-	return []AlternativeType{
+	return []AlternativeType{	
 		AlternativeTypeNone,
 		AlternativeTypeOffer,
 		AlternativeTypePlan,
@@ -73,12 +73,12 @@ type Architecture string
 
 const (
 	ArchitectureArm64 Architecture = "Arm64"
-	ArchitectureX64   Architecture = "x64"
+	ArchitectureX64 Architecture = "x64"
 )
 
 // PossibleArchitectureValues returns the possible values for the Architecture const type.
 func PossibleArchitectureValues() []Architecture {
-	return []Architecture{
+	return []Architecture{	
 		ArchitectureArm64,
 		ArchitectureX64,
 	}
@@ -89,12 +89,12 @@ type ArchitectureTypes string
 
 const (
 	ArchitectureTypesArm64 ArchitectureTypes = "Arm64"
-	ArchitectureTypesX64   ArchitectureTypes = "x64"
+	ArchitectureTypesX64 ArchitectureTypes = "x64"
 )
 
 // PossibleArchitectureTypesValues returns the possible values for the ArchitectureTypes const type.
 func PossibleArchitectureTypesValues() []ArchitectureTypes {
-	return []ArchitectureTypes{
+	return []ArchitectureTypes{	
 		ArchitectureTypesArm64,
 		ArchitectureTypesX64,
 	}
@@ -111,7 +111,7 @@ const (
 
 // PossibleAvailabilitySetSKUTypesValues returns the possible values for the AvailabilitySetSKUTypes const type.
 func PossibleAvailabilitySetSKUTypesValues() []AvailabilitySetSKUTypes {
-	return []AvailabilitySetSKUTypes{
+	return []AvailabilitySetSKUTypes{	
 		AvailabilitySetSKUTypesAligned,
 		AvailabilitySetSKUTypesClassic,
 	}
@@ -122,14 +122,14 @@ func PossibleAvailabilitySetSKUTypesValues() []AvailabilitySetSKUTypes {
 type CachingTypes string
 
 const (
-	CachingTypesNone      CachingTypes = "None"
-	CachingTypesReadOnly  CachingTypes = "ReadOnly"
+	CachingTypesNone CachingTypes = "None"
+	CachingTypesReadOnly CachingTypes = "ReadOnly"
 	CachingTypesReadWrite CachingTypes = "ReadWrite"
 )
 
 // PossibleCachingTypesValues returns the possible values for the CachingTypes const type.
 func PossibleCachingTypesValues() []CachingTypes {
-	return []CachingTypes{
+	return []CachingTypes{	
 		CachingTypesNone,
 		CachingTypesReadOnly,
 		CachingTypesReadWrite,
@@ -144,7 +144,7 @@ const (
 
 // PossibleCapacityReservationGroupInstanceViewTypesValues returns the possible values for the CapacityReservationGroupInstanceViewTypes const type.
 func PossibleCapacityReservationGroupInstanceViewTypesValues() []CapacityReservationGroupInstanceViewTypes {
-	return []CapacityReservationGroupInstanceViewTypes{
+	return []CapacityReservationGroupInstanceViewTypes{	
 		CapacityReservationGroupInstanceViewTypesInstanceView,
 	}
 }
@@ -157,7 +157,7 @@ const (
 
 // PossibleCapacityReservationInstanceViewTypesValues returns the possible values for the CapacityReservationInstanceViewTypes const type.
 func PossibleCapacityReservationInstanceViewTypesValues() []CapacityReservationInstanceViewTypes {
-	return []CapacityReservationInstanceViewTypes{
+	return []CapacityReservationInstanceViewTypes{	
 		CapacityReservationInstanceViewTypesInstanceView,
 	}
 }
@@ -170,12 +170,12 @@ type CloudServiceSlotType string
 
 const (
 	CloudServiceSlotTypeProduction CloudServiceSlotType = "Production"
-	CloudServiceSlotTypeStaging    CloudServiceSlotType = "Staging"
+	CloudServiceSlotTypeStaging CloudServiceSlotType = "Staging"
 )
 
 // PossibleCloudServiceSlotTypeValues returns the possible values for the CloudServiceSlotType const type.
 func PossibleCloudServiceSlotTypeValues() []CloudServiceSlotType {
-	return []CloudServiceSlotType{
+	return []CloudServiceSlotType{	
 		CloudServiceSlotTypeProduction,
 		CloudServiceSlotTypeStaging,
 	}
@@ -193,14 +193,14 @@ func PossibleCloudServiceSlotTypeValues() []CloudServiceSlotType {
 type CloudServiceUpgradeMode string
 
 const (
-	CloudServiceUpgradeModeAuto         CloudServiceUpgradeMode = "Auto"
-	CloudServiceUpgradeModeManual       CloudServiceUpgradeMode = "Manual"
+	CloudServiceUpgradeModeAuto CloudServiceUpgradeMode = "Auto"
+	CloudServiceUpgradeModeManual CloudServiceUpgradeMode = "Manual"
 	CloudServiceUpgradeModeSimultaneous CloudServiceUpgradeMode = "Simultaneous"
 )
 
 // PossibleCloudServiceUpgradeModeValues returns the possible values for the CloudServiceUpgradeMode const type.
 func PossibleCloudServiceUpgradeModeValues() []CloudServiceUpgradeMode {
-	return []CloudServiceUpgradeMode{
+	return []CloudServiceUpgradeMode{	
 		CloudServiceUpgradeModeAuto,
 		CloudServiceUpgradeModeManual,
 		CloudServiceUpgradeModeSimultaneous,
@@ -212,13 +212,13 @@ type ConfidentialVMEncryptionType string
 
 const (
 	ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk ConfidentialVMEncryptionType = "EncryptedVMGuestStateOnlyWithPmk"
-	ConfidentialVMEncryptionTypeEncryptedWithCmk                 ConfidentialVMEncryptionType = "EncryptedWithCmk"
-	ConfidentialVMEncryptionTypeEncryptedWithPmk                 ConfidentialVMEncryptionType = "EncryptedWithPmk"
+	ConfidentialVMEncryptionTypeEncryptedWithCmk ConfidentialVMEncryptionType = "EncryptedWithCmk"
+	ConfidentialVMEncryptionTypeEncryptedWithPmk ConfidentialVMEncryptionType = "EncryptedWithPmk"
 )
 
 // PossibleConfidentialVMEncryptionTypeValues returns the possible values for the ConfidentialVMEncryptionType const type.
 func PossibleConfidentialVMEncryptionTypeValues() []ConfidentialVMEncryptionType {
-	return []ConfidentialVMEncryptionType{
+	return []ConfidentialVMEncryptionType{	
 		ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk,
 		ConfidentialVMEncryptionTypeEncryptedWithCmk,
 		ConfidentialVMEncryptionTypeEncryptedWithPmk,
@@ -232,13 +232,13 @@ type ConsistencyModeTypes string
 
 const (
 	ConsistencyModeTypesApplicationConsistent ConsistencyModeTypes = "ApplicationConsistent"
-	ConsistencyModeTypesCrashConsistent       ConsistencyModeTypes = "CrashConsistent"
-	ConsistencyModeTypesFileSystemConsistent  ConsistencyModeTypes = "FileSystemConsistent"
+	ConsistencyModeTypesCrashConsistent ConsistencyModeTypes = "CrashConsistent"
+	ConsistencyModeTypesFileSystemConsistent ConsistencyModeTypes = "FileSystemConsistent"
 )
 
 // PossibleConsistencyModeTypesValues returns the possible values for the ConsistencyModeTypes const type.
 func PossibleConsistencyModeTypesValues() []ConsistencyModeTypes {
-	return []ConsistencyModeTypes{
+	return []ConsistencyModeTypes{	
 		ConsistencyModeTypesApplicationConsistent,
 		ConsistencyModeTypesCrashConsistent,
 		ConsistencyModeTypesFileSystemConsistent,
@@ -251,13 +251,13 @@ type CopyCompletionErrorReason string
 
 const (
 	// CopyCompletionErrorReasonCopySourceNotFound - Indicates that the source snapshot was deleted while the background copy
-	// of the resource created via CopyStart operation was in progress.
+// of the resource created via CopyStart operation was in progress.
 	CopyCompletionErrorReasonCopySourceNotFound CopyCompletionErrorReason = "CopySourceNotFound"
 )
 
 // PossibleCopyCompletionErrorReasonValues returns the possible values for the CopyCompletionErrorReason const type.
 func PossibleCopyCompletionErrorReasonValues() []CopyCompletionErrorReason {
-	return []CopyCompletionErrorReason{
+	return []CopyCompletionErrorReason{	
 		CopyCompletionErrorReasonCopySourceNotFound,
 	}
 }
@@ -267,7 +267,7 @@ type DataAccessAuthMode string
 
 const (
 	// DataAccessAuthModeAzureActiveDirectory - When export/upload URL is used, the system checks if the user has an identity
-	// in Azure Active Directory and has necessary permissions to export/upload the data. Please refer to aka.ms/DisksAzureADAuth.
+// in Azure Active Directory and has necessary permissions to export/upload the data. Please refer to aka.ms/DisksAzureADAuth.
 	DataAccessAuthModeAzureActiveDirectory DataAccessAuthMode = "AzureActiveDirectory"
 	// DataAccessAuthModeNone - No additional authentication would be performed when accessing export/upload URL.
 	DataAccessAuthModeNone DataAccessAuthMode = "None"
@@ -275,7 +275,7 @@ const (
 
 // PossibleDataAccessAuthModeValues returns the possible values for the DataAccessAuthMode const type.
 func PossibleDataAccessAuthModeValues() []DataAccessAuthMode {
-	return []DataAccessAuthMode{
+	return []DataAccessAuthMode{	
 		DataAccessAuthModeAzureActiveDirectory,
 		DataAccessAuthModeNone,
 	}
@@ -286,14 +286,14 @@ func PossibleDataAccessAuthModeValues() []DataAccessAuthMode {
 type DedicatedHostLicenseTypes string
 
 const (
-	DedicatedHostLicenseTypesNone                   DedicatedHostLicenseTypes = "None"
-	DedicatedHostLicenseTypesWindowsServerHybrid    DedicatedHostLicenseTypes = "Windows_Server_Hybrid"
+	DedicatedHostLicenseTypesNone DedicatedHostLicenseTypes = "None"
+	DedicatedHostLicenseTypesWindowsServerHybrid DedicatedHostLicenseTypes = "Windows_Server_Hybrid"
 	DedicatedHostLicenseTypesWindowsServerPerpetual DedicatedHostLicenseTypes = "Windows_Server_Perpetual"
 )
 
 // PossibleDedicatedHostLicenseTypesValues returns the possible values for the DedicatedHostLicenseTypes const type.
 func PossibleDedicatedHostLicenseTypesValues() []DedicatedHostLicenseTypes {
-	return []DedicatedHostLicenseTypes{
+	return []DedicatedHostLicenseTypes{	
 		DedicatedHostLicenseTypesNone,
 		DedicatedHostLicenseTypesWindowsServerHybrid,
 		DedicatedHostLicenseTypesWindowsServerPerpetual,
@@ -310,7 +310,7 @@ const (
 
 // PossibleDeleteOptionsValues returns the possible values for the DeleteOptions const type.
 func PossibleDeleteOptionsValues() []DeleteOptions {
-	return []DeleteOptions{
+	return []DeleteOptions{	
 		DeleteOptionsDelete,
 		DeleteOptionsDetach,
 	}
@@ -325,7 +325,7 @@ const (
 
 // PossibleDiffDiskOptionsValues returns the possible values for the DiffDiskOptions const type.
 func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
-	return []DiffDiskOptions{
+	return []DiffDiskOptions{	
 		DiffDiskOptionsLocal,
 	}
 }
@@ -339,13 +339,13 @@ func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 type DiffDiskPlacement string
 
 const (
-	DiffDiskPlacementCacheDisk    DiffDiskPlacement = "CacheDisk"
+	DiffDiskPlacementCacheDisk DiffDiskPlacement = "CacheDisk"
 	DiffDiskPlacementResourceDisk DiffDiskPlacement = "ResourceDisk"
 )
 
 // PossibleDiffDiskPlacementValues returns the possible values for the DiffDiskPlacement const type.
 func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
-	return []DiffDiskPlacement{
+	return []DiffDiskPlacement{	
 		DiffDiskPlacementCacheDisk,
 		DiffDiskPlacementResourceDisk,
 	}
@@ -367,7 +367,7 @@ const (
 
 // PossibleDiskControllerTypesValues returns the possible values for the DiskControllerTypes const type.
 func PossibleDiskControllerTypesValues() []DiskControllerTypes {
-	return []DiskControllerTypes{
+	return []DiskControllerTypes{	
 		DiskControllerTypesNVMe,
 		DiskControllerTypesSCSI,
 	}
@@ -384,31 +384,31 @@ const (
 	// DiskCreateOptionCopyFromSanSnapshot - Create a new disk by exporting from elastic san volume snapshot
 	DiskCreateOptionCopyFromSanSnapshot DiskCreateOption = "CopyFromSanSnapshot"
 	// DiskCreateOptionCopyStart - Create a new disk by using a deep copy process, where the resource creation is considered complete
-	// only after all data has been copied from the source.
+// only after all data has been copied from the source.
 	DiskCreateOptionCopyStart DiskCreateOption = "CopyStart"
 	// DiskCreateOptionEmpty - Create an empty data disk of a size given by diskSizeGB.
 	DiskCreateOptionEmpty DiskCreateOption = "Empty"
 	// DiskCreateOptionFromImage - Create a new disk from a platform image specified by the given imageReference or galleryImageReference.
 	DiskCreateOptionFromImage DiskCreateOption = "FromImage"
 	// DiskCreateOptionImport - Create a disk by importing from a blob specified by a sourceUri in a storage account specified
-	// by storageAccountId.
+// by storageAccountId.
 	DiskCreateOptionImport DiskCreateOption = "Import"
 	// DiskCreateOptionImportSecure - Similar to Import create option. Create a new Trusted Launch VM or Confidential VM supported
-	// disk by importing additional blob for VM guest state specified by securityDataUri in storage account specified by storageAccountId
+// disk by importing additional blob for VM guest state specified by securityDataUri in storage account specified by storageAccountId
 	DiskCreateOptionImportSecure DiskCreateOption = "ImportSecure"
 	// DiskCreateOptionRestore - Create a new disk by copying from a backup recovery point.
 	DiskCreateOptionRestore DiskCreateOption = "Restore"
 	// DiskCreateOptionUpload - Create a new disk by obtaining a write token and using it to directly upload the contents of the
-	// disk.
+// disk.
 	DiskCreateOptionUpload DiskCreateOption = "Upload"
 	// DiskCreateOptionUploadPreparedSecure - Similar to Upload create option. Create a new Trusted Launch VM or Confidential
-	// VM supported disk and upload using write token in both disk and VM guest state
+// VM supported disk and upload using write token in both disk and VM guest state
 	DiskCreateOptionUploadPreparedSecure DiskCreateOption = "UploadPreparedSecure"
 )
 
 // PossibleDiskCreateOptionValues returns the possible values for the DiskCreateOption const type.
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
-	return []DiskCreateOption{
+	return []DiskCreateOption{	
 		DiskCreateOptionAttach,
 		DiskCreateOptionCopy,
 		DiskCreateOptionCopyFromSanSnapshot,
@@ -431,14 +431,14 @@ func PossibleDiskCreateOptionValues() []DiskCreateOption {
 type DiskCreateOptionTypes string
 
 const (
-	DiskCreateOptionTypesAttach    DiskCreateOptionTypes = "Attach"
-	DiskCreateOptionTypesEmpty     DiskCreateOptionTypes = "Empty"
+	DiskCreateOptionTypesAttach DiskCreateOptionTypes = "Attach"
+	DiskCreateOptionTypesEmpty DiskCreateOptionTypes = "Empty"
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = "FromImage"
 )
 
 // PossibleDiskCreateOptionTypesValues returns the possible values for the DiskCreateOptionTypes const type.
 func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
-	return []DiskCreateOptionTypes{
+	return []DiskCreateOptionTypes{	
 		DiskCreateOptionTypesAttach,
 		DiskCreateOptionTypesEmpty,
 		DiskCreateOptionTypesFromImage,
@@ -458,7 +458,7 @@ const (
 
 // PossibleDiskDeleteOptionTypesValues returns the possible values for the DiskDeleteOptionTypes const type.
 func PossibleDiskDeleteOptionTypesValues() []DiskDeleteOptionTypes {
-	return []DiskDeleteOptionTypes{
+	return []DiskDeleteOptionTypes{	
 		DiskDeleteOptionTypesDelete,
 		DiskDeleteOptionTypesDetach,
 	}
@@ -480,7 +480,7 @@ const (
 
 // PossibleDiskDetachOptionTypesValues returns the possible values for the DiskDetachOptionTypes const type.
 func PossibleDiskDetachOptionTypesValues() []DiskDetachOptionTypes {
-	return []DiskDetachOptionTypes{
+	return []DiskDetachOptionTypes{	
 		DiskDetachOptionTypesForceDetach,
 	}
 }
@@ -491,15 +491,15 @@ func PossibleDiskDetachOptionTypesValues() []DiskDetachOptionTypes {
 type DiskEncryptionSetIdentityType string
 
 const (
-	DiskEncryptionSetIdentityTypeNone                       DiskEncryptionSetIdentityType = "None"
-	DiskEncryptionSetIdentityTypeSystemAssigned             DiskEncryptionSetIdentityType = "SystemAssigned"
+	DiskEncryptionSetIdentityTypeNone DiskEncryptionSetIdentityType = "None"
+	DiskEncryptionSetIdentityTypeSystemAssigned DiskEncryptionSetIdentityType = "SystemAssigned"
 	DiskEncryptionSetIdentityTypeSystemAssignedUserAssigned DiskEncryptionSetIdentityType = "SystemAssigned, UserAssigned"
-	DiskEncryptionSetIdentityTypeUserAssigned               DiskEncryptionSetIdentityType = "UserAssigned"
+	DiskEncryptionSetIdentityTypeUserAssigned DiskEncryptionSetIdentityType = "UserAssigned"
 )
 
 // PossibleDiskEncryptionSetIdentityTypeValues returns the possible values for the DiskEncryptionSetIdentityType const type.
 func PossibleDiskEncryptionSetIdentityTypeValues() []DiskEncryptionSetIdentityType {
-	return []DiskEncryptionSetIdentityType{
+	return []DiskEncryptionSetIdentityType{	
 		DiskEncryptionSetIdentityTypeNone,
 		DiskEncryptionSetIdentityTypeSystemAssigned,
 		DiskEncryptionSetIdentityTypeSystemAssignedUserAssigned,
@@ -512,19 +512,19 @@ type DiskEncryptionSetType string
 
 const (
 	// DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey - Confidential VM supported disk and VM guest state would be
-	// encrypted with customer managed key.
+// encrypted with customer managed key.
 	DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey DiskEncryptionSetType = "ConfidentialVmEncryptedWithCustomerKey"
 	// DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey - Resource using diskEncryptionSet would be encrypted at rest with
-	// Customer managed key that can be changed and revoked by a customer.
+// Customer managed key that can be changed and revoked by a customer.
 	DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey DiskEncryptionSetType = "EncryptionAtRestWithCustomerKey"
 	// DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys - Resource using diskEncryptionSet would be encrypted
-	// at rest with two layers of encryption. One of the keys is Customer managed and the other key is Platform managed.
+// at rest with two layers of encryption. One of the keys is Customer managed and the other key is Platform managed.
 	DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys DiskEncryptionSetType = "EncryptionAtRestWithPlatformAndCustomerKeys"
 )
 
 // PossibleDiskEncryptionSetTypeValues returns the possible values for the DiskEncryptionSetType const type.
 func PossibleDiskEncryptionSetTypeValues() []DiskEncryptionSetType {
-	return []DiskEncryptionSetType{
+	return []DiskEncryptionSetType{	
 		DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey,
 		DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey,
 		DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys,
@@ -536,22 +536,22 @@ type DiskSecurityTypes string
 
 const (
 	// DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey - Indicates Confidential VM disk with both OS disk and VM guest
-	// state encrypted with a customer managed key
+// state encrypted with a customer managed key
 	DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey DiskSecurityTypes = "ConfidentialVM_DiskEncryptedWithCustomerKey"
 	// DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey - Indicates Confidential VM disk with both OS disk and VM guest
-	// state encrypted with a platform managed key
+// state encrypted with a platform managed key
 	DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey DiskSecurityTypes = "ConfidentialVM_DiskEncryptedWithPlatformKey"
 	// DiskSecurityTypesConfidentialVMVmguestStateOnlyEncryptedWithPlatformKey - Indicates Confidential VM disk with only VM guest
-	// state encrypted
+// state encrypted
 	DiskSecurityTypesConfidentialVMVmguestStateOnlyEncryptedWithPlatformKey DiskSecurityTypes = "ConfidentialVM_VMGuestStateOnlyEncryptedWithPlatformKey"
 	// DiskSecurityTypesTrustedLaunch - Trusted Launch provides security features such as secure boot and virtual Trusted Platform
-	// Module (vTPM)
+// Module (vTPM)
 	DiskSecurityTypesTrustedLaunch DiskSecurityTypes = "TrustedLaunch"
 )
 
 // PossibleDiskSecurityTypesValues returns the possible values for the DiskSecurityTypes const type.
 func PossibleDiskSecurityTypesValues() []DiskSecurityTypes {
-	return []DiskSecurityTypes{
+	return []DiskSecurityTypes{	
 		DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey,
 		DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey,
 		DiskSecurityTypesConfidentialVMVmguestStateOnlyEncryptedWithPlatformKey,
@@ -583,7 +583,7 @@ const (
 
 // PossibleDiskStateValues returns the possible values for the DiskState const type.
 func PossibleDiskStateValues() []DiskState {
-	return []DiskState{
+	return []DiskState{	
 		DiskStateActiveSAS,
 		DiskStateActiveSASFrozen,
 		DiskStateActiveUpload,
@@ -600,31 +600,31 @@ type DiskStorageAccountTypes string
 
 const (
 	// DiskStorageAccountTypesPremiumLRS - Premium SSD locally redundant storage. Best for production and performance sensitive
-	// workloads.
+// workloads.
 	DiskStorageAccountTypesPremiumLRS DiskStorageAccountTypes = "Premium_LRS"
 	// DiskStorageAccountTypesPremiumV2LRS - Premium SSD v2 locally redundant storage. Best for production and performance-sensitive
-	// workloads that consistently require low latency and high IOPS and throughput.
+// workloads that consistently require low latency and high IOPS and throughput.
 	DiskStorageAccountTypesPremiumV2LRS DiskStorageAccountTypes = "PremiumV2_LRS"
 	// DiskStorageAccountTypesPremiumZRS - Premium SSD zone redundant storage. Best for the production workloads that need storage
-	// resiliency against zone failures.
+// resiliency against zone failures.
 	DiskStorageAccountTypesPremiumZRS DiskStorageAccountTypes = "Premium_ZRS"
 	// DiskStorageAccountTypesStandardLRS - Standard HDD locally redundant storage. Best for backup, non-critical, and infrequent
-	// access.
+// access.
 	DiskStorageAccountTypesStandardLRS DiskStorageAccountTypes = "Standard_LRS"
 	// DiskStorageAccountTypesStandardSSDLRS - Standard SSD locally redundant storage. Best for web servers, lightly used enterprise
-	// applications and dev/test.
+// applications and dev/test.
 	DiskStorageAccountTypesStandardSSDLRS DiskStorageAccountTypes = "StandardSSD_LRS"
 	// DiskStorageAccountTypesStandardSSDZRS - Standard SSD zone redundant storage. Best for web servers, lightly used enterprise
-	// applications and dev/test that need storage resiliency against zone failures.
+// applications and dev/test that need storage resiliency against zone failures.
 	DiskStorageAccountTypesStandardSSDZRS DiskStorageAccountTypes = "StandardSSD_ZRS"
 	// DiskStorageAccountTypesUltraSSDLRS - Ultra SSD locally redundant storage. Best for IO-intensive workloads such as SAP HANA,
-	// top tier databases (for example, SQL, Oracle), and other transaction-heavy workloads.
+// top tier databases (for example, SQL, Oracle), and other transaction-heavy workloads.
 	DiskStorageAccountTypesUltraSSDLRS DiskStorageAccountTypes = "UltraSSD_LRS"
 )
 
 // PossibleDiskStorageAccountTypesValues returns the possible values for the DiskStorageAccountTypes const type.
 func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
-	return []DiskStorageAccountTypes{
+	return []DiskStorageAccountTypes{	
 		DiskStorageAccountTypesPremiumLRS,
 		DiskStorageAccountTypesPremiumV2LRS,
 		DiskStorageAccountTypesPremiumZRS,
@@ -641,15 +641,15 @@ func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 type DomainNameLabelScopeTypes string
 
 const (
-	DomainNameLabelScopeTypesNoReuse            DomainNameLabelScopeTypes = "NoReuse"
+	DomainNameLabelScopeTypesNoReuse DomainNameLabelScopeTypes = "NoReuse"
 	DomainNameLabelScopeTypesResourceGroupReuse DomainNameLabelScopeTypes = "ResourceGroupReuse"
-	DomainNameLabelScopeTypesSubscriptionReuse  DomainNameLabelScopeTypes = "SubscriptionReuse"
-	DomainNameLabelScopeTypesTenantReuse        DomainNameLabelScopeTypes = "TenantReuse"
+	DomainNameLabelScopeTypesSubscriptionReuse DomainNameLabelScopeTypes = "SubscriptionReuse"
+	DomainNameLabelScopeTypesTenantReuse DomainNameLabelScopeTypes = "TenantReuse"
 )
 
 // PossibleDomainNameLabelScopeTypesValues returns the possible values for the DomainNameLabelScopeTypes const type.
 func PossibleDomainNameLabelScopeTypesValues() []DomainNameLabelScopeTypes {
-	return []DomainNameLabelScopeTypes{
+	return []DomainNameLabelScopeTypes{	
 		DomainNameLabelScopeTypesNoReuse,
 		DomainNameLabelScopeTypesResourceGroupReuse,
 		DomainNameLabelScopeTypesSubscriptionReuse,
@@ -661,15 +661,15 @@ func PossibleDomainNameLabelScopeTypesValues() []DomainNameLabelScopeTypes {
 type EdgeZoneStorageAccountType string
 
 const (
-	EdgeZoneStorageAccountTypePremiumLRS     EdgeZoneStorageAccountType = "Premium_LRS"
-	EdgeZoneStorageAccountTypeStandardLRS    EdgeZoneStorageAccountType = "Standard_LRS"
+	EdgeZoneStorageAccountTypePremiumLRS EdgeZoneStorageAccountType = "Premium_LRS"
+	EdgeZoneStorageAccountTypeStandardLRS EdgeZoneStorageAccountType = "Standard_LRS"
 	EdgeZoneStorageAccountTypeStandardSSDLRS EdgeZoneStorageAccountType = "StandardSSD_LRS"
-	EdgeZoneStorageAccountTypeStandardZRS    EdgeZoneStorageAccountType = "Standard_ZRS"
+	EdgeZoneStorageAccountTypeStandardZRS EdgeZoneStorageAccountType = "Standard_ZRS"
 )
 
 // PossibleEdgeZoneStorageAccountTypeValues returns the possible values for the EdgeZoneStorageAccountType const type.
 func PossibleEdgeZoneStorageAccountTypeValues() []EdgeZoneStorageAccountType {
-	return []EdgeZoneStorageAccountType{
+	return []EdgeZoneStorageAccountType{	
 		EdgeZoneStorageAccountTypePremiumLRS,
 		EdgeZoneStorageAccountTypeStandardLRS,
 		EdgeZoneStorageAccountTypeStandardSSDLRS,
@@ -682,19 +682,19 @@ type EncryptionType string
 
 const (
 	// EncryptionTypeEncryptionAtRestWithCustomerKey - Disk is encrypted at rest with Customer managed key that can be changed
-	// and revoked by a customer.
+// and revoked by a customer.
 	EncryptionTypeEncryptionAtRestWithCustomerKey EncryptionType = "EncryptionAtRestWithCustomerKey"
 	// EncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys - Disk is encrypted at rest with 2 layers of encryption. One
-	// of the keys is Customer managed and the other key is Platform managed.
+// of the keys is Customer managed and the other key is Platform managed.
 	EncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys EncryptionType = "EncryptionAtRestWithPlatformAndCustomerKeys"
 	// EncryptionTypeEncryptionAtRestWithPlatformKey - Disk is encrypted at rest with Platform managed key. It is the default
-	// encryption type. This is not a valid encryption type for disk encryption sets.
+// encryption type. This is not a valid encryption type for disk encryption sets.
 	EncryptionTypeEncryptionAtRestWithPlatformKey EncryptionType = "EncryptionAtRestWithPlatformKey"
 )
 
 // PossibleEncryptionTypeValues returns the possible values for the EncryptionType const type.
 func PossibleEncryptionTypeValues() []EncryptionType {
-	return []EncryptionType{
+	return []EncryptionType{	
 		EncryptionTypeEncryptionAtRestWithCustomerKey,
 		EncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys,
 		EncryptionTypeEncryptionAtRestWithPlatformKey,
@@ -705,18 +705,18 @@ func PossibleEncryptionTypeValues() []EncryptionType {
 type ExecutionState string
 
 const (
-	ExecutionStateCanceled  ExecutionState = "Canceled"
-	ExecutionStateFailed    ExecutionState = "Failed"
-	ExecutionStatePending   ExecutionState = "Pending"
-	ExecutionStateRunning   ExecutionState = "Running"
+	ExecutionStateCanceled ExecutionState = "Canceled"
+	ExecutionStateFailed ExecutionState = "Failed"
+	ExecutionStatePending ExecutionState = "Pending"
+	ExecutionStateRunning ExecutionState = "Running"
 	ExecutionStateSucceeded ExecutionState = "Succeeded"
-	ExecutionStateTimedOut  ExecutionState = "TimedOut"
-	ExecutionStateUnknown   ExecutionState = "Unknown"
+	ExecutionStateTimedOut ExecutionState = "TimedOut"
+	ExecutionStateUnknown ExecutionState = "Unknown"
 )
 
 // PossibleExecutionStateValues returns the possible values for the ExecutionState const type.
 func PossibleExecutionStateValues() []ExecutionState {
-	return []ExecutionState{
+	return []ExecutionState{	
 		ExecutionStateCanceled,
 		ExecutionStateFailed,
 		ExecutionStatePending,
@@ -735,7 +735,7 @@ const (
 
 // PossibleExpandTypeForListVMsValues returns the possible values for the ExpandTypeForListVMs const type.
 func PossibleExpandTypeForListVMsValues() []ExpandTypeForListVMs {
-	return []ExpandTypeForListVMs{
+	return []ExpandTypeForListVMs{	
 		ExpandTypeForListVMsInstanceView,
 	}
 }
@@ -744,12 +744,12 @@ type ExpandTypesForGetCapacityReservationGroups string
 
 const (
 	ExpandTypesForGetCapacityReservationGroupsVirtualMachineScaleSetVMsRef ExpandTypesForGetCapacityReservationGroups = "virtualMachineScaleSetVMs/$ref"
-	ExpandTypesForGetCapacityReservationGroupsVirtualMachinesRef           ExpandTypesForGetCapacityReservationGroups = "virtualMachines/$ref"
+	ExpandTypesForGetCapacityReservationGroupsVirtualMachinesRef ExpandTypesForGetCapacityReservationGroups = "virtualMachines/$ref"
 )
 
 // PossibleExpandTypesForGetCapacityReservationGroupsValues returns the possible values for the ExpandTypesForGetCapacityReservationGroups const type.
 func PossibleExpandTypesForGetCapacityReservationGroupsValues() []ExpandTypesForGetCapacityReservationGroups {
-	return []ExpandTypesForGetCapacityReservationGroups{
+	return []ExpandTypesForGetCapacityReservationGroups{	
 		ExpandTypesForGetCapacityReservationGroupsVirtualMachineScaleSetVMsRef,
 		ExpandTypesForGetCapacityReservationGroupsVirtualMachinesRef,
 	}
@@ -763,7 +763,7 @@ const (
 
 // PossibleExpandTypesForGetVMScaleSetsValues returns the possible values for the ExpandTypesForGetVMScaleSets const type.
 func PossibleExpandTypesForGetVMScaleSetsValues() []ExpandTypesForGetVMScaleSets {
-	return []ExpandTypesForGetVMScaleSets{
+	return []ExpandTypesForGetVMScaleSets{	
 		ExpandTypesForGetVMScaleSetsUserData,
 	}
 }
@@ -776,7 +776,7 @@ const (
 
 // PossibleExpandTypesForListVMsValues returns the possible values for the ExpandTypesForListVMs const type.
 func PossibleExpandTypesForListVMsValues() []ExpandTypesForListVMs {
-	return []ExpandTypesForListVMs{
+	return []ExpandTypesForListVMs{	
 		ExpandTypesForListVMsInstanceView,
 	}
 }
@@ -790,7 +790,7 @@ const (
 
 // PossibleExtendedLocationTypeValues returns the possible values for the ExtendedLocationType const type.
 func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
-	return []ExtendedLocationType{
+	return []ExtendedLocationType{	
 		ExtendedLocationTypeEdgeZone,
 	}
 }
@@ -804,7 +804,7 @@ const (
 
 // PossibleExtendedLocationTypesValues returns the possible values for the ExtendedLocationTypes const type.
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
-	return []ExtendedLocationTypes{
+	return []ExtendedLocationTypes{	
 		ExtendedLocationTypesEdgeZone,
 	}
 }
@@ -821,7 +821,7 @@ const (
 
 // PossibleFileFormatValues returns the possible values for the FileFormat const type.
 func PossibleFileFormatValues() []FileFormat {
-	return []FileFormat{
+	return []FileFormat{	
 		FileFormatVHD,
 		FileFormatVHDX,
 	}
@@ -833,13 +833,13 @@ type GalleryApplicationCustomActionParameterType string
 
 const (
 	GalleryApplicationCustomActionParameterTypeConfigurationDataBlob GalleryApplicationCustomActionParameterType = "ConfigurationDataBlob"
-	GalleryApplicationCustomActionParameterTypeLogOutputBlob         GalleryApplicationCustomActionParameterType = "LogOutputBlob"
-	GalleryApplicationCustomActionParameterTypeString                GalleryApplicationCustomActionParameterType = "String"
+	GalleryApplicationCustomActionParameterTypeLogOutputBlob GalleryApplicationCustomActionParameterType = "LogOutputBlob"
+	GalleryApplicationCustomActionParameterTypeString GalleryApplicationCustomActionParameterType = "String"
 )
 
 // PossibleGalleryApplicationCustomActionParameterTypeValues returns the possible values for the GalleryApplicationCustomActionParameterType const type.
 func PossibleGalleryApplicationCustomActionParameterTypeValues() []GalleryApplicationCustomActionParameterType {
-	return []GalleryApplicationCustomActionParameterType{
+	return []GalleryApplicationCustomActionParameterType{	
 		GalleryApplicationCustomActionParameterTypeConfigurationDataBlob,
 		GalleryApplicationCustomActionParameterTypeLogOutputBlob,
 		GalleryApplicationCustomActionParameterTypeString,
@@ -854,7 +854,7 @@ const (
 
 // PossibleGalleryExpandParamsValues returns the possible values for the GalleryExpandParams const type.
 func PossibleGalleryExpandParamsValues() []GalleryExpandParams {
-	return []GalleryExpandParams{
+	return []GalleryExpandParams{	
 		GalleryExpandParamsSharingProfileGroups,
 	}
 }
@@ -864,12 +864,12 @@ type GalleryExtendedLocationType string
 
 const (
 	GalleryExtendedLocationTypeEdgeZone GalleryExtendedLocationType = "EdgeZone"
-	GalleryExtendedLocationTypeUnknown  GalleryExtendedLocationType = "Unknown"
+	GalleryExtendedLocationTypeUnknown GalleryExtendedLocationType = "Unknown"
 )
 
 // PossibleGalleryExtendedLocationTypeValues returns the possible values for the GalleryExtendedLocationType const type.
 func PossibleGalleryExtendedLocationTypeValues() []GalleryExtendedLocationType {
-	return []GalleryExtendedLocationType{
+	return []GalleryExtendedLocationType{	
 		GalleryExtendedLocationTypeEdgeZone,
 		GalleryExtendedLocationTypeUnknown,
 	}
@@ -879,17 +879,17 @@ func PossibleGalleryExtendedLocationTypeValues() []GalleryExtendedLocationType {
 type GalleryProvisioningState string
 
 const (
-	GalleryProvisioningStateCreating  GalleryProvisioningState = "Creating"
-	GalleryProvisioningStateDeleting  GalleryProvisioningState = "Deleting"
-	GalleryProvisioningStateFailed    GalleryProvisioningState = "Failed"
+	GalleryProvisioningStateCreating GalleryProvisioningState = "Creating"
+	GalleryProvisioningStateDeleting GalleryProvisioningState = "Deleting"
+	GalleryProvisioningStateFailed GalleryProvisioningState = "Failed"
 	GalleryProvisioningStateMigrating GalleryProvisioningState = "Migrating"
 	GalleryProvisioningStateSucceeded GalleryProvisioningState = "Succeeded"
-	GalleryProvisioningStateUpdating  GalleryProvisioningState = "Updating"
+	GalleryProvisioningStateUpdating GalleryProvisioningState = "Updating"
 )
 
 // PossibleGalleryProvisioningStateValues returns the possible values for the GalleryProvisioningState const type.
 func PossibleGalleryProvisioningStateValues() []GalleryProvisioningState {
-	return []GalleryProvisioningState{
+	return []GalleryProvisioningState{	
 		GalleryProvisioningStateCreating,
 		GalleryProvisioningStateDeleting,
 		GalleryProvisioningStateFailed,
@@ -908,13 +908,13 @@ type GallerySharingPermissionTypes string
 
 const (
 	GallerySharingPermissionTypesCommunity GallerySharingPermissionTypes = "Community"
-	GallerySharingPermissionTypesGroups    GallerySharingPermissionTypes = "Groups"
-	GallerySharingPermissionTypesPrivate   GallerySharingPermissionTypes = "Private"
+	GallerySharingPermissionTypesGroups GallerySharingPermissionTypes = "Groups"
+	GallerySharingPermissionTypesPrivate GallerySharingPermissionTypes = "Private"
 )
 
 // PossibleGallerySharingPermissionTypesValues returns the possible values for the GallerySharingPermissionTypes const type.
 func PossibleGallerySharingPermissionTypesValues() []GallerySharingPermissionTypes {
-	return []GallerySharingPermissionTypes{
+	return []GallerySharingPermissionTypes{	
 		GallerySharingPermissionTypesCommunity,
 		GallerySharingPermissionTypesGroups,
 		GallerySharingPermissionTypesPrivate,
@@ -925,14 +925,14 @@ func PossibleGallerySharingPermissionTypesValues() []GallerySharingPermissionTyp
 type HostCaching string
 
 const (
-	HostCachingNone      HostCaching = "None"
-	HostCachingReadOnly  HostCaching = "ReadOnly"
+	HostCachingNone HostCaching = "None"
+	HostCachingReadOnly HostCaching = "ReadOnly"
 	HostCachingReadWrite HostCaching = "ReadWrite"
 )
 
 // PossibleHostCachingValues returns the possible values for the HostCaching const type.
 func PossibleHostCachingValues() []HostCaching {
-	return []HostCaching{
+	return []HostCaching{	
 		HostCachingNone,
 		HostCachingReadOnly,
 		HostCachingReadWrite,
@@ -949,7 +949,7 @@ const (
 
 // PossibleHyperVGenerationValues returns the possible values for the HyperVGeneration const type.
 func PossibleHyperVGenerationValues() []HyperVGeneration {
-	return []HyperVGeneration{
+	return []HyperVGeneration{	
 		HyperVGenerationV1,
 		HyperVGenerationV2,
 	}
@@ -965,7 +965,7 @@ const (
 
 // PossibleHyperVGenerationTypeValues returns the possible values for the HyperVGenerationType const type.
 func PossibleHyperVGenerationTypeValues() []HyperVGenerationType {
-	return []HyperVGenerationType{
+	return []HyperVGenerationType{	
 		HyperVGenerationTypeV1,
 		HyperVGenerationTypeV2,
 	}
@@ -981,7 +981,7 @@ const (
 
 // PossibleHyperVGenerationTypesValues returns the possible values for the HyperVGenerationTypes const type.
 func PossibleHyperVGenerationTypesValues() []HyperVGenerationTypes {
-	return []HyperVGenerationTypes{
+	return []HyperVGenerationTypes{	
 		HyperVGenerationTypesV1,
 		HyperVGenerationTypesV2,
 	}
@@ -998,7 +998,7 @@ const (
 
 // PossibleIPVersionValues returns the possible values for the IPVersion const type.
 func PossibleIPVersionValues() []IPVersion {
-	return []IPVersion{
+	return []IPVersion{	
 		IPVersionIPv4,
 		IPVersionIPv6,
 	}
@@ -1015,7 +1015,7 @@ const (
 
 // PossibleIPVersionsValues returns the possible values for the IPVersions const type.
 func PossibleIPVersionsValues() []IPVersions {
-	return []IPVersions{
+	return []IPVersions{	
 		IPVersionsIPv4,
 		IPVersionsIPv6,
 	}
@@ -1025,14 +1025,14 @@ func PossibleIPVersionsValues() []IPVersions {
 type ImageState string
 
 const (
-	ImageStateActive                  ImageState = "Active"
-	ImageStateDeprecated              ImageState = "Deprecated"
+	ImageStateActive ImageState = "Active"
+	ImageStateDeprecated ImageState = "Deprecated"
 	ImageStateScheduledForDeprecation ImageState = "ScheduledForDeprecation"
 )
 
 // PossibleImageStateValues returns the possible values for the ImageState const type.
 func PossibleImageStateValues() []ImageState {
-	return []ImageState{
+	return []ImageState{	
 		ImageStateActive,
 		ImageStateDeprecated,
 		ImageStateScheduledForDeprecation,
@@ -1043,12 +1043,12 @@ type InstanceViewTypes string
 
 const (
 	InstanceViewTypesInstanceView InstanceViewTypes = "instanceView"
-	InstanceViewTypesUserData     InstanceViewTypes = "userData"
+	InstanceViewTypesUserData InstanceViewTypes = "userData"
 )
 
 // PossibleInstanceViewTypesValues returns the possible values for the InstanceViewTypes const type.
 func PossibleInstanceViewTypesValues() []InstanceViewTypes {
-	return []InstanceViewTypes{
+	return []InstanceViewTypes{	
 		InstanceViewTypesInstanceView,
 		InstanceViewTypesUserData,
 	}
@@ -1058,15 +1058,15 @@ func PossibleInstanceViewTypesValues() []InstanceViewTypes {
 type IntervalInMins string
 
 const (
-	IntervalInMinsFiveMins   IntervalInMins = "FiveMins"
-	IntervalInMinsSixtyMins  IntervalInMins = "SixtyMins"
+	IntervalInMinsFiveMins IntervalInMins = "FiveMins"
+	IntervalInMinsSixtyMins IntervalInMins = "SixtyMins"
 	IntervalInMinsThirtyMins IntervalInMins = "ThirtyMins"
-	IntervalInMinsThreeMins  IntervalInMins = "ThreeMins"
+	IntervalInMinsThreeMins IntervalInMins = "ThreeMins"
 )
 
 // PossibleIntervalInMinsValues returns the possible values for the IntervalInMins const type.
 func PossibleIntervalInMinsValues() []IntervalInMins {
-	return []IntervalInMins{
+	return []IntervalInMins{	
 		IntervalInMinsFiveMins,
 		IntervalInMinsSixtyMins,
 		IntervalInMinsThirtyMins,
@@ -1082,12 +1082,12 @@ type LinuxPatchAssessmentMode string
 
 const (
 	LinuxPatchAssessmentModeAutomaticByPlatform LinuxPatchAssessmentMode = "AutomaticByPlatform"
-	LinuxPatchAssessmentModeImageDefault        LinuxPatchAssessmentMode = "ImageDefault"
+	LinuxPatchAssessmentModeImageDefault LinuxPatchAssessmentMode = "ImageDefault"
 )
 
 // PossibleLinuxPatchAssessmentModeValues returns the possible values for the LinuxPatchAssessmentMode const type.
 func PossibleLinuxPatchAssessmentModeValues() []LinuxPatchAssessmentMode {
-	return []LinuxPatchAssessmentMode{
+	return []LinuxPatchAssessmentMode{	
 		LinuxPatchAssessmentModeAutomaticByPlatform,
 		LinuxPatchAssessmentModeImageDefault,
 	}
@@ -1098,15 +1098,15 @@ func PossibleLinuxPatchAssessmentModeValues() []LinuxPatchAssessmentMode {
 type LinuxVMGuestPatchAutomaticByPlatformRebootSetting string
 
 const (
-	LinuxVMGuestPatchAutomaticByPlatformRebootSettingAlways     LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "Always"
+	LinuxVMGuestPatchAutomaticByPlatformRebootSettingAlways LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "Always"
 	LinuxVMGuestPatchAutomaticByPlatformRebootSettingIfRequired LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "IfRequired"
-	LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever      LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "Never"
-	LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown    LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "Unknown"
+	LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "Never"
+	LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "Unknown"
 )
 
 // PossibleLinuxVMGuestPatchAutomaticByPlatformRebootSettingValues returns the possible values for the LinuxVMGuestPatchAutomaticByPlatformRebootSetting const type.
 func PossibleLinuxVMGuestPatchAutomaticByPlatformRebootSettingValues() []LinuxVMGuestPatchAutomaticByPlatformRebootSetting {
-	return []LinuxVMGuestPatchAutomaticByPlatformRebootSetting{
+	return []LinuxVMGuestPatchAutomaticByPlatformRebootSetting{	
 		LinuxVMGuestPatchAutomaticByPlatformRebootSettingAlways,
 		LinuxVMGuestPatchAutomaticByPlatformRebootSettingIfRequired,
 		LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever,
@@ -1124,12 +1124,12 @@ type LinuxVMGuestPatchMode string
 
 const (
 	LinuxVMGuestPatchModeAutomaticByPlatform LinuxVMGuestPatchMode = "AutomaticByPlatform"
-	LinuxVMGuestPatchModeImageDefault        LinuxVMGuestPatchMode = "ImageDefault"
+	LinuxVMGuestPatchModeImageDefault LinuxVMGuestPatchMode = "ImageDefault"
 )
 
 // PossibleLinuxVMGuestPatchModeValues returns the possible values for the LinuxVMGuestPatchMode const type.
 func PossibleLinuxVMGuestPatchModeValues() []LinuxVMGuestPatchMode {
-	return []LinuxVMGuestPatchMode{
+	return []LinuxVMGuestPatchMode{	
 		LinuxVMGuestPatchModeAutomaticByPlatform,
 		LinuxVMGuestPatchModeImageDefault,
 	}
@@ -1139,15 +1139,15 @@ func PossibleLinuxVMGuestPatchModeValues() []LinuxVMGuestPatchMode {
 type MaintenanceOperationResultCodeTypes string
 
 const (
-	MaintenanceOperationResultCodeTypesMaintenanceAborted   MaintenanceOperationResultCodeTypes = "MaintenanceAborted"
+	MaintenanceOperationResultCodeTypesMaintenanceAborted MaintenanceOperationResultCodeTypes = "MaintenanceAborted"
 	MaintenanceOperationResultCodeTypesMaintenanceCompleted MaintenanceOperationResultCodeTypes = "MaintenanceCompleted"
-	MaintenanceOperationResultCodeTypesNone                 MaintenanceOperationResultCodeTypes = "None"
-	MaintenanceOperationResultCodeTypesRetryLater           MaintenanceOperationResultCodeTypes = "RetryLater"
+	MaintenanceOperationResultCodeTypesNone MaintenanceOperationResultCodeTypes = "None"
+	MaintenanceOperationResultCodeTypesRetryLater MaintenanceOperationResultCodeTypes = "RetryLater"
 )
 
 // PossibleMaintenanceOperationResultCodeTypesValues returns the possible values for the MaintenanceOperationResultCodeTypes const type.
 func PossibleMaintenanceOperationResultCodeTypesValues() []MaintenanceOperationResultCodeTypes {
-	return []MaintenanceOperationResultCodeTypes{
+	return []MaintenanceOperationResultCodeTypes{	
 		MaintenanceOperationResultCodeTypesMaintenanceAborted,
 		MaintenanceOperationResultCodeTypesMaintenanceCompleted,
 		MaintenanceOperationResultCodeTypesNone,
@@ -1165,7 +1165,7 @@ const (
 
 // PossibleNetworkAPIVersionValues returns the possible values for the NetworkAPIVersion const type.
 func PossibleNetworkAPIVersionValues() []NetworkAPIVersion {
-	return []NetworkAPIVersion{
+	return []NetworkAPIVersion{	
 		NetworkAPIVersionTwoThousandTwenty1101,
 	}
 }
@@ -1184,7 +1184,7 @@ const (
 
 // PossibleNetworkAccessPolicyValues returns the possible values for the NetworkAccessPolicy const type.
 func PossibleNetworkAccessPolicyValues() []NetworkAccessPolicy {
-	return []NetworkAccessPolicy{
+	return []NetworkAccessPolicy{	
 		NetworkAccessPolicyAllowAll,
 		NetworkAccessPolicyAllowPrivate,
 		NetworkAccessPolicyDenyAll,
@@ -1196,13 +1196,13 @@ type NetworkInterfaceAuxiliaryMode string
 
 const (
 	NetworkInterfaceAuxiliaryModeAcceleratedConnections NetworkInterfaceAuxiliaryMode = "AcceleratedConnections"
-	NetworkInterfaceAuxiliaryModeFloating               NetworkInterfaceAuxiliaryMode = "Floating"
-	NetworkInterfaceAuxiliaryModeNone                   NetworkInterfaceAuxiliaryMode = "None"
+	NetworkInterfaceAuxiliaryModeFloating NetworkInterfaceAuxiliaryMode = "Floating"
+	NetworkInterfaceAuxiliaryModeNone NetworkInterfaceAuxiliaryMode = "None"
 )
 
 // PossibleNetworkInterfaceAuxiliaryModeValues returns the possible values for the NetworkInterfaceAuxiliaryMode const type.
 func PossibleNetworkInterfaceAuxiliaryModeValues() []NetworkInterfaceAuxiliaryMode {
-	return []NetworkInterfaceAuxiliaryMode{
+	return []NetworkInterfaceAuxiliaryMode{	
 		NetworkInterfaceAuxiliaryModeAcceleratedConnections,
 		NetworkInterfaceAuxiliaryModeFloating,
 		NetworkInterfaceAuxiliaryModeNone,
@@ -1213,16 +1213,16 @@ func PossibleNetworkInterfaceAuxiliaryModeValues() []NetworkInterfaceAuxiliaryMo
 type NetworkInterfaceAuxiliarySKU string
 
 const (
-	NetworkInterfaceAuxiliarySKUA1   NetworkInterfaceAuxiliarySKU = "A1"
-	NetworkInterfaceAuxiliarySKUA2   NetworkInterfaceAuxiliarySKU = "A2"
-	NetworkInterfaceAuxiliarySKUA4   NetworkInterfaceAuxiliarySKU = "A4"
-	NetworkInterfaceAuxiliarySKUA8   NetworkInterfaceAuxiliarySKU = "A8"
+	NetworkInterfaceAuxiliarySKUA1 NetworkInterfaceAuxiliarySKU = "A1"
+	NetworkInterfaceAuxiliarySKUA2 NetworkInterfaceAuxiliarySKU = "A2"
+	NetworkInterfaceAuxiliarySKUA4 NetworkInterfaceAuxiliarySKU = "A4"
+	NetworkInterfaceAuxiliarySKUA8 NetworkInterfaceAuxiliarySKU = "A8"
 	NetworkInterfaceAuxiliarySKUNone NetworkInterfaceAuxiliarySKU = "None"
 )
 
 // PossibleNetworkInterfaceAuxiliarySKUValues returns the possible values for the NetworkInterfaceAuxiliarySKU const type.
 func PossibleNetworkInterfaceAuxiliarySKUValues() []NetworkInterfaceAuxiliarySKU {
-	return []NetworkInterfaceAuxiliarySKU{
+	return []NetworkInterfaceAuxiliarySKU{	
 		NetworkInterfaceAuxiliarySKUA1,
 		NetworkInterfaceAuxiliarySKUA2,
 		NetworkInterfaceAuxiliarySKUA4,
@@ -1242,7 +1242,7 @@ const (
 
 // PossibleOperatingSystemStateTypesValues returns the possible values for the OperatingSystemStateTypes const type.
 func PossibleOperatingSystemStateTypesValues() []OperatingSystemStateTypes {
-	return []OperatingSystemStateTypes{
+	return []OperatingSystemStateTypes{	
 		OperatingSystemStateTypesGeneralized,
 		OperatingSystemStateTypesSpecialized,
 	}
@@ -1252,13 +1252,13 @@ func PossibleOperatingSystemStateTypesValues() []OperatingSystemStateTypes {
 type OperatingSystemType string
 
 const (
-	OperatingSystemTypeLinux   OperatingSystemType = "Linux"
+	OperatingSystemTypeLinux OperatingSystemType = "Linux"
 	OperatingSystemTypeWindows OperatingSystemType = "Windows"
 )
 
 // PossibleOperatingSystemTypeValues returns the possible values for the OperatingSystemType const type.
 func PossibleOperatingSystemTypeValues() []OperatingSystemType {
-	return []OperatingSystemType{
+	return []OperatingSystemType{	
 		OperatingSystemTypeLinux,
 		OperatingSystemTypeWindows,
 	}
@@ -1271,13 +1271,13 @@ func PossibleOperatingSystemTypeValues() []OperatingSystemType {
 type OperatingSystemTypes string
 
 const (
-	OperatingSystemTypesLinux   OperatingSystemTypes = "Linux"
+	OperatingSystemTypesLinux OperatingSystemTypes = "Linux"
 	OperatingSystemTypesWindows OperatingSystemTypes = "Windows"
 )
 
 // PossibleOperatingSystemTypesValues returns the possible values for the OperatingSystemTypes const type.
 func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
-	return []OperatingSystemTypes{
+	return []OperatingSystemTypes{	
 		OperatingSystemTypesLinux,
 		OperatingSystemTypesWindows,
 	}
@@ -1288,12 +1288,12 @@ type OrchestrationMode string
 
 const (
 	OrchestrationModeFlexible OrchestrationMode = "Flexible"
-	OrchestrationModeUniform  OrchestrationMode = "Uniform"
+	OrchestrationModeUniform OrchestrationMode = "Uniform"
 )
 
 // PossibleOrchestrationModeValues returns the possible values for the OrchestrationMode const type.
 func PossibleOrchestrationModeValues() []OrchestrationMode {
-	return []OrchestrationMode{
+	return []OrchestrationMode{	
 		OrchestrationModeFlexible,
 		OrchestrationModeUniform,
 	}
@@ -1308,7 +1308,7 @@ const (
 
 // PossibleOrchestrationServiceNamesValues returns the possible values for the OrchestrationServiceNames const type.
 func PossibleOrchestrationServiceNamesValues() []OrchestrationServiceNames {
-	return []OrchestrationServiceNames{
+	return []OrchestrationServiceNames{	
 		OrchestrationServiceNamesAutomaticRepairs,
 	}
 }
@@ -1318,13 +1318,13 @@ type OrchestrationServiceState string
 
 const (
 	OrchestrationServiceStateNotRunning OrchestrationServiceState = "NotRunning"
-	OrchestrationServiceStateRunning    OrchestrationServiceState = "Running"
-	OrchestrationServiceStateSuspended  OrchestrationServiceState = "Suspended"
+	OrchestrationServiceStateRunning OrchestrationServiceState = "Running"
+	OrchestrationServiceStateSuspended OrchestrationServiceState = "Suspended"
 )
 
 // PossibleOrchestrationServiceStateValues returns the possible values for the OrchestrationServiceState const type.
 func PossibleOrchestrationServiceStateValues() []OrchestrationServiceState {
-	return []OrchestrationServiceState{
+	return []OrchestrationServiceState{	
 		OrchestrationServiceStateNotRunning,
 		OrchestrationServiceStateRunning,
 		OrchestrationServiceStateSuspended,
@@ -1335,13 +1335,13 @@ func PossibleOrchestrationServiceStateValues() []OrchestrationServiceState {
 type OrchestrationServiceStateAction string
 
 const (
-	OrchestrationServiceStateActionResume  OrchestrationServiceStateAction = "Resume"
+	OrchestrationServiceStateActionResume OrchestrationServiceStateAction = "Resume"
 	OrchestrationServiceStateActionSuspend OrchestrationServiceStateAction = "Suspend"
 )
 
 // PossibleOrchestrationServiceStateActionValues returns the possible values for the OrchestrationServiceStateAction const type.
 func PossibleOrchestrationServiceStateActionValues() []OrchestrationServiceStateAction {
-	return []OrchestrationServiceStateAction{
+	return []OrchestrationServiceStateAction{	
 		OrchestrationServiceStateActionResume,
 		OrchestrationServiceStateActionSuspend,
 	}
@@ -1352,12 +1352,12 @@ type PatchAssessmentState string
 
 const (
 	PatchAssessmentStateAvailable PatchAssessmentState = "Available"
-	PatchAssessmentStateUnknown   PatchAssessmentState = "Unknown"
+	PatchAssessmentStateUnknown PatchAssessmentState = "Unknown"
 )
 
 // PossiblePatchAssessmentStateValues returns the possible values for the PatchAssessmentState const type.
 func PossiblePatchAssessmentStateValues() []PatchAssessmentState {
-	return []PatchAssessmentState{
+	return []PatchAssessmentState{	
 		PatchAssessmentStateAvailable,
 		PatchAssessmentStateUnknown,
 	}
@@ -1367,17 +1367,17 @@ func PossiblePatchAssessmentStateValues() []PatchAssessmentState {
 type PatchInstallationState string
 
 const (
-	PatchInstallationStateExcluded    PatchInstallationState = "Excluded"
-	PatchInstallationStateFailed      PatchInstallationState = "Failed"
-	PatchInstallationStateInstalled   PatchInstallationState = "Installed"
+	PatchInstallationStateExcluded PatchInstallationState = "Excluded"
+	PatchInstallationStateFailed PatchInstallationState = "Failed"
+	PatchInstallationStateInstalled PatchInstallationState = "Installed"
 	PatchInstallationStateNotSelected PatchInstallationState = "NotSelected"
-	PatchInstallationStatePending     PatchInstallationState = "Pending"
-	PatchInstallationStateUnknown     PatchInstallationState = "Unknown"
+	PatchInstallationStatePending PatchInstallationState = "Pending"
+	PatchInstallationStateUnknown PatchInstallationState = "Unknown"
 )
 
 // PossiblePatchInstallationStateValues returns the possible values for the PatchInstallationState const type.
 func PossiblePatchInstallationStateValues() []PatchInstallationState {
-	return []PatchInstallationState{
+	return []PatchInstallationState{	
 		PatchInstallationStateExcluded,
 		PatchInstallationStateFailed,
 		PatchInstallationStateInstalled,
@@ -1394,15 +1394,15 @@ type PatchOperationStatus string
 
 const (
 	PatchOperationStatusCompletedWithWarnings PatchOperationStatus = "CompletedWithWarnings"
-	PatchOperationStatusFailed                PatchOperationStatus = "Failed"
-	PatchOperationStatusInProgress            PatchOperationStatus = "InProgress"
-	PatchOperationStatusSucceeded             PatchOperationStatus = "Succeeded"
-	PatchOperationStatusUnknown               PatchOperationStatus = "Unknown"
+	PatchOperationStatusFailed PatchOperationStatus = "Failed"
+	PatchOperationStatusInProgress PatchOperationStatus = "InProgress"
+	PatchOperationStatusSucceeded PatchOperationStatus = "Succeeded"
+	PatchOperationStatusUnknown PatchOperationStatus = "Unknown"
 )
 
 // PossiblePatchOperationStatusValues returns the possible values for the PatchOperationStatus const type.
 func PossiblePatchOperationStatusValues() []PatchOperationStatus {
-	return []PatchOperationStatus{
+	return []PatchOperationStatus{	
 		PatchOperationStatusCompletedWithWarnings,
 		PatchOperationStatusFailed,
 		PatchOperationStatusInProgress,
@@ -1416,14 +1416,14 @@ type PolicyViolationCategory string
 
 const (
 	PolicyViolationCategoryCopyrightValidation PolicyViolationCategory = "CopyrightValidation"
-	PolicyViolationCategoryIPTheft             PolicyViolationCategory = "IpTheft"
-	PolicyViolationCategoryImageFlaggedUnsafe  PolicyViolationCategory = "ImageFlaggedUnsafe"
-	PolicyViolationCategoryOther               PolicyViolationCategory = "Other"
+	PolicyViolationCategoryIPTheft PolicyViolationCategory = "IpTheft"
+	PolicyViolationCategoryImageFlaggedUnsafe PolicyViolationCategory = "ImageFlaggedUnsafe"
+	PolicyViolationCategoryOther PolicyViolationCategory = "Other"
 )
 
 // PossiblePolicyViolationCategoryValues returns the possible values for the PolicyViolationCategory const type.
 func PossiblePolicyViolationCategoryValues() []PolicyViolationCategory {
-	return []PolicyViolationCategory{
+	return []PolicyViolationCategory{	
 		PolicyViolationCategoryCopyrightValidation,
 		PolicyViolationCategoryIPTheft,
 		PolicyViolationCategoryImageFlaggedUnsafe,
@@ -1435,15 +1435,15 @@ func PossiblePolicyViolationCategoryValues() []PolicyViolationCategory {
 type PrivateEndpointConnectionProvisioningState string
 
 const (
-	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
-	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
-	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
+	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
 	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
 )
 
 // PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
-	return []PrivateEndpointConnectionProvisioningState{
+	return []PrivateEndpointConnectionProvisioningState{	
 		PrivateEndpointConnectionProvisioningStateCreating,
 		PrivateEndpointConnectionProvisioningStateDeleting,
 		PrivateEndpointConnectionProvisioningStateFailed,
@@ -1456,13 +1456,13 @@ type PrivateEndpointServiceConnectionStatus string
 
 const (
 	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
-	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
 	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
 )
 
 // PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
-	return []PrivateEndpointServiceConnectionStatus{
+	return []PrivateEndpointServiceConnectionStatus{	
 		PrivateEndpointServiceConnectionStatusApproved,
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
@@ -1473,13 +1473,13 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 type ProtocolTypes string
 
 const (
-	ProtocolTypesHTTP  ProtocolTypes = "Http"
+	ProtocolTypesHTTP ProtocolTypes = "Http"
 	ProtocolTypesHTTPS ProtocolTypes = "Https"
 )
 
 // PossibleProtocolTypesValues returns the possible values for the ProtocolTypes const type.
 func PossibleProtocolTypesValues() []ProtocolTypes {
-	return []ProtocolTypes{
+	return []ProtocolTypes{	
 		ProtocolTypesHTTP,
 		ProtocolTypesHTTPS,
 	}
@@ -1491,12 +1491,12 @@ type ProximityPlacementGroupType string
 
 const (
 	ProximityPlacementGroupTypeStandard ProximityPlacementGroupType = "Standard"
-	ProximityPlacementGroupTypeUltra    ProximityPlacementGroupType = "Ultra"
+	ProximityPlacementGroupTypeUltra ProximityPlacementGroupType = "Ultra"
 )
 
 // PossibleProximityPlacementGroupTypeValues returns the possible values for the ProximityPlacementGroupType const type.
 func PossibleProximityPlacementGroupTypeValues() []ProximityPlacementGroupType {
-	return []ProximityPlacementGroupType{
+	return []ProximityPlacementGroupType{	
 		ProximityPlacementGroupTypeStandard,
 		ProximityPlacementGroupTypeUltra,
 	}
@@ -1506,13 +1506,13 @@ func PossibleProximityPlacementGroupTypeValues() []ProximityPlacementGroupType {
 type PublicIPAddressSKUName string
 
 const (
-	PublicIPAddressSKUNameBasic    PublicIPAddressSKUName = "Basic"
+	PublicIPAddressSKUNameBasic PublicIPAddressSKUName = "Basic"
 	PublicIPAddressSKUNameStandard PublicIPAddressSKUName = "Standard"
 )
 
 // PossiblePublicIPAddressSKUNameValues returns the possible values for the PublicIPAddressSKUName const type.
 func PossiblePublicIPAddressSKUNameValues() []PublicIPAddressSKUName {
-	return []PublicIPAddressSKUName{
+	return []PublicIPAddressSKUName{	
 		PublicIPAddressSKUNameBasic,
 		PublicIPAddressSKUNameStandard,
 	}
@@ -1522,13 +1522,13 @@ func PossiblePublicIPAddressSKUNameValues() []PublicIPAddressSKUName {
 type PublicIPAddressSKUTier string
 
 const (
-	PublicIPAddressSKUTierGlobal   PublicIPAddressSKUTier = "Global"
+	PublicIPAddressSKUTierGlobal PublicIPAddressSKUTier = "Global"
 	PublicIPAddressSKUTierRegional PublicIPAddressSKUTier = "Regional"
 )
 
 // PossiblePublicIPAddressSKUTierValues returns the possible values for the PublicIPAddressSKUTier const type.
 func PossiblePublicIPAddressSKUTierValues() []PublicIPAddressSKUTier {
-	return []PublicIPAddressSKUTier{
+	return []PublicIPAddressSKUTier{	
 		PublicIPAddressSKUTierGlobal,
 		PublicIPAddressSKUTierRegional,
 	}
@@ -1539,12 +1539,12 @@ type PublicIPAllocationMethod string
 
 const (
 	PublicIPAllocationMethodDynamic PublicIPAllocationMethod = "Dynamic"
-	PublicIPAllocationMethodStatic  PublicIPAllocationMethod = "Static"
+	PublicIPAllocationMethodStatic PublicIPAllocationMethod = "Static"
 )
 
 // PossiblePublicIPAllocationMethodValues returns the possible values for the PublicIPAllocationMethod const type.
 func PossiblePublicIPAllocationMethodValues() []PublicIPAllocationMethod {
-	return []PublicIPAllocationMethod{
+	return []PublicIPAllocationMethod{	
 		PublicIPAllocationMethodDynamic,
 		PublicIPAllocationMethodStatic,
 	}
@@ -1555,18 +1555,18 @@ type PublicNetworkAccess string
 
 const (
 	// PublicNetworkAccessDisabled - You cannot access the underlying data of the disk publicly on the internet even when NetworkAccessPolicy
-	// is set to AllowAll. You can access the data via the SAS URI only from your trusted Azure VNET when NetworkAccessPolicy
-	// is set to AllowPrivate.
+// is set to AllowAll. You can access the data via the SAS URI only from your trusted Azure VNET when NetworkAccessPolicy
+// is set to AllowPrivate.
 	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
 	// PublicNetworkAccessEnabled - You can generate a SAS URI to access the underlying data of the disk publicly on the internet
-	// when NetworkAccessPolicy is set to AllowAll. You can access the data via the SAS URI only from your trusted Azure VNET
-	// when NetworkAccessPolicy is set to AllowPrivate.
+// when NetworkAccessPolicy is set to AllowAll. You can access the data via the SAS URI only from your trusted Azure VNET
+// when NetworkAccessPolicy is set to AllowPrivate.
 	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{
+	return []PublicNetworkAccess{	
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
@@ -1584,7 +1584,7 @@ const (
 
 // PossibleRepairActionValues returns the possible values for the RepairAction const type.
 func PossibleRepairActionValues() []RepairAction {
-	return []RepairAction{
+	return []RepairAction{	
 		RepairActionReimage,
 		RepairActionReplace,
 		RepairActionRestart,
@@ -1595,13 +1595,13 @@ func PossibleRepairActionValues() []RepairAction {
 type ReplicationMode string
 
 const (
-	ReplicationModeFull    ReplicationMode = "Full"
+	ReplicationModeFull ReplicationMode = "Full"
 	ReplicationModeShallow ReplicationMode = "Shallow"
 )
 
 // PossibleReplicationModeValues returns the possible values for the ReplicationMode const type.
 func PossibleReplicationModeValues() []ReplicationMode {
-	return []ReplicationMode{
+	return []ReplicationMode{	
 		ReplicationModeFull,
 		ReplicationModeShallow,
 	}
@@ -1611,15 +1611,15 @@ func PossibleReplicationModeValues() []ReplicationMode {
 type ReplicationState string
 
 const (
-	ReplicationStateCompleted   ReplicationState = "Completed"
-	ReplicationStateFailed      ReplicationState = "Failed"
+	ReplicationStateCompleted ReplicationState = "Completed"
+	ReplicationStateFailed ReplicationState = "Failed"
 	ReplicationStateReplicating ReplicationState = "Replicating"
-	ReplicationStateUnknown     ReplicationState = "Unknown"
+	ReplicationStateUnknown ReplicationState = "Unknown"
 )
 
 // PossibleReplicationStateValues returns the possible values for the ReplicationState const type.
 func PossibleReplicationStateValues() []ReplicationState {
-	return []ReplicationState{
+	return []ReplicationState{	
 		ReplicationStateCompleted,
 		ReplicationStateFailed,
 		ReplicationStateReplicating,
@@ -1635,7 +1635,7 @@ const (
 
 // PossibleReplicationStatusTypesValues returns the possible values for the ReplicationStatusTypes const type.
 func PossibleReplicationStatusTypesValues() []ReplicationStatusTypes {
-	return []ReplicationStatusTypes{
+	return []ReplicationStatusTypes{	
 		ReplicationStatusTypesReplicationStatus,
 	}
 }
@@ -1646,15 +1646,15 @@ func PossibleReplicationStatusTypesValues() []ReplicationStatusTypes {
 type ResourceIdentityType string
 
 const (
-	ResourceIdentityTypeNone                       ResourceIdentityType = "None"
-	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = "SystemAssigned"
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
 	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
-	ResourceIdentityTypeUserAssigned               ResourceIdentityType = "UserAssigned"
+	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
 )
 
 // PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{
+	return []ResourceIdentityType{	
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 		ResourceIdentityTypeSystemAssignedUserAssigned,
@@ -1667,13 +1667,13 @@ type ResourceSKUCapacityScaleType string
 
 const (
 	ResourceSKUCapacityScaleTypeAutomatic ResourceSKUCapacityScaleType = "Automatic"
-	ResourceSKUCapacityScaleTypeManual    ResourceSKUCapacityScaleType = "Manual"
-	ResourceSKUCapacityScaleTypeNone      ResourceSKUCapacityScaleType = "None"
+	ResourceSKUCapacityScaleTypeManual ResourceSKUCapacityScaleType = "Manual"
+	ResourceSKUCapacityScaleTypeNone ResourceSKUCapacityScaleType = "None"
 )
 
 // PossibleResourceSKUCapacityScaleTypeValues returns the possible values for the ResourceSKUCapacityScaleType const type.
 func PossibleResourceSKUCapacityScaleTypeValues() []ResourceSKUCapacityScaleType {
-	return []ResourceSKUCapacityScaleType{
+	return []ResourceSKUCapacityScaleType{	
 		ResourceSKUCapacityScaleTypeAutomatic,
 		ResourceSKUCapacityScaleTypeManual,
 		ResourceSKUCapacityScaleTypeNone,
@@ -1685,12 +1685,12 @@ type ResourceSKURestrictionsReasonCode string
 
 const (
 	ResourceSKURestrictionsReasonCodeNotAvailableForSubscription ResourceSKURestrictionsReasonCode = "NotAvailableForSubscription"
-	ResourceSKURestrictionsReasonCodeQuotaID                     ResourceSKURestrictionsReasonCode = "QuotaId"
+	ResourceSKURestrictionsReasonCodeQuotaID ResourceSKURestrictionsReasonCode = "QuotaId"
 )
 
 // PossibleResourceSKURestrictionsReasonCodeValues returns the possible values for the ResourceSKURestrictionsReasonCode const type.
 func PossibleResourceSKURestrictionsReasonCodeValues() []ResourceSKURestrictionsReasonCode {
-	return []ResourceSKURestrictionsReasonCode{
+	return []ResourceSKURestrictionsReasonCode{	
 		ResourceSKURestrictionsReasonCodeNotAvailableForSubscription,
 		ResourceSKURestrictionsReasonCodeQuotaID,
 	}
@@ -1701,12 +1701,12 @@ type ResourceSKURestrictionsType string
 
 const (
 	ResourceSKURestrictionsTypeLocation ResourceSKURestrictionsType = "Location"
-	ResourceSKURestrictionsTypeZone     ResourceSKURestrictionsType = "Zone"
+	ResourceSKURestrictionsTypeZone ResourceSKURestrictionsType = "Zone"
 )
 
 // PossibleResourceSKURestrictionsTypeValues returns the possible values for the ResourceSKURestrictionsType const type.
 func PossibleResourceSKURestrictionsTypeValues() []ResourceSKURestrictionsType {
-	return []ResourceSKURestrictionsType{
+	return []ResourceSKURestrictionsType{	
 		ResourceSKURestrictionsTypeLocation,
 		ResourceSKURestrictionsTypeZone,
 	}
@@ -1720,7 +1720,7 @@ const (
 
 // PossibleRestorePointCollectionExpandOptionsValues returns the possible values for the RestorePointCollectionExpandOptions const type.
 func PossibleRestorePointCollectionExpandOptionsValues() []RestorePointCollectionExpandOptions {
-	return []RestorePointCollectionExpandOptions{
+	return []RestorePointCollectionExpandOptions{	
 		RestorePointCollectionExpandOptionsRestorePoints,
 	}
 }
@@ -1730,19 +1730,19 @@ type RestorePointEncryptionType string
 
 const (
 	// RestorePointEncryptionTypeEncryptionAtRestWithCustomerKey - Disk Restore Point is encrypted at rest with Customer managed
-	// key that can be changed and revoked by a customer.
+// key that can be changed and revoked by a customer.
 	RestorePointEncryptionTypeEncryptionAtRestWithCustomerKey RestorePointEncryptionType = "EncryptionAtRestWithCustomerKey"
 	// RestorePointEncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys - Disk Restore Point is encrypted at rest with 2
-	// layers of encryption. One of the keys is Customer managed and the other key is Platform managed.
+// layers of encryption. One of the keys is Customer managed and the other key is Platform managed.
 	RestorePointEncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys RestorePointEncryptionType = "EncryptionAtRestWithPlatformAndCustomerKeys"
 	// RestorePointEncryptionTypeEncryptionAtRestWithPlatformKey - Disk Restore Point is encrypted at rest with Platform managed
-	// key.
+// key.
 	RestorePointEncryptionTypeEncryptionAtRestWithPlatformKey RestorePointEncryptionType = "EncryptionAtRestWithPlatformKey"
 )
 
 // PossibleRestorePointEncryptionTypeValues returns the possible values for the RestorePointEncryptionType const type.
 func PossibleRestorePointEncryptionTypeValues() []RestorePointEncryptionType {
-	return []RestorePointEncryptionType{
+	return []RestorePointEncryptionType{	
 		RestorePointEncryptionTypeEncryptionAtRestWithCustomerKey,
 		RestorePointEncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys,
 		RestorePointEncryptionTypeEncryptionAtRestWithPlatformKey,
@@ -1757,7 +1757,7 @@ const (
 
 // PossibleRestorePointExpandOptionsValues returns the possible values for the RestorePointExpandOptions const type.
 func PossibleRestorePointExpandOptionsValues() []RestorePointExpandOptions {
-	return []RestorePointExpandOptions{
+	return []RestorePointExpandOptions{	
 		RestorePointExpandOptionsInstanceView,
 	}
 }
@@ -1767,12 +1767,12 @@ type RollingUpgradeActionType string
 
 const (
 	RollingUpgradeActionTypeCancel RollingUpgradeActionType = "Cancel"
-	RollingUpgradeActionTypeStart  RollingUpgradeActionType = "Start"
+	RollingUpgradeActionTypeStart RollingUpgradeActionType = "Start"
 )
 
 // PossibleRollingUpgradeActionTypeValues returns the possible values for the RollingUpgradeActionType const type.
 func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
-	return []RollingUpgradeActionType{
+	return []RollingUpgradeActionType{	
 		RollingUpgradeActionTypeCancel,
 		RollingUpgradeActionTypeStart,
 	}
@@ -1782,15 +1782,15 @@ func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
 type RollingUpgradeStatusCode string
 
 const (
-	RollingUpgradeStatusCodeCancelled      RollingUpgradeStatusCode = "Cancelled"
-	RollingUpgradeStatusCodeCompleted      RollingUpgradeStatusCode = "Completed"
-	RollingUpgradeStatusCodeFaulted        RollingUpgradeStatusCode = "Faulted"
+	RollingUpgradeStatusCodeCancelled RollingUpgradeStatusCode = "Cancelled"
+	RollingUpgradeStatusCodeCompleted RollingUpgradeStatusCode = "Completed"
+	RollingUpgradeStatusCodeFaulted RollingUpgradeStatusCode = "Faulted"
 	RollingUpgradeStatusCodeRollingForward RollingUpgradeStatusCode = "RollingForward"
 )
 
 // PossibleRollingUpgradeStatusCodeValues returns the possible values for the RollingUpgradeStatusCode const type.
 func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
-	return []RollingUpgradeStatusCode{
+	return []RollingUpgradeStatusCode{	
 		RollingUpgradeStatusCodeCancelled,
 		RollingUpgradeStatusCodeCompleted,
 		RollingUpgradeStatusCodeFaulted,
@@ -1805,12 +1805,12 @@ type SecurityEncryptionTypes string
 
 const (
 	SecurityEncryptionTypesDiskWithVMGuestState SecurityEncryptionTypes = "DiskWithVMGuestState"
-	SecurityEncryptionTypesVMGuestStateOnly     SecurityEncryptionTypes = "VMGuestStateOnly"
+	SecurityEncryptionTypesVMGuestStateOnly SecurityEncryptionTypes = "VMGuestStateOnly"
 )
 
 // PossibleSecurityEncryptionTypesValues returns the possible values for the SecurityEncryptionTypes const type.
 func PossibleSecurityEncryptionTypesValues() []SecurityEncryptionTypes {
-	return []SecurityEncryptionTypes{
+	return []SecurityEncryptionTypes{	
 		SecurityEncryptionTypesDiskWithVMGuestState,
 		SecurityEncryptionTypesVMGuestStateOnly,
 	}
@@ -1823,12 +1823,12 @@ type SecurityTypes string
 
 const (
 	SecurityTypesConfidentialVM SecurityTypes = "ConfidentialVM"
-	SecurityTypesTrustedLaunch  SecurityTypes = "TrustedLaunch"
+	SecurityTypesTrustedLaunch SecurityTypes = "TrustedLaunch"
 )
 
 // PossibleSecurityTypesValues returns the possible values for the SecurityTypes const type.
 func PossibleSecurityTypesValues() []SecurityTypes {
-	return []SecurityTypes{
+	return []SecurityTypes{	
 		SecurityTypesConfidentialVM,
 		SecurityTypesTrustedLaunch,
 	}
@@ -1842,7 +1842,7 @@ const (
 
 // PossibleSelectPermissionsValues returns the possible values for the SelectPermissions const type.
 func PossibleSelectPermissionsValues() []SelectPermissions {
-	return []SelectPermissions{
+	return []SelectPermissions{	
 		SelectPermissionsPermissions,
 	}
 }
@@ -1852,13 +1852,13 @@ func PossibleSelectPermissionsValues() []SelectPermissions {
 type SettingNames string
 
 const (
-	SettingNamesAutoLogon          SettingNames = "AutoLogon"
+	SettingNamesAutoLogon SettingNames = "AutoLogon"
 	SettingNamesFirstLogonCommands SettingNames = "FirstLogonCommands"
 )
 
 // PossibleSettingNamesValues returns the possible values for the SettingNames const type.
 func PossibleSettingNamesValues() []SettingNames {
-	return []SettingNames{
+	return []SettingNames{	
 		SettingNamesAutoLogon,
 		SettingNamesFirstLogonCommands,
 	}
@@ -1868,14 +1868,14 @@ func PossibleSettingNamesValues() []SettingNames {
 type SharedGalleryHostCaching string
 
 const (
-	SharedGalleryHostCachingNone      SharedGalleryHostCaching = "None"
-	SharedGalleryHostCachingReadOnly  SharedGalleryHostCaching = "ReadOnly"
+	SharedGalleryHostCachingNone SharedGalleryHostCaching = "None"
+	SharedGalleryHostCachingReadOnly SharedGalleryHostCaching = "ReadOnly"
 	SharedGalleryHostCachingReadWrite SharedGalleryHostCaching = "ReadWrite"
 )
 
 // PossibleSharedGalleryHostCachingValues returns the possible values for the SharedGalleryHostCaching const type.
 func PossibleSharedGalleryHostCachingValues() []SharedGalleryHostCaching {
-	return []SharedGalleryHostCaching{
+	return []SharedGalleryHostCaching{	
 		SharedGalleryHostCachingNone,
 		SharedGalleryHostCachingReadOnly,
 		SharedGalleryHostCachingReadWrite,
@@ -1890,7 +1890,7 @@ const (
 
 // PossibleSharedToValuesValues returns the possible values for the SharedToValues const type.
 func PossibleSharedToValuesValues() []SharedToValues {
-	return []SharedToValues{
+	return []SharedToValues{	
 		SharedToValuesTenant,
 	}
 }
@@ -1902,13 +1902,13 @@ func PossibleSharedToValuesValues() []SharedToValues {
 type SharingProfileGroupTypes string
 
 const (
-	SharingProfileGroupTypesAADTenants    SharingProfileGroupTypes = "AADTenants"
+	SharingProfileGroupTypesAADTenants SharingProfileGroupTypes = "AADTenants"
 	SharingProfileGroupTypesSubscriptions SharingProfileGroupTypes = "Subscriptions"
 )
 
 // PossibleSharingProfileGroupTypesValues returns the possible values for the SharingProfileGroupTypes const type.
 func PossibleSharingProfileGroupTypesValues() []SharingProfileGroupTypes {
-	return []SharingProfileGroupTypes{
+	return []SharingProfileGroupTypes{	
 		SharingProfileGroupTypesAADTenants,
 		SharingProfileGroupTypesSubscriptions,
 	}
@@ -1918,15 +1918,15 @@ func PossibleSharingProfileGroupTypesValues() []SharingProfileGroupTypes {
 type SharingState string
 
 const (
-	SharingStateFailed     SharingState = "Failed"
+	SharingStateFailed SharingState = "Failed"
 	SharingStateInProgress SharingState = "InProgress"
-	SharingStateSucceeded  SharingState = "Succeeded"
-	SharingStateUnknown    SharingState = "Unknown"
+	SharingStateSucceeded SharingState = "Succeeded"
+	SharingStateUnknown SharingState = "Unknown"
 )
 
 // PossibleSharingStateValues returns the possible values for the SharingState const type.
 func PossibleSharingStateValues() []SharingState {
-	return []SharingState{
+	return []SharingState{	
 		SharingStateFailed,
 		SharingStateInProgress,
 		SharingStateSucceeded,
@@ -1942,15 +1942,15 @@ func PossibleSharingStateValues() []SharingState {
 type SharingUpdateOperationTypes string
 
 const (
-	SharingUpdateOperationTypesAdd             SharingUpdateOperationTypes = "Add"
+	SharingUpdateOperationTypesAdd SharingUpdateOperationTypes = "Add"
 	SharingUpdateOperationTypesEnableCommunity SharingUpdateOperationTypes = "EnableCommunity"
-	SharingUpdateOperationTypesRemove          SharingUpdateOperationTypes = "Remove"
-	SharingUpdateOperationTypesReset           SharingUpdateOperationTypes = "Reset"
+	SharingUpdateOperationTypesRemove SharingUpdateOperationTypes = "Remove"
+	SharingUpdateOperationTypesReset SharingUpdateOperationTypes = "Reset"
 )
 
 // PossibleSharingUpdateOperationTypesValues returns the possible values for the SharingUpdateOperationTypes const type.
 func PossibleSharingUpdateOperationTypesValues() []SharingUpdateOperationTypes {
-	return []SharingUpdateOperationTypes{
+	return []SharingUpdateOperationTypes{	
 		SharingUpdateOperationTypesAdd,
 		SharingUpdateOperationTypesEnableCommunity,
 		SharingUpdateOperationTypesRemove,
@@ -1972,7 +1972,7 @@ const (
 
 // PossibleSnapshotStorageAccountTypesValues returns the possible values for the SnapshotStorageAccountTypes const type.
 func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
-	return []SnapshotStorageAccountTypes{
+	return []SnapshotStorageAccountTypes{	
 		SnapshotStorageAccountTypesPremiumLRS,
 		SnapshotStorageAccountTypesStandardLRS,
 		SnapshotStorageAccountTypesStandardZRS,
@@ -1983,14 +1983,14 @@ func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
 type StatusLevelTypes string
 
 const (
-	StatusLevelTypesError   StatusLevelTypes = "Error"
-	StatusLevelTypesInfo    StatusLevelTypes = "Info"
+	StatusLevelTypesError StatusLevelTypes = "Error"
+	StatusLevelTypesInfo StatusLevelTypes = "Info"
 	StatusLevelTypesWarning StatusLevelTypes = "Warning"
 )
 
 // PossibleStatusLevelTypesValues returns the possible values for the StatusLevelTypes const type.
 func PossibleStatusLevelTypesValues() []StatusLevelTypes {
-	return []StatusLevelTypes{
+	return []StatusLevelTypes{	
 		StatusLevelTypesError,
 		StatusLevelTypesInfo,
 		StatusLevelTypesWarning,
@@ -2001,14 +2001,14 @@ func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 type StorageAccountType string
 
 const (
-	StorageAccountTypePremiumLRS  StorageAccountType = "Premium_LRS"
+	StorageAccountTypePremiumLRS StorageAccountType = "Premium_LRS"
 	StorageAccountTypeStandardLRS StorageAccountType = "Standard_LRS"
 	StorageAccountTypeStandardZRS StorageAccountType = "Standard_ZRS"
 )
 
 // PossibleStorageAccountTypeValues returns the possible values for the StorageAccountType const type.
 func PossibleStorageAccountTypeValues() []StorageAccountType {
-	return []StorageAccountType{
+	return []StorageAccountType{	
 		StorageAccountTypePremiumLRS,
 		StorageAccountTypeStandardLRS,
 		StorageAccountTypeStandardZRS,
@@ -2025,18 +2025,18 @@ func PossibleStorageAccountTypeValues() []StorageAccountType {
 type StorageAccountTypes string
 
 const (
-	StorageAccountTypesPremiumLRS     StorageAccountTypes = "Premium_LRS"
-	StorageAccountTypesPremiumV2LRS   StorageAccountTypes = "PremiumV2_LRS"
-	StorageAccountTypesPremiumZRS     StorageAccountTypes = "Premium_ZRS"
-	StorageAccountTypesStandardLRS    StorageAccountTypes = "Standard_LRS"
+	StorageAccountTypesPremiumLRS StorageAccountTypes = "Premium_LRS"
+	StorageAccountTypesPremiumV2LRS StorageAccountTypes = "PremiumV2_LRS"
+	StorageAccountTypesPremiumZRS StorageAccountTypes = "Premium_ZRS"
+	StorageAccountTypesStandardLRS StorageAccountTypes = "Standard_LRS"
 	StorageAccountTypesStandardSSDLRS StorageAccountTypes = "StandardSSD_LRS"
 	StorageAccountTypesStandardSSDZRS StorageAccountTypes = "StandardSSD_ZRS"
-	StorageAccountTypesUltraSSDLRS    StorageAccountTypes = "UltraSSD_LRS"
+	StorageAccountTypesUltraSSDLRS StorageAccountTypes = "UltraSSD_LRS"
 )
 
 // PossibleStorageAccountTypesValues returns the possible values for the StorageAccountTypes const type.
 func PossibleStorageAccountTypesValues() []StorageAccountTypes {
-	return []StorageAccountTypes{
+	return []StorageAccountTypes{	
 		StorageAccountTypesPremiumLRS,
 		StorageAccountTypesPremiumV2LRS,
 		StorageAccountTypesPremiumZRS,
@@ -2056,13 +2056,13 @@ type UpgradeMode string
 
 const (
 	UpgradeModeAutomatic UpgradeMode = "Automatic"
-	UpgradeModeManual    UpgradeMode = "Manual"
-	UpgradeModeRolling   UpgradeMode = "Rolling"
+	UpgradeModeManual UpgradeMode = "Manual"
+	UpgradeModeRolling UpgradeMode = "Rolling"
 )
 
 // PossibleUpgradeModeValues returns the possible values for the UpgradeMode const type.
 func PossibleUpgradeModeValues() []UpgradeMode {
-	return []UpgradeMode{
+	return []UpgradeMode{	
 		UpgradeModeAutomatic,
 		UpgradeModeManual,
 		UpgradeModeRolling,
@@ -2074,13 +2074,13 @@ type UpgradeOperationInvoker string
 
 const (
 	UpgradeOperationInvokerPlatform UpgradeOperationInvoker = "Platform"
-	UpgradeOperationInvokerUnknown  UpgradeOperationInvoker = "Unknown"
-	UpgradeOperationInvokerUser     UpgradeOperationInvoker = "User"
+	UpgradeOperationInvokerUnknown UpgradeOperationInvoker = "Unknown"
+	UpgradeOperationInvokerUser UpgradeOperationInvoker = "User"
 )
 
 // PossibleUpgradeOperationInvokerValues returns the possible values for the UpgradeOperationInvoker const type.
 func PossibleUpgradeOperationInvokerValues() []UpgradeOperationInvoker {
-	return []UpgradeOperationInvoker{
+	return []UpgradeOperationInvoker{	
 		UpgradeOperationInvokerPlatform,
 		UpgradeOperationInvokerUnknown,
 		UpgradeOperationInvokerUser,
@@ -2091,15 +2091,15 @@ func PossibleUpgradeOperationInvokerValues() []UpgradeOperationInvoker {
 type UpgradeState string
 
 const (
-	UpgradeStateCancelled      UpgradeState = "Cancelled"
-	UpgradeStateCompleted      UpgradeState = "Completed"
-	UpgradeStateFaulted        UpgradeState = "Faulted"
+	UpgradeStateCancelled UpgradeState = "Cancelled"
+	UpgradeStateCompleted UpgradeState = "Completed"
+	UpgradeStateFaulted UpgradeState = "Faulted"
 	UpgradeStateRollingForward UpgradeState = "RollingForward"
 )
 
 // PossibleUpgradeStateValues returns the possible values for the UpgradeState const type.
 func PossibleUpgradeStateValues() []UpgradeState {
-	return []UpgradeState{
+	return []UpgradeState{	
 		UpgradeStateCancelled,
 		UpgradeStateCompleted,
 		UpgradeStateFaulted,
@@ -2111,13 +2111,13 @@ func PossibleUpgradeStateValues() []UpgradeState {
 type VMDiskTypes string
 
 const (
-	VMDiskTypesNone      VMDiskTypes = "None"
+	VMDiskTypesNone VMDiskTypes = "None"
 	VMDiskTypesUnmanaged VMDiskTypes = "Unmanaged"
 )
 
 // PossibleVMDiskTypesValues returns the possible values for the VMDiskTypes const type.
 func PossibleVMDiskTypesValues() []VMDiskTypes {
-	return []VMDiskTypes{
+	return []VMDiskTypes{	
 		VMDiskTypesNone,
 		VMDiskTypesUnmanaged,
 	}
@@ -2127,13 +2127,13 @@ type VMGuestPatchClassificationLinux string
 
 const (
 	VMGuestPatchClassificationLinuxCritical VMGuestPatchClassificationLinux = "Critical"
-	VMGuestPatchClassificationLinuxOther    VMGuestPatchClassificationLinux = "Other"
+	VMGuestPatchClassificationLinuxOther VMGuestPatchClassificationLinux = "Other"
 	VMGuestPatchClassificationLinuxSecurity VMGuestPatchClassificationLinux = "Security"
 )
 
 // PossibleVMGuestPatchClassificationLinuxValues returns the possible values for the VMGuestPatchClassificationLinux const type.
 func PossibleVMGuestPatchClassificationLinuxValues() []VMGuestPatchClassificationLinux {
-	return []VMGuestPatchClassificationLinux{
+	return []VMGuestPatchClassificationLinux{	
 		VMGuestPatchClassificationLinuxCritical,
 		VMGuestPatchClassificationLinuxOther,
 		VMGuestPatchClassificationLinuxSecurity,
@@ -2143,19 +2143,19 @@ func PossibleVMGuestPatchClassificationLinuxValues() []VMGuestPatchClassificatio
 type VMGuestPatchClassificationWindows string
 
 const (
-	VMGuestPatchClassificationWindowsCritical     VMGuestPatchClassificationWindows = "Critical"
-	VMGuestPatchClassificationWindowsDefinition   VMGuestPatchClassificationWindows = "Definition"
-	VMGuestPatchClassificationWindowsFeaturePack  VMGuestPatchClassificationWindows = "FeaturePack"
-	VMGuestPatchClassificationWindowsSecurity     VMGuestPatchClassificationWindows = "Security"
-	VMGuestPatchClassificationWindowsServicePack  VMGuestPatchClassificationWindows = "ServicePack"
-	VMGuestPatchClassificationWindowsTools        VMGuestPatchClassificationWindows = "Tools"
+	VMGuestPatchClassificationWindowsCritical VMGuestPatchClassificationWindows = "Critical"
+	VMGuestPatchClassificationWindowsDefinition VMGuestPatchClassificationWindows = "Definition"
+	VMGuestPatchClassificationWindowsFeaturePack VMGuestPatchClassificationWindows = "FeaturePack"
+	VMGuestPatchClassificationWindowsSecurity VMGuestPatchClassificationWindows = "Security"
+	VMGuestPatchClassificationWindowsServicePack VMGuestPatchClassificationWindows = "ServicePack"
+	VMGuestPatchClassificationWindowsTools VMGuestPatchClassificationWindows = "Tools"
 	VMGuestPatchClassificationWindowsUpdateRollUp VMGuestPatchClassificationWindows = "UpdateRollUp"
-	VMGuestPatchClassificationWindowsUpdates      VMGuestPatchClassificationWindows = "Updates"
+	VMGuestPatchClassificationWindowsUpdates VMGuestPatchClassificationWindows = "Updates"
 )
 
 // PossibleVMGuestPatchClassificationWindowsValues returns the possible values for the VMGuestPatchClassificationWindows const type.
 func PossibleVMGuestPatchClassificationWindowsValues() []VMGuestPatchClassificationWindows {
-	return []VMGuestPatchClassificationWindows{
+	return []VMGuestPatchClassificationWindows{	
 		VMGuestPatchClassificationWindowsCritical,
 		VMGuestPatchClassificationWindowsDefinition,
 		VMGuestPatchClassificationWindowsFeaturePack,
@@ -2172,14 +2172,14 @@ type VMGuestPatchRebootBehavior string
 
 const (
 	VMGuestPatchRebootBehaviorAlwaysRequiresReboot VMGuestPatchRebootBehavior = "AlwaysRequiresReboot"
-	VMGuestPatchRebootBehaviorCanRequestReboot     VMGuestPatchRebootBehavior = "CanRequestReboot"
-	VMGuestPatchRebootBehaviorNeverReboots         VMGuestPatchRebootBehavior = "NeverReboots"
-	VMGuestPatchRebootBehaviorUnknown              VMGuestPatchRebootBehavior = "Unknown"
+	VMGuestPatchRebootBehaviorCanRequestReboot VMGuestPatchRebootBehavior = "CanRequestReboot"
+	VMGuestPatchRebootBehaviorNeverReboots VMGuestPatchRebootBehavior = "NeverReboots"
+	VMGuestPatchRebootBehaviorUnknown VMGuestPatchRebootBehavior = "Unknown"
 )
 
 // PossibleVMGuestPatchRebootBehaviorValues returns the possible values for the VMGuestPatchRebootBehavior const type.
 func PossibleVMGuestPatchRebootBehaviorValues() []VMGuestPatchRebootBehavior {
-	return []VMGuestPatchRebootBehavior{
+	return []VMGuestPatchRebootBehavior{	
 		VMGuestPatchRebootBehaviorAlwaysRequiresReboot,
 		VMGuestPatchRebootBehaviorCanRequestReboot,
 		VMGuestPatchRebootBehaviorNeverReboots,
@@ -2191,14 +2191,14 @@ func PossibleVMGuestPatchRebootBehaviorValues() []VMGuestPatchRebootBehavior {
 type VMGuestPatchRebootSetting string
 
 const (
-	VMGuestPatchRebootSettingAlways     VMGuestPatchRebootSetting = "Always"
+	VMGuestPatchRebootSettingAlways VMGuestPatchRebootSetting = "Always"
 	VMGuestPatchRebootSettingIfRequired VMGuestPatchRebootSetting = "IfRequired"
-	VMGuestPatchRebootSettingNever      VMGuestPatchRebootSetting = "Never"
+	VMGuestPatchRebootSettingNever VMGuestPatchRebootSetting = "Never"
 )
 
 // PossibleVMGuestPatchRebootSettingValues returns the possible values for the VMGuestPatchRebootSetting const type.
 func PossibleVMGuestPatchRebootSettingValues() []VMGuestPatchRebootSetting {
-	return []VMGuestPatchRebootSetting{
+	return []VMGuestPatchRebootSetting{	
 		VMGuestPatchRebootSettingAlways,
 		VMGuestPatchRebootSettingIfRequired,
 		VMGuestPatchRebootSettingNever,
@@ -2210,16 +2210,16 @@ type VMGuestPatchRebootStatus string
 
 const (
 	VMGuestPatchRebootStatusCompleted VMGuestPatchRebootStatus = "Completed"
-	VMGuestPatchRebootStatusFailed    VMGuestPatchRebootStatus = "Failed"
+	VMGuestPatchRebootStatusFailed VMGuestPatchRebootStatus = "Failed"
 	VMGuestPatchRebootStatusNotNeeded VMGuestPatchRebootStatus = "NotNeeded"
-	VMGuestPatchRebootStatusRequired  VMGuestPatchRebootStatus = "Required"
-	VMGuestPatchRebootStatusStarted   VMGuestPatchRebootStatus = "Started"
-	VMGuestPatchRebootStatusUnknown   VMGuestPatchRebootStatus = "Unknown"
+	VMGuestPatchRebootStatusRequired VMGuestPatchRebootStatus = "Required"
+	VMGuestPatchRebootStatusStarted VMGuestPatchRebootStatus = "Started"
+	VMGuestPatchRebootStatusUnknown VMGuestPatchRebootStatus = "Unknown"
 )
 
 // PossibleVMGuestPatchRebootStatusValues returns the possible values for the VMGuestPatchRebootStatus const type.
 func PossibleVMGuestPatchRebootStatusValues() []VMGuestPatchRebootStatus {
-	return []VMGuestPatchRebootStatus{
+	return []VMGuestPatchRebootStatus{	
 		VMGuestPatchRebootStatusCompleted,
 		VMGuestPatchRebootStatusFailed,
 		VMGuestPatchRebootStatusNotNeeded,
@@ -2234,12 +2234,12 @@ type VirtualMachineEvictionPolicyTypes string
 
 const (
 	VirtualMachineEvictionPolicyTypesDeallocate VirtualMachineEvictionPolicyTypes = "Deallocate"
-	VirtualMachineEvictionPolicyTypesDelete     VirtualMachineEvictionPolicyTypes = "Delete"
+	VirtualMachineEvictionPolicyTypesDelete VirtualMachineEvictionPolicyTypes = "Delete"
 )
 
 // PossibleVirtualMachineEvictionPolicyTypesValues returns the possible values for the VirtualMachineEvictionPolicyTypes const type.
 func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionPolicyTypes {
-	return []VirtualMachineEvictionPolicyTypes{
+	return []VirtualMachineEvictionPolicyTypes{	
 		VirtualMachineEvictionPolicyTypesDeallocate,
 		VirtualMachineEvictionPolicyTypesDelete,
 	}
@@ -2251,14 +2251,14 @@ func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionP
 type VirtualMachinePriorityTypes string
 
 const (
-	VirtualMachinePriorityTypesLow     VirtualMachinePriorityTypes = "Low"
+	VirtualMachinePriorityTypesLow VirtualMachinePriorityTypes = "Low"
 	VirtualMachinePriorityTypesRegular VirtualMachinePriorityTypes = "Regular"
-	VirtualMachinePriorityTypesSpot    VirtualMachinePriorityTypes = "Spot"
+	VirtualMachinePriorityTypesSpot VirtualMachinePriorityTypes = "Spot"
 )
 
 // PossibleVirtualMachinePriorityTypesValues returns the possible values for the VirtualMachinePriorityTypes const type.
 func PossibleVirtualMachinePriorityTypesValues() []VirtualMachinePriorityTypes {
-	return []VirtualMachinePriorityTypes{
+	return []VirtualMachinePriorityTypes{	
 		VirtualMachinePriorityTypesLow,
 		VirtualMachinePriorityTypesRegular,
 		VirtualMachinePriorityTypesSpot,
@@ -2270,12 +2270,12 @@ type VirtualMachineScaleSetSKUScaleType string
 
 const (
 	VirtualMachineScaleSetSKUScaleTypeAutomatic VirtualMachineScaleSetSKUScaleType = "Automatic"
-	VirtualMachineScaleSetSKUScaleTypeNone      VirtualMachineScaleSetSKUScaleType = "None"
+	VirtualMachineScaleSetSKUScaleTypeNone VirtualMachineScaleSetSKUScaleType = "None"
 )
 
 // PossibleVirtualMachineScaleSetSKUScaleTypeValues returns the possible values for the VirtualMachineScaleSetSKUScaleType const type.
 func PossibleVirtualMachineScaleSetSKUScaleTypeValues() []VirtualMachineScaleSetSKUScaleType {
-	return []VirtualMachineScaleSetSKUScaleType{
+	return []VirtualMachineScaleSetSKUScaleType{	
 		VirtualMachineScaleSetSKUScaleTypeAutomatic,
 		VirtualMachineScaleSetSKUScaleTypeNone,
 	}
@@ -2284,14 +2284,14 @@ func PossibleVirtualMachineScaleSetSKUScaleTypeValues() []VirtualMachineScaleSet
 type VirtualMachineScaleSetScaleInRules string
 
 const (
-	VirtualMachineScaleSetScaleInRulesDefault  VirtualMachineScaleSetScaleInRules = "Default"
+	VirtualMachineScaleSetScaleInRulesDefault VirtualMachineScaleSetScaleInRules = "Default"
 	VirtualMachineScaleSetScaleInRulesNewestVM VirtualMachineScaleSetScaleInRules = "NewestVM"
 	VirtualMachineScaleSetScaleInRulesOldestVM VirtualMachineScaleSetScaleInRules = "OldestVM"
 )
 
 // PossibleVirtualMachineScaleSetScaleInRulesValues returns the possible values for the VirtualMachineScaleSetScaleInRules const type.
 func PossibleVirtualMachineScaleSetScaleInRulesValues() []VirtualMachineScaleSetScaleInRules {
-	return []VirtualMachineScaleSetScaleInRules{
+	return []VirtualMachineScaleSetScaleInRules{	
 		VirtualMachineScaleSetScaleInRulesDefault,
 		VirtualMachineScaleSetScaleInRulesNewestVM,
 		VirtualMachineScaleSetScaleInRulesOldestVM,
@@ -2309,177 +2309,177 @@ func PossibleVirtualMachineScaleSetScaleInRulesValues() []VirtualMachineScaleSet
 type VirtualMachineSizeTypes string
 
 const (
-	VirtualMachineSizeTypesBasicA0          VirtualMachineSizeTypes = "Basic_A0"
-	VirtualMachineSizeTypesBasicA1          VirtualMachineSizeTypes = "Basic_A1"
-	VirtualMachineSizeTypesBasicA2          VirtualMachineSizeTypes = "Basic_A2"
-	VirtualMachineSizeTypesBasicA3          VirtualMachineSizeTypes = "Basic_A3"
-	VirtualMachineSizeTypesBasicA4          VirtualMachineSizeTypes = "Basic_A4"
-	VirtualMachineSizeTypesStandardA0       VirtualMachineSizeTypes = "Standard_A0"
-	VirtualMachineSizeTypesStandardA1       VirtualMachineSizeTypes = "Standard_A1"
-	VirtualMachineSizeTypesStandardA10      VirtualMachineSizeTypes = "Standard_A10"
-	VirtualMachineSizeTypesStandardA11      VirtualMachineSizeTypes = "Standard_A11"
-	VirtualMachineSizeTypesStandardA1V2     VirtualMachineSizeTypes = "Standard_A1_v2"
-	VirtualMachineSizeTypesStandardA2       VirtualMachineSizeTypes = "Standard_A2"
-	VirtualMachineSizeTypesStandardA2MV2    VirtualMachineSizeTypes = "Standard_A2m_v2"
-	VirtualMachineSizeTypesStandardA2V2     VirtualMachineSizeTypes = "Standard_A2_v2"
-	VirtualMachineSizeTypesStandardA3       VirtualMachineSizeTypes = "Standard_A3"
-	VirtualMachineSizeTypesStandardA4       VirtualMachineSizeTypes = "Standard_A4"
-	VirtualMachineSizeTypesStandardA4MV2    VirtualMachineSizeTypes = "Standard_A4m_v2"
-	VirtualMachineSizeTypesStandardA4V2     VirtualMachineSizeTypes = "Standard_A4_v2"
-	VirtualMachineSizeTypesStandardA5       VirtualMachineSizeTypes = "Standard_A5"
-	VirtualMachineSizeTypesStandardA6       VirtualMachineSizeTypes = "Standard_A6"
-	VirtualMachineSizeTypesStandardA7       VirtualMachineSizeTypes = "Standard_A7"
-	VirtualMachineSizeTypesStandardA8       VirtualMachineSizeTypes = "Standard_A8"
-	VirtualMachineSizeTypesStandardA8MV2    VirtualMachineSizeTypes = "Standard_A8m_v2"
-	VirtualMachineSizeTypesStandardA8V2     VirtualMachineSizeTypes = "Standard_A8_v2"
-	VirtualMachineSizeTypesStandardA9       VirtualMachineSizeTypes = "Standard_A9"
-	VirtualMachineSizeTypesStandardB1Ms     VirtualMachineSizeTypes = "Standard_B1ms"
-	VirtualMachineSizeTypesStandardB1S      VirtualMachineSizeTypes = "Standard_B1s"
-	VirtualMachineSizeTypesStandardB2Ms     VirtualMachineSizeTypes = "Standard_B2ms"
-	VirtualMachineSizeTypesStandardB2S      VirtualMachineSizeTypes = "Standard_B2s"
-	VirtualMachineSizeTypesStandardB4Ms     VirtualMachineSizeTypes = "Standard_B4ms"
-	VirtualMachineSizeTypesStandardB8Ms     VirtualMachineSizeTypes = "Standard_B8ms"
-	VirtualMachineSizeTypesStandardD1       VirtualMachineSizeTypes = "Standard_D1"
-	VirtualMachineSizeTypesStandardD11      VirtualMachineSizeTypes = "Standard_D11"
-	VirtualMachineSizeTypesStandardD11V2    VirtualMachineSizeTypes = "Standard_D11_v2"
-	VirtualMachineSizeTypesStandardD12      VirtualMachineSizeTypes = "Standard_D12"
-	VirtualMachineSizeTypesStandardD12V2    VirtualMachineSizeTypes = "Standard_D12_v2"
-	VirtualMachineSizeTypesStandardD13      VirtualMachineSizeTypes = "Standard_D13"
-	VirtualMachineSizeTypesStandardD13V2    VirtualMachineSizeTypes = "Standard_D13_v2"
-	VirtualMachineSizeTypesStandardD14      VirtualMachineSizeTypes = "Standard_D14"
-	VirtualMachineSizeTypesStandardD14V2    VirtualMachineSizeTypes = "Standard_D14_v2"
-	VirtualMachineSizeTypesStandardD15V2    VirtualMachineSizeTypes = "Standard_D15_v2"
-	VirtualMachineSizeTypesStandardD16SV3   VirtualMachineSizeTypes = "Standard_D16s_v3"
-	VirtualMachineSizeTypesStandardD16V3    VirtualMachineSizeTypes = "Standard_D16_v3"
-	VirtualMachineSizeTypesStandardD1V2     VirtualMachineSizeTypes = "Standard_D1_v2"
-	VirtualMachineSizeTypesStandardD2       VirtualMachineSizeTypes = "Standard_D2"
-	VirtualMachineSizeTypesStandardD2SV3    VirtualMachineSizeTypes = "Standard_D2s_v3"
-	VirtualMachineSizeTypesStandardD2V2     VirtualMachineSizeTypes = "Standard_D2_v2"
-	VirtualMachineSizeTypesStandardD2V3     VirtualMachineSizeTypes = "Standard_D2_v3"
-	VirtualMachineSizeTypesStandardD3       VirtualMachineSizeTypes = "Standard_D3"
-	VirtualMachineSizeTypesStandardD32SV3   VirtualMachineSizeTypes = "Standard_D32s_v3"
-	VirtualMachineSizeTypesStandardD32V3    VirtualMachineSizeTypes = "Standard_D32_v3"
-	VirtualMachineSizeTypesStandardD3V2     VirtualMachineSizeTypes = "Standard_D3_v2"
-	VirtualMachineSizeTypesStandardD4       VirtualMachineSizeTypes = "Standard_D4"
-	VirtualMachineSizeTypesStandardD4SV3    VirtualMachineSizeTypes = "Standard_D4s_v3"
-	VirtualMachineSizeTypesStandardD4V2     VirtualMachineSizeTypes = "Standard_D4_v2"
-	VirtualMachineSizeTypesStandardD4V3     VirtualMachineSizeTypes = "Standard_D4_v3"
-	VirtualMachineSizeTypesStandardD5V2     VirtualMachineSizeTypes = "Standard_D5_v2"
-	VirtualMachineSizeTypesStandardD64SV3   VirtualMachineSizeTypes = "Standard_D64s_v3"
-	VirtualMachineSizeTypesStandardD64V3    VirtualMachineSizeTypes = "Standard_D64_v3"
-	VirtualMachineSizeTypesStandardD8SV3    VirtualMachineSizeTypes = "Standard_D8s_v3"
-	VirtualMachineSizeTypesStandardD8V3     VirtualMachineSizeTypes = "Standard_D8_v3"
-	VirtualMachineSizeTypesStandardDS1      VirtualMachineSizeTypes = "Standard_DS1"
-	VirtualMachineSizeTypesStandardDS11     VirtualMachineSizeTypes = "Standard_DS11"
-	VirtualMachineSizeTypesStandardDS11V2   VirtualMachineSizeTypes = "Standard_DS11_v2"
-	VirtualMachineSizeTypesStandardDS12     VirtualMachineSizeTypes = "Standard_DS12"
-	VirtualMachineSizeTypesStandardDS12V2   VirtualMachineSizeTypes = "Standard_DS12_v2"
-	VirtualMachineSizeTypesStandardDS13     VirtualMachineSizeTypes = "Standard_DS13"
-	VirtualMachineSizeTypesStandardDS132V2  VirtualMachineSizeTypes = "Standard_DS13-2_v2"
-	VirtualMachineSizeTypesStandardDS134V2  VirtualMachineSizeTypes = "Standard_DS13-4_v2"
-	VirtualMachineSizeTypesStandardDS13V2   VirtualMachineSizeTypes = "Standard_DS13_v2"
-	VirtualMachineSizeTypesStandardDS14     VirtualMachineSizeTypes = "Standard_DS14"
-	VirtualMachineSizeTypesStandardDS144V2  VirtualMachineSizeTypes = "Standard_DS14-4_v2"
-	VirtualMachineSizeTypesStandardDS148V2  VirtualMachineSizeTypes = "Standard_DS14-8_v2"
-	VirtualMachineSizeTypesStandardDS14V2   VirtualMachineSizeTypes = "Standard_DS14_v2"
-	VirtualMachineSizeTypesStandardDS15V2   VirtualMachineSizeTypes = "Standard_DS15_v2"
-	VirtualMachineSizeTypesStandardDS1V2    VirtualMachineSizeTypes = "Standard_DS1_v2"
-	VirtualMachineSizeTypesStandardDS2      VirtualMachineSizeTypes = "Standard_DS2"
-	VirtualMachineSizeTypesStandardDS2V2    VirtualMachineSizeTypes = "Standard_DS2_v2"
-	VirtualMachineSizeTypesStandardDS3      VirtualMachineSizeTypes = "Standard_DS3"
-	VirtualMachineSizeTypesStandardDS3V2    VirtualMachineSizeTypes = "Standard_DS3_v2"
-	VirtualMachineSizeTypesStandardDS4      VirtualMachineSizeTypes = "Standard_DS4"
-	VirtualMachineSizeTypesStandardDS4V2    VirtualMachineSizeTypes = "Standard_DS4_v2"
-	VirtualMachineSizeTypesStandardDS5V2    VirtualMachineSizeTypes = "Standard_DS5_v2"
-	VirtualMachineSizeTypesStandardE16SV3   VirtualMachineSizeTypes = "Standard_E16s_v3"
-	VirtualMachineSizeTypesStandardE16V3    VirtualMachineSizeTypes = "Standard_E16_v3"
-	VirtualMachineSizeTypesStandardE2SV3    VirtualMachineSizeTypes = "Standard_E2s_v3"
-	VirtualMachineSizeTypesStandardE2V3     VirtualMachineSizeTypes = "Standard_E2_v3"
-	VirtualMachineSizeTypesStandardE3216V3  VirtualMachineSizeTypes = "Standard_E32-16_v3"
-	VirtualMachineSizeTypesStandardE328SV3  VirtualMachineSizeTypes = "Standard_E32-8s_v3"
-	VirtualMachineSizeTypesStandardE32SV3   VirtualMachineSizeTypes = "Standard_E32s_v3"
-	VirtualMachineSizeTypesStandardE32V3    VirtualMachineSizeTypes = "Standard_E32_v3"
-	VirtualMachineSizeTypesStandardE4SV3    VirtualMachineSizeTypes = "Standard_E4s_v3"
-	VirtualMachineSizeTypesStandardE4V3     VirtualMachineSizeTypes = "Standard_E4_v3"
+	VirtualMachineSizeTypesBasicA0 VirtualMachineSizeTypes = "Basic_A0"
+	VirtualMachineSizeTypesBasicA1 VirtualMachineSizeTypes = "Basic_A1"
+	VirtualMachineSizeTypesBasicA2 VirtualMachineSizeTypes = "Basic_A2"
+	VirtualMachineSizeTypesBasicA3 VirtualMachineSizeTypes = "Basic_A3"
+	VirtualMachineSizeTypesBasicA4 VirtualMachineSizeTypes = "Basic_A4"
+	VirtualMachineSizeTypesStandardA0 VirtualMachineSizeTypes = "Standard_A0"
+	VirtualMachineSizeTypesStandardA1 VirtualMachineSizeTypes = "Standard_A1"
+	VirtualMachineSizeTypesStandardA10 VirtualMachineSizeTypes = "Standard_A10"
+	VirtualMachineSizeTypesStandardA11 VirtualMachineSizeTypes = "Standard_A11"
+	VirtualMachineSizeTypesStandardA1V2 VirtualMachineSizeTypes = "Standard_A1_v2"
+	VirtualMachineSizeTypesStandardA2 VirtualMachineSizeTypes = "Standard_A2"
+	VirtualMachineSizeTypesStandardA2MV2 VirtualMachineSizeTypes = "Standard_A2m_v2"
+	VirtualMachineSizeTypesStandardA2V2 VirtualMachineSizeTypes = "Standard_A2_v2"
+	VirtualMachineSizeTypesStandardA3 VirtualMachineSizeTypes = "Standard_A3"
+	VirtualMachineSizeTypesStandardA4 VirtualMachineSizeTypes = "Standard_A4"
+	VirtualMachineSizeTypesStandardA4MV2 VirtualMachineSizeTypes = "Standard_A4m_v2"
+	VirtualMachineSizeTypesStandardA4V2 VirtualMachineSizeTypes = "Standard_A4_v2"
+	VirtualMachineSizeTypesStandardA5 VirtualMachineSizeTypes = "Standard_A5"
+	VirtualMachineSizeTypesStandardA6 VirtualMachineSizeTypes = "Standard_A6"
+	VirtualMachineSizeTypesStandardA7 VirtualMachineSizeTypes = "Standard_A7"
+	VirtualMachineSizeTypesStandardA8 VirtualMachineSizeTypes = "Standard_A8"
+	VirtualMachineSizeTypesStandardA8MV2 VirtualMachineSizeTypes = "Standard_A8m_v2"
+	VirtualMachineSizeTypesStandardA8V2 VirtualMachineSizeTypes = "Standard_A8_v2"
+	VirtualMachineSizeTypesStandardA9 VirtualMachineSizeTypes = "Standard_A9"
+	VirtualMachineSizeTypesStandardB1Ms VirtualMachineSizeTypes = "Standard_B1ms"
+	VirtualMachineSizeTypesStandardB1S VirtualMachineSizeTypes = "Standard_B1s"
+	VirtualMachineSizeTypesStandardB2Ms VirtualMachineSizeTypes = "Standard_B2ms"
+	VirtualMachineSizeTypesStandardB2S VirtualMachineSizeTypes = "Standard_B2s"
+	VirtualMachineSizeTypesStandardB4Ms VirtualMachineSizeTypes = "Standard_B4ms"
+	VirtualMachineSizeTypesStandardB8Ms VirtualMachineSizeTypes = "Standard_B8ms"
+	VirtualMachineSizeTypesStandardD1 VirtualMachineSizeTypes = "Standard_D1"
+	VirtualMachineSizeTypesStandardD11 VirtualMachineSizeTypes = "Standard_D11"
+	VirtualMachineSizeTypesStandardD11V2 VirtualMachineSizeTypes = "Standard_D11_v2"
+	VirtualMachineSizeTypesStandardD12 VirtualMachineSizeTypes = "Standard_D12"
+	VirtualMachineSizeTypesStandardD12V2 VirtualMachineSizeTypes = "Standard_D12_v2"
+	VirtualMachineSizeTypesStandardD13 VirtualMachineSizeTypes = "Standard_D13"
+	VirtualMachineSizeTypesStandardD13V2 VirtualMachineSizeTypes = "Standard_D13_v2"
+	VirtualMachineSizeTypesStandardD14 VirtualMachineSizeTypes = "Standard_D14"
+	VirtualMachineSizeTypesStandardD14V2 VirtualMachineSizeTypes = "Standard_D14_v2"
+	VirtualMachineSizeTypesStandardD15V2 VirtualMachineSizeTypes = "Standard_D15_v2"
+	VirtualMachineSizeTypesStandardD16SV3 VirtualMachineSizeTypes = "Standard_D16s_v3"
+	VirtualMachineSizeTypesStandardD16V3 VirtualMachineSizeTypes = "Standard_D16_v3"
+	VirtualMachineSizeTypesStandardD1V2 VirtualMachineSizeTypes = "Standard_D1_v2"
+	VirtualMachineSizeTypesStandardD2 VirtualMachineSizeTypes = "Standard_D2"
+	VirtualMachineSizeTypesStandardD2SV3 VirtualMachineSizeTypes = "Standard_D2s_v3"
+	VirtualMachineSizeTypesStandardD2V2 VirtualMachineSizeTypes = "Standard_D2_v2"
+	VirtualMachineSizeTypesStandardD2V3 VirtualMachineSizeTypes = "Standard_D2_v3"
+	VirtualMachineSizeTypesStandardD3 VirtualMachineSizeTypes = "Standard_D3"
+	VirtualMachineSizeTypesStandardD32SV3 VirtualMachineSizeTypes = "Standard_D32s_v3"
+	VirtualMachineSizeTypesStandardD32V3 VirtualMachineSizeTypes = "Standard_D32_v3"
+	VirtualMachineSizeTypesStandardD3V2 VirtualMachineSizeTypes = "Standard_D3_v2"
+	VirtualMachineSizeTypesStandardD4 VirtualMachineSizeTypes = "Standard_D4"
+	VirtualMachineSizeTypesStandardD4SV3 VirtualMachineSizeTypes = "Standard_D4s_v3"
+	VirtualMachineSizeTypesStandardD4V2 VirtualMachineSizeTypes = "Standard_D4_v2"
+	VirtualMachineSizeTypesStandardD4V3 VirtualMachineSizeTypes = "Standard_D4_v3"
+	VirtualMachineSizeTypesStandardD5V2 VirtualMachineSizeTypes = "Standard_D5_v2"
+	VirtualMachineSizeTypesStandardD64SV3 VirtualMachineSizeTypes = "Standard_D64s_v3"
+	VirtualMachineSizeTypesStandardD64V3 VirtualMachineSizeTypes = "Standard_D64_v3"
+	VirtualMachineSizeTypesStandardD8SV3 VirtualMachineSizeTypes = "Standard_D8s_v3"
+	VirtualMachineSizeTypesStandardD8V3 VirtualMachineSizeTypes = "Standard_D8_v3"
+	VirtualMachineSizeTypesStandardDS1 VirtualMachineSizeTypes = "Standard_DS1"
+	VirtualMachineSizeTypesStandardDS11 VirtualMachineSizeTypes = "Standard_DS11"
+	VirtualMachineSizeTypesStandardDS11V2 VirtualMachineSizeTypes = "Standard_DS11_v2"
+	VirtualMachineSizeTypesStandardDS12 VirtualMachineSizeTypes = "Standard_DS12"
+	VirtualMachineSizeTypesStandardDS12V2 VirtualMachineSizeTypes = "Standard_DS12_v2"
+	VirtualMachineSizeTypesStandardDS13 VirtualMachineSizeTypes = "Standard_DS13"
+	VirtualMachineSizeTypesStandardDS132V2 VirtualMachineSizeTypes = "Standard_DS13-2_v2"
+	VirtualMachineSizeTypesStandardDS134V2 VirtualMachineSizeTypes = "Standard_DS13-4_v2"
+	VirtualMachineSizeTypesStandardDS13V2 VirtualMachineSizeTypes = "Standard_DS13_v2"
+	VirtualMachineSizeTypesStandardDS14 VirtualMachineSizeTypes = "Standard_DS14"
+	VirtualMachineSizeTypesStandardDS144V2 VirtualMachineSizeTypes = "Standard_DS14-4_v2"
+	VirtualMachineSizeTypesStandardDS148V2 VirtualMachineSizeTypes = "Standard_DS14-8_v2"
+	VirtualMachineSizeTypesStandardDS14V2 VirtualMachineSizeTypes = "Standard_DS14_v2"
+	VirtualMachineSizeTypesStandardDS15V2 VirtualMachineSizeTypes = "Standard_DS15_v2"
+	VirtualMachineSizeTypesStandardDS1V2 VirtualMachineSizeTypes = "Standard_DS1_v2"
+	VirtualMachineSizeTypesStandardDS2 VirtualMachineSizeTypes = "Standard_DS2"
+	VirtualMachineSizeTypesStandardDS2V2 VirtualMachineSizeTypes = "Standard_DS2_v2"
+	VirtualMachineSizeTypesStandardDS3 VirtualMachineSizeTypes = "Standard_DS3"
+	VirtualMachineSizeTypesStandardDS3V2 VirtualMachineSizeTypes = "Standard_DS3_v2"
+	VirtualMachineSizeTypesStandardDS4 VirtualMachineSizeTypes = "Standard_DS4"
+	VirtualMachineSizeTypesStandardDS4V2 VirtualMachineSizeTypes = "Standard_DS4_v2"
+	VirtualMachineSizeTypesStandardDS5V2 VirtualMachineSizeTypes = "Standard_DS5_v2"
+	VirtualMachineSizeTypesStandardE16SV3 VirtualMachineSizeTypes = "Standard_E16s_v3"
+	VirtualMachineSizeTypesStandardE16V3 VirtualMachineSizeTypes = "Standard_E16_v3"
+	VirtualMachineSizeTypesStandardE2SV3 VirtualMachineSizeTypes = "Standard_E2s_v3"
+	VirtualMachineSizeTypesStandardE2V3 VirtualMachineSizeTypes = "Standard_E2_v3"
+	VirtualMachineSizeTypesStandardE3216V3 VirtualMachineSizeTypes = "Standard_E32-16_v3"
+	VirtualMachineSizeTypesStandardE328SV3 VirtualMachineSizeTypes = "Standard_E32-8s_v3"
+	VirtualMachineSizeTypesStandardE32SV3 VirtualMachineSizeTypes = "Standard_E32s_v3"
+	VirtualMachineSizeTypesStandardE32V3 VirtualMachineSizeTypes = "Standard_E32_v3"
+	VirtualMachineSizeTypesStandardE4SV3 VirtualMachineSizeTypes = "Standard_E4s_v3"
+	VirtualMachineSizeTypesStandardE4V3 VirtualMachineSizeTypes = "Standard_E4_v3"
 	VirtualMachineSizeTypesStandardE6416SV3 VirtualMachineSizeTypes = "Standard_E64-16s_v3"
 	VirtualMachineSizeTypesStandardE6432SV3 VirtualMachineSizeTypes = "Standard_E64-32s_v3"
-	VirtualMachineSizeTypesStandardE64SV3   VirtualMachineSizeTypes = "Standard_E64s_v3"
-	VirtualMachineSizeTypesStandardE64V3    VirtualMachineSizeTypes = "Standard_E64_v3"
-	VirtualMachineSizeTypesStandardE8SV3    VirtualMachineSizeTypes = "Standard_E8s_v3"
-	VirtualMachineSizeTypesStandardE8V3     VirtualMachineSizeTypes = "Standard_E8_v3"
-	VirtualMachineSizeTypesStandardF1       VirtualMachineSizeTypes = "Standard_F1"
-	VirtualMachineSizeTypesStandardF16      VirtualMachineSizeTypes = "Standard_F16"
-	VirtualMachineSizeTypesStandardF16S     VirtualMachineSizeTypes = "Standard_F16s"
-	VirtualMachineSizeTypesStandardF16SV2   VirtualMachineSizeTypes = "Standard_F16s_v2"
-	VirtualMachineSizeTypesStandardF1S      VirtualMachineSizeTypes = "Standard_F1s"
-	VirtualMachineSizeTypesStandardF2       VirtualMachineSizeTypes = "Standard_F2"
-	VirtualMachineSizeTypesStandardF2S      VirtualMachineSizeTypes = "Standard_F2s"
-	VirtualMachineSizeTypesStandardF2SV2    VirtualMachineSizeTypes = "Standard_F2s_v2"
-	VirtualMachineSizeTypesStandardF32SV2   VirtualMachineSizeTypes = "Standard_F32s_v2"
-	VirtualMachineSizeTypesStandardF4       VirtualMachineSizeTypes = "Standard_F4"
-	VirtualMachineSizeTypesStandardF4S      VirtualMachineSizeTypes = "Standard_F4s"
-	VirtualMachineSizeTypesStandardF4SV2    VirtualMachineSizeTypes = "Standard_F4s_v2"
-	VirtualMachineSizeTypesStandardF64SV2   VirtualMachineSizeTypes = "Standard_F64s_v2"
-	VirtualMachineSizeTypesStandardF72SV2   VirtualMachineSizeTypes = "Standard_F72s_v2"
-	VirtualMachineSizeTypesStandardF8       VirtualMachineSizeTypes = "Standard_F8"
-	VirtualMachineSizeTypesStandardF8S      VirtualMachineSizeTypes = "Standard_F8s"
-	VirtualMachineSizeTypesStandardF8SV2    VirtualMachineSizeTypes = "Standard_F8s_v2"
-	VirtualMachineSizeTypesStandardG1       VirtualMachineSizeTypes = "Standard_G1"
-	VirtualMachineSizeTypesStandardG2       VirtualMachineSizeTypes = "Standard_G2"
-	VirtualMachineSizeTypesStandardG3       VirtualMachineSizeTypes = "Standard_G3"
-	VirtualMachineSizeTypesStandardG4       VirtualMachineSizeTypes = "Standard_G4"
-	VirtualMachineSizeTypesStandardG5       VirtualMachineSizeTypes = "Standard_G5"
-	VirtualMachineSizeTypesStandardGS1      VirtualMachineSizeTypes = "Standard_GS1"
-	VirtualMachineSizeTypesStandardGS2      VirtualMachineSizeTypes = "Standard_GS2"
-	VirtualMachineSizeTypesStandardGS3      VirtualMachineSizeTypes = "Standard_GS3"
-	VirtualMachineSizeTypesStandardGS4      VirtualMachineSizeTypes = "Standard_GS4"
-	VirtualMachineSizeTypesStandardGS44     VirtualMachineSizeTypes = "Standard_GS4-4"
-	VirtualMachineSizeTypesStandardGS48     VirtualMachineSizeTypes = "Standard_GS4-8"
-	VirtualMachineSizeTypesStandardGS5      VirtualMachineSizeTypes = "Standard_GS5"
-	VirtualMachineSizeTypesStandardGS516    VirtualMachineSizeTypes = "Standard_GS5-16"
-	VirtualMachineSizeTypesStandardGS58     VirtualMachineSizeTypes = "Standard_GS5-8"
-	VirtualMachineSizeTypesStandardH16      VirtualMachineSizeTypes = "Standard_H16"
-	VirtualMachineSizeTypesStandardH16M     VirtualMachineSizeTypes = "Standard_H16m"
-	VirtualMachineSizeTypesStandardH16Mr    VirtualMachineSizeTypes = "Standard_H16mr"
-	VirtualMachineSizeTypesStandardH16R     VirtualMachineSizeTypes = "Standard_H16r"
-	VirtualMachineSizeTypesStandardH8       VirtualMachineSizeTypes = "Standard_H8"
-	VirtualMachineSizeTypesStandardH8M      VirtualMachineSizeTypes = "Standard_H8m"
-	VirtualMachineSizeTypesStandardL16S     VirtualMachineSizeTypes = "Standard_L16s"
-	VirtualMachineSizeTypesStandardL32S     VirtualMachineSizeTypes = "Standard_L32s"
-	VirtualMachineSizeTypesStandardL4S      VirtualMachineSizeTypes = "Standard_L4s"
-	VirtualMachineSizeTypesStandardL8S      VirtualMachineSizeTypes = "Standard_L8s"
+	VirtualMachineSizeTypesStandardE64SV3 VirtualMachineSizeTypes = "Standard_E64s_v3"
+	VirtualMachineSizeTypesStandardE64V3 VirtualMachineSizeTypes = "Standard_E64_v3"
+	VirtualMachineSizeTypesStandardE8SV3 VirtualMachineSizeTypes = "Standard_E8s_v3"
+	VirtualMachineSizeTypesStandardE8V3 VirtualMachineSizeTypes = "Standard_E8_v3"
+	VirtualMachineSizeTypesStandardF1 VirtualMachineSizeTypes = "Standard_F1"
+	VirtualMachineSizeTypesStandardF16 VirtualMachineSizeTypes = "Standard_F16"
+	VirtualMachineSizeTypesStandardF16S VirtualMachineSizeTypes = "Standard_F16s"
+	VirtualMachineSizeTypesStandardF16SV2 VirtualMachineSizeTypes = "Standard_F16s_v2"
+	VirtualMachineSizeTypesStandardF1S VirtualMachineSizeTypes = "Standard_F1s"
+	VirtualMachineSizeTypesStandardF2 VirtualMachineSizeTypes = "Standard_F2"
+	VirtualMachineSizeTypesStandardF2S VirtualMachineSizeTypes = "Standard_F2s"
+	VirtualMachineSizeTypesStandardF2SV2 VirtualMachineSizeTypes = "Standard_F2s_v2"
+	VirtualMachineSizeTypesStandardF32SV2 VirtualMachineSizeTypes = "Standard_F32s_v2"
+	VirtualMachineSizeTypesStandardF4 VirtualMachineSizeTypes = "Standard_F4"
+	VirtualMachineSizeTypesStandardF4S VirtualMachineSizeTypes = "Standard_F4s"
+	VirtualMachineSizeTypesStandardF4SV2 VirtualMachineSizeTypes = "Standard_F4s_v2"
+	VirtualMachineSizeTypesStandardF64SV2 VirtualMachineSizeTypes = "Standard_F64s_v2"
+	VirtualMachineSizeTypesStandardF72SV2 VirtualMachineSizeTypes = "Standard_F72s_v2"
+	VirtualMachineSizeTypesStandardF8 VirtualMachineSizeTypes = "Standard_F8"
+	VirtualMachineSizeTypesStandardF8S VirtualMachineSizeTypes = "Standard_F8s"
+	VirtualMachineSizeTypesStandardF8SV2 VirtualMachineSizeTypes = "Standard_F8s_v2"
+	VirtualMachineSizeTypesStandardG1 VirtualMachineSizeTypes = "Standard_G1"
+	VirtualMachineSizeTypesStandardG2 VirtualMachineSizeTypes = "Standard_G2"
+	VirtualMachineSizeTypesStandardG3 VirtualMachineSizeTypes = "Standard_G3"
+	VirtualMachineSizeTypesStandardG4 VirtualMachineSizeTypes = "Standard_G4"
+	VirtualMachineSizeTypesStandardG5 VirtualMachineSizeTypes = "Standard_G5"
+	VirtualMachineSizeTypesStandardGS1 VirtualMachineSizeTypes = "Standard_GS1"
+	VirtualMachineSizeTypesStandardGS2 VirtualMachineSizeTypes = "Standard_GS2"
+	VirtualMachineSizeTypesStandardGS3 VirtualMachineSizeTypes = "Standard_GS3"
+	VirtualMachineSizeTypesStandardGS4 VirtualMachineSizeTypes = "Standard_GS4"
+	VirtualMachineSizeTypesStandardGS44 VirtualMachineSizeTypes = "Standard_GS4-4"
+	VirtualMachineSizeTypesStandardGS48 VirtualMachineSizeTypes = "Standard_GS4-8"
+	VirtualMachineSizeTypesStandardGS5 VirtualMachineSizeTypes = "Standard_GS5"
+	VirtualMachineSizeTypesStandardGS516 VirtualMachineSizeTypes = "Standard_GS5-16"
+	VirtualMachineSizeTypesStandardGS58 VirtualMachineSizeTypes = "Standard_GS5-8"
+	VirtualMachineSizeTypesStandardH16 VirtualMachineSizeTypes = "Standard_H16"
+	VirtualMachineSizeTypesStandardH16M VirtualMachineSizeTypes = "Standard_H16m"
+	VirtualMachineSizeTypesStandardH16Mr VirtualMachineSizeTypes = "Standard_H16mr"
+	VirtualMachineSizeTypesStandardH16R VirtualMachineSizeTypes = "Standard_H16r"
+	VirtualMachineSizeTypesStandardH8 VirtualMachineSizeTypes = "Standard_H8"
+	VirtualMachineSizeTypesStandardH8M VirtualMachineSizeTypes = "Standard_H8m"
+	VirtualMachineSizeTypesStandardL16S VirtualMachineSizeTypes = "Standard_L16s"
+	VirtualMachineSizeTypesStandardL32S VirtualMachineSizeTypes = "Standard_L32s"
+	VirtualMachineSizeTypesStandardL4S VirtualMachineSizeTypes = "Standard_L4s"
+	VirtualMachineSizeTypesStandardL8S VirtualMachineSizeTypes = "Standard_L8s"
 	VirtualMachineSizeTypesStandardM12832Ms VirtualMachineSizeTypes = "Standard_M128-32ms"
 	VirtualMachineSizeTypesStandardM12864Ms VirtualMachineSizeTypes = "Standard_M128-64ms"
-	VirtualMachineSizeTypesStandardM128Ms   VirtualMachineSizeTypes = "Standard_M128ms"
-	VirtualMachineSizeTypesStandardM128S    VirtualMachineSizeTypes = "Standard_M128s"
-	VirtualMachineSizeTypesStandardM6416Ms  VirtualMachineSizeTypes = "Standard_M64-16ms"
-	VirtualMachineSizeTypesStandardM6432Ms  VirtualMachineSizeTypes = "Standard_M64-32ms"
-	VirtualMachineSizeTypesStandardM64Ms    VirtualMachineSizeTypes = "Standard_M64ms"
-	VirtualMachineSizeTypesStandardM64S     VirtualMachineSizeTypes = "Standard_M64s"
-	VirtualMachineSizeTypesStandardNC12     VirtualMachineSizeTypes = "Standard_NC12"
-	VirtualMachineSizeTypesStandardNC12SV2  VirtualMachineSizeTypes = "Standard_NC12s_v2"
-	VirtualMachineSizeTypesStandardNC12SV3  VirtualMachineSizeTypes = "Standard_NC12s_v3"
-	VirtualMachineSizeTypesStandardNC24     VirtualMachineSizeTypes = "Standard_NC24"
-	VirtualMachineSizeTypesStandardNC24R    VirtualMachineSizeTypes = "Standard_NC24r"
+	VirtualMachineSizeTypesStandardM128Ms VirtualMachineSizeTypes = "Standard_M128ms"
+	VirtualMachineSizeTypesStandardM128S VirtualMachineSizeTypes = "Standard_M128s"
+	VirtualMachineSizeTypesStandardM6416Ms VirtualMachineSizeTypes = "Standard_M64-16ms"
+	VirtualMachineSizeTypesStandardM6432Ms VirtualMachineSizeTypes = "Standard_M64-32ms"
+	VirtualMachineSizeTypesStandardM64Ms VirtualMachineSizeTypes = "Standard_M64ms"
+	VirtualMachineSizeTypesStandardM64S VirtualMachineSizeTypes = "Standard_M64s"
+	VirtualMachineSizeTypesStandardNC12 VirtualMachineSizeTypes = "Standard_NC12"
+	VirtualMachineSizeTypesStandardNC12SV2 VirtualMachineSizeTypes = "Standard_NC12s_v2"
+	VirtualMachineSizeTypesStandardNC12SV3 VirtualMachineSizeTypes = "Standard_NC12s_v3"
+	VirtualMachineSizeTypesStandardNC24 VirtualMachineSizeTypes = "Standard_NC24"
+	VirtualMachineSizeTypesStandardNC24R VirtualMachineSizeTypes = "Standard_NC24r"
 	VirtualMachineSizeTypesStandardNC24RsV2 VirtualMachineSizeTypes = "Standard_NC24rs_v2"
 	VirtualMachineSizeTypesStandardNC24RsV3 VirtualMachineSizeTypes = "Standard_NC24rs_v3"
-	VirtualMachineSizeTypesStandardNC24SV2  VirtualMachineSizeTypes = "Standard_NC24s_v2"
-	VirtualMachineSizeTypesStandardNC24SV3  VirtualMachineSizeTypes = "Standard_NC24s_v3"
-	VirtualMachineSizeTypesStandardNC6      VirtualMachineSizeTypes = "Standard_NC6"
-	VirtualMachineSizeTypesStandardNC6SV2   VirtualMachineSizeTypes = "Standard_NC6s_v2"
-	VirtualMachineSizeTypesStandardNC6SV3   VirtualMachineSizeTypes = "Standard_NC6s_v3"
-	VirtualMachineSizeTypesStandardND12S    VirtualMachineSizeTypes = "Standard_ND12s"
-	VirtualMachineSizeTypesStandardND24Rs   VirtualMachineSizeTypes = "Standard_ND24rs"
-	VirtualMachineSizeTypesStandardND24S    VirtualMachineSizeTypes = "Standard_ND24s"
-	VirtualMachineSizeTypesStandardND6S     VirtualMachineSizeTypes = "Standard_ND6s"
-	VirtualMachineSizeTypesStandardNV12     VirtualMachineSizeTypes = "Standard_NV12"
-	VirtualMachineSizeTypesStandardNV24     VirtualMachineSizeTypes = "Standard_NV24"
-	VirtualMachineSizeTypesStandardNV6      VirtualMachineSizeTypes = "Standard_NV6"
+	VirtualMachineSizeTypesStandardNC24SV2 VirtualMachineSizeTypes = "Standard_NC24s_v2"
+	VirtualMachineSizeTypesStandardNC24SV3 VirtualMachineSizeTypes = "Standard_NC24s_v3"
+	VirtualMachineSizeTypesStandardNC6 VirtualMachineSizeTypes = "Standard_NC6"
+	VirtualMachineSizeTypesStandardNC6SV2 VirtualMachineSizeTypes = "Standard_NC6s_v2"
+	VirtualMachineSizeTypesStandardNC6SV3 VirtualMachineSizeTypes = "Standard_NC6s_v3"
+	VirtualMachineSizeTypesStandardND12S VirtualMachineSizeTypes = "Standard_ND12s"
+	VirtualMachineSizeTypesStandardND24Rs VirtualMachineSizeTypes = "Standard_ND24rs"
+	VirtualMachineSizeTypesStandardND24S VirtualMachineSizeTypes = "Standard_ND24s"
+	VirtualMachineSizeTypesStandardND6S VirtualMachineSizeTypes = "Standard_ND6s"
+	VirtualMachineSizeTypesStandardNV12 VirtualMachineSizeTypes = "Standard_NV12"
+	VirtualMachineSizeTypesStandardNV24 VirtualMachineSizeTypes = "Standard_NV24"
+	VirtualMachineSizeTypesStandardNV6 VirtualMachineSizeTypes = "Standard_NV6"
 )
 
 // PossibleVirtualMachineSizeTypesValues returns the possible values for the VirtualMachineSizeTypes const type.
 func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
-	return []VirtualMachineSizeTypes{
+	return []VirtualMachineSizeTypes{	
 		VirtualMachineSizeTypesBasicA0,
 		VirtualMachineSizeTypesBasicA1,
 		VirtualMachineSizeTypesBasicA2,
@@ -2657,12 +2657,12 @@ type WindowsPatchAssessmentMode string
 
 const (
 	WindowsPatchAssessmentModeAutomaticByPlatform WindowsPatchAssessmentMode = "AutomaticByPlatform"
-	WindowsPatchAssessmentModeImageDefault        WindowsPatchAssessmentMode = "ImageDefault"
+	WindowsPatchAssessmentModeImageDefault WindowsPatchAssessmentMode = "ImageDefault"
 )
 
 // PossibleWindowsPatchAssessmentModeValues returns the possible values for the WindowsPatchAssessmentMode const type.
 func PossibleWindowsPatchAssessmentModeValues() []WindowsPatchAssessmentMode {
-	return []WindowsPatchAssessmentMode{
+	return []WindowsPatchAssessmentMode{	
 		WindowsPatchAssessmentModeAutomaticByPlatform,
 		WindowsPatchAssessmentModeImageDefault,
 	}
@@ -2673,15 +2673,15 @@ func PossibleWindowsPatchAssessmentModeValues() []WindowsPatchAssessmentMode {
 type WindowsVMGuestPatchAutomaticByPlatformRebootSetting string
 
 const (
-	WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways     WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "Always"
+	WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "Always"
 	WindowsVMGuestPatchAutomaticByPlatformRebootSettingIfRequired WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "IfRequired"
-	WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever      WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "Never"
-	WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown    WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "Unknown"
+	WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "Never"
+	WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "Unknown"
 )
 
 // PossibleWindowsVMGuestPatchAutomaticByPlatformRebootSettingValues returns the possible values for the WindowsVMGuestPatchAutomaticByPlatformRebootSetting const type.
 func PossibleWindowsVMGuestPatchAutomaticByPlatformRebootSettingValues() []WindowsVMGuestPatchAutomaticByPlatformRebootSetting {
-	return []WindowsVMGuestPatchAutomaticByPlatformRebootSetting{
+	return []WindowsVMGuestPatchAutomaticByPlatformRebootSetting{	
 		WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways,
 		WindowsVMGuestPatchAutomaticByPlatformRebootSettingIfRequired,
 		WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever,
@@ -2702,16 +2702,17 @@ func PossibleWindowsVMGuestPatchAutomaticByPlatformRebootSettingValues() []Windo
 type WindowsVMGuestPatchMode string
 
 const (
-	WindowsVMGuestPatchModeAutomaticByOS       WindowsVMGuestPatchMode = "AutomaticByOS"
+	WindowsVMGuestPatchModeAutomaticByOS WindowsVMGuestPatchMode = "AutomaticByOS"
 	WindowsVMGuestPatchModeAutomaticByPlatform WindowsVMGuestPatchMode = "AutomaticByPlatform"
-	WindowsVMGuestPatchModeManual              WindowsVMGuestPatchMode = "Manual"
+	WindowsVMGuestPatchModeManual WindowsVMGuestPatchMode = "Manual"
 )
 
 // PossibleWindowsVMGuestPatchModeValues returns the possible values for the WindowsVMGuestPatchMode const type.
 func PossibleWindowsVMGuestPatchModeValues() []WindowsVMGuestPatchMode {
-	return []WindowsVMGuestPatchMode{
+	return []WindowsVMGuestPatchMode{	
 		WindowsVMGuestPatchModeAutomaticByOS,
 		WindowsVMGuestPatchModeAutomaticByPlatform,
 		WindowsVMGuestPatchModeManual,
 	}
 }
+

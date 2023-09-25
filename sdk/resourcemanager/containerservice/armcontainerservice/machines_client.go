@@ -23,7 +23,7 @@ import (
 // MachinesClient contains the methods for the Machines group.
 // Don't use this type directly, use NewMachinesClient() instead.
 type MachinesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewMachinesClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &MachinesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -120,7 +120,7 @@ func (client *MachinesClient) getHandleResponse(resp *http.Response) (MachinesCl
 //   - resourceName - The name of the managed cluster resource.
 //   - agentPoolName - The name of the agent pool.
 //   - options - MachinesClientListOptions contains the optional parameters for the MachinesClient.NewListPager method.
-func (client *MachinesClient) NewListPager(resourceGroupName string, resourceName string, agentPoolName string, options *MachinesClientListOptions) *runtime.Pager[MachinesClientListResponse] {
+func (client *MachinesClient) NewListPager(resourceGroupName string, resourceName string, agentPoolName string, options *MachinesClientListOptions) (*runtime.Pager[MachinesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MachinesClientListResponse]{
 		More: func(page MachinesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -186,3 +186,4 @@ func (client *MachinesClient) listHandleResponse(resp *http.Response) (MachinesC
 	}
 	return result, nil
 }
+

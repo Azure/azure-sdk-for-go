@@ -23,7 +23,7 @@ import (
 // ContainerAppsAuthConfigsClient contains the methods for the ContainerAppsAuthConfigs group.
 // Don't use this type directly, use NewContainerAppsAuthConfigsClient() instead.
 type ContainerAppsAuthConfigsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewContainerAppsAuthConfigsClient(subscriptionID string, credential azcore.
 	}
 	client := &ContainerAppsAuthConfigsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *ContainerAppsAuthConfigsClient) createOrUpdateCreateRequest(ctx co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, authConfigEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -242,7 +242,7 @@ func (client *ContainerAppsAuthConfigsClient) getHandleResponse(resp *http.Respo
 //   - containerAppName - Name of the Container App.
 //   - options - ContainerAppsAuthConfigsClientListByContainerAppOptions contains the optional parameters for the ContainerAppsAuthConfigsClient.NewListByContainerAppPager
 //     method.
-func (client *ContainerAppsAuthConfigsClient) NewListByContainerAppPager(resourceGroupName string, containerAppName string, options *ContainerAppsAuthConfigsClientListByContainerAppOptions) *runtime.Pager[ContainerAppsAuthConfigsClientListByContainerAppResponse] {
+func (client *ContainerAppsAuthConfigsClient) NewListByContainerAppPager(resourceGroupName string, containerAppName string, options *ContainerAppsAuthConfigsClientListByContainerAppOptions) (*runtime.Pager[ContainerAppsAuthConfigsClientListByContainerAppResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ContainerAppsAuthConfigsClientListByContainerAppResponse]{
 		More: func(page ContainerAppsAuthConfigsClientListByContainerAppResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -304,3 +304,4 @@ func (client *ContainerAppsAuthConfigsClient) listByContainerAppHandleResponse(r
 	}
 	return result, nil
 }
+

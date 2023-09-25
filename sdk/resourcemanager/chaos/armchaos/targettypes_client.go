@@ -23,7 +23,7 @@ import (
 // TargetTypesClient contains the methods for the TargetTypes group.
 // Don't use this type directly, use NewTargetTypesClient() instead.
 type TargetTypesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTargetTypesClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &TargetTypesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -108,7 +108,7 @@ func (client *TargetTypesClient) getHandleResponse(resp *http.Response) (TargetT
 // Generated from API version 2023-04-15-preview
 //   - locationName - String that represents a Location resource name.
 //   - options - TargetTypesClientListOptions contains the optional parameters for the TargetTypesClient.NewListPager method.
-func (client *TargetTypesClient) NewListPager(locationName string, options *TargetTypesClientListOptions) *runtime.Pager[TargetTypesClientListResponse] {
+func (client *TargetTypesClient) NewListPager(locationName string, options *TargetTypesClientListOptions) (*runtime.Pager[TargetTypesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TargetTypesClientListResponse]{
 		More: func(page TargetTypesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -169,3 +169,4 @@ func (client *TargetTypesClient) listHandleResponse(resp *http.Response) (Target
 	}
 	return result, nil
 }
+

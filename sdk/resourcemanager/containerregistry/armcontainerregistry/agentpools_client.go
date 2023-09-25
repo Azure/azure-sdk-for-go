@@ -23,7 +23,7 @@ import (
 // AgentPoolsClient contains the methods for the AgentPools group.
 // Don't use this type directly, use NewAgentPoolsClient() instead.
 type AgentPoolsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &AgentPoolsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *AgentPoolsClient) createCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, agentPool); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -332,13 +332,13 @@ func (client *AgentPoolsClient) getQueueStatusHandleResponse(resp *http.Response
 //   - resourceGroupName - The name of the resource group to which the container registry belongs.
 //   - registryName - The name of the container registry.
 //   - options - AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.NewListPager method.
-func (client *AgentPoolsClient) NewListPager(resourceGroupName string, registryName string, options *AgentPoolsClientListOptions) *runtime.Pager[AgentPoolsClientListResponse] {
+func (client *AgentPoolsClient) NewListPager(resourceGroupName string, registryName string, options *AgentPoolsClientListOptions) (*runtime.Pager[AgentPoolsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AgentPoolsClientListResponse]{
 		More: func(page AgentPoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AgentPoolsClientListResponse) (AgentPoolsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AgentPoolsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AgentPoolsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -466,7 +466,8 @@ func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

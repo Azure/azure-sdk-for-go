@@ -23,7 +23,7 @@ import (
 // ClustersClient contains the methods for the Clusters group.
 // Don't use this type directly, use NewClustersClient() instead.
 type ClustersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 	}
 	client := &ClustersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cluster); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -263,7 +263,7 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - ClustersClientListOptions contains the optional parameters for the ClustersClient.NewListPager method.
-func (client *ClustersClient) NewListPager(resourceGroupName string, privateCloudName string, options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
+func (client *ClustersClient) NewListPager(resourceGroupName string, privateCloudName string, options *ClustersClientListOptions) (*runtime.Pager[ClustersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClustersClientListResponse]{
 		More: func(page ClustersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -462,7 +462,8 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterUpdate); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

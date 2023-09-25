@@ -24,7 +24,7 @@ import (
 // APIDiagnosticClient contains the methods for the APIDiagnostic group.
 // Don't use this type directly, use NewAPIDiagnosticClient() instead.
 type APIDiagnosticClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAPIDiagnosticClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &APIDiagnosticClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -108,8 +108,8 @@ func (client *APIDiagnosticClient) createOrUpdateCreateRequest(ctx context.Conte
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -340,7 +340,7 @@ func (client *APIDiagnosticClient) getEntityTagHandleResponse(resp *http.Respons
 //   - apiID - API identifier. Must be unique in the current API Management service instance.
 //   - options - APIDiagnosticClientListByServiceOptions contains the optional parameters for the APIDiagnosticClient.NewListByServicePager
 //     method.
-func (client *APIDiagnosticClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APIDiagnosticClientListByServiceOptions) *runtime.Pager[APIDiagnosticClientListByServiceResponse] {
+func (client *APIDiagnosticClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APIDiagnosticClientListByServiceOptions) (*runtime.Pager[APIDiagnosticClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APIDiagnosticClientListByServiceResponse]{
 		More: func(page APIDiagnosticClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -479,8 +479,8 @@ func (client *APIDiagnosticClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -495,3 +495,4 @@ func (client *APIDiagnosticClient) updateHandleResponse(resp *http.Response) (AP
 	}
 	return result, nil
 }
+

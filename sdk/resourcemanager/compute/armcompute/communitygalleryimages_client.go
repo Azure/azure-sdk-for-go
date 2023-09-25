@@ -23,7 +23,7 @@ import (
 // CommunityGalleryImagesClient contains the methods for the CommunityGalleryImages group.
 // Don't use this type directly, use NewCommunityGalleryImagesClient() instead.
 type CommunityGalleryImagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewCommunityGalleryImagesClient(subscriptionID string, credential azcore.To
 	}
 	client := &CommunityGalleryImagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,7 +117,7 @@ func (client *CommunityGalleryImagesClient) getHandleResponse(resp *http.Respons
 //   - publicGalleryName - The public name of the community gallery.
 //   - options - CommunityGalleryImagesClientListOptions contains the optional parameters for the CommunityGalleryImagesClient.NewListPager
 //     method.
-func (client *CommunityGalleryImagesClient) NewListPager(location string, publicGalleryName string, options *CommunityGalleryImagesClientListOptions) *runtime.Pager[CommunityGalleryImagesClientListResponse] {
+func (client *CommunityGalleryImagesClient) NewListPager(location string, publicGalleryName string, options *CommunityGalleryImagesClientListOptions) (*runtime.Pager[CommunityGalleryImagesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CommunityGalleryImagesClientListResponse]{
 		More: func(page CommunityGalleryImagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -179,3 +179,4 @@ func (client *CommunityGalleryImagesClient) listHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

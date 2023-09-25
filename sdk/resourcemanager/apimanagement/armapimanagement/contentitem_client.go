@@ -23,7 +23,7 @@ import (
 // ContentItemClient contains the methods for the ContentItem group.
 // Don't use this type directly, use NewContentItemClient() instead.
 type ContentItemClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewContentItemClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &ContentItemClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -107,8 +107,8 @@ func (client *ContentItemClient) createOrUpdateCreateRequest(ctx context.Context
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -339,7 +339,7 @@ func (client *ContentItemClient) getEntityTagHandleResponse(resp *http.Response)
 //   - contentTypeID - Content type identifier.
 //   - options - ContentItemClientListByServiceOptions contains the optional parameters for the ContentItemClient.NewListByServicePager
 //     method.
-func (client *ContentItemClient) NewListByServicePager(resourceGroupName string, serviceName string, contentTypeID string, options *ContentItemClientListByServiceOptions) *runtime.Pager[ContentItemClientListByServiceResponse] {
+func (client *ContentItemClient) NewListByServicePager(resourceGroupName string, serviceName string, contentTypeID string, options *ContentItemClientListByServiceOptions) (*runtime.Pager[ContentItemClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ContentItemClientListByServiceResponse]{
 		More: func(page ContentItemClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -405,3 +405,4 @@ func (client *ContentItemClient) listByServiceHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

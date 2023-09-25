@@ -23,7 +23,7 @@ import (
 // TenantAccessGitClient contains the methods for the TenantAccessGit group.
 // Don't use this type directly, use NewTenantAccessGitClient() instead.
 type TenantAccessGitClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTenantAccessGitClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &TenantAccessGitClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -154,3 +154,4 @@ func (client *TenantAccessGitClient) regenerateSecondaryKeyCreateRequest(ctx con
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

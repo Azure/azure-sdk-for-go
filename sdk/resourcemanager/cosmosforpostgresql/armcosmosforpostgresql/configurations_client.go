@@ -23,7 +23,7 @@ import (
 // ConfigurationsClient contains the methods for the Configurations group.
 // Don't use this type directly, use NewConfigurationsClient() instead.
 type ConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &ConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -237,7 +237,7 @@ func (client *ConfigurationsClient) getNodeHandleResponse(resp *http.Response) (
 //   - clusterName - The name of the cluster.
 //   - options - ConfigurationsClientListByClusterOptions contains the optional parameters for the ConfigurationsClient.NewListByClusterPager
 //     method.
-func (client *ConfigurationsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *ConfigurationsClientListByClusterOptions) *runtime.Pager[ConfigurationsClientListByClusterResponse] {
+func (client *ConfigurationsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *ConfigurationsClientListByClusterOptions) (*runtime.Pager[ConfigurationsClientListByClusterResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationsClientListByClusterResponse]{
 		More: func(page ConfigurationsClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -305,7 +305,7 @@ func (client *ConfigurationsClient) listByClusterHandleResponse(resp *http.Respo
 //   - serverName - The name of the server.
 //   - options - ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.NewListByServerPager
 //     method.
-func (client *ConfigurationsClient) NewListByServerPager(resourceGroupName string, clusterName string, serverName string, options *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse] {
+func (client *ConfigurationsClient) NewListByServerPager(resourceGroupName string, clusterName string, serverName string, options *ConfigurationsClientListByServerOptions) (*runtime.Pager[ConfigurationsClientListByServerResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationsClientListByServerResponse]{
 		More: func(page ConfigurationsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -440,8 +440,8 @@ func (client *ConfigurationsClient) updateOnCoordinatorCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -516,7 +516,8 @@ func (client *ConfigurationsClient) updateOnNodeCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

@@ -24,7 +24,7 @@ import (
 // AuthorizationServerClient contains the methods for the AuthorizationServer group.
 // Don't use this type directly, use NewAuthorizationServerClient() instead.
 type AuthorizationServerClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAuthorizationServerClient(subscriptionID string, credential azcore.Token
 	}
 	client := &AuthorizationServerClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,8 +103,8 @@ func (client *AuthorizationServerClient) createOrUpdateCreateRequest(ctx context
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -320,7 +320,7 @@ func (client *AuthorizationServerClient) getEntityTagHandleResponse(resp *http.R
 //   - serviceName - The name of the API Management service.
 //   - options - AuthorizationServerClientListByServiceOptions contains the optional parameters for the AuthorizationServerClient.NewListByServicePager
 //     method.
-func (client *AuthorizationServerClient) NewListByServicePager(resourceGroupName string, serviceName string, options *AuthorizationServerClientListByServiceOptions) *runtime.Pager[AuthorizationServerClientListByServiceResponse] {
+func (client *AuthorizationServerClient) NewListByServicePager(resourceGroupName string, serviceName string, options *AuthorizationServerClientListByServiceOptions) (*runtime.Pager[AuthorizationServerClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AuthorizationServerClientListByServiceResponse]{
 		More: func(page AuthorizationServerClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -520,8 +520,8 @@ func (client *AuthorizationServerClient) updateCreateRequest(ctx context.Context
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -536,3 +536,4 @@ func (client *AuthorizationServerClient) updateHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // GlobalReachConnectionsClient contains the methods for the GlobalReachConnections group.
 // Don't use this type directly, use NewGlobalReachConnectionsClient() instead.
 type GlobalReachConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewGlobalReachConnectionsClient(subscriptionID string, credential azcore.To
 	}
 	client := &GlobalReachConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *GlobalReachConnectionsClient) createOrUpdateCreateRequest(ctx cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, globalReachConnection); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -266,7 +266,7 @@ func (client *GlobalReachConnectionsClient) getHandleResponse(resp *http.Respons
 //   - privateCloudName - Name of the private cloud
 //   - options - GlobalReachConnectionsClientListOptions contains the optional parameters for the GlobalReachConnectionsClient.NewListPager
 //     method.
-func (client *GlobalReachConnectionsClient) NewListPager(resourceGroupName string, privateCloudName string, options *GlobalReachConnectionsClientListOptions) *runtime.Pager[GlobalReachConnectionsClientListResponse] {
+func (client *GlobalReachConnectionsClient) NewListPager(resourceGroupName string, privateCloudName string, options *GlobalReachConnectionsClientListOptions) (*runtime.Pager[GlobalReachConnectionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GlobalReachConnectionsClientListResponse]{
 		More: func(page GlobalReachConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -328,3 +328,4 @@ func (client *GlobalReachConnectionsClient) listHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

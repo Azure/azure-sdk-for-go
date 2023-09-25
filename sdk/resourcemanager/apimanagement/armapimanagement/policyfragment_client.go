@@ -24,7 +24,7 @@ import (
 // PolicyFragmentClient contains the methods for the PolicyFragment group.
 // Don't use this type directly, use NewPolicyFragmentClient() instead.
 type PolicyFragmentClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewPolicyFragmentClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &PolicyFragmentClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *PolicyFragmentClient) createOrUpdateCreateRequest(ctx context.Cont
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -465,3 +465,4 @@ func (client *PolicyFragmentClient) listReferencesHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

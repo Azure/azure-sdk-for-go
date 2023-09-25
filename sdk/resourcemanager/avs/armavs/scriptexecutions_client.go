@@ -23,7 +23,7 @@ import (
 // ScriptExecutionsClient contains the methods for the ScriptExecutions group.
 // Don't use this type directly, use NewScriptExecutionsClient() instead.
 type ScriptExecutionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewScriptExecutionsClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &ScriptExecutionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *ScriptExecutionsClient) createOrUpdateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, scriptExecution); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -314,8 +314,8 @@ func (client *ScriptExecutionsClient) getExecutionLogsCreateRequest(ctx context.
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ScriptOutputStreamType != nil {
 		if err := runtime.MarshalAsJSON(req, options.ScriptOutputStreamType); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -337,7 +337,7 @@ func (client *ScriptExecutionsClient) getExecutionLogsHandleResponse(resp *http.
 //   - privateCloudName - Name of the private cloud
 //   - options - ScriptExecutionsClientListOptions contains the optional parameters for the ScriptExecutionsClient.NewListPager
 //     method.
-func (client *ScriptExecutionsClient) NewListPager(resourceGroupName string, privateCloudName string, options *ScriptExecutionsClientListOptions) *runtime.Pager[ScriptExecutionsClientListResponse] {
+func (client *ScriptExecutionsClient) NewListPager(resourceGroupName string, privateCloudName string, options *ScriptExecutionsClientListOptions) (*runtime.Pager[ScriptExecutionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ScriptExecutionsClientListResponse]{
 		More: func(page ScriptExecutionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -399,3 +399,4 @@ func (client *ScriptExecutionsClient) listHandleResponse(resp *http.Response) (S
 	}
 	return result, nil
 }
+

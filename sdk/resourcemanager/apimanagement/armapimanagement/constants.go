@@ -9,7 +9,7 @@
 package armapimanagement
 
 const (
-	moduleName    = "armapimanagement"
+	moduleName = "armapimanagement"
 	moduleVersion = "v2.0.0"
 )
 
@@ -18,13 +18,13 @@ type APIManagementSKUCapacityScaleType string
 
 const (
 	APIManagementSKUCapacityScaleTypeAutomatic APIManagementSKUCapacityScaleType = "Automatic"
-	APIManagementSKUCapacityScaleTypeManual    APIManagementSKUCapacityScaleType = "Manual"
-	APIManagementSKUCapacityScaleTypeNone      APIManagementSKUCapacityScaleType = "None"
+	APIManagementSKUCapacityScaleTypeManual APIManagementSKUCapacityScaleType = "Manual"
+	APIManagementSKUCapacityScaleTypeNone APIManagementSKUCapacityScaleType = "None"
 )
 
 // PossibleAPIManagementSKUCapacityScaleTypeValues returns the possible values for the APIManagementSKUCapacityScaleType const type.
 func PossibleAPIManagementSKUCapacityScaleTypeValues() []APIManagementSKUCapacityScaleType {
-	return []APIManagementSKUCapacityScaleType{
+	return []APIManagementSKUCapacityScaleType{	
 		APIManagementSKUCapacityScaleTypeAutomatic,
 		APIManagementSKUCapacityScaleTypeManual,
 		APIManagementSKUCapacityScaleTypeNone,
@@ -36,12 +36,12 @@ type APIManagementSKURestrictionsReasonCode string
 
 const (
 	APIManagementSKURestrictionsReasonCodeNotAvailableForSubscription APIManagementSKURestrictionsReasonCode = "NotAvailableForSubscription"
-	APIManagementSKURestrictionsReasonCodeQuotaID                     APIManagementSKURestrictionsReasonCode = "QuotaId"
+	APIManagementSKURestrictionsReasonCodeQuotaID APIManagementSKURestrictionsReasonCode = "QuotaId"
 )
 
 // PossibleAPIManagementSKURestrictionsReasonCodeValues returns the possible values for the APIManagementSKURestrictionsReasonCode const type.
 func PossibleAPIManagementSKURestrictionsReasonCodeValues() []APIManagementSKURestrictionsReasonCode {
-	return []APIManagementSKURestrictionsReasonCode{
+	return []APIManagementSKURestrictionsReasonCode{	
 		APIManagementSKURestrictionsReasonCodeNotAvailableForSubscription,
 		APIManagementSKURestrictionsReasonCodeQuotaID,
 	}
@@ -52,12 +52,12 @@ type APIManagementSKURestrictionsType string
 
 const (
 	APIManagementSKURestrictionsTypeLocation APIManagementSKURestrictionsType = "Location"
-	APIManagementSKURestrictionsTypeZone     APIManagementSKURestrictionsType = "Zone"
+	APIManagementSKURestrictionsTypeZone APIManagementSKURestrictionsType = "Zone"
 )
 
 // PossibleAPIManagementSKURestrictionsTypeValues returns the possible values for the APIManagementSKURestrictionsType const type.
 func PossibleAPIManagementSKURestrictionsTypeValues() []APIManagementSKURestrictionsType {
-	return []APIManagementSKURestrictionsType{
+	return []APIManagementSKURestrictionsType{	
 		APIManagementSKURestrictionsTypeLocation,
 		APIManagementSKURestrictionsTypeZone,
 	}
@@ -67,15 +67,15 @@ func PossibleAPIManagementSKURestrictionsTypeValues() []APIManagementSKURestrict
 type APIType string
 
 const (
-	APITypeGraphql   APIType = "graphql"
-	APITypeHTTP      APIType = "http"
-	APITypeSoap      APIType = "soap"
+	APITypeGraphql APIType = "graphql"
+	APITypeHTTP APIType = "http"
+	APITypeSoap APIType = "soap"
 	APITypeWebsocket APIType = "websocket"
 )
 
 // PossibleAPITypeValues returns the possible values for the APIType const type.
 func PossibleAPITypeValues() []APIType {
-	return []APIType{
+	return []APIType{	
 		APITypeGraphql,
 		APITypeHTTP,
 		APITypeSoap,
@@ -98,7 +98,7 @@ const (
 
 // PossibleAPIVersionSetContractDetailsVersioningSchemeValues returns the possible values for the APIVersionSetContractDetailsVersioningScheme const type.
 func PossibleAPIVersionSetContractDetailsVersioningSchemeValues() []APIVersionSetContractDetailsVersioningScheme {
-	return []APIVersionSetContractDetailsVersioningScheme{
+	return []APIVersionSetContractDetailsVersioningScheme{	
 		APIVersionSetContractDetailsVersioningSchemeHeader,
 		APIVersionSetContractDetailsVersioningSchemeQuery,
 		APIVersionSetContractDetailsVersioningSchemeSegment,
@@ -108,13 +108,13 @@ func PossibleAPIVersionSetContractDetailsVersioningSchemeValues() []APIVersionSe
 type AccessIDName string
 
 const (
-	AccessIDNameAccess    AccessIDName = "access"
+	AccessIDNameAccess AccessIDName = "access"
 	AccessIDNameGitAccess AccessIDName = "gitAccess"
 )
 
 // PossibleAccessIDNameValues returns the possible values for the AccessIDName const type.
 func PossibleAccessIDNameValues() []AccessIDName {
-	return []AccessIDName{
+	return []AccessIDName{	
 		AccessIDNameAccess,
 		AccessIDNameGitAccess,
 	}
@@ -134,7 +134,7 @@ const (
 
 // PossibleAccessTypeValues returns the possible values for the AccessType const type.
 func PossibleAccessTypeValues() []AccessType {
-	return []AccessType{
+	return []AccessType{	
 		AccessTypeAccessKey,
 		AccessTypeSystemAssignedManagedIdentity,
 		AccessTypeUserAssignedManagedIdentity,
@@ -151,7 +151,7 @@ const (
 
 // PossibleAlwaysLogValues returns the possible values for the AlwaysLog const type.
 func PossibleAlwaysLogValues() []AlwaysLog {
-	return []AlwaysLog{
+	return []AlwaysLog{	
 		AlwaysLogAllErrors,
 	}
 }
@@ -162,15 +162,15 @@ func PossibleAlwaysLogValues() []AlwaysLog {
 type ApimIdentityType string
 
 const (
-	ApimIdentityTypeNone                       ApimIdentityType = "None"
-	ApimIdentityTypeSystemAssigned             ApimIdentityType = "SystemAssigned"
+	ApimIdentityTypeNone ApimIdentityType = "None"
+	ApimIdentityTypeSystemAssigned ApimIdentityType = "SystemAssigned"
 	ApimIdentityTypeSystemAssignedUserAssigned ApimIdentityType = "SystemAssigned, UserAssigned"
-	ApimIdentityTypeUserAssigned               ApimIdentityType = "UserAssigned"
+	ApimIdentityTypeUserAssigned ApimIdentityType = "UserAssigned"
 )
 
 // PossibleApimIdentityTypeValues returns the possible values for the ApimIdentityType const type.
 func PossibleApimIdentityTypeValues() []ApimIdentityType {
-	return []ApimIdentityType{
+	return []ApimIdentityType{	
 		ApimIdentityTypeNone,
 		ApimIdentityTypeSystemAssigned,
 		ApimIdentityTypeSystemAssignedUserAssigned,
@@ -189,7 +189,7 @@ const (
 
 // PossibleAppTypeValues returns the possible values for the AppType const type.
 func PossibleAppTypeValues() []AppType {
-	return []AppType{
+	return []AppType{	
 		AppTypeDeveloperPortal,
 		AppTypePortal,
 	}
@@ -199,15 +199,15 @@ func PossibleAppTypeValues() []AppType {
 type AsyncOperationStatus string
 
 const (
-	AsyncOperationStatusFailed     AsyncOperationStatus = "Failed"
+	AsyncOperationStatusFailed AsyncOperationStatus = "Failed"
 	AsyncOperationStatusInProgress AsyncOperationStatus = "InProgress"
-	AsyncOperationStatusStarted    AsyncOperationStatus = "Started"
-	AsyncOperationStatusSucceeded  AsyncOperationStatus = "Succeeded"
+	AsyncOperationStatusStarted AsyncOperationStatus = "Started"
+	AsyncOperationStatusSucceeded AsyncOperationStatus = "Succeeded"
 )
 
 // PossibleAsyncOperationStatusValues returns the possible values for the AsyncOperationStatus const type.
 func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
-	return []AsyncOperationStatus{
+	return []AsyncOperationStatus{	
 		AsyncOperationStatusFailed,
 		AsyncOperationStatusInProgress,
 		AsyncOperationStatusStarted,
@@ -219,15 +219,15 @@ func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
 type AsyncResolverStatus string
 
 const (
-	AsyncResolverStatusFailed     AsyncResolverStatus = "Failed"
+	AsyncResolverStatusFailed AsyncResolverStatus = "Failed"
 	AsyncResolverStatusInProgress AsyncResolverStatus = "InProgress"
-	AsyncResolverStatusStarted    AsyncResolverStatus = "Started"
-	AsyncResolverStatusSucceeded  AsyncResolverStatus = "Succeeded"
+	AsyncResolverStatusStarted AsyncResolverStatus = "Started"
+	AsyncResolverStatusSucceeded AsyncResolverStatus = "Succeeded"
 )
 
 // PossibleAsyncResolverStatusValues returns the possible values for the AsyncResolverStatus const type.
 func PossibleAsyncResolverStatusValues() []AsyncResolverStatus {
-	return []AsyncResolverStatus{
+	return []AsyncResolverStatus{	
 		AsyncResolverStatusFailed,
 		AsyncResolverStatusInProgress,
 		AsyncResolverStatusStarted,
@@ -238,19 +238,19 @@ func PossibleAsyncResolverStatusValues() []AsyncResolverStatus {
 type AuthorizationMethod string
 
 const (
-	AuthorizationMethodDELETE  AuthorizationMethod = "DELETE"
-	AuthorizationMethodGET     AuthorizationMethod = "GET"
-	AuthorizationMethodHEAD    AuthorizationMethod = "HEAD"
+	AuthorizationMethodDELETE AuthorizationMethod = "DELETE"
+	AuthorizationMethodGET AuthorizationMethod = "GET"
+	AuthorizationMethodHEAD AuthorizationMethod = "HEAD"
 	AuthorizationMethodOPTIONS AuthorizationMethod = "OPTIONS"
-	AuthorizationMethodPATCH   AuthorizationMethod = "PATCH"
-	AuthorizationMethodPOST    AuthorizationMethod = "POST"
-	AuthorizationMethodPUT     AuthorizationMethod = "PUT"
-	AuthorizationMethodTRACE   AuthorizationMethod = "TRACE"
+	AuthorizationMethodPATCH AuthorizationMethod = "PATCH"
+	AuthorizationMethodPOST AuthorizationMethod = "POST"
+	AuthorizationMethodPUT AuthorizationMethod = "PUT"
+	AuthorizationMethodTRACE AuthorizationMethod = "TRACE"
 )
 
 // PossibleAuthorizationMethodValues returns the possible values for the AuthorizationMethod const type.
 func PossibleAuthorizationMethodValues() []AuthorizationMethod {
-	return []AuthorizationMethod{
+	return []AuthorizationMethod{	
 		AuthorizationMethodDELETE,
 		AuthorizationMethodGET,
 		AuthorizationMethodHEAD,
@@ -272,7 +272,7 @@ const (
 
 // PossibleAuthorizationTypeValues returns the possible values for the AuthorizationType const type.
 func PossibleAuthorizationTypeValues() []AuthorizationType {
-	return []AuthorizationType{
+	return []AuthorizationType{	
 		AuthorizationTypeOAuth2,
 	}
 }
@@ -289,7 +289,7 @@ const (
 
 // PossibleBackendProtocolValues returns the possible values for the BackendProtocol const type.
 func PossibleBackendProtocolValues() []BackendProtocol {
-	return []BackendProtocol{
+	return []BackendProtocol{	
 		BackendProtocolHTTP,
 		BackendProtocolSoap,
 	}
@@ -299,12 +299,12 @@ type BearerTokenSendingMethod string
 
 const (
 	BearerTokenSendingMethodAuthorizationHeader BearerTokenSendingMethod = "authorizationHeader"
-	BearerTokenSendingMethodQuery               BearerTokenSendingMethod = "query"
+	BearerTokenSendingMethodQuery BearerTokenSendingMethod = "query"
 )
 
 // PossibleBearerTokenSendingMethodValues returns the possible values for the BearerTokenSendingMethod const type.
 func PossibleBearerTokenSendingMethodValues() []BearerTokenSendingMethod {
-	return []BearerTokenSendingMethod{
+	return []BearerTokenSendingMethod{	
 		BearerTokenSendingMethodAuthorizationHeader,
 		BearerTokenSendingMethodQuery,
 	}
@@ -315,7 +315,7 @@ type BearerTokenSendingMethods string
 
 const (
 	// BearerTokenSendingMethodsAuthorizationHeader - Access token will be transmitted in the Authorization header using Bearer
-	// schema
+// schema
 	BearerTokenSendingMethodsAuthorizationHeader BearerTokenSendingMethods = "authorizationHeader"
 	// BearerTokenSendingMethodsQuery - Access token will be transmitted as query parameters.
 	BearerTokenSendingMethodsQuery BearerTokenSendingMethods = "query"
@@ -323,7 +323,7 @@ const (
 
 // PossibleBearerTokenSendingMethodsValues returns the possible values for the BearerTokenSendingMethods const type.
 func PossibleBearerTokenSendingMethodsValues() []BearerTokenSendingMethods {
-	return []BearerTokenSendingMethods{
+	return []BearerTokenSendingMethods{	
 		BearerTokenSendingMethodsAuthorizationHeader,
 		BearerTokenSendingMethodsQuery,
 	}
@@ -335,12 +335,12 @@ type CertificateConfigurationStoreName string
 
 const (
 	CertificateConfigurationStoreNameCertificateAuthority CertificateConfigurationStoreName = "CertificateAuthority"
-	CertificateConfigurationStoreNameRoot                 CertificateConfigurationStoreName = "Root"
+	CertificateConfigurationStoreNameRoot CertificateConfigurationStoreName = "Root"
 )
 
 // PossibleCertificateConfigurationStoreNameValues returns the possible values for the CertificateConfigurationStoreName const type.
 func PossibleCertificateConfigurationStoreNameValues() []CertificateConfigurationStoreName {
-	return []CertificateConfigurationStoreName{
+	return []CertificateConfigurationStoreName{	
 		CertificateConfigurationStoreNameCertificateAuthority,
 		CertificateConfigurationStoreNameRoot,
 	}
@@ -350,15 +350,15 @@ func PossibleCertificateConfigurationStoreNameValues() []CertificateConfiguratio
 type CertificateSource string
 
 const (
-	CertificateSourceBuiltIn  CertificateSource = "BuiltIn"
-	CertificateSourceCustom   CertificateSource = "Custom"
+	CertificateSourceBuiltIn CertificateSource = "BuiltIn"
+	CertificateSourceCustom CertificateSource = "Custom"
 	CertificateSourceKeyVault CertificateSource = "KeyVault"
-	CertificateSourceManaged  CertificateSource = "Managed"
+	CertificateSourceManaged CertificateSource = "Managed"
 )
 
 // PossibleCertificateSourceValues returns the possible values for the CertificateSource const type.
 func PossibleCertificateSourceValues() []CertificateSource {
-	return []CertificateSource{
+	return []CertificateSource{	
 		CertificateSourceBuiltIn,
 		CertificateSourceCustom,
 		CertificateSourceKeyVault,
@@ -370,14 +370,14 @@ func PossibleCertificateSourceValues() []CertificateSource {
 type CertificateStatus string
 
 const (
-	CertificateStatusCompleted  CertificateStatus = "Completed"
-	CertificateStatusFailed     CertificateStatus = "Failed"
+	CertificateStatusCompleted CertificateStatus = "Completed"
+	CertificateStatusFailed CertificateStatus = "Failed"
 	CertificateStatusInProgress CertificateStatus = "InProgress"
 )
 
 // PossibleCertificateStatusValues returns the possible values for the CertificateStatus const type.
 func PossibleCertificateStatusValues() []CertificateStatus {
-	return []CertificateStatus{
+	return []CertificateStatus{	
 		CertificateStatusCompleted,
 		CertificateStatusFailed,
 		CertificateStatusInProgress,
@@ -395,7 +395,7 @@ const (
 
 // PossibleClientAuthenticationMethodValues returns the possible values for the ClientAuthenticationMethod const type.
 func PossibleClientAuthenticationMethodValues() []ClientAuthenticationMethod {
-	return []ClientAuthenticationMethod{
+	return []ClientAuthenticationMethod{	
 		ClientAuthenticationMethodBasic,
 		ClientAuthenticationMethodBody,
 	}
@@ -409,7 +409,7 @@ const (
 
 // PossibleConfigurationIDNameValues returns the possible values for the ConfigurationIDName const type.
 func PossibleConfigurationIDNameValues() []ConfigurationIDName {
-	return []ConfigurationIDName{
+	return []ConfigurationIDName{	
 		ConfigurationIDNameConfiguration,
 	}
 }
@@ -426,7 +426,7 @@ const (
 
 // PossibleConfirmationValues returns the possible values for the Confirmation const type.
 func PossibleConfirmationValues() []Confirmation {
-	return []Confirmation{
+	return []Confirmation{	
 		ConfirmationInvite,
 		ConfirmationSignup,
 	}
@@ -436,15 +436,15 @@ func PossibleConfirmationValues() []Confirmation {
 type ConnectionStatus string
 
 const (
-	ConnectionStatusConnected    ConnectionStatus = "Connected"
-	ConnectionStatusDegraded     ConnectionStatus = "Degraded"
+	ConnectionStatusConnected ConnectionStatus = "Connected"
+	ConnectionStatusDegraded ConnectionStatus = "Degraded"
 	ConnectionStatusDisconnected ConnectionStatus = "Disconnected"
-	ConnectionStatusUnknown      ConnectionStatus = "Unknown"
+	ConnectionStatusUnknown ConnectionStatus = "Unknown"
 )
 
 // PossibleConnectionStatusValues returns the possible values for the ConnectionStatus const type.
 func PossibleConnectionStatusValues() []ConnectionStatus {
-	return []ConnectionStatus{
+	return []ConnectionStatus{	
 		ConnectionStatusConnected,
 		ConnectionStatusDegraded,
 		ConnectionStatusDisconnected,
@@ -457,14 +457,14 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 type ConnectivityCheckProtocol string
 
 const (
-	ConnectivityCheckProtocolHTTP  ConnectivityCheckProtocol = "HTTP"
+	ConnectivityCheckProtocolHTTP ConnectivityCheckProtocol = "HTTP"
 	ConnectivityCheckProtocolHTTPS ConnectivityCheckProtocol = "HTTPS"
-	ConnectivityCheckProtocolTCP   ConnectivityCheckProtocol = "TCP"
+	ConnectivityCheckProtocolTCP ConnectivityCheckProtocol = "TCP"
 )
 
 // PossibleConnectivityCheckProtocolValues returns the possible values for the ConnectivityCheckProtocol const type.
 func PossibleConnectivityCheckProtocolValues() []ConnectivityCheckProtocol {
-	return []ConnectivityCheckProtocol{
+	return []ConnectivityCheckProtocol{	
 		ConnectivityCheckProtocolHTTP,
 		ConnectivityCheckProtocolHTTPS,
 		ConnectivityCheckProtocolTCP,
@@ -475,14 +475,14 @@ func PossibleConnectivityCheckProtocolValues() []ConnectivityCheckProtocol {
 type ConnectivityStatusType string
 
 const (
-	ConnectivityStatusTypeFailure      ConnectivityStatusType = "failure"
+	ConnectivityStatusTypeFailure ConnectivityStatusType = "failure"
 	ConnectivityStatusTypeInitializing ConnectivityStatusType = "initializing"
-	ConnectivityStatusTypeSuccess      ConnectivityStatusType = "success"
+	ConnectivityStatusTypeSuccess ConnectivityStatusType = "success"
 )
 
 // PossibleConnectivityStatusTypeValues returns the possible values for the ConnectivityStatusType const type.
 func PossibleConnectivityStatusTypeValues() []ConnectivityStatusType {
-	return []ConnectivityStatusType{
+	return []ConnectivityStatusType{	
 		ConnectivityStatusTypeFailure,
 		ConnectivityStatusTypeInitializing,
 		ConnectivityStatusTypeSuccess,
@@ -519,7 +519,7 @@ const (
 
 // PossibleContentFormatValues returns the possible values for the ContentFormat const type.
 func PossibleContentFormatValues() []ContentFormat {
-	return []ContentFormat{
+	return []ContentFormat{	
 		ContentFormatGraphqlLink,
 		ContentFormatOpenapi,
 		ContentFormatOpenapiJSON,
@@ -538,15 +538,15 @@ func PossibleContentFormatValues() []ContentFormat {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -566,7 +566,7 @@ const (
 
 // PossibleDataMaskingModeValues returns the possible values for the DataMaskingMode const type.
 func PossibleDataMaskingModeValues() []DataMaskingMode {
-	return []DataMaskingMode{
+	return []DataMaskingMode{	
 		DataMaskingModeHide,
 		DataMaskingModeMask,
 	}
@@ -580,7 +580,7 @@ const (
 
 // PossibleExportAPIValues returns the possible values for the ExportAPI const type.
 func PossibleExportAPIValues() []ExportAPI {
-	return []ExportAPI{
+	return []ExportAPI{	
 		ExportAPITrue,
 	}
 }
@@ -602,7 +602,7 @@ const (
 
 // PossibleExportFormatValues returns the possible values for the ExportFormat const type.
 func PossibleExportFormatValues() []ExportFormat {
-	return []ExportFormat{
+	return []ExportFormat{	
 		ExportFormatOpenapi,
 		ExportFormatOpenapiJSON,
 		ExportFormatSwagger,
@@ -622,13 +622,13 @@ const (
 	// ExportResultFormatWadl - Export the API Definition in WADL Schema to Storage Blob.
 	ExportResultFormatWadl ExportResultFormat = "wadl-link-json"
 	// ExportResultFormatWsdl - The API Definition is exported in WSDL Schema to Storage Blob. This is only supported for APIs
-	// of Type `soap`
+// of Type `soap`
 	ExportResultFormatWsdl ExportResultFormat = "wsdl-link+xml"
 )
 
 // PossibleExportResultFormatValues returns the possible values for the ExportResultFormat const type.
 func PossibleExportResultFormatValues() []ExportResultFormat {
-	return []ExportResultFormat{
+	return []ExportResultFormat{	
 		ExportResultFormatOpenAPI,
 		ExportResultFormatSwagger,
 		ExportResultFormatWadl,
@@ -651,7 +651,7 @@ const (
 
 // PossibleGrantTypeValues returns the possible values for the GrantType const type.
 func PossibleGrantTypeValues() []GrantType {
-	return []GrantType{
+	return []GrantType{	
 		GrantTypeAuthorizationCode,
 		GrantTypeClientCredentials,
 		GrantTypeImplicit,
@@ -663,14 +663,14 @@ func PossibleGrantTypeValues() []GrantType {
 type GroupType string
 
 const (
-	GroupTypeCustom   GroupType = "custom"
+	GroupTypeCustom GroupType = "custom"
 	GroupTypeExternal GroupType = "external"
-	GroupTypeSystem   GroupType = "system"
+	GroupTypeSystem GroupType = "system"
 )
 
 // PossibleGroupTypeValues returns the possible values for the GroupType const type.
 func PossibleGroupTypeValues() []GroupType {
-	return []GroupType{
+	return []GroupType{	
 		GroupTypeCustom,
 		GroupTypeExternal,
 		GroupTypeSystem,
@@ -691,7 +691,7 @@ const (
 
 // PossibleHTTPCorrelationProtocolValues returns the possible values for the HTTPCorrelationProtocol const type.
 func PossibleHTTPCorrelationProtocolValues() []HTTPCorrelationProtocol {
-	return []HTTPCorrelationProtocol{
+	return []HTTPCorrelationProtocol{	
 		HTTPCorrelationProtocolLegacy,
 		HTTPCorrelationProtocolNone,
 		HTTPCorrelationProtocolW3C,
@@ -703,15 +703,15 @@ type HostnameType string
 
 const (
 	HostnameTypeDeveloperPortal HostnameType = "DeveloperPortal"
-	HostnameTypeManagement      HostnameType = "Management"
-	HostnameTypePortal          HostnameType = "Portal"
-	HostnameTypeProxy           HostnameType = "Proxy"
-	HostnameTypeScm             HostnameType = "Scm"
+	HostnameTypeManagement HostnameType = "Management"
+	HostnameTypePortal HostnameType = "Portal"
+	HostnameTypeProxy HostnameType = "Proxy"
+	HostnameTypeScm HostnameType = "Scm"
 )
 
 // PossibleHostnameTypeValues returns the possible values for the HostnameType const type.
 func PossibleHostnameTypeValues() []HostnameType {
-	return []HostnameType{
+	return []HostnameType{	
 		HostnameTypeDeveloperPortal,
 		HostnameTypeManagement,
 		HostnameTypePortal,
@@ -739,7 +739,7 @@ const (
 
 // PossibleIdentityProviderTypeValues returns the possible values for the IdentityProviderType const type.
 func PossibleIdentityProviderTypeValues() []IdentityProviderType {
-	return []IdentityProviderType{
+	return []IdentityProviderType{	
 		IdentityProviderTypeAAD,
 		IdentityProviderTypeAADB2C,
 		IdentityProviderTypeFacebook,
@@ -753,20 +753,20 @@ func PossibleIdentityProviderTypeValues() []IdentityProviderType {
 type IssueType string
 
 const (
-	IssueTypeAgentStopped        IssueType = "AgentStopped"
-	IssueTypeDNSResolution       IssueType = "DnsResolution"
-	IssueTypeGuestFirewall       IssueType = "GuestFirewall"
+	IssueTypeAgentStopped IssueType = "AgentStopped"
+	IssueTypeDNSResolution IssueType = "DnsResolution"
+	IssueTypeGuestFirewall IssueType = "GuestFirewall"
 	IssueTypeNetworkSecurityRule IssueType = "NetworkSecurityRule"
-	IssueTypePlatform            IssueType = "Platform"
-	IssueTypePortThrottled       IssueType = "PortThrottled"
-	IssueTypeSocketBind          IssueType = "SocketBind"
-	IssueTypeUnknown             IssueType = "Unknown"
-	IssueTypeUserDefinedRoute    IssueType = "UserDefinedRoute"
+	IssueTypePlatform IssueType = "Platform"
+	IssueTypePortThrottled IssueType = "PortThrottled"
+	IssueTypeSocketBind IssueType = "SocketBind"
+	IssueTypeUnknown IssueType = "Unknown"
+	IssueTypeUserDefinedRoute IssueType = "UserDefinedRoute"
 )
 
 // PossibleIssueTypeValues returns the possible values for the IssueType const type.
 func PossibleIssueTypeValues() []IssueType {
-	return []IssueType{
+	return []IssueType{	
 		IssueTypeAgentStopped,
 		IssueTypeDNSResolution,
 		IssueTypeGuestFirewall,
@@ -783,13 +783,13 @@ func PossibleIssueTypeValues() []IssueType {
 type KeyType string
 
 const (
-	KeyTypePrimary   KeyType = "primary"
+	KeyTypePrimary KeyType = "primary"
 	KeyTypeSecondary KeyType = "secondary"
 )
 
 // PossibleKeyTypeValues returns the possible values for the KeyType const type.
 func PossibleKeyTypeValues() []KeyType {
-	return []KeyType{
+	return []KeyType{	
 		KeyTypePrimary,
 		KeyTypeSecondary,
 	}
@@ -809,7 +809,7 @@ const (
 
 // PossibleLoggerTypeValues returns the possible values for the LoggerType const type.
 func PossibleLoggerTypeValues() []LoggerType {
-	return []LoggerType{
+	return []LoggerType{	
 		LoggerTypeApplicationInsights,
 		LoggerTypeAzureEventHub,
 		LoggerTypeAzureMonitor,
@@ -820,13 +820,13 @@ func PossibleLoggerTypeValues() []LoggerType {
 type Method string
 
 const (
-	MethodGET  Method = "GET"
+	MethodGET Method = "GET"
 	MethodPOST Method = "POST"
 )
 
 // PossibleMethodValues returns the possible values for the Method const type.
 func PossibleMethodValues() []Method {
-	return []Method{
+	return []Method{	
 		MethodGET,
 		MethodPOST,
 	}
@@ -839,13 +839,13 @@ type NameAvailabilityReason string
 
 const (
 	NameAvailabilityReasonAlreadyExists NameAvailabilityReason = "AlreadyExists"
-	NameAvailabilityReasonInvalid       NameAvailabilityReason = "Invalid"
-	NameAvailabilityReasonValid         NameAvailabilityReason = "Valid"
+	NameAvailabilityReasonInvalid NameAvailabilityReason = "Invalid"
+	NameAvailabilityReasonValid NameAvailabilityReason = "Valid"
 )
 
 // PossibleNameAvailabilityReasonValues returns the possible values for the NameAvailabilityReason const type.
 func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
-	return []NameAvailabilityReason{
+	return []NameAvailabilityReason{	
 		NameAvailabilityReasonAlreadyExists,
 		NameAvailabilityReasonInvalid,
 		NameAvailabilityReasonValid,
@@ -864,7 +864,7 @@ const (
 
 // PossibleNatGatewayStateValues returns the possible values for the NatGatewayState const type.
 func PossibleNatGatewayStateValues() []NatGatewayState {
-	return []NatGatewayState{
+	return []NatGatewayState{	
 		NatGatewayStateDisabled,
 		NatGatewayStateEnabled,
 	}
@@ -874,30 +874,30 @@ type NotificationName string
 
 const (
 	// NotificationNameAccountClosedPublisher - The following email recipients and users will receive email notifications when
-	// developer closes his account.
+// developer closes his account.
 	NotificationNameAccountClosedPublisher NotificationName = "AccountClosedPublisher"
 	// NotificationNameBCC - The following recipients will receive blind carbon copies of all emails sent to developers.
 	NotificationNameBCC NotificationName = "BCC"
 	// NotificationNameNewApplicationNotificationMessage - The following email recipients and users will receive email notifications
-	// when new applications are submitted to the application gallery.
+// when new applications are submitted to the application gallery.
 	NotificationNameNewApplicationNotificationMessage NotificationName = "NewApplicationNotificationMessage"
 	// NotificationNameNewIssuePublisherNotificationMessage - The following email recipients and users will receive email notifications
-	// when a new issue or comment is submitted on the developer portal.
+// when a new issue or comment is submitted on the developer portal.
 	NotificationNameNewIssuePublisherNotificationMessage NotificationName = "NewIssuePublisherNotificationMessage"
 	// NotificationNamePurchasePublisherNotificationMessage - The following email recipients and users will receive email notifications
-	// about new API product subscriptions.
+// about new API product subscriptions.
 	NotificationNamePurchasePublisherNotificationMessage NotificationName = "PurchasePublisherNotificationMessage"
 	// NotificationNameQuotaLimitApproachingPublisherNotificationMessage - The following email recipients and users will receive
-	// email notifications when subscription usage gets close to usage quota.
+// email notifications when subscription usage gets close to usage quota.
 	NotificationNameQuotaLimitApproachingPublisherNotificationMessage NotificationName = "QuotaLimitApproachingPublisherNotificationMessage"
 	// NotificationNameRequestPublisherNotificationMessage - The following email recipients and users will receive email notifications
-	// about subscription requests for API products requiring approval.
+// about subscription requests for API products requiring approval.
 	NotificationNameRequestPublisherNotificationMessage NotificationName = "RequestPublisherNotificationMessage"
 )
 
 // PossibleNotificationNameValues returns the possible values for the NotificationName const type.
 func PossibleNotificationNameValues() []NotificationName {
-	return []NotificationName{
+	return []NotificationName{	
 		NotificationNameAccountClosedPublisher,
 		NotificationNameBCC,
 		NotificationNameNewApplicationNotificationMessage,
@@ -920,7 +920,7 @@ const (
 
 // PossibleOAuth2GrantTypeValues returns the possible values for the OAuth2GrantType const type.
 func PossibleOAuth2GrantTypeValues() []OAuth2GrantType {
-	return []OAuth2GrantType{
+	return []OAuth2GrantType{	
 		OAuth2GrantTypeAuthorizationCode,
 		OAuth2GrantTypeClientCredentials,
 	}
@@ -938,7 +938,7 @@ const (
 
 // PossibleOperationNameFormatValues returns the possible values for the OperationNameFormat const type.
 func PossibleOperationNameFormatValues() []OperationNameFormat {
-	return []OperationNameFormat{
+	return []OperationNameFormat{	
 		OperationNameFormatName,
 		OperationNameFormatURL,
 	}
@@ -948,14 +948,14 @@ func PossibleOperationNameFormatValues() []OperationNameFormat {
 type Origin string
 
 const (
-	OriginInbound  Origin = "Inbound"
-	OriginLocal    Origin = "Local"
+	OriginInbound Origin = "Inbound"
+	OriginLocal Origin = "Local"
 	OriginOutbound Origin = "Outbound"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{
+	return []Origin{	
 		OriginInbound,
 		OriginLocal,
 		OriginOutbound,
@@ -978,7 +978,7 @@ const (
 
 // PossiblePlatformVersionValues returns the possible values for the PlatformVersion const type.
 func PossiblePlatformVersionValues() []PlatformVersion {
-	return []PlatformVersion{
+	return []PlatformVersion{	
 		PlatformVersionMtv1,
 		PlatformVersionStv1,
 		PlatformVersionStv2,
@@ -993,7 +993,7 @@ const (
 	// PolicyContentFormatRawxml - The contents are inline and Content type is a non XML encoded policy document.
 	PolicyContentFormatRawxml PolicyContentFormat = "rawxml"
 	// PolicyContentFormatRawxmlLink - The policy document is not XML encoded and is hosted on a HTTP endpoint accessible from
-	// the API Management service.
+// the API Management service.
 	PolicyContentFormatRawxmlLink PolicyContentFormat = "rawxml-link"
 	// PolicyContentFormatXML - The contents are inline and Content type is an XML document.
 	PolicyContentFormatXML PolicyContentFormat = "xml"
@@ -1003,7 +1003,7 @@ const (
 
 // PossiblePolicyContentFormatValues returns the possible values for the PolicyContentFormat const type.
 func PossiblePolicyContentFormatValues() []PolicyContentFormat {
-	return []PolicyContentFormat{
+	return []PolicyContentFormat{	
 		PolicyContentFormatRawxml,
 		PolicyContentFormatRawxmlLink,
 		PolicyContentFormatXML,
@@ -1022,7 +1022,7 @@ const (
 
 // PossiblePolicyExportFormatValues returns the possible values for the PolicyExportFormat const type.
 func PossiblePolicyExportFormatValues() []PolicyExportFormat {
-	return []PolicyExportFormat{
+	return []PolicyExportFormat{	
 		PolicyExportFormatRawxml,
 		PolicyExportFormatXML,
 	}
@@ -1039,7 +1039,7 @@ const (
 
 // PossiblePolicyFragmentContentFormatValues returns the possible values for the PolicyFragmentContentFormat const type.
 func PossiblePolicyFragmentContentFormatValues() []PolicyFragmentContentFormat {
-	return []PolicyFragmentContentFormat{
+	return []PolicyFragmentContentFormat{	
 		PolicyFragmentContentFormatRawxml,
 		PolicyFragmentContentFormatXML,
 	}
@@ -1053,7 +1053,7 @@ const (
 
 // PossiblePolicyIDNameValues returns the possible values for the PolicyIDName const type.
 func PossiblePolicyIDNameValues() []PolicyIDName {
-	return []PolicyIDName{
+	return []PolicyIDName{	
 		PolicyIDNamePolicy,
 	}
 }
@@ -1061,16 +1061,16 @@ func PossiblePolicyIDNameValues() []PolicyIDName {
 type PolicyScopeContract string
 
 const (
-	PolicyScopeContractAPI       PolicyScopeContract = "Api"
-	PolicyScopeContractAll       PolicyScopeContract = "All"
+	PolicyScopeContractAPI PolicyScopeContract = "Api"
+	PolicyScopeContractAll PolicyScopeContract = "All"
 	PolicyScopeContractOperation PolicyScopeContract = "Operation"
-	PolicyScopeContractProduct   PolicyScopeContract = "Product"
-	PolicyScopeContractTenant    PolicyScopeContract = "Tenant"
+	PolicyScopeContractProduct PolicyScopeContract = "Product"
+	PolicyScopeContractTenant PolicyScopeContract = "Tenant"
 )
 
 // PossiblePolicyScopeContractValues returns the possible values for the PolicyScopeContract const type.
 func PossiblePolicyScopeContractValues() []PolicyScopeContract {
-	return []PolicyScopeContract{
+	return []PolicyScopeContract{	
 		PolicyScopeContractAPI,
 		PolicyScopeContractAll,
 		PolicyScopeContractOperation,
@@ -1095,7 +1095,7 @@ const (
 
 // PossiblePortalRevisionStatusValues returns the possible values for the PortalRevisionStatus const type.
 func PossiblePortalRevisionStatusValues() []PortalRevisionStatus {
-	return []PortalRevisionStatus{
+	return []PortalRevisionStatus{	
 		PortalRevisionStatusCompleted,
 		PortalRevisionStatusFailed,
 		PortalRevisionStatusPending,
@@ -1117,7 +1117,7 @@ const (
 
 // PossiblePortalSettingsCspModeValues returns the possible values for the PortalSettingsCspMode const type.
 func PossiblePortalSettingsCspModeValues() []PortalSettingsCspMode {
-	return []PortalSettingsCspMode{
+	return []PortalSettingsCspMode{	
 		PortalSettingsCspModeDisabled,
 		PortalSettingsCspModeEnabled,
 		PortalSettingsCspModeReportOnly,
@@ -1133,7 +1133,7 @@ const (
 
 // PossiblePreferredIPVersionValues returns the possible values for the PreferredIPVersion const type.
 func PossiblePreferredIPVersionValues() []PreferredIPVersion {
-	return []PreferredIPVersion{
+	return []PreferredIPVersion{	
 		PreferredIPVersionIPv4,
 	}
 }
@@ -1142,15 +1142,15 @@ func PossiblePreferredIPVersionValues() []PreferredIPVersion {
 type PrivateEndpointConnectionProvisioningState string
 
 const (
-	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
-	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
-	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
+	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
 	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
 )
 
 // PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
-	return []PrivateEndpointConnectionProvisioningState{
+	return []PrivateEndpointConnectionProvisioningState{	
 		PrivateEndpointConnectionProvisioningStateCreating,
 		PrivateEndpointConnectionProvisioningStateDeleting,
 		PrivateEndpointConnectionProvisioningStateFailed,
@@ -1163,13 +1163,13 @@ type PrivateEndpointServiceConnectionStatus string
 
 const (
 	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
-	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
 	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
 )
 
 // PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
-	return []PrivateEndpointServiceConnectionStatus{
+	return []PrivateEndpointServiceConnectionStatus{	
 		PrivateEndpointServiceConnectionStatusApproved,
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
@@ -1183,12 +1183,12 @@ type ProductState string
 
 const (
 	ProductStateNotPublished ProductState = "notPublished"
-	ProductStatePublished    ProductState = "published"
+	ProductStatePublished ProductState = "published"
 )
 
 // PossibleProductStateValues returns the possible values for the ProductState const type.
 func PossibleProductStateValues() []ProductState {
-	return []ProductState{
+	return []ProductState{	
 		ProductStateNotPublished,
 		ProductStatePublished,
 	}
@@ -1197,15 +1197,15 @@ func PossibleProductStateValues() []ProductState {
 type Protocol string
 
 const (
-	ProtocolHTTP  Protocol = "http"
+	ProtocolHTTP Protocol = "http"
 	ProtocolHTTPS Protocol = "https"
-	ProtocolWs    Protocol = "ws"
-	ProtocolWss   Protocol = "wss"
+	ProtocolWs Protocol = "ws"
+	ProtocolWss Protocol = "wss"
 )
 
 // PossibleProtocolValues returns the possible values for the Protocol const type.
 func PossibleProtocolValues() []Protocol {
-	return []Protocol{
+	return []Protocol{	
 		ProtocolHTTP,
 		ProtocolHTTPS,
 		ProtocolWs,
@@ -1220,12 +1220,12 @@ type PublicNetworkAccess string
 
 const (
 	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{
+	return []PublicNetworkAccess{	
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
@@ -1245,7 +1245,7 @@ const (
 
 // PossibleResourceSKUCapacityScaleTypeValues returns the possible values for the ResourceSKUCapacityScaleType const type.
 func PossibleResourceSKUCapacityScaleTypeValues() []ResourceSKUCapacityScaleType {
-	return []ResourceSKUCapacityScaleType{
+	return []ResourceSKUCapacityScaleType{	
 		ResourceSKUCapacityScaleTypeAutomatic,
 		ResourceSKUCapacityScaleTypeManual,
 		ResourceSKUCapacityScaleTypeNone,
@@ -1272,7 +1272,7 @@ const (
 
 // PossibleSKUTypeValues returns the possible values for the SKUType const type.
 func PossibleSKUTypeValues() []SKUType {
-	return []SKUType{
+	return []SKUType{	
 		SKUTypeBasic,
 		SKUTypeConsumption,
 		SKUTypeDeveloper,
@@ -1292,7 +1292,7 @@ const (
 
 // PossibleSamplingTypeValues returns the possible values for the SamplingType const type.
 func PossibleSamplingTypeValues() []SamplingType {
-	return []SamplingType{
+	return []SamplingType{	
 		SamplingTypeFixed,
 	}
 }
@@ -1309,7 +1309,7 @@ const (
 
 // PossibleSchemaTypeValues returns the possible values for the SchemaType const type.
 func PossibleSchemaTypeValues() []SchemaType {
-	return []SchemaType{
+	return []SchemaType{	
 		SchemaTypeJSON,
 		SchemaTypeXML,
 	}
@@ -1323,7 +1323,7 @@ const (
 
 // PossibleSettingsTypeNameValues returns the possible values for the SettingsTypeName const type.
 func PossibleSettingsTypeNameValues() []SettingsTypeName {
-	return []SettingsTypeName{
+	return []SettingsTypeName{	
 		SettingsTypeNamePublic,
 	}
 }
@@ -1332,13 +1332,13 @@ func PossibleSettingsTypeNameValues() []SettingsTypeName {
 type Severity string
 
 const (
-	SeverityError   Severity = "Error"
+	SeverityError Severity = "Error"
 	SeverityWarning Severity = "Warning"
 )
 
 // PossibleSeverityValues returns the possible values for the Severity const type.
 func PossibleSeverityValues() []Severity {
-	return []Severity{
+	return []Severity{	
 		SeverityError,
 		SeverityWarning,
 	}
@@ -1364,7 +1364,7 @@ const (
 
 // PossibleSoapAPITypeValues returns the possible values for the SoapAPIType const type.
 func PossibleSoapAPITypeValues() []SoapAPIType {
-	return []SoapAPIType{
+	return []SoapAPIType{	
 		SoapAPITypeGraphQL,
 		SoapAPITypeSoapPassThrough,
 		SoapAPITypeSoapToRest,
@@ -1390,7 +1390,7 @@ const (
 
 // PossibleStateValues returns the possible values for the State const type.
 func PossibleStateValues() []State {
-	return []State{
+	return []State{	
 		StateClosed,
 		StateOpen,
 		StateProposed,
@@ -1408,17 +1408,17 @@ func PossibleStateValues() []State {
 type SubscriptionState string
 
 const (
-	SubscriptionStateActive    SubscriptionState = "active"
+	SubscriptionStateActive SubscriptionState = "active"
 	SubscriptionStateCancelled SubscriptionState = "cancelled"
-	SubscriptionStateExpired   SubscriptionState = "expired"
-	SubscriptionStateRejected  SubscriptionState = "rejected"
+	SubscriptionStateExpired SubscriptionState = "expired"
+	SubscriptionStateRejected SubscriptionState = "rejected"
 	SubscriptionStateSubmitted SubscriptionState = "submitted"
 	SubscriptionStateSuspended SubscriptionState = "suspended"
 )
 
 // PossibleSubscriptionStateValues returns the possible values for the SubscriptionState const type.
 func PossibleSubscriptionStateValues() []SubscriptionState {
-	return []SubscriptionState{
+	return []SubscriptionState{	
 		SubscriptionStateActive,
 		SubscriptionStateCancelled,
 		SubscriptionStateExpired,
@@ -1431,25 +1431,25 @@ func PossibleSubscriptionStateValues() []SubscriptionState {
 type TemplateName string
 
 const (
-	TemplateNameAccountClosedDeveloper                            TemplateName = "accountClosedDeveloper"
-	TemplateNameApplicationApprovedNotificationMessage            TemplateName = "applicationApprovedNotificationMessage"
-	TemplateNameConfirmSignUpIdentityDefault                      TemplateName = "confirmSignUpIdentityDefault"
-	TemplateNameEmailChangeIdentityDefault                        TemplateName = "emailChangeIdentityDefault"
-	TemplateNameInviteUserNotificationMessage                     TemplateName = "inviteUserNotificationMessage"
-	TemplateNameNewCommentNotificationMessage                     TemplateName = "newCommentNotificationMessage"
-	TemplateNameNewDeveloperNotificationMessage                   TemplateName = "newDeveloperNotificationMessage"
-	TemplateNameNewIssueNotificationMessage                       TemplateName = "newIssueNotificationMessage"
-	TemplateNamePasswordResetByAdminNotificationMessage           TemplateName = "passwordResetByAdminNotificationMessage"
-	TemplateNamePasswordResetIdentityDefault                      TemplateName = "passwordResetIdentityDefault"
-	TemplateNamePurchaseDeveloperNotificationMessage              TemplateName = "purchaseDeveloperNotificationMessage"
+	TemplateNameAccountClosedDeveloper TemplateName = "accountClosedDeveloper"
+	TemplateNameApplicationApprovedNotificationMessage TemplateName = "applicationApprovedNotificationMessage"
+	TemplateNameConfirmSignUpIdentityDefault TemplateName = "confirmSignUpIdentityDefault"
+	TemplateNameEmailChangeIdentityDefault TemplateName = "emailChangeIdentityDefault"
+	TemplateNameInviteUserNotificationMessage TemplateName = "inviteUserNotificationMessage"
+	TemplateNameNewCommentNotificationMessage TemplateName = "newCommentNotificationMessage"
+	TemplateNameNewDeveloperNotificationMessage TemplateName = "newDeveloperNotificationMessage"
+	TemplateNameNewIssueNotificationMessage TemplateName = "newIssueNotificationMessage"
+	TemplateNamePasswordResetByAdminNotificationMessage TemplateName = "passwordResetByAdminNotificationMessage"
+	TemplateNamePasswordResetIdentityDefault TemplateName = "passwordResetIdentityDefault"
+	TemplateNamePurchaseDeveloperNotificationMessage TemplateName = "purchaseDeveloperNotificationMessage"
 	TemplateNameQuotaLimitApproachingDeveloperNotificationMessage TemplateName = "quotaLimitApproachingDeveloperNotificationMessage"
-	TemplateNameRejectDeveloperNotificationMessage                TemplateName = "rejectDeveloperNotificationMessage"
-	TemplateNameRequestDeveloperNotificationMessage               TemplateName = "requestDeveloperNotificationMessage"
+	TemplateNameRejectDeveloperNotificationMessage TemplateName = "rejectDeveloperNotificationMessage"
+	TemplateNameRequestDeveloperNotificationMessage TemplateName = "requestDeveloperNotificationMessage"
 )
 
 // PossibleTemplateNameValues returns the possible values for the TemplateName const type.
 func PossibleTemplateNameValues() []TemplateName {
-	return []TemplateName{
+	return []TemplateName{	
 		TemplateNameAccountClosedDeveloper,
 		TemplateNameApplicationApprovedNotificationMessage,
 		TemplateNameConfirmSignUpIdentityDefault,
@@ -1480,7 +1480,7 @@ const (
 
 // PossibleTranslateRequiredQueryParametersConductValues returns the possible values for the TranslateRequiredQueryParametersConduct const type.
 func PossibleTranslateRequiredQueryParametersConductValues() []TranslateRequiredQueryParametersConduct {
-	return []TranslateRequiredQueryParametersConduct{
+	return []TranslateRequiredQueryParametersConduct{	
 		TranslateRequiredQueryParametersConductQuery,
 		TranslateRequiredQueryParametersConductTemplate,
 	}
@@ -1503,7 +1503,7 @@ const (
 
 // PossibleUserStateValues returns the possible values for the UserState const type.
 func PossibleUserStateValues() []UserState {
-	return []UserState{
+	return []UserState{	
 		UserStateActive,
 		UserStateBlocked,
 		UserStateDeleted,
@@ -1518,7 +1518,7 @@ const (
 	// VerbosityError - Only traces with 'severity' set to 'error' will be sent to the logger attached to this diagnostic instance.
 	VerbosityError Verbosity = "error"
 	// VerbosityInformation - Traces with 'severity' set to 'information' and 'error' will be sent to the logger attached to this
-	// diagnostic instance.
+// diagnostic instance.
 	VerbosityInformation Verbosity = "information"
 	// VerbosityVerbose - All the traces emitted by trace policies will be sent to the logger attached to this diagnostic instance.
 	VerbosityVerbose Verbosity = "verbose"
@@ -1526,7 +1526,7 @@ const (
 
 // PossibleVerbosityValues returns the possible values for the Verbosity const type.
 func PossibleVerbosityValues() []Verbosity {
-	return []Verbosity{
+	return []Verbosity{	
 		VerbosityError,
 		VerbosityInformation,
 		VerbosityVerbose,
@@ -1547,7 +1547,7 @@ const (
 
 // PossibleVersioningSchemeValues returns the possible values for the VersioningScheme const type.
 func PossibleVersioningSchemeValues() []VersioningScheme {
-	return []VersioningScheme{
+	return []VersioningScheme{	
 		VersioningSchemeHeader,
 		VersioningSchemeQuery,
 		VersioningSchemeSegment,
@@ -1572,9 +1572,10 @@ const (
 
 // PossibleVirtualNetworkTypeValues returns the possible values for the VirtualNetworkType const type.
 func PossibleVirtualNetworkTypeValues() []VirtualNetworkType {
-	return []VirtualNetworkType{
+	return []VirtualNetworkType{	
 		VirtualNetworkTypeExternal,
 		VirtualNetworkTypeInternal,
 		VirtualNetworkTypeNone,
 	}
 }
+

@@ -23,7 +23,7 @@ import (
 // VirtualMachineRunCommandsClient contains the methods for the VirtualMachineRunCommands group.
 // Don't use this type directly, use NewVirtualMachineRunCommandsClient() instead.
 type VirtualMachineRunCommandsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualMachineRunCommandsClient(subscriptionID string, credential azcore
 	}
 	client := &VirtualMachineRunCommandsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *VirtualMachineRunCommandsClient) createOrUpdateCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	if err := runtime.MarshalAsJSON(req, runCommand); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -330,7 +330,7 @@ func (client *VirtualMachineRunCommandsClient) getByVirtualMachineHandleResponse
 //   - location - The location upon which run commands is queried.
 //   - options - VirtualMachineRunCommandsClientListOptions contains the optional parameters for the VirtualMachineRunCommandsClient.NewListPager
 //     method.
-func (client *VirtualMachineRunCommandsClient) NewListPager(location string, options *VirtualMachineRunCommandsClientListOptions) *runtime.Pager[VirtualMachineRunCommandsClientListResponse] {
+func (client *VirtualMachineRunCommandsClient) NewListPager(location string, options *VirtualMachineRunCommandsClientListOptions) (*runtime.Pager[VirtualMachineRunCommandsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualMachineRunCommandsClientListResponse]{
 		More: func(page VirtualMachineRunCommandsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -396,7 +396,7 @@ func (client *VirtualMachineRunCommandsClient) listHandleResponse(resp *http.Res
 //   - vmName - The name of the virtual machine containing the run command.
 //   - options - VirtualMachineRunCommandsClientListByVirtualMachineOptions contains the optional parameters for the VirtualMachineRunCommandsClient.NewListByVirtualMachinePager
 //     method.
-func (client *VirtualMachineRunCommandsClient) NewListByVirtualMachinePager(resourceGroupName string, vmName string, options *VirtualMachineRunCommandsClientListByVirtualMachineOptions) *runtime.Pager[VirtualMachineRunCommandsClientListByVirtualMachineResponse] {
+func (client *VirtualMachineRunCommandsClient) NewListByVirtualMachinePager(resourceGroupName string, vmName string, options *VirtualMachineRunCommandsClientListByVirtualMachineOptions) (*runtime.Pager[VirtualMachineRunCommandsClientListByVirtualMachineResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualMachineRunCommandsClientListByVirtualMachineResponse]{
 		More: func(page VirtualMachineRunCommandsClientListByVirtualMachineResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -534,7 +534,8 @@ func (client *VirtualMachineRunCommandsClient) updateCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	if err := runtime.MarshalAsJSON(req, runCommand); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

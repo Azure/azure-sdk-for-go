@@ -24,7 +24,7 @@ import (
 // APIReleaseClient contains the methods for the APIRelease group.
 // Don't use this type directly, use NewAPIReleaseClient() instead.
 type APIReleaseClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAPIReleaseClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &APIReleaseClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -108,8 +108,8 @@ func (client *APIReleaseClient) createOrUpdateCreateRequest(ctx context.Context,
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -341,7 +341,7 @@ func (client *APIReleaseClient) getEntityTagHandleResponse(resp *http.Response) 
 //   - apiID - API identifier. Must be unique in the current API Management service instance.
 //   - options - APIReleaseClientListByServiceOptions contains the optional parameters for the APIReleaseClient.NewListByServicePager
 //     method.
-func (client *APIReleaseClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APIReleaseClientListByServiceOptions) *runtime.Pager[APIReleaseClientListByServiceResponse] {
+func (client *APIReleaseClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APIReleaseClientListByServiceOptions) (*runtime.Pager[APIReleaseClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APIReleaseClientListByServiceResponse]{
 		More: func(page APIReleaseClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -480,8 +480,8 @@ func (client *APIReleaseClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -496,3 +496,4 @@ func (client *APIReleaseClient) updateHandleResponse(resp *http.Response) (APIRe
 	}
 	return result, nil
 }
+

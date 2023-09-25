@@ -23,7 +23,7 @@ import (
 // APIExportClient contains the methods for the APIExport group.
 // Don't use this type directly, use NewAPIExportClient() instead.
 type APIExportClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAPIExportClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &APIExportClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,3 +113,4 @@ func (client *APIExportClient) getHandleResponse(resp *http.Response) (APIExport
 	}
 	return result, nil
 }
+

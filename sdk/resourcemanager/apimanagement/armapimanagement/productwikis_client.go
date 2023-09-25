@@ -24,7 +24,7 @@ import (
 // ProductWikisClient contains the methods for the ProductWikis group.
 // Don't use this type directly, use NewProductWikisClient() instead.
 type ProductWikisClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewProductWikisClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &ProductWikisClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewProductWikisClient(subscriptionID string, credential azcore.TokenCredent
 //   - serviceName - The name of the API Management service.
 //   - productID - Product identifier. Must be unique in the current API Management service instance.
 //   - options - ProductWikisClientListOptions contains the optional parameters for the ProductWikisClient.NewListPager method.
-func (client *ProductWikisClient) NewListPager(resourceGroupName string, serviceName string, productID string, options *ProductWikisClientListOptions) *runtime.Pager[ProductWikisClientListResponse] {
+func (client *ProductWikisClient) NewListPager(resourceGroupName string, serviceName string, productID string, options *ProductWikisClientListOptions) (*runtime.Pager[ProductWikisClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProductWikisClientListResponse]{
 		More: func(page ProductWikisClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -129,3 +129,4 @@ func (client *ProductWikisClient) listHandleResponse(resp *http.Response) (Produ
 	}
 	return result, nil
 }
+

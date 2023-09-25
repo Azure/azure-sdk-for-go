@@ -23,7 +23,7 @@ import (
 // PortalSettingsClient contains the methods for the PortalSettings group.
 // Don't use this type directly, use NewPortalSettingsClient() instead.
 type PortalSettingsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPortalSettingsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &PortalSettingsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,3 +103,4 @@ func (client *PortalSettingsClient) listByServiceHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

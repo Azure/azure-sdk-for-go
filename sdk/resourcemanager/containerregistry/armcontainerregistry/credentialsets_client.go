@@ -23,7 +23,7 @@ import (
 // CredentialSetsClient contains the methods for the CredentialSets group.
 // Don't use this type directly, use NewCredentialSetsClient() instead.
 type CredentialSetsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewCredentialSetsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &CredentialSetsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *CredentialSetsClient) createCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, credentialSetCreateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -271,13 +271,13 @@ func (client *CredentialSetsClient) getHandleResponse(resp *http.Response) (Cred
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - CredentialSetsClientListOptions contains the optional parameters for the CredentialSetsClient.NewListPager method.
-func (client *CredentialSetsClient) NewListPager(resourceGroupName string, registryName string, options *CredentialSetsClientListOptions) *runtime.Pager[CredentialSetsClientListResponse] {
+func (client *CredentialSetsClient) NewListPager(resourceGroupName string, registryName string, options *CredentialSetsClientListOptions) (*runtime.Pager[CredentialSetsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CredentialSetsClientListResponse]{
 		More: func(page CredentialSetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CredentialSetsClientListResponse) (CredentialSetsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CredentialSetsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CredentialSetsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -408,7 +408,8 @@ func (client *CredentialSetsClient) updateCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, credentialSetUpdateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ScriptPackagesClient contains the methods for the ScriptPackages group.
 // Don't use this type directly, use NewScriptPackagesClient() instead.
 type ScriptPackagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewScriptPackagesClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &ScriptPackagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,7 +114,7 @@ func (client *ScriptPackagesClient) getHandleResponse(resp *http.Response) (Scri
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - ScriptPackagesClientListOptions contains the optional parameters for the ScriptPackagesClient.NewListPager method.
-func (client *ScriptPackagesClient) NewListPager(resourceGroupName string, privateCloudName string, options *ScriptPackagesClientListOptions) *runtime.Pager[ScriptPackagesClientListResponse] {
+func (client *ScriptPackagesClient) NewListPager(resourceGroupName string, privateCloudName string, options *ScriptPackagesClientListOptions) (*runtime.Pager[ScriptPackagesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ScriptPackagesClientListResponse]{
 		More: func(page ScriptPackagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -176,3 +176,4 @@ func (client *ScriptPackagesClient) listHandleResponse(resp *http.Response) (Scr
 	}
 	return result, nil
 }
+

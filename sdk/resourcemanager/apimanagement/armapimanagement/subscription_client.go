@@ -24,7 +24,7 @@ import (
 // SubscriptionClient contains the methods for the Subscription group.
 // Don't use this type directly, use NewSubscriptionClient() instead.
 type SubscriptionClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewSubscriptionClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &SubscriptionClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,8 +109,8 @@ func (client *SubscriptionClient) createOrUpdateCreateRequest(ctx context.Contex
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -324,7 +324,7 @@ func (client *SubscriptionClient) getEntityTagHandleResponse(resp *http.Response
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - SubscriptionClientListOptions contains the optional parameters for the SubscriptionClient.NewListPager method.
-func (client *SubscriptionClient) NewListPager(resourceGroupName string, serviceName string, options *SubscriptionClientListOptions) *runtime.Pager[SubscriptionClientListResponse] {
+func (client *SubscriptionClient) NewListPager(resourceGroupName string, serviceName string, options *SubscriptionClientListOptions) (*runtime.Pager[SubscriptionClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SubscriptionClientListResponse]{
 		More: func(page SubscriptionClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -641,8 +641,8 @@ func (client *SubscriptionClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -657,3 +657,4 @@ func (client *SubscriptionClient) updateHandleResponse(resp *http.Response) (Sub
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // ConnectedEnvironmentsCertificatesClient contains the methods for the ConnectedEnvironmentsCertificates group.
 // Don't use this type directly, use NewConnectedEnvironmentsCertificatesClient() instead.
 type ConnectedEnvironmentsCertificatesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewConnectedEnvironmentsCertificatesClient(subscriptionID string, credentia
 	}
 	client := &ConnectedEnvironmentsCertificatesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *ConnectedEnvironmentsCertificatesClient) createOrUpdateCreateReque
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.CertificateEnvelope != nil {
 		if err := runtime.MarshalAsJSON(req, *options.CertificateEnvelope); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -244,7 +244,7 @@ func (client *ConnectedEnvironmentsCertificatesClient) getHandleResponse(resp *h
 //   - connectedEnvironmentName - Name of the Connected Environment.
 //   - options - ConnectedEnvironmentsCertificatesClientListOptions contains the optional parameters for the ConnectedEnvironmentsCertificatesClient.NewListPager
 //     method.
-func (client *ConnectedEnvironmentsCertificatesClient) NewListPager(resourceGroupName string, connectedEnvironmentName string, options *ConnectedEnvironmentsCertificatesClientListOptions) *runtime.Pager[ConnectedEnvironmentsCertificatesClientListResponse] {
+func (client *ConnectedEnvironmentsCertificatesClient) NewListPager(resourceGroupName string, connectedEnvironmentName string, options *ConnectedEnvironmentsCertificatesClientListOptions) (*runtime.Pager[ConnectedEnvironmentsCertificatesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConnectedEnvironmentsCertificatesClientListResponse]{
 		More: func(page ConnectedEnvironmentsCertificatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -363,8 +363,8 @@ func (client *ConnectedEnvironmentsCertificatesClient) updateCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, certificateEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -376,3 +376,4 @@ func (client *ConnectedEnvironmentsCertificatesClient) updateHandleResponse(resp
 	}
 	return result, nil
 }
+

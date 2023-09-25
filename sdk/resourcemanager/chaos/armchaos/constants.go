@@ -9,7 +9,7 @@
 package armchaos
 
 const (
-	moduleName    = "armchaos"
+	moduleName = "armchaos"
 	moduleVersion = "v0.7.0"
 )
 
@@ -22,7 +22,7 @@ const (
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
+	return []ActionType{	
 		ActionTypeInternal,
 	}
 }
@@ -31,15 +31,15 @@ func PossibleActionTypeValues() []ActionType {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -56,7 +56,7 @@ const (
 
 // PossibleFilterTypeValues returns the possible values for the FilterType const type.
 func PossibleFilterTypeValues() []FilterType {
-	return []FilterType{
+	return []FilterType{	
 		FilterTypeSimple,
 	}
 }
@@ -66,14 +66,14 @@ func PossibleFilterTypeValues() []FilterType {
 type Origin string
 
 const (
-	OriginSystem     Origin = "system"
-	OriginUser       Origin = "user"
+	OriginSystem Origin = "system"
+	OriginUser Origin = "user"
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{
+	return []Origin{	
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -84,14 +84,14 @@ func PossibleOriginValues() []Origin {
 type ResourceIdentityType string
 
 const (
-	ResourceIdentityTypeNone           ResourceIdentityType = "None"
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
-	ResourceIdentityTypeUserAssigned   ResourceIdentityType = "UserAssigned"
+	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
 )
 
 // PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{
+	return []ResourceIdentityType{	
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 		ResourceIdentityTypeUserAssigned,
@@ -102,13 +102,13 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type SelectorType string
 
 const (
-	SelectorTypeList  SelectorType = "List"
+	SelectorTypeList SelectorType = "List"
 	SelectorTypeQuery SelectorType = "Query"
 )
 
 // PossibleSelectorTypeValues returns the possible values for the SelectorType const type.
 func PossibleSelectorTypeValues() []SelectorType {
-	return []SelectorType{
+	return []SelectorType{	
 		SelectorTypeList,
 		SelectorTypeQuery,
 	}
@@ -123,7 +123,8 @@ const (
 
 // PossibleTargetReferenceTypeValues returns the possible values for the TargetReferenceType const type.
 func PossibleTargetReferenceTypeValues() []TargetReferenceType {
-	return []TargetReferenceType{
+	return []TargetReferenceType{	
 		TargetReferenceTypeChaosTarget,
 	}
 }
+

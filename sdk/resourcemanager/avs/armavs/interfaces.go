@@ -43,3 +43,4 @@ type WorkloadNetworkDhcpEntityClassification interface {
 	// GetWorkloadNetworkDhcpEntity returns the WorkloadNetworkDhcpEntity content of the underlying type.
 	GetWorkloadNetworkDhcpEntity() *WorkloadNetworkDhcpEntity
 }
+

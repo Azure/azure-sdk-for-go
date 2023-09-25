@@ -24,7 +24,7 @@ import (
 // VirtualMachineImagesClient contains the methods for the VirtualMachineImages group.
 // Don't use this type directly, use NewVirtualMachineImagesClient() instead.
 type VirtualMachineImagesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewVirtualMachineImagesClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &VirtualMachineImagesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -444,3 +444,4 @@ func (client *VirtualMachineImagesClient) listSKUsHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

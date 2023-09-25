@@ -24,7 +24,7 @@ import (
 // GatewayAPIClient contains the methods for the GatewayAPI group.
 // Don't use this type directly, use NewGatewayAPIClient() instead.
 type GatewayAPIClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGatewayAPIClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &GatewayAPIClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -106,8 +106,8 @@ func (client *GatewayAPIClient) createOrUpdateCreateRequest(ctx context.Context,
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -263,7 +263,7 @@ func (client *GatewayAPIClient) getEntityTagHandleResponse(resp *http.Response) 
 //     'managed'
 //   - options - GatewayAPIClientListByServiceOptions contains the optional parameters for the GatewayAPIClient.NewListByServicePager
 //     method.
-func (client *GatewayAPIClient) NewListByServicePager(resourceGroupName string, serviceName string, gatewayID string, options *GatewayAPIClientListByServiceOptions) *runtime.Pager[GatewayAPIClientListByServiceResponse] {
+func (client *GatewayAPIClient) NewListByServicePager(resourceGroupName string, serviceName string, gatewayID string, options *GatewayAPIClientListByServiceOptions) (*runtime.Pager[GatewayAPIClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GatewayAPIClientListByServiceResponse]{
 		More: func(page GatewayAPIClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -338,3 +338,4 @@ func (client *GatewayAPIClient) listByServiceHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

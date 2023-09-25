@@ -52,8 +52,8 @@ type APIContract struct {
 // APIContractProperties - API Entity Properties
 type APIContractProperties struct {
 	// REQUIRED; Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance.
-	// It is appended to the API endpoint base URL specified during the service instance
-	// creation to form a public URL for this API.
+// It is appended to the API endpoint base URL specified during the service instance
+// creation to form a public URL for this API.
 	Path *string
 
 	// Describes the revision of the API. If no value is provided, default revision 1 is created
@@ -156,8 +156,8 @@ type APIContractUpdateProperties struct {
 	License *APILicenseInformation
 
 	// Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It
-	// is appended to the API endpoint base URL specified during the service instance
-	// creation to form a public URL for this API.
+// is appended to the API endpoint base URL specified during the service instance
+// creation to form a public URL for this API.
 	Path *string
 
 	// Describes on which protocols the operations in this API can be invoked.
@@ -188,8 +188,8 @@ type APICreateOrUpdateParameter struct {
 // APICreateOrUpdateProperties - API Create or Update Properties.
 type APICreateOrUpdateProperties struct {
 	// REQUIRED; Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance.
-	// It is appended to the API endpoint base URL specified during the service instance
-	// creation to form a public URL for this API.
+// It is appended to the API endpoint base URL specified during the service instance
+// creation to form a public URL for this API.
 	Path *string
 
 	// Describes the revision of the API. If no value is provided, default revision 1 is created
@@ -241,10 +241,10 @@ type APICreateOrUpdateProperties struct {
 	ServiceURL *string
 
 	// Type of API to create.
-	// * http creates a REST API
-	// * soap creates a SOAP pass-through API
-	// * websocket creates websocket API
-	// * graphql creates GraphQL API.
+// * http creates a REST API
+// * soap creates a SOAP pass-through API
+// * websocket creates websocket API
+// * graphql creates GraphQL API.
 	SoapAPIType *SoapAPIType
 
 	// API identifier of the source API.
@@ -260,7 +260,7 @@ type APICreateOrUpdateProperties struct {
 	TermsOfServiceURL *string
 
 	// Strategy of translating required query parameters to template ones. By default has value 'template'. Possible values: 'template',
-	// 'query'
+// 'query'
 	TranslateRequiredQueryParametersConduct *TranslateRequiredQueryParametersConduct
 
 	// Content value when Importing an API.
@@ -393,7 +393,7 @@ type APIReleaseContractProperties struct {
 	Notes *string
 
 	// READ-ONLY; The time the API was released. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
-	// by the ISO 8601 standard.
+// by the ISO 8601 standard.
 	CreatedDateTime *time.Time
 
 	// READ-ONLY; The time the API release was updated.
@@ -421,7 +421,7 @@ type APIRevisionContract struct {
 	APIRevision *string
 
 	// READ-ONLY; The time the API Revision was created. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
-	// by the ISO 8601 standard.
+// by the ISO 8601 standard.
 	CreatedDateTime *time.Time
 
 	// READ-ONLY; Description of the API Revision.
@@ -437,7 +437,7 @@ type APIRevisionContract struct {
 	PrivateURL *string
 
 	// READ-ONLY; The time the API Revision were updated. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
-	// by the ISO 8601 standard.
+// by the ISO 8601 standard.
 	UpdatedDateTime *time.Time
 }
 
@@ -498,8 +498,8 @@ type APITagResourceContractProperties struct {
 	Name *string
 
 	// Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It
-	// is appended to the API endpoint base URL specified during the service instance
-	// creation to form a public URL for this API.
+// is appended to the API endpoint base URL specified during the service instance
+// creation to form a public URL for this API.
 	Path *string
 
 	// Describes on which protocols the operations in this API can be invoked.
@@ -686,7 +686,7 @@ type AccessInformationCreateParameterProperties struct {
 	PrincipalID *string
 
 	// Secondary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the
-	// value.
+// value.
 	SecondaryKey *string
 }
 
@@ -711,7 +711,7 @@ type AccessInformationSecretsContract struct {
 	PrincipalID *string
 
 	// Secondary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the
-	// value.
+// value.
 	SecondaryKey *string
 }
 
@@ -736,14 +736,14 @@ type AdditionalLocation struct {
 	SKU *ServiceSKUProperties
 
 	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway
-	// in this additional location.
+// in this additional location.
 	DisableGateway *bool
 
 	// Property can be used to enable NAT Gateway for this API Management service.
 	NatGatewayState *NatGatewayState
 
 	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the location. Supported
-	// only for Premium SKU being deployed in Virtual Network.
+// only for Premium SKU being deployed in Virtual Network.
 	PublicIPAddressID *string
 
 	// Virtual network configuration for the location.
@@ -756,19 +756,19 @@ type AdditionalLocation struct {
 	GatewayRegionalURL *string
 
 	// READ-ONLY; Outbound public IPV4 address prefixes associated with NAT Gateway deployed service. Available only for Premium
-	// SKU on stv2 platform.
+// SKU on stv2 platform.
 	OutboundPublicIPAddresses []*string
 
 	// READ-ONLY; Compute Platform Version running the service.
 	PlatformVersion *PlatformVersion
 
 	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service which is deployed in an Internal Virtual
-	// Network in a particular additional location. Available only for Basic, Standard,
-	// Premium and Isolated SKU.
+// Network in a particular additional location. Available only for Basic, Standard,
+// Premium and Isolated SKU.
 	PrivateIPAddresses []*string
 
 	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in the additional location. Available
-	// only for Basic, Standard, Premium and Isolated SKU.
+// only for Basic, Standard, Premium and Isolated SKU.
 	PublicIPAddresses []*string
 }
 
@@ -1027,32 +1027,32 @@ type AuthorizationServerContractBaseProperties struct {
 	BearerTokenSendingMethods []*BearerTokenSendingMethod
 
 	// Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or
-	// Body. When Body is specified, client credentials and other parameters are passed
-	// within the request body in the application/x-www-form-urlencoded format.
+// Body. When Body is specified, client credentials and other parameters are passed
+// within the request body in the application/x-www-form-urlencoded format.
 	ClientAuthenticationMethod []*ClientAuthenticationMethod
 
 	// Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in
-	// the form of a string containing space-delimited values.
+// the form of a string containing space-delimited values.
 	DefaultScope *string
 
 	// Description of the authorization server. Can contain HTML formatting tags.
 	Description *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
-	// resource owner password.
+// resource owner password.
 	ResourceOwnerPassword *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
-	// resource owner username.
+// resource owner username.
 	ResourceOwnerUsername *string
 
 	// If true, authorization server will include state parameter from the authorization request to its response. Client may use
-	// state parameter to raise protocol security.
+// state parameter to raise protocol security.
 	SupportState *bool
 
 	// Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects
-	// with name and value string properties, i.e. {"name" : "name value", "value":
-	// "a value"}.
+// with name and value string properties, i.e. {"name" : "name value", "value":
+// "a value"}.
 	TokenBodyParameters []*TokenBodyParameterContract
 
 	// OAuth token endpoint. Contains absolute URI to entity being referenced.
@@ -1068,7 +1068,7 @@ type AuthorizationServerContractProperties struct {
 	ClientID *string
 
 	// REQUIRED; Optional reference to a page where client or app registration for this authorization server is performed. Contains
-	// absolute URL to entity being referenced.
+// absolute URL to entity being referenced.
 	ClientRegistrationEndpoint *string
 
 	// REQUIRED; User-friendly authorization server name.
@@ -1084,43 +1084,43 @@ type AuthorizationServerContractProperties struct {
 	BearerTokenSendingMethods []*BearerTokenSendingMethod
 
 	// Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or
-	// Body. When Body is specified, client credentials and other parameters are passed
-	// within the request body in the application/x-www-form-urlencoded format.
+// Body. When Body is specified, client credentials and other parameters are passed
+// within the request body in the application/x-www-form-urlencoded format.
 	ClientAuthenticationMethod []*ClientAuthenticationMethod
 
 	// Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use
-	// '/listSecrets' POST request to get the value.
+// '/listSecrets' POST request to get the value.
 	ClientSecret *string
 
 	// Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in
-	// the form of a string containing space-delimited values.
+// the form of a string containing space-delimited values.
 	DefaultScope *string
 
 	// Description of the authorization server. Can contain HTML formatting tags.
 	Description *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
-	// resource owner password.
+// resource owner password.
 	ResourceOwnerPassword *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
-	// resource owner username.
+// resource owner username.
 	ResourceOwnerUsername *string
 
 	// If true, authorization server will include state parameter from the authorization request to its response. Client may use
-	// state parameter to raise protocol security.
+// state parameter to raise protocol security.
 	SupportState *bool
 
 	// Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects
-	// with name and value string properties, i.e. {"name" : "name value", "value":
-	// "a value"}.
+// with name and value string properties, i.e. {"name" : "name value", "value":
+// "a value"}.
 	TokenBodyParameters []*TokenBodyParameterContract
 
 	// OAuth token endpoint. Contains absolute URI to entity being referenced.
 	TokenEndpoint *string
 
 	// If true, the authorization server will be used in the API documentation in the developer portal. False by default if no
-	// value is provided.
+// value is provided.
 	UseInAPIDocumentation *bool
 
 	// If true, the authorization server may be used in the developer portal test console. True by default if no value is provided.
@@ -1133,11 +1133,11 @@ type AuthorizationServerSecretsContract struct {
 	ClientSecret *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
-	// resource owner password.
+// resource owner password.
 	ResourceOwnerPassword *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
-	// resource owner username.
+// resource owner username.
 	ResourceOwnerUsername *string
 }
 
@@ -1168,23 +1168,23 @@ type AuthorizationServerUpdateContractProperties struct {
 	BearerTokenSendingMethods []*BearerTokenSendingMethod
 
 	// Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or
-	// Body. When Body is specified, client credentials and other parameters are passed
-	// within the request body in the application/x-www-form-urlencoded format.
+// Body. When Body is specified, client credentials and other parameters are passed
+// within the request body in the application/x-www-form-urlencoded format.
 	ClientAuthenticationMethod []*ClientAuthenticationMethod
 
 	// Client or app id registered with this authorization server.
 	ClientID *string
 
 	// Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute
-	// URL to entity being referenced.
+// URL to entity being referenced.
 	ClientRegistrationEndpoint *string
 
 	// Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use
-	// '/listSecrets' POST request to get the value.
+// '/listSecrets' POST request to get the value.
 	ClientSecret *string
 
 	// Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in
-	// the form of a string containing space-delimited values.
+// the form of a string containing space-delimited values.
 	DefaultScope *string
 
 	// Description of the authorization server. Can contain HTML formatting tags.
@@ -1197,27 +1197,27 @@ type AuthorizationServerUpdateContractProperties struct {
 	GrantTypes []*GrantType
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
-	// resource owner password.
+// resource owner password.
 	ResourceOwnerPassword *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
-	// resource owner username.
+// resource owner username.
 	ResourceOwnerUsername *string
 
 	// If true, authorization server will include state parameter from the authorization request to its response. Client may use
-	// state parameter to raise protocol security.
+// state parameter to raise protocol security.
 	SupportState *bool
 
 	// Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects
-	// with name and value string properties, i.e. {"name" : "name value", "value":
-	// "a value"}.
+// with name and value string properties, i.e. {"name" : "name value", "value":
+// "a value"}.
 	TokenBodyParameters []*TokenBodyParameterContract
 
 	// OAuth token endpoint. Contains absolute URI to entity being referenced.
 	TokenEndpoint *string
 
 	// If true, the authorization server will be used in the API documentation in the developer portal. False by default if no
-	// value is provided.
+// value is provided.
 	UseInAPIDocumentation *bool
 
 	// If true, the authorization server may be used in the developer portal test console. True by default if no value is provided.
@@ -1248,7 +1248,7 @@ type BackendBaseParameters struct {
 	Proxy *BackendProxyContract
 
 	// Management Uri of the Resource in External System. This URL can be the Arm Resource Id of Logic Apps, Function Apps or
-	// API Apps.
+// API Apps.
 	ResourceID *string
 
 	// Backend TLS Properties
@@ -1306,7 +1306,7 @@ type BackendContractProperties struct {
 	Proxy *BackendProxyContract
 
 	// Management Uri of the Resource in External System. This URL can be the Arm Resource Id of Logic Apps, Function Apps or
-	// API Apps.
+// API Apps.
 	ResourceID *string
 
 	// Backend TLS Properties
@@ -1343,7 +1343,7 @@ type BackendProperties struct {
 // BackendProxyContract - Details of the Backend WebProxy Server to use in the Request to Backend.
 type BackendProxyContract struct {
 	// REQUIRED; WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all
-	// fragments and query strings.
+// fragments and query strings.
 	URL *string
 
 	// Password to connect to the WebProxy Server
@@ -1398,11 +1398,11 @@ type BackendServiceFabricClusterProperties struct {
 // BackendTLSProperties - Properties controlling TLS Certificate Validation.
 type BackendTLSProperties struct {
 	// Flag indicating whether SSL certificate chain validation should be done when using self-signed certificates for this backend
-	// host.
+// host.
 	ValidateCertificateChain *bool
 
 	// Flag indicating whether SSL certificate name validation should be done when using self-signed certificates for this backend
-	// host.
+// host.
 	ValidateCertificateName *bool
 }
 
@@ -1424,7 +1424,7 @@ type BackendUpdateParameterProperties struct {
 	Proxy *BackendProxyContract
 
 	// Management Uri of the Resource in External System. This URL can be the Arm Resource Id of Logic Apps, Function Apps or
-	// API Apps.
+// API Apps.
 	ResourceID *string
 
 	// Backend TLS Properties
@@ -1527,7 +1527,7 @@ type CertificateCollection struct {
 // CertificateConfiguration - Certificate configuration which consist of non-trusted intermediates and root certificates.
 type CertificateConfiguration struct {
 	// REQUIRED; The System.Security.Cryptography.x509certificates.StoreName certificate store location. Only Root and CertificateAuthority
-	// are valid locations.
+// are valid locations.
 	StoreName *CertificateConfigurationStoreName
 
 	// Certificate information.
@@ -1558,7 +1558,7 @@ type CertificateContract struct {
 // CertificateContractProperties - Properties of the Certificate contract.
 type CertificateContractProperties struct {
 	// REQUIRED; Expiration date of the certificate. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
-	// by the ISO 8601 standard.
+// by the ISO 8601 standard.
 	ExpirationDate *time.Time
 
 	// REQUIRED; Subject attribute of the certificate.
@@ -1592,7 +1592,7 @@ type CertificateCreateOrUpdateProperties struct {
 // CertificateInformation - SSL certificate information.
 type CertificateInformation struct {
 	// REQUIRED; Expiration date of the certificate. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
-	// by the ISO 8601 standard.
+// by the ISO 8601 standard.
 	Expiry *time.Time
 
 	// REQUIRED; Subject of the certificate.
@@ -1620,7 +1620,7 @@ type ConnectivityCheckRequest struct {
 	PreferredIPVersion *PreferredIPVersion
 
 	// The request's protocol. Specific protocol configuration can be available based on this selection. The specified destination
-	// address must be coherent with this value.
+// address must be coherent with this value.
 	Protocol *ConnectivityCheckProtocol
 
 	// Protocol-specific configuration.
@@ -1729,18 +1729,18 @@ type ConnectivityStatusContract struct {
 	IsOptional *bool
 
 	// REQUIRED; The date when the resource connectivity status last Changed from success to failure or vice-versa. The date conforms
-	// to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
-	// standard.
+// to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
+// standard.
 	LastStatusChange *time.Time
 
 	// REQUIRED; The date when the resource connectivity status was last updated. This status should be updated every 15 minutes.
-	// If this status has not been updated, then it means that the service has lost network
-	// connectivity to the resource, from inside the Virtual Network.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
-	// as specified by the ISO 8601 standard.
+// If this status has not been updated, then it means that the service has lost network
+// connectivity to the resource, from inside the Virtual Network.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
+// as specified by the ISO 8601 standard.
 	LastUpdated *time.Time
 
 	// REQUIRED; The hostname of the resource which the service depends on. This can be the database, storage or any other azure
-	// resource on which the service depends upon.
+// resource on which the service depends upon.
 	Name *string
 
 	// REQUIRED; Resource Type.
@@ -1854,11 +1854,11 @@ type DeletedServiceContract struct {
 
 type DeletedServiceContractProperties struct {
 	// UTC Timestamp when the service was soft-deleted. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
-	// by the ISO 8601 standard.
+// by the ISO 8601 standard.
 	DeletionDate *time.Time
 
 	// UTC Date and Time when the service will be automatically purged. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
-	// as specified by the ISO 8601 standard.
+// as specified by the ISO 8601 standard.
 	ScheduledPurgeDate *time.Time
 
 	// Fully-qualified API Management Service Resource ID
@@ -2255,7 +2255,7 @@ type GatewayTokenContract struct {
 // GatewayTokenRequestContract - Gateway token request contract properties.
 type GatewayTokenRequestContract struct {
 	// REQUIRED; The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date conforms to the following
-	// format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+// format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	Expiry *time.Time
 
 	// REQUIRED; The Key to be used to generate gateway token.
@@ -2346,8 +2346,8 @@ type GroupContractProperties struct {
 	Description *string
 
 	// For external groups, this property contains the id of the group from the external identity provider, e.g. for Azure Active
-	// Directory aad://<tenant>.onmicrosoft.com/groups/<group object id>; otherwise
-	// the value is null.
+// Directory aad://<tenant>.onmicrosoft.com/groups/<group object id>; otherwise
+// the value is null.
 	ExternalID *string
 
 	// Group type.
@@ -2372,8 +2372,8 @@ type GroupCreateParametersProperties struct {
 	Description *string
 
 	// Identifier of the external groups, this property contains the id of the group from the external identity provider, e.g.
-	// for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group object
-	// id>; otherwise the value is null.
+// for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group object
+// id>; otherwise the value is null.
 	ExternalID *string
 
 	// Group type.
@@ -2395,8 +2395,8 @@ type GroupUpdateParametersProperties struct {
 	DisplayName *string
 
 	// Identifier of the external groups, this property contains the id of the group from the external identity provider, e.g.
-	// for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group object
-	// id>; otherwise the value is null.
+// for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group object
+// id>; otherwise the value is null.
 	ExternalID *string
 
 	// Group type.
@@ -2445,21 +2445,21 @@ type HostnameConfiguration struct {
 	CertificateStatus *CertificateStatus
 
 	// Specify true to setup the certificate associated with this Hostname as the Default SSL Certificate. If a client does not
-	// send the SNI header, then this will be the certificate that will be challenged.
-	// The property is useful if a service has multiple custom hostname enabled and it needs to decide on the default ssl certificate.
-	// The setting only applied to gateway Hostname Type.
+// send the SNI header, then this will be the certificate that will be challenged.
+// The property is useful if a service has multiple custom hostname enabled and it needs to decide on the default ssl certificate.
+// The setting only applied to gateway Hostname Type.
 	DefaultSSLBinding *bool
 
 	// Base64 Encoded certificate.
 	EncodedCertificate *string
 
 	// System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing
-	// the SSL certificate.
+// the SSL certificate.
 	IdentityClientID *string
 
 	// Url to the KeyVault Secret containing the Ssl Certificate. If absolute Url containing version is provided, auto-update
-	// of ssl certificate will not work. This requires Api Management service to be
-	// configured with aka.ms/apimmsi. The secret should be of type application/x-pkcs12
+// of ssl certificate will not work. This requires Api Management service to be
+// configured with aka.ms/apimmsi. The secret should be of type application/x-pkcs12
 	KeyVaultID *string
 
 	// Specify true to always negotiate client certificate on the hostname. Default Value is false.
@@ -2515,7 +2515,7 @@ type IdentityProviderContract struct {
 // Active Directory which can be used to enable access to the API Management service developer portal for all users.
 type IdentityProviderContractProperties struct {
 	// REQUIRED; Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for
-	// Google login, App ID for Microsoft.
+// Google login, App ID for Microsoft.
 	ClientID *string
 
 	// List of Allowed Tenants when configuring Azure Active Directory login.
@@ -2528,8 +2528,8 @@ type IdentityProviderContractProperties struct {
 	ClientLibrary *string
 
 	// Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is
-	// App Secret for Facebook login, API Key for Google login, Public Key for
-	// Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+// App Secret for Facebook login, API Key for Google login, Public Key for
+// Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
 	ClientSecret *string
 
 	// Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
@@ -2570,12 +2570,12 @@ type IdentityProviderCreateContract struct {
 // Azure Active Directory which can be used to enable access to the API Management service developer portal for all users.
 type IdentityProviderCreateContractProperties struct {
 	// REQUIRED; Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for
-	// Google login, App ID for Microsoft.
+// Google login, App ID for Microsoft.
 	ClientID *string
 
 	// REQUIRED; Client secret of the Application in external Identity Provider, used to authenticate login request. For example,
-	// it is App Secret for Facebook login, API Key for Google login, Public Key for
-	// Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+// it is App Secret for Facebook login, API Key for Google login, Public Key for
+// Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
 	ClientSecret *string
 
 	// List of Allowed Tenants when configuring Azure Active Directory login.
@@ -2633,15 +2633,15 @@ type IdentityProviderUpdateProperties struct {
 	Authority *string
 
 	// Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login,
-	// App ID for Microsoft.
+// App ID for Microsoft.
 	ClientID *string
 
 	// The client library to be used in the developer portal. Only applies to AAD and AAD B2C Identity Provider.
 	ClientLibrary *string
 
 	// Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is
-	// App Secret for Facebook login, API Key for Google login, Public Key for
-	// Microsoft.
+// App Secret for Facebook login, API Key for Google login, Public Key for
+// Microsoft.
 	ClientSecret *string
 
 	// Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
@@ -2696,7 +2696,7 @@ type IssueAttachmentContractProperties struct {
 	Content *string
 
 	// REQUIRED; Either 'link' if content is provided via an HTTP link or the MIME type of the Base64-encoded binary data provided
-	// in the 'content' property.
+// in the 'content' property.
 	ContentFormat *string
 
 	// REQUIRED; Filename by which the binary data will be saved.
@@ -2835,7 +2835,7 @@ type KeyVaultContractCreateProperties struct {
 	IdentityClientID *string
 
 	// Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires
-	// API Management service to be configured with aka.ms/apimmsi
+// API Management service to be configured with aka.ms/apimmsi
 	SecretIdentifier *string
 }
 
@@ -2848,7 +2848,7 @@ type KeyVaultContractProperties struct {
 	LastStatus *KeyVaultLastAccessStatusContractProperties
 
 	// Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires
-	// API Management service to be configured with aka.ms/apimmsi
+// API Management service to be configured with aka.ms/apimmsi
 	SecretIdentifier *string
 }
 
@@ -2861,7 +2861,7 @@ type KeyVaultLastAccessStatusContractProperties struct {
 	Message *string
 
 	// Last time secret was accessed. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO
-	// 8601 standard.
+// 8601 standard.
 	TimeStampUTC *time.Time
 }
 
@@ -2899,7 +2899,7 @@ type LoggerContractProperties struct {
 	LoggerType *LoggerType
 
 	// The name and SendRule connection string of the event hub for azureEventHub logger. Instrumentation key for applicationInsights
-	// logger.
+// logger.
 	Credentials map[string]*string
 
 	// Logger description.
@@ -2975,8 +2975,8 @@ type NamedValueContractProperties struct {
 	Tags []*string
 
 	// Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property
-	// will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
-	// the value.
+// will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
+// the value.
 	Value *string
 }
 
@@ -3010,8 +3010,8 @@ type NamedValueCreateContractProperties struct {
 	Tags []*string
 
 	// Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property
-	// will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
-	// the value.
+// will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
+// the value.
 	Value *string
 }
 
@@ -3174,11 +3174,11 @@ type OpenidConnectProviderContractProperties struct {
 	Description *string
 
 	// If true, the Open ID Connect provider will be used in the API documentation in the developer portal. False by default if
-	// no value is provided.
+// no value is provided.
 	UseInAPIDocumentation *bool
 
 	// If true, the Open ID Connect provider may be used in the developer portal test console. True by default if no value is
-	// provided.
+// provided.
 	UseInTestConsole *bool
 }
 
@@ -3206,11 +3206,11 @@ type OpenidConnectProviderUpdateContractProperties struct {
 	MetadataEndpoint *string
 
 	// If true, the Open ID Connect provider will be used in the API documentation in the developer portal. False by default if
-	// no value is provided.
+// no value is provided.
 	UseInAPIDocumentation *bool
 
 	// If true, the Open ID Connect provider may be used in the developer portal test console. True by default if no value is
-	// provided.
+// provided.
 	UseInTestConsole *bool
 }
 
@@ -3353,19 +3353,19 @@ type OperationResultContractProperties struct {
 	ResultInfo *string
 
 	// Start time of an async operation. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO
-	// 8601 standard.
+// 8601 standard.
 	Started *time.Time
 
 	// Status of an async operation.
 	Status *AsyncOperationStatus
 
 	// Last update time of an async operation. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by
-	// the ISO 8601 standard.
+// the ISO 8601 standard.
 	Updated *time.Time
 
 	// READ-ONLY; This property if only provided as part of the TenantConfigurationValidate operation. It contains the log the
-	// entities which will be updated/created/deleted as part of the TenantConfigurationDeploy
-	// operation.
+// entities which will be updated/created/deleted as part of the TenantConfigurationDeploy
+// operation.
 	ActionLog []*OperationResultLogItemContract
 }
 
@@ -3691,8 +3691,8 @@ type PortalConfigProperties struct {
 
 	// Enable or disable Basic authentication method.
 	EnableBasicAuth *bool
-	Signin          *PortalConfigPropertiesSignin
-	Signup          *PortalConfigPropertiesSignup
+	Signin *PortalConfigPropertiesSignin
+	Signup *PortalConfigPropertiesSignup
 }
 
 type PortalConfigPropertiesSignin struct {
@@ -4032,66 +4032,66 @@ type ProductContractProperties struct {
 	DisplayName *string
 
 	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
-	// to call the product’s APIs immediately after subscribing. If true,
-	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
-	// only if subscriptionRequired property is present and has a value of false.
+// to call the product’s APIs immediately after subscribing. If true,
+// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
+// only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool
 
 	// Product description. May include HTML formatting tags.
 	Description *string
 
 	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products
-	// are visible only to administrators. Default state of Product is
-	// notPublished.
+// are visible only to administrators. Default state of Product is
+// notPublished.
 	State *ProductState
 
 	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred
-	// to as "protected" and a valid subscription key is required for a request to an
-	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
-	// in the product can be made without a subscription key. If property is omitted
-	// when creating a new product it's value is assumed to be true.
+// to as "protected" and a valid subscription key is required for a request to an
+// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
+// in the product can be made without a subscription key. If property is omitted
+// when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool
 
 	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited
-	// per user subscriptions. Can be present only if subscriptionRequired
-	// property is present and has a value of false.
+// per user subscriptions. Can be present only if subscriptionRequired
+// property is present and has a value of false.
 	SubscriptionsLimit *int32
 
 	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
-	// before they can complete the subscription process.
+// before they can complete the subscription process.
 	Terms *string
 }
 
 // ProductEntityBaseParameters - Product Entity Base Parameters
 type ProductEntityBaseParameters struct {
 	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
-	// to call the product’s APIs immediately after subscribing. If true,
-	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
-	// only if subscriptionRequired property is present and has a value of false.
+// to call the product’s APIs immediately after subscribing. If true,
+// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
+// only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool
 
 	// Product description. May include HTML formatting tags.
 	Description *string
 
 	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products
-	// are visible only to administrators. Default state of Product is
-	// notPublished.
+// are visible only to administrators. Default state of Product is
+// notPublished.
 	State *ProductState
 
 	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred
-	// to as "protected" and a valid subscription key is required for a request to an
-	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
-	// in the product can be made without a subscription key. If property is omitted
-	// when creating a new product it's value is assumed to be true.
+// to as "protected" and a valid subscription key is required for a request to an
+// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
+// in the product can be made without a subscription key. If property is omitted
+// when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool
 
 	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited
-	// per user subscriptions. Can be present only if subscriptionRequired
-	// property is present and has a value of false.
+// per user subscriptions. Can be present only if subscriptionRequired
+// property is present and has a value of false.
 	SubscriptionsLimit *int32
 
 	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
-	// before they can complete the subscription process.
+// before they can complete the subscription process.
 	Terms *string
 }
 
@@ -4101,9 +4101,9 @@ type ProductTagResourceContractProperties struct {
 	Name *string
 
 	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
-	// to call the product’s APIs immediately after subscribing. If true,
-	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
-	// only if subscriptionRequired property is present and has a value of false.
+// to call the product’s APIs immediately after subscribing. If true,
+// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
+// only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool
 
 	// Product description. May include HTML formatting tags.
@@ -4113,24 +4113,24 @@ type ProductTagResourceContractProperties struct {
 	ID *string
 
 	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products
-	// are visible only to administrators. Default state of Product is
-	// notPublished.
+// are visible only to administrators. Default state of Product is
+// notPublished.
 	State *ProductState
 
 	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred
-	// to as "protected" and a valid subscription key is required for a request to an
-	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
-	// in the product can be made without a subscription key. If property is omitted
-	// when creating a new product it's value is assumed to be true.
+// to as "protected" and a valid subscription key is required for a request to an
+// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
+// in the product can be made without a subscription key. If property is omitted
+// when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool
 
 	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited
-	// per user subscriptions. Can be present only if subscriptionRequired
-	// property is present and has a value of false.
+// per user subscriptions. Can be present only if subscriptionRequired
+// property is present and has a value of false.
 	SubscriptionsLimit *int32
 
 	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
-	// before they can complete the subscription process.
+// before they can complete the subscription process.
 	Terms *string
 }
 
@@ -4143,9 +4143,9 @@ type ProductUpdateParameters struct {
 // ProductUpdateProperties - Parameters supplied to the Update Product operation.
 type ProductUpdateProperties struct {
 	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
-	// to call the product’s APIs immediately after subscribing. If true,
-	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
-	// only if subscriptionRequired property is present and has a value of false.
+// to call the product’s APIs immediately after subscribing. If true,
+// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
+// only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool
 
 	// Product description. May include HTML formatting tags.
@@ -4155,24 +4155,24 @@ type ProductUpdateProperties struct {
 	DisplayName *string
 
 	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products
-	// are visible only to administrators. Default state of Product is
-	// notPublished.
+// are visible only to administrators. Default state of Product is
+// notPublished.
 	State *ProductState
 
 	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred
-	// to as "protected" and a valid subscription key is required for a request to an
-	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
-	// in the product can be made without a subscription key. If property is omitted
-	// when creating a new product it's value is assumed to be true.
+// to as "protected" and a valid subscription key is required for a request to an
+// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
+// in the product can be made without a subscription key. If property is omitted
+// when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool
 
 	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited
-	// per user subscriptions. Can be present only if subscriptionRequired
-	// property is present and has a value of false.
+// per user subscriptions. Can be present only if subscriptionRequired
+// property is present and has a value of false.
 	SubscriptionsLimit *int32
 
 	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
-	// before they can complete the subscription process.
+// before they can complete the subscription process.
 	Terms *string
 }
 
@@ -4207,14 +4207,14 @@ type QuotaCounterContract struct {
 	CounterKey *string
 
 	// REQUIRED; The date of the end of Counter Period. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
-	// by the ISO 8601 standard.
+// by the ISO 8601 standard.
 	PeriodEndTime *time.Time
 
 	// REQUIRED; Identifier of the Period for which the counter was collected. Must not be empty.
 	PeriodKey *string
 
 	// REQUIRED; The date of the start of Counter Period. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
-	// by the ISO 8601 standard.
+// by the ISO 8601 standard.
 	PeriodStartTime *time.Time
 
 	// Quota Value Properties
@@ -4401,11 +4401,11 @@ type ReportRecordContract struct {
 	CacheMissCount *int32
 
 	// Number of calls blocked due to invalid credentials. This includes calls returning HttpStatusCode.Unauthorized and HttpStatusCode.Forbidden
-	// and HttpStatusCode.TooManyRequests
+// and HttpStatusCode.TooManyRequests
 	CallCountBlocked *int32
 
 	// Number of calls failed due to gateway or backend errors. This includes calls returning HttpStatusCode.BadRequest(400) and
-	// any Code between HttpStatusCode.InternalServerError (500) and 600
+// any Code between HttpStatusCode.InternalServerError (500) and 600
 	CallCountFailed *int32
 
 	// Number of other calls.
@@ -4421,7 +4421,7 @@ type ReportRecordContract struct {
 	Country *string
 
 	// Length of aggregation period. Interval must be multiple of 15 minutes and may not be zero. The value should be in ISO 8601
-	// format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
+// format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
 	Interval *string
 
 	// Name depending on report endpoint specifies product, API, operation or developer name.
@@ -4446,7 +4446,7 @@ type ReportRecordContract struct {
 	SubscriptionID *string
 
 	// Start of aggregation period. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
-	// standard.
+// standard.
 	Timestamp *time.Time
 
 	// Zip code to which this record data is related.
@@ -4474,7 +4474,7 @@ type RepresentationContract struct {
 	SchemaID *string
 
 	// Type name defined by the schema. Applicable only if 'contentType' value is neither 'application/x-www-form-urlencoded'
-	// nor 'multipart/form-data'.
+// nor 'multipart/form-data'.
 	TypeName *string
 }
 
@@ -4517,8 +4517,8 @@ type RequestReportRecordContract struct {
 	BackendResponseCode *string
 
 	// Specifies if response cache was involved in generating the response. If the value is none, the cache was not used. If the
-	// value is hit, cached response was returned. If the value is miss, the cache
-	// was used but lookup resulted in a miss and request was fulfilled by the backend.
+// value is hit, cached response was returned. If the value is miss, the cache
+// was used but lookup resulted in a miss and request was fulfilled by the backend.
 	Cache *string
 
 	// The client IP address associated with this request.
@@ -4627,19 +4627,19 @@ type ResolverResultContractProperties struct {
 	ResultInfo *string
 
 	// Start time of an async resolver. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO
-	// 8601 standard.
+// 8601 standard.
 	Started *time.Time
 
 	// Status of an async resolver.
 	Status *AsyncResolverStatus
 
 	// Last update time of an async resolver. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by
-	// the ISO 8601 standard.
+// the ISO 8601 standard.
 	Updated *time.Time
 
 	// READ-ONLY; This property if only provided as part of the TenantConfigurationValidate resolver. It contains the log the
-	// entities which will be updated/created/deleted as part of the TenantConfigurationDeploy
-	// resolver.
+// entities which will be updated/created/deleted as part of the TenantConfigurationDeploy
+// resolver.
 	ActionLog []*ResolverResultLogItemContract
 }
 
@@ -4819,9 +4819,9 @@ type SKU struct {
 	Size *string
 
 	// READ-ONLY; Specifies the tier of virtual machines in a scale set.
-	// Possible Values:
-	// Standard
-	// Basic
+// Possible Values:
+// Standard
+// Basic
 	Tier *string
 }
 
@@ -4892,7 +4892,7 @@ type SKURestrictions struct {
 	Type *APIManagementSKURestrictionsType
 
 	// READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where
-	// the SKU is restricted.
+// the SKU is restricted.
 	Values []*string
 }
 
@@ -4911,7 +4911,7 @@ type SKUsResult struct {
 	Value []*SKU
 
 	// READ-ONLY; The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to fetch the next page of Resource
-	// Skus
+// Skus
 	NextLink *string
 }
 
@@ -4936,7 +4936,7 @@ type SaveConfigurationParameterProperties struct {
 	Branch *string
 
 	// The value if true, the current configuration database is committed to the Git repository, even if the Git repository has
-	// newer changes that would be overwritten.
+// newer changes that would be overwritten.
 	Force *bool
 }
 
@@ -4970,11 +4970,11 @@ type SchemaContract struct {
 // SchemaContractProperties - API Schema create or update contract Properties.
 type SchemaContractProperties struct {
 	// REQUIRED; Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema
-	// document (e.g. application/json, application/xml).
-	// - Swagger Schema use application/vnd.ms-azure-apim.swagger.definitions+json
-	// - WSDL Schema use application/vnd.ms-azure-apim.xsd+xml
-	// - OpenApi Schema use application/vnd.oai.openapi.components+json
-	// - WADL Schema use application/vnd.ms-azure-apim.wadl.grammars+xml.
+// document (e.g. application/json, application/xml).
+// - Swagger Schema use application/vnd.ms-azure-apim.swagger.definitions+json
+// - WSDL Schema use application/vnd.ms-azure-apim.xsd+xml
+// - OpenApi Schema use application/vnd.oai.openapi.components+json
+// - WADL Schema use application/vnd.ms-azure-apim.wadl.grammars+xml.
 	ContentType *string
 
 	// REQUIRED; Create or update Properties of the API Schema Document.
@@ -4996,7 +4996,7 @@ type SchemaDocumentProperties struct {
 // ServiceApplyNetworkConfigurationParameters - Parameter supplied to the Apply Network configuration operation.
 type ServiceApplyNetworkConfigurationParameters struct {
 	// Location of the Api Management service to update for a multi-region service. For a service deployed in a single region,
-	// this parameter is not required.
+// this parameter is not required.
 	Location *string
 }
 
@@ -5030,41 +5030,41 @@ type ServiceBaseProperties struct {
 	AdditionalLocations []*AdditionalLocation
 
 	// List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed
-	// is 10.
+// is 10.
 	Certificates []*CertificateConfiguration
 
 	// Custom properties of the API Management service.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA
-	// for all TLS(1.0, 1.1 and 1.2).
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11 can be used to disable just TLS 1.1.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10 can be used to disable TLS 1.0 on an API
-	// Management service.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11 can be used to disable just TLS 1.1
-	// for communications with backends.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10 can be used to disable TLS 1.0 for
-	// communications with backends.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2 can be used to enable HTTP2 protocol on an
-	// API Management service.
-	// Not specifying any of these properties on PATCH operation will reset omitted properties' values to their defaults. For
-	// all the settings except Http2 the default value is True if the service was
-	// created on or before April 1, 2018 and False otherwise. Http2 setting's default value is False.
-	// You can disable any of the following ciphers by using settings Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]:
-	// TLSECDHEECDSAWITHAES256CBCSHA, TLSECDHEECDSAWITHAES128CBC
-	// SHA, TLSECDHERSAWITHAES256CBCSHA, TLSECDHERSAWITHAES128CBCSHA, TLSRSAWITHAES128GCMSHA256, TLSRSAWITHAES256CBCSHA256, TLSRSAWITHAES128CBCSHA256,
-	// TLSRSAWITHAES256CBCSHA, TLSRSAWITHAES128CBCSHA. For
-	// example, Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256:false. The default
-	// value is true for them.
-	// Note: The following ciphers can't be disabled since they are required by internal platform components: TLSAES256GCMSHA384,TLSAES128GCMSHA256,TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCM
-	// SHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBCSHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA
+// for all TLS(1.0, 1.1 and 1.2).
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11 can be used to disable just TLS 1.1.
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10 can be used to disable TLS 1.0 on an API
+// Management service.
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11 can be used to disable just TLS 1.1
+// for communications with backends.
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10 can be used to disable TLS 1.0 for
+// communications with backends.
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2 can be used to enable HTTP2 protocol on an
+// API Management service.
+// Not specifying any of these properties on PATCH operation will reset omitted properties' values to their defaults. For
+// all the settings except Http2 the default value is True if the service was
+// created on or before April 1, 2018 and False otherwise. Http2 setting's default value is False.
+// You can disable any of the following ciphers by using settings Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]:
+// TLSECDHEECDSAWITHAES256CBCSHA, TLSECDHEECDSAWITHAES128CBC
+// SHA, TLSECDHERSAWITHAES256CBCSHA, TLSECDHERSAWITHAES128CBCSHA, TLSRSAWITHAES128GCMSHA256, TLSRSAWITHAES256CBCSHA256, TLSRSAWITHAES128CBCSHA256,
+// TLSRSAWITHAES256CBCSHA, TLSRSAWITHAES128CBCSHA. For
+// example, Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256:false. The default
+// value is true for them.
+// Note: The following ciphers can't be disabled since they are required by internal platform components: TLSAES256GCMSHA384,TLSAES128GCMSHA256,TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCM
+// SHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBCSHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256
 	CustomProperties map[string]*string
 
 	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway
-	// in master region.
+// in master region.
 	DisableGateway *bool
 
 	// Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each
-	// request to the gateway. This also enables the ability to authenticate the
-	// certificate in the policy on the gateway.
+// request to the gateway. This also enables the ability to authenticate the
+// certificate in the policy on the gateway.
 	EnableClientCertificate *bool
 
 	// Custom hostname configuration of the API Management service.
@@ -5080,30 +5080,30 @@ type ServiceBaseProperties struct {
 	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper
 
 	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region. Supported
-	// only for Developer and Premium SKU being deployed in Virtual Network.
+// only for Developer and Premium SKU being deployed in Virtual Network.
 	PublicIPAddressID *string
 
 	// Whether or not public endpoint access is allowed for this API Management service. Value is optional but if passed in, must
-	// be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
-	// exclusive access method. Default value is 'Enabled'
+// be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
+// exclusive access method. Default value is 'Enabled'
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other
-	// properties will be ignored.
+// properties will be ignored.
 	Restore *bool
 
 	// Virtual network configuration of the API Management service.
 	VirtualNetworkConfiguration *VirtualNetworkConfiguration
 
 	// The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management
-	// service is not part of any Virtual Network, External means the API Management
-	// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
-	// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
-	// only.
+// service is not part of any Virtual Network, External means the API Management
+// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
+// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
+// only.
 	VirtualNetworkType *VirtualNetworkType
 
 	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
-	// as specified by the ISO 8601 standard.
+// as specified by the ISO 8601 standard.
 	CreatedAtUTC *time.Time
 
 	// READ-ONLY; DEveloper Portal endpoint URL of the API Management service.
@@ -5119,7 +5119,7 @@ type ServiceBaseProperties struct {
 	ManagementAPIURL *string
 
 	// READ-ONLY; Outbound public IPV4 address prefixes associated with NAT Gateway deployed service. Available only for Premium
-	// SKU on stv2 platform.
+// SKU on stv2 platform.
 	OutboundPublicIPAddresses []*string
 
 	// READ-ONLY; Compute Platform Version running the service in this location.
@@ -5129,22 +5129,22 @@ type ServiceBaseProperties struct {
 	PortalURL *string
 
 	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed
-	// in an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated
-	// SKU.
+// in an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated
+// SKU.
 	PrivateIPAddresses []*string
 
 	// READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
 	ProvisioningState *string
 
 	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for
-	// Basic, Standard, Premium and Isolated SKU.
+// Basic, Standard, Premium and Isolated SKU.
 	PublicIPAddresses []*string
 
 	// READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string
 
 	// READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started
-	// on the service.
+// on the service.
 	TargetProvisioningState *string
 }
 
@@ -5169,13 +5169,13 @@ type ServiceGetSsoTokenResult struct {
 // ServiceIdentity - Identity properties of the Api Management service resource.
 type ServiceIdentity struct {
 	// REQUIRED; The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly
-	// created identity and a set of user assigned identities. The type 'None' will remove any
-	// identities from the service.
+// created identity and a set of user assigned identities. The type 'None' will remove any
+// identities from the service.
 	Type *ApimIdentityType
 
 	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
-	// ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/ providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+// ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/ providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserIdentityProperties
 
 	// READ-ONLY; The principal id of the identity.
@@ -5197,13 +5197,13 @@ type ServiceListResult struct {
 // ServiceNameAvailabilityResult - Response of the CheckNameAvailability operation.
 type ServiceNameAvailabilityResult struct {
 	// Invalid indicates the name provided does not match the resource provider’s naming requirements (incorrect length, unsupported
-	// characters, etc.) AlreadyExists indicates that the name is already in use
-	// and is therefore unavailable.
+// characters, etc.) AlreadyExists indicates that the name is already in use
+// and is therefore unavailable.
 	Reason *NameAvailabilityReason
 
 	// READ-ONLY; If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource
-	// naming requirements so that the user can select a valid name. If reason == AlreadyExists,
-	// explain that is already in use, and direct them to select a different name.
+// naming requirements so that the user can select a valid name. If reason == AlreadyExists,
+// explain that is already in use, and direct them to select a different name.
 	Message *string
 
 	// READ-ONLY; True if the name is available and can be used to create a new API Management service; otherwise false.
@@ -5225,41 +5225,41 @@ type ServiceProperties struct {
 	AdditionalLocations []*AdditionalLocation
 
 	// List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed
-	// is 10.
+// is 10.
 	Certificates []*CertificateConfiguration
 
 	// Custom properties of the API Management service.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA
-	// for all TLS(1.0, 1.1 and 1.2).
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11 can be used to disable just TLS 1.1.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10 can be used to disable TLS 1.0 on an API
-	// Management service.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11 can be used to disable just TLS 1.1
-	// for communications with backends.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10 can be used to disable TLS 1.0 for
-	// communications with backends.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2 can be used to enable HTTP2 protocol on an
-	// API Management service.
-	// Not specifying any of these properties on PATCH operation will reset omitted properties' values to their defaults. For
-	// all the settings except Http2 the default value is True if the service was
-	// created on or before April 1, 2018 and False otherwise. Http2 setting's default value is False.
-	// You can disable any of the following ciphers by using settings Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]:
-	// TLSECDHEECDSAWITHAES256CBCSHA, TLSECDHEECDSAWITHAES128CBC
-	// SHA, TLSECDHERSAWITHAES256CBCSHA, TLSECDHERSAWITHAES128CBCSHA, TLSRSAWITHAES128GCMSHA256, TLSRSAWITHAES256CBCSHA256, TLSRSAWITHAES128CBCSHA256,
-	// TLSRSAWITHAES256CBCSHA, TLSRSAWITHAES128CBCSHA. For
-	// example, Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256:false. The default
-	// value is true for them.
-	// Note: The following ciphers can't be disabled since they are required by internal platform components: TLSAES256GCMSHA384,TLSAES128GCMSHA256,TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCM
-	// SHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBCSHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA
+// for all TLS(1.0, 1.1 and 1.2).
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11 can be used to disable just TLS 1.1.
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10 can be used to disable TLS 1.0 on an API
+// Management service.
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11 can be used to disable just TLS 1.1
+// for communications with backends.
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10 can be used to disable TLS 1.0 for
+// communications with backends.
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2 can be used to enable HTTP2 protocol on an
+// API Management service.
+// Not specifying any of these properties on PATCH operation will reset omitted properties' values to their defaults. For
+// all the settings except Http2 the default value is True if the service was
+// created on or before April 1, 2018 and False otherwise. Http2 setting's default value is False.
+// You can disable any of the following ciphers by using settings Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]:
+// TLSECDHEECDSAWITHAES256CBCSHA, TLSECDHEECDSAWITHAES128CBC
+// SHA, TLSECDHERSAWITHAES256CBCSHA, TLSECDHERSAWITHAES128CBCSHA, TLSRSAWITHAES128GCMSHA256, TLSRSAWITHAES256CBCSHA256, TLSRSAWITHAES128CBCSHA256,
+// TLSRSAWITHAES256CBCSHA, TLSRSAWITHAES128CBCSHA. For
+// example, Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256:false. The default
+// value is true for them.
+// Note: The following ciphers can't be disabled since they are required by internal platform components: TLSAES256GCMSHA384,TLSAES128GCMSHA256,TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCM
+// SHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBCSHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256
 	CustomProperties map[string]*string
 
 	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway
-	// in master region.
+// in master region.
 	DisableGateway *bool
 
 	// Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each
-	// request to the gateway. This also enables the ability to authenticate the
-	// certificate in the policy on the gateway.
+// request to the gateway. This also enables the ability to authenticate the
+// certificate in the policy on the gateway.
 	EnableClientCertificate *bool
 
 	// Custom hostname configuration of the API Management service.
@@ -5275,30 +5275,30 @@ type ServiceProperties struct {
 	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper
 
 	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region. Supported
-	// only for Developer and Premium SKU being deployed in Virtual Network.
+// only for Developer and Premium SKU being deployed in Virtual Network.
 	PublicIPAddressID *string
 
 	// Whether or not public endpoint access is allowed for this API Management service. Value is optional but if passed in, must
-	// be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
-	// exclusive access method. Default value is 'Enabled'
+// be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
+// exclusive access method. Default value is 'Enabled'
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other
-	// properties will be ignored.
+// properties will be ignored.
 	Restore *bool
 
 	// Virtual network configuration of the API Management service.
 	VirtualNetworkConfiguration *VirtualNetworkConfiguration
 
 	// The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management
-	// service is not part of any Virtual Network, External means the API Management
-	// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
-	// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
-	// only.
+// service is not part of any Virtual Network, External means the API Management
+// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
+// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
+// only.
 	VirtualNetworkType *VirtualNetworkType
 
 	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
-	// as specified by the ISO 8601 standard.
+// as specified by the ISO 8601 standard.
 	CreatedAtUTC *time.Time
 
 	// READ-ONLY; DEveloper Portal endpoint URL of the API Management service.
@@ -5314,7 +5314,7 @@ type ServiceProperties struct {
 	ManagementAPIURL *string
 
 	// READ-ONLY; Outbound public IPV4 address prefixes associated with NAT Gateway deployed service. Available only for Premium
-	// SKU on stv2 platform.
+// SKU on stv2 platform.
 	OutboundPublicIPAddresses []*string
 
 	// READ-ONLY; Compute Platform Version running the service in this location.
@@ -5324,22 +5324,22 @@ type ServiceProperties struct {
 	PortalURL *string
 
 	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed
-	// in an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated
-	// SKU.
+// in an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated
+// SKU.
 	PrivateIPAddresses []*string
 
 	// READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
 	ProvisioningState *string
 
 	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for
-	// Basic, Standard, Premium and Isolated SKU.
+// Basic, Standard, Premium and Isolated SKU.
 	PublicIPAddresses []*string
 
 	// READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string
 
 	// READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started
-	// on the service.
+// on the service.
 	TargetProvisioningState *string
 }
 
@@ -5382,7 +5382,7 @@ type ServiceResource struct {
 // ServiceSKUProperties - API Management service resource SKU properties.
 type ServiceSKUProperties struct {
 	// REQUIRED; Capacity of the SKU (number of deployed units of the SKU). For Consumption SKU capacity must be specified as
-	// 0.
+// 0.
 	Capacity *int32
 
 	// REQUIRED; Name of the Sku.
@@ -5428,41 +5428,41 @@ type ServiceUpdateProperties struct {
 	AdditionalLocations []*AdditionalLocation
 
 	// List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed
-	// is 10.
+// is 10.
 	Certificates []*CertificateConfiguration
 
 	// Custom properties of the API Management service.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA
-	// for all TLS(1.0, 1.1 and 1.2).
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11 can be used to disable just TLS 1.1.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10 can be used to disable TLS 1.0 on an API
-	// Management service.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11 can be used to disable just TLS 1.1
-	// for communications with backends.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10 can be used to disable TLS 1.0 for
-	// communications with backends.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2 can be used to enable HTTP2 protocol on an
-	// API Management service.
-	// Not specifying any of these properties on PATCH operation will reset omitted properties' values to their defaults. For
-	// all the settings except Http2 the default value is True if the service was
-	// created on or before April 1, 2018 and False otherwise. Http2 setting's default value is False.
-	// You can disable any of the following ciphers by using settings Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]:
-	// TLSECDHEECDSAWITHAES256CBCSHA, TLSECDHEECDSAWITHAES128CBC
-	// SHA, TLSECDHERSAWITHAES256CBCSHA, TLSECDHERSAWITHAES128CBCSHA, TLSRSAWITHAES128GCMSHA256, TLSRSAWITHAES256CBCSHA256, TLSRSAWITHAES128CBCSHA256,
-	// TLSRSAWITHAES256CBCSHA, TLSRSAWITHAES128CBCSHA. For
-	// example, Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256:false. The default
-	// value is true for them.
-	// Note: The following ciphers can't be disabled since they are required by internal platform components: TLSAES256GCMSHA384,TLSAES128GCMSHA256,TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCM
-	// SHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBCSHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA
+// for all TLS(1.0, 1.1 and 1.2).
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11 can be used to disable just TLS 1.1.
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10 can be used to disable TLS 1.0 on an API
+// Management service.
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11 can be used to disable just TLS 1.1
+// for communications with backends.
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10 can be used to disable TLS 1.0 for
+// communications with backends.
+// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2 can be used to enable HTTP2 protocol on an
+// API Management service.
+// Not specifying any of these properties on PATCH operation will reset omitted properties' values to their defaults. For
+// all the settings except Http2 the default value is True if the service was
+// created on or before April 1, 2018 and False otherwise. Http2 setting's default value is False.
+// You can disable any of the following ciphers by using settings Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]:
+// TLSECDHEECDSAWITHAES256CBCSHA, TLSECDHEECDSAWITHAES128CBC
+// SHA, TLSECDHERSAWITHAES256CBCSHA, TLSECDHERSAWITHAES128CBCSHA, TLSRSAWITHAES128GCMSHA256, TLSRSAWITHAES256CBCSHA256, TLSRSAWITHAES128CBCSHA256,
+// TLSRSAWITHAES256CBCSHA, TLSRSAWITHAES128CBCSHA. For
+// example, Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256:false. The default
+// value is true for them.
+// Note: The following ciphers can't be disabled since they are required by internal platform components: TLSAES256GCMSHA384,TLSAES128GCMSHA256,TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCM
+// SHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBCSHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256
 	CustomProperties map[string]*string
 
 	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway
-	// in master region.
+// in master region.
 	DisableGateway *bool
 
 	// Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each
-	// request to the gateway. This also enables the ability to authenticate the
-	// certificate in the policy on the gateway.
+// request to the gateway. This also enables the ability to authenticate the
+// certificate in the policy on the gateway.
 	EnableClientCertificate *bool
 
 	// Custom hostname configuration of the API Management service.
@@ -5478,12 +5478,12 @@ type ServiceUpdateProperties struct {
 	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper
 
 	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region. Supported
-	// only for Developer and Premium SKU being deployed in Virtual Network.
+// only for Developer and Premium SKU being deployed in Virtual Network.
 	PublicIPAddressID *string
 
 	// Whether or not public endpoint access is allowed for this API Management service. Value is optional but if passed in, must
-	// be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
-	// exclusive access method. Default value is 'Enabled'
+// be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
+// exclusive access method. Default value is 'Enabled'
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// Publisher email.
@@ -5493,21 +5493,21 @@ type ServiceUpdateProperties struct {
 	PublisherName *string
 
 	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other
-	// properties will be ignored.
+// properties will be ignored.
 	Restore *bool
 
 	// Virtual network configuration of the API Management service.
 	VirtualNetworkConfiguration *VirtualNetworkConfiguration
 
 	// The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management
-	// service is not part of any Virtual Network, External means the API Management
-	// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
-	// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
-	// only.
+// service is not part of any Virtual Network, External means the API Management
+// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
+// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
+// only.
 	VirtualNetworkType *VirtualNetworkType
 
 	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
-	// as specified by the ISO 8601 standard.
+// as specified by the ISO 8601 standard.
 	CreatedAtUTC *time.Time
 
 	// READ-ONLY; DEveloper Portal endpoint URL of the API Management service.
@@ -5523,7 +5523,7 @@ type ServiceUpdateProperties struct {
 	ManagementAPIURL *string
 
 	// READ-ONLY; Outbound public IPV4 address prefixes associated with NAT Gateway deployed service. Available only for Premium
-	// SKU on stv2 platform.
+// SKU on stv2 platform.
 	OutboundPublicIPAddresses []*string
 
 	// READ-ONLY; Compute Platform Version running the service in this location.
@@ -5533,22 +5533,22 @@ type ServiceUpdateProperties struct {
 	PortalURL *string
 
 	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed
-	// in an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated
-	// SKU.
+// in an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated
+// SKU.
 	PrivateIPAddresses []*string
 
 	// READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
 	ProvisioningState *string
 
 	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for
-	// Basic, Standard, Premium and Isolated SKU.
+// Basic, Standard, Premium and Isolated SKU.
 	PublicIPAddresses []*string
 
 	// READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string
 
 	// READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started
-	// on the service.
+// on the service.
 	TargetProvisioningState *string
 }
 
@@ -5585,11 +5585,11 @@ type SubscriptionContractProperties struct {
 	Scope *string
 
 	// REQUIRED; Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription
-	// is blocked, and the subscriber cannot call any APIs of the product, * submitted – the
-	// subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription
-	// request has been denied by an administrator, * cancelled – the
-	// subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration
-	// date and was deactivated.
+// is blocked, and the subscriber cannot call any APIs of the product, * submitted – the
+// subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription
+// request has been denied by an administrator, * cancelled – the
+// subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration
+// date and was deactivated.
 	State *SubscriptionState
 
 	// Determines whether tracing is enabled
@@ -5599,41 +5599,41 @@ type SubscriptionContractProperties struct {
 	DisplayName *string
 
 	// Date when subscription was cancelled or expired. The setting is for audit purposes only and the subscription is not automatically
-	// cancelled. The subscription lifecycle can be managed by using the
-	// state property. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+// cancelled. The subscription lifecycle can be managed by using the
+// state property. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	EndDate *time.Time
 
 	// Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically expired.
-	// The subscription lifecycle can be managed by using the state property. The date
-	// conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+// The subscription lifecycle can be managed by using the state property. The date
+// conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	ExpirationDate *time.Time
 
 	// Upcoming subscription expiration notification date. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as
-	// specified by the ISO 8601 standard.
+// specified by the ISO 8601 standard.
 	NotificationDate *time.Time
 
 	// The user resource identifier of the subscription owner. The value is a valid relative URL in the format of /users/{userId}
-	// where {userId} is a user identifier.
+// where {userId} is a user identifier.
 	OwnerID *string
 
 	// Subscription primary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
-	// the value.
+// the value.
 	PrimaryKey *string
 
 	// Subscription secondary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
-	// the value.
+// the value.
 	SecondaryKey *string
 
 	// Subscription activation date. The setting is for audit purposes only and the subscription is not automatically activated.
-	// The subscription lifecycle can be managed by using the state property. The
-	// date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+// The subscription lifecycle can be managed by using the state property. The
+// date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	StartDate *time.Time
 
 	// Optional subscription comment added by an administrator when the state is changed to the 'rejected'.
 	StateComment *string
 
 	// READ-ONLY; Subscription creation date. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by
-	// the ISO 8601 standard.
+// the ISO 8601 standard.
 	CreatedDate *time.Time
 }
 
@@ -5658,12 +5658,12 @@ type SubscriptionCreateParameterProperties struct {
 	SecondaryKey *string
 
 	// Initial subscription state. If no value is specified, subscription is created with Submitted state. Possible states are
-	// * active – the subscription is active, * suspended – the subscription is
-	// blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been made by
-	// the developer, but has not yet been approved or rejected, * rejected – the
-	// subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled by the developer
-	// or administrator, * expired – the subscription reached its expiration date
-	// and was deactivated.
+// * active – the subscription is active, * suspended – the subscription is
+// blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been made by
+// the developer, but has not yet been approved or rejected, * rejected – the
+// subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled by the developer
+// or administrator, * expired – the subscription reached its expiration date
+// and was deactivated.
 	State *SubscriptionState
 }
 
@@ -5700,8 +5700,8 @@ type SubscriptionUpdateParameterProperties struct {
 	DisplayName *string
 
 	// Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically expired.
-	// The subscription lifecycle can be managed by using the state property. The date
-	// conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+// The subscription lifecycle can be managed by using the state property. The date
+// conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	ExpirationDate *time.Time
 
 	// User identifier path: /users/{userId}
@@ -5717,11 +5717,11 @@ type SubscriptionUpdateParameterProperties struct {
 	SecondaryKey *string
 
 	// Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is blocked,
-	// and the subscriber cannot call any APIs of the product, * submitted – the
-	// subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription
-	// request has been denied by an administrator, * cancelled – the
-	// subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration
-	// date and was deactivated.
+// and the subscriber cannot call any APIs of the product, * submitted – the
+// subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription
+// request has been denied by an administrator, * cancelled – the
+// subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration
+// date and was deactivated.
 	State *SubscriptionState
 
 	// Comments describing subscription state change by the administrator when the state is changed to the 'rejected'.
@@ -5923,7 +5923,7 @@ type TenantConfigurationSyncStateContractProperties struct {
 	CommitID *string
 
 	// The date of the latest configuration change. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
-	// by the ISO 8601 standard.
+// by the ISO 8601 standard.
 	ConfigurationChangeDate *time.Time
 
 	// value indicating if last sync was save (true) or deploy (false) operation.
@@ -5939,7 +5939,7 @@ type TenantConfigurationSyncStateContractProperties struct {
 	LastOperationID *string
 
 	// The date of the latest synchronization. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by
-	// the ISO 8601 standard.
+// the ISO 8601 standard.
 	SyncDate *time.Time
 }
 
@@ -6039,11 +6039,11 @@ type UserContractProperties struct {
 	Note *string
 
 	// Date of user registration. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
-	// standard.
+// standard.
 	RegistrationDate *time.Time
 
 	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal
-	// or call any APIs of subscribed products. Default state is Active.
+// or call any APIs of subscribed products. Default state is Active.
 	State *UserState
 
 	// READ-ONLY; Collection of groups user is part of.
@@ -6077,7 +6077,7 @@ type UserCreateParameterProperties struct {
 	Password *string
 
 	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal
-	// or call any APIs of subscribed products. Default state is Active.
+// or call any APIs of subscribed products. Default state is Active.
 	State *UserState
 }
 
@@ -6096,7 +6096,7 @@ type UserEntityBaseParameters struct {
 	Note *string
 
 	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal
-	// or call any APIs of subscribed products. Default state is Active.
+// or call any APIs of subscribed products. Default state is Active.
 	State *UserState
 }
 
@@ -6132,7 +6132,7 @@ type UserIdentityProperties struct {
 // UserTokenParameterProperties - Parameters supplied to the Get User Token operation.
 type UserTokenParameterProperties struct {
 	// REQUIRED; The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date conforms to the following
-	// format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+// format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	Expiry *time.Time
 
 	// REQUIRED; The Key to be used to generate token for user.
@@ -6178,7 +6178,7 @@ type UserUpdateParametersProperties struct {
 	Password *string
 
 	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal
-	// or call any APIs of subscribed products. Default state is Active.
+// or call any APIs of subscribed products. Default state is Active.
 	State *UserState
 }
 
@@ -6244,3 +6244,4 @@ type X509CertificateName struct {
 	// Common Name of the Certificate.
 	Name *string
 }
+

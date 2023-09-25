@@ -24,7 +24,7 @@ import (
 // PortalRevisionClient contains the methods for the PortalRevision group.
 // Don't use this type directly, use NewPortalRevisionClient() instead.
 type PortalRevisionClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewPortalRevisionClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &PortalRevisionClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -119,8 +119,8 @@ func (client *PortalRevisionClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -265,7 +265,7 @@ func (client *PortalRevisionClient) getEntityTagHandleResponse(resp *http.Respon
 //   - serviceName - The name of the API Management service.
 //   - options - PortalRevisionClientListByServiceOptions contains the optional parameters for the PortalRevisionClient.NewListByServicePager
 //     method.
-func (client *PortalRevisionClient) NewListByServicePager(resourceGroupName string, serviceName string, options *PortalRevisionClientListByServiceOptions) *runtime.Pager[PortalRevisionClientListByServiceResponse] {
+func (client *PortalRevisionClient) NewListByServicePager(resourceGroupName string, serviceName string, options *PortalRevisionClientListByServiceOptions) (*runtime.Pager[PortalRevisionClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PortalRevisionClientListByServiceResponse]{
 		More: func(page PortalRevisionClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -413,7 +413,8 @@ func (client *PortalRevisionClient) updateCreateRequest(ctx context.Context, res
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

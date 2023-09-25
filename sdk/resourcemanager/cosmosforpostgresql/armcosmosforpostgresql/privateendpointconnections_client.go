@@ -23,7 +23,7 @@ import (
 // PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
 type PrivateEndpointConnectionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 	}
 	client := &PrivateEndpointConnectionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -261,7 +261,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 //   - clusterName - The name of the cluster.
 //   - options - PrivateEndpointConnectionsClientListByClusterOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByClusterPager
 //     method.
-func (client *PrivateEndpointConnectionsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *PrivateEndpointConnectionsClientListByClusterOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByClusterResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *PrivateEndpointConnectionsClientListByClusterOptions) (*runtime.Pager[PrivateEndpointConnectionsClientListByClusterResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionsClientListByClusterResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByClusterResponse) bool {
 			return false
@@ -314,3 +314,4 @@ func (client *PrivateEndpointConnectionsClient) listByClusterHandleResponse(resp
 	}
 	return result, nil
 }
+

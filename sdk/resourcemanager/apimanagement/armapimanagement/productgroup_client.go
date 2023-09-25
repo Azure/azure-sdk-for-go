@@ -24,7 +24,7 @@ import (
 // ProductGroupClient contains the methods for the ProductGroup group.
 // Don't use this type directly, use NewProductGroupClient() instead.
 type ProductGroupClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewProductGroupClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &ProductGroupClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -243,7 +243,7 @@ func (client *ProductGroupClient) deleteCreateRequest(ctx context.Context, resou
 //   - productID - Product identifier. Must be unique in the current API Management service instance.
 //   - options - ProductGroupClientListByProductOptions contains the optional parameters for the ProductGroupClient.NewListByProductPager
 //     method.
-func (client *ProductGroupClient) NewListByProductPager(resourceGroupName string, serviceName string, productID string, options *ProductGroupClientListByProductOptions) *runtime.Pager[ProductGroupClientListByProductResponse] {
+func (client *ProductGroupClient) NewListByProductPager(resourceGroupName string, serviceName string, productID string, options *ProductGroupClientListByProductOptions) (*runtime.Pager[ProductGroupClientListByProductResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProductGroupClientListByProductResponse]{
 		More: func(page ProductGroupClientListByProductResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -318,3 +318,4 @@ func (client *ProductGroupClient) listByProductHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

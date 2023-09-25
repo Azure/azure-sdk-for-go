@@ -24,7 +24,7 @@ import (
 // DocumentationClient contains the methods for the Documentation group.
 // Don't use this type directly, use NewDocumentationClient() instead.
 type DocumentationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewDocumentationClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &DocumentationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,8 +103,8 @@ func (client *DocumentationClient) createOrUpdateCreateRequest(ctx context.Conte
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -319,7 +319,7 @@ func (client *DocumentationClient) getEntityTagHandleResponse(resp *http.Respons
 //   - serviceName - The name of the API Management service.
 //   - options - DocumentationClientListByServiceOptions contains the optional parameters for the DocumentationClient.NewListByServicePager
 //     method.
-func (client *DocumentationClient) NewListByServicePager(resourceGroupName string, serviceName string, options *DocumentationClientListByServiceOptions) *runtime.Pager[DocumentationClientListByServiceResponse] {
+func (client *DocumentationClient) NewListByServicePager(resourceGroupName string, serviceName string, options *DocumentationClientListByServiceOptions) (*runtime.Pager[DocumentationClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DocumentationClientListByServiceResponse]{
 		More: func(page DocumentationClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -449,8 +449,8 @@ func (client *DocumentationClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -465,3 +465,4 @@ func (client *DocumentationClient) updateHandleResponse(resp *http.Response) (Do
 	}
 	return result, nil
 }
+

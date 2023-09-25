@@ -23,7 +23,7 @@ import (
 // GalleryImageVersionsClient contains the methods for the GalleryImageVersions group.
 // Don't use this type directly, use NewGalleryImageVersionsClient() instead.
 type GalleryImageVersionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGalleryImageVersionsClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &GalleryImageVersionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -123,8 +123,8 @@ func (client *GalleryImageVersionsClient) createOrUpdateCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, galleryImageVersion); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -288,7 +288,7 @@ func (client *GalleryImageVersionsClient) getHandleResponse(resp *http.Response)
 //   - galleryImageName - The name of the Shared Image Gallery Image Definition from which the Image Versions are to be listed.
 //   - options - GalleryImageVersionsClientListByGalleryImageOptions contains the optional parameters for the GalleryImageVersionsClient.NewListByGalleryImagePager
 //     method.
-func (client *GalleryImageVersionsClient) NewListByGalleryImagePager(resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImageVersionsClientListByGalleryImageOptions) *runtime.Pager[GalleryImageVersionsClientListByGalleryImageResponse] {
+func (client *GalleryImageVersionsClient) NewListByGalleryImagePager(resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImageVersionsClientListByGalleryImageOptions) (*runtime.Pager[GalleryImageVersionsClientListByGalleryImageResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GalleryImageVersionsClientListByGalleryImageResponse]{
 		More: func(page GalleryImageVersionsClientListByGalleryImageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -434,7 +434,8 @@ func (client *GalleryImageVersionsClient) updateCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, galleryImageVersion); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

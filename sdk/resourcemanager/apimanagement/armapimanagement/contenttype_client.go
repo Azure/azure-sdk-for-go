@@ -23,7 +23,7 @@ import (
 // ContentTypeClient contains the methods for the ContentType group.
 // Don't use this type directly, use NewContentTypeClient() instead.
 type ContentTypeClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewContentTypeClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &ContentTypeClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -104,8 +104,8 @@ func (client *ContentTypeClient) createOrUpdateCreateRequest(ctx context.Context
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -258,7 +258,7 @@ func (client *ContentTypeClient) getHandleResponse(resp *http.Response) (Content
 //   - serviceName - The name of the API Management service.
 //   - options - ContentTypeClientListByServiceOptions contains the optional parameters for the ContentTypeClient.NewListByServicePager
 //     method.
-func (client *ContentTypeClient) NewListByServicePager(resourceGroupName string, serviceName string, options *ContentTypeClientListByServiceOptions) *runtime.Pager[ContentTypeClientListByServiceResponse] {
+func (client *ContentTypeClient) NewListByServicePager(resourceGroupName string, serviceName string, options *ContentTypeClientListByServiceOptions) (*runtime.Pager[ContentTypeClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ContentTypeClientListByServiceResponse]{
 		More: func(page ContentTypeClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -320,3 +320,4 @@ func (client *ContentTypeClient) listByServiceHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

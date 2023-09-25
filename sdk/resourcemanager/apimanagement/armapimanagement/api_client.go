@@ -24,7 +24,7 @@ import (
 // APIClient contains the methods for the API group.
 // Don't use this type directly, use NewAPIClient() instead.
 type APIClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAPIClient(subscriptionID string, credential azcore.TokenCredential, opti
 	}
 	client := &APIClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,8 +121,8 @@ func (client *APIClient) createOrUpdateCreateRequest(ctx context.Context, resour
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -329,7 +329,7 @@ func (client *APIClient) getEntityTagHandleResponse(resp *http.Response) (APICli
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - APIClientListByServiceOptions contains the optional parameters for the APIClient.NewListByServicePager method.
-func (client *APIClient) NewListByServicePager(resourceGroupName string, serviceName string, options *APIClientListByServiceOptions) *runtime.Pager[APIClientListByServiceResponse] {
+func (client *APIClient) NewListByServicePager(resourceGroupName string, serviceName string, options *APIClientListByServiceOptions) (*runtime.Pager[APIClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APIClientListByServiceResponse]{
 		More: func(page APIClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -413,7 +413,7 @@ func (client *APIClient) listByServiceHandleResponse(resp *http.Response) (APICl
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - APIClientListByTagsOptions contains the optional parameters for the APIClient.NewListByTagsPager method.
-func (client *APIClient) NewListByTagsPager(resourceGroupName string, serviceName string, options *APIClientListByTagsOptions) *runtime.Pager[APIClientListByTagsResponse] {
+func (client *APIClient) NewListByTagsPager(resourceGroupName string, serviceName string, options *APIClientListByTagsOptions) (*runtime.Pager[APIClientListByTagsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APIClientListByTagsResponse]{
 		More: func(page APIClientListByTagsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -547,8 +547,8 @@ func (client *APIClient) updateCreateRequest(ctx context.Context, resourceGroupN
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -563,3 +563,4 @@ func (client *APIClient) updateHandleResponse(resp *http.Response) (APIClientUpd
 	}
 	return result, nil
 }
+

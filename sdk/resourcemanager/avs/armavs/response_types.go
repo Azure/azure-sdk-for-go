@@ -581,3 +581,4 @@ type WorkloadNetworksClientUpdateVMGroupResponse struct {
 	// NSX VM Group
 	WorkloadNetworkVMGroup
 }
+

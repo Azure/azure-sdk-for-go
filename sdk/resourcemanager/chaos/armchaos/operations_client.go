@@ -32,7 +32,7 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 		return nil, err
 	}
 	client := &OperationsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -41,7 +41,7 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 //
 // Generated from API version 2023-04-15-preview
 //   - options - OperationsClientListAllOptions contains the optional parameters for the OperationsClient.NewListAllPager method.
-func (client *OperationsClient) NewListAllPager(options *OperationsClientListAllOptions) *runtime.Pager[OperationsClientListAllResponse] {
+func (client *OperationsClient) NewListAllPager(options *OperationsClientListAllOptions) (*runtime.Pager[OperationsClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListAllResponse]{
 		More: func(page OperationsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -91,3 +91,4 @@ func (client *OperationsClient) listAllHandleResponse(resp *http.Response) (Oper
 	}
 	return result, nil
 }
+

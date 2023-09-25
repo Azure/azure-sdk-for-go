@@ -23,7 +23,7 @@ import (
 // VirtualMachinesClient contains the methods for the VirtualMachines group.
 // Don't use this type directly, use NewVirtualMachinesClient() instead.
 type VirtualMachinesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &VirtualMachinesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,7 +121,7 @@ func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (Vir
 //   - clusterName - Name of the cluster in the private cloud
 //   - options - VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.NewListPager
 //     method.
-func (client *VirtualMachinesClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *VirtualMachinesClientListOptions) *runtime.Pager[VirtualMachinesClientListResponse] {
+func (client *VirtualMachinesClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *VirtualMachinesClientListOptions) (*runtime.Pager[VirtualMachinesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualMachinesClientListResponse]{
 		More: func(page VirtualMachinesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -265,7 +265,8 @@ func (client *VirtualMachinesClient) restrictMovementCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, restrictMovement); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

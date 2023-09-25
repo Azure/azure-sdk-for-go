@@ -23,7 +23,7 @@ import (
 )
 
 // WebhooksServer is a fake server for instances of the armcontainerregistry.WebhooksClient type.
-type WebhooksServer struct {
+type WebhooksServer struct{
 	// BeginCreate is the fake for method WebhooksClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters armcontainerregistry.WebhookCreateParameters, options *armcontainerregistry.WebhooksClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse], errResp azfake.ErrorResponder)
@@ -55,6 +55,7 @@ type WebhooksServer struct {
 	// BeginUpdate is the fake for method WebhooksClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters armcontainerregistry.WebhookUpdateParameters, options *armcontainerregistry.WebhooksClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewWebhooksServerTransport creates a new instance of WebhooksServerTransport with the provided implementation.
@@ -62,24 +63,24 @@ type WebhooksServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWebhooksServerTransport(srv *WebhooksServer) *WebhooksServerTransport {
 	return &WebhooksServerTransport{
-		srv:                srv,
-		beginCreate:        newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]](),
-		beginDelete:        newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]](),
-		newListPager:       newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]](),
+		srv: srv,
+		beginCreate: newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]](),
 		newListEventsPager: newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]](),
-		beginUpdate:        newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]](),
 	}
 }
 
 // WebhooksServerTransport connects instances of armcontainerregistry.WebhooksClient to instances of WebhooksServer.
 // Don't use this type directly, use NewWebhooksServerTransport instead.
 type WebhooksServerTransport struct {
-	srv                *WebhooksServer
-	beginCreate        *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]]
-	beginDelete        *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]]
-	newListPager       *tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]]
+	srv *WebhooksServer
+	beginCreate *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]]
 	newListEventsPager *tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]]
-	beginUpdate        *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for WebhooksServerTransport.
@@ -127,32 +128,32 @@ func (w *WebhooksServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 	}
 	beginCreate := w.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks/(?P<webhookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.WebhookCreateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		webhookNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("webhookName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, webhookNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks/(?P<webhookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.WebhookCreateParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	webhookNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("webhookName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, webhookNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreate = &respr
 		w.beginCreate.add(req, beginCreate)
 	}
@@ -179,28 +180,28 @@ func (w *WebhooksServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	}
 	beginDelete := w.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks/(?P<webhookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		webhookNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("webhookName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, webhookNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks/(?P<webhookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	webhookNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("webhookName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, webhookNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		w.beginDelete.add(req, beginDelete)
 	}
@@ -252,8 +253,7 @@ func (w *WebhooksServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Webhook, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -289,8 +289,7 @@ func (w *WebhooksServerTransport) dispatchGetCallbackConfig(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CallbackConfig, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -301,21 +300,21 @@ func (w *WebhooksServerTransport) dispatchNewListPager(req *http.Request) (*http
 	}
 	newListPager := w.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+resp := w.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
 		newListPager = &resp
 		w.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.WebhooksClientListResponse, createLink func() string) {
@@ -342,25 +341,25 @@ func (w *WebhooksServerTransport) dispatchNewListEventsPager(req *http.Request) 
 	}
 	newListEventsPager := w.newListEventsPager.get(req)
 	if newListEventsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks/(?P<webhookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listEvents`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		webhookNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("webhookName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewListEventsPager(resourceGroupNameUnescaped, registryNameUnescaped, webhookNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks/(?P<webhookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listEvents`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	webhookNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("webhookName")])
+	if err != nil {
+		return nil, err
+	}
+resp := w.srv.NewListEventsPager(resourceGroupNameUnescaped, registryNameUnescaped, webhookNameUnescaped, nil)
 		newListEventsPager = &resp
 		w.newListEventsPager.add(req, newListEventsPager)
 		server.PagerResponderInjectNextLinks(newListEventsPager, req, func(page *armcontainerregistry.WebhooksClientListEventsResponse, createLink func() string) {
@@ -412,8 +411,7 @@ func (w *WebhooksServerTransport) dispatchPing(req *http.Request) (*http.Respons
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EventInfo, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -424,32 +422,32 @@ func (w *WebhooksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 	}
 	beginUpdate := w.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks/(?P<webhookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.WebhookUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		webhookNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("webhookName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := w.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, webhookNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/webhooks/(?P<webhookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.WebhookUpdateParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	webhookNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("webhookName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, webhookNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		w.beginUpdate.add(req, beginUpdate)
 	}
@@ -469,3 +467,4 @@ func (w *WebhooksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 
 	return resp, nil
 }
+

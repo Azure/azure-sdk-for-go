@@ -24,7 +24,7 @@ import (
 // APISchemaClient contains the methods for the APISchema group.
 // Don't use this type directly, use NewAPISchemaClient() instead.
 type APISchemaClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAPISchemaClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &APISchemaClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -127,8 +127,8 @@ func (client *APISchemaClient) createOrUpdateCreateRequest(ctx context.Context, 
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -352,7 +352,7 @@ func (client *APISchemaClient) getEntityTagHandleResponse(resp *http.Response) (
 //   - apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
 //     ;rev=n as a suffix where n is the revision number.
 //   - options - APISchemaClientListByAPIOptions contains the optional parameters for the APISchemaClient.NewListByAPIPager method.
-func (client *APISchemaClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *APISchemaClientListByAPIOptions) *runtime.Pager[APISchemaClientListByAPIResponse] {
+func (client *APISchemaClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *APISchemaClientListByAPIOptions) (*runtime.Pager[APISchemaClientListByAPIResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APISchemaClientListByAPIResponse]{
 		More: func(page APISchemaClientListByAPIResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -427,3 +427,4 @@ func (client *APISchemaClient) listByAPIHandleResponse(resp *http.Response) (API
 	}
 	return result, nil
 }
+

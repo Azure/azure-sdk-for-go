@@ -11,7 +11,7 @@ package armcontainerregistry
 // AgentPoolsClientCreateResponse contains the response from method AgentPoolsClient.BeginCreate.
 type AgentPoolsClientCreateResponse struct {
 	// The agentpool that has the ARM resource and properties.
-	// The agentpool will have all information to create an agent pool.
+// The agentpool will have all information to create an agent pool.
 	AgentPool
 }
 
@@ -29,7 +29,7 @@ type AgentPoolsClientGetQueueStatusResponse struct {
 // AgentPoolsClientGetResponse contains the response from method AgentPoolsClient.Get.
 type AgentPoolsClientGetResponse struct {
 	// The agentpool that has the ARM resource and properties.
-	// The agentpool will have all information to create an agent pool.
+// The agentpool will have all information to create an agent pool.
 	AgentPool
 }
 
@@ -42,7 +42,7 @@ type AgentPoolsClientListResponse struct {
 // AgentPoolsClientUpdateResponse contains the response from method AgentPoolsClient.BeginUpdate.
 type AgentPoolsClientUpdateResponse struct {
 	// The agentpool that has the ARM resource and properties.
-	// The agentpool will have all information to create an agent pool.
+// The agentpool will have all information to create an agent pool.
 	AgentPool
 }
 
@@ -472,7 +472,7 @@ type ScopeMapsClientUpdateResponse struct {
 // TaskRunsClientCreateResponse contains the response from method TaskRunsClient.BeginCreate.
 type TaskRunsClientCreateResponse struct {
 	// The task run that has the ARM resource and properties.
-	// The task run will have the information of request and result of a run.
+// The task run will have the information of request and result of a run.
 	TaskRun
 }
 
@@ -484,14 +484,14 @@ type TaskRunsClientDeleteResponse struct {
 // TaskRunsClientGetDetailsResponse contains the response from method TaskRunsClient.GetDetails.
 type TaskRunsClientGetDetailsResponse struct {
 	// The task run that has the ARM resource and properties.
-	// The task run will have the information of request and result of a run.
+// The task run will have the information of request and result of a run.
 	TaskRun
 }
 
 // TaskRunsClientGetResponse contains the response from method TaskRunsClient.Get.
 type TaskRunsClientGetResponse struct {
 	// The task run that has the ARM resource and properties.
-	// The task run will have the information of request and result of a run.
+// The task run will have the information of request and result of a run.
 	TaskRun
 }
 
@@ -504,14 +504,14 @@ type TaskRunsClientListResponse struct {
 // TaskRunsClientUpdateResponse contains the response from method TaskRunsClient.BeginUpdate.
 type TaskRunsClientUpdateResponse struct {
 	// The task run that has the ARM resource and properties.
-	// The task run will have the information of request and result of a run.
+// The task run will have the information of request and result of a run.
 	TaskRun
 }
 
 // TasksClientCreateResponse contains the response from method TasksClient.BeginCreate.
 type TasksClientCreateResponse struct {
 	// The task that has the ARM resource and task properties.
-	// The task will have all information to schedule a run against it.
+// The task will have all information to schedule a run against it.
 	Task
 }
 
@@ -523,14 +523,14 @@ type TasksClientDeleteResponse struct {
 // TasksClientGetDetailsResponse contains the response from method TasksClient.GetDetails.
 type TasksClientGetDetailsResponse struct {
 	// The task that has the ARM resource and task properties.
-	// The task will have all information to schedule a run against it.
+// The task will have all information to schedule a run against it.
 	Task
 }
 
 // TasksClientGetResponse contains the response from method TasksClient.Get.
 type TasksClientGetResponse struct {
 	// The task that has the ARM resource and task properties.
-	// The task will have all information to schedule a run against it.
+// The task will have all information to schedule a run against it.
 	Task
 }
 
@@ -543,7 +543,7 @@ type TasksClientListResponse struct {
 // TasksClientUpdateResponse contains the response from method TasksClient.BeginUpdate.
 type TasksClientUpdateResponse struct {
 	// The task that has the ARM resource and task properties.
-	// The task will have all information to schedule a run against it.
+// The task will have all information to schedule a run against it.
 	Task
 }
 
@@ -622,3 +622,4 @@ type WebhooksClientUpdateResponse struct {
 	// An object that represents a webhook for a container registry.
 	Webhook
 }
+

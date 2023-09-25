@@ -23,7 +23,7 @@ import (
 // FleetMembersClient contains the methods for the FleetMembers group.
 // Don't use this type directly, use NewFleetMembersClient() instead.
 type FleetMembersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewFleetMembersClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &FleetMembersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -123,8 +123,8 @@ func (client *FleetMembersClient) createCreateRequest(ctx context.Context, resou
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -278,7 +278,7 @@ func (client *FleetMembersClient) getHandleResponse(resp *http.Response) (FleetM
 //   - fleetName - The name of the Fleet resource.
 //   - options - FleetMembersClientListByFleetOptions contains the optional parameters for the FleetMembersClient.NewListByFleetPager
 //     method.
-func (client *FleetMembersClient) NewListByFleetPager(resourceGroupName string, fleetName string, options *FleetMembersClientListByFleetOptions) *runtime.Pager[FleetMembersClientListByFleetResponse] {
+func (client *FleetMembersClient) NewListByFleetPager(resourceGroupName string, fleetName string, options *FleetMembersClientListByFleetOptions) (*runtime.Pager[FleetMembersClientListByFleetResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[FleetMembersClientListByFleetResponse]{
 		More: func(page FleetMembersClientListByFleetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -418,7 +418,8 @@ func (client *FleetMembersClient) updateCreateRequest(ctx context.Context, resou
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

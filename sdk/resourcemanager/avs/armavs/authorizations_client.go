@@ -23,7 +23,7 @@ import (
 // AuthorizationsClient contains the methods for the Authorizations group.
 // Don't use this type directly, use NewAuthorizationsClient() instead.
 type AuthorizationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAuthorizationsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &AuthorizationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *AuthorizationsClient) createOrUpdateCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, authorization); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -264,7 +264,7 @@ func (client *AuthorizationsClient) getHandleResponse(resp *http.Response) (Auth
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - AuthorizationsClientListOptions contains the optional parameters for the AuthorizationsClient.NewListPager method.
-func (client *AuthorizationsClient) NewListPager(resourceGroupName string, privateCloudName string, options *AuthorizationsClientListOptions) *runtime.Pager[AuthorizationsClientListResponse] {
+func (client *AuthorizationsClient) NewListPager(resourceGroupName string, privateCloudName string, options *AuthorizationsClientListOptions) (*runtime.Pager[AuthorizationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AuthorizationsClientListResponse]{
 		More: func(page AuthorizationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -326,3 +326,4 @@ func (client *AuthorizationsClient) listHandleResponse(resp *http.Response) (Aut
 	}
 	return result, nil
 }
+

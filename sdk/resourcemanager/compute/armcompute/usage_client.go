@@ -23,7 +23,7 @@ import (
 // UsageClient contains the methods for the Usage group.
 // Don't use this type directly, use NewUsageClient() instead.
 type UsageClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, op
 	}
 	client := &UsageClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, op
 // Generated from API version 2023-07-01
 //   - location - The location for which resource usage is queried.
 //   - options - UsageClientListOptions contains the optional parameters for the UsageClient.NewListPager method.
-func (client *UsageClient) NewListPager(location string, options *UsageClientListOptions) *runtime.Pager[UsageClientListResponse] {
+func (client *UsageClient) NewListPager(location string, options *UsageClientListOptions) (*runtime.Pager[UsageClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[UsageClientListResponse]{
 		More: func(page UsageClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -108,3 +108,4 @@ func (client *UsageClient) listHandleResponse(resp *http.Response) (UsageClientL
 	}
 	return result, nil
 }
+

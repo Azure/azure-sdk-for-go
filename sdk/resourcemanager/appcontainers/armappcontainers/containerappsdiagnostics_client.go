@@ -23,7 +23,7 @@ import (
 // ContainerAppsDiagnosticsClient contains the methods for the ContainerAppsDiagnostics group.
 // Don't use this type directly, use NewContainerAppsDiagnosticsClient() instead.
 type ContainerAppsDiagnosticsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewContainerAppsDiagnosticsClient(subscriptionID string, credential azcore.
 	}
 	client := &ContainerAppsDiagnosticsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -243,7 +243,7 @@ func (client *ContainerAppsDiagnosticsClient) getRootHandleResponse(resp *http.R
 //   - containerAppName - Name of the Container App for which detector info is needed.
 //   - options - ContainerAppsDiagnosticsClientListDetectorsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.NewListDetectorsPager
 //     method.
-func (client *ContainerAppsDiagnosticsClient) NewListDetectorsPager(resourceGroupName string, containerAppName string, options *ContainerAppsDiagnosticsClientListDetectorsOptions) *runtime.Pager[ContainerAppsDiagnosticsClientListDetectorsResponse] {
+func (client *ContainerAppsDiagnosticsClient) NewListDetectorsPager(resourceGroupName string, containerAppName string, options *ContainerAppsDiagnosticsClientListDetectorsOptions) (*runtime.Pager[ContainerAppsDiagnosticsClientListDetectorsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ContainerAppsDiagnosticsClientListDetectorsResponse]{
 		More: func(page ContainerAppsDiagnosticsClientListDetectorsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -313,7 +313,7 @@ func (client *ContainerAppsDiagnosticsClient) listDetectorsHandleResponse(resp *
 //   - containerAppName - Name of the Container App for which Revisions are needed.
 //   - options - ContainerAppsDiagnosticsClientListRevisionsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.NewListRevisionsPager
 //     method.
-func (client *ContainerAppsDiagnosticsClient) NewListRevisionsPager(resourceGroupName string, containerAppName string, options *ContainerAppsDiagnosticsClientListRevisionsOptions) *runtime.Pager[ContainerAppsDiagnosticsClientListRevisionsResponse] {
+func (client *ContainerAppsDiagnosticsClient) NewListRevisionsPager(resourceGroupName string, containerAppName string, options *ContainerAppsDiagnosticsClientListRevisionsOptions) (*runtime.Pager[ContainerAppsDiagnosticsClientListRevisionsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ContainerAppsDiagnosticsClientListRevisionsResponse]{
 		More: func(page ContainerAppsDiagnosticsClientListRevisionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -378,3 +378,4 @@ func (client *ContainerAppsDiagnosticsClient) listRevisionsHandleResponse(resp *
 	}
 	return result, nil
 }
+

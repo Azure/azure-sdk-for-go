@@ -23,7 +23,7 @@ import (
 // PrivateCloudsClient contains the methods for the PrivateClouds group.
 // Don't use this type directly, use NewPrivateCloudsClient() instead.
 type PrivateCloudsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPrivateCloudsClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &PrivateCloudsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,8 +110,8 @@ func (client *PrivateCloudsClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateCloud); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -248,7 +248,7 @@ func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response) (Priva
 // Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PrivateCloudsClientListOptions contains the optional parameters for the PrivateCloudsClient.NewListPager method.
-func (client *PrivateCloudsClient) NewListPager(resourceGroupName string, options *PrivateCloudsClientListOptions) *runtime.Pager[PrivateCloudsClientListResponse] {
+func (client *PrivateCloudsClient) NewListPager(resourceGroupName string, options *PrivateCloudsClientListOptions) (*runtime.Pager[PrivateCloudsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateCloudsClientListResponse]{
 		More: func(page PrivateCloudsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -373,7 +373,7 @@ func (client *PrivateCloudsClient) listAdminCredentialsHandleResponse(resp *http
 // Generated from API version 2023-03-01
 //   - options - PrivateCloudsClientListInSubscriptionOptions contains the optional parameters for the PrivateCloudsClient.NewListInSubscriptionPager
 //     method.
-func (client *PrivateCloudsClient) NewListInSubscriptionPager(options *PrivateCloudsClientListInSubscriptionOptions) *runtime.Pager[PrivateCloudsClientListInSubscriptionResponse] {
+func (client *PrivateCloudsClient) NewListInSubscriptionPager(options *PrivateCloudsClientListInSubscriptionOptions) (*runtime.Pager[PrivateCloudsClientListInSubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateCloudsClientListInSubscriptionResponse]{
 		More: func(page PrivateCloudsClientListInSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -631,7 +631,8 @@ func (client *PrivateCloudsClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateCloudUpdate); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

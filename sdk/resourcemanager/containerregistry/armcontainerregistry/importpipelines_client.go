@@ -23,7 +23,7 @@ import (
 // ImportPipelinesClient contains the methods for the ImportPipelines group.
 // Don't use this type directly, use NewImportPipelinesClient() instead.
 type ImportPipelinesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewImportPipelinesClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &ImportPipelinesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ImportPipelinesClient) createCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, importPipelineCreateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -272,13 +272,13 @@ func (client *ImportPipelinesClient) getHandleResponse(resp *http.Response) (Imp
 //   - registryName - The name of the container registry.
 //   - options - ImportPipelinesClientListOptions contains the optional parameters for the ImportPipelinesClient.NewListPager
 //     method.
-func (client *ImportPipelinesClient) NewListPager(resourceGroupName string, registryName string, options *ImportPipelinesClientListOptions) *runtime.Pager[ImportPipelinesClientListResponse] {
+func (client *ImportPipelinesClient) NewListPager(resourceGroupName string, registryName string, options *ImportPipelinesClientListOptions) (*runtime.Pager[ImportPipelinesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ImportPipelinesClientListResponse]{
 		More: func(page ImportPipelinesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ImportPipelinesClientListResponse) (ImportPipelinesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImportPipelinesClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImportPipelinesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -333,3 +333,4 @@ func (client *ImportPipelinesClient) listHandleResponse(resp *http.Response) (Im
 	}
 	return result, nil
 }
+

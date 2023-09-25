@@ -23,7 +23,7 @@ import (
 // JobsExecutionsClient contains the methods for the JobsExecutions group.
 // Don't use this type directly, use NewJobsExecutionsClient() instead.
 type JobsExecutionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewJobsExecutionsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &JobsExecutionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewJobsExecutionsClient(subscriptionID string, credential azcore.TokenCrede
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - options - JobsExecutionsClientListOptions contains the optional parameters for the JobsExecutionsClient.NewListPager method.
-func (client *JobsExecutionsClient) NewListPager(resourceGroupName string, jobName string, options *JobsExecutionsClientListOptions) *runtime.Pager[JobsExecutionsClientListResponse] {
+func (client *JobsExecutionsClient) NewListPager(resourceGroupName string, jobName string, options *JobsExecutionsClientListOptions) (*runtime.Pager[JobsExecutionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[JobsExecutionsClientListResponse]{
 		More: func(page JobsExecutionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -114,3 +114,4 @@ func (client *JobsExecutionsClient) listHandleResponse(resp *http.Response) (Job
 	}
 	return result, nil
 }
+

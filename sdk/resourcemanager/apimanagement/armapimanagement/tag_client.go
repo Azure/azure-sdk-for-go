@@ -24,7 +24,7 @@ import (
 // TagClient contains the methods for the Tag group.
 // Don't use this type directly, use NewTagClient() instead.
 type TagClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewTagClient(subscriptionID string, credential azcore.TokenCredential, opti
 	}
 	client := &TagClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -322,8 +322,8 @@ func (client *TagClient) createOrUpdateCreateRequest(ctx context.Context, resour
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1170,7 +1170,7 @@ func (client *TagClient) getEntityStateByProductHandleResponse(resp *http.Respon
 //   - apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
 //     ;rev=n as a suffix where n is the revision number.
 //   - options - TagClientListByAPIOptions contains the optional parameters for the TagClient.NewListByAPIPager method.
-func (client *TagClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *TagClientListByAPIOptions) *runtime.Pager[TagClientListByAPIResponse] {
+func (client *TagClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *TagClientListByAPIOptions) (*runtime.Pager[TagClientListByAPIResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TagClientListByAPIResponse]{
 		More: func(page TagClientListByAPIResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1255,7 +1255,7 @@ func (client *TagClient) listByAPIHandleResponse(resp *http.Response) (TagClient
 //     ;rev=n as a suffix where n is the revision number.
 //   - operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
 //   - options - TagClientListByOperationOptions contains the optional parameters for the TagClient.NewListByOperationPager method.
-func (client *TagClient) NewListByOperationPager(resourceGroupName string, serviceName string, apiID string, operationID string, options *TagClientListByOperationOptions) *runtime.Pager[TagClientListByOperationResponse] {
+func (client *TagClient) NewListByOperationPager(resourceGroupName string, serviceName string, apiID string, operationID string, options *TagClientListByOperationOptions) (*runtime.Pager[TagClientListByOperationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TagClientListByOperationResponse]{
 		More: func(page TagClientListByOperationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1342,7 +1342,7 @@ func (client *TagClient) listByOperationHandleResponse(resp *http.Response) (Tag
 //   - serviceName - The name of the API Management service.
 //   - productID - Product identifier. Must be unique in the current API Management service instance.
 //   - options - TagClientListByProductOptions contains the optional parameters for the TagClient.NewListByProductPager method.
-func (client *TagClient) NewListByProductPager(resourceGroupName string, serviceName string, productID string, options *TagClientListByProductOptions) *runtime.Pager[TagClientListByProductResponse] {
+func (client *TagClient) NewListByProductPager(resourceGroupName string, serviceName string, productID string, options *TagClientListByProductOptions) (*runtime.Pager[TagClientListByProductResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TagClientListByProductResponse]{
 		More: func(page TagClientListByProductResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1424,7 +1424,7 @@ func (client *TagClient) listByProductHandleResponse(resp *http.Response) (TagCl
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - TagClientListByServiceOptions contains the optional parameters for the TagClient.NewListByServicePager method.
-func (client *TagClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TagClientListByServiceOptions) *runtime.Pager[TagClientListByServiceResponse] {
+func (client *TagClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TagClientListByServiceOptions) (*runtime.Pager[TagClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TagClientListByServiceResponse]{
 		More: func(page TagClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1557,8 +1557,8 @@ func (client *TagClient) updateCreateRequest(ctx context.Context, resourceGroupN
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1573,3 +1573,4 @@ func (client *TagClient) updateHandleResponse(resp *http.Response) (TagClientUpd
 	}
 	return result, nil
 }
+

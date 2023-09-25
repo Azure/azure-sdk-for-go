@@ -24,7 +24,7 @@ import (
 // APIVersionSetClient contains the methods for the APIVersionSet group.
 // Don't use this type directly, use NewAPIVersionSetClient() instead.
 type APIVersionSetClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAPIVersionSetClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &APIVersionSetClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,8 +103,8 @@ func (client *APIVersionSetClient) createOrUpdateCreateRequest(ctx context.Conte
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -319,7 +319,7 @@ func (client *APIVersionSetClient) getEntityTagHandleResponse(resp *http.Respons
 //   - serviceName - The name of the API Management service.
 //   - options - APIVersionSetClientListByServiceOptions contains the optional parameters for the APIVersionSetClient.NewListByServicePager
 //     method.
-func (client *APIVersionSetClient) NewListByServicePager(resourceGroupName string, serviceName string, options *APIVersionSetClientListByServiceOptions) *runtime.Pager[APIVersionSetClientListByServiceResponse] {
+func (client *APIVersionSetClient) NewListByServicePager(resourceGroupName string, serviceName string, options *APIVersionSetClientListByServiceOptions) (*runtime.Pager[APIVersionSetClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APIVersionSetClientListByServiceResponse]{
 		More: func(page APIVersionSetClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -449,8 +449,8 @@ func (client *APIVersionSetClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -465,3 +465,4 @@ func (client *APIVersionSetClient) updateHandleResponse(resp *http.Response) (AP
 	}
 	return result, nil
 }
+

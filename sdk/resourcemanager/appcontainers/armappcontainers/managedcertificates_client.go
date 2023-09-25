@@ -23,7 +23,7 @@ import (
 // ManagedCertificatesClient contains the methods for the ManagedCertificates group.
 // Don't use this type directly, use NewManagedCertificatesClient() instead.
 type ManagedCertificatesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewManagedCertificatesClient(subscriptionID string, credential azcore.Token
 	}
 	client := &ManagedCertificatesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,8 +117,8 @@ func (client *ManagedCertificatesClient) createOrUpdateCreateRequest(ctx context
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ManagedCertificateEnvelope != nil {
 		if err := runtime.MarshalAsJSON(req, *options.ManagedCertificateEnvelope); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -252,7 +252,7 @@ func (client *ManagedCertificatesClient) getHandleResponse(resp *http.Response) 
 //   - environmentName - Name of the Managed Environment.
 //   - options - ManagedCertificatesClientListOptions contains the optional parameters for the ManagedCertificatesClient.NewListPager
 //     method.
-func (client *ManagedCertificatesClient) NewListPager(resourceGroupName string, environmentName string, options *ManagedCertificatesClientListOptions) *runtime.Pager[ManagedCertificatesClientListResponse] {
+func (client *ManagedCertificatesClient) NewListPager(resourceGroupName string, environmentName string, options *ManagedCertificatesClientListOptions) (*runtime.Pager[ManagedCertificatesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedCertificatesClientListResponse]{
 		More: func(page ManagedCertificatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -371,8 +371,8 @@ func (client *ManagedCertificatesClient) updateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, managedCertificateEnvelope); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -384,3 +384,4 @@ func (client *ManagedCertificatesClient) updateHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

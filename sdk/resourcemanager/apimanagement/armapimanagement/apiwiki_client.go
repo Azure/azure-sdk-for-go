@@ -23,7 +23,7 @@ import (
 // APIWikiClient contains the methods for the APIWiki group.
 // Don't use this type directly, use NewAPIWikiClient() instead.
 type APIWikiClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewAPIWikiClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &APIWikiClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -101,8 +101,8 @@ func (client *APIWikiClient) createOrUpdateCreateRequest(ctx context.Context, re
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -367,8 +367,8 @@ func (client *APIWikiClient) updateCreateRequest(ctx context.Context, resourceGr
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -383,3 +383,4 @@ func (client *APIWikiClient) updateHandleResponse(resp *http.Response) (APIWikiC
 	}
 	return result, nil
 }
+

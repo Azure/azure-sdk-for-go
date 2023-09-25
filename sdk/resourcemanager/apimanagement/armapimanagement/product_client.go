@@ -24,7 +24,7 @@ import (
 // ProductClient contains the methods for the Product group.
 // Don't use this type directly, use NewProductClient() instead.
 type ProductClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewProductClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &ProductClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -102,8 +102,8 @@ func (client *ProductClient) createOrUpdateCreateRequest(ctx context.Context, re
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -320,7 +320,7 @@ func (client *ProductClient) getEntityTagHandleResponse(resp *http.Response) (Pr
 //   - serviceName - The name of the API Management service.
 //   - options - ProductClientListByServiceOptions contains the optional parameters for the ProductClient.NewListByServicePager
 //     method.
-func (client *ProductClient) NewListByServicePager(resourceGroupName string, serviceName string, options *ProductClientListByServiceOptions) *runtime.Pager[ProductClientListByServiceResponse] {
+func (client *ProductClient) NewListByServicePager(resourceGroupName string, serviceName string, options *ProductClientListByServiceOptions) (*runtime.Pager[ProductClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProductClientListByServiceResponse]{
 		More: func(page ProductClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -404,7 +404,7 @@ func (client *ProductClient) listByServiceHandleResponse(resp *http.Response) (P
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - ProductClientListByTagsOptions contains the optional parameters for the ProductClient.NewListByTagsPager method.
-func (client *ProductClient) NewListByTagsPager(resourceGroupName string, serviceName string, options *ProductClientListByTagsOptions) *runtime.Pager[ProductClientListByTagsResponse] {
+func (client *ProductClient) NewListByTagsPager(resourceGroupName string, serviceName string, options *ProductClientListByTagsOptions) (*runtime.Pager[ProductClientListByTagsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProductClientListByTagsResponse]{
 		More: func(page ProductClientListByTagsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -537,8 +537,8 @@ func (client *ProductClient) updateCreateRequest(ctx context.Context, resourceGr
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -553,3 +553,4 @@ func (client *ProductClient) updateHandleResponse(resp *http.Response) (ProductC
 	}
 	return result, nil
 }
+

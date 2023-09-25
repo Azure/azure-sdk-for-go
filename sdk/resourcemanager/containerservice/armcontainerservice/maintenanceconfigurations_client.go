@@ -23,7 +23,7 @@ import (
 // MaintenanceConfigurationsClient contains the methods for the MaintenanceConfigurations group.
 // Don't use this type directly, use NewMaintenanceConfigurationsClient() instead.
 type MaintenanceConfigurationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewMaintenanceConfigurationsClient(subscriptionID string, credential azcore
 	}
 	client := &MaintenanceConfigurationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -99,8 +99,8 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -242,7 +242,7 @@ func (client *MaintenanceConfigurationsClient) getHandleResponse(resp *http.Resp
 //   - resourceName - The name of the managed cluster resource.
 //   - options - MaintenanceConfigurationsClientListByManagedClusterOptions contains the optional parameters for the MaintenanceConfigurationsClient.NewListByManagedClusterPager
 //     method.
-func (client *MaintenanceConfigurationsClient) NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *MaintenanceConfigurationsClientListByManagedClusterOptions) *runtime.Pager[MaintenanceConfigurationsClientListByManagedClusterResponse] {
+func (client *MaintenanceConfigurationsClient) NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *MaintenanceConfigurationsClientListByManagedClusterOptions) (*runtime.Pager[MaintenanceConfigurationsClientListByManagedClusterResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MaintenanceConfigurationsClientListByManagedClusterResponse]{
 		More: func(page MaintenanceConfigurationsClientListByManagedClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -304,3 +304,4 @@ func (client *MaintenanceConfigurationsClient) listByManagedClusterHandleRespons
 	}
 	return result, nil
 }
+

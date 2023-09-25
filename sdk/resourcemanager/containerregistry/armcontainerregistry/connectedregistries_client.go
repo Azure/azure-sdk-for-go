@@ -23,7 +23,7 @@ import (
 // ConnectedRegistriesClient contains the methods for the ConnectedRegistries group.
 // Don't use this type directly, use NewConnectedRegistriesClient() instead.
 type ConnectedRegistriesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewConnectedRegistriesClient(subscriptionID string, credential azcore.Token
 	}
 	client := &ConnectedRegistriesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ConnectedRegistriesClient) createCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectedRegistryCreateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -348,13 +348,13 @@ func (client *ConnectedRegistriesClient) getHandleResponse(resp *http.Response) 
 //   - registryName - The name of the container registry.
 //   - options - ConnectedRegistriesClientListOptions contains the optional parameters for the ConnectedRegistriesClient.NewListPager
 //     method.
-func (client *ConnectedRegistriesClient) NewListPager(resourceGroupName string, registryName string, options *ConnectedRegistriesClientListOptions) *runtime.Pager[ConnectedRegistriesClientListResponse] {
+func (client *ConnectedRegistriesClient) NewListPager(resourceGroupName string, registryName string, options *ConnectedRegistriesClientListOptions) (*runtime.Pager[ConnectedRegistriesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ConnectedRegistriesClientListResponse]{
 		More: func(page ConnectedRegistriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ConnectedRegistriesClientListResponse) (ConnectedRegistriesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConnectedRegistriesClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConnectedRegistriesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -488,7 +488,8 @@ func (client *ConnectedRegistriesClient) updateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectedRegistryUpdateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

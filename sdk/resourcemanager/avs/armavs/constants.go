@@ -9,7 +9,7 @@
 package armavs
 
 const (
-	moduleName    = "armavs"
+	moduleName = "armavs"
 	moduleVersion = "v1.3.0"
 )
 
@@ -17,18 +17,18 @@ const (
 type AddonProvisioningState string
 
 const (
-	AddonProvisioningStateBuilding  AddonProvisioningState = "Building"
-	AddonProvisioningStateCanceled  AddonProvisioningState = "Canceled"
+	AddonProvisioningStateBuilding AddonProvisioningState = "Building"
+	AddonProvisioningStateCanceled AddonProvisioningState = "Canceled"
 	AddonProvisioningStateCancelled AddonProvisioningState = "Cancelled"
-	AddonProvisioningStateDeleting  AddonProvisioningState = "Deleting"
-	AddonProvisioningStateFailed    AddonProvisioningState = "Failed"
+	AddonProvisioningStateDeleting AddonProvisioningState = "Deleting"
+	AddonProvisioningStateFailed AddonProvisioningState = "Failed"
 	AddonProvisioningStateSucceeded AddonProvisioningState = "Succeeded"
-	AddonProvisioningStateUpdating  AddonProvisioningState = "Updating"
+	AddonProvisioningStateUpdating AddonProvisioningState = "Updating"
 )
 
 // PossibleAddonProvisioningStateValues returns the possible values for the AddonProvisioningState const type.
 func PossibleAddonProvisioningStateValues() []AddonProvisioningState {
-	return []AddonProvisioningState{
+	return []AddonProvisioningState{	
 		AddonProvisioningStateBuilding,
 		AddonProvisioningStateCanceled,
 		AddonProvisioningStateCancelled,
@@ -46,12 +46,12 @@ const (
 	AddonTypeArc AddonType = "Arc"
 	AddonTypeHCX AddonType = "HCX"
 	AddonTypeSRM AddonType = "SRM"
-	AddonTypeVR  AddonType = "VR"
+	AddonTypeVR AddonType = "VR"
 )
 
 // PossibleAddonTypeValues returns the possible values for the AddonType const type.
 func PossibleAddonTypeValues() []AddonType {
-	return []AddonType{
+	return []AddonType{	
 		AddonTypeArc,
 		AddonTypeHCX,
 		AddonTypeSRM,
@@ -63,13 +63,13 @@ func PossibleAddonTypeValues() []AddonType {
 type AffinityStrength string
 
 const (
-	AffinityStrengthMust   AffinityStrength = "Must"
+	AffinityStrengthMust AffinityStrength = "Must"
 	AffinityStrengthShould AffinityStrength = "Should"
 )
 
 // PossibleAffinityStrengthValues returns the possible values for the AffinityStrength const type.
 func PossibleAffinityStrengthValues() []AffinityStrength {
-	return []AffinityStrength{
+	return []AffinityStrength{	
 		AffinityStrengthMust,
 		AffinityStrengthShould,
 	}
@@ -79,13 +79,13 @@ func PossibleAffinityStrengthValues() []AffinityStrength {
 type AffinityType string
 
 const (
-	AffinityTypeAffinity     AffinityType = "Affinity"
+	AffinityTypeAffinity AffinityType = "Affinity"
 	AffinityTypeAntiAffinity AffinityType = "AntiAffinity"
 )
 
 // PossibleAffinityTypeValues returns the possible values for the AffinityType const type.
 func PossibleAffinityTypeValues() []AffinityType {
-	return []AffinityType{
+	return []AffinityType{	
 		AffinityTypeAffinity,
 		AffinityTypeAntiAffinity,
 	}
@@ -95,13 +95,13 @@ func PossibleAffinityTypeValues() []AffinityType {
 type AvailabilityStrategy string
 
 const (
-	AvailabilityStrategyDualZone   AvailabilityStrategy = "DualZone"
+	AvailabilityStrategyDualZone AvailabilityStrategy = "DualZone"
 	AvailabilityStrategySingleZone AvailabilityStrategy = "SingleZone"
 )
 
 // PossibleAvailabilityStrategyValues returns the possible values for the AvailabilityStrategy const type.
 func PossibleAvailabilityStrategyValues() []AvailabilityStrategy {
-	return []AvailabilityStrategy{
+	return []AvailabilityStrategy{	
 		AvailabilityStrategyDualZone,
 		AvailabilityStrategySingleZone,
 	}
@@ -111,13 +111,13 @@ func PossibleAvailabilityStrategyValues() []AvailabilityStrategy {
 type AzureHybridBenefitType string
 
 const (
-	AzureHybridBenefitTypeNone    AzureHybridBenefitType = "None"
+	AzureHybridBenefitTypeNone AzureHybridBenefitType = "None"
 	AzureHybridBenefitTypeSQLHost AzureHybridBenefitType = "SqlHost"
 )
 
 // PossibleAzureHybridBenefitTypeValues returns the possible values for the AzureHybridBenefitType const type.
 func PossibleAzureHybridBenefitTypeValues() []AzureHybridBenefitType {
-	return []AzureHybridBenefitType{
+	return []AzureHybridBenefitType{	
 		AzureHybridBenefitTypeNone,
 		AzureHybridBenefitTypeSQLHost,
 	}
@@ -127,16 +127,16 @@ func PossibleAzureHybridBenefitTypeValues() []AzureHybridBenefitType {
 type CloudLinkStatus string
 
 const (
-	CloudLinkStatusActive       CloudLinkStatus = "Active"
-	CloudLinkStatusBuilding     CloudLinkStatus = "Building"
-	CloudLinkStatusDeleting     CloudLinkStatus = "Deleting"
+	CloudLinkStatusActive CloudLinkStatus = "Active"
+	CloudLinkStatusBuilding CloudLinkStatus = "Building"
+	CloudLinkStatusDeleting CloudLinkStatus = "Deleting"
 	CloudLinkStatusDisconnected CloudLinkStatus = "Disconnected"
-	CloudLinkStatusFailed       CloudLinkStatus = "Failed"
+	CloudLinkStatusFailed CloudLinkStatus = "Failed"
 )
 
 // PossibleCloudLinkStatusValues returns the possible values for the CloudLinkStatus const type.
 func PossibleCloudLinkStatusValues() []CloudLinkStatus {
-	return []CloudLinkStatus{
+	return []CloudLinkStatus{	
 		CloudLinkStatusActive,
 		CloudLinkStatusBuilding,
 		CloudLinkStatusDeleting,
@@ -149,17 +149,17 @@ func PossibleCloudLinkStatusValues() []CloudLinkStatus {
 type ClusterProvisioningState string
 
 const (
-	ClusterProvisioningStateCanceled  ClusterProvisioningState = "Canceled"
+	ClusterProvisioningStateCanceled ClusterProvisioningState = "Canceled"
 	ClusterProvisioningStateCancelled ClusterProvisioningState = "Cancelled"
-	ClusterProvisioningStateDeleting  ClusterProvisioningState = "Deleting"
-	ClusterProvisioningStateFailed    ClusterProvisioningState = "Failed"
+	ClusterProvisioningStateDeleting ClusterProvisioningState = "Deleting"
+	ClusterProvisioningStateFailed ClusterProvisioningState = "Failed"
 	ClusterProvisioningStateSucceeded ClusterProvisioningState = "Succeeded"
-	ClusterProvisioningStateUpdating  ClusterProvisioningState = "Updating"
+	ClusterProvisioningStateUpdating ClusterProvisioningState = "Updating"
 )
 
 // PossibleClusterProvisioningStateValues returns the possible values for the ClusterProvisioningState const type.
 func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
-	return []ClusterProvisioningState{
+	return []ClusterProvisioningState{	
 		ClusterProvisioningStateCanceled,
 		ClusterProvisioningStateCancelled,
 		ClusterProvisioningStateDeleting,
@@ -173,16 +173,16 @@ func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 type DNSServiceLogLevelEnum string
 
 const (
-	DNSServiceLogLevelEnumDEBUG   DNSServiceLogLevelEnum = "DEBUG"
-	DNSServiceLogLevelEnumERROR   DNSServiceLogLevelEnum = "ERROR"
-	DNSServiceLogLevelEnumFATAL   DNSServiceLogLevelEnum = "FATAL"
-	DNSServiceLogLevelEnumINFO    DNSServiceLogLevelEnum = "INFO"
+	DNSServiceLogLevelEnumDEBUG DNSServiceLogLevelEnum = "DEBUG"
+	DNSServiceLogLevelEnumERROR DNSServiceLogLevelEnum = "ERROR"
+	DNSServiceLogLevelEnumFATAL DNSServiceLogLevelEnum = "FATAL"
+	DNSServiceLogLevelEnumINFO DNSServiceLogLevelEnum = "INFO"
 	DNSServiceLogLevelEnumWARNING DNSServiceLogLevelEnum = "WARNING"
 )
 
 // PossibleDNSServiceLogLevelEnumValues returns the possible values for the DNSServiceLogLevelEnum const type.
 func PossibleDNSServiceLogLevelEnumValues() []DNSServiceLogLevelEnum {
-	return []DNSServiceLogLevelEnum{
+	return []DNSServiceLogLevelEnum{	
 		DNSServiceLogLevelEnumDEBUG,
 		DNSServiceLogLevelEnumERROR,
 		DNSServiceLogLevelEnumFATAL,
@@ -201,7 +201,7 @@ const (
 
 // PossibleDNSServiceStatusEnumValues returns the possible values for the DNSServiceStatusEnum const type.
 func PossibleDNSServiceStatusEnumValues() []DNSServiceStatusEnum {
-	return []DNSServiceStatusEnum{
+	return []DNSServiceStatusEnum{	
 		DNSServiceStatusEnumFAILURE,
 		DNSServiceStatusEnumSUCCESS,
 	}
@@ -211,19 +211,19 @@ func PossibleDNSServiceStatusEnumValues() []DNSServiceStatusEnum {
 type DatastoreProvisioningState string
 
 const (
-	DatastoreProvisioningStateCanceled  DatastoreProvisioningState = "Canceled"
+	DatastoreProvisioningStateCanceled DatastoreProvisioningState = "Canceled"
 	DatastoreProvisioningStateCancelled DatastoreProvisioningState = "Cancelled"
-	DatastoreProvisioningStateCreating  DatastoreProvisioningState = "Creating"
-	DatastoreProvisioningStateDeleting  DatastoreProvisioningState = "Deleting"
-	DatastoreProvisioningStateFailed    DatastoreProvisioningState = "Failed"
-	DatastoreProvisioningStatePending   DatastoreProvisioningState = "Pending"
+	DatastoreProvisioningStateCreating DatastoreProvisioningState = "Creating"
+	DatastoreProvisioningStateDeleting DatastoreProvisioningState = "Deleting"
+	DatastoreProvisioningStateFailed DatastoreProvisioningState = "Failed"
+	DatastoreProvisioningStatePending DatastoreProvisioningState = "Pending"
 	DatastoreProvisioningStateSucceeded DatastoreProvisioningState = "Succeeded"
-	DatastoreProvisioningStateUpdating  DatastoreProvisioningState = "Updating"
+	DatastoreProvisioningStateUpdating DatastoreProvisioningState = "Updating"
 )
 
 // PossibleDatastoreProvisioningStateValues returns the possible values for the DatastoreProvisioningState const type.
 func PossibleDatastoreProvisioningStateValues() []DatastoreProvisioningState {
-	return []DatastoreProvisioningState{
+	return []DatastoreProvisioningState{	
 		DatastoreProvisioningStateCanceled,
 		DatastoreProvisioningStateCancelled,
 		DatastoreProvisioningStateCreating,
@@ -239,18 +239,18 @@ func PossibleDatastoreProvisioningStateValues() []DatastoreProvisioningState {
 type DatastoreStatus string
 
 const (
-	DatastoreStatusAccessible        DatastoreStatus = "Accessible"
-	DatastoreStatusAttached          DatastoreStatus = "Attached"
-	DatastoreStatusDeadOrError       DatastoreStatus = "DeadOrError"
-	DatastoreStatusDetached          DatastoreStatus = "Detached"
-	DatastoreStatusInaccessible      DatastoreStatus = "Inaccessible"
+	DatastoreStatusAccessible DatastoreStatus = "Accessible"
+	DatastoreStatusAttached DatastoreStatus = "Attached"
+	DatastoreStatusDeadOrError DatastoreStatus = "DeadOrError"
+	DatastoreStatusDetached DatastoreStatus = "Detached"
+	DatastoreStatusInaccessible DatastoreStatus = "Inaccessible"
 	DatastoreStatusLostCommunication DatastoreStatus = "LostCommunication"
-	DatastoreStatusUnknown           DatastoreStatus = "Unknown"
+	DatastoreStatusUnknown DatastoreStatus = "Unknown"
 )
 
 // PossibleDatastoreStatusValues returns the possible values for the DatastoreStatus const type.
 func PossibleDatastoreStatusValues() []DatastoreStatus {
-	return []DatastoreStatus{
+	return []DatastoreStatus{	
 		DatastoreStatusAccessible,
 		DatastoreStatusAttached,
 		DatastoreStatusDeadOrError,
@@ -265,13 +265,13 @@ func PossibleDatastoreStatusValues() []DatastoreStatus {
 type DhcpTypeEnum string
 
 const (
-	DhcpTypeEnumRELAY  DhcpTypeEnum = "RELAY"
+	DhcpTypeEnumRELAY DhcpTypeEnum = "RELAY"
 	DhcpTypeEnumSERVER DhcpTypeEnum = "SERVER"
 )
 
 // PossibleDhcpTypeEnumValues returns the possible values for the DhcpTypeEnum const type.
 func PossibleDhcpTypeEnumValues() []DhcpTypeEnum {
-	return []DhcpTypeEnum{
+	return []DhcpTypeEnum{	
 		DhcpTypeEnumRELAY,
 		DhcpTypeEnumSERVER,
 	}
@@ -282,12 +282,12 @@ type EncryptionKeyStatus string
 
 const (
 	EncryptionKeyStatusAccessDenied EncryptionKeyStatus = "AccessDenied"
-	EncryptionKeyStatusConnected    EncryptionKeyStatus = "Connected"
+	EncryptionKeyStatusConnected EncryptionKeyStatus = "Connected"
 )
 
 // PossibleEncryptionKeyStatusValues returns the possible values for the EncryptionKeyStatus const type.
 func PossibleEncryptionKeyStatusValues() []EncryptionKeyStatus {
-	return []EncryptionKeyStatus{
+	return []EncryptionKeyStatus{	
 		EncryptionKeyStatusAccessDenied,
 		EncryptionKeyStatusConnected,
 	}
@@ -298,12 +298,12 @@ type EncryptionState string
 
 const (
 	EncryptionStateDisabled EncryptionState = "Disabled"
-	EncryptionStateEnabled  EncryptionState = "Enabled"
+	EncryptionStateEnabled EncryptionState = "Enabled"
 )
 
 // PossibleEncryptionStateValues returns the possible values for the EncryptionState const type.
 func PossibleEncryptionStateValues() []EncryptionState {
-	return []EncryptionState{
+	return []EncryptionState{	
 		EncryptionStateDisabled,
 		EncryptionStateEnabled,
 	}
@@ -314,12 +314,12 @@ type EncryptionVersionType string
 
 const (
 	EncryptionVersionTypeAutoDetected EncryptionVersionType = "AutoDetected"
-	EncryptionVersionTypeFixed        EncryptionVersionType = "Fixed"
+	EncryptionVersionTypeFixed EncryptionVersionType = "Fixed"
 )
 
 // PossibleEncryptionVersionTypeValues returns the possible values for the EncryptionVersionType const type.
 func PossibleEncryptionVersionTypeValues() []EncryptionVersionType {
-	return []EncryptionVersionType{
+	return []EncryptionVersionType{	
 		EncryptionVersionTypeAutoDetected,
 		EncryptionVersionTypeFixed,
 	}
@@ -329,15 +329,15 @@ func PossibleEncryptionVersionTypeValues() []EncryptionVersionType {
 type ExpressRouteAuthorizationProvisioningState string
 
 const (
-	ExpressRouteAuthorizationProvisioningStateCanceled  ExpressRouteAuthorizationProvisioningState = "Canceled"
-	ExpressRouteAuthorizationProvisioningStateFailed    ExpressRouteAuthorizationProvisioningState = "Failed"
+	ExpressRouteAuthorizationProvisioningStateCanceled ExpressRouteAuthorizationProvisioningState = "Canceled"
+	ExpressRouteAuthorizationProvisioningStateFailed ExpressRouteAuthorizationProvisioningState = "Failed"
 	ExpressRouteAuthorizationProvisioningStateSucceeded ExpressRouteAuthorizationProvisioningState = "Succeeded"
-	ExpressRouteAuthorizationProvisioningStateUpdating  ExpressRouteAuthorizationProvisioningState = "Updating"
+	ExpressRouteAuthorizationProvisioningStateUpdating ExpressRouteAuthorizationProvisioningState = "Updating"
 )
 
 // PossibleExpressRouteAuthorizationProvisioningStateValues returns the possible values for the ExpressRouteAuthorizationProvisioningState const type.
 func PossibleExpressRouteAuthorizationProvisioningStateValues() []ExpressRouteAuthorizationProvisioningState {
-	return []ExpressRouteAuthorizationProvisioningState{
+	return []ExpressRouteAuthorizationProvisioningState{	
 		ExpressRouteAuthorizationProvisioningStateCanceled,
 		ExpressRouteAuthorizationProvisioningStateFailed,
 		ExpressRouteAuthorizationProvisioningStateSucceeded,
@@ -349,15 +349,15 @@ func PossibleExpressRouteAuthorizationProvisioningStateValues() []ExpressRouteAu
 type GlobalReachConnectionProvisioningState string
 
 const (
-	GlobalReachConnectionProvisioningStateCanceled  GlobalReachConnectionProvisioningState = "Canceled"
-	GlobalReachConnectionProvisioningStateFailed    GlobalReachConnectionProvisioningState = "Failed"
+	GlobalReachConnectionProvisioningStateCanceled GlobalReachConnectionProvisioningState = "Canceled"
+	GlobalReachConnectionProvisioningStateFailed GlobalReachConnectionProvisioningState = "Failed"
 	GlobalReachConnectionProvisioningStateSucceeded GlobalReachConnectionProvisioningState = "Succeeded"
-	GlobalReachConnectionProvisioningStateUpdating  GlobalReachConnectionProvisioningState = "Updating"
+	GlobalReachConnectionProvisioningStateUpdating GlobalReachConnectionProvisioningState = "Updating"
 )
 
 // PossibleGlobalReachConnectionProvisioningStateValues returns the possible values for the GlobalReachConnectionProvisioningState const type.
 func PossibleGlobalReachConnectionProvisioningStateValues() []GlobalReachConnectionProvisioningState {
-	return []GlobalReachConnectionProvisioningState{
+	return []GlobalReachConnectionProvisioningState{	
 		GlobalReachConnectionProvisioningStateCanceled,
 		GlobalReachConnectionProvisioningStateFailed,
 		GlobalReachConnectionProvisioningStateSucceeded,
@@ -369,14 +369,14 @@ func PossibleGlobalReachConnectionProvisioningStateValues() []GlobalReachConnect
 type GlobalReachConnectionStatus string
 
 const (
-	GlobalReachConnectionStatusConnected    GlobalReachConnectionStatus = "Connected"
-	GlobalReachConnectionStatusConnecting   GlobalReachConnectionStatus = "Connecting"
+	GlobalReachConnectionStatusConnected GlobalReachConnectionStatus = "Connected"
+	GlobalReachConnectionStatusConnecting GlobalReachConnectionStatus = "Connecting"
 	GlobalReachConnectionStatusDisconnected GlobalReachConnectionStatus = "Disconnected"
 )
 
 // PossibleGlobalReachConnectionStatusValues returns the possible values for the GlobalReachConnectionStatus const type.
 func PossibleGlobalReachConnectionStatusValues() []GlobalReachConnectionStatus {
-	return []GlobalReachConnectionStatus{
+	return []GlobalReachConnectionStatus{	
 		GlobalReachConnectionStatusConnected,
 		GlobalReachConnectionStatusConnecting,
 		GlobalReachConnectionStatusDisconnected,
@@ -387,15 +387,15 @@ func PossibleGlobalReachConnectionStatusValues() []GlobalReachConnectionStatus {
 type HcxEnterpriseSiteStatus string
 
 const (
-	HcxEnterpriseSiteStatusAvailable   HcxEnterpriseSiteStatus = "Available"
-	HcxEnterpriseSiteStatusConsumed    HcxEnterpriseSiteStatus = "Consumed"
+	HcxEnterpriseSiteStatusAvailable HcxEnterpriseSiteStatus = "Available"
+	HcxEnterpriseSiteStatusConsumed HcxEnterpriseSiteStatus = "Consumed"
 	HcxEnterpriseSiteStatusDeactivated HcxEnterpriseSiteStatus = "Deactivated"
-	HcxEnterpriseSiteStatusDeleted     HcxEnterpriseSiteStatus = "Deleted"
+	HcxEnterpriseSiteStatusDeleted HcxEnterpriseSiteStatus = "Deleted"
 )
 
 // PossibleHcxEnterpriseSiteStatusValues returns the possible values for the HcxEnterpriseSiteStatus const type.
 func PossibleHcxEnterpriseSiteStatusValues() []HcxEnterpriseSiteStatus {
-	return []HcxEnterpriseSiteStatus{
+	return []HcxEnterpriseSiteStatus{	
 		HcxEnterpriseSiteStatusAvailable,
 		HcxEnterpriseSiteStatusConsumed,
 		HcxEnterpriseSiteStatusDeactivated,
@@ -408,12 +408,12 @@ type InternetEnum string
 
 const (
 	InternetEnumDisabled InternetEnum = "Disabled"
-	InternetEnumEnabled  InternetEnum = "Enabled"
+	InternetEnumEnabled InternetEnum = "Enabled"
 )
 
 // PossibleInternetEnumValues returns the possible values for the InternetEnum const type.
 func PossibleInternetEnumValues() []InternetEnum {
-	return []InternetEnum{
+	return []InternetEnum{	
 		InternetEnumDisabled,
 		InternetEnumEnabled,
 	}
@@ -424,12 +424,12 @@ type MountOptionEnum string
 
 const (
 	MountOptionEnumATTACH MountOptionEnum = "ATTACH"
-	MountOptionEnumMOUNT  MountOptionEnum = "MOUNT"
+	MountOptionEnumMOUNT MountOptionEnum = "MOUNT"
 )
 
 // PossibleMountOptionEnumValues returns the possible values for the MountOptionEnum const type.
 func PossibleMountOptionEnumValues() []MountOptionEnum {
-	return []MountOptionEnum{
+	return []MountOptionEnum{	
 		MountOptionEnumATTACH,
 		MountOptionEnumMOUNT,
 	}
@@ -441,12 +441,12 @@ type NsxPublicIPQuotaRaisedEnum string
 
 const (
 	NsxPublicIPQuotaRaisedEnumDisabled NsxPublicIPQuotaRaisedEnum = "Disabled"
-	NsxPublicIPQuotaRaisedEnumEnabled  NsxPublicIPQuotaRaisedEnum = "Enabled"
+	NsxPublicIPQuotaRaisedEnumEnabled NsxPublicIPQuotaRaisedEnum = "Enabled"
 )
 
 // PossibleNsxPublicIPQuotaRaisedEnumValues returns the possible values for the NsxPublicIPQuotaRaisedEnum const type.
 func PossibleNsxPublicIPQuotaRaisedEnumValues() []NsxPublicIPQuotaRaisedEnum {
-	return []NsxPublicIPQuotaRaisedEnum{
+	return []NsxPublicIPQuotaRaisedEnum{	
 		NsxPublicIPQuotaRaisedEnumDisabled,
 		NsxPublicIPQuotaRaisedEnumEnabled,
 	}
@@ -462,7 +462,7 @@ const (
 
 // PossibleOptionalParamEnumValues returns the possible values for the OptionalParamEnum const type.
 func PossibleOptionalParamEnumValues() []OptionalParamEnum {
-	return []OptionalParamEnum{
+	return []OptionalParamEnum{	
 		OptionalParamEnumOptional,
 		OptionalParamEnumRequired,
 	}
@@ -472,17 +472,17 @@ func PossibleOptionalParamEnumValues() []OptionalParamEnum {
 type PlacementPolicyProvisioningState string
 
 const (
-	PlacementPolicyProvisioningStateBuilding  PlacementPolicyProvisioningState = "Building"
-	PlacementPolicyProvisioningStateCanceled  PlacementPolicyProvisioningState = "Canceled"
-	PlacementPolicyProvisioningStateDeleting  PlacementPolicyProvisioningState = "Deleting"
-	PlacementPolicyProvisioningStateFailed    PlacementPolicyProvisioningState = "Failed"
+	PlacementPolicyProvisioningStateBuilding PlacementPolicyProvisioningState = "Building"
+	PlacementPolicyProvisioningStateCanceled PlacementPolicyProvisioningState = "Canceled"
+	PlacementPolicyProvisioningStateDeleting PlacementPolicyProvisioningState = "Deleting"
+	PlacementPolicyProvisioningStateFailed PlacementPolicyProvisioningState = "Failed"
 	PlacementPolicyProvisioningStateSucceeded PlacementPolicyProvisioningState = "Succeeded"
-	PlacementPolicyProvisioningStateUpdating  PlacementPolicyProvisioningState = "Updating"
+	PlacementPolicyProvisioningStateUpdating PlacementPolicyProvisioningState = "Updating"
 )
 
 // PossiblePlacementPolicyProvisioningStateValues returns the possible values for the PlacementPolicyProvisioningState const type.
 func PossiblePlacementPolicyProvisioningStateValues() []PlacementPolicyProvisioningState {
-	return []PlacementPolicyProvisioningState{
+	return []PlacementPolicyProvisioningState{	
 		PlacementPolicyProvisioningStateBuilding,
 		PlacementPolicyProvisioningStateCanceled,
 		PlacementPolicyProvisioningStateDeleting,
@@ -497,12 +497,12 @@ type PlacementPolicyState string
 
 const (
 	PlacementPolicyStateDisabled PlacementPolicyState = "Disabled"
-	PlacementPolicyStateEnabled  PlacementPolicyState = "Enabled"
+	PlacementPolicyStateEnabled PlacementPolicyState = "Enabled"
 )
 
 // PossiblePlacementPolicyStateValues returns the possible values for the PlacementPolicyState const type.
 func PossiblePlacementPolicyStateValues() []PlacementPolicyState {
-	return []PlacementPolicyState{
+	return []PlacementPolicyState{	
 		PlacementPolicyStateDisabled,
 		PlacementPolicyStateEnabled,
 	}
@@ -513,12 +513,12 @@ type PlacementPolicyType string
 
 const (
 	PlacementPolicyTypeVMHost PlacementPolicyType = "VmHost"
-	PlacementPolicyTypeVMVM   PlacementPolicyType = "VmVm"
+	PlacementPolicyTypeVMVM PlacementPolicyType = "VmVm"
 )
 
 // PossiblePlacementPolicyTypeValues returns the possible values for the PlacementPolicyType const type.
 func PossiblePlacementPolicyTypeValues() []PlacementPolicyType {
-	return []PlacementPolicyType{
+	return []PlacementPolicyType{	
 		PlacementPolicyTypeVMHost,
 		PlacementPolicyTypeVMVM,
 	}
@@ -529,13 +529,13 @@ type PortMirroringDirectionEnum string
 
 const (
 	PortMirroringDirectionEnumBIDIRECTIONAL PortMirroringDirectionEnum = "BIDIRECTIONAL"
-	PortMirroringDirectionEnumEGRESS        PortMirroringDirectionEnum = "EGRESS"
-	PortMirroringDirectionEnumINGRESS       PortMirroringDirectionEnum = "INGRESS"
+	PortMirroringDirectionEnumEGRESS PortMirroringDirectionEnum = "EGRESS"
+	PortMirroringDirectionEnumINGRESS PortMirroringDirectionEnum = "INGRESS"
 )
 
 // PossiblePortMirroringDirectionEnumValues returns the possible values for the PortMirroringDirectionEnum const type.
 func PossiblePortMirroringDirectionEnumValues() []PortMirroringDirectionEnum {
-	return []PortMirroringDirectionEnum{
+	return []PortMirroringDirectionEnum{	
 		PortMirroringDirectionEnumBIDIRECTIONAL,
 		PortMirroringDirectionEnumEGRESS,
 		PortMirroringDirectionEnumINGRESS,
@@ -552,7 +552,7 @@ const (
 
 // PossiblePortMirroringStatusEnumValues returns the possible values for the PortMirroringStatusEnum const type.
 func PossiblePortMirroringStatusEnumValues() []PortMirroringStatusEnum {
-	return []PortMirroringStatusEnum{
+	return []PortMirroringStatusEnum{	
 		PortMirroringStatusEnumFAILURE,
 		PortMirroringStatusEnumSUCCESS,
 	}
@@ -562,19 +562,19 @@ func PossiblePortMirroringStatusEnumValues() []PortMirroringStatusEnum {
 type PrivateCloudProvisioningState string
 
 const (
-	PrivateCloudProvisioningStateBuilding  PrivateCloudProvisioningState = "Building"
-	PrivateCloudProvisioningStateCanceled  PrivateCloudProvisioningState = "Canceled"
+	PrivateCloudProvisioningStateBuilding PrivateCloudProvisioningState = "Building"
+	PrivateCloudProvisioningStateCanceled PrivateCloudProvisioningState = "Canceled"
 	PrivateCloudProvisioningStateCancelled PrivateCloudProvisioningState = "Cancelled"
-	PrivateCloudProvisioningStateDeleting  PrivateCloudProvisioningState = "Deleting"
-	PrivateCloudProvisioningStateFailed    PrivateCloudProvisioningState = "Failed"
-	PrivateCloudProvisioningStatePending   PrivateCloudProvisioningState = "Pending"
+	PrivateCloudProvisioningStateDeleting PrivateCloudProvisioningState = "Deleting"
+	PrivateCloudProvisioningStateFailed PrivateCloudProvisioningState = "Failed"
+	PrivateCloudProvisioningStatePending PrivateCloudProvisioningState = "Pending"
 	PrivateCloudProvisioningStateSucceeded PrivateCloudProvisioningState = "Succeeded"
-	PrivateCloudProvisioningStateUpdating  PrivateCloudProvisioningState = "Updating"
+	PrivateCloudProvisioningStateUpdating PrivateCloudProvisioningState = "Updating"
 )
 
 // PossiblePrivateCloudProvisioningStateValues returns the possible values for the PrivateCloudProvisioningState const type.
 func PossiblePrivateCloudProvisioningStateValues() []PrivateCloudProvisioningState {
-	return []PrivateCloudProvisioningState{
+	return []PrivateCloudProvisioningState{	
 		PrivateCloudProvisioningStateBuilding,
 		PrivateCloudProvisioningStateCanceled,
 		PrivateCloudProvisioningStateCancelled,
@@ -591,12 +591,12 @@ type QuotaEnabled string
 
 const (
 	QuotaEnabledDisabled QuotaEnabled = "Disabled"
-	QuotaEnabledEnabled  QuotaEnabled = "Enabled"
+	QuotaEnabledEnabled QuotaEnabled = "Enabled"
 )
 
 // PossibleQuotaEnabledValues returns the possible values for the QuotaEnabled const type.
 func PossibleQuotaEnabledValues() []QuotaEnabled {
-	return []QuotaEnabled{
+	return []QuotaEnabled{	
 		QuotaEnabledDisabled,
 		QuotaEnabledEnabled,
 	}
@@ -607,13 +607,13 @@ func PossibleQuotaEnabledValues() []QuotaEnabled {
 type ResourceIdentityType string
 
 const (
-	ResourceIdentityTypeNone           ResourceIdentityType = "None"
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
 )
 
 // PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{
+	return []ResourceIdentityType{	
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 	}
@@ -624,12 +624,12 @@ type SSLEnum string
 
 const (
 	SSLEnumDisabled SSLEnum = "Disabled"
-	SSLEnumEnabled  SSLEnum = "Enabled"
+	SSLEnumEnabled SSLEnum = "Enabled"
 )
 
 // PossibleSSLEnumValues returns the possible values for the SSLEnum const type.
 func PossibleSSLEnumValues() []SSLEnum {
-	return []SSLEnum{
+	return []SSLEnum{	
 		SSLEnumDisabled,
 		SSLEnumEnabled,
 	}
@@ -639,14 +639,14 @@ func PossibleSSLEnumValues() []SSLEnum {
 type ScriptExecutionParameterType string
 
 const (
-	ScriptExecutionParameterTypeCredential  ScriptExecutionParameterType = "Credential"
+	ScriptExecutionParameterTypeCredential ScriptExecutionParameterType = "Credential"
 	ScriptExecutionParameterTypeSecureValue ScriptExecutionParameterType = "SecureValue"
-	ScriptExecutionParameterTypeValue       ScriptExecutionParameterType = "Value"
+	ScriptExecutionParameterTypeValue ScriptExecutionParameterType = "Value"
 )
 
 // PossibleScriptExecutionParameterTypeValues returns the possible values for the ScriptExecutionParameterType const type.
 func PossibleScriptExecutionParameterTypeValues() []ScriptExecutionParameterType {
-	return []ScriptExecutionParameterType{
+	return []ScriptExecutionParameterType{	
 		ScriptExecutionParameterTypeCredential,
 		ScriptExecutionParameterTypeSecureValue,
 		ScriptExecutionParameterTypeValue,
@@ -657,19 +657,19 @@ func PossibleScriptExecutionParameterTypeValues() []ScriptExecutionParameterType
 type ScriptExecutionProvisioningState string
 
 const (
-	ScriptExecutionProvisioningStateCanceled   ScriptExecutionProvisioningState = "Canceled"
-	ScriptExecutionProvisioningStateCancelled  ScriptExecutionProvisioningState = "Cancelled"
+	ScriptExecutionProvisioningStateCanceled ScriptExecutionProvisioningState = "Canceled"
+	ScriptExecutionProvisioningStateCancelled ScriptExecutionProvisioningState = "Cancelled"
 	ScriptExecutionProvisioningStateCancelling ScriptExecutionProvisioningState = "Cancelling"
-	ScriptExecutionProvisioningStateDeleting   ScriptExecutionProvisioningState = "Deleting"
-	ScriptExecutionProvisioningStateFailed     ScriptExecutionProvisioningState = "Failed"
-	ScriptExecutionProvisioningStatePending    ScriptExecutionProvisioningState = "Pending"
-	ScriptExecutionProvisioningStateRunning    ScriptExecutionProvisioningState = "Running"
-	ScriptExecutionProvisioningStateSucceeded  ScriptExecutionProvisioningState = "Succeeded"
+	ScriptExecutionProvisioningStateDeleting ScriptExecutionProvisioningState = "Deleting"
+	ScriptExecutionProvisioningStateFailed ScriptExecutionProvisioningState = "Failed"
+	ScriptExecutionProvisioningStatePending ScriptExecutionProvisioningState = "Pending"
+	ScriptExecutionProvisioningStateRunning ScriptExecutionProvisioningState = "Running"
+	ScriptExecutionProvisioningStateSucceeded ScriptExecutionProvisioningState = "Succeeded"
 )
 
 // PossibleScriptExecutionProvisioningStateValues returns the possible values for the ScriptExecutionProvisioningState const type.
 func PossibleScriptExecutionProvisioningStateValues() []ScriptExecutionProvisioningState {
-	return []ScriptExecutionProvisioningState{
+	return []ScriptExecutionProvisioningState{	
 		ScriptExecutionProvisioningStateCanceled,
 		ScriptExecutionProvisioningStateCancelled,
 		ScriptExecutionProvisioningStateCancelling,
@@ -684,15 +684,15 @@ func PossibleScriptExecutionProvisioningStateValues() []ScriptExecutionProvision
 type ScriptOutputStreamType string
 
 const (
-	ScriptOutputStreamTypeError       ScriptOutputStreamType = "Error"
+	ScriptOutputStreamTypeError ScriptOutputStreamType = "Error"
 	ScriptOutputStreamTypeInformation ScriptOutputStreamType = "Information"
-	ScriptOutputStreamTypeOutput      ScriptOutputStreamType = "Output"
-	ScriptOutputStreamTypeWarning     ScriptOutputStreamType = "Warning"
+	ScriptOutputStreamTypeOutput ScriptOutputStreamType = "Output"
+	ScriptOutputStreamTypeWarning ScriptOutputStreamType = "Warning"
 )
 
 // PossibleScriptOutputStreamTypeValues returns the possible values for the ScriptOutputStreamType const type.
 func PossibleScriptOutputStreamTypeValues() []ScriptOutputStreamType {
-	return []ScriptOutputStreamType{
+	return []ScriptOutputStreamType{	
 		ScriptOutputStreamTypeError,
 		ScriptOutputStreamTypeInformation,
 		ScriptOutputStreamTypeOutput,
@@ -704,17 +704,17 @@ func PossibleScriptOutputStreamTypeValues() []ScriptOutputStreamType {
 type ScriptParameterTypes string
 
 const (
-	ScriptParameterTypesBool         ScriptParameterTypes = "Bool"
-	ScriptParameterTypesCredential   ScriptParameterTypes = "Credential"
-	ScriptParameterTypesFloat        ScriptParameterTypes = "Float"
-	ScriptParameterTypesInt          ScriptParameterTypes = "Int"
+	ScriptParameterTypesBool ScriptParameterTypes = "Bool"
+	ScriptParameterTypesCredential ScriptParameterTypes = "Credential"
+	ScriptParameterTypesFloat ScriptParameterTypes = "Float"
+	ScriptParameterTypesInt ScriptParameterTypes = "Int"
 	ScriptParameterTypesSecureString ScriptParameterTypes = "SecureString"
-	ScriptParameterTypesString       ScriptParameterTypes = "String"
+	ScriptParameterTypesString ScriptParameterTypes = "String"
 )
 
 // PossibleScriptParameterTypesValues returns the possible values for the ScriptParameterTypes const type.
 func PossibleScriptParameterTypesValues() []ScriptParameterTypes {
-	return []ScriptParameterTypes{
+	return []ScriptParameterTypes{	
 		ScriptParameterTypesBool,
 		ScriptParameterTypesCredential,
 		ScriptParameterTypesFloat,
@@ -734,7 +734,7 @@ const (
 
 // PossibleSegmentStatusEnumValues returns the possible values for the SegmentStatusEnum const type.
 func PossibleSegmentStatusEnumValues() []SegmentStatusEnum {
-	return []SegmentStatusEnum{
+	return []SegmentStatusEnum{	
 		SegmentStatusEnumFAILURE,
 		SegmentStatusEnumSUCCESS,
 	}
@@ -745,13 +745,13 @@ type TrialStatus string
 
 const (
 	TrialStatusTrialAvailable TrialStatus = "TrialAvailable"
-	TrialStatusTrialDisabled  TrialStatus = "TrialDisabled"
-	TrialStatusTrialUsed      TrialStatus = "TrialUsed"
+	TrialStatusTrialDisabled TrialStatus = "TrialDisabled"
+	TrialStatusTrialUsed TrialStatus = "TrialUsed"
 )
 
 // PossibleTrialStatusValues returns the possible values for the TrialStatus const type.
 func PossibleTrialStatusValues() []TrialStatus {
-	return []TrialStatus{
+	return []TrialStatus{	
 		TrialStatusTrialAvailable,
 		TrialStatusTrialDisabled,
 		TrialStatusTrialUsed,
@@ -768,7 +768,7 @@ const (
 
 // PossibleVMGroupStatusEnumValues returns the possible values for the VMGroupStatusEnum const type.
 func PossibleVMGroupStatusEnumValues() []VMGroupStatusEnum {
-	return []VMGroupStatusEnum{
+	return []VMGroupStatusEnum{	
 		VMGroupStatusEnumFAILURE,
 		VMGroupStatusEnumSUCCESS,
 	}
@@ -778,14 +778,14 @@ func PossibleVMGroupStatusEnumValues() []VMGroupStatusEnum {
 type VMTypeEnum string
 
 const (
-	VMTypeEnumEDGE    VMTypeEnum = "EDGE"
+	VMTypeEnumEDGE VMTypeEnum = "EDGE"
 	VMTypeEnumREGULAR VMTypeEnum = "REGULAR"
 	VMTypeEnumSERVICE VMTypeEnum = "SERVICE"
 )
 
 // PossibleVMTypeEnumValues returns the possible values for the VMTypeEnum const type.
 func PossibleVMTypeEnumValues() []VMTypeEnum {
-	return []VMTypeEnum{
+	return []VMTypeEnum{	
 		VMTypeEnumEDGE,
 		VMTypeEnumREGULAR,
 		VMTypeEnumSERVICE,
@@ -797,12 +797,12 @@ type VirtualMachineRestrictMovementState string
 
 const (
 	VirtualMachineRestrictMovementStateDisabled VirtualMachineRestrictMovementState = "Disabled"
-	VirtualMachineRestrictMovementStateEnabled  VirtualMachineRestrictMovementState = "Enabled"
+	VirtualMachineRestrictMovementStateEnabled VirtualMachineRestrictMovementState = "Enabled"
 )
 
 // PossibleVirtualMachineRestrictMovementStateValues returns the possible values for the VirtualMachineRestrictMovementState const type.
 func PossibleVirtualMachineRestrictMovementStateValues() []VirtualMachineRestrictMovementState {
-	return []VirtualMachineRestrictMovementState{
+	return []VirtualMachineRestrictMovementState{	
 		VirtualMachineRestrictMovementStateDisabled,
 		VirtualMachineRestrictMovementStateEnabled,
 	}
@@ -812,13 +812,13 @@ func PossibleVirtualMachineRestrictMovementStateValues() []VirtualMachineRestric
 type VisibilityParameterEnum string
 
 const (
-	VisibilityParameterEnumHidden  VisibilityParameterEnum = "Hidden"
+	VisibilityParameterEnumHidden VisibilityParameterEnum = "Hidden"
 	VisibilityParameterEnumVisible VisibilityParameterEnum = "Visible"
 )
 
 // PossibleVisibilityParameterEnumValues returns the possible values for the VisibilityParameterEnum const type.
 func PossibleVisibilityParameterEnumValues() []VisibilityParameterEnum {
-	return []VisibilityParameterEnum{
+	return []VisibilityParameterEnum{	
 		VisibilityParameterEnumHidden,
 		VisibilityParameterEnumVisible,
 	}
@@ -828,17 +828,17 @@ func PossibleVisibilityParameterEnumValues() []VisibilityParameterEnum {
 type WorkloadNetworkDNSServiceProvisioningState string
 
 const (
-	WorkloadNetworkDNSServiceProvisioningStateBuilding  WorkloadNetworkDNSServiceProvisioningState = "Building"
-	WorkloadNetworkDNSServiceProvisioningStateCanceled  WorkloadNetworkDNSServiceProvisioningState = "Canceled"
-	WorkloadNetworkDNSServiceProvisioningStateDeleting  WorkloadNetworkDNSServiceProvisioningState = "Deleting"
-	WorkloadNetworkDNSServiceProvisioningStateFailed    WorkloadNetworkDNSServiceProvisioningState = "Failed"
+	WorkloadNetworkDNSServiceProvisioningStateBuilding WorkloadNetworkDNSServiceProvisioningState = "Building"
+	WorkloadNetworkDNSServiceProvisioningStateCanceled WorkloadNetworkDNSServiceProvisioningState = "Canceled"
+	WorkloadNetworkDNSServiceProvisioningStateDeleting WorkloadNetworkDNSServiceProvisioningState = "Deleting"
+	WorkloadNetworkDNSServiceProvisioningStateFailed WorkloadNetworkDNSServiceProvisioningState = "Failed"
 	WorkloadNetworkDNSServiceProvisioningStateSucceeded WorkloadNetworkDNSServiceProvisioningState = "Succeeded"
-	WorkloadNetworkDNSServiceProvisioningStateUpdating  WorkloadNetworkDNSServiceProvisioningState = "Updating"
+	WorkloadNetworkDNSServiceProvisioningStateUpdating WorkloadNetworkDNSServiceProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkDNSServiceProvisioningStateValues returns the possible values for the WorkloadNetworkDNSServiceProvisioningState const type.
 func PossibleWorkloadNetworkDNSServiceProvisioningStateValues() []WorkloadNetworkDNSServiceProvisioningState {
-	return []WorkloadNetworkDNSServiceProvisioningState{
+	return []WorkloadNetworkDNSServiceProvisioningState{	
 		WorkloadNetworkDNSServiceProvisioningStateBuilding,
 		WorkloadNetworkDNSServiceProvisioningStateCanceled,
 		WorkloadNetworkDNSServiceProvisioningStateDeleting,
@@ -852,17 +852,17 @@ func PossibleWorkloadNetworkDNSServiceProvisioningStateValues() []WorkloadNetwor
 type WorkloadNetworkDNSZoneProvisioningState string
 
 const (
-	WorkloadNetworkDNSZoneProvisioningStateBuilding  WorkloadNetworkDNSZoneProvisioningState = "Building"
-	WorkloadNetworkDNSZoneProvisioningStateCanceled  WorkloadNetworkDNSZoneProvisioningState = "Canceled"
-	WorkloadNetworkDNSZoneProvisioningStateDeleting  WorkloadNetworkDNSZoneProvisioningState = "Deleting"
-	WorkloadNetworkDNSZoneProvisioningStateFailed    WorkloadNetworkDNSZoneProvisioningState = "Failed"
+	WorkloadNetworkDNSZoneProvisioningStateBuilding WorkloadNetworkDNSZoneProvisioningState = "Building"
+	WorkloadNetworkDNSZoneProvisioningStateCanceled WorkloadNetworkDNSZoneProvisioningState = "Canceled"
+	WorkloadNetworkDNSZoneProvisioningStateDeleting WorkloadNetworkDNSZoneProvisioningState = "Deleting"
+	WorkloadNetworkDNSZoneProvisioningStateFailed WorkloadNetworkDNSZoneProvisioningState = "Failed"
 	WorkloadNetworkDNSZoneProvisioningStateSucceeded WorkloadNetworkDNSZoneProvisioningState = "Succeeded"
-	WorkloadNetworkDNSZoneProvisioningStateUpdating  WorkloadNetworkDNSZoneProvisioningState = "Updating"
+	WorkloadNetworkDNSZoneProvisioningStateUpdating WorkloadNetworkDNSZoneProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkDNSZoneProvisioningStateValues returns the possible values for the WorkloadNetworkDNSZoneProvisioningState const type.
 func PossibleWorkloadNetworkDNSZoneProvisioningStateValues() []WorkloadNetworkDNSZoneProvisioningState {
-	return []WorkloadNetworkDNSZoneProvisioningState{
+	return []WorkloadNetworkDNSZoneProvisioningState{	
 		WorkloadNetworkDNSZoneProvisioningStateBuilding,
 		WorkloadNetworkDNSZoneProvisioningStateCanceled,
 		WorkloadNetworkDNSZoneProvisioningStateDeleting,
@@ -876,17 +876,17 @@ func PossibleWorkloadNetworkDNSZoneProvisioningStateValues() []WorkloadNetworkDN
 type WorkloadNetworkDhcpProvisioningState string
 
 const (
-	WorkloadNetworkDhcpProvisioningStateBuilding  WorkloadNetworkDhcpProvisioningState = "Building"
-	WorkloadNetworkDhcpProvisioningStateCanceled  WorkloadNetworkDhcpProvisioningState = "Canceled"
-	WorkloadNetworkDhcpProvisioningStateDeleting  WorkloadNetworkDhcpProvisioningState = "Deleting"
-	WorkloadNetworkDhcpProvisioningStateFailed    WorkloadNetworkDhcpProvisioningState = "Failed"
+	WorkloadNetworkDhcpProvisioningStateBuilding WorkloadNetworkDhcpProvisioningState = "Building"
+	WorkloadNetworkDhcpProvisioningStateCanceled WorkloadNetworkDhcpProvisioningState = "Canceled"
+	WorkloadNetworkDhcpProvisioningStateDeleting WorkloadNetworkDhcpProvisioningState = "Deleting"
+	WorkloadNetworkDhcpProvisioningStateFailed WorkloadNetworkDhcpProvisioningState = "Failed"
 	WorkloadNetworkDhcpProvisioningStateSucceeded WorkloadNetworkDhcpProvisioningState = "Succeeded"
-	WorkloadNetworkDhcpProvisioningStateUpdating  WorkloadNetworkDhcpProvisioningState = "Updating"
+	WorkloadNetworkDhcpProvisioningStateUpdating WorkloadNetworkDhcpProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkDhcpProvisioningStateValues returns the possible values for the WorkloadNetworkDhcpProvisioningState const type.
 func PossibleWorkloadNetworkDhcpProvisioningStateValues() []WorkloadNetworkDhcpProvisioningState {
-	return []WorkloadNetworkDhcpProvisioningState{
+	return []WorkloadNetworkDhcpProvisioningState{	
 		WorkloadNetworkDhcpProvisioningStateBuilding,
 		WorkloadNetworkDhcpProvisioningStateCanceled,
 		WorkloadNetworkDhcpProvisioningStateDeleting,
@@ -904,7 +904,7 @@ const (
 
 // PossibleWorkloadNetworkNameValues returns the possible values for the WorkloadNetworkName const type.
 func PossibleWorkloadNetworkNameValues() []WorkloadNetworkName {
-	return []WorkloadNetworkName{
+	return []WorkloadNetworkName{	
 		WorkloadNetworkNameDefault,
 	}
 }
@@ -913,17 +913,17 @@ func PossibleWorkloadNetworkNameValues() []WorkloadNetworkName {
 type WorkloadNetworkPortMirroringProvisioningState string
 
 const (
-	WorkloadNetworkPortMirroringProvisioningStateBuilding  WorkloadNetworkPortMirroringProvisioningState = "Building"
-	WorkloadNetworkPortMirroringProvisioningStateCanceled  WorkloadNetworkPortMirroringProvisioningState = "Canceled"
-	WorkloadNetworkPortMirroringProvisioningStateDeleting  WorkloadNetworkPortMirroringProvisioningState = "Deleting"
-	WorkloadNetworkPortMirroringProvisioningStateFailed    WorkloadNetworkPortMirroringProvisioningState = "Failed"
+	WorkloadNetworkPortMirroringProvisioningStateBuilding WorkloadNetworkPortMirroringProvisioningState = "Building"
+	WorkloadNetworkPortMirroringProvisioningStateCanceled WorkloadNetworkPortMirroringProvisioningState = "Canceled"
+	WorkloadNetworkPortMirroringProvisioningStateDeleting WorkloadNetworkPortMirroringProvisioningState = "Deleting"
+	WorkloadNetworkPortMirroringProvisioningStateFailed WorkloadNetworkPortMirroringProvisioningState = "Failed"
 	WorkloadNetworkPortMirroringProvisioningStateSucceeded WorkloadNetworkPortMirroringProvisioningState = "Succeeded"
-	WorkloadNetworkPortMirroringProvisioningStateUpdating  WorkloadNetworkPortMirroringProvisioningState = "Updating"
+	WorkloadNetworkPortMirroringProvisioningStateUpdating WorkloadNetworkPortMirroringProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkPortMirroringProvisioningStateValues returns the possible values for the WorkloadNetworkPortMirroringProvisioningState const type.
 func PossibleWorkloadNetworkPortMirroringProvisioningStateValues() []WorkloadNetworkPortMirroringProvisioningState {
-	return []WorkloadNetworkPortMirroringProvisioningState{
+	return []WorkloadNetworkPortMirroringProvisioningState{	
 		WorkloadNetworkPortMirroringProvisioningStateBuilding,
 		WorkloadNetworkPortMirroringProvisioningStateCanceled,
 		WorkloadNetworkPortMirroringProvisioningStateDeleting,
@@ -937,17 +937,17 @@ func PossibleWorkloadNetworkPortMirroringProvisioningStateValues() []WorkloadNet
 type WorkloadNetworkPublicIPProvisioningState string
 
 const (
-	WorkloadNetworkPublicIPProvisioningStateBuilding  WorkloadNetworkPublicIPProvisioningState = "Building"
-	WorkloadNetworkPublicIPProvisioningStateCanceled  WorkloadNetworkPublicIPProvisioningState = "Canceled"
-	WorkloadNetworkPublicIPProvisioningStateDeleting  WorkloadNetworkPublicIPProvisioningState = "Deleting"
-	WorkloadNetworkPublicIPProvisioningStateFailed    WorkloadNetworkPublicIPProvisioningState = "Failed"
+	WorkloadNetworkPublicIPProvisioningStateBuilding WorkloadNetworkPublicIPProvisioningState = "Building"
+	WorkloadNetworkPublicIPProvisioningStateCanceled WorkloadNetworkPublicIPProvisioningState = "Canceled"
+	WorkloadNetworkPublicIPProvisioningStateDeleting WorkloadNetworkPublicIPProvisioningState = "Deleting"
+	WorkloadNetworkPublicIPProvisioningStateFailed WorkloadNetworkPublicIPProvisioningState = "Failed"
 	WorkloadNetworkPublicIPProvisioningStateSucceeded WorkloadNetworkPublicIPProvisioningState = "Succeeded"
-	WorkloadNetworkPublicIPProvisioningStateUpdating  WorkloadNetworkPublicIPProvisioningState = "Updating"
+	WorkloadNetworkPublicIPProvisioningStateUpdating WorkloadNetworkPublicIPProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkPublicIPProvisioningStateValues returns the possible values for the WorkloadNetworkPublicIPProvisioningState const type.
 func PossibleWorkloadNetworkPublicIPProvisioningStateValues() []WorkloadNetworkPublicIPProvisioningState {
-	return []WorkloadNetworkPublicIPProvisioningState{
+	return []WorkloadNetworkPublicIPProvisioningState{	
 		WorkloadNetworkPublicIPProvisioningStateBuilding,
 		WorkloadNetworkPublicIPProvisioningStateCanceled,
 		WorkloadNetworkPublicIPProvisioningStateDeleting,
@@ -961,17 +961,17 @@ func PossibleWorkloadNetworkPublicIPProvisioningStateValues() []WorkloadNetworkP
 type WorkloadNetworkSegmentProvisioningState string
 
 const (
-	WorkloadNetworkSegmentProvisioningStateBuilding  WorkloadNetworkSegmentProvisioningState = "Building"
-	WorkloadNetworkSegmentProvisioningStateCanceled  WorkloadNetworkSegmentProvisioningState = "Canceled"
-	WorkloadNetworkSegmentProvisioningStateDeleting  WorkloadNetworkSegmentProvisioningState = "Deleting"
-	WorkloadNetworkSegmentProvisioningStateFailed    WorkloadNetworkSegmentProvisioningState = "Failed"
+	WorkloadNetworkSegmentProvisioningStateBuilding WorkloadNetworkSegmentProvisioningState = "Building"
+	WorkloadNetworkSegmentProvisioningStateCanceled WorkloadNetworkSegmentProvisioningState = "Canceled"
+	WorkloadNetworkSegmentProvisioningStateDeleting WorkloadNetworkSegmentProvisioningState = "Deleting"
+	WorkloadNetworkSegmentProvisioningStateFailed WorkloadNetworkSegmentProvisioningState = "Failed"
 	WorkloadNetworkSegmentProvisioningStateSucceeded WorkloadNetworkSegmentProvisioningState = "Succeeded"
-	WorkloadNetworkSegmentProvisioningStateUpdating  WorkloadNetworkSegmentProvisioningState = "Updating"
+	WorkloadNetworkSegmentProvisioningStateUpdating WorkloadNetworkSegmentProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkSegmentProvisioningStateValues returns the possible values for the WorkloadNetworkSegmentProvisioningState const type.
 func PossibleWorkloadNetworkSegmentProvisioningStateValues() []WorkloadNetworkSegmentProvisioningState {
-	return []WorkloadNetworkSegmentProvisioningState{
+	return []WorkloadNetworkSegmentProvisioningState{	
 		WorkloadNetworkSegmentProvisioningStateBuilding,
 		WorkloadNetworkSegmentProvisioningStateCanceled,
 		WorkloadNetworkSegmentProvisioningStateDeleting,
@@ -985,17 +985,17 @@ func PossibleWorkloadNetworkSegmentProvisioningStateValues() []WorkloadNetworkSe
 type WorkloadNetworkVMGroupProvisioningState string
 
 const (
-	WorkloadNetworkVMGroupProvisioningStateBuilding  WorkloadNetworkVMGroupProvisioningState = "Building"
-	WorkloadNetworkVMGroupProvisioningStateCanceled  WorkloadNetworkVMGroupProvisioningState = "Canceled"
-	WorkloadNetworkVMGroupProvisioningStateDeleting  WorkloadNetworkVMGroupProvisioningState = "Deleting"
-	WorkloadNetworkVMGroupProvisioningStateFailed    WorkloadNetworkVMGroupProvisioningState = "Failed"
+	WorkloadNetworkVMGroupProvisioningStateBuilding WorkloadNetworkVMGroupProvisioningState = "Building"
+	WorkloadNetworkVMGroupProvisioningStateCanceled WorkloadNetworkVMGroupProvisioningState = "Canceled"
+	WorkloadNetworkVMGroupProvisioningStateDeleting WorkloadNetworkVMGroupProvisioningState = "Deleting"
+	WorkloadNetworkVMGroupProvisioningStateFailed WorkloadNetworkVMGroupProvisioningState = "Failed"
 	WorkloadNetworkVMGroupProvisioningStateSucceeded WorkloadNetworkVMGroupProvisioningState = "Succeeded"
-	WorkloadNetworkVMGroupProvisioningStateUpdating  WorkloadNetworkVMGroupProvisioningState = "Updating"
+	WorkloadNetworkVMGroupProvisioningStateUpdating WorkloadNetworkVMGroupProvisioningState = "Updating"
 )
 
 // PossibleWorkloadNetworkVMGroupProvisioningStateValues returns the possible values for the WorkloadNetworkVMGroupProvisioningState const type.
 func PossibleWorkloadNetworkVMGroupProvisioningStateValues() []WorkloadNetworkVMGroupProvisioningState {
-	return []WorkloadNetworkVMGroupProvisioningState{
+	return []WorkloadNetworkVMGroupProvisioningState{	
 		WorkloadNetworkVMGroupProvisioningStateBuilding,
 		WorkloadNetworkVMGroupProvisioningStateCanceled,
 		WorkloadNetworkVMGroupProvisioningStateDeleting,
@@ -1004,3 +1004,4 @@ func PossibleWorkloadNetworkVMGroupProvisioningStateValues() []WorkloadNetworkVM
 		WorkloadNetworkVMGroupProvisioningStateUpdating,
 	}
 }
+

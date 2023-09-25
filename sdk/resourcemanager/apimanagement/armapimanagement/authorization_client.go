@@ -24,7 +24,7 @@ import (
 // AuthorizationClient contains the methods for the Authorization group.
 // Don't use this type directly, use NewAuthorizationClient() instead.
 type AuthorizationClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAuthorizationClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &AuthorizationClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -105,8 +105,8 @@ func (client *AuthorizationClient) confirmConsentCodeCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -183,8 +183,8 @@ func (client *AuthorizationClient) createOrUpdateCreateRequest(ctx context.Conte
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -344,7 +344,7 @@ func (client *AuthorizationClient) getHandleResponse(resp *http.Response) (Autho
 //   - authorizationProviderID - Identifier of the authorization provider.
 //   - options - AuthorizationClientListByAuthorizationProviderOptions contains the optional parameters for the AuthorizationClient.NewListByAuthorizationProviderPager
 //     method.
-func (client *AuthorizationClient) NewListByAuthorizationProviderPager(resourceGroupName string, serviceName string, authorizationProviderID string, options *AuthorizationClientListByAuthorizationProviderOptions) *runtime.Pager[AuthorizationClientListByAuthorizationProviderResponse] {
+func (client *AuthorizationClient) NewListByAuthorizationProviderPager(resourceGroupName string, serviceName string, authorizationProviderID string, options *AuthorizationClientListByAuthorizationProviderOptions) (*runtime.Pager[AuthorizationClientListByAuthorizationProviderResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AuthorizationClientListByAuthorizationProviderResponse]{
 		More: func(page AuthorizationClientListByAuthorizationProviderResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -419,3 +419,4 @@ func (client *AuthorizationClient) listByAuthorizationProviderHandleResponse(res
 	}
 	return result, nil
 }
+

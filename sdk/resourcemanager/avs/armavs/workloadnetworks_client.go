@@ -23,7 +23,7 @@ import (
 // WorkloadNetworksClient contains the methods for the WorkloadNetworks group.
 // Don't use this type directly, use NewWorkloadNetworksClient() instead.
 type WorkloadNetworksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewWorkloadNetworksClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &WorkloadNetworksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *WorkloadNetworksClient) createDNSServiceCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkDNSService); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -192,8 +192,8 @@ func (client *WorkloadNetworksClient) createDNSZoneCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkDNSZone); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,8 +269,8 @@ func (client *WorkloadNetworksClient) createDhcpCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkDhcp); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -346,8 +346,8 @@ func (client *WorkloadNetworksClient) createPortMirroringCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkPortMirroring); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -423,8 +423,8 @@ func (client *WorkloadNetworksClient) createPublicIPCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkPublicIP); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -500,8 +500,8 @@ func (client *WorkloadNetworksClient) createSegmentsCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkSegment); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -577,8 +577,8 @@ func (client *WorkloadNetworksClient) createVMGroupCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkVMGroup); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1759,7 +1759,7 @@ func (client *WorkloadNetworksClient) getVirtualMachineHandleResponse(resp *http
 //   - privateCloudName - Name of the private cloud
 //   - options - WorkloadNetworksClientListOptions contains the optional parameters for the WorkloadNetworksClient.NewListPager
 //     method.
-func (client *WorkloadNetworksClient) NewListPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListOptions) *runtime.Pager[WorkloadNetworksClientListResponse] {
+func (client *WorkloadNetworksClient) NewListPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListOptions) (*runtime.Pager[WorkloadNetworksClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListResponse]{
 		More: func(page WorkloadNetworksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1829,7 +1829,7 @@ func (client *WorkloadNetworksClient) listHandleResponse(resp *http.Response) (W
 //   - privateCloudName - Name of the private cloud
 //   - options - WorkloadNetworksClientListDNSServicesOptions contains the optional parameters for the WorkloadNetworksClient.NewListDNSServicesPager
 //     method.
-func (client *WorkloadNetworksClient) NewListDNSServicesPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSServicesOptions) *runtime.Pager[WorkloadNetworksClientListDNSServicesResponse] {
+func (client *WorkloadNetworksClient) NewListDNSServicesPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSServicesOptions) (*runtime.Pager[WorkloadNetworksClientListDNSServicesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListDNSServicesResponse]{
 		More: func(page WorkloadNetworksClientListDNSServicesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1899,7 +1899,7 @@ func (client *WorkloadNetworksClient) listDNSServicesHandleResponse(resp *http.R
 //   - privateCloudName - Name of the private cloud
 //   - options - WorkloadNetworksClientListDNSZonesOptions contains the optional parameters for the WorkloadNetworksClient.NewListDNSZonesPager
 //     method.
-func (client *WorkloadNetworksClient) NewListDNSZonesPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSZonesOptions) *runtime.Pager[WorkloadNetworksClientListDNSZonesResponse] {
+func (client *WorkloadNetworksClient) NewListDNSZonesPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDNSZonesOptions) (*runtime.Pager[WorkloadNetworksClientListDNSZonesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListDNSZonesResponse]{
 		More: func(page WorkloadNetworksClientListDNSZonesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1969,7 +1969,7 @@ func (client *WorkloadNetworksClient) listDNSZonesHandleResponse(resp *http.Resp
 //   - privateCloudName - Name of the private cloud
 //   - options - WorkloadNetworksClientListDhcpOptions contains the optional parameters for the WorkloadNetworksClient.NewListDhcpPager
 //     method.
-func (client *WorkloadNetworksClient) NewListDhcpPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDhcpOptions) *runtime.Pager[WorkloadNetworksClientListDhcpResponse] {
+func (client *WorkloadNetworksClient) NewListDhcpPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListDhcpOptions) (*runtime.Pager[WorkloadNetworksClientListDhcpResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListDhcpResponse]{
 		More: func(page WorkloadNetworksClientListDhcpResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2039,7 +2039,7 @@ func (client *WorkloadNetworksClient) listDhcpHandleResponse(resp *http.Response
 //   - privateCloudName - Name of the private cloud
 //   - options - WorkloadNetworksClientListGatewaysOptions contains the optional parameters for the WorkloadNetworksClient.NewListGatewaysPager
 //     method.
-func (client *WorkloadNetworksClient) NewListGatewaysPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListGatewaysOptions) *runtime.Pager[WorkloadNetworksClientListGatewaysResponse] {
+func (client *WorkloadNetworksClient) NewListGatewaysPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListGatewaysOptions) (*runtime.Pager[WorkloadNetworksClientListGatewaysResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListGatewaysResponse]{
 		More: func(page WorkloadNetworksClientListGatewaysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2109,7 +2109,7 @@ func (client *WorkloadNetworksClient) listGatewaysHandleResponse(resp *http.Resp
 //   - privateCloudName - Name of the private cloud
 //   - options - WorkloadNetworksClientListPortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.NewListPortMirroringPager
 //     method.
-func (client *WorkloadNetworksClient) NewListPortMirroringPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPortMirroringOptions) *runtime.Pager[WorkloadNetworksClientListPortMirroringResponse] {
+func (client *WorkloadNetworksClient) NewListPortMirroringPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPortMirroringOptions) (*runtime.Pager[WorkloadNetworksClientListPortMirroringResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListPortMirroringResponse]{
 		More: func(page WorkloadNetworksClientListPortMirroringResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2179,7 +2179,7 @@ func (client *WorkloadNetworksClient) listPortMirroringHandleResponse(resp *http
 //   - privateCloudName - Name of the private cloud
 //   - options - WorkloadNetworksClientListPublicIPsOptions contains the optional parameters for the WorkloadNetworksClient.NewListPublicIPsPager
 //     method.
-func (client *WorkloadNetworksClient) NewListPublicIPsPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPublicIPsOptions) *runtime.Pager[WorkloadNetworksClientListPublicIPsResponse] {
+func (client *WorkloadNetworksClient) NewListPublicIPsPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListPublicIPsOptions) (*runtime.Pager[WorkloadNetworksClientListPublicIPsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListPublicIPsResponse]{
 		More: func(page WorkloadNetworksClientListPublicIPsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2249,7 +2249,7 @@ func (client *WorkloadNetworksClient) listPublicIPsHandleResponse(resp *http.Res
 //   - privateCloudName - Name of the private cloud
 //   - options - WorkloadNetworksClientListSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.NewListSegmentsPager
 //     method.
-func (client *WorkloadNetworksClient) NewListSegmentsPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListSegmentsOptions) *runtime.Pager[WorkloadNetworksClientListSegmentsResponse] {
+func (client *WorkloadNetworksClient) NewListSegmentsPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListSegmentsOptions) (*runtime.Pager[WorkloadNetworksClientListSegmentsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListSegmentsResponse]{
 		More: func(page WorkloadNetworksClientListSegmentsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2319,7 +2319,7 @@ func (client *WorkloadNetworksClient) listSegmentsHandleResponse(resp *http.Resp
 //   - privateCloudName - Name of the private cloud
 //   - options - WorkloadNetworksClientListVMGroupsOptions contains the optional parameters for the WorkloadNetworksClient.NewListVMGroupsPager
 //     method.
-func (client *WorkloadNetworksClient) NewListVMGroupsPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVMGroupsOptions) *runtime.Pager[WorkloadNetworksClientListVMGroupsResponse] {
+func (client *WorkloadNetworksClient) NewListVMGroupsPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVMGroupsOptions) (*runtime.Pager[WorkloadNetworksClientListVMGroupsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListVMGroupsResponse]{
 		More: func(page WorkloadNetworksClientListVMGroupsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2389,7 +2389,7 @@ func (client *WorkloadNetworksClient) listVMGroupsHandleResponse(resp *http.Resp
 //   - privateCloudName - Name of the private cloud
 //   - options - WorkloadNetworksClientListVirtualMachinesOptions contains the optional parameters for the WorkloadNetworksClient.NewListVirtualMachinesPager
 //     method.
-func (client *WorkloadNetworksClient) NewListVirtualMachinesPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVirtualMachinesOptions) *runtime.Pager[WorkloadNetworksClientListVirtualMachinesResponse] {
+func (client *WorkloadNetworksClient) NewListVirtualMachinesPager(resourceGroupName string, privateCloudName string, options *WorkloadNetworksClientListVirtualMachinesOptions) (*runtime.Pager[WorkloadNetworksClientListVirtualMachinesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[WorkloadNetworksClientListVirtualMachinesResponse]{
 		More: func(page WorkloadNetworksClientListVirtualMachinesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -2524,8 +2524,8 @@ func (client *WorkloadNetworksClient) updateDNSServiceCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkDNSService); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -2601,8 +2601,8 @@ func (client *WorkloadNetworksClient) updateDNSZoneCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkDNSZone); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -2678,8 +2678,8 @@ func (client *WorkloadNetworksClient) updateDhcpCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkDhcp); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -2755,8 +2755,8 @@ func (client *WorkloadNetworksClient) updatePortMirroringCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkPortMirroring); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -2832,8 +2832,8 @@ func (client *WorkloadNetworksClient) updateSegmentsCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkSegment); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -2909,7 +2909,8 @@ func (client *WorkloadNetworksClient) updateVMGroupCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, workloadNetworkVMGroup); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // LocationsClient contains the methods for the Locations group.
 // Don't use this type directly, use NewLocationsClient() instead.
 type LocationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &LocationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -145,8 +145,8 @@ func (client *LocationsClient) checkTrialAvailabilityCreateRequest(ctx context.C
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SKU != nil {
 		if err := runtime.MarshalAsJSON(req, *options.SKU); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -160,3 +160,4 @@ func (client *LocationsClient) checkTrialAvailabilityHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

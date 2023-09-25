@@ -24,7 +24,7 @@ import (
 // RunsClient contains the methods for the Runs group.
 // Don't use this type directly, use NewRunsClient() instead.
 type RunsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewRunsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	}
 	client := &RunsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -255,13 +255,13 @@ func (client *RunsClient) getLogSasURLHandleResponse(resp *http.Response) (RunsC
 //   - resourceGroupName - The name of the resource group to which the container registry belongs.
 //   - registryName - The name of the container registry.
 //   - options - RunsClientListOptions contains the optional parameters for the RunsClient.NewListPager method.
-func (client *RunsClient) NewListPager(resourceGroupName string, registryName string, options *RunsClientListOptions) *runtime.Pager[RunsClientListResponse] {
+func (client *RunsClient) NewListPager(resourceGroupName string, registryName string, options *RunsClientListOptions) (*runtime.Pager[RunsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RunsClientListResponse]{
 		More: func(page RunsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RunsClientListResponse) (RunsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RunsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RunsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -395,7 +395,8 @@ func (client *RunsClient) updateCreateRequest(ctx context.Context, resourceGroup
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, runUpdateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

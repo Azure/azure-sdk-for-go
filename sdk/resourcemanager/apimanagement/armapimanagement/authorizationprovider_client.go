@@ -24,7 +24,7 @@ import (
 // AuthorizationProviderClient contains the methods for the AuthorizationProvider group.
 // Don't use this type directly, use NewAuthorizationProviderClient() instead.
 type AuthorizationProviderClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAuthorizationProviderClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &AuthorizationProviderClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -103,8 +103,8 @@ func (client *AuthorizationProviderClient) createOrUpdateCreateRequest(ctx conte
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -255,7 +255,7 @@ func (client *AuthorizationProviderClient) getHandleResponse(resp *http.Response
 //   - serviceName - The name of the API Management service.
 //   - options - AuthorizationProviderClientListByServiceOptions contains the optional parameters for the AuthorizationProviderClient.NewListByServicePager
 //     method.
-func (client *AuthorizationProviderClient) NewListByServicePager(resourceGroupName string, serviceName string, options *AuthorizationProviderClientListByServiceOptions) *runtime.Pager[AuthorizationProviderClientListByServiceResponse] {
+func (client *AuthorizationProviderClient) NewListByServicePager(resourceGroupName string, serviceName string, options *AuthorizationProviderClientListByServiceOptions) (*runtime.Pager[AuthorizationProviderClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AuthorizationProviderClientListByServiceResponse]{
 		More: func(page AuthorizationProviderClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -326,3 +326,4 @@ func (client *AuthorizationProviderClient) listByServiceHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

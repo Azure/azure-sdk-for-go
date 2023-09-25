@@ -23,7 +23,7 @@ import (
 // PolicyDescriptionClient contains the methods for the PolicyDescription group.
 // Don't use this type directly, use NewPolicyDescriptionClient() instead.
 type PolicyDescriptionClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPolicyDescriptionClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &PolicyDescriptionClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -106,3 +106,4 @@ func (client *PolicyDescriptionClient) listByServiceHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

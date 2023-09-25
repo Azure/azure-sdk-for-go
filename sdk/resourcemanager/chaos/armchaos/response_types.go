@@ -154,3 +154,4 @@ type TargetsClientListResponse struct {
 	// Model that represents a list of Target resources and a link for pagination.
 	TargetListResult
 }
+

@@ -9,7 +9,7 @@
 package armcommunication
 
 const (
-	moduleName    = "armcommunication"
+	moduleName = "armcommunication"
 	moduleVersion = "v2.1.0-beta.1"
 )
 
@@ -22,7 +22,7 @@ const (
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
+	return []ActionType{	
 		ActionTypeInternal,
 	}
 }
@@ -32,12 +32,12 @@ type CheckNameAvailabilityReason string
 
 const (
 	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
-	CheckNameAvailabilityReasonInvalid       CheckNameAvailabilityReason = "Invalid"
+	CheckNameAvailabilityReasonInvalid CheckNameAvailabilityReason = "Invalid"
 )
 
 // PossibleCheckNameAvailabilityReasonValues returns the possible values for the CheckNameAvailabilityReason const type.
 func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
-	return []CheckNameAvailabilityReason{
+	return []CheckNameAvailabilityReason{	
 		CheckNameAvailabilityReasonAlreadyExists,
 		CheckNameAvailabilityReasonInvalid,
 	}
@@ -47,20 +47,20 @@ func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
 type CommunicationServicesProvisioningState string
 
 const (
-	CommunicationServicesProvisioningStateCanceled  CommunicationServicesProvisioningState = "Canceled"
-	CommunicationServicesProvisioningStateCreating  CommunicationServicesProvisioningState = "Creating"
-	CommunicationServicesProvisioningStateDeleting  CommunicationServicesProvisioningState = "Deleting"
-	CommunicationServicesProvisioningStateFailed    CommunicationServicesProvisioningState = "Failed"
-	CommunicationServicesProvisioningStateMoving    CommunicationServicesProvisioningState = "Moving"
-	CommunicationServicesProvisioningStateRunning   CommunicationServicesProvisioningState = "Running"
+	CommunicationServicesProvisioningStateCanceled CommunicationServicesProvisioningState = "Canceled"
+	CommunicationServicesProvisioningStateCreating CommunicationServicesProvisioningState = "Creating"
+	CommunicationServicesProvisioningStateDeleting CommunicationServicesProvisioningState = "Deleting"
+	CommunicationServicesProvisioningStateFailed CommunicationServicesProvisioningState = "Failed"
+	CommunicationServicesProvisioningStateMoving CommunicationServicesProvisioningState = "Moving"
+	CommunicationServicesProvisioningStateRunning CommunicationServicesProvisioningState = "Running"
 	CommunicationServicesProvisioningStateSucceeded CommunicationServicesProvisioningState = "Succeeded"
-	CommunicationServicesProvisioningStateUnknown   CommunicationServicesProvisioningState = "Unknown"
-	CommunicationServicesProvisioningStateUpdating  CommunicationServicesProvisioningState = "Updating"
+	CommunicationServicesProvisioningStateUnknown CommunicationServicesProvisioningState = "Unknown"
+	CommunicationServicesProvisioningStateUpdating CommunicationServicesProvisioningState = "Updating"
 )
 
 // PossibleCommunicationServicesProvisioningStateValues returns the possible values for the CommunicationServicesProvisioningState const type.
 func PossibleCommunicationServicesProvisioningStateValues() []CommunicationServicesProvisioningState {
-	return []CommunicationServicesProvisioningState{
+	return []CommunicationServicesProvisioningState{	
 		CommunicationServicesProvisioningStateCanceled,
 		CommunicationServicesProvisioningStateCreating,
 		CommunicationServicesProvisioningStateDeleting,
@@ -77,15 +77,15 @@ func PossibleCommunicationServicesProvisioningStateValues() []CommunicationServi
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -97,14 +97,14 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type DomainManagement string
 
 const (
-	DomainManagementAzureManaged                    DomainManagement = "AzureManaged"
-	DomainManagementCustomerManaged                 DomainManagement = "CustomerManaged"
+	DomainManagementAzureManaged DomainManagement = "AzureManaged"
+	DomainManagementCustomerManaged DomainManagement = "CustomerManaged"
 	DomainManagementCustomerManagedInExchangeOnline DomainManagement = "CustomerManagedInExchangeOnline"
 )
 
 // PossibleDomainManagementValues returns the possible values for the DomainManagement const type.
 func PossibleDomainManagementValues() []DomainManagement {
-	return []DomainManagement{
+	return []DomainManagement{	
 		DomainManagementAzureManaged,
 		DomainManagementCustomerManaged,
 		DomainManagementCustomerManagedInExchangeOnline,
@@ -115,20 +115,20 @@ func PossibleDomainManagementValues() []DomainManagement {
 type DomainsProvisioningState string
 
 const (
-	DomainsProvisioningStateCanceled  DomainsProvisioningState = "Canceled"
-	DomainsProvisioningStateCreating  DomainsProvisioningState = "Creating"
-	DomainsProvisioningStateDeleting  DomainsProvisioningState = "Deleting"
-	DomainsProvisioningStateFailed    DomainsProvisioningState = "Failed"
-	DomainsProvisioningStateMoving    DomainsProvisioningState = "Moving"
-	DomainsProvisioningStateRunning   DomainsProvisioningState = "Running"
+	DomainsProvisioningStateCanceled DomainsProvisioningState = "Canceled"
+	DomainsProvisioningStateCreating DomainsProvisioningState = "Creating"
+	DomainsProvisioningStateDeleting DomainsProvisioningState = "Deleting"
+	DomainsProvisioningStateFailed DomainsProvisioningState = "Failed"
+	DomainsProvisioningStateMoving DomainsProvisioningState = "Moving"
+	DomainsProvisioningStateRunning DomainsProvisioningState = "Running"
 	DomainsProvisioningStateSucceeded DomainsProvisioningState = "Succeeded"
-	DomainsProvisioningStateUnknown   DomainsProvisioningState = "Unknown"
-	DomainsProvisioningStateUpdating  DomainsProvisioningState = "Updating"
+	DomainsProvisioningStateUnknown DomainsProvisioningState = "Unknown"
+	DomainsProvisioningStateUpdating DomainsProvisioningState = "Updating"
 )
 
 // PossibleDomainsProvisioningStateValues returns the possible values for the DomainsProvisioningState const type.
 func PossibleDomainsProvisioningStateValues() []DomainsProvisioningState {
-	return []DomainsProvisioningState{
+	return []DomainsProvisioningState{	
 		DomainsProvisioningStateCanceled,
 		DomainsProvisioningStateCreating,
 		DomainsProvisioningStateDeleting,
@@ -145,20 +145,20 @@ func PossibleDomainsProvisioningStateValues() []DomainsProvisioningState {
 type EmailServicesProvisioningState string
 
 const (
-	EmailServicesProvisioningStateCanceled  EmailServicesProvisioningState = "Canceled"
-	EmailServicesProvisioningStateCreating  EmailServicesProvisioningState = "Creating"
-	EmailServicesProvisioningStateDeleting  EmailServicesProvisioningState = "Deleting"
-	EmailServicesProvisioningStateFailed    EmailServicesProvisioningState = "Failed"
-	EmailServicesProvisioningStateMoving    EmailServicesProvisioningState = "Moving"
-	EmailServicesProvisioningStateRunning   EmailServicesProvisioningState = "Running"
+	EmailServicesProvisioningStateCanceled EmailServicesProvisioningState = "Canceled"
+	EmailServicesProvisioningStateCreating EmailServicesProvisioningState = "Creating"
+	EmailServicesProvisioningStateDeleting EmailServicesProvisioningState = "Deleting"
+	EmailServicesProvisioningStateFailed EmailServicesProvisioningState = "Failed"
+	EmailServicesProvisioningStateMoving EmailServicesProvisioningState = "Moving"
+	EmailServicesProvisioningStateRunning EmailServicesProvisioningState = "Running"
 	EmailServicesProvisioningStateSucceeded EmailServicesProvisioningState = "Succeeded"
-	EmailServicesProvisioningStateUnknown   EmailServicesProvisioningState = "Unknown"
-	EmailServicesProvisioningStateUpdating  EmailServicesProvisioningState = "Updating"
+	EmailServicesProvisioningStateUnknown EmailServicesProvisioningState = "Unknown"
+	EmailServicesProvisioningStateUpdating EmailServicesProvisioningState = "Updating"
 )
 
 // PossibleEmailServicesProvisioningStateValues returns the possible values for the EmailServicesProvisioningState const type.
 func PossibleEmailServicesProvisioningStateValues() []EmailServicesProvisioningState {
-	return []EmailServicesProvisioningState{
+	return []EmailServicesProvisioningState{	
 		EmailServicesProvisioningStateCanceled,
 		EmailServicesProvisioningStateCreating,
 		EmailServicesProvisioningStateDeleting,
@@ -175,13 +175,13 @@ func PossibleEmailServicesProvisioningStateValues() []EmailServicesProvisioningS
 type KeyType string
 
 const (
-	KeyTypePrimary   KeyType = "Primary"
+	KeyTypePrimary KeyType = "Primary"
 	KeyTypeSecondary KeyType = "Secondary"
 )
 
 // PossibleKeyTypeValues returns the possible values for the KeyType const type.
 func PossibleKeyTypeValues() []KeyType {
-	return []KeyType{
+	return []KeyType{	
 		KeyTypePrimary,
 		KeyTypeSecondary,
 	}
@@ -191,15 +191,15 @@ func PossibleKeyTypeValues() []KeyType {
 type ManagedServiceIdentityType string
 
 const (
-	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
-	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
 	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
-	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
 
 // PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{
+	return []ManagedServiceIdentityType{	
 		ManagedServiceIdentityTypeNone,
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
@@ -212,14 +212,14 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 type Origin string
 
 const (
-	OriginSystem     Origin = "system"
-	OriginUser       Origin = "user"
+	OriginSystem Origin = "system"
+	OriginUser Origin = "user"
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{
+	return []Origin{	
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -230,20 +230,20 @@ func PossibleOriginValues() []Origin {
 type ProvisioningState string
 
 const (
-	ProvisioningStateCanceled  ProvisioningState = "Canceled"
-	ProvisioningStateCreating  ProvisioningState = "Creating"
-	ProvisioningStateDeleting  ProvisioningState = "Deleting"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
-	ProvisioningStateMoving    ProvisioningState = "Moving"
-	ProvisioningStateRunning   ProvisioningState = "Running"
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	ProvisioningStateMoving ProvisioningState = "Moving"
+	ProvisioningStateRunning ProvisioningState = "Running"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	ProvisioningStateUnknown   ProvisioningState = "Unknown"
-	ProvisioningStateUpdating  ProvisioningState = "Updating"
+	ProvisioningStateUnknown ProvisioningState = "Unknown"
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateCanceled,
 		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
@@ -261,12 +261,12 @@ type UserEngagementTracking string
 
 const (
 	UserEngagementTrackingDisabled UserEngagementTracking = "Disabled"
-	UserEngagementTrackingEnabled  UserEngagementTracking = "Enabled"
+	UserEngagementTrackingEnabled UserEngagementTracking = "Enabled"
 )
 
 // PossibleUserEngagementTrackingValues returns the possible values for the UserEngagementTracking const type.
 func PossibleUserEngagementTrackingValues() []UserEngagementTracking {
-	return []UserEngagementTracking{
+	return []UserEngagementTracking{	
 		UserEngagementTrackingDisabled,
 		UserEngagementTrackingEnabled,
 	}
@@ -276,17 +276,17 @@ func PossibleUserEngagementTrackingValues() []UserEngagementTracking {
 type VerificationStatus string
 
 const (
-	VerificationStatusCancellationRequested  VerificationStatus = "CancellationRequested"
-	VerificationStatusNotStarted             VerificationStatus = "NotStarted"
-	VerificationStatusVerificationFailed     VerificationStatus = "VerificationFailed"
+	VerificationStatusCancellationRequested VerificationStatus = "CancellationRequested"
+	VerificationStatusNotStarted VerificationStatus = "NotStarted"
+	VerificationStatusVerificationFailed VerificationStatus = "VerificationFailed"
 	VerificationStatusVerificationInProgress VerificationStatus = "VerificationInProgress"
-	VerificationStatusVerificationRequested  VerificationStatus = "VerificationRequested"
-	VerificationStatusVerified               VerificationStatus = "Verified"
+	VerificationStatusVerificationRequested VerificationStatus = "VerificationRequested"
+	VerificationStatusVerified VerificationStatus = "Verified"
 )
 
 // PossibleVerificationStatusValues returns the possible values for the VerificationStatus const type.
 func PossibleVerificationStatusValues() []VerificationStatus {
-	return []VerificationStatus{
+	return []VerificationStatus{	
 		VerificationStatusCancellationRequested,
 		VerificationStatusNotStarted,
 		VerificationStatusVerificationFailed,
@@ -300,16 +300,16 @@ func PossibleVerificationStatusValues() []VerificationStatus {
 type VerificationType string
 
 const (
-	VerificationTypeDKIM   VerificationType = "DKIM"
-	VerificationTypeDKIM2  VerificationType = "DKIM2"
-	VerificationTypeDMARC  VerificationType = "DMARC"
+	VerificationTypeDKIM VerificationType = "DKIM"
+	VerificationTypeDKIM2 VerificationType = "DKIM2"
+	VerificationTypeDMARC VerificationType = "DMARC"
 	VerificationTypeDomain VerificationType = "Domain"
-	VerificationTypeSPF    VerificationType = "SPF"
+	VerificationTypeSPF VerificationType = "SPF"
 )
 
 // PossibleVerificationTypeValues returns the possible values for the VerificationType const type.
 func PossibleVerificationTypeValues() []VerificationType {
-	return []VerificationType{
+	return []VerificationType{	
 		VerificationTypeDKIM,
 		VerificationTypeDKIM2,
 		VerificationTypeDMARC,
@@ -317,3 +317,4 @@ func PossibleVerificationTypeValues() []VerificationType {
 		VerificationTypeSPF,
 	}
 }
+

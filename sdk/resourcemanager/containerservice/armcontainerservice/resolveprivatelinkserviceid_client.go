@@ -23,7 +23,7 @@ import (
 // ResolvePrivateLinkServiceIDClient contains the methods for the ResolvePrivateLinkServiceID group.
 // Don't use this type directly, use NewResolvePrivateLinkServiceIDClient() instead.
 type ResolvePrivateLinkServiceIDClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewResolvePrivateLinkServiceIDClient(subscriptionID string, credential azco
 	}
 	client := &ResolvePrivateLinkServiceIDClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -94,8 +94,8 @@ func (client *ResolvePrivateLinkServiceIDClient) postCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -107,3 +107,4 @@ func (client *ResolvePrivateLinkServiceIDClient) postHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // VirtualMachineExtensionsClient contains the methods for the VirtualMachineExtensions group.
 // Don't use this type directly, use NewVirtualMachineExtensionsClient() instead.
 type VirtualMachineExtensionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewVirtualMachineExtensionsClient(subscriptionID string, credential azcore.
 	}
 	client := &VirtualMachineExtensionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *VirtualMachineExtensionsClient) createOrUpdateCreateRequest(ctx co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, extensionParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -399,7 +399,8 @@ func (client *VirtualMachineExtensionsClient) updateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, extensionParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

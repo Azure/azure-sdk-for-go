@@ -86,3 +86,4 @@ func unmarshalTaskStepUpdateParametersClassification(rawMsg json.RawMessage) (Ta
 	}
 	return b, nil
 }
+

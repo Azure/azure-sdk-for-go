@@ -77,7 +77,7 @@ type ExperimentsClientListAllOptions struct {
 	ContinuationToken *string
 
 	// Optional value that indicates whether to filter results based on if the Experiment is currently running. If null, then
-	// the results will not be filtered.
+// the results will not be filtered.
 	Running *bool
 }
 
@@ -99,7 +99,7 @@ type ExperimentsClientListOptions struct {
 	ContinuationToken *string
 
 	// Optional value that indicates whether to filter results based on if the Experiment is currently running. If null, then
-	// the results will not be filtered.
+// the results will not be filtered.
 	Running *bool
 }
 
@@ -149,3 +149,4 @@ type TargetsClientListOptions struct {
 	// String that sets the continuation token.
 	ContinuationToken *string
 }
+

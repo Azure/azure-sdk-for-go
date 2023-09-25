@@ -23,7 +23,7 @@ import (
 // ExportPipelinesClient contains the methods for the ExportPipelines group.
 // Don't use this type directly, use NewExportPipelinesClient() instead.
 type ExportPipelinesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewExportPipelinesClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &ExportPipelinesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ExportPipelinesClient) createCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, exportPipelineCreateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -272,13 +272,13 @@ func (client *ExportPipelinesClient) getHandleResponse(resp *http.Response) (Exp
 //   - registryName - The name of the container registry.
 //   - options - ExportPipelinesClientListOptions contains the optional parameters for the ExportPipelinesClient.NewListPager
 //     method.
-func (client *ExportPipelinesClient) NewListPager(resourceGroupName string, registryName string, options *ExportPipelinesClientListOptions) *runtime.Pager[ExportPipelinesClientListResponse] {
+func (client *ExportPipelinesClient) NewListPager(resourceGroupName string, registryName string, options *ExportPipelinesClientListOptions) (*runtime.Pager[ExportPipelinesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ExportPipelinesClientListResponse]{
 		More: func(page ExportPipelinesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExportPipelinesClientListResponse) (ExportPipelinesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExportPipelinesClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExportPipelinesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -333,3 +333,4 @@ func (client *ExportPipelinesClient) listHandleResponse(resp *http.Response) (Ex
 	}
 	return result, nil
 }
+

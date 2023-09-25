@@ -23,7 +23,7 @@ import (
 // ReplicationsClient contains the methods for the Replications group.
 // Don't use this type directly, use NewReplicationsClient() instead.
 type ReplicationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewReplicationsClient(subscriptionID string, credential azcore.TokenCredent
 	}
 	client := &ReplicationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,8 +118,8 @@ func (client *ReplicationsClient) createCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, replication); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -270,13 +270,13 @@ func (client *ReplicationsClient) getHandleResponse(resp *http.Response) (Replic
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - ReplicationsClientListOptions contains the optional parameters for the ReplicationsClient.NewListPager method.
-func (client *ReplicationsClient) NewListPager(resourceGroupName string, registryName string, options *ReplicationsClientListOptions) *runtime.Pager[ReplicationsClientListResponse] {
+func (client *ReplicationsClient) NewListPager(resourceGroupName string, registryName string, options *ReplicationsClientListOptions) (*runtime.Pager[ReplicationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationsClientListResponse]{
 		More: func(page ReplicationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReplicationsClientListResponse) (ReplicationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -407,7 +407,8 @@ func (client *ReplicationsClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, replicationUpdateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

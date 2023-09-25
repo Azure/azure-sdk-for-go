@@ -9,7 +9,7 @@
 package armapicenter
 
 const (
-	moduleName    = "armapicenter"
+	moduleName = "armapicenter"
 	moduleVersion = "v0.1.0"
 )
 
@@ -22,7 +22,7 @@ const (
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
+	return []ActionType{	
 		ActionTypeInternal,
 	}
 }
@@ -31,15 +31,15 @@ func PossibleActionTypeValues() []ActionType {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -51,15 +51,15 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type ManagedServiceIdentityType string
 
 const (
-	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
-	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
 	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
-	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
 
 // PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{
+	return []ManagedServiceIdentityType{	
 		ManagedServiceIdentityTypeNone,
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
@@ -72,14 +72,14 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 type Origin string
 
 const (
-	OriginSystem     Origin = "system"
-	OriginUser       Origin = "user"
+	OriginSystem Origin = "system"
+	OriginUser Origin = "user"
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{
+	return []Origin{	
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -90,16 +90,17 @@ func PossibleOriginValues() []Origin {
 type ProvisioningState string
 
 const (
-	ProvisioningStateCanceled  ProvisioningState = "Canceled"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	ProvisioningStateFailed ProvisioningState = "Failed"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateCanceled,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
 	}
 }
+

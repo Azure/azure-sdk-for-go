@@ -40,7 +40,7 @@ type AddonArcProperties struct {
 // GetAddonProperties implements the AddonPropertiesClassification interface for type AddonArcProperties.
 func (a *AddonArcProperties) GetAddonProperties() *AddonProperties {
 	return &AddonProperties{
-		AddonType:         a.AddonType,
+		AddonType: a.AddonType,
 		ProvisioningState: a.ProvisioningState,
 	}
 }
@@ -60,7 +60,7 @@ type AddonHcxProperties struct {
 // GetAddonProperties implements the AddonPropertiesClassification interface for type AddonHcxProperties.
 func (a *AddonHcxProperties) GetAddonProperties() *AddonProperties {
 	return &AddonProperties{
-		AddonType:         a.AddonType,
+		AddonType: a.AddonType,
 		ProvisioningState: a.ProvisioningState,
 	}
 }
@@ -101,7 +101,7 @@ type AddonSrmProperties struct {
 // GetAddonProperties implements the AddonPropertiesClassification interface for type AddonSrmProperties.
 func (a *AddonSrmProperties) GetAddonProperties() *AddonProperties {
 	return &AddonProperties{
-		AddonType:         a.AddonType,
+		AddonType: a.AddonType,
 		ProvisioningState: a.ProvisioningState,
 	}
 }
@@ -121,7 +121,7 @@ type AddonVrProperties struct {
 // GetAddonProperties implements the AddonPropertiesClassification interface for type AddonVrProperties.
 func (a *AddonVrProperties) GetAddonProperties() *AddonProperties {
 	return &AddonProperties{
-		AddonType:         a.AddonType,
+		AddonType: a.AddonType,
 		ProvisioningState: a.ProvisioningState,
 	}
 }
@@ -273,6 +273,21 @@ type ClusterZoneList struct {
 	Zones []*ClusterZone
 }
 
+// CommonClusterProperties - The common properties of a cluster
+type CommonClusterProperties struct {
+	// The cluster size
+	ClusterSize *int32
+
+	// The hosts
+	Hosts []*string
+
+	// READ-ONLY; The identity
+	ClusterID *int32
+
+	// READ-ONLY; The state of the cluster provisioning
+	ProvisioningState *ClusterProvisioningState
+}
+
 // Datastore - A datastore resource
 type Datastore struct {
 	// The properties of a datastore resource
@@ -367,6 +382,40 @@ type Endpoints struct {
 
 	// READ-ONLY; Endpoint for Virtual Center Server Appliance
 	Vcsa *string
+}
+
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
 }
 
 // ExpressRouteAuthorization - ExpressRoute Circuit Authorization
@@ -720,9 +769,7 @@ type PlacementPolicyProperties struct {
 }
 
 // GetPlacementPolicyProperties implements the PlacementPolicyPropertiesClassification interface for type PlacementPolicyProperties.
-func (p *PlacementPolicyProperties) GetPlacementPolicyProperties() *PlacementPolicyProperties {
-	return p
-}
+func (p *PlacementPolicyProperties) GetPlacementPolicyProperties() *PlacementPolicyProperties { return p }
 
 // PlacementPolicyUpdate - An update of a DRS placement policy resource
 type PlacementPolicyUpdate struct {
@@ -778,7 +825,7 @@ type PrivateCloud struct {
 // PrivateCloudIdentity - Identity for the virtual machine.
 type PrivateCloudIdentity struct {
 	// The type of identity used for the private cloud. The type 'SystemAssigned' refers to an implicitly created identity. The
-	// type 'None' will remove any identities from the Private Cloud.
+// type 'None' will remove any identities from the Private Cloud.
 	Type *ResourceIdentityType
 
 	// READ-ONLY; The principal ID of private cloud identity. This property will only be provided for a system assigned identity.
@@ -800,8 +847,8 @@ type PrivateCloudList struct {
 // PrivateCloudProperties - The properties of a private cloud resource
 type PrivateCloudProperties struct {
 	// REQUIRED; The block of addresses should be unique across VNet in your subscription as well as on-premise. Make sure the
-	// CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X is
-	// between 0 and 22
+// CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X is
+// between 0 and 22
 	NetworkBlock *string
 
 	// Properties describing how the cloud is distributed across availability zones
@@ -814,8 +861,8 @@ type PrivateCloudProperties struct {
 	Encryption *Encryption
 
 	// Array of additional networks noncontiguous with networkBlock. Networks must be unique and non-overlapping across VNet in
-	// your subscription, on-premise, and this privateCloud networkBlock attribute.
-	// Make sure the CIDR format conforms to (A.B.C.D/X).
+// your subscription, on-premise, and this privateCloud networkBlock attribute.
+// Make sure the CIDR format conforms to (A.B.C.D/X).
 	ExtendedNetworkBlocks []*string
 
 	// vCenter Single Sign On Identity Sources
@@ -846,7 +893,7 @@ type PrivateCloudProperties struct {
 	ManagementNetwork *string
 
 	// READ-ONLY; Flag to indicate whether the private cloud has the quota for provisioned NSX Public IP count raised from 64
-	// to 1024
+// to 1024
 	NsxPublicIPQuotaRaised *NsxPublicIPQuotaRaisedEnum
 
 	// READ-ONLY; Thumbprint of the NSX-T Manager SSL certificate
@@ -886,8 +933,8 @@ type PrivateCloudUpdateProperties struct {
 	Encryption *Encryption
 
 	// Array of additional networks noncontiguous with networkBlock. Networks must be unique and non-overlapping across VNet in
-	// your subscription, on-premise, and this privateCloud networkBlock attribute.
-	// Make sure the CIDR format conforms to (A.B.C.D/X).
+// your subscription, on-premise, and this privateCloud networkBlock attribute.
+// Make sure the CIDR format conforms to (A.B.C.D/X).
 	ExtendedNetworkBlocks []*string
 
 	// vCenter Single Sign On Identity Sources
@@ -900,6 +947,18 @@ type PrivateCloudUpdateProperties struct {
 	ManagementCluster *ManagementCluster
 }
 
+// ProxyResource - The resource model definition for a ARM proxy resource
+type ProxyResource struct {
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
 // Quota - Subscription quotas
 type Quota struct {
 	// READ-ONLY; Remaining hosts quota by sku type
@@ -907,6 +966,18 @@ type Quota struct {
 
 	// READ-ONLY; Host quota is active for current subscription
 	QuotaEnabled *QuotaEnabled
+}
+
+// Resource - The core properties of ARM resources
+type Resource struct {
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
 }
 
 // SKU - The resource model definition representing SKU
@@ -1141,6 +1212,24 @@ type ServiceSpecification struct {
 	MetricSpecifications []*MetricSpecification
 }
 
+// TrackedResource - The resource model definition for a ARM tracked top level resource
+type TrackedResource struct {
+	// Resource location
+	Location *string
+
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
 // Trial - Subscription trial availability
 type Trial struct {
 	// READ-ONLY; Number of trial hosts available
@@ -1183,10 +1272,10 @@ type VMHostPlacementPolicyProperties struct {
 // GetPlacementPolicyProperties implements the PlacementPolicyPropertiesClassification interface for type VMHostPlacementPolicyProperties.
 func (v *VMHostPlacementPolicyProperties) GetPlacementPolicyProperties() *PlacementPolicyProperties {
 	return &PlacementPolicyProperties{
-		DisplayName:       v.DisplayName,
+		DisplayName: v.DisplayName,
 		ProvisioningState: v.ProvisioningState,
-		State:             v.State,
-		Type:              v.Type,
+		State: v.State,
+		Type: v.Type,
 	}
 }
 
@@ -1214,10 +1303,10 @@ type VMPlacementPolicyProperties struct {
 // GetPlacementPolicyProperties implements the PlacementPolicyPropertiesClassification interface for type VMPlacementPolicyProperties.
 func (v *VMPlacementPolicyProperties) GetPlacementPolicyProperties() *PlacementPolicyProperties {
 	return &PlacementPolicyProperties{
-		DisplayName:       v.DisplayName,
+		DisplayName: v.DisplayName,
 		ProvisioningState: v.ProvisioningState,
-		State:             v.State,
-		Type:              v.Type,
+		State: v.State,
+		Type: v.Type,
 	}
 }
 
@@ -1411,9 +1500,7 @@ type WorkloadNetworkDhcpEntity struct {
 }
 
 // GetWorkloadNetworkDhcpEntity implements the WorkloadNetworkDhcpEntityClassification interface for type WorkloadNetworkDhcpEntity.
-func (w *WorkloadNetworkDhcpEntity) GetWorkloadNetworkDhcpEntity() *WorkloadNetworkDhcpEntity {
-	return w
-}
+func (w *WorkloadNetworkDhcpEntity) GetWorkloadNetworkDhcpEntity() *WorkloadNetworkDhcpEntity { return w }
 
 // WorkloadNetworkDhcpList - A list of NSX dhcp entities
 type WorkloadNetworkDhcpList struct {
@@ -1448,11 +1535,11 @@ type WorkloadNetworkDhcpRelay struct {
 // GetWorkloadNetworkDhcpEntity implements the WorkloadNetworkDhcpEntityClassification interface for type WorkloadNetworkDhcpRelay.
 func (w *WorkloadNetworkDhcpRelay) GetWorkloadNetworkDhcpEntity() *WorkloadNetworkDhcpEntity {
 	return &WorkloadNetworkDhcpEntity{
-		DhcpType:          w.DhcpType,
-		DisplayName:       w.DisplayName,
+		DhcpType: w.DhcpType,
+		DisplayName: w.DisplayName,
 		ProvisioningState: w.ProvisioningState,
-		Revision:          w.Revision,
-		Segments:          w.Segments,
+		Revision: w.Revision,
+		Segments: w.Segments,
 	}
 }
 
@@ -1483,11 +1570,11 @@ type WorkloadNetworkDhcpServer struct {
 // GetWorkloadNetworkDhcpEntity implements the WorkloadNetworkDhcpEntityClassification interface for type WorkloadNetworkDhcpServer.
 func (w *WorkloadNetworkDhcpServer) GetWorkloadNetworkDhcpEntity() *WorkloadNetworkDhcpEntity {
 	return &WorkloadNetworkDhcpEntity{
-		DhcpType:          w.DhcpType,
-		DisplayName:       w.DisplayName,
+		DhcpType: w.DhcpType,
+		DisplayName: w.DisplayName,
 		ProvisioningState: w.ProvisioningState,
-		Revision:          w.Revision,
-		Segments:          w.Segments,
+		Revision: w.Revision,
+		Segments: w.Segments,
 	}
 }
 
@@ -1757,3 +1844,4 @@ type WorkloadNetworkVirtualMachinesList struct {
 	// READ-ONLY; The items on the page
 	Value []*WorkloadNetworkVirtualMachine
 }
+

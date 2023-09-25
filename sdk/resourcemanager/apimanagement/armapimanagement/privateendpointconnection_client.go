@@ -23,7 +23,7 @@ import (
 // PrivateEndpointConnectionClient contains the methods for the PrivateEndpointConnection group.
 // Don't use this type directly, use NewPrivateEndpointConnectionClient() instead.
 type PrivateEndpointConnectionClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore
 	}
 	client := &PrivateEndpointConnectionClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,8 +114,8 @@ func (client *PrivateEndpointConnectionClient) createOrUpdateCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateEndpointConnectionRequest); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -331,7 +331,7 @@ func (client *PrivateEndpointConnectionClient) getPrivateLinkResourceHandleRespo
 //   - serviceName - The name of the API Management service.
 //   - options - PrivateEndpointConnectionClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionClient.NewListByServicePager
 //     method.
-func (client *PrivateEndpointConnectionClient) NewListByServicePager(resourceGroupName string, serviceName string, options *PrivateEndpointConnectionClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionClientListByServiceResponse] {
+func (client *PrivateEndpointConnectionClient) NewListByServicePager(resourceGroupName string, serviceName string, options *PrivateEndpointConnectionClientListByServiceOptions) (*runtime.Pager[PrivateEndpointConnectionClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionClientListByServiceResponse]{
 		More: func(page PrivateEndpointConnectionClientListByServiceResponse) bool {
 			return false
@@ -448,3 +448,4 @@ func (client *PrivateEndpointConnectionClient) listPrivateLinkResourcesHandleRes
 	}
 	return result, nil
 }
+

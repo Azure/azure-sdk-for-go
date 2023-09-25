@@ -23,7 +23,7 @@ import (
 // CacheRulesClient contains the methods for the CacheRules group.
 // Don't use this type directly, use NewCacheRulesClient() instead.
 type CacheRulesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewCacheRulesClient(subscriptionID string, credential azcore.TokenCredentia
 	}
 	client := &CacheRulesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,8 +117,8 @@ func (client *CacheRulesClient) createCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cacheRuleCreateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,13 +269,13 @@ func (client *CacheRulesClient) getHandleResponse(resp *http.Response) (CacheRul
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - CacheRulesClientListOptions contains the optional parameters for the CacheRulesClient.NewListPager method.
-func (client *CacheRulesClient) NewListPager(resourceGroupName string, registryName string, options *CacheRulesClientListOptions) *runtime.Pager[CacheRulesClientListResponse] {
+func (client *CacheRulesClient) NewListPager(resourceGroupName string, registryName string, options *CacheRulesClientListOptions) (*runtime.Pager[CacheRulesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CacheRulesClientListResponse]{
 		More: func(page CacheRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CacheRulesClientListResponse) (CacheRulesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CacheRulesClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CacheRulesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -405,7 +405,8 @@ func (client *CacheRulesClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cacheRuleUpdateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

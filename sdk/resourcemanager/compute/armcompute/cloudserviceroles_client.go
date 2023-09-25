@@ -23,7 +23,7 @@ import (
 // CloudServiceRolesClient contains the methods for the CloudServiceRoles group.
 // Don't use this type directly, use NewCloudServiceRolesClient() instead.
 type CloudServiceRolesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewCloudServiceRolesClient(subscriptionID string, credential azcore.TokenCr
 	}
 	client := &CloudServiceRolesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,7 +117,7 @@ func (client *CloudServiceRolesClient) getHandleResponse(resp *http.Response) (C
 //   - cloudServiceName - Name of the cloud service.
 //   - options - CloudServiceRolesClientListOptions contains the optional parameters for the CloudServiceRolesClient.NewListPager
 //     method.
-func (client *CloudServiceRolesClient) NewListPager(resourceGroupName string, cloudServiceName string, options *CloudServiceRolesClientListOptions) *runtime.Pager[CloudServiceRolesClientListResponse] {
+func (client *CloudServiceRolesClient) NewListPager(resourceGroupName string, cloudServiceName string, options *CloudServiceRolesClientListOptions) (*runtime.Pager[CloudServiceRolesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CloudServiceRolesClientListResponse]{
 		More: func(page CloudServiceRolesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -179,3 +179,4 @@ func (client *CloudServiceRolesClient) listHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+

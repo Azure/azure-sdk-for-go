@@ -24,7 +24,7 @@ import (
 // GatewayClient contains the methods for the Gateway group.
 // Don't use this type directly, use NewGatewayClient() instead.
 type GatewayClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewGatewayClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &GatewayClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -102,8 +102,8 @@ func (client *GatewayClient) createOrUpdateCreateRequest(ctx context.Context, re
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -233,8 +233,8 @@ func (client *GatewayClient) generateTokenCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -389,7 +389,7 @@ func (client *GatewayClient) getEntityTagHandleResponse(resp *http.Response) (Ga
 //   - serviceName - The name of the API Management service.
 //   - options - GatewayClientListByServiceOptions contains the optional parameters for the GatewayClient.NewListByServicePager
 //     method.
-func (client *GatewayClient) NewListByServicePager(resourceGroupName string, serviceName string, options *GatewayClientListByServiceOptions) *runtime.Pager[GatewayClientListByServiceResponse] {
+func (client *GatewayClient) NewListByServicePager(resourceGroupName string, serviceName string, options *GatewayClientListByServiceOptions) (*runtime.Pager[GatewayClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GatewayClientListByServiceResponse]{
 		More: func(page GatewayClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -584,8 +584,8 @@ func (client *GatewayClient) regenerateKeyCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -647,8 +647,8 @@ func (client *GatewayClient) updateCreateRequest(ctx context.Context, resourceGr
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -663,3 +663,4 @@ func (client *GatewayClient) updateHandleResponse(resp *http.Response) (GatewayC
 	}
 	return result, nil
 }
+

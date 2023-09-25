@@ -23,7 +23,7 @@ import (
 // ProductWikiClient contains the methods for the ProductWiki group.
 // Don't use this type directly, use NewProductWikiClient() instead.
 type ProductWikiClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewProductWikiClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &ProductWikiClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -102,8 +102,8 @@ func (client *ProductWikiClient) createOrUpdateCreateRequest(ctx context.Context
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -369,8 +369,8 @@ func (client *ProductWikiClient) updateCreateRequest(ctx context.Context, resour
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -385,3 +385,4 @@ func (client *ProductWikiClient) updateHandleResponse(resp *http.Response) (Prod
 	}
 	return result, nil
 }
+

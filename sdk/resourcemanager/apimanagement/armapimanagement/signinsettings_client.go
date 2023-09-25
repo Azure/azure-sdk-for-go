@@ -23,7 +23,7 @@ import (
 // SignInSettingsClient contains the methods for the SignInSettings group.
 // Don't use this type directly, use NewSignInSettingsClient() instead.
 type SignInSettingsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSignInSettingsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &SignInSettingsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -97,8 +97,8 @@ func (client *SignInSettingsClient) createOrUpdateCreateRequest(ctx context.Cont
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -287,7 +287,8 @@ func (client *SignInSettingsClient) updateCreateRequest(ctx context.Context, res
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

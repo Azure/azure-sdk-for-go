@@ -11,9 +11,8 @@ package azeventgrid
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AcknowledgeOptions.
@@ -33,7 +32,7 @@ func (a *AcknowledgeOptions) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "lockTokens":
-			err = unpopulate(val, "LockTokens", &a.LockTokens)
+				err = unpopulate(val, "LockTokens", &a.LockTokens)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -61,10 +60,10 @@ func (a *AcknowledgeResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "failedLockTokens":
-			err = unpopulate(val, "FailedLockTokens", &a.FailedLockTokens)
+				err = unpopulate(val, "FailedLockTokens", &a.FailedLockTokens)
 			delete(rawMsg, key)
 		case "succeededLockTokens":
-			err = unpopulate(val, "SucceededLockTokens", &a.SucceededLockTokens)
+				err = unpopulate(val, "SucceededLockTokens", &a.SucceededLockTokens)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -92,10 +91,10 @@ func (b *BrokerProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "deliveryCount":
-			err = unpopulate(val, "DeliveryCount", &b.DeliveryCount)
+				err = unpopulate(val, "DeliveryCount", &b.DeliveryCount)
 			delete(rawMsg, key)
 		case "lockToken":
-			err = unpopulate(val, "LockToken", &b.LockToken)
+				err = unpopulate(val, "LockToken", &b.LockToken)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -124,13 +123,13 @@ func (f *FailedLockToken) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "errorCode":
-			err = unpopulate(val, "ErrorCode", &f.ErrorCode)
+				err = unpopulate(val, "ErrorCode", &f.ErrorCode)
 			delete(rawMsg, key)
 		case "errorDescription":
-			err = unpopulate(val, "ErrorDescription", &f.ErrorDescription)
+				err = unpopulate(val, "ErrorDescription", &f.ErrorDescription)
 			delete(rawMsg, key)
 		case "lockToken":
-			err = unpopulate(val, "LockToken", &f.LockToken)
+				err = unpopulate(val, "LockToken", &f.LockToken)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -158,10 +157,10 @@ func (r *ReceiveDetails) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "brokerProperties":
-			err = unpopulate(val, "BrokerProperties", &r.BrokerProperties)
+				err = unpopulate(val, "BrokerProperties", &r.BrokerProperties)
 			delete(rawMsg, key)
 		case "event":
-			err = unpopulate(val, "Event", &r.Event)
+				err = unpopulate(val, "Event", &r.Event)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -188,7 +187,7 @@ func (r *ReceiveResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "value":
-			err = unpopulate(val, "Value", &r.Value)
+				err = unpopulate(val, "Value", &r.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -215,7 +214,7 @@ func (r *RejectOptions) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "lockTokens":
-			err = unpopulate(val, "LockTokens", &r.LockTokens)
+				err = unpopulate(val, "LockTokens", &r.LockTokens)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -243,10 +242,10 @@ func (r *RejectResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "failedLockTokens":
-			err = unpopulate(val, "FailedLockTokens", &r.FailedLockTokens)
+				err = unpopulate(val, "FailedLockTokens", &r.FailedLockTokens)
 			delete(rawMsg, key)
 		case "succeededLockTokens":
-			err = unpopulate(val, "SucceededLockTokens", &r.SucceededLockTokens)
+				err = unpopulate(val, "SucceededLockTokens", &r.SucceededLockTokens)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -273,7 +272,7 @@ func (r *ReleaseOptions) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "lockTokens":
-			err = unpopulate(val, "LockTokens", &r.LockTokens)
+				err = unpopulate(val, "LockTokens", &r.LockTokens)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -301,10 +300,10 @@ func (r *ReleaseResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "failedLockTokens":
-			err = unpopulate(val, "FailedLockTokens", &r.FailedLockTokens)
+				err = unpopulate(val, "FailedLockTokens", &r.FailedLockTokens)
 			delete(rawMsg, key)
 		case "succeededLockTokens":
-			err = unpopulate(val, "SucceededLockTokens", &r.SucceededLockTokens)
+				err = unpopulate(val, "SucceededLockTokens", &r.SucceededLockTokens)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -333,3 +332,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
+

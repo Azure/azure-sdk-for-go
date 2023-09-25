@@ -23,7 +23,7 @@ import (
 // TenantSettingsClient contains the methods for the TenantSettings group.
 // Don't use this type directly, use NewTenantSettingsClient() instead.
 type TenantSettingsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTenantSettingsClient(subscriptionID string, credential azcore.TokenCrede
 	}
 	client := &TenantSettingsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -118,7 +118,7 @@ func (client *TenantSettingsClient) getHandleResponse(resp *http.Response) (Tena
 //   - serviceName - The name of the API Management service.
 //   - options - TenantSettingsClientListByServiceOptions contains the optional parameters for the TenantSettingsClient.NewListByServicePager
 //     method.
-func (client *TenantSettingsClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TenantSettingsClientListByServiceOptions) *runtime.Pager[TenantSettingsClientListByServiceResponse] {
+func (client *TenantSettingsClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TenantSettingsClientListByServiceOptions) (*runtime.Pager[TenantSettingsClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TenantSettingsClientListByServiceResponse]{
 		More: func(page TenantSettingsClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -183,3 +183,4 @@ func (client *TenantSettingsClient) listByServiceHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
+

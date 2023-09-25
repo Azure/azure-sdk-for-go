@@ -23,7 +23,7 @@ import (
 // TasksClient contains the methods for the Tasks group.
 // Don't use this type directly, use NewTasksClient() instead.
 type TasksClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTasksClient(subscriptionID string, credential azcore.TokenCredential, op
 	}
 	client := &TasksClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -115,8 +115,8 @@ func (client *TasksClient) createCreateRequest(ctx context.Context, resourceGrou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, taskCreateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -331,13 +331,13 @@ func (client *TasksClient) getDetailsHandleResponse(resp *http.Response) (TasksC
 //   - resourceGroupName - The name of the resource group to which the container registry belongs.
 //   - registryName - The name of the container registry.
 //   - options - TasksClientListOptions contains the optional parameters for the TasksClient.NewListPager method.
-func (client *TasksClient) NewListPager(resourceGroupName string, registryName string, options *TasksClientListOptions) *runtime.Pager[TasksClientListResponse] {
+func (client *TasksClient) NewListPager(resourceGroupName string, registryName string, options *TasksClientListOptions) (*runtime.Pager[TasksClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TasksClientListResponse]{
 		More: func(page TasksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TasksClientListResponse) (TasksClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TasksClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TasksClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -465,7 +465,8 @@ func (client *TasksClient) updateCreateRequest(ctx context.Context, resourceGrou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, taskUpdateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

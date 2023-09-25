@@ -23,7 +23,7 @@ import (
 // DeletedServicesClient contains the methods for the DeletedServices group.
 // Don't use this type directly, use NewDeletedServicesClient() instead.
 type DeletedServicesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewDeletedServicesClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &DeletedServicesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -109,7 +109,7 @@ func (client *DeletedServicesClient) getByNameHandleResponse(resp *http.Response
 // Generated from API version 2022-08-01
 //   - options - DeletedServicesClientListBySubscriptionOptions contains the optional parameters for the DeletedServicesClient.NewListBySubscriptionPager
 //     method.
-func (client *DeletedServicesClient) NewListBySubscriptionPager(options *DeletedServicesClientListBySubscriptionOptions) *runtime.Pager[DeletedServicesClientListBySubscriptionResponse] {
+func (client *DeletedServicesClient) NewListBySubscriptionPager(options *DeletedServicesClientListBySubscriptionOptions) (*runtime.Pager[DeletedServicesClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DeletedServicesClientListBySubscriptionResponse]{
 		More: func(page DeletedServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -233,3 +233,4 @@ func (client *DeletedServicesClient) purgeCreateRequest(ctx context.Context, ser
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

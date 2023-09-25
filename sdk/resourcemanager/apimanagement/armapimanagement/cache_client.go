@@ -24,7 +24,7 @@ import (
 // CacheClient contains the methods for the Cache group.
 // Don't use this type directly, use NewCacheClient() instead.
 type CacheClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewCacheClient(subscriptionID string, credential azcore.TokenCredential, op
 	}
 	client := &CacheClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -102,8 +102,8 @@ func (client *CacheClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -316,7 +316,7 @@ func (client *CacheClient) getEntityTagHandleResponse(resp *http.Response) (Cach
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - CacheClientListByServiceOptions contains the optional parameters for the CacheClient.NewListByServicePager method.
-func (client *CacheClient) NewListByServicePager(resourceGroupName string, serviceName string, options *CacheClientListByServiceOptions) *runtime.Pager[CacheClientListByServiceResponse] {
+func (client *CacheClient) NewListByServicePager(resourceGroupName string, serviceName string, options *CacheClientListByServiceOptions) (*runtime.Pager[CacheClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CacheClientListByServiceResponse]{
 		More: func(page CacheClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -443,8 +443,8 @@ func (client *CacheClient) updateCreateRequest(ctx context.Context, resourceGrou
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -459,3 +459,4 @@ func (client *CacheClient) updateHandleResponse(resp *http.Response) (CacheClien
 	}
 	return result, nil
 }
+

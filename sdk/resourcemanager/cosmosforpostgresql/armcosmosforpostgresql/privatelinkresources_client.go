@@ -23,7 +23,7 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	}
 	client := &PrivateLinkResourcesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,7 +113,7 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 //   - clusterName - The name of the cluster.
 //   - options - PrivateLinkResourcesClientListByClusterOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByClusterPager
 //     method.
-func (client *PrivateLinkResourcesClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *PrivateLinkResourcesClientListByClusterOptions) *runtime.Pager[PrivateLinkResourcesClientListByClusterResponse] {
+func (client *PrivateLinkResourcesClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *PrivateLinkResourcesClientListByClusterOptions) (*runtime.Pager[PrivateLinkResourcesClientListByClusterResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkResourcesClientListByClusterResponse]{
 		More: func(page PrivateLinkResourcesClientListByClusterResponse) bool {
 			return false
@@ -166,3 +166,4 @@ func (client *PrivateLinkResourcesClient) listByClusterHandleResponse(resp *http
 	}
 	return result, nil
 }
+

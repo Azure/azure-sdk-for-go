@@ -23,7 +23,7 @@ import (
 // NetworkStatusClient contains the methods for the NetworkStatus group.
 // Don't use this type directly, use NewNetworkStatusClient() instead.
 type NetworkStatusClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewNetworkStatusClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &NetworkStatusClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -172,3 +172,4 @@ func (client *NetworkStatusClient) listByServiceHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

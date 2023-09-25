@@ -24,7 +24,7 @@ import (
 // TagResourceClient contains the methods for the TagResource group.
 // Don't use this type directly, use NewTagResourceClient() instead.
 type TagResourceClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewTagResourceClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &TagResourceClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewTagResourceClient(subscriptionID string, credential azcore.TokenCredenti
 //   - serviceName - The name of the API Management service.
 //   - options - TagResourceClientListByServiceOptions contains the optional parameters for the TagResourceClient.NewListByServicePager
 //     method.
-func (client *TagResourceClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TagResourceClientListByServiceOptions) *runtime.Pager[TagResourceClientListByServiceResponse] {
+func (client *TagResourceClient) NewListByServicePager(resourceGroupName string, serviceName string, options *TagResourceClientListByServiceOptions) (*runtime.Pager[TagResourceClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TagResourceClientListByServiceResponse]{
 		More: func(page TagResourceClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -122,3 +122,4 @@ func (client *TagResourceClient) listByServiceHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

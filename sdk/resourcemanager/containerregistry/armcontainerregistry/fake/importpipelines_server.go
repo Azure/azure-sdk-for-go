@@ -23,7 +23,7 @@ import (
 )
 
 // ImportPipelinesServer is a fake server for instances of the armcontainerregistry.ImportPipelinesClient type.
-type ImportPipelinesServer struct {
+type ImportPipelinesServer struct{
 	// BeginCreate is the fake for method ImportPipelinesClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string, importPipelineCreateParameters armcontainerregistry.ImportPipeline, options *armcontainerregistry.ImportPipelinesClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientCreateResponse], errResp azfake.ErrorResponder)
@@ -39,6 +39,7 @@ type ImportPipelinesServer struct {
 	// NewListPager is the fake for method ImportPipelinesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.ImportPipelinesClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.ImportPipelinesClientListResponse])
+
 }
 
 // NewImportPipelinesServerTransport creates a new instance of ImportPipelinesServerTransport with the provided implementation.
@@ -46,9 +47,9 @@ type ImportPipelinesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewImportPipelinesServerTransport(srv *ImportPipelinesServer) *ImportPipelinesServerTransport {
 	return &ImportPipelinesServerTransport{
-		srv:          srv,
-		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientCreateResponse]](),
-		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientDeleteResponse]](),
+		srv: srv,
+		beginCreate: newTracker[azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientCreateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientDeleteResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.ImportPipelinesClientListResponse]](),
 	}
 }
@@ -56,9 +57,9 @@ func NewImportPipelinesServerTransport(srv *ImportPipelinesServer) *ImportPipeli
 // ImportPipelinesServerTransport connects instances of armcontainerregistry.ImportPipelinesClient to instances of ImportPipelinesServer.
 // Don't use this type directly, use NewImportPipelinesServerTransport instead.
 type ImportPipelinesServerTransport struct {
-	srv          *ImportPipelinesServer
-	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientCreateResponse]]
-	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientDeleteResponse]]
+	srv *ImportPipelinesServer
+	beginCreate *tracker[azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientCreateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcontainerregistry.ImportPipelinesClientDeleteResponse]]
 	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.ImportPipelinesClientListResponse]]
 }
 
@@ -99,32 +100,32 @@ func (i *ImportPipelinesServerTransport) dispatchBeginCreate(req *http.Request) 
 	}
 	beginCreate := i.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/importPipelines/(?P<importPipelineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.ImportPipeline](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		importPipelineNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("importPipelineName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, importPipelineNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/importPipelines/(?P<importPipelineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.ImportPipeline](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	importPipelineNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("importPipelineName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, importPipelineNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreate = &respr
 		i.beginCreate.add(req, beginCreate)
 	}
@@ -151,28 +152,28 @@ func (i *ImportPipelinesServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := i.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/importPipelines/(?P<importPipelineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		importPipelineNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("importPipelineName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, importPipelineNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/importPipelines/(?P<importPipelineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	importPipelineNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("importPipelineName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, importPipelineNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		i.beginDelete.add(req, beginDelete)
 	}
@@ -224,8 +225,7 @@ func (i *ImportPipelinesServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ImportPipeline, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -236,21 +236,21 @@ func (i *ImportPipelinesServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := i.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/importPipelines`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := i.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/importPipelines`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+resp := i.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
 		newListPager = &resp
 		i.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.ImportPipelinesClientListResponse, createLink func() string) {
@@ -270,3 +270,4 @@ func (i *ImportPipelinesServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	return resp, nil
 }
+

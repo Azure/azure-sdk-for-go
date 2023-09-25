@@ -24,7 +24,7 @@ import (
 // VirtualMachineImagesEdgeZoneClient contains the methods for the VirtualMachineImagesEdgeZone group.
 // Don't use this type directly, use NewVirtualMachineImagesEdgeZoneClient() instead.
 type VirtualMachineImagesEdgeZoneClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewVirtualMachineImagesEdgeZoneClient(subscriptionID string, credential azc
 	}
 	client := &VirtualMachineImagesEdgeZoneClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -408,3 +408,4 @@ func (client *VirtualMachineImagesEdgeZoneClient) listSKUsHandleResponse(resp *h
 	}
 	return result, nil
 }
+

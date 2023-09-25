@@ -23,7 +23,7 @@ import (
 // BillingMetersClient contains the methods for the BillingMeters group.
 // Don't use this type directly, use NewBillingMetersClient() instead.
 type BillingMetersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewBillingMetersClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &BillingMetersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -97,3 +97,4 @@ func (client *BillingMetersClient) getHandleResponse(resp *http.Response) (Billi
 	}
 	return result, nil
 }
+

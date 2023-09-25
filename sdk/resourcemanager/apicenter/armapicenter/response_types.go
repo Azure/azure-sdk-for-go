@@ -48,3 +48,4 @@ type ServicesClientUpdateResponse struct {
 	// The service entity.
 	Service
 }
+

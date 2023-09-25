@@ -23,7 +23,7 @@ import (
 // IdentityProviderClient contains the methods for the IdentityProvider group.
 // Don't use this type directly, use NewIdentityProviderClient() instead.
 type IdentityProviderClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewIdentityProviderClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &IdentityProviderClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -102,8 +102,8 @@ func (client *IdentityProviderClient) createOrUpdateCreateRequest(ctx context.Co
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -318,7 +318,7 @@ func (client *IdentityProviderClient) getEntityTagHandleResponse(resp *http.Resp
 //   - serviceName - The name of the API Management service.
 //   - options - IdentityProviderClientListByServiceOptions contains the optional parameters for the IdentityProviderClient.NewListByServicePager
 //     method.
-func (client *IdentityProviderClient) NewListByServicePager(resourceGroupName string, serviceName string, options *IdentityProviderClientListByServiceOptions) *runtime.Pager[IdentityProviderClientListByServiceResponse] {
+func (client *IdentityProviderClient) NewListByServicePager(resourceGroupName string, serviceName string, options *IdentityProviderClientListByServiceOptions) (*runtime.Pager[IdentityProviderClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[IdentityProviderClientListByServiceResponse]{
 		More: func(page IdentityProviderClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -508,8 +508,8 @@ func (client *IdentityProviderClient) updateCreateRequest(ctx context.Context, r
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -524,3 +524,4 @@ func (client *IdentityProviderClient) updateHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

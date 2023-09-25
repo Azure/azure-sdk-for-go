@@ -23,7 +23,7 @@ import (
 // ProductPolicyClient contains the methods for the ProductPolicy group.
 // Don't use this type directly, use NewProductPolicyClient() instead.
 type ProductPolicyClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewProductPolicyClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &ProductPolicyClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -107,8 +107,8 @@ func (client *ProductPolicyClient) createOrUpdateCreateRequest(ctx context.Conte
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -399,3 +399,4 @@ func (client *ProductPolicyClient) listByProductHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
+

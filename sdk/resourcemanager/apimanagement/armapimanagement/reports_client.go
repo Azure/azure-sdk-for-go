@@ -24,7 +24,7 @@ import (
 // ReportsClient contains the methods for the Reports group.
 // Don't use this type directly, use NewReportsClient() instead.
 type ReportsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	client := &ReportsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - serviceName - The name of the API Management service.
 //   - filter - The filter to apply on the operation.
 //   - options - ReportsClientListByAPIOptions contains the optional parameters for the ReportsClient.NewListByAPIPager method.
-func (client *ReportsClient) NewListByAPIPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByAPIOptions) *runtime.Pager[ReportsClientListByAPIResponse] {
+func (client *ReportsClient) NewListByAPIPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByAPIOptions) (*runtime.Pager[ReportsClientListByAPIResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByAPIResponse]{
 		More: func(page ReportsClientListByAPIResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -155,7 +155,7 @@ func (client *ReportsClient) listByAPIHandleResponse(resp *http.Response) (Repor
 //     | serviceTimeMin | select | | |
 //     | serviceTimeMax | select | | |
 //   - options - ReportsClientListByGeoOptions contains the optional parameters for the ReportsClient.NewListByGeoPager method.
-func (client *ReportsClient) NewListByGeoPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByGeoOptions) *runtime.Pager[ReportsClientListByGeoResponse] {
+func (client *ReportsClient) NewListByGeoPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByGeoOptions) (*runtime.Pager[ReportsClientListByGeoResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByGeoResponse]{
 		More: func(page ReportsClientListByGeoResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -256,7 +256,7 @@ func (client *ReportsClient) listByGeoHandleResponse(resp *http.Response) (Repor
 //     | serviceTimeMax | select | | |
 //   - options - ReportsClientListByOperationOptions contains the optional parameters for the ReportsClient.NewListByOperationPager
 //     method.
-func (client *ReportsClient) NewListByOperationPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByOperationOptions) *runtime.Pager[ReportsClientListByOperationResponse] {
+func (client *ReportsClient) NewListByOperationPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByOperationOptions) (*runtime.Pager[ReportsClientListByOperationResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByOperationResponse]{
 		More: func(page ReportsClientListByOperationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -358,7 +358,7 @@ func (client *ReportsClient) listByOperationHandleResponse(resp *http.Response) 
 //     | serviceTimeMax | select | | |
 //   - options - ReportsClientListByProductOptions contains the optional parameters for the ReportsClient.NewListByProductPager
 //     method.
-func (client *ReportsClient) NewListByProductPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByProductOptions) *runtime.Pager[ReportsClientListByProductResponse] {
+func (client *ReportsClient) NewListByProductPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByProductOptions) (*runtime.Pager[ReportsClientListByProductResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByProductResponse]{
 		More: func(page ReportsClientListByProductResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -447,7 +447,7 @@ func (client *ReportsClient) listByProductHandleResponse(resp *http.Response) (R
 //     | subscriptionId | filter | eq | |
 //   - options - ReportsClientListByRequestOptions contains the optional parameters for the ReportsClient.NewListByRequestPager
 //     method.
-func (client *ReportsClient) NewListByRequestPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByRequestOptions) *runtime.Pager[ReportsClientListByRequestResponse] {
+func (client *ReportsClient) NewListByRequestPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByRequestOptions) (*runtime.Pager[ReportsClientListByRequestResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByRequestResponse]{
 		More: func(page ReportsClientListByRequestResponse) bool {
 			return false
@@ -540,7 +540,7 @@ func (client *ReportsClient) listByRequestHandleResponse(resp *http.Response) (R
 //     | serviceTimeMax | select | | |
 //   - options - ReportsClientListBySubscriptionOptions contains the optional parameters for the ReportsClient.NewListBySubscriptionPager
 //     method.
-func (client *ReportsClient) NewListBySubscriptionPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListBySubscriptionOptions) *runtime.Pager[ReportsClientListBySubscriptionResponse] {
+func (client *ReportsClient) NewListBySubscriptionPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListBySubscriptionOptions) (*runtime.Pager[ReportsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReportsClientListBySubscriptionResponse]{
 		More: func(page ReportsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -645,7 +645,7 @@ func (client *ReportsClient) listBySubscriptionHandleResponse(resp *http.Respons
 //     format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert
 //     TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds)).
 //   - options - ReportsClientListByTimeOptions contains the optional parameters for the ReportsClient.NewListByTimePager method.
-func (client *ReportsClient) NewListByTimePager(resourceGroupName string, serviceName string, filter string, interval string, options *ReportsClientListByTimeOptions) *runtime.Pager[ReportsClientListByTimeResponse] {
+func (client *ReportsClient) NewListByTimePager(resourceGroupName string, serviceName string, filter string, interval string, options *ReportsClientListByTimeOptions) (*runtime.Pager[ReportsClientListByTimeResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByTimeResponse]{
 		More: func(page ReportsClientListByTimeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -749,7 +749,7 @@ func (client *ReportsClient) listByTimeHandleResponse(resp *http.Response) (Repo
 //     | serviceTimeMin | select | | |
 //     | serviceTimeMax | select | | |
 //   - options - ReportsClientListByUserOptions contains the optional parameters for the ReportsClient.NewListByUserPager method.
-func (client *ReportsClient) NewListByUserPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByUserOptions) *runtime.Pager[ReportsClientListByUserResponse] {
+func (client *ReportsClient) NewListByUserPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByUserOptions) (*runtime.Pager[ReportsClientListByUserResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByUserResponse]{
 		More: func(page ReportsClientListByUserResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -821,3 +821,4 @@ func (client *ReportsClient) listByUserHandleResponse(resp *http.Response) (Repo
 	}
 	return result, nil
 }
+

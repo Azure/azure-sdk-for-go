@@ -24,7 +24,7 @@ import (
 // ManagedClustersClient contains the methods for the ManagedClusters group.
 // Don't use this type directly, use NewManagedClustersClient() instead.
 type ManagedClustersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewManagedClustersClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &ManagedClustersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -185,8 +185,8 @@ func (client *ManagedClustersClient) createOrUpdateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -772,7 +772,7 @@ func (client *ManagedClustersClient) getUpgradeProfileHandleResponse(resp *http.
 // Generated from API version 2023-07-02-preview
 //   - options - ManagedClustersClientListOptions contains the optional parameters for the ManagedClustersClient.NewListPager
 //     method.
-func (client *ManagedClustersClient) NewListPager(options *ManagedClustersClientListOptions) *runtime.Pager[ManagedClustersClientListResponse] {
+func (client *ManagedClustersClient) NewListPager(options *ManagedClustersClientListOptions) (*runtime.Pager[ManagedClustersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListResponse]{
 		More: func(page ManagedClustersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -833,7 +833,7 @@ func (client *ManagedClustersClient) listHandleResponse(resp *http.Response) (Ma
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ManagedClustersClientListByResourceGroupOptions contains the optional parameters for the ManagedClustersClient.NewListByResourceGroupPager
 //     method.
-func (client *ManagedClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedClustersClientListByResourceGroupOptions) *runtime.Pager[ManagedClustersClientListByResourceGroupResponse] {
+func (client *ManagedClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedClustersClientListByResourceGroupOptions) (*runtime.Pager[ManagedClustersClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListByResourceGroupResponse]{
 		More: func(page ManagedClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1094,7 +1094,7 @@ func (client *ManagedClustersClient) listClusterUserCredentialsHandleResponse(re
 //   - location - The name of Azure region.
 //   - options - ManagedClustersClientListGuardrailsVersionsOptions contains the optional parameters for the ManagedClustersClient.NewListGuardrailsVersionsPager
 //     method.
-func (client *ManagedClustersClient) NewListGuardrailsVersionsPager(location string, options *ManagedClustersClientListGuardrailsVersionsOptions) *runtime.Pager[ManagedClustersClientListGuardrailsVersionsResponse] {
+func (client *ManagedClustersClient) NewListGuardrailsVersionsPager(location string, options *ManagedClustersClientListGuardrailsVersionsOptions) (*runtime.Pager[ManagedClustersClientListGuardrailsVersionsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListGuardrailsVersionsResponse]{
 		More: func(page ManagedClustersClientListGuardrailsVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1217,7 +1217,7 @@ func (client *ManagedClustersClient) listKubernetesVersionsHandleResponse(resp *
 //   - location - The name of Azure region.
 //   - options - ManagedClustersClientListMeshRevisionProfilesOptions contains the optional parameters for the ManagedClustersClient.NewListMeshRevisionProfilesPager
 //     method.
-func (client *ManagedClustersClient) NewListMeshRevisionProfilesPager(location string, options *ManagedClustersClientListMeshRevisionProfilesOptions) *runtime.Pager[ManagedClustersClientListMeshRevisionProfilesResponse] {
+func (client *ManagedClustersClient) NewListMeshRevisionProfilesPager(location string, options *ManagedClustersClientListMeshRevisionProfilesOptions) (*runtime.Pager[ManagedClustersClientListMeshRevisionProfilesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListMeshRevisionProfilesResponse]{
 		More: func(page ManagedClustersClientListMeshRevisionProfilesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1283,7 +1283,7 @@ func (client *ManagedClustersClient) listMeshRevisionProfilesHandleResponse(resp
 //   - resourceName - The name of the managed cluster resource.
 //   - options - ManagedClustersClientListMeshUpgradeProfilesOptions contains the optional parameters for the ManagedClustersClient.NewListMeshUpgradeProfilesPager
 //     method.
-func (client *ManagedClustersClient) NewListMeshUpgradeProfilesPager(resourceGroupName string, resourceName string, options *ManagedClustersClientListMeshUpgradeProfilesOptions) *runtime.Pager[ManagedClustersClientListMeshUpgradeProfilesResponse] {
+func (client *ManagedClustersClient) NewListMeshUpgradeProfilesPager(resourceGroupName string, resourceName string, options *ManagedClustersClientListMeshUpgradeProfilesOptions) (*runtime.Pager[ManagedClustersClientListMeshUpgradeProfilesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListMeshUpgradeProfilesResponse]{
 		More: func(page ManagedClustersClientListMeshUpgradeProfilesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1354,7 +1354,7 @@ func (client *ManagedClustersClient) listMeshUpgradeProfilesHandleResponse(resp 
 //   - resourceName - The name of the managed cluster resource.
 //   - options - ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the
 //     ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager method.
-func (client *ManagedClustersClient) NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, resourceName string, options *ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse] {
+func (client *ManagedClustersClient) NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, resourceName string, options *ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions) (*runtime.Pager[ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse]{
 		More: func(page ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1488,8 +1488,8 @@ func (client *ManagedClustersClient) resetAADProfileCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1562,8 +1562,8 @@ func (client *ManagedClustersClient) resetServicePrincipalProfileCreateRequest(c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1782,8 +1782,8 @@ func (client *ManagedClustersClient) runCommandCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, requestPayload); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -2002,7 +2002,8 @@ func (client *ManagedClustersClient) updateTagsCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

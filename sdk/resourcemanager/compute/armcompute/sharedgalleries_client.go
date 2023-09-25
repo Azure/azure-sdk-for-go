@@ -23,7 +23,7 @@ import (
 // SharedGalleriesClient contains the methods for the SharedGalleries group.
 // Don't use this type directly, use NewSharedGalleriesClient() instead.
 type SharedGalleriesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewSharedGalleriesClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &SharedGalleriesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -110,7 +110,7 @@ func (client *SharedGalleriesClient) getHandleResponse(resp *http.Response) (Sha
 //   - location - Resource location.
 //   - options - SharedGalleriesClientListOptions contains the optional parameters for the SharedGalleriesClient.NewListPager
 //     method.
-func (client *SharedGalleriesClient) NewListPager(location string, options *SharedGalleriesClientListOptions) *runtime.Pager[SharedGalleriesClientListResponse] {
+func (client *SharedGalleriesClient) NewListPager(location string, options *SharedGalleriesClientListOptions) (*runtime.Pager[SharedGalleriesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SharedGalleriesClientListResponse]{
 		More: func(page SharedGalleriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -171,3 +171,4 @@ func (client *SharedGalleriesClient) listHandleResponse(resp *http.Response) (Sh
 	}
 	return result, nil
 }
+

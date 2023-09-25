@@ -24,7 +24,7 @@ import (
 // UserGroupClient contains the methods for the UserGroup group.
 // Don't use this type directly, use NewUserGroupClient() instead.
 type UserGroupClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewUserGroupClient(subscriptionID string, credential azcore.TokenCredential
 	}
 	client := &UserGroupClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -51,7 +51,7 @@ func NewUserGroupClient(subscriptionID string, credential azcore.TokenCredential
 //   - serviceName - The name of the API Management service.
 //   - userID - User identifier. Must be unique in the current API Management service instance.
 //   - options - UserGroupClientListOptions contains the optional parameters for the UserGroupClient.NewListPager method.
-func (client *UserGroupClient) NewListPager(resourceGroupName string, serviceName string, userID string, options *UserGroupClientListOptions) *runtime.Pager[UserGroupClientListResponse] {
+func (client *UserGroupClient) NewListPager(resourceGroupName string, serviceName string, userID string, options *UserGroupClientListOptions) (*runtime.Pager[UserGroupClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[UserGroupClientListResponse]{
 		More: func(page UserGroupClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -126,3 +126,4 @@ func (client *UserGroupClient) listHandleResponse(resp *http.Response) (UserGrou
 	}
 	return result, nil
 }
+

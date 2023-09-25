@@ -23,7 +23,7 @@ import (
 // ScriptCmdletsClient contains the methods for the ScriptCmdlets group.
 // Don't use this type directly, use NewScriptCmdletsClient() instead.
 type ScriptCmdletsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewScriptCmdletsClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &ScriptCmdletsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,7 +121,7 @@ func (client *ScriptCmdletsClient) getHandleResponse(resp *http.Response) (Scrip
 //   - privateCloudName - Name of the private cloud
 //   - scriptPackageName - Name of the script package in the private cloud
 //   - options - ScriptCmdletsClientListOptions contains the optional parameters for the ScriptCmdletsClient.NewListPager method.
-func (client *ScriptCmdletsClient) NewListPager(resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptCmdletsClientListOptions) *runtime.Pager[ScriptCmdletsClientListResponse] {
+func (client *ScriptCmdletsClient) NewListPager(resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptCmdletsClientListOptions) (*runtime.Pager[ScriptCmdletsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ScriptCmdletsClientListResponse]{
 		More: func(page ScriptCmdletsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -187,3 +187,4 @@ func (client *ScriptCmdletsClient) listHandleResponse(resp *http.Response) (Scri
 	}
 	return result, nil
 }
+

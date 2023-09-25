@@ -23,7 +23,7 @@ import (
 // RegionClient contains the methods for the Region group.
 // Don't use this type directly, use NewRegionClient() instead.
 type RegionClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRegionClient(subscriptionID string, credential azcore.TokenCredential, o
 	}
 	client := &RegionClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,7 +50,7 @@ func NewRegionClient(subscriptionID string, credential azcore.TokenCredential, o
 //   - serviceName - The name of the API Management service.
 //   - options - RegionClientListByServiceOptions contains the optional parameters for the RegionClient.NewListByServicePager
 //     method.
-func (client *RegionClient) NewListByServicePager(resourceGroupName string, serviceName string, options *RegionClientListByServiceOptions) *runtime.Pager[RegionClientListByServiceResponse] {
+func (client *RegionClient) NewListByServicePager(resourceGroupName string, serviceName string, options *RegionClientListByServiceOptions) (*runtime.Pager[RegionClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RegionClientListByServiceResponse]{
 		More: func(page RegionClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -112,3 +112,4 @@ func (client *RegionClient) listByServiceHandleResponse(resp *http.Response) (Re
 	}
 	return result, nil
 }
+

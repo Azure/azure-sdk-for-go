@@ -24,7 +24,7 @@ import (
 // APIIssueAttachmentClient contains the methods for the APIIssueAttachment group.
 // Don't use this type directly, use NewAPIIssueAttachmentClient() instead.
 type APIIssueAttachmentClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAPIIssueAttachmentClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &APIIssueAttachmentClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *APIIssueAttachmentClient) createOrUpdateCreateRequest(ctx context.
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -362,7 +362,7 @@ func (client *APIIssueAttachmentClient) getEntityTagHandleResponse(resp *http.Re
 //   - issueID - Issue identifier. Must be unique in the current API Management service instance.
 //   - options - APIIssueAttachmentClientListByServiceOptions contains the optional parameters for the APIIssueAttachmentClient.NewListByServicePager
 //     method.
-func (client *APIIssueAttachmentClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, issueID string, options *APIIssueAttachmentClientListByServiceOptions) *runtime.Pager[APIIssueAttachmentClientListByServiceResponse] {
+func (client *APIIssueAttachmentClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, issueID string, options *APIIssueAttachmentClientListByServiceOptions) (*runtime.Pager[APIIssueAttachmentClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APIIssueAttachmentClientListByServiceResponse]{
 		More: func(page APIIssueAttachmentClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -441,3 +441,4 @@ func (client *APIIssueAttachmentClient) listByServiceHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

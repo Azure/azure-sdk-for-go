@@ -23,7 +23,7 @@ import (
 // ContainerAppsRevisionReplicasClient contains the methods for the ContainerAppsRevisionReplicas group.
 // Don't use this type directly, use NewContainerAppsRevisionReplicasClient() instead.
 type ContainerAppsRevisionReplicasClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewContainerAppsRevisionReplicasClient(subscriptionID string, credential az
 	}
 	client := &ContainerAppsRevisionReplicasClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -179,3 +179,4 @@ func (client *ContainerAppsRevisionReplicasClient) listReplicasHandleResponse(re
 	}
 	return result, nil
 }
+

@@ -23,7 +23,7 @@ import (
 // RolesClient contains the methods for the Roles group.
 // Don't use this type directly, use NewRolesClient() instead.
 type RolesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewRolesClient(subscriptionID string, credential azcore.TokenCredential, op
 	}
 	client := &RolesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *RolesClient) createCreateRequest(ctx context.Context, resourceGrou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -257,7 +257,7 @@ func (client *RolesClient) getHandleResponse(resp *http.Response) (RolesClientGe
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - RolesClientListByClusterOptions contains the optional parameters for the RolesClient.NewListByClusterPager method.
-func (client *RolesClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *RolesClientListByClusterOptions) *runtime.Pager[RolesClientListByClusterResponse] {
+func (client *RolesClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *RolesClientListByClusterOptions) (*runtime.Pager[RolesClientListByClusterResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RolesClientListByClusterResponse]{
 		More: func(page RolesClientListByClusterResponse) bool {
 			return false
@@ -310,3 +310,4 @@ func (client *RolesClient) listByClusterHandleResponse(resp *http.Response) (Rol
 	}
 	return result, nil
 }
+

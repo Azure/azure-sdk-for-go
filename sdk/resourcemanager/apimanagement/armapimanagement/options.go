@@ -39,13 +39,13 @@ type APIClientListByServiceOptions struct {
 	ExpandAPIVersionSet *bool
 
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | isCurrent | filter | eq, ne | |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | isCurrent | filter | eq, ne | |
 	Filter *string
 
 	// Number of records to skip.
@@ -61,14 +61,14 @@ type APIClientListByServiceOptions struct {
 // APIClientListByTagsOptions contains the optional parameters for the APIClient.NewListByTagsPager method.
 type APIClientListByTagsOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | apiRevision | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | isCurrent | filter | eq | |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | apiRevision | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | isCurrent | filter | eq | |
 	Filter *string
 
 	// Include not tagged APIs.
@@ -111,8 +111,8 @@ type APIDiagnosticClientGetOptions struct {
 // method.
 type APIDiagnosticClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -159,9 +159,9 @@ type APIIssueAttachmentClientGetOptions struct {
 // method.
 type APIIssueAttachmentClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -199,10 +199,10 @@ type APIIssueClientListByServiceOptions struct {
 	ExpandCommentsAttachments *bool
 
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | state | filter | eq | |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | state | filter | eq | |
 	Filter *string
 
 	// Number of records to skip.
@@ -243,9 +243,9 @@ type APIIssueCommentClientGetOptions struct {
 // method.
 type APIIssueCommentClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -279,12 +279,12 @@ type APIOperationClientGetOptions struct {
 // APIOperationClientListByAPIOptions contains the optional parameters for the APIOperationClient.NewListByAPIPager method.
 type APIOperationClientListByAPIOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | method | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | urlTemplate | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | method | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | urlTemplate | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -362,8 +362,8 @@ type APIPolicyClientListByAPIOptions struct {
 // APIProductClientListByApisOptions contains the optional parameters for the APIProductClient.NewListByApisPager method.
 type APIProductClientListByApisOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -397,8 +397,8 @@ type APIReleaseClientGetOptions struct {
 // APIReleaseClientListByServiceOptions contains the optional parameters for the APIReleaseClient.NewListByServicePager method.
 type APIReleaseClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | notes | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | notes | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -417,8 +417,8 @@ type APIReleaseClientUpdateOptions struct {
 // method.
 type APIRevisionClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | apiRevision | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | apiRevision | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -457,8 +457,8 @@ type APISchemaClientGetOptions struct {
 // APISchemaClientListByAPIOptions contains the optional parameters for the APISchemaClient.NewListByAPIPager method.
 type APISchemaClientListByAPIOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | contentType | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | contentType | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -495,9 +495,9 @@ type APITagDescriptionClientGetOptions struct {
 // method.
 type APITagDescriptionClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -532,7 +532,7 @@ type APIVersionSetClientGetOptions struct {
 // method.
 type APIVersionSetClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
+// |-------------|-------------|-------------|-------------|
 	Filter *string
 
 	// Number of records to skip.
@@ -576,8 +576,8 @@ type APIWikiClientUpdateOptions struct {
 // APIWikisClientListOptions contains the optional parameters for the APIWikisClient.NewListPager method.
 type APIWikisClientListOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | eq | contains |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | eq | contains |
 	Filter *string
 
 	// Number of records to skip.
@@ -610,9 +610,9 @@ type AuthorizationAccessPolicyClientGetOptions struct {
 // method.
 type AuthorizationAccessPolicyClientListByAuthorizationOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -648,9 +648,9 @@ type AuthorizationClientGetOptions struct {
 // method.
 type AuthorizationClientListByAuthorizationProviderOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -686,9 +686,9 @@ type AuthorizationProviderClientGetOptions struct {
 // method.
 type AuthorizationProviderClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -725,9 +725,9 @@ type AuthorizationServerClientGetOptions struct {
 // method.
 type AuthorizationServerClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -772,10 +772,10 @@ type BackendClientGetOptions struct {
 // BackendClientListByServiceOptions contains the optional parameters for the BackendClient.NewListByServicePager method.
 type BackendClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | title | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | url | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | title | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | url | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -856,11 +856,11 @@ type CertificateClientGetOptions struct {
 // method.
 type CertificateClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | subject | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | thumbprint | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | expirationDate | filter | ge, le, eq, ne, gt, lt | |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | subject | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | thumbprint | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | expirationDate | filter | ge, le, eq, ne, gt, lt | |
 	Filter *string
 
 	// When set to true, the response contains only certificates entities which failed refresh.
@@ -1004,8 +1004,8 @@ type DiagnosticClientGetOptions struct {
 // DiagnosticClientListByServiceOptions contains the optional parameters for the DiagnosticClient.NewListByServicePager method.
 type DiagnosticClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -1045,8 +1045,8 @@ type DocumentationClientGetOptions struct {
 // method.
 type DocumentationClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | eq | contains |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | eq | contains |
 	Filter *string
 
 	// Number of records to skip.
@@ -1086,8 +1086,8 @@ type EmailTemplateClientGetOptions struct {
 // method.
 type EmailTemplateClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -1120,8 +1120,8 @@ type GatewayAPIClientGetEntityTagOptions struct {
 // GatewayAPIClientListByServiceOptions contains the optional parameters for the GatewayAPIClient.NewListByServicePager method.
 type GatewayAPIClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -1160,8 +1160,8 @@ type GatewayCertificateAuthorityClientGetOptions struct {
 // method.
 type GatewayCertificateAuthorityClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | eq, ne | |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | eq, ne | |
 	Filter *string
 
 	// Number of records to skip.
@@ -1200,10 +1200,10 @@ type GatewayClientGetOptions struct {
 // GatewayClientListByServiceOptions contains the optional parameters for the GatewayClient.NewListByServicePager method.
 type GatewayClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | region | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | region | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -1257,9 +1257,9 @@ type GatewayHostnameConfigurationClientGetOptions struct {
 // method.
 type GatewayHostnameConfigurationClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | hostname | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | hostname | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -1298,8 +1298,8 @@ type GlobalSchemaClientGetOptions struct {
 // method.
 type GlobalSchemaClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -1336,11 +1336,11 @@ type GraphQLAPIResolverClientGetOptions struct {
 // method.
 type GraphQLAPIResolverClientListByAPIOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -1410,11 +1410,11 @@ type GroupClientGetOptions struct {
 // GroupClientListByServiceOptions contains the optional parameters for the GroupClient.NewListByServicePager method.
 type GroupClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | externalId | filter | eq | |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | externalId | filter | eq | |
 	Filter *string
 
 	// Number of records to skip.
@@ -1447,13 +1447,13 @@ type GroupUserClientDeleteOptions struct {
 // GroupUserClientListOptions contains the optional parameters for the GroupUserClient.NewListPager method.
 type GroupUserClientListOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | firstName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | lastName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | email | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | registrationDate | filter | ge, le, eq, ne, gt, lt | |
-	// | note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | firstName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | lastName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | email | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | registrationDate | filter | ge, le, eq, ne, gt, lt | |
+// | note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -1510,13 +1510,13 @@ type IssueClientGetOptions struct {
 // IssueClientListByServiceOptions contains the optional parameters for the IssueClient.NewListByServicePager method.
 type IssueClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | apiId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | title | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | authorName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | state | filter | eq | |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | apiId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | title | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | authorName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | state | filter | eq | |
 	Filter *string
 
 	// Number of records to skip.
@@ -1550,11 +1550,11 @@ type LoggerClientGetOptions struct {
 // LoggerClientListByServiceOptions contains the optional parameters for the LoggerClient.NewListByServicePager method.
 type LoggerClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | loggerType | filter | eq | |
-	// | resourceId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | loggerType | filter | eq | |
+// | resourceId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -1610,9 +1610,9 @@ type NamedValueClientGetOptions struct {
 // NamedValueClientListByServiceOptions contains the optional parameters for the NamedValueClient.NewListByServicePager method.
 type NamedValueClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | tags | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith, any, all |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | tags | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith, any, all |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// When set to true, the response contains only named value entities which failed refresh.
@@ -1736,9 +1736,9 @@ type OpenIDConnectProviderClientGetOptions struct {
 // method.
 type OpenIDConnectProviderClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -1762,13 +1762,13 @@ type OpenIDConnectProviderClientUpdateOptions struct {
 // OperationClientListByTagsOptions contains the optional parameters for the OperationClient.NewListByTagsPager method.
 type OperationClientListByTagsOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | apiName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | method | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | urlTemplate | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | apiName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | method | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | urlTemplate | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Include not tagged Operations.
@@ -1855,10 +1855,10 @@ type PolicyFragmentClientGetOptions struct {
 // PolicyFragmentClientListByServiceOptions contains the optional parameters for the PolicyFragmentClient.ListByService method.
 type PolicyFragmentClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter, orderBy | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | value | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter, orderBy | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | value | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// OData order by query option.
@@ -1933,8 +1933,8 @@ type PortalRevisionClientGetOptions struct {
 // method.
 type PortalRevisionClientListByServiceOptions struct {
 	// FIELD SUPPORTED OPERATORS SUPPORTED FUNCTIONS
-	// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith| |description | ge, le, eq, ne, gt, lt | substringof,
-	// contains, startswith, endswith| |isCurrent | eq, ne | |
+// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith| |description | ge, le, eq, ne, gt, lt | substringof,
+// contains, startswith, endswith| |isCurrent | eq, ne | |
 	Filter *string
 
 	// Number of records to skip.
@@ -2005,12 +2005,12 @@ type ProductAPIClientDeleteOptions struct {
 // ProductAPIClientListByProductOptions contains the optional parameters for the ProductAPIClient.NewListByProductPager method.
 type ProductAPIClientListByProductOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -2048,13 +2048,13 @@ type ProductClientListByServiceOptions struct {
 	ExpandGroups *bool
 
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | terms | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | state | filter | eq | |
-	// | groups | expand | | |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | terms | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | state | filter | eq | |
+// | groups | expand | | |
 	Filter *string
 
 	// Number of records to skip.
@@ -2070,12 +2070,12 @@ type ProductClientListByServiceOptions struct {
 // ProductClientListByTagsOptions contains the optional parameters for the ProductClient.NewListByTagsPager method.
 type ProductClientListByTagsOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | terms | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | state | filter | eq | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | terms | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | state | filter | eq | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Include not tagged Products.
@@ -2113,10 +2113,10 @@ type ProductGroupClientDeleteOptions struct {
 // method.
 type ProductGroupClientListByProductOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | |
-	// | displayName | filter | eq, ne | |
-	// | description | filter | eq, ne | |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | |
+// | displayName | filter | eq, ne | |
+// | description | filter | eq, ne | |
 	Filter *string
 
 	// Number of records to skip.
@@ -2157,16 +2157,16 @@ type ProductPolicyClientListByProductOptions struct {
 // method.
 type ProductSubscriptionsClientListOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | stateComment | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | ownerId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | scope | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | productId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | state | filter | eq | |
-	// | user | expand | | |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | stateComment | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | ownerId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | scope | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | productId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | state | filter | eq | |
+// | user | expand | | |
 	Filter *string
 
 	// Number of records to skip.
@@ -2205,8 +2205,8 @@ type ProductWikiClientUpdateOptions struct {
 // ProductWikisClientListOptions contains the optional parameters for the ProductWikisClient.NewListPager method.
 type ProductWikisClientListOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | eq | contains |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | eq | contains |
 	Filter *string
 
 	// Number of records to skip.
@@ -2342,8 +2342,8 @@ type SKUsClientListOptions struct {
 // method.
 type ServiceClientBeginApplyNetworkConfigurationUpdatesOptions struct {
 	// Parameters supplied to the Apply Network Configuration operation. If the parameters are empty, all the regions in which
-	// the Api Management service is deployed will be updated sequentially without
-	// incurring downtime in the region.
+// the Api Management service is deployed will be updated sequentially without
+// incurring downtime in the region.
 	Parameters *ServiceApplyNetworkConfigurationParameters
 
 	// Resumes the LRO from the provided token.
@@ -2478,8 +2478,8 @@ type SubscriptionClientCreateOrUpdateOptions struct {
 	IfMatch *string
 
 	// Notify change in Subscription State.
-	// * If false, do not send any email notification for change of state of subscription
-	// * If true, send email notification of change of state of subscription
+// * If false, do not send any email notification for change of state of subscription
+// * If true, send email notification of change of state of subscription
 	Notify *bool
 }
 
@@ -2501,16 +2501,16 @@ type SubscriptionClientGetOptions struct {
 // SubscriptionClientListOptions contains the optional parameters for the SubscriptionClient.NewListPager method.
 type SubscriptionClientListOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | stateComment | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | ownerId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | scope | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | productId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | state | filter | eq | |
-	// | user | expand | | |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | stateComment | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | ownerId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | scope | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | productId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | state | filter | eq | |
+// | user | expand | | |
 	Filter *string
 
 	// Number of records to skip.
@@ -2543,8 +2543,8 @@ type SubscriptionClientUpdateOptions struct {
 	AppType *AppType
 
 	// Notify change in Subscription State.
-	// * If false, do not send any email notification for change of state of subscription
-	// * If true, send email notification of change of state of subscription
+// * If false, do not send any email notification for change of state of subscription
+// * If true, send email notification of change of state of subscription
 	Notify *bool
 }
 
@@ -2633,9 +2633,9 @@ type TagClientGetOptions struct {
 // TagClientListByAPIOptions contains the optional parameters for the TagClient.NewListByAPIPager method.
 type TagClientListByAPIOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -2648,9 +2648,9 @@ type TagClientListByAPIOptions struct {
 // TagClientListByOperationOptions contains the optional parameters for the TagClient.NewListByOperationPager method.
 type TagClientListByOperationOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -2663,9 +2663,9 @@ type TagClientListByOperationOptions struct {
 // TagClientListByProductOptions contains the optional parameters for the TagClient.NewListByProductPager method.
 type TagClientListByProductOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -2678,9 +2678,9 @@ type TagClientListByProductOptions struct {
 // TagClientListByServiceOptions contains the optional parameters for the TagClient.NewListByServicePager method.
 type TagClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Scope like 'apis', 'products' or 'apis/{apiId}
@@ -2702,20 +2702,20 @@ type TagClientUpdateOptions struct {
 // method.
 type TagResourceClientListByServiceOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | aid | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | apiName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | apiRevision | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | method | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | urlTemplate | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | terms | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | state | filter | eq | |
-	// | isCurrent | filter | eq | |
+// |-------------|-------------|-------------|-------------|
+// | aid | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | apiName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | apiRevision | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | method | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | urlTemplate | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | terms | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | state | filter | eq | |
+// | isCurrent | filter | eq | |
 	Filter *string
 
 	// Number of records to skip.
@@ -2867,15 +2867,15 @@ type UserClientListByServiceOptions struct {
 	ExpandGroups *bool
 
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|-------------|-------------|-------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | firstName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | lastName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | email | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | state | filter | eq | |
-	// | registrationDate | filter | ge, le, eq, ne, gt, lt | |
-	// | note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | groups | expand | | |
+// |-------------|-------------|-------------|-------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | firstName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | lastName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | email | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | state | filter | eq | |
+// | registrationDate | filter | ge, le, eq, ne, gt, lt | |
+// | note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | groups | expand | | |
 	Filter *string
 
 	// Number of records to skip.
@@ -2900,10 +2900,10 @@ type UserConfirmationPasswordClientSendOptions struct {
 // UserGroupClientListOptions contains the optional parameters for the UserGroupClient.NewListPager method.
 type UserGroupClientListOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|------------------------|-----------------------------------|
-	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|------------------------|-----------------------------------|
+// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -2926,14 +2926,14 @@ type UserSubscriptionClientGetOptions struct {
 // UserSubscriptionClientListOptions contains the optional parameters for the UserSubscriptionClient.NewListPager method.
 type UserSubscriptionClientListOptions struct {
 	// | Field | Usage | Supported operators | Supported functions |
-	// |-------------|------------------------|-----------------------------------|
-	// |name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// |displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// |stateComment | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// |ownerId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// |scope | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// |userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-	// |productId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |-------------|------------------------|-----------------------------------|
+// |name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |stateComment | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |ownerId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |scope | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// |productId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 
 	// Number of records to skip.
@@ -2942,3 +2942,4 @@ type UserSubscriptionClientListOptions struct {
 	// Number of records to return.
 	Top *int32
 }
+

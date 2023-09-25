@@ -17,9 +17,9 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	serviceName    string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	serviceName string
+	credential azcore.TokenCredential
+	options *arm.ClientOptions
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -34,7 +34,7 @@ func NewClientFactory(subscriptionID string, serviceName string, credential azco
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, serviceName: serviceName, credential: credential,
+		subscriptionID: 	subscriptionID,		serviceName: 	serviceName,		credential: credential,
 		options: options.Clone(),
 	}, nil
 }
@@ -48,3 +48,4 @@ func (c *ClientFactory) NewServicesClient() *ServicesClient {
 	subClient, _ := NewServicesClient(c.subscriptionID, c.serviceName, c.credential, c.options)
 	return subClient
 }
+

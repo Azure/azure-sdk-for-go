@@ -23,7 +23,7 @@ import (
 // GraphQLAPIResolverPolicyClient contains the methods for the GraphQLAPIResolverPolicy group.
 // Don't use this type directly, use NewGraphQLAPIResolverPolicyClient() instead.
 type GraphQLAPIResolverPolicyClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewGraphQLAPIResolverPolicyClient(subscriptionID string, credential azcore.
 	}
 	client := &GraphQLAPIResolverPolicyClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -113,8 +113,8 @@ func (client *GraphQLAPIResolverPolicyClient) createOrUpdateCreateRequest(ctx co
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -370,7 +370,7 @@ func (client *GraphQLAPIResolverPolicyClient) getEntityTagHandleResponse(resp *h
 //   - resolverID - Resolver identifier within a GraphQL API. Must be unique in the current API Management service instance.
 //   - options - GraphQLAPIResolverPolicyClientListByResolverOptions contains the optional parameters for the GraphQLAPIResolverPolicyClient.NewListByResolverPager
 //     method.
-func (client *GraphQLAPIResolverPolicyClient) NewListByResolverPager(resourceGroupName string, serviceName string, apiID string, resolverID string, options *GraphQLAPIResolverPolicyClientListByResolverOptions) *runtime.Pager[GraphQLAPIResolverPolicyClientListByResolverResponse] {
+func (client *GraphQLAPIResolverPolicyClient) NewListByResolverPager(resourceGroupName string, serviceName string, apiID string, resolverID string, options *GraphQLAPIResolverPolicyClientListByResolverOptions) (*runtime.Pager[GraphQLAPIResolverPolicyClientListByResolverResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[GraphQLAPIResolverPolicyClientListByResolverResponse]{
 		More: func(page GraphQLAPIResolverPolicyClientListByResolverResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -440,3 +440,4 @@ func (client *GraphQLAPIResolverPolicyClient) listByResolverHandleResponse(resp 
 	}
 	return result, nil
 }
+

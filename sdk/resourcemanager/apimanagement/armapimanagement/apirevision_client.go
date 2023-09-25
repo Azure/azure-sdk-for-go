@@ -24,7 +24,7 @@ import (
 // APIRevisionClient contains the methods for the APIRevision group.
 // Don't use this type directly, use NewAPIRevisionClient() instead.
 type APIRevisionClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAPIRevisionClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &APIRevisionClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -52,7 +52,7 @@ func NewAPIRevisionClient(subscriptionID string, credential azcore.TokenCredenti
 //   - apiID - API identifier. Must be unique in the current API Management service instance.
 //   - options - APIRevisionClientListByServiceOptions contains the optional parameters for the APIRevisionClient.NewListByServicePager
 //     method.
-func (client *APIRevisionClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APIRevisionClientListByServiceOptions) *runtime.Pager[APIRevisionClientListByServiceResponse] {
+func (client *APIRevisionClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APIRevisionClientListByServiceOptions) (*runtime.Pager[APIRevisionClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[APIRevisionClientListByServiceResponse]{
 		More: func(page APIRevisionClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -127,3 +127,4 @@ func (client *APIRevisionClient) listByServiceHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

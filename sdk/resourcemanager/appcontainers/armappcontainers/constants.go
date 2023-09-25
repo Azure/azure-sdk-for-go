@@ -9,7 +9,7 @@
 package armappcontainers
 
 const (
-	moduleName    = "armappcontainers"
+	moduleName = "armappcontainers"
 	moduleVersion = "v2.0.0"
 )
 
@@ -17,13 +17,13 @@ const (
 type AccessMode string
 
 const (
-	AccessModeReadOnly  AccessMode = "ReadOnly"
+	AccessModeReadOnly AccessMode = "ReadOnly"
 	AccessModeReadWrite AccessMode = "ReadWrite"
 )
 
 // PossibleAccessModeValues returns the possible values for the AccessMode const type.
 func PossibleAccessModeValues() []AccessMode {
-	return []AccessMode{
+	return []AccessMode{	
 		AccessModeReadOnly,
 		AccessModeReadWrite,
 	}
@@ -34,12 +34,12 @@ type Action string
 
 const (
 	ActionAllow Action = "Allow"
-	ActionDeny  Action = "Deny"
+	ActionDeny Action = "Deny"
 )
 
 // PossibleActionValues returns the possible values for the Action const type.
 func PossibleActionValues() []Action {
-	return []Action{
+	return []Action{	
 		ActionAllow,
 		ActionDeny,
 	}
@@ -52,12 +52,12 @@ type ActiveRevisionsMode string
 
 const (
 	ActiveRevisionsModeMultiple ActiveRevisionsMode = "Multiple"
-	ActiveRevisionsModeSingle   ActiveRevisionsMode = "Single"
+	ActiveRevisionsModeSingle ActiveRevisionsMode = "Single"
 )
 
 // PossibleActiveRevisionsModeValues returns the possible values for the ActiveRevisionsMode const type.
 func PossibleActiveRevisionsModeValues() []ActiveRevisionsMode {
-	return []ActiveRevisionsMode{
+	return []ActiveRevisionsMode{	
 		ActiveRevisionsModeMultiple,
 		ActiveRevisionsModeSingle,
 	}
@@ -67,13 +67,13 @@ func PossibleActiveRevisionsModeValues() []ActiveRevisionsMode {
 type Affinity string
 
 const (
-	AffinityNone   Affinity = "none"
+	AffinityNone Affinity = "none"
 	AffinitySticky Affinity = "sticky"
 )
 
 // PossibleAffinityValues returns the possible values for the Affinity const type.
 func PossibleAffinityValues() []Affinity {
-	return []Affinity{
+	return []Affinity{	
 		AffinityNone,
 		AffinitySticky,
 	}
@@ -89,7 +89,7 @@ const (
 
 // PossibleAppProtocolValues returns the possible values for the AppProtocol const type.
 func PossibleAppProtocolValues() []AppProtocol {
-	return []AppProtocol{
+	return []AppProtocol{	
 		AppProtocolGrpc,
 		AppProtocolHTTP,
 	}
@@ -99,13 +99,13 @@ func PossibleAppProtocolValues() []AppProtocol {
 type Applicability string
 
 const (
-	ApplicabilityCustom          Applicability = "Custom"
+	ApplicabilityCustom Applicability = "Custom"
 	ApplicabilityLocationDefault Applicability = "LocationDefault"
 )
 
 // PossibleApplicabilityValues returns the possible values for the Applicability const type.
 func PossibleApplicabilityValues() []Applicability {
-	return []Applicability{
+	return []Applicability{	
 		ApplicabilityCustom,
 		ApplicabilityLocationDefault,
 	}
@@ -115,13 +115,13 @@ func PossibleApplicabilityValues() []Applicability {
 type BindingType string
 
 const (
-	BindingTypeDisabled   BindingType = "Disabled"
+	BindingTypeDisabled BindingType = "Disabled"
 	BindingTypeSniEnabled BindingType = "SniEnabled"
 )
 
 // PossibleBindingTypeValues returns the possible values for the BindingType const type.
 func PossibleBindingTypeValues() []BindingType {
-	return []BindingType{
+	return []BindingType{	
 		BindingTypeDisabled,
 		BindingTypeSniEnabled,
 	}
@@ -131,16 +131,16 @@ func PossibleBindingTypeValues() []BindingType {
 type CertificateProvisioningState string
 
 const (
-	CertificateProvisioningStateCanceled     CertificateProvisioningState = "Canceled"
+	CertificateProvisioningStateCanceled CertificateProvisioningState = "Canceled"
 	CertificateProvisioningStateDeleteFailed CertificateProvisioningState = "DeleteFailed"
-	CertificateProvisioningStateFailed       CertificateProvisioningState = "Failed"
-	CertificateProvisioningStatePending      CertificateProvisioningState = "Pending"
-	CertificateProvisioningStateSucceeded    CertificateProvisioningState = "Succeeded"
+	CertificateProvisioningStateFailed CertificateProvisioningState = "Failed"
+	CertificateProvisioningStatePending CertificateProvisioningState = "Pending"
+	CertificateProvisioningStateSucceeded CertificateProvisioningState = "Succeeded"
 )
 
 // PossibleCertificateProvisioningStateValues returns the possible values for the CertificateProvisioningState const type.
 func PossibleCertificateProvisioningStateValues() []CertificateProvisioningState {
-	return []CertificateProvisioningState{
+	return []CertificateProvisioningState{	
 		CertificateProvisioningStateCanceled,
 		CertificateProvisioningStateDeleteFailed,
 		CertificateProvisioningStateFailed,
@@ -154,12 +154,12 @@ type CheckNameAvailabilityReason string
 
 const (
 	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
-	CheckNameAvailabilityReasonInvalid       CheckNameAvailabilityReason = "Invalid"
+	CheckNameAvailabilityReasonInvalid CheckNameAvailabilityReason = "Invalid"
 )
 
 // PossibleCheckNameAvailabilityReasonValues returns the possible values for the CheckNameAvailabilityReason const type.
 func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
-	return []CheckNameAvailabilityReason{
+	return []CheckNameAvailabilityReason{	
 		CheckNameAvailabilityReasonAlreadyExists,
 		CheckNameAvailabilityReasonInvalid,
 	}
@@ -169,19 +169,19 @@ func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
 type ConnectedEnvironmentProvisioningState string
 
 const (
-	ConnectedEnvironmentProvisioningStateCanceled                      ConnectedEnvironmentProvisioningState = "Canceled"
-	ConnectedEnvironmentProvisioningStateFailed                        ConnectedEnvironmentProvisioningState = "Failed"
-	ConnectedEnvironmentProvisioningStateInfrastructureSetupComplete   ConnectedEnvironmentProvisioningState = "InfrastructureSetupComplete"
+	ConnectedEnvironmentProvisioningStateCanceled ConnectedEnvironmentProvisioningState = "Canceled"
+	ConnectedEnvironmentProvisioningStateFailed ConnectedEnvironmentProvisioningState = "Failed"
+	ConnectedEnvironmentProvisioningStateInfrastructureSetupComplete ConnectedEnvironmentProvisioningState = "InfrastructureSetupComplete"
 	ConnectedEnvironmentProvisioningStateInfrastructureSetupInProgress ConnectedEnvironmentProvisioningState = "InfrastructureSetupInProgress"
-	ConnectedEnvironmentProvisioningStateInitializationInProgress      ConnectedEnvironmentProvisioningState = "InitializationInProgress"
-	ConnectedEnvironmentProvisioningStateScheduledForDelete            ConnectedEnvironmentProvisioningState = "ScheduledForDelete"
-	ConnectedEnvironmentProvisioningStateSucceeded                     ConnectedEnvironmentProvisioningState = "Succeeded"
-	ConnectedEnvironmentProvisioningStateWaiting                       ConnectedEnvironmentProvisioningState = "Waiting"
+	ConnectedEnvironmentProvisioningStateInitializationInProgress ConnectedEnvironmentProvisioningState = "InitializationInProgress"
+	ConnectedEnvironmentProvisioningStateScheduledForDelete ConnectedEnvironmentProvisioningState = "ScheduledForDelete"
+	ConnectedEnvironmentProvisioningStateSucceeded ConnectedEnvironmentProvisioningState = "Succeeded"
+	ConnectedEnvironmentProvisioningStateWaiting ConnectedEnvironmentProvisioningState = "Waiting"
 )
 
 // PossibleConnectedEnvironmentProvisioningStateValues returns the possible values for the ConnectedEnvironmentProvisioningState const type.
 func PossibleConnectedEnvironmentProvisioningStateValues() []ConnectedEnvironmentProvisioningState {
-	return []ConnectedEnvironmentProvisioningState{
+	return []ConnectedEnvironmentProvisioningState{	
 		ConnectedEnvironmentProvisioningStateCanceled,
 		ConnectedEnvironmentProvisioningStateFailed,
 		ConnectedEnvironmentProvisioningStateInfrastructureSetupComplete,
@@ -197,14 +197,14 @@ func PossibleConnectedEnvironmentProvisioningStateValues() []ConnectedEnvironmen
 type ContainerAppContainerRunningState string
 
 const (
-	ContainerAppContainerRunningStateRunning    ContainerAppContainerRunningState = "Running"
+	ContainerAppContainerRunningStateRunning ContainerAppContainerRunningState = "Running"
 	ContainerAppContainerRunningStateTerminated ContainerAppContainerRunningState = "Terminated"
-	ContainerAppContainerRunningStateWaiting    ContainerAppContainerRunningState = "Waiting"
+	ContainerAppContainerRunningStateWaiting ContainerAppContainerRunningState = "Waiting"
 )
 
 // PossibleContainerAppContainerRunningStateValues returns the possible values for the ContainerAppContainerRunningState const type.
 func PossibleContainerAppContainerRunningStateValues() []ContainerAppContainerRunningState {
-	return []ContainerAppContainerRunningState{
+	return []ContainerAppContainerRunningState{	
 		ContainerAppContainerRunningStateRunning,
 		ContainerAppContainerRunningStateTerminated,
 		ContainerAppContainerRunningStateWaiting,
@@ -215,16 +215,16 @@ func PossibleContainerAppContainerRunningStateValues() []ContainerAppContainerRu
 type ContainerAppProvisioningState string
 
 const (
-	ContainerAppProvisioningStateCanceled   ContainerAppProvisioningState = "Canceled"
-	ContainerAppProvisioningStateDeleting   ContainerAppProvisioningState = "Deleting"
-	ContainerAppProvisioningStateFailed     ContainerAppProvisioningState = "Failed"
+	ContainerAppProvisioningStateCanceled ContainerAppProvisioningState = "Canceled"
+	ContainerAppProvisioningStateDeleting ContainerAppProvisioningState = "Deleting"
+	ContainerAppProvisioningStateFailed ContainerAppProvisioningState = "Failed"
 	ContainerAppProvisioningStateInProgress ContainerAppProvisioningState = "InProgress"
-	ContainerAppProvisioningStateSucceeded  ContainerAppProvisioningState = "Succeeded"
+	ContainerAppProvisioningStateSucceeded ContainerAppProvisioningState = "Succeeded"
 )
 
 // PossibleContainerAppProvisioningStateValues returns the possible values for the ContainerAppProvisioningState const type.
 func PossibleContainerAppProvisioningStateValues() []ContainerAppProvisioningState {
-	return []ContainerAppProvisioningState{
+	return []ContainerAppProvisioningState{	
 		ContainerAppProvisioningStateCanceled,
 		ContainerAppProvisioningStateDeleting,
 		ContainerAppProvisioningStateFailed,
@@ -238,13 +238,13 @@ type ContainerAppReplicaRunningState string
 
 const (
 	ContainerAppReplicaRunningStateNotRunning ContainerAppReplicaRunningState = "NotRunning"
-	ContainerAppReplicaRunningStateRunning    ContainerAppReplicaRunningState = "Running"
-	ContainerAppReplicaRunningStateUnknown    ContainerAppReplicaRunningState = "Unknown"
+	ContainerAppReplicaRunningStateRunning ContainerAppReplicaRunningState = "Running"
+	ContainerAppReplicaRunningStateUnknown ContainerAppReplicaRunningState = "Unknown"
 )
 
 // PossibleContainerAppReplicaRunningStateValues returns the possible values for the ContainerAppReplicaRunningState const type.
 func PossibleContainerAppReplicaRunningStateValues() []ContainerAppReplicaRunningState {
-	return []ContainerAppReplicaRunningState{
+	return []ContainerAppReplicaRunningState{	
 		ContainerAppReplicaRunningStateNotRunning,
 		ContainerAppReplicaRunningStateRunning,
 		ContainerAppReplicaRunningStateUnknown,
@@ -255,13 +255,13 @@ func PossibleContainerAppReplicaRunningStateValues() []ContainerAppReplicaRunnin
 type CookieExpirationConvention string
 
 const (
-	CookieExpirationConventionFixedTime               CookieExpirationConvention = "FixedTime"
+	CookieExpirationConventionFixedTime CookieExpirationConvention = "FixedTime"
 	CookieExpirationConventionIdentityProviderDerived CookieExpirationConvention = "IdentityProviderDerived"
 )
 
 // PossibleCookieExpirationConventionValues returns the possible values for the CookieExpirationConvention const type.
 func PossibleCookieExpirationConventionValues() []CookieExpirationConvention {
-	return []CookieExpirationConvention{
+	return []CookieExpirationConvention{	
 		CookieExpirationConventionFixedTime,
 		CookieExpirationConventionIdentityProviderDerived,
 	}
@@ -271,15 +271,15 @@ func PossibleCookieExpirationConventionValues() []CookieExpirationConvention {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -291,14 +291,14 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type DNSVerificationTestResult string
 
 const (
-	DNSVerificationTestResultFailed  DNSVerificationTestResult = "Failed"
-	DNSVerificationTestResultPassed  DNSVerificationTestResult = "Passed"
+	DNSVerificationTestResultFailed DNSVerificationTestResult = "Failed"
+	DNSVerificationTestResultPassed DNSVerificationTestResult = "Passed"
 	DNSVerificationTestResultSkipped DNSVerificationTestResult = "Skipped"
 )
 
 // PossibleDNSVerificationTestResultValues returns the possible values for the DNSVerificationTestResult const type.
 func PossibleDNSVerificationTestResultValues() []DNSVerificationTestResult {
-	return []DNSVerificationTestResult{
+	return []DNSVerificationTestResult{	
 		DNSVerificationTestResultFailed,
 		DNSVerificationTestResultPassed,
 		DNSVerificationTestResultSkipped,
@@ -309,21 +309,21 @@ func PossibleDNSVerificationTestResultValues() []DNSVerificationTestResult {
 type EnvironmentProvisioningState string
 
 const (
-	EnvironmentProvisioningStateCanceled                      EnvironmentProvisioningState = "Canceled"
-	EnvironmentProvisioningStateFailed                        EnvironmentProvisioningState = "Failed"
-	EnvironmentProvisioningStateInfrastructureSetupComplete   EnvironmentProvisioningState = "InfrastructureSetupComplete"
+	EnvironmentProvisioningStateCanceled EnvironmentProvisioningState = "Canceled"
+	EnvironmentProvisioningStateFailed EnvironmentProvisioningState = "Failed"
+	EnvironmentProvisioningStateInfrastructureSetupComplete EnvironmentProvisioningState = "InfrastructureSetupComplete"
 	EnvironmentProvisioningStateInfrastructureSetupInProgress EnvironmentProvisioningState = "InfrastructureSetupInProgress"
-	EnvironmentProvisioningStateInitializationInProgress      EnvironmentProvisioningState = "InitializationInProgress"
-	EnvironmentProvisioningStateScheduledForDelete            EnvironmentProvisioningState = "ScheduledForDelete"
-	EnvironmentProvisioningStateSucceeded                     EnvironmentProvisioningState = "Succeeded"
-	EnvironmentProvisioningStateUpgradeFailed                 EnvironmentProvisioningState = "UpgradeFailed"
-	EnvironmentProvisioningStateUpgradeRequested              EnvironmentProvisioningState = "UpgradeRequested"
-	EnvironmentProvisioningStateWaiting                       EnvironmentProvisioningState = "Waiting"
+	EnvironmentProvisioningStateInitializationInProgress EnvironmentProvisioningState = "InitializationInProgress"
+	EnvironmentProvisioningStateScheduledForDelete EnvironmentProvisioningState = "ScheduledForDelete"
+	EnvironmentProvisioningStateSucceeded EnvironmentProvisioningState = "Succeeded"
+	EnvironmentProvisioningStateUpgradeFailed EnvironmentProvisioningState = "UpgradeFailed"
+	EnvironmentProvisioningStateUpgradeRequested EnvironmentProvisioningState = "UpgradeRequested"
+	EnvironmentProvisioningStateWaiting EnvironmentProvisioningState = "Waiting"
 )
 
 // PossibleEnvironmentProvisioningStateValues returns the possible values for the EnvironmentProvisioningState const type.
 func PossibleEnvironmentProvisioningStateValues() []EnvironmentProvisioningState {
-	return []EnvironmentProvisioningState{
+	return []EnvironmentProvisioningState{	
 		EnvironmentProvisioningStateCanceled,
 		EnvironmentProvisioningStateFailed,
 		EnvironmentProvisioningStateInfrastructureSetupComplete,
@@ -346,7 +346,7 @@ const (
 
 // PossibleExtendedLocationTypesValues returns the possible values for the ExtendedLocationTypes const type.
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
-	return []ExtendedLocationTypes{
+	return []ExtendedLocationTypes{	
 		ExtendedLocationTypesCustomLocation,
 	}
 }
@@ -355,14 +355,14 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 type ForwardProxyConvention string
 
 const (
-	ForwardProxyConventionCustom   ForwardProxyConvention = "Custom"
-	ForwardProxyConventionNoProxy  ForwardProxyConvention = "NoProxy"
+	ForwardProxyConventionCustom ForwardProxyConvention = "Custom"
+	ForwardProxyConventionNoProxy ForwardProxyConvention = "NoProxy"
 	ForwardProxyConventionStandard ForwardProxyConvention = "Standard"
 )
 
 // PossibleForwardProxyConventionValues returns the possible values for the ForwardProxyConvention const type.
 func PossibleForwardProxyConventionValues() []ForwardProxyConvention {
-	return []ForwardProxyConvention{
+	return []ForwardProxyConvention{	
 		ForwardProxyConventionCustom,
 		ForwardProxyConventionNoProxy,
 		ForwardProxyConventionStandard,
@@ -375,14 +375,14 @@ func PossibleForwardProxyConventionValues() []ForwardProxyConvention {
 type IngressClientCertificateMode string
 
 const (
-	IngressClientCertificateModeAccept  IngressClientCertificateMode = "accept"
-	IngressClientCertificateModeIgnore  IngressClientCertificateMode = "ignore"
+	IngressClientCertificateModeAccept IngressClientCertificateMode = "accept"
+	IngressClientCertificateModeIgnore IngressClientCertificateMode = "ignore"
 	IngressClientCertificateModeRequire IngressClientCertificateMode = "require"
 )
 
 // PossibleIngressClientCertificateModeValues returns the possible values for the IngressClientCertificateMode const type.
 func PossibleIngressClientCertificateModeValues() []IngressClientCertificateMode {
-	return []IngressClientCertificateMode{
+	return []IngressClientCertificateMode{	
 		IngressClientCertificateModeAccept,
 		IngressClientCertificateModeIgnore,
 		IngressClientCertificateModeRequire,
@@ -393,15 +393,15 @@ func PossibleIngressClientCertificateModeValues() []IngressClientCertificateMode
 type IngressTransportMethod string
 
 const (
-	IngressTransportMethodAuto  IngressTransportMethod = "auto"
-	IngressTransportMethodHTTP  IngressTransportMethod = "http"
+	IngressTransportMethodAuto IngressTransportMethod = "auto"
+	IngressTransportMethodHTTP IngressTransportMethod = "http"
 	IngressTransportMethodHTTP2 IngressTransportMethod = "http2"
-	IngressTransportMethodTCP   IngressTransportMethod = "tcp"
+	IngressTransportMethodTCP IngressTransportMethod = "tcp"
 )
 
 // PossibleIngressTransportMethodValues returns the possible values for the IngressTransportMethod const type.
 func PossibleIngressTransportMethodValues() []IngressTransportMethod {
-	return []IngressTransportMethod{
+	return []IngressTransportMethod{	
 		IngressTransportMethodAuto,
 		IngressTransportMethodHTTP,
 		IngressTransportMethodHTTP2,
@@ -413,18 +413,18 @@ func PossibleIngressTransportMethodValues() []IngressTransportMethod {
 type JobExecutionRunningState string
 
 const (
-	JobExecutionRunningStateDegraded   JobExecutionRunningState = "Degraded"
-	JobExecutionRunningStateFailed     JobExecutionRunningState = "Failed"
+	JobExecutionRunningStateDegraded JobExecutionRunningState = "Degraded"
+	JobExecutionRunningStateFailed JobExecutionRunningState = "Failed"
 	JobExecutionRunningStateProcessing JobExecutionRunningState = "Processing"
-	JobExecutionRunningStateRunning    JobExecutionRunningState = "Running"
-	JobExecutionRunningStateStopped    JobExecutionRunningState = "Stopped"
-	JobExecutionRunningStateSucceeded  JobExecutionRunningState = "Succeeded"
-	JobExecutionRunningStateUnknown    JobExecutionRunningState = "Unknown"
+	JobExecutionRunningStateRunning JobExecutionRunningState = "Running"
+	JobExecutionRunningStateStopped JobExecutionRunningState = "Stopped"
+	JobExecutionRunningStateSucceeded JobExecutionRunningState = "Succeeded"
+	JobExecutionRunningStateUnknown JobExecutionRunningState = "Unknown"
 )
 
 // PossibleJobExecutionRunningStateValues returns the possible values for the JobExecutionRunningState const type.
 func PossibleJobExecutionRunningStateValues() []JobExecutionRunningState {
-	return []JobExecutionRunningState{
+	return []JobExecutionRunningState{	
 		JobExecutionRunningStateDegraded,
 		JobExecutionRunningStateFailed,
 		JobExecutionRunningStateProcessing,
@@ -439,16 +439,16 @@ func PossibleJobExecutionRunningStateValues() []JobExecutionRunningState {
 type JobProvisioningState string
 
 const (
-	JobProvisioningStateCanceled   JobProvisioningState = "Canceled"
-	JobProvisioningStateDeleting   JobProvisioningState = "Deleting"
-	JobProvisioningStateFailed     JobProvisioningState = "Failed"
+	JobProvisioningStateCanceled JobProvisioningState = "Canceled"
+	JobProvisioningStateDeleting JobProvisioningState = "Deleting"
+	JobProvisioningStateFailed JobProvisioningState = "Failed"
 	JobProvisioningStateInProgress JobProvisioningState = "InProgress"
-	JobProvisioningStateSucceeded  JobProvisioningState = "Succeeded"
+	JobProvisioningStateSucceeded JobProvisioningState = "Succeeded"
 )
 
 // PossibleJobProvisioningStateValues returns the possible values for the JobProvisioningState const type.
 func PossibleJobProvisioningStateValues() []JobProvisioningState {
-	return []JobProvisioningState{
+	return []JobProvisioningState{	
 		JobProvisioningStateCanceled,
 		JobProvisioningStateDeleting,
 		JobProvisioningStateFailed,
@@ -463,13 +463,13 @@ type LogLevel string
 const (
 	LogLevelDebug LogLevel = "debug"
 	LogLevelError LogLevel = "error"
-	LogLevelInfo  LogLevel = "info"
-	LogLevelWarn  LogLevel = "warn"
+	LogLevelInfo LogLevel = "info"
+	LogLevelWarn LogLevel = "warn"
 )
 
 // PossibleLogLevelValues returns the possible values for the LogLevel const type.
 func PossibleLogLevelValues() []LogLevel {
-	return []LogLevel{
+	return []LogLevel{	
 		LogLevelDebug,
 		LogLevelError,
 		LogLevelInfo,
@@ -482,13 +482,13 @@ type ManagedCertificateDomainControlValidation string
 
 const (
 	ManagedCertificateDomainControlValidationCNAME ManagedCertificateDomainControlValidation = "CNAME"
-	ManagedCertificateDomainControlValidationHTTP  ManagedCertificateDomainControlValidation = "HTTP"
-	ManagedCertificateDomainControlValidationTXT   ManagedCertificateDomainControlValidation = "TXT"
+	ManagedCertificateDomainControlValidationHTTP ManagedCertificateDomainControlValidation = "HTTP"
+	ManagedCertificateDomainControlValidationTXT ManagedCertificateDomainControlValidation = "TXT"
 )
 
 // PossibleManagedCertificateDomainControlValidationValues returns the possible values for the ManagedCertificateDomainControlValidation const type.
 func PossibleManagedCertificateDomainControlValidationValues() []ManagedCertificateDomainControlValidation {
-	return []ManagedCertificateDomainControlValidation{
+	return []ManagedCertificateDomainControlValidation{	
 		ManagedCertificateDomainControlValidationCNAME,
 		ManagedCertificateDomainControlValidationHTTP,
 		ManagedCertificateDomainControlValidationTXT,
@@ -499,15 +499,15 @@ func PossibleManagedCertificateDomainControlValidationValues() []ManagedCertific
 type ManagedServiceIdentityType string
 
 const (
-	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
-	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
 	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
-	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
 
 // PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{
+	return []ManagedServiceIdentityType{	
 		ManagedServiceIdentityTypeNone,
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
@@ -519,14 +519,14 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 type RevisionHealthState string
 
 const (
-	RevisionHealthStateHealthy   RevisionHealthState = "Healthy"
-	RevisionHealthStateNone      RevisionHealthState = "None"
+	RevisionHealthStateHealthy RevisionHealthState = "Healthy"
+	RevisionHealthStateNone RevisionHealthState = "None"
 	RevisionHealthStateUnhealthy RevisionHealthState = "Unhealthy"
 )
 
 // PossibleRevisionHealthStateValues returns the possible values for the RevisionHealthState const type.
 func PossibleRevisionHealthStateValues() []RevisionHealthState {
-	return []RevisionHealthState{
+	return []RevisionHealthState{	
 		RevisionHealthStateHealthy,
 		RevisionHealthStateNone,
 		RevisionHealthStateUnhealthy,
@@ -537,16 +537,16 @@ func PossibleRevisionHealthStateValues() []RevisionHealthState {
 type RevisionProvisioningState string
 
 const (
-	RevisionProvisioningStateDeprovisioned  RevisionProvisioningState = "Deprovisioned"
+	RevisionProvisioningStateDeprovisioned RevisionProvisioningState = "Deprovisioned"
 	RevisionProvisioningStateDeprovisioning RevisionProvisioningState = "Deprovisioning"
-	RevisionProvisioningStateFailed         RevisionProvisioningState = "Failed"
-	RevisionProvisioningStateProvisioned    RevisionProvisioningState = "Provisioned"
-	RevisionProvisioningStateProvisioning   RevisionProvisioningState = "Provisioning"
+	RevisionProvisioningStateFailed RevisionProvisioningState = "Failed"
+	RevisionProvisioningStateProvisioned RevisionProvisioningState = "Provisioned"
+	RevisionProvisioningStateProvisioning RevisionProvisioningState = "Provisioning"
 )
 
 // PossibleRevisionProvisioningStateValues returns the possible values for the RevisionProvisioningState const type.
 func PossibleRevisionProvisioningStateValues() []RevisionProvisioningState {
-	return []RevisionProvisioningState{
+	return []RevisionProvisioningState{	
 		RevisionProvisioningStateDeprovisioned,
 		RevisionProvisioningStateDeprovisioning,
 		RevisionProvisioningStateFailed,
@@ -559,17 +559,17 @@ func PossibleRevisionProvisioningStateValues() []RevisionProvisioningState {
 type RevisionRunningState string
 
 const (
-	RevisionRunningStateDegraded   RevisionRunningState = "Degraded"
-	RevisionRunningStateFailed     RevisionRunningState = "Failed"
+	RevisionRunningStateDegraded RevisionRunningState = "Degraded"
+	RevisionRunningStateFailed RevisionRunningState = "Failed"
 	RevisionRunningStateProcessing RevisionRunningState = "Processing"
-	RevisionRunningStateRunning    RevisionRunningState = "Running"
-	RevisionRunningStateStopped    RevisionRunningState = "Stopped"
-	RevisionRunningStateUnknown    RevisionRunningState = "Unknown"
+	RevisionRunningStateRunning RevisionRunningState = "Running"
+	RevisionRunningStateStopped RevisionRunningState = "Stopped"
+	RevisionRunningStateUnknown RevisionRunningState = "Unknown"
 )
 
 // PossibleRevisionRunningStateValues returns the possible values for the RevisionRunningState const type.
 func PossibleRevisionRunningStateValues() []RevisionRunningState {
-	return []RevisionRunningState{
+	return []RevisionRunningState{	
 		RevisionRunningStateDegraded,
 		RevisionRunningStateFailed,
 		RevisionRunningStateProcessing,
@@ -583,13 +583,13 @@ func PossibleRevisionRunningStateValues() []RevisionRunningState {
 type Scheme string
 
 const (
-	SchemeHTTP  Scheme = "HTTP"
+	SchemeHTTP Scheme = "HTTP"
 	SchemeHTTPS Scheme = "HTTPS"
 )
 
 // PossibleSchemeValues returns the possible values for the Scheme const type.
 func PossibleSchemeValues() []Scheme {
-	return []Scheme{
+	return []Scheme{	
 		SchemeHTTP,
 		SchemeHTTPS,
 	}
@@ -599,15 +599,15 @@ func PossibleSchemeValues() []Scheme {
 type SourceControlOperationState string
 
 const (
-	SourceControlOperationStateCanceled   SourceControlOperationState = "Canceled"
-	SourceControlOperationStateFailed     SourceControlOperationState = "Failed"
+	SourceControlOperationStateCanceled SourceControlOperationState = "Canceled"
+	SourceControlOperationStateFailed SourceControlOperationState = "Failed"
 	SourceControlOperationStateInProgress SourceControlOperationState = "InProgress"
-	SourceControlOperationStateSucceeded  SourceControlOperationState = "Succeeded"
+	SourceControlOperationStateSucceeded SourceControlOperationState = "Succeeded"
 )
 
 // PossibleSourceControlOperationStateValues returns the possible values for the SourceControlOperationState const type.
 func PossibleSourceControlOperationStateValues() []SourceControlOperationState {
-	return []SourceControlOperationState{
+	return []SourceControlOperationState{	
 		SourceControlOperationStateCanceled,
 		SourceControlOperationStateFailed,
 		SourceControlOperationStateInProgress,
@@ -620,13 +620,13 @@ type StorageType string
 
 const (
 	StorageTypeAzureFile StorageType = "AzureFile"
-	StorageTypeEmptyDir  StorageType = "EmptyDir"
-	StorageTypeSecret    StorageType = "Secret"
+	StorageTypeEmptyDir StorageType = "EmptyDir"
+	StorageTypeSecret StorageType = "Secret"
 )
 
 // PossibleStorageTypeValues returns the possible values for the StorageType const type.
 func PossibleStorageTypeValues() []StorageType {
-	return []StorageType{
+	return []StorageType{	
 		StorageTypeAzureFile,
 		StorageTypeEmptyDir,
 		StorageTypeSecret,
@@ -637,14 +637,14 @@ func PossibleStorageTypeValues() []StorageType {
 type TriggerType string
 
 const (
-	TriggerTypeEvent    TriggerType = "Event"
-	TriggerTypeManual   TriggerType = "Manual"
+	TriggerTypeEvent TriggerType = "Event"
+	TriggerTypeManual TriggerType = "Manual"
 	TriggerTypeSchedule TriggerType = "Schedule"
 )
 
 // PossibleTriggerTypeValues returns the possible values for the TriggerType const type.
 func PossibleTriggerTypeValues() []TriggerType {
-	return []TriggerType{
+	return []TriggerType{	
 		TriggerTypeEvent,
 		TriggerTypeManual,
 		TriggerTypeSchedule,
@@ -655,14 +655,14 @@ func PossibleTriggerTypeValues() []TriggerType {
 type Type string
 
 const (
-	TypeLiveness  Type = "Liveness"
+	TypeLiveness Type = "Liveness"
 	TypeReadiness Type = "Readiness"
-	TypeStartup   Type = "Startup"
+	TypeStartup Type = "Startup"
 )
 
 // PossibleTypeValues returns the possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{
+	return []Type{	
 		TypeLiveness,
 		TypeReadiness,
 		TypeStartup,
@@ -673,18 +673,19 @@ func PossibleTypeValues() []Type {
 type UnauthenticatedClientActionV2 string
 
 const (
-	UnauthenticatedClientActionV2AllowAnonymous      UnauthenticatedClientActionV2 = "AllowAnonymous"
+	UnauthenticatedClientActionV2AllowAnonymous UnauthenticatedClientActionV2 = "AllowAnonymous"
 	UnauthenticatedClientActionV2RedirectToLoginPage UnauthenticatedClientActionV2 = "RedirectToLoginPage"
-	UnauthenticatedClientActionV2Return401           UnauthenticatedClientActionV2 = "Return401"
-	UnauthenticatedClientActionV2Return403           UnauthenticatedClientActionV2 = "Return403"
+	UnauthenticatedClientActionV2Return401 UnauthenticatedClientActionV2 = "Return401"
+	UnauthenticatedClientActionV2Return403 UnauthenticatedClientActionV2 = "Return403"
 )
 
 // PossibleUnauthenticatedClientActionV2Values returns the possible values for the UnauthenticatedClientActionV2 const type.
 func PossibleUnauthenticatedClientActionV2Values() []UnauthenticatedClientActionV2 {
-	return []UnauthenticatedClientActionV2{
+	return []UnauthenticatedClientActionV2{	
 		UnauthenticatedClientActionV2AllowAnonymous,
 		UnauthenticatedClientActionV2RedirectToLoginPage,
 		UnauthenticatedClientActionV2Return401,
 		UnauthenticatedClientActionV2Return403,
 	}
 }
+

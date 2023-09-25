@@ -23,7 +23,7 @@ import (
 // SenderUsernamesClient contains the methods for the SenderUsernames group.
 // Don't use this type directly, use NewSenderUsernamesClient() instead.
 type SenderUsernamesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewSenderUsernamesClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &SenderUsernamesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -102,8 +102,8 @@ func (client *SenderUsernamesClient) createOrUpdateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -248,7 +248,7 @@ func (client *SenderUsernamesClient) getHandleResponse(resp *http.Response) (Sen
 //   - domainName - The name of the Domains resource.
 //   - options - SenderUsernamesClientListByDomainsOptions contains the optional parameters for the SenderUsernamesClient.NewListByDomainsPager
 //     method.
-func (client *SenderUsernamesClient) NewListByDomainsPager(resourceGroupName string, emailServiceName string, domainName string, options *SenderUsernamesClientListByDomainsOptions) *runtime.Pager[SenderUsernamesClientListByDomainsResponse] {
+func (client *SenderUsernamesClient) NewListByDomainsPager(resourceGroupName string, emailServiceName string, domainName string, options *SenderUsernamesClientListByDomainsOptions) (*runtime.Pager[SenderUsernamesClientListByDomainsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SenderUsernamesClientListByDomainsResponse]{
 		More: func(page SenderUsernamesClientListByDomainsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -311,3 +311,4 @@ func (client *SenderUsernamesClient) listByDomainsHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

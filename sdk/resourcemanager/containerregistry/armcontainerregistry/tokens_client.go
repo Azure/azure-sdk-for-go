@@ -23,7 +23,7 @@ import (
 // TokensClient contains the methods for the Tokens group.
 // Don't use this type directly, use NewTokensClient() instead.
 type TokensClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewTokensClient(subscriptionID string, credential azcore.TokenCredential, o
 	}
 	client := &TokensClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -117,8 +117,8 @@ func (client *TokensClient) createCreateRequest(ctx context.Context, resourceGro
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, tokenCreateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -269,13 +269,13 @@ func (client *TokensClient) getHandleResponse(resp *http.Response) (TokensClient
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - TokensClientListOptions contains the optional parameters for the TokensClient.NewListPager method.
-func (client *TokensClient) NewListPager(resourceGroupName string, registryName string, options *TokensClientListOptions) *runtime.Pager[TokensClientListResponse] {
+func (client *TokensClient) NewListPager(resourceGroupName string, registryName string, options *TokensClientListOptions) (*runtime.Pager[TokensClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TokensClientListResponse]{
 		More: func(page TokensClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TokensClientListResponse) (TokensClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TokensClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TokensClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -405,7 +405,8 @@ func (client *TokensClient) updateCreateRequest(ctx context.Context, resourceGro
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, tokenUpdateParameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

@@ -24,7 +24,7 @@ import (
 // UserClient contains the methods for the User group.
 // Don't use this type directly, use NewUserClient() instead.
 type UserClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewUserClient(subscriptionID string, credential azcore.TokenCredential, opt
 	}
 	client := &UserClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -105,8 +105,8 @@ func (client *UserClient) createOrUpdateCreateRequest(ctx context.Context, resou
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -444,8 +444,8 @@ func (client *UserClient) getSharedAccessTokenCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -464,7 +464,7 @@ func (client *UserClient) getSharedAccessTokenHandleResponse(resp *http.Response
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - UserClientListByServiceOptions contains the optional parameters for the UserClient.NewListByServicePager method.
-func (client *UserClient) NewListByServicePager(resourceGroupName string, serviceName string, options *UserClientListByServiceOptions) *runtime.Pager[UserClientListByServiceResponse] {
+func (client *UserClient) NewListByServicePager(resourceGroupName string, serviceName string, options *UserClientListByServiceOptions) (*runtime.Pager[UserClientListByServiceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[UserClientListByServiceResponse]{
 		More: func(page UserClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -597,8 +597,8 @@ func (client *UserClient) updateCreateRequest(ctx context.Context, resourceGroup
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -613,3 +613,4 @@ func (client *UserClient) updateHandleResponse(resp *http.Response) (UserClientU
 	}
 	return result, nil
 }
+

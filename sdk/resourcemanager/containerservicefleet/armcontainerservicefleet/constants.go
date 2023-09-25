@@ -9,7 +9,7 @@
 package armcontainerservicefleet
 
 const (
-	moduleName    = "armcontainerservicefleet"
+	moduleName = "armcontainerservicefleet"
 	moduleVersion = "v0.2.0"
 )
 
@@ -22,7 +22,7 @@ const (
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
+	return []ActionType{	
 		ActionTypeInternal,
 	}
 }
@@ -31,15 +31,15 @@ func PossibleActionTypeValues() []ActionType {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -67,7 +67,7 @@ const (
 
 // PossibleFleetMemberProvisioningStateValues returns the possible values for the FleetMemberProvisioningState const type.
 func PossibleFleetMemberProvisioningStateValues() []FleetMemberProvisioningState {
-	return []FleetMemberProvisioningState{
+	return []FleetMemberProvisioningState{	
 		FleetMemberProvisioningStateCanceled,
 		FleetMemberProvisioningStateFailed,
 		FleetMemberProvisioningStateJoining,
@@ -97,7 +97,7 @@ const (
 
 // PossibleFleetProvisioningStateValues returns the possible values for the FleetProvisioningState const type.
 func PossibleFleetProvisioningStateValues() []FleetProvisioningState {
-	return []FleetProvisioningState{
+	return []FleetProvisioningState{	
 		FleetProvisioningStateCanceled,
 		FleetProvisioningStateCreating,
 		FleetProvisioningStateDeleting,
@@ -119,7 +119,7 @@ const (
 
 // PossibleManagedClusterUpgradeTypeValues returns the possible values for the ManagedClusterUpgradeType const type.
 func PossibleManagedClusterUpgradeTypeValues() []ManagedClusterUpgradeType {
-	return []ManagedClusterUpgradeType{
+	return []ManagedClusterUpgradeType{	
 		ManagedClusterUpgradeTypeFull,
 		ManagedClusterUpgradeTypeNodeImageOnly,
 	}
@@ -129,15 +129,15 @@ func PossibleManagedClusterUpgradeTypeValues() []ManagedClusterUpgradeType {
 type ManagedServiceIdentityType string
 
 const (
-	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
-	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
 	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
-	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
 
 // PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{
+	return []ManagedServiceIdentityType{	
 		ManagedServiceIdentityTypeNone,
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
@@ -150,21 +150,21 @@ type NodeImageSelectionType string
 
 const (
 	// NodeImageSelectionTypeConsistent - The image versions to upgrade nodes to are selected as described below: for each node
-	// pool in managed clusters affected by the update run, the system selects the latest image version such that it is available
-	// across all other node pools (in all other clusters) of the same image type. As a result, all node pools of the same image
-	// type will be upgraded to the same image version. For example, if the latest image version for image type 'AKSUbuntu-1804gen2containerd'
-	// is 'AKSUbuntu-1804gen2containerd-2021.10.12' for a node pool in cluster A in region X, and is 'AKSUbuntu-1804gen2containerd-2021.10.17'
-	// for a node pool in cluster B in region Y, the system will upgrade both node pools to image version 'AKSUbuntu-1804gen2containerd-2021.10.12'.
+// pool in managed clusters affected by the update run, the system selects the latest image version such that it is available
+// across all other node pools (in all other clusters) of the same image type. As a result, all node pools of the same image
+// type will be upgraded to the same image version. For example, if the latest image version for image type 'AKSUbuntu-1804gen2containerd'
+// is 'AKSUbuntu-1804gen2containerd-2021.10.12' for a node pool in cluster A in region X, and is 'AKSUbuntu-1804gen2containerd-2021.10.17'
+// for a node pool in cluster B in region Y, the system will upgrade both node pools to image version 'AKSUbuntu-1804gen2containerd-2021.10.12'.
 	NodeImageSelectionTypeConsistent NodeImageSelectionType = "Consistent"
 	// NodeImageSelectionTypeLatest - Use the latest image version when upgrading nodes. Clusters may use different image versions
-	// (e.g., 'AKSUbuntu-1804gen2containerd-2021.10.12' and 'AKSUbuntu-1804gen2containerd-2021.10.19') because, for example, the
-	// latest available version is different in different regions.
+// (e.g., 'AKSUbuntu-1804gen2containerd-2021.10.12' and 'AKSUbuntu-1804gen2containerd-2021.10.19') because, for example, the
+// latest available version is different in different regions.
 	NodeImageSelectionTypeLatest NodeImageSelectionType = "Latest"
 )
 
 // PossibleNodeImageSelectionTypeValues returns the possible values for the NodeImageSelectionType const type.
 func PossibleNodeImageSelectionTypeValues() []NodeImageSelectionType {
-	return []NodeImageSelectionType{
+	return []NodeImageSelectionType{	
 		NodeImageSelectionTypeConsistent,
 		NodeImageSelectionTypeLatest,
 	}
@@ -175,14 +175,14 @@ func PossibleNodeImageSelectionTypeValues() []NodeImageSelectionType {
 type Origin string
 
 const (
-	OriginSystem     Origin = "system"
-	OriginUser       Origin = "user"
+	OriginSystem Origin = "system"
+	OriginUser Origin = "user"
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{
+	return []Origin{	
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -203,7 +203,7 @@ const (
 
 // PossibleUpdateRunProvisioningStateValues returns the possible values for the UpdateRunProvisioningState const type.
 func PossibleUpdateRunProvisioningStateValues() []UpdateRunProvisioningState {
-	return []UpdateRunProvisioningState{
+	return []UpdateRunProvisioningState{	
 		UpdateRunProvisioningStateCanceled,
 		UpdateRunProvisioningStateFailed,
 		UpdateRunProvisioningStateSucceeded,
@@ -232,7 +232,7 @@ const (
 
 // PossibleUpdateStateValues returns the possible values for the UpdateState const type.
 func PossibleUpdateStateValues() []UpdateState {
-	return []UpdateState{
+	return []UpdateState{	
 		UpdateStateCompleted,
 		UpdateStateFailed,
 		UpdateStateNotStarted,
@@ -242,3 +242,4 @@ func PossibleUpdateStateValues() []UpdateState {
 		UpdateStateStopping,
 	}
 }
+

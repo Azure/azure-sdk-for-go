@@ -23,7 +23,7 @@ import (
 // QuotaByCounterKeysClient contains the methods for the QuotaByCounterKeys group.
 // Don't use this type directly, use NewQuotaByCounterKeysClient() instead.
 type QuotaByCounterKeysClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -38,7 +38,7 @@ func NewQuotaByCounterKeysClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &QuotaByCounterKeysClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -171,8 +171,8 @@ func (client *QuotaByCounterKeysClient) updateCreateRequest(ctx context.Context,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -184,3 +184,4 @@ func (client *QuotaByCounterKeysClient) updateHandleResponse(resp *http.Response
 	}
 	return result, nil
 }
+

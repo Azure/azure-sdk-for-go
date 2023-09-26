@@ -10,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"net/http"
 	"os"
 	"testing"
 
@@ -89,6 +90,11 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client, tv testVars) 
 	}
 
 	resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(tv), nil)
+
+	if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
+		t.Skipf("OpenAI resource overloaded, skipping this test")
+	}
+
 	require.NoError(t, err)
 
 	if tv.Endpoint.Azure {
@@ -111,6 +117,11 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client, tv testVars) 
 
 func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, tv testVars) {
 	streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(tv), nil)
+
+	if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
+		t.Skipf("OpenAI resource overloaded, skipping this test")
+	}
+
 	require.NoError(t, err)
 
 	// the data comes back differently for streaming

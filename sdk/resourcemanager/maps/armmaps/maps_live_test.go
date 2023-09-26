@@ -43,7 +43,7 @@ func (testsuite *MapsTestSuite) SetupSuite() {
 	testsuite.accountName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "accountn", 14, false)
 	testsuite.armEndpoint = "https://management.azure.com"
 	testsuite.creatorName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "creatorn", 14, false)
-	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus2")
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
@@ -74,7 +74,7 @@ func (testsuite *MapsTestSuite) Prepare() {
 		Tags: map[string]*string{
 			"test": to.Ptr("true"),
 		},
-		Kind: to.Ptr(armmaps.KindGen1),
+		Kind: to.Ptr(armmaps.KindGen2),
 		Properties: &armmaps.AccountProperties{
 			Cors: &armmaps.CorsRules{
 				CorsRules: []*armmaps.CorsRule{
@@ -87,7 +87,7 @@ func (testsuite *MapsTestSuite) Prepare() {
 			DisableLocalAuth: to.Ptr(false),
 		},
 		SKU: &armmaps.SKU{
-			Name: to.Ptr(armmaps.NameS0),
+			Name: to.Ptr(armmaps.NameG2),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -145,38 +145,9 @@ func (testsuite *MapsTestSuite) TestAccounts() {
 	fmt.Println("Call operation: Accounts_ListKeys")
 	_, err = accountsClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, nil)
 	testsuite.Require().NoError(err)
-}
 
-// Microsoft.Maps/operations
-func (testsuite *MapsTestSuite) TestMaps() {
-	var err error
-	// From step Maps_ListOperations
-	fmt.Println("Call operation: Maps_ListOperations")
-	client, err := armmaps.NewClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	clientNewListOperationsPager := client.NewListOperationsPager(nil)
-	for clientNewListOperationsPager.More() {
-		_, err := clientNewListOperationsPager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-		break
-	}
-
-	// From step Maps_ListSubscriptionOperations
-	fmt.Println("Call operation: Maps_ListSubscriptionOperations")
-	clientNewListSubscriptionOperationsPager := client.NewListSubscriptionOperationsPager(nil)
-	for clientNewListSubscriptionOperationsPager.More() {
-		_, err := clientNewListSubscriptionOperationsPager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-		break
-	}
-}
-
-func (testsuite *MapsTestSuite) Cleanup() {
-	var err error
 	// From step Accounts_Update
 	fmt.Println("Call operation: Accounts_Update")
-	accountsClient, err := armmaps.NewAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
 	_, err = accountsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armmaps.AccountUpdateParameters{
 		Tags: map[string]*string{
 			"specialTag": to.Ptr("true"),
@@ -187,11 +158,66 @@ func (testsuite *MapsTestSuite) Cleanup() {
 	// The current provisioningState must transition to a terminal state before the resource can be updated.
 	recordMode := recording.GetEnvVariable("AZURE_RECORD_MODE", "playback")
 	if recordMode == "record" {
-		time.Sleep(60*time.Second)
+		time.Sleep(60 * time.Second)
+	}
+}
+
+// Microsoft.Maps/accounts/{accountName}/creators/{creatorName}
+func (testsuite *MapsTestSuite) TestCreators() {
+	var err error
+	// From step Creators_CreateOrUpdate
+	fmt.Println("Call operation: Creators_CreateOrUpdate")
+	creatorsClient, err := armmaps.NewCreatorsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	_, err = creatorsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.creatorName, armmaps.Creator{
+		Location: to.Ptr(testsuite.location),
+		Tags: map[string]*string{
+			"test": to.Ptr("true"),
+		},
+		Properties: &armmaps.CreatorProperties{
+			StorageUnits: to.Ptr[int32](5),
+		},
+	}, nil)
+	testsuite.Require().NoError(err)
+
+	// From step Creators_ListByAccount
+	fmt.Println("Call operation: Creators_ListByAccount")
+	creatorsClientNewListByAccountPager := creatorsClient.NewListByAccountPager(testsuite.resourceGroupName, testsuite.accountName, nil)
+	for creatorsClientNewListByAccountPager.More() {
+		_, err := creatorsClientNewListByAccountPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
 	}
 
+	// From step Creators_Get
+	fmt.Println("Call operation: Creators_Get")
+	_, err = creatorsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.creatorName, nil)
+	testsuite.Require().NoError(err)
+
+	// From step Creators_Update
+	fmt.Println("Call operation: Creators_Update")
+	_, err = creatorsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.creatorName, armmaps.CreatorUpdateParameters{
+		Properties: &armmaps.CreatorProperties{
+			StorageUnits: to.Ptr[int32](10),
+		},
+		Tags: map[string]*string{
+			"specialTag": to.Ptr("true"),
+		},
+	}, nil)
+	testsuite.Require().NoError(err)
+
+	// From step Creators_Delete
+	fmt.Println("Call operation: Creators_Delete")
+	_, err = creatorsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.creatorName, nil)
+	testsuite.Require().NoError(err)
+}
+
+func (testsuite *MapsTestSuite) Cleanup() {
+	var err error
 	// From step Accounts_Delete
 	fmt.Println("Call operation: Accounts_Delete")
+	accountsClient, err := armmaps.NewAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	_, err = accountsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, nil)
 	testsuite.Require().NoError(err)
 }

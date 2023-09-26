@@ -17,6 +17,8 @@
 
 ### Other Changes
 
+* Updated dependencies.
+
 ## 1.8.0-beta.3 (2023-09-07)
 
 ### Features Added

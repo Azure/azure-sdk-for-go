@@ -11,7 +11,7 @@ param(
     [switch]$alwaysSetBodyParamRequired,
     [switch]$removeUnreferencedTypes,
     [string]$config = "autorest.md",
-    [string]$goExtension = "@autorest/go@4.0.0-preview.55",
+    [string]$goExtension = "@autorest/go@4.0.0-alpha.20230925.4",
     [string]$filePrefix,
     [string]$outputFolder
 )

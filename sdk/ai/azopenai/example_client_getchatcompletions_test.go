@@ -78,7 +78,10 @@ func ExampleClient_GetChatCompletions() {
 
 	for _, choice := range resp.Choices {
 		gotReply = true
-		fmt.Fprintf(os.Stderr, "Content[%d]: %s\n", *choice.Index, *choice.Message.Content)
+
+		if choice.Message != nil && choice.Message.Content != nil {
+			fmt.Fprintf(os.Stderr, "Content[%d]: %s\n", *choice.Index, *choice.Message.Content)
+		}
 	}
 
 	if gotReply {

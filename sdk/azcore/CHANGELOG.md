@@ -22,6 +22,7 @@
   * `WithCaptureResponse`
   * `WithHTTPHeader`
   * `WithRetryOptions`
+* Updated dependencies.
 
 ## 1.7.2 (2023-09-06)
 

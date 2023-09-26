@@ -61,7 +61,7 @@ type AudioTranscriptionOptions struct {
 // sentences.
 type AudioTranscriptionSegment struct {
 	// REQUIRED; The average log probability associated with this audio segment.
-	AvgLogprob *float32
+	AvgLogProb *float32
 
 	// REQUIRED; The compression ratio of this audio segment.
 	CompressionRatio *float32
@@ -140,7 +140,7 @@ type AudioTranslationOptions struct {
 // sentences.
 type AudioTranslationSegment struct {
 	// REQUIRED; The average log probability associated with this audio segment.
-	AvgLogprob *float32
+	AvgLogProb *float32
 
 	// REQUIRED; The compression ratio of this audio segment.
 	CompressionRatio *float32
@@ -282,40 +282,6 @@ type AzureCognitiveSearchIndexFieldMappingOptions struct {
 
 // Error - The error object.
 type Error struct {
-	// REQUIRED; One of a server-defined set of error codes.
-	Code *string
-
-	// REQUIRED; A human-readable representation of the error.
-	Message *string
-
-	// An array of details about specific errors that led to this reported error.
-	Details []Error
-
-	// An object containing more specific information than the current object about the error.
-	InnerError *InnerError
-
-	// The target of the error.
-	Target *string
-}
-
-// ErrorInnererror - An object containing more specific information than the current object about the
-// error.
-type ErrorInnererror struct {
-	// One of a server-defined set of error codes.
-	Code *string
-
-	// Inner error.
-	InnerError *InnerError
-}
-
-// ErrorResponse - A response containing error details.
-type ErrorResponse struct {
-	// REQUIRED; The error object.
-	Error *ErrorResponseError
-}
-
-// ErrorResponseError - The error object.
-type ErrorResponseError struct {
 	// REQUIRED; One of a server-defined set of error codes.
 	Code *string
 

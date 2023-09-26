@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.0 (2023-09-25)
+## 0.3.0 (2023-09-26)
 
 ### Features Added
 - Support for Whisper audio APIs for transcription and translation using `GetAudioTranscription` and `GetAudioTranslation`.

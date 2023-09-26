@@ -201,6 +201,17 @@ directive:
 
       fix($.AudioTranslationOptions.properties.response_format);
       fix($.AudioTranslation.properties.task);
+
+  - from:
+    - options.go
+    - models_serde.go
+    - models.go
+    where: $
+    transform: |
+      return $
+        .replace(/AvgLogprob \*float32/g, "AvgLogProb *float32")
+        .replace(/(a|c)\.AvgLogprob/g, "$1.AvgLogProb")
+
   #
   # [END] Whisper
   #
@@ -253,10 +264,16 @@ directive:
     where: $
     transform: | 
       return $
-        // InnerError is actually a recursive type, no need for this innererrorinnererror type
+        // remove some types that were generated to support the recursive error.
         .replace(/\/\/ AzureCoreFoundationsInnerErrorInnererror.+?\n}/s, "")
         // also, remove its marshalling functions
-        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?AzureCoreFoundationsInnerErrorInnererror.+?\n}/sg, "")
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsInnerErrorInnererror.+?\n}/sg, "")
+        .replace(/\/\/ AzureCoreFoundationsErrorInnererror.+?\n}/s, "")
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsErrorInnererror.+?\n}/sg, "")
+        .replace(/\/\/ AzureCoreFoundationsErrorResponseError.+?\n}/s, "")
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsErrorResponseError.+?\n}/sg, "")
+        .replace(/\/\/ AzureCoreFoundationsErrorResponse.+?\n}/s, "")
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsErrorResponse.+?\n}/sg, "")
 
         // Remove any references to the type and replace them with InnerError.
         .replace(/Innererror \*(AzureCoreFoundationsInnerErrorInnererror|AzureCoreFoundationsErrorInnererror)/g, "InnerError *InnerError")

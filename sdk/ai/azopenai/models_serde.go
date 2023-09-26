@@ -110,7 +110,7 @@ func (a *AudioTranscriptionOptions) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AudioTranscriptionSegment.
 func (a AudioTranscriptionSegment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "avg_logprob", a.AvgLogprob)
+	populate(objectMap, "avg_logprob", a.AvgLogProb)
 	populate(objectMap, "compression_ratio", a.CompressionRatio)
 	populate(objectMap, "end", a.End)
 	populate(objectMap, "id", a.ID)
@@ -133,7 +133,7 @@ func (a *AudioTranscriptionSegment) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "avg_logprob":
-			err = unpopulate(val, "AvgLogprob", &a.AvgLogprob)
+			err = unpopulate(val, "AvgLogprob", &a.AvgLogProb)
 			delete(rawMsg, key)
 		case "compression_ratio":
 			err = unpopulate(val, "CompressionRatio", &a.CompressionRatio)
@@ -259,7 +259,7 @@ func (a *AudioTranslationOptions) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AudioTranslationSegment.
 func (a AudioTranslationSegment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "avg_logprob", a.AvgLogprob)
+	populate(objectMap, "avg_logprob", a.AvgLogProb)
 	populate(objectMap, "compression_ratio", a.CompressionRatio)
 	populate(objectMap, "end", a.End)
 	populate(objectMap, "id", a.ID)
@@ -282,7 +282,7 @@ func (a *AudioTranslationSegment) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "avg_logprob":
-			err = unpopulate(val, "AvgLogprob", &a.AvgLogprob)
+			err = unpopulate(val, "AvgLogprob", &a.AvgLogProb)
 			delete(rawMsg, key)
 		case "compression_ratio":
 			err = unpopulate(val, "CompressionRatio", &a.CompressionRatio)
@@ -551,107 +551,6 @@ func (a Error) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type Error.
 func (a *Error) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, "Code", &a.Code)
-			delete(rawMsg, key)
-		case "details":
-			err = unpopulate(val, "Details", &a.Details)
-			delete(rawMsg, key)
-		case "innererror":
-			err = unpopulate(val, "Innererror", &a.InnerError)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, "Message", &a.Message)
-			delete(rawMsg, key)
-		case "target":
-			err = unpopulate(val, "Target", &a.Target)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorInnererror.
-func (a ErrorInnererror) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "code", a.Code)
-	populate(objectMap, "innererror", a.InnerError)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorInnererror.
-func (a *ErrorInnererror) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, "Code", &a.Code)
-			delete(rawMsg, key)
-		case "innererror":
-			err = unpopulate(val, "Innererror", &a.InnerError)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
-func (a ErrorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "error", a.Error)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorResponse.
-func (a *ErrorResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "error":
-			err = unpopulate(val, "Error", &a.Error)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponseError.
-func (a ErrorResponseError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "code", a.Code)
-	populate(objectMap, "details", a.Details)
-	populate(objectMap, "innererror", a.InnerError)
-	populate(objectMap, "message", a.Message)
-	populate(objectMap, "target", a.Target)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorResponseError.
-func (a *ErrorResponseError) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)

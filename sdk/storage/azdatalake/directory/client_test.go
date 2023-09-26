@@ -2166,6 +2166,47 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
+func (s *UnrecordedTestSuite) TestDirectoryRenameUsingSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	perms := sas.DirectoryPermissions{Read: true, Create: true, Write: true, Move: true, Delete: true, List: true}
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:       sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:     time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		FileSystemName: filesystemName,
+		Permissions:    perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+
+	srcDirClient, err := directory.NewClientWithNoCredential(fsClient.DFSURL()+"/dir1?"+sasToken, nil)
+	_require.NoError(err)
+
+	_, err = srcDirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	destPathWithSAS := "dir2?" + sasToken
+	_, err = srcDirClient.Rename(context.Background(), destPathWithSAS, nil)
+	_require.NoError(err)
+
+	_, err = srcDirClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
+}
+
 func (s *RecordedTestSuite) TestDirRenameNoOptions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

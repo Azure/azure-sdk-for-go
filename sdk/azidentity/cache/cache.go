@@ -1,6 +1,6 @@
-//go:build go1.18 && (darwin || windows)
+//go:build go1.18 && (darwin || linux || windows)
 // +build go1.18
-// +build darwin windows
+// +build darwin linux windows
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.

@@ -501,6 +501,39 @@ func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
 	testGetTokenSuccess(t, cred)
 }
 
+func TestManagedIdentityCredential_IMDSRetries(t *testing.T) {
+	sts := mockSTS{}
+	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+		ClientOptions: azcore.ClientOptions{
+			Retry: policy.RetryOptions{
+				MaxRetries:    1,
+				MaxRetryDelay: time.Nanosecond,
+			},
+			Transport: &sts,
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cred.mic.msiType != msiTypeIMDS {
+		t.SkipNow()
+	}
+	for _, code := range []int{404, 410, 429, 500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511} {
+		reqs := 0
+		sts.tokenRequestCallback = func(r *http.Request) *http.Response {
+			reqs++
+			return &http.Response{Body: http.NoBody, Request: r, StatusCode: code}
+		}
+		_, err = cred.GetToken(context.Background(), testTRO)
+		if err == nil {
+			t.Fatal("expected an error")
+		}
+		if reqs != 2 {
+			t.Errorf("expected 1 retry after %d response, got %d", code, reqs-1)
+		}
+	}
+}
+
 func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {
 	resetEnvironmentVarsForTest()
 	expectedSecret := "expected-secret"

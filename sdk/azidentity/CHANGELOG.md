@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* `ManagedIdentityCredential` will now retry when IMDS responds 410 or 503
 
 ### Other Changes
 

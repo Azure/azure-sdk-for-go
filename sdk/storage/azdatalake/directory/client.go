@@ -267,7 +267,10 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 		return RenameResponse{}, err
 	}
 
-	oldPath, _ := url.Parse(d.DFSURL())
+	oldPath, err := url.Parse(d.DFSURL())
+	if err != nil {
+		return RenameResponse{}, err
+	}
 	srcParts := strings.Split(d.DFSURL(), "?")
 	newSrcPath := oldPath.Path
 	newSrcQuery := ""

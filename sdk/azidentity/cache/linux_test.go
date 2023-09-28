@@ -152,10 +152,10 @@ func TestUnencryptedFallback(t *testing.T) {
 	p, err := internal.CacheFilePath(o.Name)
 	require.NoError(t, err)
 	require.NoFileExists(t, p)
+	defer os.Remove(p)
 	o.AllowUnencryptedStorage = true
 	k, err := storage(o)
 	require.NoError(t, err)
 	require.NoError(t, k.Write(ctx, []byte("data")))
 	require.FileExists(t, p)
-	os.Remove(p)
 }

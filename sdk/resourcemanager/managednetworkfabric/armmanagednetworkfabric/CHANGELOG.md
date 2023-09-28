@@ -1,5 +1,21 @@
 # Release History
 
+## 2.0.0 (2023-09-28)
+### Breaking Changes
+
+- Function `*NetworkFabricsClient.BeginUpgrade` parameter(s) have been changed from `(context.Context, string, string, UpdateVersion, *NetworkFabricsClientBeginUpgradeOptions)` to `(context.Context, string, string, UpgradeNetworkFabricProperties, *NetworkFabricsClientBeginUpgradeOptions)`
+
+### Features Added
+
+- New value `ConfigurationStatePendingCommit`, `ConfigurationStateProvisioning` added to enum type `ConfigurationState`
+- New enum type `NetworkFabricUpgradeAction` with values `NetworkFabricUpgradeActionComplete`, `NetworkFabricUpgradeActionStart`
+- New struct `UpgradeNetworkFabricProperties`
+- New field `DefaultAction` in struct `AccessControlListPatchProperties`
+- New field `DefaultAction` in struct `AccessControlListProperties`
+- New field `DefaultAction` in struct `RoutePolicyPatchableProperties`
+- New field `DefaultAction` in struct `RoutePolicyProperties`
+
+
 ## 1.0.0 (2023-07-28)
 ### Breaking Changes
 

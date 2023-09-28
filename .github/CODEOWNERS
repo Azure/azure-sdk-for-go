@@ -376,31 +376,13 @@
 #/<NotInRepo>/          @kpiteira
 
 # ServiceLabel: %Monitor
-#/<NotInRepo>/          @SameergMS @dadunl
-
-# ServiceLabel: %Monitor - Autoscale
-#/<NotInRepo>/          @AzMonEssential
-
-# ServiceLabel: %Monitor - ActivityLogs
-#/<NotInRepo>/          @AzMonEssential
-
-# ServiceLabel: %Monitor - Metrics
-#/<NotInRepo>/          @AzMonEssential
-
-# ServiceLabel: %Monitor - Diagnostic Settings
-#/<NotInRepo>/          @AzMonEssential
-
-# ServiceLabel: %Monitor - Alerts
-#/<NotInRepo>/          @AzmonAlerts
-
-# ServiceLabel: %Monitor - ActionGroups
-#/<NotInRepo>/          @AzmonActionG
-
-# ServiceLabel: %Monitor - LogAnalytics
-#/<NotInRepo>/          @AzmonLogA
+#/<NotInRepo>/          @SameergMS @dadunl @AzMonEssential @AzmonAlerts @AzmonActionG @AzmonLogA
 
 # ServiceLabel: %Monitor - ApplicationInsights
 #/<NotInRepo>/          @azmonapplicationinsights
+
+# ServiceLabel: %Monitor - Exporter
+#/<NotInRepo>/          @cijothomas @reyang @rajkumar-rangaraj @TimothyMothra @vishweshbankwar
 
 # ServiceLabel: %MySQL
 #/<NotInRepo>/          @ambhatna @savjani
@@ -614,6 +596,3 @@
 
 # ServiceLabel: %Consumption - RIandShowBack
 #/<NotInRepo>/          @ccmshowbackdevs
-
-# ServiceLabel: %Monitor - Exporter
-#/<NotInRepo>/          @cijothomas @reyang @rajkumar-rangaraj @TimothyMothra @vishweshbankwar

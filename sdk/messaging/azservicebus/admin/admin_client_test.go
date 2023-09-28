@@ -234,18 +234,31 @@ func testCreateQueue(t *testing.T, isPremium bool) {
 		expectedQueueProperties.MaxSizeInMegabytes = to.Ptr(int32(16 * 4096))
 	}
 
-	require.EqualValues(t, expectedQueueProperties, createResp.QueueProperties)
+	require.Equal(t, createResp.QueueName, queueName)
+	require.Equal(t, expectedQueueProperties, createResp.QueueProperties)
 
 	getResp, err := adminClient.GetQueue(context.Background(), queueName, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, getResp.QueueProperties, createResp.QueueProperties)
+	require.Equal(t, getResp.QueueName, queueName)
+	require.Equal(t, getResp.QueueProperties, createResp.QueueProperties)
 
 	// ensure we can round-trip
 	updateResp, err := adminClient.UpdateQueue(context.Background(), queueName, getResp.QueueProperties, nil)
 	require.NoError(t, err)
 
+	require.Equal(t, updateResp.QueueName, queueName)
 	require.EqualValues(t, expectedQueueProperties, updateResp.QueueProperties)
+
+	runtimeResp, err := adminClient.GetQueueRuntimeProperties(context.Background(), queueName, nil)
+	require.NoError(t, err)
+
+	require.Equal(t, queueName, runtimeResp.QueueName)
+	require.NotZero(t, runtimeResp.CreatedAt)
+	require.NotZero(t, runtimeResp.UpdatedAt)
+	require.Zero(t, runtimeResp.AccessedAt)
+	require.Zero(t, runtimeResp.TotalMessageCount)
+	require.Zero(t, runtimeResp.SizeInBytes)
 }
 
 func TestAdminClient_UpdateQueue(t *testing.T) {
@@ -477,7 +490,7 @@ func testTopicCreation(t *testing.T, isPremium bool) {
 	}
 
 	// check topic properties, existence
-	addResp, err := adminClient.CreateTopic(context.Background(), topicName, createTopicOptions)
+	createResp, err := adminClient.CreateTopic(context.Background(), topicName, createTopicOptions)
 	require.NoError(t, err)
 
 	defer deleteTopic(t, adminClient, topicName)
@@ -506,19 +519,25 @@ func testTopicCreation(t *testing.T, isPremium bool) {
 		// enabling partitioning increases our max size because of the 16 partition),
 		expectedTopicProps.EnablePartitioning = to.Ptr(true)
 		expectedTopicProps.MaxSizeInMegabytes = to.Ptr(int32(16 * 2048))
-
 	}
 
-	require.EqualValues(t, expectedTopicProps, addResp.TopicProperties)
+	require.Equal(t, CreateTopicResponse{
+		TopicName:       topicName,
+		TopicProperties: expectedTopicProps,
+	}, createResp)
 
 	getResp, err := adminClient.GetTopic(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, expectedTopicProps, getResp.TopicProperties)
+	require.Equal(t, &GetTopicResponse{
+		TopicName:       topicName,
+		TopicProperties: getResp.TopicProperties,
+	}, getResp)
 
 	runtimeResp, err := adminClient.GetTopicRuntimeProperties(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
+	require.Equal(t, topicName, runtimeResp.TopicName)
 	require.False(t, runtimeResp.CreatedAt.IsZero())
 	require.False(t, runtimeResp.UpdatedAt.IsZero())
 	require.True(t, runtimeResp.AccessedAt.IsZero())
@@ -526,7 +545,7 @@ func testTopicCreation(t *testing.T, isPremium bool) {
 	require.Zero(t, runtimeResp.ScheduledMessageCount)
 	require.Zero(t, runtimeResp.SizeInBytes)
 
-	addSubWithPropsResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, &CreateSubscriptionOptions{
+	createSubWithPropsResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, &CreateSubscriptionOptions{
 		Properties: &SubscriptionProperties{
 			LockDuration:                                    to.Ptr("PT3M"),
 			RequiresSession:                                 to.Ptr(false),
@@ -544,18 +563,28 @@ func testTopicCreation(t *testing.T, isPremium bool) {
 
 	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
 
-	require.EqualValues(t, SubscriptionProperties{
-		LockDuration:                                    to.Ptr("PT3M"),
-		RequiresSession:                                 to.Ptr(false),
-		DefaultMessageTimeToLive:                        to.Ptr("PT7M"),
-		DeadLetteringOnMessageExpiration:                to.Ptr(true),
-		EnableDeadLetteringOnFilterEvaluationExceptions: to.Ptr(false),
-		MaxDeliveryCount:                                to.Ptr(int32(11)),
-		Status:                                          &status,
-		EnableBatchedOperations:                         to.Ptr(false),
-		AutoDeleteOnIdle:                                to.Ptr("PT11M"),
-		UserMetadata:                                    to.Ptr("user metadata"),
-	}, addSubWithPropsResp.SubscriptionProperties)
+	require.Equal(t, CreateSubscriptionResponse{
+		SubscriptionName: subscriptionName,
+		TopicName:        topicName,
+		SubscriptionProperties: SubscriptionProperties{
+			LockDuration:                                    to.Ptr("PT3M"),
+			RequiresSession:                                 to.Ptr(false),
+			DefaultMessageTimeToLive:                        to.Ptr("PT7M"),
+			DeadLetteringOnMessageExpiration:                to.Ptr(true),
+			EnableDeadLetteringOnFilterEvaluationExceptions: to.Ptr(false),
+			MaxDeliveryCount:                                to.Ptr(int32(11)),
+			Status:                                          &status,
+			EnableBatchedOperations:                         to.Ptr(false),
+			AutoDeleteOnIdle:                                to.Ptr("PT11M"),
+			UserMetadata:                                    to.Ptr("user metadata"),
+		},
+	}, createSubWithPropsResp)
+
+	runtimePropsResp, err := adminClient.GetSubscriptionRuntimeProperties(context.Background(), topicName, subscriptionName, nil)
+	require.NoError(t, err)
+
+	require.Equal(t, topicName, runtimePropsResp.TopicName)
+	require.Equal(t, subscriptionName, runtimePropsResp.SubscriptionName)
 }
 
 func TestAdminClient_TopicAndSubscription_WithFalseFilterDefaultSubscriptionRule(t *testing.T) {
@@ -774,6 +803,7 @@ func TestAdminClient_UpdateTopic(t *testing.T) {
 	updateResp, err := adminClient.UpdateTopic(context.Background(), topicName, addResp.TopicProperties, nil)
 	require.NoError(t, err)
 
+	require.Equal(t, topicName, updateResp.TopicName)
 	require.EqualValues(t, "PT11M", *updateResp.AutoDeleteOnIdle)
 	require.EqualValues(t, addResp.AuthorizationRules, updateResp.AuthorizationRules)
 
@@ -1043,15 +1073,19 @@ func TestAdminClient_UpdateSubscription(t *testing.T) {
 	defer deleteTopic(t, adminClient, topicName)
 
 	subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
-	addResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil)
+	createResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil)
 	require.NoError(t, err)
+	require.Equal(t, topicName, createResp.TopicName)
+	require.Equal(t, subscriptionName, createResp.SubscriptionName)
 
 	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
 
-	addResp.LockDuration = to.Ptr("PT4M")
-	updateResp, err := adminClient.UpdateSubscription(context.Background(), topicName, subscriptionName, addResp.SubscriptionProperties, nil)
+	createResp.LockDuration = to.Ptr("PT4M")
+	updateResp, err := adminClient.UpdateSubscription(context.Background(), topicName, subscriptionName, createResp.SubscriptionProperties, nil)
 	require.NoError(t, err)
 
+	require.Equal(t, subscriptionName, updateResp.SubscriptionName)
+	require.Equal(t, topicName, updateResp.TopicName)
 	require.EqualValues(t, "PT4M", *updateResp.LockDuration)
 
 	// try changing a value that's not allowed
@@ -1059,7 +1093,7 @@ func TestAdminClient_UpdateSubscription(t *testing.T) {
 	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, subscriptionName, updateResp.SubscriptionProperties, nil)
 	require.Contains(t, err.Error(), "The value for the RequiresSession property of an existing Subscription cannot be changed")
 
-	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, "non-existent-subscription", addResp.SubscriptionProperties, nil)
+	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, "non-existent-subscription", createResp.SubscriptionProperties, nil)
 	require.Contains(t, err.Error(), "404 Not Found")
 
 	var asResponseErr *azcore.ResponseError
@@ -2071,4 +2105,43 @@ func TestATOMNoCountDetails(t *testing.T) {
 	tRP, err := newTopicRuntimePropertiesItem(&atom.TopicEnvelope{Content: &atom.TopicContent{}})
 	require.Nil(t, tRP)
 	require.Error(t, err, "invalid topic runtime properties: no CountDetails element")
+}
+
+func TestATOMEntitiesHaveNames(t *testing.T) {
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	nano := time.Now().UnixNano()
+	topicName := fmt.Sprintf("topic-%X", nano)
+
+	t.Run("topic", func(t *testing.T) {
+		createTopicResp, err := adminClient.CreateTopic(context.Background(), topicName, &CreateTopicOptions{
+			Properties: &TopicProperties{
+				AutoDeleteOnIdle: to.Ptr("PT5M"),
+			},
+		})
+		require.NoError(t, err)
+		require.Equal(t, createTopicResp.TopicName, topicName)
+
+		topicResp, err := adminClient.GetTopic(context.Background(), topicName, nil)
+		require.NoError(t, err)
+		require.Equal(t, topicResp.TopicName, topicName)
+	})
+
+	t.Run("sub", func(t *testing.T) {
+		createSubResp, err := adminClient.CreateSubscription(context.Background(), topicName, "sub1", &CreateSubscriptionOptions{
+			Properties: &SubscriptionProperties{
+				AutoDeleteOnIdle: to.Ptr("PT5M"),
+			},
+		})
+		require.NoError(t, err)
+		require.Equal(t, createSubResp.TopicName, topicName)
+		require.Equal(t, createSubResp.SubscriptionName, "sub1")
+
+		subResp, err := adminClient.GetSubscription(context.Background(), topicName, "sub1", nil)
+		require.NoError(t, err)
+
+		require.Equal(t, subResp.TopicName, topicName)
+		require.Equal(t, subResp.SubscriptionName, "sub1")
+	})
 }

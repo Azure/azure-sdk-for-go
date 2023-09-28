@@ -13,11 +13,15 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache/internal/aescbc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache/internal/jwe"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/AzureAD/microsoft-authentication-extensions-for-go/cache/accessor"
+	"github.com/AzureAD/microsoft-authentication-extensions-for-go/cache/accessor/file"
 	"golang.org/x/sys/unix"
 )
 
@@ -26,10 +30,48 @@ const (
 	userKey = "user"
 )
 
-var cacheDir = os.UserHomeDir
+var (
+	cacheDir   = os.UserHomeDir
+	tryKeyring = func() error {
+		k, err := newKeyring("azidentity-test-cache")
+		if err != nil {
+			return err
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+		err = k.Write(ctx, []byte("test"))
+		if err != nil {
+			return err
+		}
+		_, err = k.Read(ctx)
+		if err != nil {
+			return err
+		}
+		return k.Delete(ctx)
+	}
+)
 
 func storage(o internal.TokenCachePersistenceOptions) (accessor.Accessor, error) {
-	return newKeyring(o.Name)
+	name := o.Name
+	if name == "" {
+		name = defaultName
+	}
+	err := tryKeyring()
+	if err != nil {
+		msg := fmt.Sprintf("cache encryption is impossible because the key retention facility isn't usable: %s", err)
+		if o.AllowUnencryptedStorage {
+			f := ""
+			f, err = internal.CacheFilePath(name)
+			if err == nil {
+				log.Write(azidentity.EventAuthentication, msg+". Falling back to unencrypted storage")
+				return file.New(f)
+			}
+		} else {
+			err = errors.New(msg + ". Set AllowUnencryptedStorage on TokenCachePersistenceOptions to store the cache in plaintext instead of returning this error")
+		}
+		return nil, err
+	}
+	return newKeyring(name)
 }
 
 // keyring encrypts cache data with a key stored on the user keyring and writes the encrypted

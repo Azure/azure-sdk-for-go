@@ -8,6 +8,7 @@ package cache
 
 import (
 	"context"
+	"errors"
 	"os"
 	"path/filepath"
 	"testing"
@@ -137,4 +138,24 @@ func TestTwoInstances(t *testing.T) {
 			require.NoError(t, b.Delete(ctx))
 		})
 	}
+}
+
+func TestUnencryptedFallback(t *testing.T) {
+	before := tryKeyring
+	t.Cleanup(func() { tryKeyring = before })
+	tryKeyring = func() error { return errors.New("it didn't work") }
+
+	o := internal.TokenCachePersistenceOptions{Name: t.Name()}
+	_, err := storage(internal.TokenCachePersistenceOptions{})
+	require.Error(t, err)
+
+	p, err := internal.CacheFilePath(o.Name)
+	require.NoError(t, err)
+	require.NoFileExists(t, p)
+	o.AllowUnencryptedStorage = true
+	k, err := storage(o)
+	require.NoError(t, err)
+	require.NoError(t, k.Write(ctx, []byte("data")))
+	require.FileExists(t, p)
+	os.Remove(p)
 }

@@ -43,6 +43,7 @@
 
 * Fixed an issue that could cause some ARM RPs to not be automatically registered.
 * Block bearer token authentication for non TLS protected endpoints.
+* Fixed an issue that could cause an HTTP/2 request to hang when the TCP connection becomes unresponsive.
 
 ### Other Changes
 
@@ -57,8 +58,6 @@
 ### Bugs Fixed
 
 * Suppress creating spans for nested SDK API calls. The HTTP span will be a child of the outer API span.
-* Fix default HTTP transport to work in WASM modules.
-* Fixed an issue that could cause an HTTP/2 request to hang when the TCP connection becomes unresponsive.
 
 ### Other Changes
 

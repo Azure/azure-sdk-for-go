@@ -38,6 +38,8 @@ type endpoint struct {
 	Azure  bool
 }
 
+// newTestClient creates a client enabled for HTTP recording, if needed.
+// See [newRecordingTransporter] for sanitization code.
 func newTestClient(t *testing.T, ep endpoint) *azopenai.Client {
 	if ep.Azure {
 		cred, err := azopenai.NewKeyCredential(ep.APIKey)
@@ -55,13 +57,14 @@ func newTestClient(t *testing.T, ep endpoint) *azopenai.Client {
 		cred, err := azopenai.NewKeyCredential(ep.APIKey)
 		require.NoError(t, err)
 
-		// we get rate limited quite a bit.
 		options := newClientOptionsForTest(t)
 
 		if options == nil {
 			options = &azopenai.ClientOptions{}
 		}
 
+		// We get rate limited quite a bit with OpenAI so we use this _very_ forgiving retry
+		// policy to make our tests pass consistently.
 		options.Retry = policy.RetryOptions{
 			MaxRetries:    60,
 			RetryDelay:    time.Second,
@@ -127,6 +130,8 @@ const fakeCognitiveIndexName = "index"
 
 func initEnvVars() {
 	if recording.GetRecordMode() == recording.PlaybackMode {
+		// Setup our variables so our requests are consistent with what we recorded.
+		// Endpoints are sanitized using the recording policy
 		azureOpenAI.Endpoint = endpoint{
 			URL:    fakeEndpoint,
 			APIKey: fakeAPIKey,
@@ -197,6 +202,8 @@ func initEnvVars() {
 	}
 }
 
+// newRecordingTransporter sets up our recording policy to sanitize endpoints and any parts of the response that might
+// involve UUIDs that would make the response/request inconsistent.
 func newRecordingTransporter(t *testing.T) policy.Transporter {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
@@ -253,6 +260,11 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 	return transport
 }
 
+// newClientOptionsForTest creates options that enable a few optional things:
+//   - If we're recording then it injects the recording transporter
+//   - If `SSLKEYLOGFILE` is set in the environment it'll automatically setup
+//     the HTTP policy so it writes the keylog for that client to a file. You can
+//     use this with WireShark to decrypt and view a network trace.
 func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 	co := &azopenai.ClientOptions{}
 

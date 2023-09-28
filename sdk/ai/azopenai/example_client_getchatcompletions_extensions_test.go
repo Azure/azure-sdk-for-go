@@ -74,7 +74,7 @@ func ExampleClient_GetChatCompletions_bringYourOwnDataWithCognitiveSearch() {
 				},
 			},
 		},
-		Deployment: "gpt-4",
+		Deployment: modelDeploymentID,
 	}, nil)
 
 	if err != nil {

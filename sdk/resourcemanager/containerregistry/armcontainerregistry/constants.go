@@ -10,7 +10,7 @@ package armcontainerregistry
 
 const (
 	moduleName    = "armcontainerregistry"
-	moduleVersion = "v1.1.0-beta.3"
+	moduleVersion = "v1.2.0-beta.1"
 )
 
 // Action - The action of IP ACL rule.
@@ -405,6 +405,20 @@ func PossibleOSValues() []OS {
 	return []OS{
 		OSLinux,
 		OSWindows,
+	}
+}
+
+// PackageSourceType - The type of package source for a archive.
+type PackageSourceType string
+
+const (
+	PackageSourceTypeRemote PackageSourceType = "remote"
+)
+
+// PossiblePackageSourceTypeValues returns the possible values for the PackageSourceType const type.
+func PossiblePackageSourceTypeValues() []PackageSourceType {
+	return []PackageSourceType{
+		PackageSourceTypeRemote,
 	}
 }
 

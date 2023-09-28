@@ -14,7 +14,7 @@ import (
 
 func ExampleClient_GetEmbeddings() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_EMBEDDINGS_MODEL_DEPLOYMENT")
+	modelDeploymentID := os.Getenv("AOAI_EMBEDDINGS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")

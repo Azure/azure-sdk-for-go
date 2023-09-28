@@ -10,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"net/http"
 	"os"
 	"testing"
 
@@ -40,13 +41,8 @@ var expectedContent = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10."
 var expectedRole = azopenai.ChatRoleAssistant
 
 func TestClient_GetChatCompletions(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
-	require.NoError(t, err)
-
-	chatClient, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
-	testGetChatCompletions(t, chatClient, azureOpenAI)
+	client := newTestClient(t, azureOpenAI.Endpoint)
+	testGetChatCompletions(t, client, azureOpenAI)
 }
 
 func TestClient_GetChatCompletionsStream(t *testing.T) {
@@ -94,12 +90,17 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client, tv testVars) 
 	}
 
 	resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(tv), nil)
+
+	if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
+		t.Skipf("OpenAI resource overloaded, skipping this test")
+	}
+
 	require.NoError(t, err)
 
-	if tv.Azure {
+	if tv.Endpoint.Azure {
 		// Azure also provides content-filtering. This particular prompt and responses
 		// will be considered safe.
-		expected.PromptAnnotations = []azopenai.PromptFilterResult{
+		expected.PromptFilterResults = []azopenai.PromptFilterResult{
 			{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
 		}
 		expected.Choices[0].ContentFilterResults = safeContentFilter
@@ -116,6 +117,11 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client, tv testVars) 
 
 func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, tv testVars) {
 	streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(tv), nil)
+
+	if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
+		t.Skipf("OpenAI resource overloaded, skipping this test")
+	}
+
 	require.NoError(t, err)
 
 	// the data comes back differently for streaming
@@ -133,10 +139,10 @@ func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, tv test
 
 		require.NoError(t, err)
 
-		if completion.PromptAnnotations != nil {
+		if completion.PromptFilterResults != nil {
 			require.Equal(t, []azopenai.PromptFilterResult{
 				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
-			}, completion.PromptAnnotations)
+			}, completion.PromptFilterResults)
 		}
 
 		if len(completion.Choices) == 0 {
@@ -180,7 +186,7 @@ func TestClient_GetChatCompletions_DefaultAzureCredential(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	chatClient, err := azopenai.NewClient(azureOpenAI.Endpoint, dac, &azopenai.ClientOptions{
+	chatClient, err := azopenai.NewClient(azureOpenAI.Endpoint.URL, dac, &azopenai.ClientOptions{
 		ClientOptions: policy.ClientOptions{Transport: recordingTransporter},
 	})
 	require.NoError(t, err)
@@ -189,13 +195,9 @@ func TestClient_GetChatCompletions_DefaultAzureCredential(t *testing.T) {
 }
 
 func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
-	require.NoError(t, err)
+	client := newTestClient(t, azureOpenAI.Endpoint)
 
-	chatClient, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
-	_, err = chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
+	_, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatMessage{
 			{
 				Role:    to.Ptr(azopenai.ChatRole("user")),

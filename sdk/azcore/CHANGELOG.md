@@ -13,7 +13,11 @@
 
 ### Bugs Fixed
 
+* Fixed an issue that could cause some ARM RPs to not be automatically registered.
+
 ### Other Changes
+
+* Updated dependencies.
 
 ## 1.8.0-beta.3 (2023-09-07)
 

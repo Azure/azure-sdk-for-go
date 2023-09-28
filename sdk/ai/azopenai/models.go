@@ -10,6 +10,169 @@ package azopenai
 
 import "time"
 
+// AudioTranscription - Result information for an operation that transcribed spoken audio into written text.
+type AudioTranscription struct {
+	// REQUIRED; The transcribed text for the provided audio data.
+	Text *string
+
+	// The total duration of the audio processed to produce accompanying transcription information.
+	Duration *float32
+
+	// The spoken language that was detected in the transcribed audio data. This is expressed as a two-letter ISO-639-1 language
+	// code like 'en' or 'fr'.
+	Language *string
+
+	// A collection of information about the timing, probabilities, and other detail of each processed audio segment.
+	Segments []AudioTranscriptionSegment
+
+	// The label that describes which operation type generated the accompanying response data.
+	Task *AudioTaskLabel
+}
+
+// AudioTranscriptionOptions - The configuration information for an audio transcription request.
+type AudioTranscriptionOptions struct {
+	// REQUIRED; The audio data to transcribe. This must be the binary content of a file in one of the supported media formats:
+	// flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
+	File []byte
+
+	// The primary spoken language of the audio data to be transcribed, supplied as a two-letter ISO-639-1 language code such
+	// as 'en' or 'fr'. Providing this known input language is optional but may improve
+	// the accuracy and/or latency of transcription.
+	Language *string
+
+	// REQUIRED: Deployment specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.
+	Deployment string
+
+	// An optional hint to guide the model's style or continue from a prior audio segment. The written language of the prompt
+	// should match the primary spoken language of the audio data.
+	Prompt *string
+
+	// The requested format of the transcription response data, which will influence the content and detail of the result.
+	ResponseFormat *AudioTranscriptionFormat
+
+	// The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values
+	// like 0.2 will make it more focused and deterministic. If set to 0, the model will
+	// use log probability to automatically increase the temperature until certain thresholds are hit.
+	Temperature *float32
+}
+
+// AudioTranscriptionSegment - Extended information about a single segment of transcribed audio data. Segments generally represent
+// roughly 5-10 seconds of speech. Segment boundaries typically occur between words but not necessarily
+// sentences.
+type AudioTranscriptionSegment struct {
+	// REQUIRED; The average log probability associated with this audio segment.
+	AvgLogProb *float32
+
+	// REQUIRED; The compression ratio of this audio segment.
+	CompressionRatio *float32
+
+	// REQUIRED; The time at which this segment ended relative to the beginning of the transcribed audio.
+	End *float32
+
+	// REQUIRED; The 0-based index of this segment within a transcription.
+	ID *int32
+
+	// REQUIRED; The probability of no speech detection within this audio segment.
+	NoSpeechProb *float32
+
+	// REQUIRED; The seek position associated with the processing of this audio segment. Seek positions are expressed as hundredths
+	// of seconds. The model may process several segments from a single seek position, so
+	// while the seek position will never represent a later time than the segment's start, the segment's start may represent a
+	// significantly later time than the segment's associated seek position.
+	Seek *int32
+
+	// REQUIRED; The time at which this segment started relative to the beginning of the transcribed audio.
+	Start *float32
+
+	// REQUIRED; The temperature score associated with this audio segment.
+	Temperature *float32
+
+	// REQUIRED; The transcribed text that was part of this audio segment.
+	Text *string
+
+	// REQUIRED; The token IDs matching the transcribed text in this audio segment.
+	Tokens []int32
+}
+
+// AudioTranslation - Result information for an operation that translated spoken audio into written text.
+type AudioTranslation struct {
+	// REQUIRED; The translated text for the provided audio data.
+	Text *string
+
+	// The total duration of the audio processed to produce accompanying translation information.
+	Duration *float32
+
+	// The spoken language that was detected in the translated audio data. This is expressed as a two-letter ISO-639-1 language
+	// code like 'en' or 'fr'.
+	Language *string
+
+	// A collection of information about the timing, probabilities, and other detail of each processed audio segment.
+	Segments []AudioTranslationSegment
+
+	// The label that describes which operation type generated the accompanying response data.
+	Task *AudioTaskLabel
+}
+
+// AudioTranslationOptions - The configuration information for an audio translation request.
+type AudioTranslationOptions struct {
+	// REQUIRED; The audio data to translate. This must be the binary content of a file in one of the supported media formats:
+	// flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
+	File []byte
+
+	// REQUIRED: Deployment specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.
+	Deployment string
+
+	// An optional hint to guide the model's style or continue from a prior audio segment. The written language of the prompt
+	// should match the primary spoken language of the audio data.
+	Prompt *string
+
+	// The requested format of the translation response data, which will influence the content and detail of the result.
+	ResponseFormat *AudioTranslationFormat
+
+	// The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values
+	// like 0.2 will make it more focused and deterministic. If set to 0, the model will
+	// use log probability to automatically increase the temperature until certain thresholds are hit.
+	Temperature *float32
+}
+
+// AudioTranslationSegment - Extended information about a single segment of translated audio data. Segments generally represent
+// roughly 5-10 seconds of speech. Segment boundaries typically occur between words but not necessarily
+// sentences.
+type AudioTranslationSegment struct {
+	// REQUIRED; The average log probability associated with this audio segment.
+	AvgLogProb *float32
+
+	// REQUIRED; The compression ratio of this audio segment.
+	CompressionRatio *float32
+
+	// REQUIRED; The time at which this segment ended relative to the beginning of the translated audio.
+	End *float32
+
+	// REQUIRED; The 0-based index of this segment within a translation.
+	ID *int32
+
+	// REQUIRED; The probability of no speech detection within this audio segment.
+	NoSpeechProb *float32
+
+	// REQUIRED; The seek position associated with the processing of this audio segment. Seek positions are expressed as hundredths
+	// of seconds. The model may process several segments from a single seek position, so
+	// while the seek position will never represent a later time than the segment's start, the segment's start may represent a
+	// significantly later time than the segment's associated seek position.
+	Seek *int32
+
+	// REQUIRED; The time at which this segment started relative to the beginning of the translated audio.
+	Start *float32
+
+	// REQUIRED; The temperature score associated with this audio segment.
+	Temperature *float32
+
+	// REQUIRED; The translated text that was part of this audio segment.
+	Text *string
+
+	// REQUIRED; The token IDs matching the translated text in this audio segment.
+	Tokens []int32
+}
+
 // AzureChatExtensionConfiguration - A representation of configuration data for a single Azure OpenAI chat extension. This
 // will be used by a chat completions request that should use Azure OpenAI chat extensions to augment the response
 // behavior. The use of this configuration is compatible only with Azure OpenAI.
@@ -117,8 +280,8 @@ type AzureCognitiveSearchIndexFieldMappingOptions struct {
 	VectorFields []string
 }
 
-// azureCoreFoundationsError - The error object.
-type azureCoreFoundationsError struct {
+// Error - The error object.
+type Error struct {
 	// REQUIRED; One of a server-defined set of error codes.
 	Code *string
 
@@ -126,67 +289,24 @@ type azureCoreFoundationsError struct {
 	Message *string
 
 	// An array of details about specific errors that led to this reported error.
-	Details []azureCoreFoundationsError
+	Details []Error
 
 	// An object containing more specific information than the current object about the error.
-	Innererror *azureCoreFoundationsErrorInnererror
+	InnerError *InnerError
 
 	// The target of the error.
 	Target *string
 }
 
-// azureCoreFoundationsErrorInnererror - An object containing more specific information than the current object about the
-// error.
-type azureCoreFoundationsErrorInnererror struct {
-	// One of a server-defined set of error codes.
-	Code *string
-
-	// Inner error.
-	Innererror *azureCoreFoundationsInnerErrorInnererror
-}
-
-// azureCoreFoundationsErrorResponse - A response containing error details.
-type azureCoreFoundationsErrorResponse struct {
-	// REQUIRED; The error object.
-	Error *azureCoreFoundationsErrorResponseError
-}
-
-// azureCoreFoundationsErrorResponseError - The error object.
-type azureCoreFoundationsErrorResponseError struct {
-	// REQUIRED; One of a server-defined set of error codes.
-	Code *string
-
-	// REQUIRED; A human-readable representation of the error.
-	Message *string
-
-	// An array of details about specific errors that led to this reported error.
-	Details []azureCoreFoundationsError
-
-	// An object containing more specific information than the current object about the error.
-	Innererror *azureCoreFoundationsErrorInnererror
-
-	// The target of the error.
-	Target *string
-}
-
-// azureCoreFoundationsInnerError - An object containing more specific information about the error. As per Microsoft One API
+// InnerError - An object containing more specific information about the error. As per Microsoft One API
 // guidelines -
 // https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
-type azureCoreFoundationsInnerError struct {
+type InnerError struct {
 	// One of a server-defined set of error codes.
 	Code *string
 
 	// Inner error.
-	Innererror *azureCoreFoundationsInnerErrorInnererror
-}
-
-// azureCoreFoundationsInnerErrorInnererror - Inner error.
-type azureCoreFoundationsInnerErrorInnererror struct {
-	// One of a server-defined set of error codes.
-	Code *string
-
-	// Inner error.
-	Innererror *azureCoreFoundationsInnerErrorInnererror
+	InnerError *InnerError
 }
 
 // batchImageGenerationOperationResponse - A polling status update or final response payload for an image operation.
@@ -201,7 +321,7 @@ type batchImageGenerationOperationResponse struct {
 	Status *azureOpenAIOperationState
 
 	// The error if the operation failed.
-	Error *azureCoreFoundationsError
+	Error *Error
 
 	// A timestamp when this operation and its associated images expire and will be deleted (in unix epochs).
 	Expires *int64
@@ -236,23 +356,26 @@ type ChatChoice struct {
 // it has been detected, as well as the severity level (verylow, low, medium, high-scale that determines the
 // intensity and risk level of harmful content) and if it has been filtered or not.
 type ChatChoiceContentFilterResults struct {
+	// Describes an error returned if the content filtering system is down or otherwise unable to complete the operation in time.
+	Error *ContentFilterResultsError
+
 	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
 	// group on the basis of certain differentiating attributes of these groups
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
 	// immigration status, ability status, personal appearance, and body size.
-	Hate *ContentFilterResultsHate
+	Hate *ContentFilterResult
 
 	// Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill oneself.
-	SelfHarm *ContentFilterResultsSelfHarm
+	SelfHarm *ContentFilterResult
 
 	// Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic or affectionate
 	// terms, physical sexual acts, including those portrayed as an assault or a
 	// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
-	Sexual *ContentFilterResultsSexual
+	Sexual *ContentFilterResult
 
 	// Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes
 	// weapons, etc.
-	Violence *ContentFilterResultsViolence
+	Violence *ContentFilterResult
 }
 
 // ChatChoiceDelta - The delta message content for a streaming response.
@@ -321,7 +444,7 @@ type ChatCompletions struct {
 
 	// Content filtering results for zero or more prompts in the request. In a streaming request, results for different prompts
 	// may arrive at different times or in different orders.
-	PromptAnnotations []PromptFilterResult
+	PromptFilterResults []PromptFilterResult
 }
 
 // ChatCompletionsOptions - The configuration information for a chat completions request. Completions support a wide variety
@@ -466,23 +589,26 @@ type Choice struct {
 // has been detected, as well as the severity level (verylow, low, medium, high-scale that determines the
 // intensity and risk level of harmful content) and if it has been filtered or not.
 type ChoiceContentFilterResults struct {
+	// Describes an error returned if the content filtering system is down or otherwise unable to complete the operation in time.
+	Error *ContentFilterResultsError
+
 	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
 	// group on the basis of certain differentiating attributes of these groups
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
 	// immigration status, ability status, personal appearance, and body size.
-	Hate *ContentFilterResultsHate
+	Hate *ContentFilterResult
 
 	// Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill oneself.
-	SelfHarm *ContentFilterResultsSelfHarm
+	SelfHarm *ContentFilterResult
 
 	// Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic or affectionate
 	// terms, physical sexual acts, including those portrayed as an assault or a
 	// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
-	Sexual *ContentFilterResultsSexual
+	Sexual *ContentFilterResult
 
 	// Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes
 	// weapons, etc.
-	Violence *ContentFilterResultsViolence
+	Violence *ContentFilterResult
 }
 
 // ChoiceLogProbs - The log probabilities model for tokens associated with this completions choice.
@@ -497,7 +623,7 @@ type ChoiceLogProbs struct {
 	Tokens []string
 
 	// REQUIRED; A mapping of tokens to maximum log probability values in this completions data.
-	TopLogProbs []any
+	TopLogProbs []map[string]*float32
 }
 
 // Completions - Representation of the response data from a completions request. Completions support a wide variety of tasks
@@ -520,7 +646,7 @@ type Completions struct {
 
 	// Content filtering results for zero or more prompts in the request. In a streaming request, results for different prompts
 	// may arrive at different times or in different orders.
-	PromptAnnotations []PromptFilterResult
+	PromptFilterResults []PromptFilterResult
 }
 
 // CompletionsLogProbabilityModel - Representation of a log probabilities model for a completions generation.
@@ -535,7 +661,7 @@ type CompletionsLogProbabilityModel struct {
 	Tokens []string
 
 	// REQUIRED; A mapping of tokens to maximum log probability values in this completions data.
-	TopLogProbs []any
+	TopLogProbs []map[string]*float32
 }
 
 // CompletionsOptions - The configuration information for a completions request. Completions support a wide variety of tasks
@@ -618,68 +744,56 @@ type CompletionsUsage struct {
 	TotalTokens *int32
 }
 
+// ContentFilterResult - Information about filtered content severity level and if it has been filtered or not.
+type ContentFilterResult struct {
+	// REQUIRED; A value indicating whether or not the content has been filtered.
+	Filtered *bool
+
+	// REQUIRED; Ratings for the intensity and risk level of filtered content.
+	Severity *ContentFilterSeverity
+}
+
 // ContentFilterResults - Information about the content filtering category, if it has been detected.
 type ContentFilterResults struct {
+	// Describes an error returned if the content filtering system is down or otherwise unable to complete the operation in time.
+	Error *ContentFilterResultsError
+
 	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
 	// group on the basis of certain differentiating attributes of these groups
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
 	// immigration status, ability status, personal appearance, and body size.
-	Hate *ContentFilterResultsHate
+	Hate *ContentFilterResult
 
 	// Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill oneself.
-	SelfHarm *ContentFilterResultsSelfHarm
+	SelfHarm *ContentFilterResult
 
 	// Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic or affectionate
 	// terms, physical sexual acts, including those portrayed as an assault or a
 	// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
-	Sexual *ContentFilterResultsSexual
+	Sexual *ContentFilterResult
 
 	// Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes
 	// weapons, etc.
-	Violence *ContentFilterResultsViolence
+	Violence *ContentFilterResult
 }
 
-// ContentFilterResultsHate - Describes language attacks or uses that include pejorative or discriminatory language with reference
-// to a person or identity group on the basis of certain differentiating attributes of these groups
-// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
-// immigration status, ability status, personal appearance, and body size.
-type ContentFilterResultsHate struct {
-	// REQUIRED; A value indicating whether or not the content has been filtered.
-	Filtered *bool
+// ContentFilterResultsError - Describes an error returned if the content filtering system is down or otherwise unable to
+// complete the operation in time.
+type ContentFilterResultsError struct {
+	// REQUIRED; One of a server-defined set of error codes.
+	Code *string
 
-	// REQUIRED; Ratings for the intensity and risk level of filtered content.
-	Severity *ContentFilterSeverity
-}
+	// REQUIRED; A human-readable representation of the error.
+	Message *string
 
-// ContentFilterResultsSelfHarm - Describes language related to physical actions intended to purposely hurt, injure, or damage
-// one’s body, or kill oneself.
-type ContentFilterResultsSelfHarm struct {
-	// REQUIRED; A value indicating whether or not the content has been filtered.
-	Filtered *bool
+	// An array of details about specific errors that led to this reported error.
+	Details []Error
 
-	// REQUIRED; Ratings for the intensity and risk level of filtered content.
-	Severity *ContentFilterSeverity
-}
+	// An object containing more specific information than the current object about the error.
+	InnerError *InnerError
 
-// ContentFilterResultsSexual - Describes language related to anatomical organs and genitals, romantic relationships, acts
-// portrayed in erotic or affectionate terms, physical sexual acts, including those portrayed as an assault or a
-// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
-type ContentFilterResultsSexual struct {
-	// REQUIRED; A value indicating whether or not the content has been filtered.
-	Filtered *bool
-
-	// REQUIRED; Ratings for the intensity and risk level of filtered content.
-	Severity *ContentFilterSeverity
-}
-
-// ContentFilterResultsViolence - Describes language related to physical actions intended to hurt, injure, damage, or kill
-// someone or something; describes weapons, etc.
-type ContentFilterResultsViolence struct {
-	// REQUIRED; A value indicating whether or not the content has been filtered.
-	Filtered *bool
-
-	// REQUIRED; Ratings for the intensity and risk level of filtered content.
-	Severity *ContentFilterSeverity
+	// The target of the error.
+	Target *string
 }
 
 // Deployment - A specific deployment
@@ -826,21 +940,24 @@ type PromptFilterResult struct {
 
 // PromptFilterResultContentFilterResults - Content filtering results for this prompt
 type PromptFilterResultContentFilterResults struct {
+	// Describes an error returned if the content filtering system is down or otherwise unable to complete the operation in time.
+	Error *ContentFilterResultsError
+
 	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
 	// group on the basis of certain differentiating attributes of these groups
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
 	// immigration status, ability status, personal appearance, and body size.
-	Hate *ContentFilterResultsHate
+	Hate *ContentFilterResult
 
 	// Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill oneself.
-	SelfHarm *ContentFilterResultsSelfHarm
+	SelfHarm *ContentFilterResult
 
 	// Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic or affectionate
 	// terms, physical sexual acts, including those portrayed as an assault or a
 	// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
-	Sexual *ContentFilterResultsSexual
+	Sexual *ContentFilterResult
 
 	// Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes
 	// weapons, etc.
-	Violence *ContentFilterResultsViolence
+	Violence *ContentFilterResult
 }

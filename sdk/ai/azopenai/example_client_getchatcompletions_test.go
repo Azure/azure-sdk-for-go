@@ -18,7 +18,7 @@ import (
 
 func ExampleClient_GetChatCompletions() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT")
+	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
@@ -78,7 +78,28 @@ func ExampleClient_GetChatCompletions() {
 
 	for _, choice := range resp.Choices {
 		gotReply = true
-		fmt.Fprintf(os.Stderr, "Content[%d]: %s\n", *choice.Index, *choice.Message.Content)
+
+		if choice.ContentFilterResults != nil {
+			fmt.Fprintf(os.Stderr, "Content filter results\n")
+
+			if choice.ContentFilterResults.Error != nil {
+				fmt.Fprintf(os.Stderr, "  Error:%v\n", choice.ContentFilterResults.Error)
+			}
+
+			fmt.Fprintf(os.Stderr, "  Hate: sev: %v, filtered: %v\n", *choice.ContentFilterResults.Hate.Severity, *choice.ContentFilterResults.Hate.Filtered)
+			fmt.Fprintf(os.Stderr, "  SelfHarm: sev: %v, filtered: %v\n", *choice.ContentFilterResults.SelfHarm.Severity, *choice.ContentFilterResults.SelfHarm.Filtered)
+			fmt.Fprintf(os.Stderr, "  Sexual: sev: %v, filtered: %v\n", *choice.ContentFilterResults.Sexual.Severity, *choice.ContentFilterResults.Sexual.Filtered)
+			fmt.Fprintf(os.Stderr, "  Violence: sev: %v, filtered: %v\n", *choice.ContentFilterResults.Violence.Severity, *choice.ContentFilterResults.Violence.Filtered)
+		}
+
+		if choice.Message != nil && choice.Message.Content != nil {
+			fmt.Fprintf(os.Stderr, "Content[%d]: %s\n", *choice.Index, *choice.Message.Content)
+		}
+
+		if choice.FinishReason != nil {
+			// this choice's conversation is complete.
+			fmt.Fprintf(os.Stderr, "Finish reason[%d]: %s\n", *choice.Index, *choice.FinishReason)
+		}
 	}
 
 	if gotReply {
@@ -90,7 +111,7 @@ func ExampleClient_GetChatCompletions() {
 
 func ExampleClient_GetChatCompletions_functions() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT")
+	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
@@ -183,7 +204,7 @@ func ExampleClient_GetChatCompletions_functions() {
 
 func ExampleClient_GetChatCompletionsStream() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT")
+	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")

@@ -46,7 +46,7 @@ func NewReplicationsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreate - Creates a replication for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - replicationName - The name of the replication.
@@ -71,7 +71,7 @@ func (client *ReplicationsClient) BeginCreate(ctx context.Context, resourceGroup
 // Create - Creates a replication for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-08-01-preview
 func (client *ReplicationsClient) create(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replication Replication, options *ReplicationsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationsClient.BeginCreate"
@@ -114,7 +114,7 @@ func (client *ReplicationsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, replication); err != nil {
@@ -126,7 +126,7 @@ func (client *ReplicationsClient) createCreateRequest(ctx context.Context, resou
 // BeginDelete - Deletes a replication from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - replicationName - The name of the replication.
@@ -150,7 +150,7 @@ func (client *ReplicationsClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Deletes a replication from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-08-01-preview
 func (client *ReplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *ReplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationsClient.BeginDelete"
@@ -193,7 +193,7 @@ func (client *ReplicationsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -201,7 +201,7 @@ func (client *ReplicationsClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Gets the properties of the specified replication.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - replicationName - The name of the replication.
@@ -249,7 +249,7 @@ func (client *ReplicationsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +266,7 @@ func (client *ReplicationsClient) getHandleResponse(resp *http.Response) (Replic
 
 // NewListPager - Lists all the replications for the specified container registry.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - ReplicationsClientListOptions contains the optional parameters for the ReplicationsClient.NewListPager method.
@@ -317,7 +317,7 @@ func (client *ReplicationsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -335,7 +335,7 @@ func (client *ReplicationsClient) listHandleResponse(resp *http.Response) (Repli
 // BeginUpdate - Updates a replication for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - replicationName - The name of the replication.
@@ -360,7 +360,7 @@ func (client *ReplicationsClient) BeginUpdate(ctx context.Context, resourceGroup
 // Update - Updates a replication for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-08-01-preview
 func (client *ReplicationsClient) update(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters ReplicationUpdateParameters, options *ReplicationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationsClient.BeginUpdate"
@@ -403,7 +403,7 @@ func (client *ReplicationsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, replicationUpdateParameters); err != nil {

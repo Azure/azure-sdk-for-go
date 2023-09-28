@@ -176,6 +176,7 @@ var unregisteredRPCodes = []string{
 	"MissingSubscriptionRegistration",
 	"MissingRegistrationForResourceProvider",
 	"Subscription Not Registered",
+	"SubscriptionNotRegistered",
 }
 
 func isUnregisteredRPCode(errorCode string) bool {

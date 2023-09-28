@@ -96,7 +96,7 @@ directive:
     transform: $["$ref"] = "#/components/schemas/State"; delete $.allOf; 
   - from: openapi-document
     where: $.components.schemas["ContentFilterResult"].properties.severity
-    transform: $["$ref"] = "#/components/schemas/ContentFilterSeverity"; delete $.allOf;
+    transform: $.$ref = $.allOf[0].$ref; delete $.allOf;
   - from: openapi-document
     where: $.components.schemas["ChatChoice"].properties.finish_reason
     transform: $["$ref"] = "#/components/schemas/CompletionsFinishReason"; delete $.oneOf;
@@ -109,6 +109,113 @@ directive:
   - from: openapi-document
     where: $.components.schemas["AzureCognitiveSearchChatExtensionConfiguration"].properties.queryType
     transform: $["$ref"] = "#/components/schemas/AzureCognitiveSearchQueryType"; delete $.allOf;
+  - from: openapi-document
+    where: $.components.schemas["ContentFilterResults"].properties.sexual
+    transform: $.$ref = $.allOf[0].$ref; delete $.allOf;
+  - from: openapi-document
+    where: $.components.schemas["ContentFilterResults"].properties.hate
+    transform: $.$ref = $.allOf[0].$ref; delete $.allOf;
+  - from: openapi-document
+    where: $.components.schemas["ContentFilterResults"].properties.self_harm
+    transform: $.$ref = $.allOf[0].$ref; delete $.allOf;
+  - from: openapi-document
+    where: $.components.schemas["ContentFilterResults"].properties.violence
+    transform: $.$ref = $.allOf[0].$ref; delete $.allOf;
+
+  #
+  # [BEGIN] Whisper
+  #
+
+  # the whisper operations are really long since they are a conglomeration of _all_ the
+  # possible return types.
+  - rename-operation:
+      from: getAudioTranscriptionAsPlainText_getAudioTranscriptionAsResponseObject
+      to: GetAudioTranscriptionInternal
+  - rename-operation:
+      from: getAudioTranslationAsPlainText_getAudioTranslationAsResponseObject
+      to: GetAudioTranslationInternal
+
+  # fixup the responses
+  - from: openapi-document
+    where: $.paths["/deployments/{deploymentId}/audio/transcriptions"]
+    transform: |
+      delete $.post.responses["200"].statusCode;
+      $.post.responses["200"].content["application/json"].schema["$ref"] = "#/components/schemas/AudioTranscription"; delete $.post.responses["200"].content["application/json"].schema.anyOf;
+  - from: openapi-document
+    where: $.paths["/deployments/{deploymentId}/audio/translations"]
+    transform: |
+      delete $.post.responses["200"].statusCode;
+      $.post.responses["200"].content["application/json"].schema["$ref"] = "#/components/schemas/AudioTranscription"; delete $.post.responses["200"].content["application/json"].schema.anyOf;
+
+  # hide the generated functions, in favor of our public wrappers.
+  - from: 
+    - client.go
+    - models.go
+    - models_serde.go
+    - response_types.go
+    - options.go
+    where: $
+    transform: |
+      return $
+        .replace(/GetAudioTranscriptionInternal([^){ ]*)/g, "getAudioTranscriptionInternal$1")
+        .replace(/GetAudioTranslationInternal([^){ ]*)/g, "getAudioTranslationInternal$1");
+
+  # some multipart fixing
+  - from: client.go
+    where: $
+    transform: |
+      return $
+        .replace(/(func.*getAudio(?:Translation|Transcription)InternalCreateRequest\(.+?)options/g, "$1body")
+        .replace(/runtime\.SetMultipartFormData\(.+?\)/sg, "setMultipartFormData(req, file, *body)")
+
+  # response type parsing (can be text/plain _or_ JSON)
+  - from: client.go
+    where: $
+    transform: |
+      return $
+        .replace(/client\.getAudioTranscriptionInternalHandleResponse/g, "getAudioTranscriptionInternalHandleResponse")
+        .replace(/client\.getAudioTranslationInternalHandleResponse/g, "getAudioTranslationInternalHandleResponse")
+
+  # Whisper openapi3 generation: we have two oneOf that point to the same type.
+  # and we want to activate our multipart support in the generator.
+  - from: openapi-document
+    where: $.paths
+    transform: |
+      let makeMultipart = (item) => {
+        if (item["application/json"] == null) { return item; }
+        item["multipart/form-data"] = {
+          ...item["application/json"]
+        };
+        delete item["application/json"];
+      }
+      makeMultipart($["/deployments/{deploymentId}/audio/transcriptions"].post.requestBody.content);
+      makeMultipart($["/deployments/{deploymentId}/audio/translations"].post.requestBody.content);
+
+  - from: openapi-document
+    where: $.components.schemas
+    transform: |
+      let fix = (v) => { if (v.allOf != null) { v.$ref = v.allOf[0].$ref; delete v.allOf; } };
+      
+      fix($.AudioTranscriptionOptions.properties.response_format);
+      fix($.AudioTranscription.properties.task);
+
+      fix($.AudioTranslationOptions.properties.response_format);
+      fix($.AudioTranslation.properties.task);
+
+  - from:
+    - options.go
+    - models_serde.go
+    - models.go
+    where: $
+    transform: |
+      return $
+        .replace(/AvgLogprob \*float32/g, "AvgLogProb *float32")
+        .replace(/(a|c)\.AvgLogprob/g, "$1.AvgLogProb")
+
+  #
+  # [END] Whisper
+  #
+
   # Fix "AutoGenerated" models
   - from: openapi-document
     where: $.components.schemas["ChatCompletions"].properties.usage
@@ -155,13 +262,32 @@ directive:
     - models_serde.go
     - models.go
     where: $
-    transform: return $.replace(/AzureCoreFoundations/g, "azureCoreFoundations");
-  - from: 
-    - models_serde.go
-    - models.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)?func \(\w \*?(?:ErrorResponse|ErrorResponseError|InnerError|InnerErrorInnererror)\).*\{\s(?:.+\s)+\}\s/g, "");
+    transform: | 
+      return $
+        // remove some types that were generated to support the recursive error.
+        .replace(/\/\/ AzureCoreFoundationsInnerErrorInnererror.+?\n}/s, "")
+        // also, remove its marshalling functions
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsInnerErrorInnererror.+?\n}/sg, "")
+        .replace(/\/\/ AzureCoreFoundationsErrorInnererror.+?\n}/s, "")
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsErrorInnererror.+?\n}/sg, "")
+        .replace(/\/\/ AzureCoreFoundationsErrorResponseError.+?\n}/s, "")
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsErrorResponseError.+?\n}/sg, "")
+        .replace(/\/\/ AzureCoreFoundationsErrorResponse.+?\n}/s, "")
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsErrorResponse.+?\n}/sg, "")
 
+        // Remove any references to the type and replace them with InnerError.
+        .replace(/Innererror \*(AzureCoreFoundationsInnerErrorInnererror|AzureCoreFoundationsErrorInnererror)/g, "InnerError *InnerError")
+
+        // Fix the marshallers/unmarshallers to use the right case.
+        .replace(/(a|c).Innererror/g, '$1.InnerError')
+
+        // We have two "inner error" types that are identical (ErrorInnerError and InnerError). Let's eliminate the one that's not actually directly referenced.
+        .replace(/\/\/azureCoreFoundationsInnerError.+?\n}/s, "")
+        
+        //
+        // Fix the AzureCoreFoundation naming to match our style.
+        //
+        .replace(/AzureCoreFoundations/g, "")
   - from: constants.go
     where: $
     transform: >-
@@ -184,15 +310,6 @@ directive:
     transform: |
       return $
         .replace(/runtime\.JoinPaths\(client.endpoint, urlPath\)/g, "client.formatURL(urlPath, getDeployment(body))");
-
-  # Some ImageGenerations hackery to represent the ImageLocation/ImagePayload polymorphism.
-  # - Remove the auto-generated ImageGenerationsDataItem.
-  # - Replace the ImageGenerations.Data type with []ImageGenerationDataItem
-  # - from: models.go
-  #   where: $
-  #   transform: |
-  #     return $.replace(/type ImageGenerationsDataItem struct {[^}]+}/, "// ImageGenerationsDataItem represents an image URL or payload\ntype ImageGenerationsDataItem struct{\nImageLocation\nImagePayload\n}")
-  #       $.replace(/(type ImageGenerations struct.+?)Data any/g, "$1Data []ImageGenerationsDataItem")
 
   - from: models.go
     where: $
@@ -261,16 +378,6 @@ directive:
     where: $
     transform: return $.replace(/Logprobs/g, "LogProbs")
 
-  # delete ContentFilterResult in favor of our custom representation.
-  - from: 
-    - models.go
-    - models_serde.go
-    where: $
-    transform: |
-      return $.replace(/\/\/ ContentFilterResult.+?\n}/s, "")
-        .replace(/\/\/ MarshalJSON implements the json.Marshaller interface for type ContentFilterResult.+?\n}/s, "")
-        .replace(/\/\/ UnmarshalJSON implements the json.Unmarshaller interface for type ContentFilterResult.+?\n}/s, "");
-
   - from: constants.go
     where: $
     transform: return $.replace(/\/\/ PossibleazureOpenAIOperationStateValues returns.+?\n}/s, "");
@@ -295,14 +402,14 @@ directive:
     where: $
     transform: |
       return $
-        .replace(/\/\/ The model name.*?Model \*string/sg, "// REQUIRED: Deployment specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.\nDeployment string");
+        .replace(/\/\/ The model.*?Model \*string/sg, "// REQUIRED: Deployment specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.\nDeployment string");
 
   - from: models_serde.go
     where: $
     transform: |
       return $
-        .replace(/populate\(objectMap, "model", (c|e).Model\)/g, 'populate(objectMap, "model", &$1.Deployment)')
-        .replace(/err = unpopulate\(val, "Model", &(c|e).Model\)/g, 'err = unpopulate(val, "Model", &$1.Deployment)');
+        .replace(/populate\(objectMap, "model", (c|e|a).Model\)/g, 'populate(objectMap, "model", &$1.Deployment)')
+        .replace(/err = unpopulate\(val, "Model", &(c|e|a).Model\)/g, 'err = unpopulate(val, "Model", &$1.Deployment)');
 
   # Make the Azure extensions internal - we expose these through the GetChatCompletions*() functions
   # and just treat which endpoint we use as an implementation detail.
@@ -344,4 +451,9 @@ directive:
       return $.replace(
         /(AzureChatExtensionTypeAzureCognitiveSearch AzureChatExtensionType)/, 
         "// AzureChatExtensionTypeAzureCognitiveSearch enables the use of an Azure Cognitive Search index with chat completions.\n// [AzureChatExtensionConfiguration.Parameter] should be of type [AzureCognitiveSearchChatExtensionConfiguration].\n$1");
+  
+  # HACK: prompt_filter_results <-> prompt_annotations change
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/case "prompt_filter_results":/g, 'case "prompt_annotations":\nfallthrough\ncase "prompt_filter_results":')
 ```

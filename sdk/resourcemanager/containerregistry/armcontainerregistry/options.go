@@ -41,6 +41,55 @@ type AgentPoolsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ArchiveVersionsClientBeginCreateOptions contains the optional parameters for the ArchiveVersionsClient.BeginCreate method.
+type ArchiveVersionsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ArchiveVersionsClientBeginDeleteOptions contains the optional parameters for the ArchiveVersionsClient.BeginDelete method.
+type ArchiveVersionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ArchiveVersionsClientGetOptions contains the optional parameters for the ArchiveVersionsClient.Get method.
+type ArchiveVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArchiveVersionsClientListOptions contains the optional parameters for the ArchiveVersionsClient.NewListPager method.
+type ArchiveVersionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArchivesClientBeginCreateOptions contains the optional parameters for the ArchivesClient.BeginCreate method.
+type ArchivesClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ArchivesClientBeginDeleteOptions contains the optional parameters for the ArchivesClient.BeginDelete method.
+type ArchivesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ArchivesClientGetOptions contains the optional parameters for the ArchivesClient.Get method.
+type ArchivesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArchivesClientListOptions contains the optional parameters for the ArchivesClient.NewListPager method.
+type ArchivesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArchivesClientUpdateOptions contains the optional parameters for the ArchivesClient.Update method.
+type ArchivesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CacheRulesClientBeginCreateOptions contains the optional parameters for the CacheRulesClient.BeginCreate method.
 type CacheRulesClientBeginCreateOptions struct {
 	// Resumes the LRO from the provided token.

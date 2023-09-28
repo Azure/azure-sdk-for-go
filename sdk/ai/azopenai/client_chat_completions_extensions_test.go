@@ -48,7 +48,7 @@ func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
 }
 
 func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
-	client := newAzureOpenAIClientForTest(t, azureOpenAI)
+	client := newAzureOpenAIClientForTest(t, azureOpenAICanary)
 
 	streamResp, err := client.GetChatCompletionsStream(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatMessage{
@@ -59,7 +59,7 @@ func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 			Extensions: []azopenai.AzureChatExtensionConfiguration{
 				{
 					Type:       to.Ptr(azopenai.AzureChatExtensionTypeAzureCognitiveSearch),
-					Parameters: azureOpenAI.Cognitive,
+					Parameters: azureOpenAICanary.Cognitive,
 				},
 			},
 		},

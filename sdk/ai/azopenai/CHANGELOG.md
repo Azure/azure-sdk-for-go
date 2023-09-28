@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.3.0 (2023-09-26)
+
+### Features Added
+- Support for Whisper audio APIs for transcription and translation using `GetAudioTranscription` and `GetAudioTranslation`.
+
+### Breaking Changes
+- ChatChoiceContentFilterResults content filtering fields are now all typed as ContentFilterResult, instead of unique types for each field.
+- `PromptAnnotations` renamed to `PromptFilterResults` in `ChatCompletions` and `Completions`.
 
 ## 0.2.0 (2023-08-28)
 

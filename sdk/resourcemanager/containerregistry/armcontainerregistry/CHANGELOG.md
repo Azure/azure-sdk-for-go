@@ -1,43 +1,36 @@
 # Release History
 
-## 1.1.0-beta.3 (2023-07-19)
-
-### Bug Fixes
-
-- Fixed a potential panic in faked paged and long-running operations.
-
-## 1.1.0-beta.2 (2023-06-12)
-
+## 1.2.0-beta.1 (2023-09-22)
 ### Features Added
 
 - Support for test fakes and OpenTelemetry trace spans.
-
-## 1.1.0-beta.1 (2023-03-27)
-### Features Added
-
 - New enum type `ActivationStatus` with values `ActivationStatusActive`, `ActivationStatusInactive`
 - New enum type `AuditLogStatus` with values `AuditLogStatusDisabled`, `AuditLogStatusEnabled`
 - New enum type `AzureADAuthenticationAsArmPolicyStatus` with values `AzureADAuthenticationAsArmPolicyStatusDisabled`, `AzureADAuthenticationAsArmPolicyStatusEnabled`
 - New enum type `CertificateType` with values `CertificateTypeLocalDirectory`
 - New enum type `ConnectedRegistryMode` with values `ConnectedRegistryModeMirror`, `ConnectedRegistryModeReadOnly`, `ConnectedRegistryModeReadWrite`, `ConnectedRegistryModeRegistry`
 - New enum type `ConnectionState` with values `ConnectionStateOffline`, `ConnectionStateOnline`, `ConnectionStateSyncing`, `ConnectionStateUnhealthy`
-- New enum type `CredentialHealthStatus` with values `CredentialHealthStatusHealthy`, `CredentialHealthStatusUnhealthy`
-- New enum type `CredentialName` with values `CredentialNameCredential1`
 - New enum type `LogLevel` with values `LogLevelDebug`, `LogLevelError`, `LogLevelInformation`, `LogLevelNone`, `LogLevelWarning`
+- New enum type `PackageSourceType` with values `PackageSourceTypeRemote`
 - New enum type `PipelineOptions` with values `PipelineOptionsContinueOnErrors`, `PipelineOptionsDeleteSourceBlobOnSuccess`, `PipelineOptionsOverwriteBlobs`, `PipelineOptionsOverwriteTags`
 - New enum type `PipelineRunSourceType` with values `PipelineRunSourceTypeAzureStorageBlob`
 - New enum type `PipelineRunTargetType` with values `PipelineRunTargetTypeAzureStorageBlob`
 - New enum type `PipelineSourceType` with values `PipelineSourceTypeAzureStorageBlobContainer`
 - New enum type `TLSStatus` with values `TLSStatusDisabled`, `TLSStatusEnabled`
-- New function `NewCacheRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CacheRulesClient, error)`
-- New function `*CacheRulesClient.BeginCreate(context.Context, string, string, string, CacheRule, *CacheRulesClientBeginCreateOptions) (*runtime.Poller[CacheRulesClientCreateResponse], error)`
-- New function `*CacheRulesClient.BeginDelete(context.Context, string, string, string, *CacheRulesClientBeginDeleteOptions) (*runtime.Poller[CacheRulesClientDeleteResponse], error)`
-- New function `*CacheRulesClient.Get(context.Context, string, string, string, *CacheRulesClientGetOptions) (CacheRulesClientGetResponse, error)`
-- New function `*CacheRulesClient.NewListPager(string, string, *CacheRulesClientListOptions) *runtime.Pager[CacheRulesClientListResponse]`
-- New function `*CacheRulesClient.BeginUpdate(context.Context, string, string, string, CacheRuleUpdateParameters, *CacheRulesClientBeginUpdateOptions) (*runtime.Poller[CacheRulesClientUpdateResponse], error)`
-- New function `*ClientFactory.NewCacheRulesClient() *CacheRulesClient`
+- New function `NewArchiveVersionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ArchiveVersionsClient, error)`
+- New function `*ArchiveVersionsClient.BeginCreate(context.Context, string, string, string, string, string, *ArchiveVersionsClientBeginCreateOptions) (*runtime.Poller[ArchiveVersionsClientCreateResponse], error)`
+- New function `*ArchiveVersionsClient.BeginDelete(context.Context, string, string, string, string, string, *ArchiveVersionsClientBeginDeleteOptions) (*runtime.Poller[ArchiveVersionsClientDeleteResponse], error)`
+- New function `*ArchiveVersionsClient.Get(context.Context, string, string, string, string, string, *ArchiveVersionsClientGetOptions) (ArchiveVersionsClientGetResponse, error)`
+- New function `*ArchiveVersionsClient.NewListPager(string, string, string, string, *ArchiveVersionsClientListOptions) *runtime.Pager[ArchiveVersionsClientListResponse]`
+- New function `NewArchivesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ArchivesClient, error)`
+- New function `*ArchivesClient.BeginCreate(context.Context, string, string, string, string, Archive, *ArchivesClientBeginCreateOptions) (*runtime.Poller[ArchivesClientCreateResponse], error)`
+- New function `*ArchivesClient.BeginDelete(context.Context, string, string, string, string, *ArchivesClientBeginDeleteOptions) (*runtime.Poller[ArchivesClientDeleteResponse], error)`
+- New function `*ArchivesClient.Get(context.Context, string, string, string, string, *ArchivesClientGetOptions) (ArchivesClientGetResponse, error)`
+- New function `*ArchivesClient.NewListPager(string, string, string, *ArchivesClientListOptions) *runtime.Pager[ArchivesClientListResponse]`
+- New function `*ArchivesClient.Update(context.Context, string, string, string, string, ArchiveUpdateParameters, *ArchivesClientUpdateOptions) (ArchivesClientUpdateResponse, error)`
+- New function `*ClientFactory.NewArchiveVersionsClient() *ArchiveVersionsClient`
+- New function `*ClientFactory.NewArchivesClient() *ArchivesClient`
 - New function `*ClientFactory.NewConnectedRegistriesClient() *ConnectedRegistriesClient`
-- New function `*ClientFactory.NewCredentialSetsClient() *CredentialSetsClient`
 - New function `*ClientFactory.NewExportPipelinesClient() *ExportPipelinesClient`
 - New function `*ClientFactory.NewImportPipelinesClient() *ImportPipelinesClient`
 - New function `*ClientFactory.NewPipelineRunsClient() *PipelineRunsClient`
@@ -48,12 +41,6 @@
 - New function `*ConnectedRegistriesClient.Get(context.Context, string, string, string, *ConnectedRegistriesClientGetOptions) (ConnectedRegistriesClientGetResponse, error)`
 - New function `*ConnectedRegistriesClient.NewListPager(string, string, *ConnectedRegistriesClientListOptions) *runtime.Pager[ConnectedRegistriesClientListResponse]`
 - New function `*ConnectedRegistriesClient.BeginUpdate(context.Context, string, string, string, ConnectedRegistryUpdateParameters, *ConnectedRegistriesClientBeginUpdateOptions) (*runtime.Poller[ConnectedRegistriesClientUpdateResponse], error)`
-- New function `NewCredentialSetsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CredentialSetsClient, error)`
-- New function `*CredentialSetsClient.BeginCreate(context.Context, string, string, string, CredentialSet, *CredentialSetsClientBeginCreateOptions) (*runtime.Poller[CredentialSetsClientCreateResponse], error)`
-- New function `*CredentialSetsClient.BeginDelete(context.Context, string, string, string, *CredentialSetsClientBeginDeleteOptions) (*runtime.Poller[CredentialSetsClientDeleteResponse], error)`
-- New function `*CredentialSetsClient.Get(context.Context, string, string, string, *CredentialSetsClientGetOptions) (CredentialSetsClientGetResponse, error)`
-- New function `*CredentialSetsClient.NewListPager(string, string, *CredentialSetsClientListOptions) *runtime.Pager[CredentialSetsClientListResponse]`
-- New function `*CredentialSetsClient.BeginUpdate(context.Context, string, string, string, CredentialSetUpdateParameters, *CredentialSetsClientBeginUpdateOptions) (*runtime.Poller[CredentialSetsClientUpdateResponse], error)`
 - New function `NewExportPipelinesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ExportPipelinesClient, error)`
 - New function `*ExportPipelinesClient.BeginCreate(context.Context, string, string, string, ExportPipeline, *ExportPipelinesClientBeginCreateOptions) (*runtime.Poller[ExportPipelinesClientCreateResponse], error)`
 - New function `*ExportPipelinesClient.BeginDelete(context.Context, string, string, string, *ExportPipelinesClientBeginDeleteOptions) (*runtime.Poller[ExportPipelinesClientDeleteResponse], error)`
@@ -70,24 +57,21 @@
 - New function `*PipelineRunsClient.Get(context.Context, string, string, string, *PipelineRunsClientGetOptions) (PipelineRunsClientGetResponse, error)`
 - New function `*PipelineRunsClient.NewListPager(string, string, *PipelineRunsClientListOptions) *runtime.Pager[PipelineRunsClientListResponse]`
 - New struct `ActivationProperties`
-- New struct `AuthCredential`
+- New struct `Archive`
+- New struct `ArchiveListResult`
+- New struct `ArchivePackageSourceProperties`
+- New struct `ArchiveProperties`
+- New struct `ArchiveUpdateParameters`
+- New struct `ArchiveUpdateProperties`
+- New struct `ArchiveVersion`
+- New struct `ArchiveVersionListResult`
+- New struct `ArchiveVersionProperties`
 - New struct `AzureADAuthenticationAsArmPolicy`
-- New struct `CacheRule`
-- New struct `CacheRuleProperties`
-- New struct `CacheRuleUpdateParameters`
-- New struct `CacheRuleUpdateProperties`
-- New struct `CacheRulesListResult`
 - New struct `ConnectedRegistry`
 - New struct `ConnectedRegistryListResult`
 - New struct `ConnectedRegistryProperties`
 - New struct `ConnectedRegistryUpdateParameters`
 - New struct `ConnectedRegistryUpdateProperties`
-- New struct `CredentialHealth`
-- New struct `CredentialSet`
-- New struct `CredentialSetListResult`
-- New struct `CredentialSetProperties`
-- New struct `CredentialSetUpdateParameters`
-- New struct `CredentialSetUpdateProperties`
 - New struct `ExportPipeline`
 - New struct `ExportPipelineListResult`
 - New struct `ExportPipelineProperties`
@@ -117,10 +101,42 @@
 - New struct `SyncUpdateProperties`
 - New struct `TLSCertificateProperties`
 - New struct `TLSProperties`
-- New field `AzureADAuthenticationAsArmPolicy` in struct `Policies`
-- New field `SoftDeletePolicy` in struct `Policies`
+- New field `AzureADAuthenticationAsArmPolicy`, `SoftDeletePolicy` in struct `Policies`
 - New field `AnonymousPullEnabled` in struct `RegistryProperties`
 - New field `AnonymousPullEnabled` in struct `RegistryPropertiesUpdateParameters`
+
+
+## 1.1.0 (2023-09-22)
+### Features Added
+
+- New enum type `CredentialHealthStatus` with values `CredentialHealthStatusHealthy`, `CredentialHealthStatusUnhealthy`
+- New enum type `CredentialName` with values `CredentialNameCredential1`
+- New function `NewCacheRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CacheRulesClient, error)`
+- New function `*CacheRulesClient.BeginCreate(context.Context, string, string, string, CacheRule, *CacheRulesClientBeginCreateOptions) (*runtime.Poller[CacheRulesClientCreateResponse], error)`
+- New function `*CacheRulesClient.BeginDelete(context.Context, string, string, string, *CacheRulesClientBeginDeleteOptions) (*runtime.Poller[CacheRulesClientDeleteResponse], error)`
+- New function `*CacheRulesClient.Get(context.Context, string, string, string, *CacheRulesClientGetOptions) (CacheRulesClientGetResponse, error)`
+- New function `*CacheRulesClient.NewListPager(string, string, *CacheRulesClientListOptions) *runtime.Pager[CacheRulesClientListResponse]`
+- New function `*CacheRulesClient.BeginUpdate(context.Context, string, string, string, CacheRuleUpdateParameters, *CacheRulesClientBeginUpdateOptions) (*runtime.Poller[CacheRulesClientUpdateResponse], error)`
+- New function `*ClientFactory.NewCacheRulesClient() *CacheRulesClient`
+- New function `*ClientFactory.NewCredentialSetsClient() *CredentialSetsClient`
+- New function `NewCredentialSetsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CredentialSetsClient, error)`
+- New function `*CredentialSetsClient.BeginCreate(context.Context, string, string, string, CredentialSet, *CredentialSetsClientBeginCreateOptions) (*runtime.Poller[CredentialSetsClientCreateResponse], error)`
+- New function `*CredentialSetsClient.BeginDelete(context.Context, string, string, string, *CredentialSetsClientBeginDeleteOptions) (*runtime.Poller[CredentialSetsClientDeleteResponse], error)`
+- New function `*CredentialSetsClient.Get(context.Context, string, string, string, *CredentialSetsClientGetOptions) (CredentialSetsClientGetResponse, error)`
+- New function `*CredentialSetsClient.NewListPager(string, string, *CredentialSetsClientListOptions) *runtime.Pager[CredentialSetsClientListResponse]`
+- New function `*CredentialSetsClient.BeginUpdate(context.Context, string, string, string, CredentialSetUpdateParameters, *CredentialSetsClientBeginUpdateOptions) (*runtime.Poller[CredentialSetsClientUpdateResponse], error)`
+- New struct `AuthCredential`
+- New struct `CacheRule`
+- New struct `CacheRuleProperties`
+- New struct `CacheRuleUpdateParameters`
+- New struct `CacheRuleUpdateProperties`
+- New struct `CacheRulesListResult`
+- New struct `CredentialHealth`
+- New struct `CredentialSet`
+- New struct `CredentialSetListResult`
+- New struct `CredentialSetProperties`
+- New struct `CredentialSetUpdateParameters`
+- New struct `CredentialSetUpdateProperties`
 
 
 ## 1.0.0 (2023-03-24)

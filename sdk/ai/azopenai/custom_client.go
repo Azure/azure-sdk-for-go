@@ -194,6 +194,12 @@ func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCom
 
 	if hasAzureExtensions(body) {
 		req, err = client.getChatCompletionsWithAzureExtensionsCreateRequest(ctx, body, &GetChatCompletionsWithAzureExtensionsOptions{})
+
+		if err == nil {
+			reqQP := req.Raw().URL.Query()
+			reqQP.Set("api-version", "2023-08-01-preview")
+			req.Raw().URL.RawQuery = reqQP.Encode()
+		}
 	} else {
 		req, err = client.getChatCompletionsCreateRequest(ctx, body, &GetChatCompletionsOptions{})
 	}
@@ -268,7 +274,7 @@ type clientData struct {
 	azure    bool
 }
 
-func getDeployment[T ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | ImageGenerationOptions](v T) string {
+func getDeployment[T ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | ImageGenerationOptions | *getAudioTranscriptionInternalOptions | *getAudioTranslationInternalOptions](v T) string {
 	switch a := any(v).(type) {
 	case ChatCompletionsOptions:
 		return a.Deployment
@@ -278,6 +284,10 @@ func getDeployment[T ChatCompletionsOptions | CompletionsOptions | EmbeddingsOpt
 		return a.Deployment
 	case ImageGenerationOptions:
 		return ""
+	case *getAudioTranscriptionInternalOptions:
+		return *a.Model
+	case *getAudioTranslationInternalOptions:
+		return *a.Model
 	default:
 		return ""
 	}

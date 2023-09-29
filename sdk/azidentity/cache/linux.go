@@ -13,7 +13,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache/internal/aescbc"
@@ -37,8 +36,9 @@ var (
 		if err != nil {
 			return err
 		}
-		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-		defer cancel()
+		// the Accessor interface requires contexts for these methods but this implementation
+		// doesn't use them, which is okay because these methods don't block on user interaction
+		ctx := context.Background()
 		err = k.Write(ctx, []byte("test"))
 		if err != nil {
 			return err
@@ -194,7 +194,7 @@ func (k *keyring) decrypt(j jwe.JWE) ([]byte, error) {
 		k.key = nil
 		k.keyID = 0
 	}
-	// data is unreadable; the next Write will create a new key and overwrite the file
+	// data is unreadable; the next Write will overwrite the file
 	return nil, nil
 }
 

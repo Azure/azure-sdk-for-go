@@ -71,9 +71,6 @@ func (a *AESCBCHMACSHA2) Encrypt(iv, plaintext, additionalData []byte) (EncryptR
 		return result, err
 	}
 	plaintext = pad(plaintext)
-	if err != nil {
-		return result, err
-	}
 	result.Ciphertext = make([]byte, len(plaintext))
 	cipher.NewCBCEncrypter(block, iv).CryptBlocks(result.Ciphertext, plaintext)
 	result.Tag = a.tag(iv, result.Ciphertext, additionalData)

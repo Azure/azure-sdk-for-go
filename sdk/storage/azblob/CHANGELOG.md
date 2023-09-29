@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed null pointer exception when `SetImmutabilityPolicyOptions` is passed as `nil`.
 
 ### Other Changes
 

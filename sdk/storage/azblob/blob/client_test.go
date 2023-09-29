@@ -3524,7 +3524,7 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 
 	resp, err := bbClient.SetImmutabilityPolicy(context.Background(), currentTime, nil)
 	_require.NoError(err)
-	_require.Equal(&resp.ImmutabilityPolicyExpiry, currentTime)
+	_require.Equal((*resp.ImmutabilityPolicyExpiry).UTC(), currentTime.UTC())
 
 	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
 	_require.NoError(err)

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveResources_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveResources_List.json
 func ExampleMoveResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,6 +66,7 @@ func ExampleMoveResourcesClient_NewListPager() {
 		// 				}},
 		// 				ResourceSettings: &armresourcemover.VirtualMachineResourceSettings{
 		// 					ResourceType: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 					TargetResourceGroupName: to.Ptr("rg2"),
 		// 					TargetResourceName: to.Ptr("eastusvm1"),
 		// 					UserManagedIdentities: []*string{
 		// 						to.Ptr("/subscriptions/subid/resourceGroups/eastusRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/umi1")},
@@ -73,6 +74,7 @@ func ExampleMoveResourcesClient_NewListPager() {
 		// 					SourceID: to.Ptr("/subscriptions/subid/resourceGroups/eastus/providers/Microsoft.Compute/virtualMachines/eastusvm1"),
 		// 					SourceResourceSettings: &armresourcemover.VirtualMachineResourceSettings{
 		// 						ResourceType: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 						TargetResourceGroupName: to.Ptr("rg1"),
 		// 						TargetResourceName: to.Ptr("eastusvm1"),
 		// 						TargetAvailabilityZone: to.Ptr(armresourcemover.TargetAvailabilityZoneTwo),
 		// 						TargetVMSize: to.Ptr("Standard_B2s"),
@@ -134,7 +136,7 @@ func ExampleMoveResourcesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveResources_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveResources_Create.json
 func ExampleMoveResourcesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,6 +195,7 @@ func ExampleMoveResourcesClient_BeginCreate() {
 	// 		ProvisioningState: to.Ptr(armresourcemover.ProvisioningStateSucceeded),
 	// 		ResourceSettings: &armresourcemover.VirtualMachineResourceSettings{
 	// 			ResourceType: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 			TargetResourceGroupName: to.Ptr("rg1"),
 	// 			TargetResourceName: to.Ptr("westusvm1"),
 	// 			TargetAvailabilitySetID: to.Ptr("/subscriptions/subid/resourceGroups/eastusRG/providers/Microsoft.Compute/availabilitySets/avset1"),
 	// 			TargetAvailabilityZone: to.Ptr(armresourcemover.TargetAvailabilityZoneTwo),
@@ -212,7 +215,7 @@ func ExampleMoveResourcesClient_BeginCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveResources_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveResources_Delete.json
 func ExampleMoveResourcesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +248,7 @@ func ExampleMoveResourcesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveResources_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveResources_Get.json
 func ExampleMoveResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,6 +280,7 @@ func ExampleMoveResourcesClient_Get() {
 	// 		}},
 	// 		ResourceSettings: &armresourcemover.VirtualMachineResourceSettings{
 	// 			ResourceType: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 			TargetResourceGroupName: to.Ptr("rg2"),
 	// 			TargetResourceName: to.Ptr("eastusvm1"),
 	// 			UserManagedIdentities: []*string{
 	// 				to.Ptr("/subscriptions/subid/resourceGroups/eastusRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/umi1")},
@@ -284,6 +288,7 @@ func ExampleMoveResourcesClient_Get() {
 	// 			SourceID: to.Ptr("/subscriptions/subid/resourceGroups/eastus/providers/Microsoft.Compute/virtualMachines/eastusvm1"),
 	// 			SourceResourceSettings: &armresourcemover.VirtualMachineResourceSettings{
 	// 				ResourceType: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 				TargetResourceGroupName: to.Ptr("rg1"),
 	// 				TargetResourceName: to.Ptr("eastusvm1"),
 	// 				TargetAvailabilityZone: to.Ptr(armresourcemover.TargetAvailabilityZoneTwo),
 	// 				TargetVMSize: to.Ptr("Standard_B2s"),

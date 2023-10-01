@@ -10,8 +10,26 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v4.4.0-beta.1"
+	moduleVersion = "v4.4.0-beta.2"
 )
+
+// AddonAutoscaling - Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
+type AddonAutoscaling string
+
+const (
+	// AddonAutoscalingDisabled - Feature to autoscale AKS-managed add-ons is disabled.
+	AddonAutoscalingDisabled AddonAutoscaling = "Disabled"
+	// AddonAutoscalingEnabled - Feature to autoscale AKS-managed add-ons is enabled. The default VPA update mode is Initial mode.
+	AddonAutoscalingEnabled AddonAutoscaling = "Enabled"
+)
+
+// PossibleAddonAutoscalingValues returns the possible values for the AddonAutoscaling const type.
+func PossibleAddonAutoscalingValues() []AddonAutoscaling {
+	return []AddonAutoscaling{
+		AddonAutoscalingDisabled,
+		AddonAutoscalingEnabled,
+	}
+}
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
 // pool restrictions and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools
@@ -591,6 +609,8 @@ const (
 	NetworkPolicyCalico NetworkPolicy = "calico"
 	// NetworkPolicyCilium - Use Cilium to enforce network policies. This requires networkDataplane to be 'cilium'.
 	NetworkPolicyCilium NetworkPolicy = "cilium"
+	// NetworkPolicyNone - Network policies will not be enforced. This is the default value when NetworkPolicy is not specified.
+	NetworkPolicyNone NetworkPolicy = "none"
 )
 
 // PossibleNetworkPolicyValues returns the possible values for the NetworkPolicy const type.
@@ -599,6 +619,7 @@ func PossibleNetworkPolicyValues() []NetworkPolicy {
 		NetworkPolicyAzure,
 		NetworkPolicyCalico,
 		NetworkPolicyCilium,
+		NetworkPolicyNone,
 	}
 }
 

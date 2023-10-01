@@ -370,8 +370,20 @@ type IstioCertificateAuthority struct {
 
 // IstioComponents - Istio components configuration.
 type IstioComponents struct {
+	// Istio egress gateways.
+	EgressGateways []*IstioEgressGateway
+
 	// Istio ingress gateways.
 	IngressGateways []*IstioIngressGateway
+}
+
+// IstioEgressGateway - Istio egress gateway configuration.
+type IstioEgressGateway struct {
+	// REQUIRED; Whether to enable the egress gateway.
+	Enabled *bool
+
+	// NodeSelector for scheduling the egress gateway.
+	NodeSelector map[string]*string
 }
 
 // IstioIngressGateway - Istio ingress gateway configuration. For now, we support up to one external ingress gateway named
@@ -1658,9 +1670,26 @@ type ManagedClusterPropertiesAutoScalerProfile struct {
 	// Valid values are 'true' and 'false'
 	BalanceSimilarNodeGroups *string
 
-	// If not specified, the default is 'random'. See expanders [https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders]
-	// for more information.
+	// If set to true, all daemonset pods on empty nodes will be evicted before deletion of the node. If the daemonset pod cannot
+	// be evicted another node will be chosen for scaling. If set to false, the node
+	// will be deleted without ensuring that daemonset pods are deleted or evicted.
+	DaemonsetEvictionForEmptyNodes *bool
+
+	// If set to true, all daemonset pods on occupied nodes will be evicted before deletion of the node. If the daemonset pod
+	// cannot be evicted another node will be chosen for scaling. If set to false, the
+	// node will be deleted without ensuring that daemonset pods are deleted or evicted.
+	DaemonsetEvictionForOccupiedNodes *bool
+
+	// Available values are: 'least-waste', 'most-pods', 'priority', 'random'.
 	Expander *Expander
+
+	// Available values are: 'least-waste', 'most-pods', 'priority', 'random'. If multiple expanders are configured, they will
+	// be considered in the order in which they are listed, with the first one being
+	// considered first.
+	Expanders []*Expander
+
+	// If set to true, the resources used by daemonset will be taken into account when making scaling down decisions.
+	IgnoreDaemonsetsUtilization *bool
 
 	// The default is 10.
 	MaxEmptyBulkDelete *string
@@ -1984,8 +2013,11 @@ type ManagedClusterWorkloadAutoScalerProfileKeda struct {
 }
 
 type ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler struct {
-	// REQUIRED; Whether to enable VPA. Default value is false.
+	// REQUIRED; Whether to enable VPA add-on in cluster. Default value is false.
 	Enabled *bool
+
+	// Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
+	AddonAutoscaling *AddonAutoscaling
 }
 
 type ManagedServiceIdentityUserAssignedIdentitiesValue struct {

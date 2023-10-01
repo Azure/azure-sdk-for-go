@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2023-07-28)
+## 2.0.0 (2023-10-27)
 ### Breaking Changes
 
 - Type of `EndpointBaseUpdateParameters.Properties` has been changed from `*EndpointBaseUpdateProperties` to `EndpointBaseUpdatePropertiesClassification`

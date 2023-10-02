@@ -6,6 +6,8 @@ github.com/Azure/azure-sdk-for-go/sdk/internal v1.3.0 h1:sXr+ck84g/ZlZUOZiNELInm
 github.com/Azure/azure-sdk-for-go/sdk/internal v1.3.0/go.mod h1:okt5dMMTOFjX/aovMlrjvvXoPMBVSPzk9185BT0+eZM=
 github.com/AzureAD/microsoft-authentication-extensions-for-go/cache v0.0.0-20230630175857-77aee8d4827a h1:dJXYYudQhQ0TEpDXdX9gz2LV1nl0S0Oa25ccTHf75u0=
 github.com/AzureAD/microsoft-authentication-extensions-for-go/cache v0.0.0-20230630175857-77aee8d4827a/go.mod h1:tCcJZ0uHAmvjsVYzEFivsRTN00oz5BEsRgQHu5JZ9WE=
+github.com/AzureAD/microsoft-authentication-extensions-for-go/cache v0.1.1-0.20230928163952-361da6dd79f8 h1:Oy5U7ro71jveRYGIcFeyZcZS5sTi+8TftMdG3/UKRBg=
+github.com/AzureAD/microsoft-authentication-extensions-for-go/cache v0.1.1-0.20230928163952-361da6dd79f8/go.mod h1:tCcJZ0uHAmvjsVYzEFivsRTN00oz5BEsRgQHu5JZ9WE=
 github.com/AzureAD/microsoft-authentication-library-for-go v1.0.0 h1:OBhqkivkhkMqLPymWEppkm7vgPQY2XsHoEkaMQ0AdZY=
 github.com/AzureAD/microsoft-authentication-library-for-go v1.0.0/go.mod h1:kgDmCTgBzIEPFElEF+FK0SdjAor06dRq2Go927dnQ6o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

@@ -14,6 +14,7 @@
 ### Bugs Fixed
 
 * Fixed an issue that could cause some ARM RPs to not be automatically registered.
+* Block bearer token authentication for non TLS protected endpoints.
 
 ### Other Changes
 

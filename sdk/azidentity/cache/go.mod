@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.3.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.3.0
-	github.com/AzureAD/microsoft-authentication-extensions-for-go/cache v0.1.1-0.20230928163952-361da6dd79f8
+	github.com/AzureAD/microsoft-authentication-extensions-for-go/cache v0.1.1
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.0.0
 	github.com/google/uuid v1.3.0
 	github.com/stretchr/testify v1.8.2

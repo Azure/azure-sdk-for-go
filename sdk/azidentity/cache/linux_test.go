@@ -21,6 +21,10 @@ import (
 var ctx = context.Background()
 
 func TestKeyExistsButNotFile(t *testing.T) {
+	before := cacheDir
+	t.Cleanup(func() { cacheDir = before })
+	tmpdir := t.TempDir()
+	cacheDir = func() (string, error) { return tmpdir, nil }
 	expected := []byte(t.Name())
 	a, err := newKeyring(t.Name())
 	require.NoError(t, err)
@@ -46,6 +50,10 @@ func TestKeyExistsButNotFile(t *testing.T) {
 }
 
 func TestReadWriteDelete(t *testing.T) {
+	before := cacheDir
+	t.Cleanup(func() { cacheDir = before })
+	tmpdir := t.TempDir()
+	cacheDir = func() (string, error) { return tmpdir, nil }
 	for _, test := range []struct {
 		expected   []byte
 		desc, name string
@@ -101,6 +109,10 @@ func TestReadWriteDelete(t *testing.T) {
 }
 
 func TestTwoInstances(t *testing.T) {
+	before := cacheDir
+	t.Cleanup(func() { cacheDir = before })
+	tmpdir := t.TempDir()
+	cacheDir = func() (string, error) { return tmpdir, nil }
 	for _, deleteFile := range []bool{false, true} {
 		s := "key and file exist"
 		if deleteFile {
@@ -141,9 +153,11 @@ func TestTwoInstances(t *testing.T) {
 }
 
 func TestUnencryptedFallback(t *testing.T) {
-	before := tryKeyring
-	t.Cleanup(func() { tryKeyring = before })
+	tryKeyringBefore := tryKeyring
+	t.Cleanup(func() { tryKeyring = tryKeyringBefore })
 	tryKeyring = func() error { return errors.New("it didn't work") }
+	cacheDirBefore := cacheDir
+	t.Cleanup(func() { cacheDir = cacheDirBefore })
 
 	o := internal.TokenCachePersistenceOptions{Name: t.Name()}
 	_, err := storage(internal.TokenCachePersistenceOptions{})

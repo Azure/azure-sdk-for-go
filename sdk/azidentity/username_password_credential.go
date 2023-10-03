@@ -57,6 +57,7 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 		ClientOptions:                options.ClientOptions,
 		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
 		Password:                     password,
+		Record:                       options.AuthenticationRecord,
 		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
 		Username:                     username,
 	}

@@ -15,6 +15,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -102,26 +103,28 @@ func TestUserAuthentication(t *testing.T) {
 	for _, credential := range []struct {
 		name                    string
 		interactive, recordable bool
-		new                     func(*testing.T, azcore.ClientOptions, AuthenticationRecord, bool) (authenticater, error)
+		new                     func(*TokenCachePersistenceOptions, azcore.ClientOptions, AuthenticationRecord, bool) (authenticater, error)
 	}{
 		{
 			name: credNameBrowser,
-			new: func(t *testing.T, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
+			new: func(tcpo *TokenCachePersistenceOptions, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
 				return NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
 					AuthenticationRecord:           ar,
 					ClientOptions:                  co,
 					DisableAutomaticAuthentication: disableAutoAuth,
+					TokenCachePersistenceOptions:   tcpo,
 				})
 			},
 			interactive: true,
 		},
 		{
 			name: credNameDeviceCode,
-			new: func(t *testing.T, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
+			new: func(tcpo *TokenCachePersistenceOptions, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
 				o := DeviceCodeCredentialOptions{
 					AuthenticationRecord:           ar,
 					ClientOptions:                  co,
 					DisableAutomaticAuthentication: disableAutoAuth,
+					TokenCachePersistenceOptions:   tcpo,
 				}
 				if recording.GetRecordMode() == recording.PlaybackMode {
 					o.UserPrompt = func(context.Context, DeviceCodeMessage) error { return nil }
@@ -133,10 +136,11 @@ func TestUserAuthentication(t *testing.T) {
 		},
 		{
 			name: credNameUserPassword,
-			new: func(t *testing.T, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
+			new: func(tcpo *TokenCachePersistenceOptions, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
 				opts := UsernamePasswordCredentialOptions{
-					AuthenticationRecord: ar,
-					ClientOptions:        co,
+					AuthenticationRecord:         ar,
+					ClientOptions:                co,
+					TokenCachePersistenceOptions: tcpo,
 				}
 				return NewUsernamePasswordCredential(liveUser.tenantID, developerSignOnClientID, liveUser.username, liveUser.password, &opts)
 			},
@@ -161,13 +165,13 @@ func TestUserAuthentication(t *testing.T) {
 				}}
 
 				co := azcore.ClientOptions{Cloud: cc, Transport: &sts}
-				cred, err := credential.new(t, co, AuthenticationRecord{}, false)
+				cred, err := credential.new(nil, co, AuthenticationRecord{}, false)
 				require.NoError(t, err)
 				_, err = cred.Authenticate(context.Background(), nil)
 				require.NoError(t, err)
 
 				os.Setenv(azureAuthorityHost, cc.ActiveDirectoryAuthorityHost)
-				cred, err = credential.new(t, azcore.ClientOptions{Transport: &sts}, AuthenticationRecord{}, false)
+				cred, err = credential.new(nil, azcore.ClientOptions{Transport: &sts}, AuthenticationRecord{}, false)
 				require.NoError(t, err)
 				_, err = cred.Authenticate(context.Background(), nil)
 				if cc.ActiveDirectoryAuthorityHost == customCloud.ActiveDirectoryAuthorityHost {
@@ -180,19 +184,17 @@ func TestUserAuthentication(t *testing.T) {
 		})
 
 		t.Run("Authenticate_Live_"+credential.name, func(t *testing.T) {
-			reqCounter := tokenRequestCountingPolicy{}
-			co := azcore.ClientOptions{PerCallPolicies: []policy.Policy{&reqCounter}}
 			if credential.name == credNameBrowser {
 				if !runManualTests {
 					t.Skipf("set %s to run this test", azidentityRunManualTests)
 				}
-			} else {
-				var stop func()
-				co, stop = initRecording(t)
-				defer stop()
 			}
+			co, stop := initRecording(t)
+			defer stop()
+			counter := tokenRequestCountingPolicy{}
+			co.PerCallPolicies = append(co.PerCallPolicies, &counter)
 
-			cred, err := credential.new(t, co, AuthenticationRecord{}, false)
+			cred, err := credential.new(nil, co, AuthenticationRecord{}, false)
 			require.NoError(t, err)
 			ar, err := cred.Authenticate(context.Background(), &testTRO)
 			require.NoError(t, err)
@@ -206,11 +208,44 @@ func TestUserAuthentication(t *testing.T) {
 				s := v.FieldByIndex(f.Index).Addr().Interface().(*string)
 				require.NotEmpty(t, *s)
 			}
+			require.Equal(t, 1, counter.count)
+		})
+
+		t.Run("PersistentCache_Live/"+credential.name, func(t *testing.T) {
+			if runtime.GOOS == "darwin" {
+				t.Skip("persistent caching requires interaction on macOS")
+			}
+			if credential.name == credNameBrowser && !runManualTests {
+				t.Skipf("set %s to run this test", azidentityRunManualTests)
+			}
+			p, err := internal.CacheFilePath(t.Name())
+			require.NoError(t, err)
+			os.Remove(p)
+			co, stop := initRecording(t)
+			defer stop()
+			counter := tokenRequestCountingPolicy{}
+			co.PerCallPolicies = append(co.PerCallPolicies, &counter)
+			tcpo := TokenCachePersistenceOptions{Name: t.Name()}
+
+			cred, err := credential.new(&tcpo, co, AuthenticationRecord{}, true)
+			require.NoError(t, err)
+			record, err := cred.Authenticate(context.Background(), &testTRO)
+			require.NoError(t, err)
+			defer os.Remove(p)
+			tk, err := cred.GetToken(context.Background(), testTRO)
+			require.NoError(t, err)
+			require.Equal(t, 1, counter.count)
+
+			cred2, err := credential.new(&tcpo, co, record, true)
+			require.NoError(t, err)
+			tk2, err := cred2.GetToken(context.Background(), testTRO)
+			require.NoError(t, err)
+			require.Equal(t, tk.Token, tk2.Token)
 		})
 
 		if credential.interactive {
 			t.Run("DisableAutomaticAuthentication/"+credential.name, func(t *testing.T) {
-				cred, err := credential.new(t, policy.ClientOptions{Transport: &mockSTS{}}, AuthenticationRecord{}, true)
+				cred, err := credential.new(nil, policy.ClientOptions{Transport: &mockSTS{}}, AuthenticationRecord{}, true)
 				require.NoError(t, err)
 				_, err = cred.GetToken(context.Background(), testTRO)
 				require.ErrorIs(t, err, ErrAuthenticationRequired)

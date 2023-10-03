@@ -224,3 +224,16 @@ func TestBearerTokenPolicy_AuthZHandlerErrors(t *testing.T) {
 		require.Equal(t, i+1, srv.Requests())
 	}
 }
+
+func TestBearerTokenPolicy_RequiresHTTPS(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	b := NewBearerTokenPolicy(mockCredential{}, nil, nil)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerRetryPolicies: []policy.Policy{b}})
+	req, err := NewRequest(context.Background(), "GET", srv.URL())
+	require.NoError(t, err)
+	_, err = pl.Do(req)
+	require.Error(t, err)
+	var nre errorinfo.NonRetriable
+	require.ErrorAs(t, err, &nre)
+}

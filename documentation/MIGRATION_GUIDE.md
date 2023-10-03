@@ -1,6 +1,6 @@
 # Guide for migrating to `sdk/resourcemanager/**/arm**` from `services/**/mgmt/**`
 
-This document is intended for users that are familiar with the previous version of the Azure SDK For Go for management modules (`services/**/mgmt/**`) and wish to migrate their application to the next version of Azure resource management libraries (`sdk/resourcemanager/**/arm**`)
+This document is intended for users that are familiar with the previous version of the Azure SDK For Go for management modules (`services/**/mgmt/**` also known as track or version 1) and wish to migrate their application to the next version of Azure resource management libraries (`sdk/resourcemanager/**/arm**` also known as track or version 2).  All version 1 Go modules are [deprecated and no longer recieving support](https://azure.github.io/azure-sdk/releases/deprecated/go.html). 
 
 **For users new to the Azure SDK For Go for resource management modules, please see the [README for 'sdk/azcore`](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azcore) and the README for every individual package.**
 

@@ -18,13 +18,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var ctx = context.Background()
+var (
+	ctx              = context.Background()
+	storageAvailable = false
+)
+
+func TestMain(m *testing.M) {
+	err := tryKeyring()
+	storageAvailable = err == nil
+	os.Exit(m.Run())
+}
 
 func TestKeyExistsButNotFile(t *testing.T) {
-	before := cacheDir
-	t.Cleanup(func() { cacheDir = before })
-	tmpdir := t.TempDir()
-	cacheDir = func() (string, error) { return tmpdir, nil }
+	if !storageAvailable {
+		t.Skip("storage isn't available")
+	}
 	expected := []byte(t.Name())
 	a, err := newKeyring(t.Name())
 	require.NoError(t, err)
@@ -50,10 +58,9 @@ func TestKeyExistsButNotFile(t *testing.T) {
 }
 
 func TestReadWriteDelete(t *testing.T) {
-	before := cacheDir
-	t.Cleanup(func() { cacheDir = before })
-	tmpdir := t.TempDir()
-	cacheDir = func() (string, error) { return tmpdir, nil }
+	if !storageAvailable {
+		t.Skip("storage isn't available")
+	}
 	for _, test := range []struct {
 		expected   []byte
 		desc, name string
@@ -109,10 +116,9 @@ func TestReadWriteDelete(t *testing.T) {
 }
 
 func TestTwoInstances(t *testing.T) {
-	before := cacheDir
-	t.Cleanup(func() { cacheDir = before })
-	tmpdir := t.TempDir()
-	cacheDir = func() (string, error) { return tmpdir, nil }
+	if !storageAvailable {
+		t.Skip("storage isn't available")
+	}
 	for _, deleteFile := range []bool{false, true} {
 		s := "key and file exist"
 		if deleteFile {
@@ -153,11 +159,12 @@ func TestTwoInstances(t *testing.T) {
 }
 
 func TestUnencryptedFallback(t *testing.T) {
-	tryKeyringBefore := tryKeyring
-	t.Cleanup(func() { tryKeyring = tryKeyringBefore })
+	if !storageAvailable {
+		t.Skip("storage isn't available")
+	}
+	before := tryKeyring
+	t.Cleanup(func() { tryKeyring = before })
 	tryKeyring = func() error { return errors.New("it didn't work") }
-	cacheDirBefore := cacheDir
-	t.Cleanup(func() { cacheDir = cacheDirBefore })
 
 	o := internal.TokenCachePersistenceOptions{Name: t.Name()}
 	_, err := storage(internal.TokenCachePersistenceOptions{})

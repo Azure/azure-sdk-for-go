@@ -212,8 +212,8 @@ func TestUserAuthentication(t *testing.T) {
 		})
 
 		t.Run("PersistentCache_Live/"+credential.name, func(t *testing.T) {
-			if runtime.GOOS == "darwin" {
-				t.Skip("persistent caching requires interaction on macOS")
+			if runtime.GOOS != "windows" {
+				t.Skip("this test runs only on Windows")
 			}
 			if credential.name == credNameBrowser && !runManualTests {
 				t.Skipf("set %s to run this test", azidentityRunManualTests)

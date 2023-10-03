@@ -84,6 +84,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		DisableAutomaticAuthentication: cp.DisableAutomaticAuthentication,
 		DisableInstanceDiscovery:       cp.DisableInstanceDiscovery,
 		LoginHint:                      cp.LoginHint,
+		Record:                         cp.AuthenticationRecord,
 		RedirectURL:                    cp.RedirectURL,
 		TokenCachePersistenceOptions:   cp.TokenCachePersistenceOptions,
 	}

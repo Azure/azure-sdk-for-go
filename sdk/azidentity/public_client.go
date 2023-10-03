@@ -33,6 +33,7 @@ type publicClientOptions struct {
 	DisableAutomaticAuthentication bool
 	DisableInstanceDiscovery       bool
 	LoginHint, RedirectURL         string
+	Record                         AuthenticationRecord
 	TokenCachePersistenceOptions   *TokenCachePersistenceOptions
 	Username, Password             string
 }
@@ -90,6 +91,7 @@ func newPublicClient(tenantID, clientID, name string, o publicClientOptions) (*p
 		name:         name,
 		noCAEMu:      &sync.Mutex{},
 		opts:         o,
+		record:       o.Record,
 		tenantID:     tenantID,
 	}, nil
 }

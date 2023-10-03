@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed a bug where the `x-ms-file-attributes` header could be set to contain invalid trailing or leading | characters.
 
 ### Other Changes
 

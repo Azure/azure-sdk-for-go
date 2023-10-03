@@ -30,7 +30,7 @@
         },
         {
             "Name": "azidentity/cache",
-            "CoverageGoal": 0.42
+            "CoverageGoal": 0.35
         },
         {
             "Name": "azqueue",

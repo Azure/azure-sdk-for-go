@@ -55,6 +55,10 @@ func NewManagersClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - ManagersClientCreateOrUpdateOptions contains the optional parameters for the ManagersClient.CreateOrUpdate method.
 func (client *ManagersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkManagerName string, parameters Manager, options *ManagersClientCreateOrUpdateOptions) (ManagersClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ManagersClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkManagerName, parameters, options)
 	if err != nil {
 		return ManagersClientCreateOrUpdateResponse{}, err
@@ -137,6 +141,10 @@ func (client *ManagersClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-05-01
 func (client *ManagersClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, options *ManagersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagersClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkManagerName, options)
 	if err != nil {
 		return nil, err
@@ -190,6 +198,10 @@ func (client *ManagersClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - ManagersClientGetOptions contains the optional parameters for the ManagersClient.Get method.
 func (client *ManagersClient) Get(ctx context.Context, resourceGroupName string, networkManagerName string, options *ManagersClientGetOptions) (ManagersClientGetResponse, error) {
 	var err error
+	const operationName = "ManagersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkManagerName, options)
 	if err != nil {
 		return ManagersClientGetResponse{}, err
@@ -252,6 +264,7 @@ func (client *ManagersClient) NewListPager(resourceGroupName string, options *Ma
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagersClientListResponse) (ManagersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagersClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -271,6 +284,7 @@ func (client *ManagersClient) NewListPager(resourceGroupName string, options *Ma
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -322,6 +336,7 @@ func (client *ManagersClient) NewListBySubscriptionPager(options *ManagersClient
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagersClientListBySubscriptionResponse) (ManagersClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagersClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -341,6 +356,7 @@ func (client *ManagersClient) NewListBySubscriptionPager(options *ManagersClient
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -387,6 +403,10 @@ func (client *ManagersClient) listBySubscriptionHandleResponse(resp *http.Respon
 //   - options - ManagersClientPatchOptions contains the optional parameters for the ManagersClient.Patch method.
 func (client *ManagersClient) Patch(ctx context.Context, resourceGroupName string, networkManagerName string, parameters PatchObject, options *ManagersClientPatchOptions) (ManagersClientPatchResponse, error) {
 	var err error
+	const operationName = "ManagersClient.Patch"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.patchCreateRequest(ctx, resourceGroupName, networkManagerName, parameters, options)
 	if err != nil {
 		return ManagersClientPatchResponse{}, err

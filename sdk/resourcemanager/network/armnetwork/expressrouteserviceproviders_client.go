@@ -55,6 +55,7 @@ func (client *ExpressRouteServiceProvidersClient) NewListPager(options *ExpressR
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExpressRouteServiceProvidersClientListResponse) (ExpressRouteServiceProvidersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpressRouteServiceProvidersClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -74,6 +75,7 @@ func (client *ExpressRouteServiceProvidersClient) NewListPager(options *ExpressR
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

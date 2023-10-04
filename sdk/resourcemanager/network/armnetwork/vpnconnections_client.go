@@ -76,6 +76,10 @@ func (client *VPNConnectionsClient) BeginCreateOrUpdate(ctx context.Context, res
 // Generated from API version 2023-05-01
 func (client *VPNConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VPNConnection, options *VPNConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VPNConnectionsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, vpnConnectionParameters, options)
 	if err != nil {
 		return nil, err
@@ -154,6 +158,10 @@ func (client *VPNConnectionsClient) BeginDelete(ctx context.Context, resourceGro
 // Generated from API version 2023-05-01
 func (client *VPNConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VPNConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VPNConnectionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, options)
 	if err != nil {
 		return nil, err
@@ -209,6 +217,10 @@ func (client *VPNConnectionsClient) deleteCreateRequest(ctx context.Context, res
 //   - options - VPNConnectionsClientGetOptions contains the optional parameters for the VPNConnectionsClient.Get method.
 func (client *VPNConnectionsClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VPNConnectionsClientGetOptions) (VPNConnectionsClientGetResponse, error) {
 	var err error
+	const operationName = "VPNConnectionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, options)
 	if err != nil {
 		return VPNConnectionsClientGetResponse{}, err
@@ -277,6 +289,7 @@ func (client *VPNConnectionsClient) NewListByVPNGatewayPager(resourceGroupName s
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VPNConnectionsClientListByVPNGatewayResponse) (VPNConnectionsClientListByVPNGatewayResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VPNConnectionsClient.NewListByVPNGatewayPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -296,6 +309,7 @@ func (client *VPNConnectionsClient) NewListByVPNGatewayPager(resourceGroupName s
 			}
 			return client.listByVPNGatewayHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -364,6 +378,10 @@ func (client *VPNConnectionsClient) BeginStartPacketCapture(ctx context.Context,
 // Generated from API version 2023-05-01
 func (client *VPNConnectionsClient) startPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStartPacketCaptureOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VPNConnectionsClient.BeginStartPacketCapture"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.startPacketCaptureCreateRequest(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -445,6 +463,10 @@ func (client *VPNConnectionsClient) BeginStopPacketCapture(ctx context.Context, 
 // Generated from API version 2023-05-01
 func (client *VPNConnectionsClient) stopPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStopPacketCaptureOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VPNConnectionsClient.BeginStopPacketCapture"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.stopPacketCaptureCreateRequest(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
 	if err != nil {
 		return nil, err

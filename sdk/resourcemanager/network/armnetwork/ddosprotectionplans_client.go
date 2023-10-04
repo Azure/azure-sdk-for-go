@@ -74,6 +74,10 @@ func (client *DdosProtectionPlansClient) BeginCreateOrUpdate(ctx context.Context
 // Generated from API version 2023-05-01
 func (client *DdosProtectionPlansClient) createOrUpdate(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters DdosProtectionPlan, options *DdosProtectionPlansClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DdosProtectionPlansClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, ddosProtectionPlanName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -147,6 +151,10 @@ func (client *DdosProtectionPlansClient) BeginDelete(ctx context.Context, resour
 // Generated from API version 2023-05-01
 func (client *DdosProtectionPlansClient) deleteOperation(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, options *DdosProtectionPlansClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DdosProtectionPlansClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ddosProtectionPlanName, options)
 	if err != nil {
 		return nil, err
@@ -197,6 +205,10 @@ func (client *DdosProtectionPlansClient) deleteCreateRequest(ctx context.Context
 //   - options - DdosProtectionPlansClientGetOptions contains the optional parameters for the DdosProtectionPlansClient.Get method.
 func (client *DdosProtectionPlansClient) Get(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, options *DdosProtectionPlansClientGetOptions) (DdosProtectionPlansClientGetResponse, error) {
 	var err error
+	const operationName = "DdosProtectionPlansClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ddosProtectionPlanName, options)
 	if err != nil {
 		return DdosProtectionPlansClientGetResponse{}, err
@@ -259,6 +271,7 @@ func (client *DdosProtectionPlansClient) NewListPager(options *DdosProtectionPla
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DdosProtectionPlansClientListResponse) (DdosProtectionPlansClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DdosProtectionPlansClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -278,6 +291,7 @@ func (client *DdosProtectionPlansClient) NewListPager(options *DdosProtectionPla
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -320,6 +334,7 @@ func (client *DdosProtectionPlansClient) NewListByResourceGroupPager(resourceGro
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DdosProtectionPlansClientListByResourceGroupResponse) (DdosProtectionPlansClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DdosProtectionPlansClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -339,6 +354,7 @@ func (client *DdosProtectionPlansClient) NewListByResourceGroupPager(resourceGro
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -384,6 +400,10 @@ func (client *DdosProtectionPlansClient) listByResourceGroupHandleResponse(resp 
 //     method.
 func (client *DdosProtectionPlansClient) UpdateTags(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters TagsObject, options *DdosProtectionPlansClientUpdateTagsOptions) (DdosProtectionPlansClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "DdosProtectionPlansClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, ddosProtectionPlanName, parameters, options)
 	if err != nil {
 		return DdosProtectionPlansClientUpdateTagsResponse{}, err

@@ -55,6 +55,10 @@ func NewLoadBalancerOutboundRulesClient(subscriptionID string, credential azcore
 //     method.
 func (client *LoadBalancerOutboundRulesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, outboundRuleName string, options *LoadBalancerOutboundRulesClientGetOptions) (LoadBalancerOutboundRulesClientGetResponse, error) {
 	var err error
+	const operationName = "LoadBalancerOutboundRulesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, outboundRuleName, options)
 	if err != nil {
 		return LoadBalancerOutboundRulesClientGetResponse{}, err
@@ -123,6 +127,7 @@ func (client *LoadBalancerOutboundRulesClient) NewListPager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LoadBalancerOutboundRulesClientListResponse) (LoadBalancerOutboundRulesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoadBalancerOutboundRulesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -142,6 +147,7 @@ func (client *LoadBalancerOutboundRulesClient) NewListPager(resourceGroupName st
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

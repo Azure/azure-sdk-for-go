@@ -75,6 +75,10 @@ func (client *ExpressRoutePortAuthorizationsClient) BeginCreateOrUpdate(ctx cont
 // Generated from API version 2023-05-01
 func (client *ExpressRoutePortAuthorizationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, authorizationParameters ExpressRoutePortAuthorization, options *ExpressRoutePortAuthorizationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExpressRoutePortAuthorizationsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, expressRoutePortName, authorizationName, authorizationParameters, options)
 	if err != nil {
 		return nil, err
@@ -153,6 +157,10 @@ func (client *ExpressRoutePortAuthorizationsClient) BeginDelete(ctx context.Cont
 // Generated from API version 2023-05-01
 func (client *ExpressRoutePortAuthorizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, options *ExpressRoutePortAuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExpressRoutePortAuthorizationsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, expressRoutePortName, authorizationName, options)
 	if err != nil {
 		return nil, err
@@ -209,6 +217,10 @@ func (client *ExpressRoutePortAuthorizationsClient) deleteCreateRequest(ctx cont
 //     method.
 func (client *ExpressRoutePortAuthorizationsClient) Get(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, options *ExpressRoutePortAuthorizationsClientGetOptions) (ExpressRoutePortAuthorizationsClientGetResponse, error) {
 	var err error
+	const operationName = "ExpressRoutePortAuthorizationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, expressRoutePortName, authorizationName, options)
 	if err != nil {
 		return ExpressRoutePortAuthorizationsClientGetResponse{}, err
@@ -277,6 +289,7 @@ func (client *ExpressRoutePortAuthorizationsClient) NewListPager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExpressRoutePortAuthorizationsClientListResponse) (ExpressRoutePortAuthorizationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpressRoutePortAuthorizationsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -296,6 +309,7 @@ func (client *ExpressRoutePortAuthorizationsClient) NewListPager(resourceGroupNa
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

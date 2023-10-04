@@ -56,6 +56,7 @@ func (client *AvailableServiceAliasesClient) NewListPager(location string, optio
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailableServiceAliasesClientListResponse) (AvailableServiceAliasesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailableServiceAliasesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -75,6 +76,7 @@ func (client *AvailableServiceAliasesClient) NewListPager(location string, optio
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -122,6 +124,7 @@ func (client *AvailableServiceAliasesClient) NewListByResourceGroupPager(resourc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailableServiceAliasesClientListByResourceGroupResponse) (AvailableServiceAliasesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailableServiceAliasesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -141,6 +144,7 @@ func (client *AvailableServiceAliasesClient) NewListByResourceGroupPager(resourc
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

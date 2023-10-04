@@ -75,6 +75,10 @@ func (client *SecurityRulesClient) BeginCreateOrUpdate(ctx context.Context, reso
 // Generated from API version 2023-05-01
 func (client *SecurityRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule, options *SecurityRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SecurityRulesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters, options)
 	if err != nil {
 		return nil, err
@@ -153,6 +157,10 @@ func (client *SecurityRulesClient) BeginDelete(ctx context.Context, resourceGrou
 // Generated from API version 2023-05-01
 func (client *SecurityRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string, options *SecurityRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SecurityRulesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkSecurityGroupName, securityRuleName, options)
 	if err != nil {
 		return nil, err
@@ -208,6 +216,10 @@ func (client *SecurityRulesClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - SecurityRulesClientGetOptions contains the optional parameters for the SecurityRulesClient.Get method.
 func (client *SecurityRulesClient) Get(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, securityRuleName string, options *SecurityRulesClientGetOptions) (SecurityRulesClientGetResponse, error) {
 	var err error
+	const operationName = "SecurityRulesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkSecurityGroupName, securityRuleName, options)
 	if err != nil {
 		return SecurityRulesClientGetResponse{}, err
@@ -275,6 +287,7 @@ func (client *SecurityRulesClient) NewListPager(resourceGroupName string, networ
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SecurityRulesClientListResponse) (SecurityRulesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SecurityRulesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -294,6 +307,7 @@ func (client *SecurityRulesClient) NewListPager(resourceGroupName string, networ
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

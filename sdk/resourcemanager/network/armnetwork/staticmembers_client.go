@@ -58,6 +58,10 @@ func NewStaticMembersClient(subscriptionID string, credential azcore.TokenCreden
 //     method.
 func (client *StaticMembersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkManagerName string, networkGroupName string, staticMemberName string, parameters StaticMember, options *StaticMembersClientCreateOrUpdateOptions) (StaticMembersClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "StaticMembersClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkManagerName, networkGroupName, staticMemberName, parameters, options)
 	if err != nil {
 		return StaticMembersClientCreateOrUpdateResponse{}, err
@@ -131,6 +135,10 @@ func (client *StaticMembersClient) createOrUpdateHandleResponse(resp *http.Respo
 //   - options - StaticMembersClientDeleteOptions contains the optional parameters for the StaticMembersClient.Delete method.
 func (client *StaticMembersClient) Delete(ctx context.Context, resourceGroupName string, networkManagerName string, networkGroupName string, staticMemberName string, options *StaticMembersClientDeleteOptions) (StaticMembersClientDeleteResponse, error) {
 	var err error
+	const operationName = "StaticMembersClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkManagerName, networkGroupName, staticMemberName, options)
 	if err != nil {
 		return StaticMembersClientDeleteResponse{}, err
@@ -191,6 +199,10 @@ func (client *StaticMembersClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - StaticMembersClientGetOptions contains the optional parameters for the StaticMembersClient.Get method.
 func (client *StaticMembersClient) Get(ctx context.Context, resourceGroupName string, networkManagerName string, networkGroupName string, staticMemberName string, options *StaticMembersClientGetOptions) (StaticMembersClientGetResponse, error) {
 	var err error
+	const operationName = "StaticMembersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkManagerName, networkGroupName, staticMemberName, options)
 	if err != nil {
 		return StaticMembersClientGetResponse{}, err
@@ -263,6 +275,7 @@ func (client *StaticMembersClient) NewListPager(resourceGroupName string, networ
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *StaticMembersClientListResponse) (StaticMembersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StaticMembersClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -282,6 +295,7 @@ func (client *StaticMembersClient) NewListPager(resourceGroupName string, networ
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

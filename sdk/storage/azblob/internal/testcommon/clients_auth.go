@@ -218,7 +218,6 @@ func CreateNewContainer(ctx context.Context, _require *require.Assertions, conta
 
 	_, err := containerClient.Create(ctx, nil)
 	_require.NoError(err)
-	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return containerClient
 }
 

@@ -158,6 +158,9 @@ type NetworkProfile struct {
 	// The CIDR used for OpenShift/Kubernetes Pods.
 	PodCidr *string
 
+	// Specifies whether subnets are pre-attached with an NSG
+	PreconfiguredNSG *PreconfiguredNSG
+
 	// The CIDR used for OpenShift/Kubernetes Services.
 	ServiceCidr *string
 }
@@ -238,6 +241,9 @@ type OpenShiftClusterProperties struct {
 
 	// The cluster worker profiles.
 	WorkerProfiles []*WorkerProfile
+
+	// READ-ONLY; The cluster worker profiles status.
+	WorkerProfilesStatus []*WorkerProfile
 }
 
 // OpenShiftClusterUpdate - OpenShiftCluster represents an Azure Red Hat OpenShift cluster.

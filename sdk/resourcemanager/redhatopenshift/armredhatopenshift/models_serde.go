@@ -436,6 +436,7 @@ func (n NetworkProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "outboundType", n.OutboundType)
 	populate(objectMap, "podCidr", n.PodCidr)
+	populate(objectMap, "preconfiguredNSG", n.PreconfiguredNSG)
 	populate(objectMap, "serviceCidr", n.ServiceCidr)
 	return json.Marshal(objectMap)
 }
@@ -454,6 +455,9 @@ func (n *NetworkProfile) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "podCidr":
 			err = unpopulate(val, "PodCidr", &n.PodCidr)
+			delete(rawMsg, key)
+		case "preconfiguredNSG":
+			err = unpopulate(val, "PreconfiguredNSG", &n.PreconfiguredNSG)
 			delete(rawMsg, key)
 		case "serviceCidr":
 			err = unpopulate(val, "ServiceCidr", &n.ServiceCidr)
@@ -618,6 +622,7 @@ func (o OpenShiftClusterProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", o.ProvisioningState)
 	populate(objectMap, "servicePrincipalProfile", o.ServicePrincipalProfile)
 	populate(objectMap, "workerProfiles", o.WorkerProfiles)
+	populate(objectMap, "workerProfilesStatus", o.WorkerProfilesStatus)
 	return json.Marshal(objectMap)
 }
 
@@ -656,6 +661,9 @@ func (o *OpenShiftClusterProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "workerProfiles":
 			err = unpopulate(val, "WorkerProfiles", &o.WorkerProfiles)
+			delete(rawMsg, key)
+		case "workerProfilesStatus":
+			err = unpopulate(val, "WorkerProfilesStatus", &o.WorkerProfilesStatus)
 			delete(rawMsg, key)
 		}
 		if err != nil {

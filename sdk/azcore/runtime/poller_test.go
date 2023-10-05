@@ -391,25 +391,13 @@ func TestOpPollerWithWidgetPUT(t *testing.T) {
 	}
 }
 
-type nonRetriableError struct {
-	Msg string
-}
-
-func (n *nonRetriableError) Error() string {
-	return n.Msg
-}
-
-func (*nonRetriableError) NonRetriable() {
-	// prevent the retry policy from masking this transient error
-}
-
 func TestOpPollerWithWidgetFinalGetError(t *testing.T) {
 	srv, close := mock.NewServer()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"status": "Succeeded"}`)))
 	// PUT and PATCH state that a final GET will happen
 	// the first attempt at a final GET returns an error
-	srv.AppendError(&nonRetriableError{Msg: "failed attempt"})
+	srv.AppendError(shared.NonRetriableError(errors.New("failed attempt")))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"size": 2}`)))
 	defer close()
 

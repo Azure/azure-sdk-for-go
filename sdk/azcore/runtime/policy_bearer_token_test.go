@@ -5,7 +5,6 @@ package runtime
 
 import (
 	"context"
-	"fmt"
 
 	"errors"
 	"net/http"
@@ -205,13 +204,13 @@ func TestBearerTokenPolicy_AuthZHandlerErrors(t *testing.T) {
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerRetryPolicies: []policy.Policy{b}})
 
 	// the policy should propagate the handler's errors, wrapping them to make them nonretriable, if necessary
-	msg := "something went wrong"
+	fatalErr := errors.New("something went wrong")
 	var nre errorinfo.NonRetriable
-	for i, e := range []error{fmt.Errorf(msg), &nonRetriableError{msg}} {
+	for i, e := range []error{fatalErr, shared.NonRetriableError(fatalErr)} {
 		handler.onReqErr = e
 		_, err = pl.Do(req)
 		require.ErrorAs(t, err, &nre)
-		require.EqualError(t, nre, msg)
+		require.EqualError(t, nre, fatalErr.Error())
 		// the policy shouldn't have sent a request, because OnRequest returned an error
 		require.Equal(t, i, srv.Requests())
 
@@ -219,9 +218,22 @@ func TestBearerTokenPolicy_AuthZHandlerErrors(t *testing.T) {
 		handler.onChallengeErr = e
 		_, err = pl.Do(req)
 		require.ErrorAs(t, err, &nre)
-		require.EqualError(t, nre, msg)
+		require.EqualError(t, nre, fatalErr.Error())
 		handler.onChallengeErr = nil
 		// the policy should have sent one request, because OnRequest returned nil but OnChallenge returned an error
 		require.Equal(t, i+1, srv.Requests())
 	}
+}
+
+func TestBearerTokenPolicy_RequiresHTTPS(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	b := NewBearerTokenPolicy(mockCredential{}, nil, nil)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerRetryPolicies: []policy.Policy{b}})
+	req, err := NewRequest(context.Background(), "GET", srv.URL())
+	require.NoError(t, err)
+	_, err = pl.Do(req)
+	require.Error(t, err)
+	var nre errorinfo.NonRetriable
+	require.ErrorAs(t, err, &nre)
 }

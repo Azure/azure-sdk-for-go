@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
@@ -34,6 +35,9 @@ type mockCredential struct {
 }
 
 func (mc mockCredential) GetToken(ctx context.Context, options azpolicy.TokenRequestOptions) (azcore.AccessToken, error) {
+	if !options.EnableCAE {
+		return azcore.AccessToken{}, errors.New("ARM clients should set EnableCAE to true")
+	}
 	if mc.getTokenImpl != nil {
 		return mc.getTokenImpl(ctx, options)
 	}
@@ -203,7 +207,6 @@ func TestAuxiliaryTenants(t *testing.T) {
 }
 
 func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
-	t.Skip("unskip this test after adding back CAE support")
 	for _, test := range []struct {
 		challenge, desc, expectedClaims string
 		err                             error
@@ -255,17 +258,16 @@ func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
 		},
 	} {
 		t.Run(test.desc, func(t *testing.T) {
-			srv, close := mock.NewServer()
+			srv, close := mock.NewTLSServer()
 			defer close()
 			srv.SetResponse(mock.WithHeader(shared.HeaderWWWAuthenticate, test.challenge), mock.WithStatusCode(http.StatusUnauthorized))
 			calls := 0
 			cred := mockCredential{
 				getTokenImpl: func(ctx context.Context, actual azpolicy.TokenRequestOptions) (azcore.AccessToken, error) {
 					calls += 1
-					// TODO: uncomment after restoring TokenRequestOptions.Claims
-					// if calls == 2 && test.expectedClaims != "" {
-					// require.Equal(t, test.expectedClaims, actual.Claims)
-					// }
+					if calls == 2 && test.expectedClaims != "" {
+						require.Equal(t, test.expectedClaims, actual.Claims)
+					}
 					return azcore.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
 				},
 			}
@@ -284,4 +286,17 @@ func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestBearerTokenPolicyRequiresHTTPS(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	b := NewBearerTokenPolicy(mockCredential{}, nil)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerRetryPolicies: []policy.Policy{b}})
+	req, err := runtime.NewRequest(context.Background(), "GET", srv.URL())
+	require.NoError(t, err)
+	_, err = pl.Do(req)
+	require.Error(t, err)
+	var nre errorinfo.NonRetriable
+	require.ErrorAs(t, err, &nre)
 }

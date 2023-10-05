@@ -51,6 +51,7 @@ type GenerateParam struct {
 	SkipGenerateExample bool
 	GoVersion           string
 	RemoveTagSet        bool
+	ForceStableVersion  bool
 }
 
 func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
@@ -173,7 +174,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 
 	// add tag set
-	if !generateParam.RemoveTagSet && generateParam.NamespaceConfig != "" {
+	if !generateParam.RemoveTagSet && generateParam.NamespaceConfig != "" && !onBoard {
 		log.Printf("Add tag in `autorest.md`...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
 		if err := AddTagSet(autorestMdPath, generateParam.NamespaceConfig); err != nil {
@@ -192,6 +193,18 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	isCurrentPreview, err = ContainsPreviewAPIVersion(packagePath)
 	if err != nil {
 		return nil, err
+	}
+
+	if isCurrentPreview && generateParam.ForceStableVersion {
+		tag, err := GetTag(filepath.Join(packagePath, "autorest.md"))
+		if err != nil {
+			return nil, err
+		}
+		if tag != "" {
+			if !strings.Contains(tag, "preview") {
+				isCurrentPreview = false
+			}
+		}
 	}
 
 	if !onBoard {
@@ -296,6 +309,23 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		log.Printf("Replace version in autorest.md and constants...")
 		if err = ReplaceVersion(packagePath, version.String()); err != nil {
 			return nil, err
+		}
+
+		if changelog.HasBreakingChanges() && isGenerateFake(packagePath) {
+			log.Printf("Replace fake module v2+...")
+			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, previousVersion, version.String(),
+				"fake", "_server.go"); err != nil {
+				return nil, err
+			}
+		}
+
+		// When sdk has major version bump, the live test needs to update the module referenced in the code.
+		if changelog.HasBreakingChanges() && existSuffixFile(packagePath, "_live_test.go") {
+			log.Printf("Replace live test module v2+...")
+			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, previousVersion, version.String(),
+				"", "_live_test.go"); err != nil {
+				return nil, err
+			}
 		}
 
 		// Example generation should be the last step because the package import relay on the new calculated version

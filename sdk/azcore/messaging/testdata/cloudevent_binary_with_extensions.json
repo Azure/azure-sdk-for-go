@@ -1,0 +1,15 @@
+{
+    "data_base64": "AQID",
+    "datacontenttype": "data content type",
+    "dataschema": "microsoft.com/dataschema",
+    "extbool": true,
+    "extnum": 1,
+    "extstr": "extstring",
+    "exturi": "http://microsoft.com",
+    "id": "2de93014-a793-4170-88f4-1ef74002dfc9",
+    "source": "source",
+    "specversion": "1.0",
+    "subject": "subject",
+    "time": "2023-06-16T02:54:01.470515Z",
+    "type": "type"
+}

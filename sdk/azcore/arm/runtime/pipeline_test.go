@@ -27,12 +27,13 @@ import (
 
 func TestNewPipelineWithAPIVersion(t *testing.T) {
 	version := "42"
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse()
 	pl, err := NewPipeline("...", "...", mockCredential{}, azruntime.PipelineOptions{}, &armpolicy.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			APIVersion: version,
+			Transport:  srv,
 		},
 	})
 	require.NoError(t, err)
@@ -44,7 +45,7 @@ func TestNewPipelineWithAPIVersion(t *testing.T) {
 }
 
 func TestNewPipelineWithOptions(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse()
 	opt := armpolicy.ClientOptions{}
@@ -71,7 +72,7 @@ func TestNewPipelineWithOptions(t *testing.T) {
 
 func TestNewPipelineWithCustomTelemetry(t *testing.T) {
 	const myTelemetry = "something"
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse()
 	opt := armpolicy.ClientOptions{}
@@ -101,7 +102,7 @@ func TestNewPipelineWithCustomTelemetry(t *testing.T) {
 }
 
 func TestDisableAutoRPRegistration(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	// initial response that RP is unregistered
 	srv.SetResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp1)))
@@ -148,7 +149,7 @@ func (p *countingPolicy) Do(req *policy.Request) (*http.Response, error) {
 }
 
 func TestPipelineWithCustomPolicies(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	// initial response is a failure to trigger retry
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
@@ -189,7 +190,7 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 
 func TestPipelineAudience(t *testing.T) {
 	for _, c := range []cloud.Configuration{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublic} {
-		srv, close := mock.NewServer()
+		srv, close := mock.NewTLSServer()
 		defer close()
 		srv.AppendResponse(mock.WithStatusCode(200))
 		opts := &armpolicy.ClientOptions{}
@@ -249,11 +250,21 @@ func TestPipelineWithIncompleteCloudConfig(t *testing.T) {
 }
 
 func TestPipelineDoConcurrent(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse()
 
-	pl, err := NewPipeline("TestPipelineDoConcurrent", shared.Version, mockCredential{}, azruntime.PipelineOptions{}, nil)
+	pl, err := NewPipeline(
+		"TestPipelineDoConcurrent",
+		shared.Version,
+		mockCredential{},
+		azruntime.PipelineOptions{},
+		&armpolicy.ClientOptions{
+			ClientOptions: policy.ClientOptions{
+				Transport: srv,
+			},
+		},
+	)
 	require.NoError(t, err)
 
 	plErr := make(chan error, 1)

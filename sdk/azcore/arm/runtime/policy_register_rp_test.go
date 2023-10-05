@@ -99,7 +99,7 @@ func testRPRegistrationOptions(srv *mock.Server) *armpolicy.RegistrationOptions 
 }
 
 func TestRPRegistrationPolicySuccess(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	// initial response that RP is unregistered
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp1)))
@@ -190,7 +190,7 @@ func TestRPRegistrationPolicy409Other(t *testing.T) {
 }
 
 func TestRPRegistrationPolicyTimesOut(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	// initial response that RP is unregistered
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp1)))
@@ -220,7 +220,7 @@ func TestRPRegistrationPolicyTimesOut(t *testing.T) {
 }
 
 func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	// add a cycle of unregistered->registered so that we keep retrying and hit the cap
 	for i := 0; i < 4; i++ {
@@ -256,7 +256,7 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 
 // test cancelling registration
 func TestRPRegistrationPolicyCanCancel(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	// initial response that RP is unregistered
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp2)))
@@ -325,7 +325,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 }
 
 func TestRPRegistrationPolicyAudience(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	// initial response that RP is unregistered
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp2)))
@@ -414,6 +414,7 @@ func TestRPRegistrationPolicyEnvironmentsInSubExceeded(t *testing.T) {
 
 func TestIsUnregisteredRPCode(t *testing.T) {
 	require.True(t, isUnregisteredRPCode("Subscription Not Registered"))
+	require.True(t, isUnregisteredRPCode("SubscriptionNotRegistered"))
 	require.False(t, isUnregisteredRPCode("Your subscription isn't registered"))
 }
 

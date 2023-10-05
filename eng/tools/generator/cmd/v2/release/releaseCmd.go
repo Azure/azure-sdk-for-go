@@ -75,6 +75,7 @@ type Flags struct {
 	GoVersion           string
 	Token               string
 	UpdateSpecVersion   bool
+	ForceStableVersion  bool
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -90,6 +91,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("go-version", "1.18", "Go version")
 	flagSet.StringP("token", "t", "", "Specify the personal access token of Github")
 	flagSet.Bool("update-spec-version", true, "Whether to update the commit id, the default is true")
+	flagSet.Bool("force-stable-version", false, "Even if input-files contains preview files, they are forced to be generated as stable versions. At the same time, the tag must not contain preview.")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
@@ -106,6 +108,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		GoVersion:           flags.GetString(flagSet, "go-version"),
 		Token:               flags.GetString(flagSet, "token"),
 		UpdateSpecVersion:   flags.GetBool(flagSet, "update-spec-version"),
+		ForceStableVersion:  flags.GetBool(flagSet, "force-stable-version"),
 	}
 }
 
@@ -157,6 +160,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 		ReleaseDate:         c.flags.ReleaseDate,
 		SkipGenerateExample: c.flags.SkipGenerateExample,
 		GoVersion:           c.flags.GoVersion,
+		ForceStableVersion:  c.flags.ForceStableVersion,
 	})
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)
@@ -183,6 +187,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 }
 
 func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRepoParam, specCommitHash string) error {
+	var generateErr []error
 	var pullRequestUrls = make(map[string]string)
 	var pushBranch = make(map[string]struct {
 		requestLink      string
@@ -220,7 +225,8 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			}
 			err = c.generate(sdkRepo, specCommitHash)
 			if err != nil {
-				return err
+				generateErr = append(generateErr, err)
+				continue
 			}
 
 			// get current branch name
@@ -286,6 +292,13 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 		log.Println("Fixes:")
 		for branch, url := range pullRequestUrls {
 			log.Printf("%s : %s", branch, url)
+		}
+	}
+
+	if len(generateErr) != 0 {
+		fmt.Println("generator error:")
+		for _, e := range generateErr {
+			fmt.Println(e)
 		}
 	}
 

@@ -1,15 +1,9 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.2.0 (2023-10-10)
 
 ### Bugs Fixed
 * Fixed null pointer exception when `SetImmutabilityPolicyOptions` is passed as `nil`.
-
-### Other Changes
 
 ## 1.2.0-beta.1 (2023-09-18)
 

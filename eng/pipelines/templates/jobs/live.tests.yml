@@ -66,6 +66,7 @@ jobs:
         parameters:
           SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
           SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
+          EnvVars: ${{ parameters.EnvVars }}
 
       - template: /eng/common/TestResources/deploy-test-resources.yml
         parameters:

@@ -4,7 +4,6 @@
 package common_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest"
@@ -31,7 +30,7 @@ func TestEnumFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.EnumFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Enum `EnumRemove` has been removed\n\n### Features Added\n\n- New value `EnumExistB` added to enum type `EnumExist`\n- New enum type `EnumAdd` with values `EnumAddA`, `EnumAddB`\n")
+	excepted := "### Breaking Changes\n\n- Enum `EnumRemove` has been removed\n\n### Features Added\n\n- New value `EnumExistB` added to enum type `EnumExist`\n- New enum type `EnumAdd` with values `EnumAddA`, `EnumAddB`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
@@ -53,7 +52,7 @@ func TestFuncFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.FuncFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Function `*Client.BeingDelete` has been removed\n- Function `*Client.NewListPager` has been removed\n- Function `*Client.Update` has been removed\n\n### Features Added\n\n- New function `*Client.BeginCreateOrUpdate(string, *ClientBeginCreateOrUpdateOptions) (ClientBeginCreateOrUpdateResponse, error)`\n- New function `*Client.NewListBySubscriptionPager(*ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse]`\n")
+	excepted := "### Breaking Changes\n\n- Function `*Client.BeingDelete` has been removed\n- Function `*Client.NewListPager` has been removed\n- Function `*Client.Update` has been removed\n\n### Features Added\n\n- New function `*Client.BeginCreateOrUpdate(string, *ClientBeginCreateOrUpdateOptions) (ClientBeginCreateOrUpdateResponse, error)`\n- New function `*Client.NewListBySubscriptionPager(*ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse]`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
@@ -75,7 +74,7 @@ func TestLROFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.FuncFilter, common.LROFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Operation `*Client.BeginDelete` has been changed to non-LRO, use `*Client.Delete` instead.\n- Operation `*Client.CreateOrUpdate` has been changed to LRO, use `*Client.BeginCreateOrUpdate` instead.\n")
+	excepted := "### Breaking Changes\n\n- Operation `*Client.BeginDelete` has been changed to non-LRO, use `*Client.Delete` instead.\n- Operation `*Client.CreateOrUpdate` has been changed to LRO, use `*Client.BeginCreateOrUpdate` instead.\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
@@ -97,7 +96,7 @@ func TestPageableFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.FuncFilter, common.PageableFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Operation `*Client.GetLog` has supported pagination, use `*Client.NewGetLogPager` instead.\n- Operation `*Client.NewListPager` does not support pagination anymore, use `*Client.List` instead.\n")
+	excepted := "### Breaking Changes\n\n- Operation `*Client.GetLog` has supported pagination, use `*Client.NewGetLogPager` instead.\n- Operation `*Client.NewListPager` does not support pagination anymore, use `*Client.List` instead.\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
@@ -119,7 +118,7 @@ func TestInterfaceToAnyFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.InterfaceToAnyFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Type of `Interface2Any.NewType` has been changed from `interface{}` to `string`\n")
+	excepted := "### Breaking Changes\n\n- Type of `Interface2Any.NewType` has been changed from `interface{}` to `string`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
@@ -139,7 +138,7 @@ func TestTypeToAny(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Type of `Client.M` has been changed from `map[string]string` to `map[string]any`\n\n### Features Added\n\n- Type of `Client.A` has been changed from `*int` to `any`\n")
+	excepted := "### Breaking Changes\n\n- Type of `Client.M` has been changed from `map[string]string` to `map[string]any`\n\n### Features Added\n\n- Type of `Client.A` has been changed from `*int` to `any`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
@@ -161,6 +160,6 @@ func TestFuncParameterChange(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.FuncFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Function `*Client.AfterAny` parameter(s) have been changed from `(context.Context, string, string, interface{}, ClientOption)` to `(context.Context, string, string, any, Option)`\n- Function `*Client.BeforeAny` parameter(s) have been changed from `(context.Context, string, string, interface{}, ClientOption)` to `(context.Context, string, any, any, ClientOption)`\n")
+	excepted := "### Breaking Changes\n\n- Function `*Client.AfterAny` parameter(s) have been changed from `(context.Context, string, string, interface{}, ClientOption)` to `(context.Context, string, string, any, Option)`\n- Function `*Client.BeforeAny` parameter(s) have been changed from `(context.Context, string, string, interface{}, ClientOption)` to `(context.Context, string, any, any, ClientOption)`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }

@@ -292,7 +292,7 @@ func scannerPrint(scanner *bufio.Scanner, writer io.Writer, prefix string) error
 	}
 	for scanner.Scan() {
 		line := scanner.Text()
-		if _, err := fmt.Fprintln(writer, fmt.Sprintf("%s%s", prefix, line)); err != nil {
+		if _, err := fmt.Fprintf(writer, "%s%s\n", prefix, line); err != nil {
 			return err
 		}
 	}

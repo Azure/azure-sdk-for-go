@@ -138,11 +138,18 @@ class Version {
 }
 
 Function Test-Exe-In-Path {
-  Param([string] $ExeToLookFor)
+  Param([string] $ExeToLookFor, [bool]$ExitOnError = $true)
   if ($null -eq (Get-Command $ExeToLookFor -ErrorAction SilentlyContinue)) {
-    Write-Error "Unable to find $ExeToLookFor in your PATH"
-    exit 1
+    if ($ExitOnError) {
+      Write-Error "Unable to find $ExeToLookFor in your PATH"
+      exit 1
+    }
+    else {
+      return $false
+    }
   }
+
+  return $true
 }
 
 Function Test-TestProxyVersion {
@@ -301,18 +308,17 @@ Function Invoke-ProxyCommand {
 # Get the shorthash directory under PROXY_ASSETS_FOLDER
 Function Get-AssetsRoot {
   param(
-    [string] $AssetsJsonFile
+    [string] $AssetsJsonFile,
+    [string] $TestProxyExe
   )
   $repoRoot = Get-Repo-Root
   $relPath = [IO.Path]::GetRelativePath($repoRoot, $AssetsJsonFile).Replace("`\", "/")
   $assetsJsonDirectory = Split-Path $relPath
-  $breadcrumbFile = Join-Path $repoRoot ".assets" ".breadcrumb"
 
-  $breadcrumbString = Get-Content $breadcrumbFile | Where-Object { $_.StartsWith($relPath) }
-  $assetRepo = $breadcrumbString.Split(";")[1]
-  $assetsPrefix = (Get-Content $AssetsJsonFile | Out-String | ConvertFrom-Json).AssetsRepoPrefixPath
+  [array] $output = & "$TestProxyExe" config locate -a "$relPath" --storage-location="$repoRoot"
+  $assetsDirectory = $output[-1]
 
-  return Join-Path $repoRoot ".assets" $assetRepo $assetsPrefix $assetsJsonDirectory
+  return Join-Path $assetsDirectory $assetsJsonDirectory
 }
 
 Function Move-AssetsFromLangRepo {
@@ -348,9 +354,29 @@ $language = Get-Repo-Language
 # in the path and that we're able to map the language's recording
 # directories
 if ($InitialPush) {
-  Test-Exe-In-Path -ExeToLookFor $TestProxyExe
+  $proxyPresent = Test-Exe-In-Path -ExeToLookFor $TestProxyExe -ExitOnError $false
 
-  if ($TestProxyExe -eq "test-proxy") {
+  # try to fall back 
+  if (-not $proxyPresent) {
+    $StandaloneTestProxyExe = "Azure.Sdk.Tools.TestProxy"
+
+    if ($IsWindows) {
+      $StandaloneTestProxyExe += ".exe"
+    }
+
+    $standalonePresent = Test-Exe-In-Path -ExeToLookFor $StandaloneTestProxyExe -ExitOnError $false
+
+    if ($standalonePresent) {
+      Write-Host "Default proxy exe $TestProxyExe is not present, but standalone tool $StandaloneTestProxyExe is. Updating proxy exe to use the standalone version."
+      $TestProxyExe = $StandaloneTestProxyExe
+    }
+    else {
+      Write-Error "The user has selected option InitialPush to push their assets, neither $TestProxyExe nor standalone executable $StandaloneTestProxyExe are installed on this machine."
+      exit 1
+    }
+  }
+
+  if ($TestProxyExe -eq "test-proxy" -or $TestProxyExe.StartsWith("Azure.Sdk.Tools.TestProxy")) {
     Test-TestProxyVersion -TestProxyExe $TestProxyExe
   }
 
@@ -378,7 +404,7 @@ if ($InitialPush) {
     $CommandArgs = "restore --assets-json-path $assetsJsonRelPath"
     Invoke-ProxyCommand -TestProxyExe $TestProxyExe -CommandArgs $CommandArgs -TargetDirectory $repoRoot
 
-    $assetsRoot = (Get-AssetsRoot -AssetsJsonFile $assetsJsonFile)
+    $assetsRoot = (Get-AssetsRoot -AssetsJsonFile $assetsJsonFile -TestProxyExe $TestProxyExe)
     Write-Host "assetsRoot=$assetsRoot"
 
     Move-AssetsFromLangRepo -AssetsRoot $assetsRoot

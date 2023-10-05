@@ -13,6 +13,10 @@
 * Added types `KeyCredentialPolicy` and `SASCredentialPolicy` to the `azcore/runtime` package.
   * Includes their respective constructor functions and options types.
 
+### Breaking Changes
+> These changes affect only code written against beta versions of `v1.8.0`
+* The beta features for tracing and fakes have been omitted for this release.
+
 ### Bugs Fixed
 
 * Fixed an issue that could cause some ARM RPs to not be automatically registered.

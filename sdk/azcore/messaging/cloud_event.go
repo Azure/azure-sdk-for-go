@@ -1,6 +1,5 @@
-// Copyright 2017 Microsoft Corporation. All rights reserved.
-// Use of this source code is governed by an MIT
-// license that can be found in the LICENSE file.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 // Package messaging contains types used across messaging packages.
 package messaging

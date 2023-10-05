@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added `Claims` and `TenantID` fields to `policy.TokenRequestOptions`.
+* ARM bearer token policy handles CAE challenges.
 * `messaging/CloudEvent` allows you to serialize/deserialize CloudEvents, as described in the CloudEvents 1.0 specification: [link](https://github.com/cloudevents/spec)
 * Added `TokenRequestOptions.EnableCAE` to indicate whether to request a CAE token
 * Added function `FetcherForNextLink` and `FetcherForNextLinkOptions` to the `runtime` package to centralize creation of `Pager[T].Fetcher` from a next link URL.

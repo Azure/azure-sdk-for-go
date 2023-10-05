@@ -242,6 +242,7 @@ func (ab *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.U
 }
 
 // SetImmutabilityPolicy operation enables users to set the immutability policy on a blob.
+// The expiryTime must be time.RFC1123 compliant. "UTC" is not a valid timezone unlike "GMT".
 // https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
 func (ab *Client) SetImmutabilityPolicy(ctx context.Context, expiryTime time.Time, options *blob.SetImmutabilityPolicyOptions) (blob.SetImmutabilityPolicyResponse, error) {
 	return ab.BlobClient().SetImmutabilityPolicy(ctx, expiryTime, options)

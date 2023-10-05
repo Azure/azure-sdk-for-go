@@ -244,6 +244,7 @@ func (b *Client) GetTags(ctx context.Context, options *GetTagsOptions) (GetTagsR
 }
 
 // SetImmutabilityPolicy operation enables users to set the immutability policy on a blob. Mode defaults to "Unlocked".
+// The expiryTime must be time.RFC1123 compliant. "UTC" is not a valid timezone unlike "GMT".
 // https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
 func (b *Client) SetImmutabilityPolicy(ctx context.Context, expiryTime time.Time, options *SetImmutabilityPolicyOptions) (SetImmutabilityPolicyResponse, error) {
 	blobSetImmutabilityPolicyOptions, modifiedAccessConditions := options.format()

@@ -451,7 +451,8 @@ func (o *GetTagsOptions) format() (*generated.BlobClientGetTagsOptions, *generat
 // SetImmutabilityPolicyOptions contains the parameter for Client.SetImmutabilityPolicy
 type SetImmutabilityPolicyOptions struct {
 	// Specifies the immutability policy mode to set on the blob. Possible values to set include: "Locked", "Unlocked".
-	// "Mutable" can only be returned by service, don't set to "Mutable". If mode is not set - it will default to Unlocked.
+	// "Mutable" can only be returned by service, don't set to "Mutable".
+	// If mode is not set - it will default to the previous mode of the blob. Once the mode is "Locked" it is not possible to set it back to "Unlocked".
 	Mode                     *ImmutabilityPolicySetting
 	ModifiedAccessConditions *ModifiedAccessConditions
 }

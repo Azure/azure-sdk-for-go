@@ -10,7 +10,7 @@ require:
 license-header: MICROSOFT_MIT_NO_VERSION
 module-version: 4.3.0-beta.1
 tag: package-2023-05
-azcore-version: 1.8.0-beta.3
+azcore-version: 1.9.0-beta.1
 generate-fakes: true
 inject-spans: true
 ```

@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added `WithQueryParameters` to the `policy` package to facilitate adding custom query parameters to an API call.
+
 ### Breaking Changes
 
 ### Bugs Fixed

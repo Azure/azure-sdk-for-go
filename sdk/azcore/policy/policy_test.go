@@ -10,6 +10,7 @@ import (
 	"context"
 	"math"
 	"net/http"
+	"net/url"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -39,6 +40,21 @@ func TestWithHTTPHeader(t *testing.T) {
 	header, ok := raw.(http.Header)
 	require.True(t, ok)
 	require.EqualValues(t, val, header.Get(key))
+}
+
+func TestWithQueryParameters(t *testing.T) {
+	const (
+		key = "some"
+		val = "thing"
+	)
+	input := url.Values{}
+	input.Set(key, val)
+	ctx := WithQueryParameters(context.Background(), input)
+	require.NotNil(t, ctx)
+	raw := ctx.Value(shared.CtxWithQueryParametersKey{})
+	qp, ok := raw.(url.Values)
+	require.True(t, ok)
+	require.EqualValues(t, val, qp.Get(key))
 }
 
 func TestWithRetryOptions(t *testing.T) {

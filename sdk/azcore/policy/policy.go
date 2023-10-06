@@ -9,6 +9,7 @@ package policy
 import (
 	"context"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -177,6 +178,13 @@ func WithCaptureResponse(parent context.Context, resp **http.Response) context.C
 // Any overlapping headers will have their values replaced with the values specified here.
 func WithHTTPHeader(parent context.Context, header http.Header) context.Context {
 	return context.WithValue(parent, shared.CtxWithHTTPHeaderKey{}, header)
+}
+
+// WithQueryParameters adds the specified url.Values to the parent context.
+// Use this to specify custom query parameters at the API-call level.
+// Any overlapping parameters will have their values replaced with the values specified here.
+func WithQueryParameters(parent context.Context, v url.Values) context.Context {
+	return context.WithValue(parent, shared.CtxWithQueryParametersKey{}, v)
 }
 
 // WithRetryOptions adds the specified RetryOptions to the parent context.

@@ -33,6 +33,8 @@ type CtxWithTracingTracer struct{}
 // CtxAPINameKey is used as a context key for adding/retrieving the API name.
 type CtxAPINameKey struct{}
 
+type CtxWithQueryParametersKey struct{}
+
 // Delay waits for the duration to elapse or the context to be cancelled.
 func Delay(ctx context.Context, delay time.Duration) error {
 	select {

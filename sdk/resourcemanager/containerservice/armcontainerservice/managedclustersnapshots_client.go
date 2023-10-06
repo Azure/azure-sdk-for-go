@@ -54,6 +54,10 @@ func NewManagedClusterSnapshotsClient(subscriptionID string, credential azcore.T
 //     method.
 func (client *ManagedClusterSnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterSnapshot, options *ManagedClusterSnapshotsClientCreateOrUpdateOptions) (ManagedClusterSnapshotsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ManagedClusterSnapshotsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return ManagedClusterSnapshotsClientCreateOrUpdateResponse{}, err
@@ -118,6 +122,10 @@ func (client *ManagedClusterSnapshotsClient) createOrUpdateHandleResponse(resp *
 //     method.
 func (client *ManagedClusterSnapshotsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClusterSnapshotsClientDeleteOptions) (ManagedClusterSnapshotsClientDeleteResponse, error) {
 	var err error
+	const operationName = "ManagedClusterSnapshotsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ManagedClusterSnapshotsClientDeleteResponse{}, err
@@ -169,6 +177,10 @@ func (client *ManagedClusterSnapshotsClient) deleteCreateRequest(ctx context.Con
 //     method.
 func (client *ManagedClusterSnapshotsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClusterSnapshotsClientGetOptions) (ManagedClusterSnapshotsClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedClusterSnapshotsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ManagedClusterSnapshotsClientGetResponse{}, err
@@ -231,6 +243,7 @@ func (client *ManagedClusterSnapshotsClient) NewListPager(options *ManagedCluste
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedClusterSnapshotsClientListResponse) (ManagedClusterSnapshotsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedClusterSnapshotsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -250,6 +263,7 @@ func (client *ManagedClusterSnapshotsClient) NewListPager(options *ManagedCluste
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -292,6 +306,7 @@ func (client *ManagedClusterSnapshotsClient) NewListByResourceGroupPager(resourc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedClusterSnapshotsClientListByResourceGroupResponse) (ManagedClusterSnapshotsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedClusterSnapshotsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -311,6 +326,7 @@ func (client *ManagedClusterSnapshotsClient) NewListByResourceGroupPager(resourc
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -356,6 +372,10 @@ func (client *ManagedClusterSnapshotsClient) listByResourceGroupHandleResponse(r
 //     method.
 func (client *ManagedClusterSnapshotsClient) UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject, options *ManagedClusterSnapshotsClientUpdateTagsOptions) (ManagedClusterSnapshotsClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "ManagedClusterSnapshotsClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return ManagedClusterSnapshotsClientUpdateTagsResponse{}, err

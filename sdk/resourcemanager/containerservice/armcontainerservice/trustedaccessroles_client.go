@@ -55,6 +55,7 @@ func (client *TrustedAccessRolesClient) NewListPager(location string, options *T
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TrustedAccessRolesClientListResponse) (TrustedAccessRolesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TrustedAccessRolesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -74,6 +75,7 @@ func (client *TrustedAccessRolesClient) NewListPager(location string, options *T
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

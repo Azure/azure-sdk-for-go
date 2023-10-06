@@ -19,19 +19,18 @@ import (
 )
 
 var (
-	ctx              = context.Background()
-	storageAvailable = false
+	ctx        = context.Background()
+	keyringErr error
 )
 
 func TestMain(m *testing.M) {
-	err := tryKeyring()
-	storageAvailable = err == nil
+	keyringErr = tryKeyring()
 	os.Exit(m.Run())
 }
 
 func TestKeyExistsButNotFile(t *testing.T) {
-	if !storageAvailable {
-		t.Skip("storage isn't available")
+	if keyringErr != nil {
+		t.Skip(keyringErr)
 	}
 	expected := []byte(t.Name())
 	a, err := newKeyring(t.Name())
@@ -58,8 +57,8 @@ func TestKeyExistsButNotFile(t *testing.T) {
 }
 
 func TestReadWriteDelete(t *testing.T) {
-	if !storageAvailable {
-		t.Skip("storage isn't available")
+	if keyringErr != nil {
+		t.Skip(keyringErr)
 	}
 	for _, test := range []struct {
 		expected   []byte
@@ -116,8 +115,8 @@ func TestReadWriteDelete(t *testing.T) {
 }
 
 func TestTwoInstances(t *testing.T) {
-	if !storageAvailable {
-		t.Skip("storage isn't available")
+	if keyringErr != nil {
+		t.Skip(keyringErr)
 	}
 	for _, deleteFile := range []bool{false, true} {
 		s := "key and file exist"
@@ -159,9 +158,6 @@ func TestTwoInstances(t *testing.T) {
 }
 
 func TestUnencryptedFallback(t *testing.T) {
-	if !storageAvailable {
-		t.Skip("storage isn't available")
-	}
 	before := tryKeyring
 	t.Cleanup(func() { tryKeyring = before })
 	tryKeyring = func() error { return errors.New("it didn't work") }

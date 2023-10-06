@@ -58,6 +58,10 @@ func NewVirtualMachineImagesClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *VirtualMachineImagesClient) Get(ctx context.Context, location string, publisherName string, offer string, skus string, version string, options *VirtualMachineImagesClientGetOptions) (VirtualMachineImagesClientGetResponse, error) {
 	var err error
+	const operationName = "VirtualMachineImagesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, publisherName, offer, skus, version, options)
 	if err != nil {
 		return VirtualMachineImagesClientGetResponse{}, err
@@ -133,6 +137,10 @@ func (client *VirtualMachineImagesClient) getHandleResponse(resp *http.Response)
 //     method.
 func (client *VirtualMachineImagesClient) List(ctx context.Context, location string, publisherName string, offer string, skus string, options *VirtualMachineImagesClientListOptions) (VirtualMachineImagesClientListResponse, error) {
 	var err error
+	const operationName = "VirtualMachineImagesClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, location, publisherName, offer, skus, options)
 	if err != nil {
 		return VirtualMachineImagesClientListResponse{}, err
@@ -211,6 +219,10 @@ func (client *VirtualMachineImagesClient) listHandleResponse(resp *http.Response
 //     method.
 func (client *VirtualMachineImagesClient) ListByEdgeZone(ctx context.Context, location string, edgeZone string, options *VirtualMachineImagesClientListByEdgeZoneOptions) (VirtualMachineImagesClientListByEdgeZoneResponse, error) {
 	var err error
+	const operationName = "VirtualMachineImagesClient.ListByEdgeZone"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByEdgeZoneCreateRequest(ctx, location, edgeZone, options)
 	if err != nil {
 		return VirtualMachineImagesClientListByEdgeZoneResponse{}, err
@@ -272,6 +284,10 @@ func (client *VirtualMachineImagesClient) listByEdgeZoneHandleResponse(resp *htt
 //     method.
 func (client *VirtualMachineImagesClient) ListOffers(ctx context.Context, location string, publisherName string, options *VirtualMachineImagesClientListOffersOptions) (VirtualMachineImagesClientListOffersResponse, error) {
 	var err error
+	const operationName = "VirtualMachineImagesClient.ListOffers"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listOffersCreateRequest(ctx, location, publisherName, options)
 	if err != nil {
 		return VirtualMachineImagesClientListOffersResponse{}, err
@@ -332,6 +348,10 @@ func (client *VirtualMachineImagesClient) listOffersHandleResponse(resp *http.Re
 //     method.
 func (client *VirtualMachineImagesClient) ListPublishers(ctx context.Context, location string, options *VirtualMachineImagesClientListPublishersOptions) (VirtualMachineImagesClientListPublishersResponse, error) {
 	var err error
+	const operationName = "VirtualMachineImagesClient.ListPublishers"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listPublishersCreateRequest(ctx, location, options)
 	if err != nil {
 		return VirtualMachineImagesClientListPublishersResponse{}, err
@@ -390,6 +410,10 @@ func (client *VirtualMachineImagesClient) listPublishersHandleResponse(resp *htt
 //     method.
 func (client *VirtualMachineImagesClient) ListSKUs(ctx context.Context, location string, publisherName string, offer string, options *VirtualMachineImagesClientListSKUsOptions) (VirtualMachineImagesClientListSKUsResponse, error) {
 	var err error
+	const operationName = "VirtualMachineImagesClient.ListSKUs"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSKUsCreateRequest(ctx, location, publisherName, offer, options)
 	if err != nil {
 		return VirtualMachineImagesClientListSKUsResponse{}, err

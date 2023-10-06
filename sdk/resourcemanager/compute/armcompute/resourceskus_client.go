@@ -54,6 +54,7 @@ func (client *ResourceSKUsClient) NewListPager(options *ResourceSKUsClientListOp
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceSKUsClientListResponse) (ResourceSKUsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceSKUsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -73,6 +74,7 @@ func (client *ResourceSKUsClient) NewListPager(options *ResourceSKUsClientListOp
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

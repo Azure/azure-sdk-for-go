@@ -73,6 +73,10 @@ func (client *GalleriesClient) BeginCreateOrUpdate(ctx context.Context, resource
 // Generated from API version 2022-03-03
 func (client *GalleriesClient) createOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery, options *GalleriesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "GalleriesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, galleryName, gallery, options)
 	if err != nil {
 		return nil, err
@@ -143,6 +147,10 @@ func (client *GalleriesClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Generated from API version 2022-03-03
 func (client *GalleriesClient) deleteOperation(ctx context.Context, resourceGroupName string, galleryName string, options *GalleriesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "GalleriesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, galleryName, options)
 	if err != nil {
 		return nil, err
@@ -193,6 +201,10 @@ func (client *GalleriesClient) deleteCreateRequest(ctx context.Context, resource
 //   - options - GalleriesClientGetOptions contains the optional parameters for the GalleriesClient.Get method.
 func (client *GalleriesClient) Get(ctx context.Context, resourceGroupName string, galleryName string, options *GalleriesClientGetOptions) (GalleriesClientGetResponse, error) {
 	var err error
+	const operationName = "GalleriesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, galleryName, options)
 	if err != nil {
 		return GalleriesClientGetResponse{}, err
@@ -260,6 +272,7 @@ func (client *GalleriesClient) NewListPager(options *GalleriesClientListOptions)
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GalleriesClientListResponse) (GalleriesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GalleriesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -279,6 +292,7 @@ func (client *GalleriesClient) NewListPager(options *GalleriesClientListOptions)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -321,6 +335,7 @@ func (client *GalleriesClient) NewListByResourceGroupPager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GalleriesClientListByResourceGroupResponse) (GalleriesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GalleriesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -340,6 +355,7 @@ func (client *GalleriesClient) NewListByResourceGroupPager(resourceGroupName str
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -402,6 +418,10 @@ func (client *GalleriesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // Generated from API version 2022-03-03
 func (client *GalleriesClient) update(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate, options *GalleriesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "GalleriesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, galleryName, gallery, options)
 	if err != nil {
 		return nil, err

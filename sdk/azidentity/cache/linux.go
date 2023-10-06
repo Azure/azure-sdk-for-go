@@ -124,7 +124,7 @@ func (k *keyring) Read(context.Context) ([]byte, error) {
 		if errors.Is(err, os.ErrNotExist) {
 			return nil, nil
 		}
-		return nil, err
+		return nil, fmt.Errorf("failed to read cache data due to error %q", err)
 	}
 	if len(b) == 0 {
 		return nil, nil
@@ -147,7 +147,7 @@ func (k *keyring) Write(_ context.Context, data []byte) error {
 	}
 	content, err := j.Serialize()
 	if err != nil {
-		return err
+		return fmt.Errorf("couldn't serialize cache data due to error %q", err)
 	}
 	err = os.WriteFile(k.file, []byte(content), 0600)
 	if errors.Is(err, os.ErrNotExist) {
@@ -164,12 +164,12 @@ func (k *keyring) createKey() ([]byte, error) {
 	key := make([]byte, keySize+1)
 	_, err := rand.Read(key)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't create an encryption key due to error %q", err)
+		return nil, fmt.Errorf("couldn't create cache encryption key due to error %q", err)
 	}
 	key[keySize] = 0
 	id, err := unix.AddKey(userKey, k.description, key, k.ringID)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't store encryption key due to error %q", err)
+		return nil, fmt.Errorf("couldn't store cache encryption key due to error %q", err)
 	}
 	k.key = key[:keySize]
 	k.keyID = id
@@ -204,7 +204,7 @@ func (k *keyring) encrypt(data []byte) (jwe.JWE, error) {
 		key, err = k.createKey()
 	}
 	if err != nil {
-		return jwe.JWE{}, err
+		return jwe.JWE{}, fmt.Errorf("couldn't get cache encryption key due to error %q", err)
 	}
 	alg, err := aescbc.NewAES128CBCHMACSHA256(key)
 	if err != nil {
@@ -229,7 +229,7 @@ func (k *keyring) getKey() ([]byte, error) {
 	pl := make([]byte, keySize+1) // extra byte for the payload's null terminator
 	_, err := unix.KeyctlBuffer(unix.KEYCTL_READ, k.keyID, pl, 0)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read cache data due to error %q", err)
+		return nil, err
 	}
 	k.key = pl[:keySize]
 	return k.key, nil

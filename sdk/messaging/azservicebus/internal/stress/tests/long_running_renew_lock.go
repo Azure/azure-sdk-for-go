@@ -16,6 +16,7 @@ import (
 
 func LongRunningRenewLockTest(remainingArgs []string) {
 	sc := shared.MustCreateStressContext("LongRunningRenewLockTest", nil)
+	defer sc.End()
 
 	queueName := fmt.Sprintf("renew-lock-test-%s", sc.Nano)
 	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
@@ -23,7 +24,7 @@ func LongRunningRenewLockTest(remainingArgs []string) {
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create admin.Client", err)
 
-	sender, err := client.NewSender(queueName, nil)
+	sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)
 	sc.PanicOnError("failed to create Sender", err)
 
 	err = sender.SendMessage(context.Background(), &azservicebus.Message{
@@ -31,7 +32,7 @@ func LongRunningRenewLockTest(remainingArgs []string) {
 	}, nil)
 	sc.PanicOnError("failed to send message", err)
 
-	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	receiver, err := shared.NewTrackingReceiverForQueue(sc.TC, client, queueName, nil)
 	sc.PanicOnError("failed to create receiver", err)
 
 	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)

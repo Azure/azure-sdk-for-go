@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/TagRules_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c280892951a9e45c059132c05aace25a9c752d48/specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/TagRules_List.json
 func ExampleTagRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,6 +46,7 @@ func ExampleTagRulesClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Datadog/monitors/tagRules"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Datadog/monitors/myMonitor/tagRules/default"),
 		// 			Properties: &armdatadog.MonitoringTagRulesProperties{
+		// 				Automuting: to.Ptr(true),
 		// 				LogRules: &armdatadog.LogRules{
 		// 					FilteringTags: []*armdatadog.FilteringTag{
 		// 						{
@@ -72,7 +73,7 @@ func ExampleTagRulesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/TagRules_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c280892951a9e45c059132c05aace25a9c752d48/specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/TagRules_CreateOrUpdate.json
 func ExampleTagRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,6 +96,7 @@ func ExampleTagRulesClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.Datadog/monitors/tagRules"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Datadog/monitors/myMonitor/tagRules/default"),
 	// 	Properties: &armdatadog.MonitoringTagRulesProperties{
+	// 		Automuting: to.Ptr(true),
 	// 		LogRules: &armdatadog.LogRules{
 	// 			FilteringTags: []*armdatadog.FilteringTag{
 	// 				{
@@ -119,7 +121,7 @@ func ExampleTagRulesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/TagRules_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c280892951a9e45c059132c05aace25a9c752d48/specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/TagRules_Get.json
 func ExampleTagRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,6 +144,7 @@ func ExampleTagRulesClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Datadog/monitors/tagRules"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Datadog/monitors/myMonitor/tagRules/default"),
 	// 	Properties: &armdatadog.MonitoringTagRulesProperties{
+	// 		Automuting: to.Ptr(true),
 	// 		LogRules: &armdatadog.LogRules{
 	// 			FilteringTags: []*armdatadog.FilteringTag{
 	// 				{

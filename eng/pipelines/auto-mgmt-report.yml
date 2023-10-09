@@ -2,13 +2,13 @@ trigger: none
 
 pr: none
 
-# schedules:
-#   - cron: "0 1 * * 0"
-#     displayName: Daily mgmt report
-#     branches:
-#       include:
-#         - main
-#     always: true
+schedules:
+  - cron: "0 1 * * 0"
+    displayName: Generate mgmtreport every Sunday
+    branches:
+      include:
+        - main
+    always: true
 
 stages:
   - stage:
@@ -24,4 +24,4 @@ stages:
             inputs:
               scriptPath: 'eng/scripts/auto-mgmt-report.sh'
               cwd: '$(System.DefaultWorkingDirectory)'
-              args: $(AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN) $(AZURE_STORAGE_PRIMARY_ACCOUNT_KEY)
+              args: '$(AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN) $(AZURE_STORAGE_PRIMARY_ACCOUNT_KEY)'

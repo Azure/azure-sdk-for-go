@@ -184,9 +184,14 @@ func TestUserAuthentication(t *testing.T) {
 		})
 
 		t.Run("Authenticate_Live_"+credential.name, func(t *testing.T) {
-			if credential.name == credNameBrowser {
-				if !runManualTests {
+			switch recording.GetRecordMode() {
+			case recording.LiveMode:
+				if credential.interactive && !runManualTests {
 					t.Skipf("set %s to run this test", azidentityRunManualTests)
+				}
+			case recording.PlaybackMode, recording.RecordingMode:
+				if !credential.recordable {
+					t.Skip("this test can't be recorded")
 				}
 			}
 			co, stop := initRecording(t)
@@ -212,11 +217,18 @@ func TestUserAuthentication(t *testing.T) {
 		})
 
 		t.Run("PersistentCache_Live/"+credential.name, func(t *testing.T) {
+			switch recording.GetRecordMode() {
+			case recording.LiveMode:
+				if credential.interactive && !runManualTests {
+					t.Skipf("set %s to run this test", azidentityRunManualTests)
+				}
+			case recording.PlaybackMode, recording.RecordingMode:
+				if !credential.recordable {
+					t.Skip("this test can't be recorded")
+				}
+			}
 			if runtime.GOOS != "windows" {
 				t.Skip("this test runs only on Windows")
-			}
-			if credential.name == credNameBrowser && !runManualTests {
-				t.Skipf("set %s to run this test", azidentityRunManualTests)
 			}
 			p, err := internal.CacheFilePath(t.Name())
 			require.NoError(t, err)

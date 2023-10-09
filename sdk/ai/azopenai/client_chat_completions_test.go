@@ -90,11 +90,7 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client, tv testVars) 
 	}
 
 	resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(tv), nil)
-
-	if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
-		t.Skipf("OpenAI resource overloaded, skipping this test")
-	}
-
+	skipNowIfThrottled(t, err)
 	require.NoError(t, err)
 
 	if tv.Endpoint.Azure {

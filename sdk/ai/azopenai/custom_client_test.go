@@ -51,7 +51,7 @@ func TestNewClient(t *testing.T) {
 func TestNewClientWithKeyCredential(t *testing.T) {
 	type args struct {
 		endpoint   string
-		credential azopenai.KeyCredential
+		credential *azcore.KeyCredential
 		options    *azopenai.ClientOptions
 	}
 	tests := []struct {
@@ -99,6 +99,7 @@ func testGetCompletionsStream(t *testing.T, client *azopenai.Client, tv testVars
 	}
 
 	response, err := client.GetCompletionsStream(context.TODO(), body, nil)
+	skipNowIfThrottled(t, err)
 	require.NoError(t, err)
 
 	if err != nil {

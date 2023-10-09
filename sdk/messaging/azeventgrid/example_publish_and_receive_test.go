@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid"
@@ -25,7 +26,7 @@ func Example_publishAndReceiveCloudEvents() {
 		return
 	}
 
-	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, key, nil)
+	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(key), nil)
 
 	if err != nil {
 		panic(err)

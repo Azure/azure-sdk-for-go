@@ -55,6 +55,7 @@ func (client *UsagesClient) NewListByLocationPager(location string, options *Usa
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *UsagesClientListByLocationResponse) (UsagesClientListByLocationResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UsagesClient.NewListByLocationPager")
 			req, err := client.listByLocationCreateRequest(ctx, location, options)
 			if err != nil {
 				return UsagesClientListByLocationResponse{}, err
@@ -68,6 +69,7 @@ func (client *UsagesClient) NewListByLocationPager(location string, options *Usa
 			}
 			return client.listByLocationHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

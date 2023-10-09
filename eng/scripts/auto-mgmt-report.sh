@@ -8,7 +8,7 @@ export AZURE_STORAGE_PRIMARY_ACCOUNT_KEY=$2
 git clone https://github.com/Azure/azure-sdk-for-go.git
 
 cd ./azure-sdk-for-go
-pwd > sdkpath
+sdkpath=`pwd`
 
 go install github.com/Azure/azure-sdk-for-go/eng/tools/mgmtreport@latest
 cd ./eng/tools/mgmtreport

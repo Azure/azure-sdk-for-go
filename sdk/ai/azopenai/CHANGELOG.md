@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- azopenai.KeyCredential
+
 ### Bugs Fixed
 
 ### Other Changes

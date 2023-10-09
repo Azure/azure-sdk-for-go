@@ -93,13 +93,14 @@ func NewClientForOpenAI(endpoint string, credential *azcore.KeyCredential, optio
 		options = &ClientOptions{}
 	}
 
-	openAIPolicy := newOpenAIPolicy()
-
 	kp := runtime.NewKeyCredentialPolicy(credential, "authorization", &runtime.KeyCredentialPolicyOptions{
 		Prefix: "Bearer ",
 	})
 
-	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{kp, openAIPolicy}}, &options.ClientOptions)
+	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{
+		PerRetry: []policy.Policy{kp, newOpenAIPolicy()},
+	}, &options.ClientOptions)
+
 	if err != nil {
 		return nil, err
 	}

@@ -1,15 +1,9 @@
 # Release History
 
-## 1.4.0-beta.6 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.4.0 (2023-10-10)
 
 ### Bugs Fixed
 * `ManagedIdentityCredential` will now retry when IMDS responds 410 or 503
-
-### Other Changes
 
 ## 1.4.0-beta.5 (2023-09-12)
 

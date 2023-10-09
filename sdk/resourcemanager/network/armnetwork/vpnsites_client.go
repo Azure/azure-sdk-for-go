@@ -74,6 +74,10 @@ func (client *VPNSitesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // Generated from API version 2023-05-01
 func (client *VPNSitesClient) createOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VPNSite, options *VPNSitesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VPNSitesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vpnSiteName, vpnSiteParameters, options)
 	if err != nil {
 		return nil, err
@@ -146,6 +150,10 @@ func (client *VPNSitesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-05-01
 func (client *VPNSitesClient) deleteOperation(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VPNSitesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VPNSitesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vpnSiteName, options)
 	if err != nil {
 		return nil, err
@@ -196,6 +204,10 @@ func (client *VPNSitesClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - VPNSitesClientGetOptions contains the optional parameters for the VPNSitesClient.Get method.
 func (client *VPNSitesClient) Get(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VPNSitesClientGetOptions) (VPNSitesClientGetResponse, error) {
 	var err error
+	const operationName = "VPNSitesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vpnSiteName, options)
 	if err != nil {
 		return VPNSitesClientGetResponse{}, err
@@ -257,6 +269,7 @@ func (client *VPNSitesClient) NewListPager(options *VPNSitesClientListOptions) *
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VPNSitesClientListResponse) (VPNSitesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VPNSitesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -276,6 +289,7 @@ func (client *VPNSitesClient) NewListPager(options *VPNSitesClientListOptions) *
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -318,6 +332,7 @@ func (client *VPNSitesClient) NewListByResourceGroupPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VPNSitesClientListByResourceGroupResponse) (VPNSitesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VPNSitesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -337,6 +352,7 @@ func (client *VPNSitesClient) NewListByResourceGroupPager(resourceGroupName stri
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -381,6 +397,10 @@ func (client *VPNSitesClient) listByResourceGroupHandleResponse(resp *http.Respo
 //   - options - VPNSitesClientUpdateTagsOptions contains the optional parameters for the VPNSitesClient.UpdateTags method.
 func (client *VPNSitesClient) UpdateTags(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters TagsObject, options *VPNSitesClientUpdateTagsOptions) (VPNSitesClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "VPNSitesClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, vpnSiteName, vpnSiteParameters, options)
 	if err != nil {
 		return VPNSitesClientUpdateTagsResponse{}, err

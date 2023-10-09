@@ -57,6 +57,10 @@ func NewConnectivityConfigurationsClient(subscriptionID string, credential azcor
 //     method.
 func (client *ConnectivityConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, connectivityConfiguration ConnectivityConfiguration, options *ConnectivityConfigurationsClientCreateOrUpdateOptions) (ConnectivityConfigurationsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ConnectivityConfigurationsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, connectivityConfiguration, options)
 	if err != nil {
 		return ConnectivityConfigurationsClientCreateOrUpdateResponse{}, err
@@ -147,6 +151,10 @@ func (client *ConnectivityConfigurationsClient) BeginDelete(ctx context.Context,
 // Generated from API version 2023-05-01
 func (client *ConnectivityConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *ConnectivityConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ConnectivityConfigurationsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, options)
 	if err != nil {
 		return nil, err
@@ -207,6 +215,10 @@ func (client *ConnectivityConfigurationsClient) deleteCreateRequest(ctx context.
 //     method.
 func (client *ConnectivityConfigurationsClient) Get(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *ConnectivityConfigurationsClientGetOptions) (ConnectivityConfigurationsClientGetResponse, error) {
 	var err error
+	const operationName = "ConnectivityConfigurationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, options)
 	if err != nil {
 		return ConnectivityConfigurationsClientGetResponse{}, err
@@ -275,6 +287,7 @@ func (client *ConnectivityConfigurationsClient) NewListPager(resourceGroupName s
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ConnectivityConfigurationsClientListResponse) (ConnectivityConfigurationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConnectivityConfigurationsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -294,6 +307,7 @@ func (client *ConnectivityConfigurationsClient) NewListPager(resourceGroupName s
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

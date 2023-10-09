@@ -74,6 +74,10 @@ func (client *DiskEncryptionSetsClient) BeginCreateOrUpdate(ctx context.Context,
 // Generated from API version 2023-04-02
 func (client *DiskEncryptionSetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSet, options *DiskEncryptionSetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DiskEncryptionSetsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, diskEncryptionSetName, diskEncryptionSet, options)
 	if err != nil {
 		return nil, err
@@ -147,6 +151,10 @@ func (client *DiskEncryptionSetsClient) BeginDelete(ctx context.Context, resourc
 // Generated from API version 2023-04-02
 func (client *DiskEncryptionSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DiskEncryptionSetsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, diskEncryptionSetName, options)
 	if err != nil {
 		return nil, err
@@ -199,6 +207,10 @@ func (client *DiskEncryptionSetsClient) deleteCreateRequest(ctx context.Context,
 //   - options - DiskEncryptionSetsClientGetOptions contains the optional parameters for the DiskEncryptionSetsClient.Get method.
 func (client *DiskEncryptionSetsClient) Get(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsClientGetOptions) (DiskEncryptionSetsClientGetResponse, error) {
 	var err error
+	const operationName = "DiskEncryptionSetsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, diskEncryptionSetName, options)
 	if err != nil {
 		return DiskEncryptionSetsClientGetResponse{}, err
@@ -261,6 +273,7 @@ func (client *DiskEncryptionSetsClient) NewListPager(options *DiskEncryptionSets
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DiskEncryptionSetsClientListResponse) (DiskEncryptionSetsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskEncryptionSetsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -280,6 +293,7 @@ func (client *DiskEncryptionSetsClient) NewListPager(options *DiskEncryptionSets
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -325,6 +339,7 @@ func (client *DiskEncryptionSetsClient) NewListAssociatedResourcesPager(resource
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DiskEncryptionSetsClientListAssociatedResourcesResponse) (DiskEncryptionSetsClientListAssociatedResourcesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskEncryptionSetsClient.NewListAssociatedResourcesPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -344,6 +359,7 @@ func (client *DiskEncryptionSetsClient) NewListAssociatedResourcesPager(resource
 			}
 			return client.listAssociatedResourcesHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -394,6 +410,7 @@ func (client *DiskEncryptionSetsClient) NewListByResourceGroupPager(resourceGrou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DiskEncryptionSetsClientListByResourceGroupResponse) (DiskEncryptionSetsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskEncryptionSetsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -413,6 +430,7 @@ func (client *DiskEncryptionSetsClient) NewListByResourceGroupPager(resourceGrou
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -477,6 +495,10 @@ func (client *DiskEncryptionSetsClient) BeginUpdate(ctx context.Context, resourc
 // Generated from API version 2023-04-02
 func (client *DiskEncryptionSetsClient) update(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSetUpdate, options *DiskEncryptionSetsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DiskEncryptionSetsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, diskEncryptionSetName, diskEncryptionSet, options)
 	if err != nil {
 		return nil, err

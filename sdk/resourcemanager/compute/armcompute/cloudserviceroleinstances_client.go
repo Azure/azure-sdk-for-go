@@ -72,6 +72,10 @@ func (client *CloudServiceRoleInstancesClient) BeginDelete(ctx context.Context, 
 // Generated from API version 2022-09-04
 func (client *CloudServiceRoleInstancesClient) deleteOperation(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServiceRoleInstancesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -128,6 +132,10 @@ func (client *CloudServiceRoleInstancesClient) deleteCreateRequest(ctx context.C
 //     method.
 func (client *CloudServiceRoleInstancesClient) Get(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientGetOptions) (CloudServiceRoleInstancesClientGetResponse, error) {
 	var err error
+	const operationName = "CloudServiceRoleInstancesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return CloudServiceRoleInstancesClientGetResponse{}, err
@@ -197,6 +205,10 @@ func (client *CloudServiceRoleInstancesClient) getHandleResponse(resp *http.Resp
 //     method.
 func (client *CloudServiceRoleInstancesClient) GetInstanceView(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientGetInstanceViewOptions) (CloudServiceRoleInstancesClientGetInstanceViewResponse, error) {
 	var err error
+	const operationName = "CloudServiceRoleInstancesClient.GetInstanceView"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getInstanceViewCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return CloudServiceRoleInstancesClientGetInstanceViewResponse{}, err
@@ -263,6 +275,10 @@ func (client *CloudServiceRoleInstancesClient) getInstanceViewHandleResponse(res
 //     method.
 func (client *CloudServiceRoleInstancesClient) GetRemoteDesktopFile(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientGetRemoteDesktopFileOptions) (CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse, error) {
 	var err error
+	const operationName = "CloudServiceRoleInstancesClient.GetRemoteDesktopFile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getRemoteDesktopFileCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse{}, err
@@ -323,6 +339,7 @@ func (client *CloudServiceRoleInstancesClient) NewListPager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CloudServiceRoleInstancesClientListResponse) (CloudServiceRoleInstancesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceRoleInstancesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -342,6 +359,7 @@ func (client *CloudServiceRoleInstancesClient) NewListPager(resourceGroupName st
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -415,6 +433,10 @@ func (client *CloudServiceRoleInstancesClient) BeginRebuild(ctx context.Context,
 // Generated from API version 2022-09-04
 func (client *CloudServiceRoleInstancesClient) rebuild(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginRebuildOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServiceRoleInstancesClient.BeginRebuild"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.rebuildCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -490,6 +512,10 @@ func (client *CloudServiceRoleInstancesClient) BeginReimage(ctx context.Context,
 // Generated from API version 2022-09-04
 func (client *CloudServiceRoleInstancesClient) reimage(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginReimageOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServiceRoleInstancesClient.BeginReimage"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.reimageCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -563,6 +589,10 @@ func (client *CloudServiceRoleInstancesClient) BeginRestart(ctx context.Context,
 // Generated from API version 2022-09-04
 func (client *CloudServiceRoleInstancesClient) restart(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginRestartOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudServiceRoleInstancesClient.BeginRestart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.restartCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err

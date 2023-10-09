@@ -18,9 +18,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var ctx = context.Background()
+var (
+	ctx        = context.Background()
+	keyringErr error
+)
+
+func TestMain(m *testing.M) {
+	keyringErr = tryKeyring()
+	os.Exit(m.Run())
+}
 
 func TestKeyExistsButNotFile(t *testing.T) {
+	if keyringErr != nil {
+		t.Skip(keyringErr)
+	}
 	expected := []byte(t.Name())
 	a, err := newKeyring(t.Name())
 	require.NoError(t, err)
@@ -46,6 +57,9 @@ func TestKeyExistsButNotFile(t *testing.T) {
 }
 
 func TestReadWriteDelete(t *testing.T) {
+	if keyringErr != nil {
+		t.Skip(keyringErr)
+	}
 	for _, test := range []struct {
 		expected   []byte
 		desc, name string
@@ -101,6 +115,9 @@ func TestReadWriteDelete(t *testing.T) {
 }
 
 func TestTwoInstances(t *testing.T) {
+	if keyringErr != nil {
+		t.Skip(keyringErr)
+	}
 	for _, deleteFile := range []bool{false, true} {
 		s := "key and file exist"
 		if deleteFile {

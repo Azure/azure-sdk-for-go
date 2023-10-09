@@ -5,6 +5,9 @@ export PATH=$PATH:$HOME/go/bin
 export AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN=$1
 export AZURE_STORAGE_PRIMARY_ACCOUNT_KEY=$2
 
+echo $AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN
+echo $AZURE_STORAGE_PRIMARY_ACCOUNT_KEY
+
 # git config --global user.email "ReleaseHelper"
 # git config --global user.name "ReleaseHelper"
 

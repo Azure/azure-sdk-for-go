@@ -55,6 +55,10 @@ func NewTrustedAccessRoleBindingsClient(subscriptionID string, credential azcore
 //     method.
 func (client *TrustedAccessRoleBindingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, trustedAccessRoleBinding TrustedAccessRoleBinding, options *TrustedAccessRoleBindingsClientCreateOrUpdateOptions) (TrustedAccessRoleBindingsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "TrustedAccessRoleBindingsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, trustedAccessRoleBindingName, trustedAccessRoleBinding, options)
 	if err != nil {
 		return TrustedAccessRoleBindingsClientCreateOrUpdateResponse{}, err
@@ -124,6 +128,10 @@ func (client *TrustedAccessRoleBindingsClient) createOrUpdateHandleResponse(resp
 //     method.
 func (client *TrustedAccessRoleBindingsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, options *TrustedAccessRoleBindingsClientDeleteOptions) (TrustedAccessRoleBindingsClientDeleteResponse, error) {
 	var err error
+	const operationName = "TrustedAccessRoleBindingsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, trustedAccessRoleBindingName, options)
 	if err != nil {
 		return TrustedAccessRoleBindingsClientDeleteResponse{}, err
@@ -180,6 +188,10 @@ func (client *TrustedAccessRoleBindingsClient) deleteCreateRequest(ctx context.C
 //     method.
 func (client *TrustedAccessRoleBindingsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, options *TrustedAccessRoleBindingsClientGetOptions) (TrustedAccessRoleBindingsClientGetResponse, error) {
 	var err error
+	const operationName = "TrustedAccessRoleBindingsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, trustedAccessRoleBindingName, options)
 	if err != nil {
 		return TrustedAccessRoleBindingsClientGetResponse{}, err
@@ -248,6 +260,7 @@ func (client *TrustedAccessRoleBindingsClient) NewListPager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TrustedAccessRoleBindingsClientListResponse) (TrustedAccessRoleBindingsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TrustedAccessRoleBindingsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -267,6 +280,7 @@ func (client *TrustedAccessRoleBindingsClient) NewListPager(resourceGroupName st
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

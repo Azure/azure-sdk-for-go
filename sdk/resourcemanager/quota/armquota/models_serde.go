@@ -1015,10 +1015,10 @@ func (u *UsagesObject) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "usagesType":
+		case "UsagesType", "usagesType":
 			err = unpopulate(val, "UsagesType", &u.UsagesType)
 			delete(rawMsg, key)
-		case "value":
+		case "Value", "value":
 			err = unpopulate(val, "Value", &u.Value)
 			delete(rawMsg, key)
 		}

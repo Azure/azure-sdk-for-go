@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.1 (2023-10-11)
+## 1.5.0-beta.1 (2023-10-10)
 
 ### Features Added
 * Optional persistent token caching for most credentials. Set `TokenCachePersistenceOptions`

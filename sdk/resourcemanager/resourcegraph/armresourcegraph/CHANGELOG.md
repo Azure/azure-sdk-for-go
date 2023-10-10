@@ -1,5 +1,11 @@
 # Release History
 
+## 0.8.2 (2023-10-09)
+
+### Other Changes
+
+- Updated to latest `azcore` beta.
+
 ## 0.8.1 (2023-07-19)
 
 ### Bug Fixes

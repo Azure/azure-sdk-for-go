@@ -64,12 +64,12 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 //   - endpoint - Azure OpenAI service endpoint, for example: https://{your-resource-name}.openai.azure.com
 //   - credential - used to authorize requests with an API Key credential
 //   - options - client options, pass nil to accept the default values.
-func NewClientWithKeyCredential(endpoint string, credential KeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithKeyCredential(endpoint string, credential *azcore.KeyCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 
-	authPolicy := newAPIKeyPolicy(credential, "api-key")
+	authPolicy := runtime.NewKeyCredentialPolicy(credential, "api-key", nil)
 	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
@@ -88,12 +88,19 @@ func NewClientWithKeyCredential(endpoint string, credential KeyCredential, optio
 //   - endpoint - OpenAI service endpoint, for example: https://api.openai.com/v1
 //   - credential - used to authorize requests with an API Key credential
 //   - options - client options, pass nil to accept the default values.
-func NewClientForOpenAI(endpoint string, credential KeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientForOpenAI(endpoint string, credential *azcore.KeyCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	openAIPolicy := newOpenAIPolicy(credential)
-	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{openAIPolicy}}, &options.ClientOptions)
+
+	kp := runtime.NewKeyCredentialPolicy(credential, "authorization", &runtime.KeyCredentialPolicyOptions{
+		Prefix: "Bearer ",
+	})
+
+	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{
+		PerRetry: []policy.Policy{kp, newOpenAIPolicy()},
+	}, &options.ClientOptions)
+
 	if err != nil {
 		return nil, err
 	}
@@ -108,14 +115,11 @@ func NewClientForOpenAI(endpoint string, credential KeyCredential, options *Clie
 }
 
 // openAIPolicy is an internal pipeline policy to remove the api-version query parameter
-type openAIPolicy struct {
-	cred KeyCredential
-}
+type openAIPolicy struct{}
 
 // newOpenAIPolicy creates a new instance of openAIPolicy.
-// cred: a KeyCredential implementation.
-func newOpenAIPolicy(cred KeyCredential) *openAIPolicy {
-	return &openAIPolicy{cred: cred}
+func newOpenAIPolicy() *openAIPolicy {
+	return &openAIPolicy{}
 }
 
 // Do returns a function which adapts a request to target OpenAI.
@@ -123,7 +127,6 @@ func newOpenAIPolicy(cred KeyCredential) *openAIPolicy {
 func (b *openAIPolicy) Do(req *policy.Request) (*http.Response, error) {
 	q := req.Raw().URL.Query()
 	q.Del("api-version")
-	req.Raw().Header.Set("authorization", "Bearer "+b.cred.apiKey)
 	return req.Next()
 }
 

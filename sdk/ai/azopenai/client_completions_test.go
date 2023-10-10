@@ -42,6 +42,7 @@ func testGetCompletions(t *testing.T, client *azopenai.Client, isAzure bool) {
 		Temperature: to.Ptr(float32(0.0)),
 		Deployment:  deploymentID,
 	}, nil)
+	skipNowIfThrottled(t, err)
 	require.NoError(t, err)
 
 	want := azopenai.GetCompletionsResponse{

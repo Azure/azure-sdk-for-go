@@ -1,10 +1,12 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.4.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+
+- `azopenai.KeyCredential` has been replaced by [azcore.KeyCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#KeyCredential).
 
 ### Bugs Fixed
 

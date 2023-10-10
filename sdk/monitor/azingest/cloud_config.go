@@ -8,7 +8,7 @@ package azingest
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
-// Cloud Service Names for Monitor Query Logs and Metrics, used to identify the respective cloud.ServiceConfiguration
+// Cloud Service Names for Monitor Ingestion, used to identify the respective cloud.ServiceConfiguration
 const (
 	ServiceNameIngestion cloud.ServiceName = "azingest"
 )

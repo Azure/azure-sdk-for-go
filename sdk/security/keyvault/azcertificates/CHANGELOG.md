@@ -1,12 +1,19 @@
 # Release History
 
-## 0.11.1 (Unreleased)
+## 1.0.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2023-09-12)
+
+### Features Added
+* First stable release of the azcertificates module
 
 ### Other Changes
 * Upgraded dependencies

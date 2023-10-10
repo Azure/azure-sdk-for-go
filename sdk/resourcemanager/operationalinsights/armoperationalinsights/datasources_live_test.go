@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -40,13 +41,13 @@ func (testsuite *DataSourcesTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.dataSourceName = testutil.GenerateAlphaNumericID(testsuite.T(), "iodatasource", 6)
+	testsuite.dataSourceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "iodatasource", 18, false)
 	testsuite.storageAccountName = "oistorageaccountx"
-	testsuite.workspaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "oiautorest", 6)
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.storageAccountId = testutil.GetEnv("STORAGE_ACCOUNT_ID", "")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.workspaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "oiautorest", 16, false)
+	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.storageAccountId = recording.GetEnvVariable("STORAGE_ACCOUNT_ID", "")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name

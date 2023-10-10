@@ -9,6 +9,10 @@ package directory_test
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -18,9 +22,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"net/http"
-	"testing"
-	"time"
 )
 
 var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
@@ -138,7 +139,7 @@ func (s *RecordedTestSuite) TestCreateDirAndDeleteWithConnectionString() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := directory.NewClientFromConnectionString(*connectionString, dirName, filesystemName, nil)
@@ -148,7 +149,7 @@ func (s *RecordedTestSuite) TestCreateDirAndDeleteWithConnectionString() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -162,7 +163,7 @@ func (s *RecordedTestSuite) TestBlobURLAndDFSURL() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -171,7 +172,7 @@ func (s *RecordedTestSuite) TestBlobURLAndDFSURL() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_require.Contains(dirClient.DFSURL(), ".dfs.core.windows.net/"+filesystemName+"/"+dirName)
@@ -188,7 +189,7 @@ func (s *RecordedTestSuite) TestCreateDirAndDelete() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -197,7 +198,7 @@ func (s *RecordedTestSuite) TestCreateDirAndDelete() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -211,7 +212,7 @@ func (s *RecordedTestSuite) TestGetAndCreateFileClient() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -220,15 +221,15 @@ func (s *RecordedTestSuite) TestGetAndCreateFileClient() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(fileClient)
 
 	_, err = fileClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestCreateDirWithNilAccessConditions() {
@@ -241,7 +242,7 @@ func (s *RecordedTestSuite) TestCreateDirWithNilAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -250,7 +251,7 @@ func (s *RecordedTestSuite) TestCreateDirWithNilAccessConditions() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	createDirOpts := &directory.CreateOptions{
@@ -258,7 +259,7 @@ func (s *RecordedTestSuite) TestCreateDirWithNilAccessConditions() {
 	}
 
 	resp, err = dirClient.Create(context.Background(), createDirOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -272,7 +273,7 @@ func (s *RecordedTestSuite) TestCreateDirIfModifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	DirName := testcommon.GenerateDirName(testName)
 	DirClient, err := testcommon.GetDirClient(filesystemName, DirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -281,7 +282,7 @@ func (s *RecordedTestSuite) TestCreateDirIfModifiedSinceTrue() {
 	defer testcommon.DeleteDir(context.Background(), _require, DirClient)
 
 	resp, err := DirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -295,7 +296,7 @@ func (s *RecordedTestSuite) TestCreateDirIfModifiedSinceTrue() {
 	}
 
 	resp, err = DirClient.Create(context.Background(), createDirOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -309,7 +310,7 @@ func (s *RecordedTestSuite) TestCreateDirIfModifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	DirName := testcommon.GenerateDirName(testName)
 	DirClient, err := testcommon.GetDirClient(filesystemName, DirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -318,7 +319,7 @@ func (s *RecordedTestSuite) TestCreateDirIfModifiedSinceFalse() {
 	defer testcommon.DeleteDir(context.Background(), _require, DirClient)
 
 	resp, err := DirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -332,7 +333,7 @@ func (s *RecordedTestSuite) TestCreateDirIfModifiedSinceFalse() {
 	}
 
 	resp, err = DirClient.Create(context.Background(), createDirOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -346,7 +347,7 @@ func (s *RecordedTestSuite) TestCreateDirIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -355,7 +356,7 @@ func (s *RecordedTestSuite) TestCreateDirIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -369,7 +370,7 @@ func (s *RecordedTestSuite) TestCreateDirIfUnmodifiedSinceTrue() {
 	}
 
 	resp, err = dirClient.Create(context.Background(), createDirOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -383,7 +384,7 @@ func (s *RecordedTestSuite) TestCreateDirIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -392,7 +393,7 @@ func (s *RecordedTestSuite) TestCreateDirIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -406,7 +407,7 @@ func (s *RecordedTestSuite) TestCreateDirIfUnmodifiedSinceFalse() {
 	}
 
 	resp, err = dirClient.Create(context.Background(), createDirOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -421,7 +422,7 @@ func (s *RecordedTestSuite) TestCreateDirIfETagMatch() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -430,7 +431,7 @@ func (s *RecordedTestSuite) TestCreateDirIfETagMatch() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -444,7 +445,7 @@ func (s *RecordedTestSuite) TestCreateDirIfETagMatch() {
 	}
 
 	resp, err = dirClient.Create(context.Background(), createDirOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -458,7 +459,7 @@ func (s *RecordedTestSuite) TestCreateDirIfETagMatchFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -467,7 +468,7 @@ func (s *RecordedTestSuite) TestCreateDirIfETagMatchFalse() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -481,7 +482,7 @@ func (s *RecordedTestSuite) TestCreateDirIfETagMatchFalse() {
 	}
 
 	resp, err = dirClient.Create(context.Background(), createDirOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -500,7 +501,7 @@ func (s *RecordedTestSuite) TestCreateDirWithNilHTTPHeaders() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -509,7 +510,7 @@ func (s *RecordedTestSuite) TestCreateDirWithNilHTTPHeaders() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), createDirOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -527,7 +528,7 @@ func (s *RecordedTestSuite) TestCreateDirWithHTTPHeaders() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -536,7 +537,7 @@ func (s *RecordedTestSuite) TestCreateDirWithHTTPHeaders() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), createDirOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -555,23 +556,23 @@ func (s *RecordedTestSuite) TestCreateDirWithLease() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// should fail since leased
 	_, err = dirClient.Create(context.Background(), createFileOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	time.Sleep(time.Second * 15)
 	resp, err = dirClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -592,18 +593,18 @@ func (s *RecordedTestSuite) TestCreateDirWithPermissions() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	resp2, err := dirClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.Equal("rwxrwxrwx", *resp2.Permissions)
 }
@@ -629,14 +630,14 @@ func (s *RecordedTestSuite) TestCreateDirWithOwnerGroupACLUmask() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 }
@@ -651,21 +652,21 @@ func (s *RecordedTestSuite) TestDeleteDirWithNilAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	deleteOpts := &directory.DeleteOptions{
 		AccessConditions: nil,
 	}
 
 	resp, err := dirClient.Delete(context.Background(), deleteOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -679,14 +680,14 @@ func (s *RecordedTestSuite) TestDeleteDirIfModifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
 
@@ -699,7 +700,7 @@ func (s *RecordedTestSuite) TestDeleteDirIfModifiedSinceTrue() {
 	}
 
 	resp1, err := dirClient.Delete(context.Background(), deleteOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp1)
 }
 
@@ -713,14 +714,14 @@ func (s *RecordedTestSuite) TestDeleteDirIfModifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -734,7 +735,7 @@ func (s *RecordedTestSuite) TestDeleteDirIfModifiedSinceFalse() {
 	}
 
 	_, err = dirClient.Delete(context.Background(), deleteOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -748,14 +749,14 @@ func (s *RecordedTestSuite) TestDeleteDirIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -769,7 +770,7 @@ func (s *RecordedTestSuite) TestDeleteDirIfUnmodifiedSinceTrue() {
 	}
 
 	_, err = dirClient.Delete(context.Background(), deleteOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -783,14 +784,14 @@ func (s *RecordedTestSuite) TestDeleteDirIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -804,7 +805,7 @@ func (s *RecordedTestSuite) TestDeleteDirIfUnmodifiedSinceFalse() {
 	}
 
 	_, err = dirClient.Delete(context.Background(), deleteOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -819,14 +820,14 @@ func (s *RecordedTestSuite) TestDeleteDirIfETagMatch() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -840,7 +841,7 @@ func (s *RecordedTestSuite) TestDeleteDirIfETagMatch() {
 	}
 
 	_, err = dirClient.Delete(context.Background(), deleteOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 }
 
@@ -854,14 +855,14 @@ func (s *RecordedTestSuite) TestDeleteDirIfETagMatchFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -875,7 +876,7 @@ func (s *RecordedTestSuite) TestDeleteDirIfETagMatchFalse() {
 	}
 
 	_, err = dirClient.Delete(context.Background(), deleteOpts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -890,18 +891,18 @@ func (s *RecordedTestSuite) TestDirSetAccessControlNil() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = dirClient.SetAccessControl(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	_require.Equal(err, datalakeerror.MissingParameters)
 }
@@ -926,18 +927,18 @@ func (s *RecordedTestSuite) TestDirSetAccessControl() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestDirSetAccessControlWithNilAccessConditions() {
@@ -960,18 +961,18 @@ func (s *RecordedTestSuite) TestDirSetAccessControlWithNilAccessConditions() {
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestDirSetAccessControlIfModifiedSinceTrue() {
@@ -987,14 +988,14 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfModifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -1010,7 +1011,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfModifiedSinceTrue() {
 	}
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestDirSetAccessControlIfModifiedSinceFalse() {
@@ -1026,14 +1027,14 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfModifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
 
@@ -1049,7 +1050,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfModifiedSinceFalse() {
 	}
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -1066,14 +1067,14 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -1088,7 +1089,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfUnmodifiedSinceTrue() {
 		}}
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestDirSetAccessControlIfUnmodifiedSinceFalse() {
@@ -1104,14 +1105,14 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -1128,7 +1129,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfUnmodifiedSinceFalse() {
 	}
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -1146,14 +1147,14 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfETagMatch() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 	etag := resp.ETag
 
@@ -1169,7 +1170,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfETagMatch() {
 	}
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestDirSetAccessControlIfETagMatchFalse() {
@@ -1185,14 +1186,14 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfETagMatchFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -1207,7 +1208,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfETagMatchFalse() {
 		}}
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -1225,18 +1226,18 @@ func (s *RecordedTestSuite) TestDirGetAccessControl() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1254,14 +1255,14 @@ func (s *UnrecordedTestSuite) TestDirGetAccessControlWithSAS() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// Adding SAS and options
@@ -1275,12 +1276,12 @@ func (s *UnrecordedTestSuite) TestDirGetAccessControlWithSAS() {
 	expiry := time.Now().Add(time.Hour)
 
 	sasURL, err := dirClient.GetSASURL(permissions, expiry, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirClient2, _ := directory.NewClientWithNoCredential(sasURL, nil)
 
 	getACLResp, err := dirClient2.GetAccessControl(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1294,14 +1295,14 @@ func (s *UnrecordedTestSuite) TestDeleteWithSAS() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// Adding SAS and options
@@ -1315,12 +1316,12 @@ func (s *UnrecordedTestSuite) TestDeleteWithSAS() {
 	expiry := time.Now().Add(time.Hour)
 
 	sasURL, err := dirClient.GetSASURL(permissions, expiry, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirClient2, _ := directory.NewClientWithNoCredential(sasURL, nil)
 
 	_, err = dirClient2.Delete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestDirGetAccessControlWithNilAccessConditions() {
@@ -1337,14 +1338,14 @@ func (s *RecordedTestSuite) TestDirGetAccessControlWithNilAccessConditions() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	opts := &directory.GetAccessControlOptions{
@@ -1352,7 +1353,7 @@ func (s *RecordedTestSuite) TestDirGetAccessControlWithNilAccessConditions() {
 	}
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1370,14 +1371,14 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfModifiedSinceTrue() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -1390,7 +1391,7 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfModifiedSinceTrue() {
 	}
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1408,14 +1409,14 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfModifiedSinceFalse() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
 
@@ -1428,7 +1429,7 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfModifiedSinceFalse() {
 	}
 
 	_, err = dirClient.GetAccessControl(context.Background(), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -1446,14 +1447,14 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfUnmodifiedSinceTrue() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -1465,7 +1466,7 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfUnmodifiedSinceTrue() {
 		}}
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1483,14 +1484,14 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfUnmodifiedSinceFalse() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -1504,7 +1505,7 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfUnmodifiedSinceFalse() {
 	}
 
 	_, err = dirClient.GetAccessControl(context.Background(), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
@@ -1523,14 +1524,14 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatch() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 	etag := resp.ETag
 
@@ -1543,7 +1544,7 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatch() {
 	}
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1561,14 +1562,14 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatchFalse() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -1580,7 +1581,7 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatchFalse() {
 		}}
 
 	_, err = dirClient.GetAccessControl(context.Background(), opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -1597,25 +1598,25 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursive() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	resp1, err := dirClient.SetAccessControlRecursive(context.Background(), acl, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
 	_require.Equal(resp1.FilesSuccessful, to.Ptr(int32(0)))
 	_require.Equal(resp1.FailureCount, to.Ptr(int32(0)))
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1630,19 +1631,19 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithBadContinuation(
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	opts := &directory.SetAccessControlRecursiveOptions{Marker: to.Ptr("garbage")}
 	resp1, err := dirClient.SetAccessControlRecursive(context.Background(), acl, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(0)))
 	_require.Equal(resp1.FilesSuccessful, to.Ptr(int32(0)))
@@ -1660,26 +1661,26 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithEmptyOpts() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	opts := &directory.SetAccessControlRecursiveOptions{}
 	resp1, err := dirClient.SetAccessControlRecursive(context.Background(), acl, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
 	_require.Equal(resp1.FilesSuccessful, to.Ptr(int32(0)))
 	_require.Equal(resp1.FailureCount, to.Ptr(int32(0)))
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1694,37 +1695,37 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	resp1, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp1)
 
 	fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(fileClient)
 
 	_, err = fileClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileClient1, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName + "1"))
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(fileClient1)
 
 	_, err = fileClient1.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	opts := &directory.SetAccessControlRecursiveOptions{BatchSize: to.Ptr(int32(2)), MaxBatches: to.Ptr(int32(1)), ContinueOnFailure: to.Ptr(true), Marker: nil}
 	resp2, err := dirClient.SetAccessControlRecursive(context.Background(), acl, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
 	_require.Equal(resp2.DirectoriesSuccessful, to.Ptr(int32(1)))
@@ -1732,7 +1733,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults() {
 	_require.Equal(resp2.FailureCount, to.Ptr(int32(0)))
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1747,37 +1748,37 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults2() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	resp1, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp1)
 
 	fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(fileClient)
 
 	_, err = fileClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileClient1, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName + "1"))
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(fileClient1)
 
 	_, err = fileClient1.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	opts := &directory.SetAccessControlRecursiveOptions{ContinueOnFailure: to.Ptr(true), Marker: nil}
 	resp2, err := dirClient.SetAccessControlRecursive(context.Background(), acl, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
 	_require.Equal(resp2.DirectoriesSuccessful, to.Ptr(int32(1)))
@@ -1785,7 +1786,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults2() {
 	_require.Equal(resp2.FailureCount, to.Ptr(int32(0)))
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1800,37 +1801,37 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults3() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	resp1, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp1)
 
 	fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(fileClient)
 
 	_, err = fileClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	fileClient1, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName + "1"))
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(fileClient1)
 
 	_, err = fileClient1.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	opts := &directory.SetAccessControlRecursiveOptions{BatchSize: to.Ptr(int32(1)), ContinueOnFailure: to.Ptr(true), Marker: nil}
 	resp2, err := dirClient.SetAccessControlRecursive(context.Background(), acl, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
 	_require.Equal(resp2.DirectoriesSuccessful, to.Ptr(int32(1)))
@@ -1838,7 +1839,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults3() {
 	_require.Equal(resp2.FailureCount, to.Ptr(int32(0)))
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
@@ -1857,22 +1858,22 @@ func (s *RecordedTestSuite) TestDirUpdateAccessControlRecursive() {
 		ACL: &acl,
 	}
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), createOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	resp1, err := dirClient.UpdateAccessControlRecursive(context.Background(), acl1, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
 
 	resp2, err := dirClient.GetAccessControl(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(acl1, *resp2.ACL)
 
 }
@@ -1890,18 +1891,18 @@ func (s *RecordedTestSuite) TestDirRemoveAccessControlRecursive() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	resp1, err := dirClient.RemoveAccessControlRecursive(context.Background(), acl, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
 }
 
@@ -1915,7 +1916,7 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithBasicMetadata() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -1924,11 +1925,11 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithBasicMetadata() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = dirClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestDirSetMetadataWithAccessConditions() {
@@ -1941,7 +1942,7 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -1950,7 +1951,7 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithAccessConditions() {
 	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -1963,12 +1964,12 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithAccessConditions() {
 		},
 	}
 	_, err = dirClient.SetMetadata(context.Background(), testcommon.BasicMetadata, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func validatePropertiesSet(_require *require.Assertions, dirClient *directory.Client, disposition string) {
 	resp, err := dirClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*resp.ContentDisposition, disposition)
 }
 
@@ -1982,18 +1983,18 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeaders() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	_, err = dirClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
@@ -2007,14 +2008,14 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersWithNilAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	opts := &directory.SetHTTPHeadersOptions{
@@ -2022,7 +2023,7 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersWithNilAccessConditions() {
 	}
 
 	_, err = dirClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
@@ -2036,14 +2037,14 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfModifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -2056,7 +2057,7 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfModifiedSinceTrue() {
 		},
 	}
 	_, err = dirClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
@@ -2070,14 +2071,14 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfModifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -2090,7 +2091,7 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfModifiedSinceFalse() {
 		},
 	}
 	_, err = dirClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -2104,14 +2105,14 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -2124,7 +2125,7 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfUnmodifiedSinceTrue() {
 		},
 	}
 	_, err = dirClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
@@ -2138,14 +2139,14 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -2158,7 +2159,7 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = dirClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -2172,14 +2173,14 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfETagMatch() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -2191,7 +2192,7 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfETagMatch() {
 			},
 		}}
 	_, err = dirClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.Nil(err)
+	_require.NoError(err)
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
@@ -2205,14 +2206,14 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfETagMatchFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -2225,7 +2226,7 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfETagMatchFalse() {
 		},
 	}
 	_, err = dirClient.SetHTTPHeaders(context.Background(), testcommon.BasicHeaders, opts)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
@@ -2239,19 +2240,19 @@ func (s *RecordedTestSuite) TestDirRenameNoOptions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
@@ -2266,14 +2267,14 @@ func (s *RecordedTestSuite) TestRenameDirWithNilAccessConditions() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	renameFileOpts := &directory.RenameOptions{
@@ -2282,7 +2283,7 @@ func (s *RecordedTestSuite) TestRenameDirWithNilAccessConditions() {
 
 	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
@@ -2297,14 +2298,14 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -2318,7 +2319,7 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceTrue() {
 	}
 	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
@@ -2333,14 +2334,14 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -2356,7 +2357,7 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceFalse() {
 	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
 
@@ -2370,14 +2371,14 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceTrue() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
@@ -2392,7 +2393,7 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceTrue() {
 
 	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
@@ -2407,14 +2408,14 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
@@ -2430,7 +2431,7 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceFalse() {
 	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
 
@@ -2444,14 +2445,14 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatch() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -2466,7 +2467,7 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatch() {
 
 	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
@@ -2481,14 +2482,14 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatchFalse() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	etag := resp.ETag
@@ -2504,7 +2505,7 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatchFalse() {
 	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
 
@@ -2518,21 +2519,21 @@ func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp)
 
 	// This tests directory.NewClient
 	var respFromCtxDir *http.Response
 	ctxWithRespDir := runtime.WithCaptureResponse(context.Background(), &respFromCtxDir)
 	resp2, err := dirClient.GetProperties(ctxWithRespDir, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxDir) // validate that the respFromCtx is actually populated
 	_require.Equal("directory", respFromCtxDir.Header.Get("x-ms-resource-type"))
@@ -2542,20 +2543,20 @@ func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
 	var respFromCtxFs *http.Response
 	ctxWithRespFs := runtime.WithCaptureResponse(context.Background(), &respFromCtxFs)
 	resp2, err = dirClient.GetProperties(ctxWithRespFs, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxFs) // validate that the respFromCtx is actually populated
 	_require.Equal("directory", respFromCtxFs.Header.Get("x-ms-resource-type"))
 
 	// This tests service.NewClient
 	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	fsClient = serviceClient.NewFileSystemClient(filesystemName)
 	dirClient = fsClient.NewDirectoryClient(dirName)
 	var respFromCtxService *http.Response
 	ctxWithRespService := runtime.WithCaptureResponse(context.Background(), &respFromCtxService)
 	resp2, err = dirClient.GetProperties(ctxWithRespService, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxService) // validate that the respFromCtx is actually populated
 	_require.Equal("directory", respFromCtxService.Header.Get("x-ms-resource-type"))

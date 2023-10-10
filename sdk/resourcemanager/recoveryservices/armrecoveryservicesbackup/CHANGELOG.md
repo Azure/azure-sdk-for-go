@@ -1,5 +1,63 @@
 # Release History
 
+## 3.0.0 (2023-09-22)
+### Breaking Changes
+
+- Function `*AzureVMWorkloadSAPHanaHSR.GetAzureVMWorkloadProtectableItem` has been removed
+- Function `*AzureVMWorkloadSAPHanaHSR.GetWorkloadProtectableItem` has been removed
+- Struct `AzureVMWorkloadSAPHanaHSR` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `AzureFileshareProtectedItem` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `AzureIaaSClassicComputeVMProtectedItem` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `AzureIaaSComputeVMProtectedItem` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `AzureIaaSVMProtectedItem` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `AzureSQLProtectedItem` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `AzureVMWorkloadProtectedItem` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `AzureVMWorkloadSAPAseDatabaseProtectedItem` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `AzureVMWorkloadSAPHanaDBInstanceProtectedItem` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `AzureVMWorkloadSAPHanaDatabaseProtectedItem` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `AzureVMWorkloadSQLDatabaseProtectedItem` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `DPMProtectedItem` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `GenericProtectedItem` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `MabFileFolderProtectedItem` has been removed
+- Field `ActionRequired` of struct `PrivateLinkServiceConnectionState` has been removed
+- Field `SoftDeleteRetentionPeriod` of struct `ProtectedItem` has been removed
+
+### Features Added
+
+- New value `SoftDeleteFeatureStateAlwaysON` added to enum type `SoftDeleteFeatureState`
+- New enum type `VaultSubResourceType` with values `VaultSubResourceTypeAzureBackup`, `VaultSubResourceTypeAzureBackupSecondary`, `VaultSubResourceTypeAzureSiteRecovery`
+- New function `*AzureVMWorkloadSAPHanaHSRProtectableItem.GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem`
+- New function `*AzureVMWorkloadSAPHanaHSRProtectableItem.GetWorkloadProtectableItem() *WorkloadProtectableItem`
+- New struct `AzureVMWorkloadSAPHanaHSRProtectableItem`
+- New field `SoftDeleteRetentionPeriodInDays` in struct `AzureFileshareProtectedItem`
+- New field `SoftDeleteRetentionPeriodInDays` in struct `AzureIaaSClassicComputeVMProtectedItem`
+- New field `SoftDeleteRetentionPeriodInDays` in struct `AzureIaaSComputeVMProtectedItem`
+- New field `SoftDeleteRetentionPeriodInDays` in struct `AzureIaaSVMProtectedItem`
+- New field `SoftDeleteRetentionPeriodInDays` in struct `AzureSQLProtectedItem`
+- New field `NodesList`, `SoftDeleteRetentionPeriodInDays` in struct `AzureVMWorkloadProtectedItem`
+- New field `NodesList`, `SoftDeleteRetentionPeriodInDays` in struct `AzureVMWorkloadSAPAseDatabaseProtectedItem`
+- New field `IsProtectable` in struct `AzureVMWorkloadSAPAseSystemProtectableItem`
+- New field `IsProtectable` in struct `AzureVMWorkloadSAPHanaDBInstance`
+- New field `NodesList`, `SoftDeleteRetentionPeriodInDays` in struct `AzureVMWorkloadSAPHanaDBInstanceProtectedItem`
+- New field `IsProtectable` in struct `AzureVMWorkloadSAPHanaDatabaseProtectableItem`
+- New field `NodesList`, `SoftDeleteRetentionPeriodInDays` in struct `AzureVMWorkloadSAPHanaDatabaseProtectedItem`
+- New field `IsProtectable` in struct `AzureVMWorkloadSAPHanaSystemProtectableItem`
+- New field `IsProtectable`, `NodesList` in struct `AzureVMWorkloadSQLAvailabilityGroupProtectableItem`
+- New field `IsProtectable` in struct `AzureVMWorkloadSQLDatabaseProtectableItem`
+- New field `NodesList`, `SoftDeleteRetentionPeriodInDays` in struct `AzureVMWorkloadSQLDatabaseProtectedItem`
+- New field `IsProtectable` in struct `AzureVMWorkloadSQLInstanceProtectableItem`
+- New field `SoftDeleteRetentionPeriodInDays` in struct `BackupResourceVaultConfig`
+- New field `AcquireStorageAccountLock`, `ProtectedItemsCount` in struct `BackupStatusResponse`
+- New field `SoftDeleteRetentionPeriodInDays` in struct `DPMProtectedItem`
+- New field `SourceResourceID` in struct `DistributedNodesInfo`
+- New field `SoftDeleteRetentionPeriodInDays` in struct `GenericProtectedItem`
+- New field `ProtectableItemCount` in struct `InquiryValidation`
+- New field `SoftDeleteRetentionPeriodInDays` in struct `MabFileFolderProtectedItem`
+- New field `GroupIDs` in struct `PrivateEndpointConnection`
+- New field `ActionsRequired` in struct `PrivateLinkServiceConnectionState`
+- New field `SoftDeleteRetentionPeriodInDays` in struct `ProtectedItem`
+
+
 ## 2.1.1 (2023-04-14)
 ### Bug Fixes
 

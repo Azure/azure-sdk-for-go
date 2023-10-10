@@ -1,12 +1,20 @@
 # Release History
 
-## 1.8.0-beta.3 (Unreleased)
+## 1.8.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.8.0-beta.3 (2023-09-07)
 
 ### Features Added
 
 * Added function `FetcherForNextLink` and `FetcherForNextLinkOptions` to the `runtime` package to centralize creation of `Pager[T].Fetcher` from a next link URL.
-
-### Breaking Changes
 
 ### Bugs Fixed
 
@@ -18,6 +26,12 @@
   * `WithCaptureResponse`
   * `WithHTTPHeader`
   * `WithRetryOptions`
+
+## 1.7.2 (2023-09-06)
+
+### Bugs Fixed
+
+* Fix default HTTP transport to work in WASM modules.
 
 ## 1.8.0-beta.2 (2023-08-14)
 

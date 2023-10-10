@@ -14,7 +14,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -30,6 +29,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/stretchr/testify/require"
 )
 
@@ -145,7 +145,7 @@ func BlobListToMap(list []string) map[string]bool {
 }
 
 func ValidateHTTPErrorCode(_require *require.Assertions, err error, code int) {
-	_require.NotNil(err)
+	_require.Error(err)
 	var responseErr *azcore.ResponseError
 	errors.As(err, &responseErr)
 	if responseErr != nil {
@@ -156,7 +156,7 @@ func ValidateHTTPErrorCode(_require *require.Assertions, err error, code int) {
 }
 
 func ValidateBlobErrorCode(_require *require.Assertions, err error, code bloberror.Code) {
-	_require.NotNil(err)
+	_require.Error(err)
 	var responseErr *azcore.ResponseError
 	errors.As(err, &responseErr)
 	if responseErr != nil {
@@ -168,9 +168,9 @@ func ValidateBlobErrorCode(_require *require.Assertions, err error, code bloberr
 
 func ValidateUpload(ctx context.Context, _require *require.Assertions, blobClient *blockblob.Client) {
 	resp, err := blobClient.DownloadStream(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	data, err := io.ReadAll(resp.Body)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(data, 0)
 }
 

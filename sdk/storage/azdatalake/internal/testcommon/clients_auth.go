@@ -10,6 +10,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -19,7 +21,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 const (
@@ -150,14 +151,14 @@ func GetFileClient(fsName, fName string, t *testing.T, accountType TestAccountTy
 func CreateNewFile(ctx context.Context, _require *require.Assertions, fileName string, filesystemClient *filesystem.Client) *file.Client {
 	fileClient := filesystemClient.NewFileClient(fileName)
 	_, err := fileClient.Create(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	return fileClient
 }
 
 func CreateNewDir(ctx context.Context, _require *require.Assertions, dirName string, filesystemClient *filesystem.Client) *directory.Client {
 	dirClient := filesystemClient.NewDirectoryClient(dirName)
 	_, err := dirClient.Create(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	return dirClient
 }
 
@@ -184,17 +185,17 @@ func ServiceGetFileSystemClient(filesystemName string, s *service.Client) *files
 
 func DeleteFileSystem(ctx context.Context, _require *require.Assertions, filesystemClient *filesystem.Client) {
 	_, err := filesystemClient.Delete(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func DeleteFile(ctx context.Context, _require *require.Assertions, fileClient *file.Client) {
 	_, err := fileClient.Delete(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func DeleteDir(ctx context.Context, _require *require.Assertions, dirClient *directory.Client) {
 	_, err := dirClient.Delete(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func GetGenericConnectionString(accountType TestAccountType) (*string, error) {
@@ -211,7 +212,7 @@ func CreateNewFileSystem(ctx context.Context, _require *require.Assertions, file
 	fsClient := ServiceGetFileSystemClient(filesystemName, serviceClient)
 
 	_, err := fsClient.Create(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return fsClient
 }

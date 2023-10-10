@@ -11,8 +11,7 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
+	"fmt"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -23,8 +22,10 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -34,6 +35,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -83,7 +85,7 @@ func createNewAppendBlob(ctx context.Context, _require *require.Assertions, appe
 	abClient := getAppendBlobClient(appendBlobName, containerClient)
 
 	_, err := abClient.Create(ctx, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	return abClient
 }
@@ -102,11 +104,11 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlock() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(resp.RawResponse.StatusCode, 201)
 
 	appendResp, err := abClient.AppendBlock(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
@@ -120,9 +122,81 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlock() {
 	_require.Equal((*appendResp.Date).IsZero(), false)
 
 	appendResp, err = abClient.AppendBlock(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*appendResp.BlobAppendOffset, "1024")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(2))
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	blobName := testName
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	abClient, err := appendblob.NewClient(blobURL, cred, nil)
+	_require.NoError(err)
+
+	resp, err := abClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobClientSharedKey() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	blobName := testName
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	cred, err := blob.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	abClient, err := appendblob.NewClientWithSharedKeyCredential(blobURL, cred, nil)
+	_require.NoError(err)
+
+	resp, err := abClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobClientConnectionString() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testName
+	connectionString, err := testcommon.GetGenericConnectionString(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	abClient, err := appendblob.NewClientFromConnectionString(*connectionString, containerName, blobName, nil)
+	_require.NoError(err)
+
+	resp, err := abClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
 }
 
 func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockHighThroughput() {
@@ -140,18 +214,18 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockHighThroughput() {
 
 	// Create AppendBlob with 5MB data
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	contentSize := 5 * 1024 * 1024 // 5MB
 	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	appendResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(appendResp.ETag)
 
 	// Check data integrity through downloading.
 	destBuffer := make([]byte, contentSize)
 	downloadBufferOptions := blob.DownloadBufferOptions{Range: blob.HTTPRange{Offset: 0, Count: int64(contentSize)}}
 	_, err = abClient.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
 }
 
@@ -168,7 +242,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockWithAutoGeneratedCRC64()
 	// set up abClient to test
 	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(resp.RawResponse.StatusCode, 201)
 
 	// test append block with valid CRC64 value
@@ -179,7 +253,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockWithAutoGeneratedCRC64()
 	}
 
 	appendResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(readerToBody), &appendBlockOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
@@ -202,7 +276,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockWithAutoGeneratedCRC64()
 	}
 
 	appendResp, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(readerToBody), &appendBlockOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CRC64Mismatch)
 }
@@ -220,7 +294,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithMD5() {
 	// set up abClient to test
 	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// test append block with valid MD5 value
 	readerToBody, body := testcommon.GetDataAndReader(testName, 1024)
@@ -231,7 +305,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithMD5() {
 		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5),
 	}
 	appendResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(readerToBody), &appendBlockOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(appendResp.ETag)
@@ -251,7 +325,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithMD5() {
 		TransactionalValidation: blob.TransferValidationTypeMD5(badMD5),
 	}
 	appendResp, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(readerToBody), &appendBlockOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
 }
@@ -269,7 +343,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCRC64() {
 	// set up abClient to test
 	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// test append block with valid CRC64 value
 	readerToBody, body := testcommon.GetDataAndReader(testName, 1024)
@@ -280,7 +354,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCRC64() {
 		TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value),
 	}
 	appendResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(readerToBody), &appendBlockOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(appendResp.ContentCRC64, crc)
 
 	// test append block with bad CRC64 value
@@ -291,7 +365,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCRC64() {
 		TransactionalValidation: blob.TransferValidationTypeCRC64(badCRC64),
 	}
 	appendResp, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(readerToBody), &appendBlockOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithSDKGeneratedCRC64() {
@@ -307,7 +381,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithSDKGeneratedCRC64() {
 	// set up abClient to test
 	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// test append block with SDK generated CRC64 value
 	readerToBody, body := testcommon.GetDataAndReader(testName, 1024)
@@ -318,7 +392,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithSDKGeneratedCRC64() {
 		TransactionalValidation: blob.TransferValidationTypeComputeCRC64(),
 	}
 	appendResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(readerToBody), &appendBlockOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(appendResp.ContentCRC64, crc)
 }
 
@@ -341,10 +415,10 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 
 	// Prepare source abClient for copy.
 	_, err = srcBlob.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	appendResp, err := srcBlob.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
@@ -361,7 +435,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	_require.Nil(err)
+	_require.NoError(err)
 	perms := sas.BlobPermissions{Read: true}
 
 	srcBlobParts.SAS, err = sas.BlobSignatureValues{
@@ -377,11 +451,11 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 
 	// Append block from URL.
 	_, err = destBlob.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, nil)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*appendFromURLResp.BlobAppendOffset, "0")
 	_require.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(appendFromURLResp.ETag)
@@ -398,7 +472,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 	destBuffer := make([]byte, 4*1024)
 	downloadBufferOptions := blob.DownloadBufferOptions{Range: blob.HTTPRange{Offset: 0, Count: 4096}}
 	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
 }
 
@@ -418,9 +492,9 @@ func (s *AppendBlobUnrecordedTestsSuite) TestBlobEncryptionScopeSAS() {
 	blobParts, _ := blob.ParseURL(blobClient.URL())
 
 	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
-	_require.Nil(err)
+	_require.NoError(err)
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	_require.Nil(err)
+	_require.NoError(err)
 	perms := sas.BlobPermissions{Read: true, Create: true, Write: true, Delete: true}
 
 	blobParts.SAS, err = sas.BlobSignatureValues{
@@ -437,7 +511,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestBlobEncryptionScopeSAS() {
 
 	// create new client with sas url
 	blobClient, err = appendblob.NewClientWithNoCredential(blobURLWithSAS, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	createResponse, err := blobClient.Create(context.Background(), nil)
 	_require.NoError(err)
@@ -461,10 +535,10 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAccountEncryptionScopeSAS() {
 	blobParts, _ := blob.ParseURL(blobClient.URL())
 
 	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	blobParts.SAS, err = sas.AccountSignatureValues{
 		Protocol:        sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
@@ -517,7 +591,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestGetUserDelegationEncryptionScopeSAS
 
 	// get permissions and details for sas
 	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	permissions := sas.BlobPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true}
 
@@ -563,10 +637,10 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 
 	// Prepare source abClient for copy.
 	_, err = srcBlob.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	appendResp, err := srcBlob.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
@@ -583,7 +657,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	_require.Nil(err)
+	_require.NoError(err)
 	perms := sas.BlobPermissions{Read: true}
 
 	srcBlobParts.SAS, err = sas.BlobSignatureValues{
@@ -599,7 +673,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 
 	// Append block from URL.
 	_, err = destBlob.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	count := int64(contentSize)
 	var md5Validator blob.SourceContentValidationTypeMD5 = contentMD5[:]
@@ -609,7 +683,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendBlockURLOptions)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*appendFromURLResp.BlobAppendOffset, "0")
 	_require.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(appendFromURLResp.ETag)
@@ -626,7 +700,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 	destBuffer := make([]byte, 4*1024)
 	downloadBufferOptions := blob.DownloadBufferOptions{Range: blob.HTTPRange{Offset: 0, Count: 4096}}
 	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
 
 	// Test append block from URL with bad MD5 value
@@ -637,7 +711,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 		SourceContentValidation: badMD5Validator,
 	}
 	_, err = destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendBlockURLOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
 }
 
@@ -661,17 +735,17 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64() {
 
 	// Prepare source abClient for copy.
 	_, err = srcBlob.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	appendResp, err := srcBlob.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(appendResp.ContentCRC64, crc)
 
 	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	_require.Nil(err)
+	_require.NoError(err)
 	perms := sas.BlobPermissions{Read: true}
 
 	srcBlobParts.SAS, err = sas.BlobSignatureValues{
@@ -687,7 +761,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64() {
 
 	// Append block from URL.
 	_, err = destBlob.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	count := int64(contentSize)
 	appendBlockURLOptions := appendblob.AppendBlockFromURLOptions{
@@ -695,7 +769,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64() {
 		SourceContentValidation: blob.SourceContentValidationTypeCRC64(crc),
 	}
 	_, err = destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendBlockURLOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// TODO: This does not work... ContentCRC64 is not returned. Fix this later.
 	// _require.EqualValues(appendFromURLResp.ContentCRC64, crc)
@@ -704,7 +778,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64() {
 	destBuffer := make([]byte, 4*1024)
 	downloadBufferOptions := blob.DownloadBufferOptions{Range: blob.HTTPRange{Offset: 0, Count: 4096}}
 	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
 }
 
@@ -730,16 +804,16 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64Negative
 
 	// Prepare source abClient for copy.
 	_, err = srcBlob.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	appendResp, err := srcBlob.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(appendResp.ContentCRC64, crc)
 
 	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	_require.Nil(err)
+	_require.NoError(err)
 	perms := sas.BlobPermissions{Read: true}
 
 	srcBlobParts.SAS, err = sas.BlobSignatureValues{
@@ -755,7 +829,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64Negative
 
 	// Append block from URL.
 	_, err = destBlob.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	count := int64(contentSize)
 
 	// Test append block from URL with bad CRC64 value
@@ -770,7 +844,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64Negative
 	_, err = destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendBlockURLOptions)
 
 	// TODO: AppendBlockFromURL should fail, but is currently not working due to service issue.
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CRC64Mismatch)
 }
 
@@ -794,13 +868,13 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuth() {
 
 	// Upload some data to source
 	_, err = srcABClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	contentSize := 4 * 1024 // 4KB
 	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	_, err = srcABClient.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = destABClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Getting token
 	token, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
@@ -817,7 +891,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuth() {
 	// Download data from destination
 	destBuffer := make([]byte, 4*1024)
 	_, err = destABClient.DownloadBuffer(context.Background(), destBuffer, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
 }
 
@@ -837,13 +911,13 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuthNegat
 
 	// Upload some data to source
 	_, err = srcABClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	contentSize := 4 * 1024 // 4KB
 	r, _ := testcommon.GetDataAndReader(testName, contentSize)
 	_, err = srcABClient.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = destABClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	options := appendblob.AppendBlockFromURLOptions{
 		CopySourceAuthorization: to.Ptr("Bearer faketoken"),
@@ -870,10 +944,10 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendMetadataNonEmpty() {
 	_, err = abClient.Create(context.Background(), &appendblob.CreateOptions{
 		Metadata: testcommon.BasicMetadata,
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp.Metadata)
 	_require.EqualValues(resp.Metadata, testcommon.BasicMetadata)
 }
@@ -895,10 +969,10 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendMetadataEmpty() {
 		Metadata: map[string]*string{},
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.Metadata)
 }
 
@@ -919,7 +993,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendMetadataInvalid() {
 		Metadata: map[string]*string{"In valid!": to.Ptr("bar")},
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 	_require.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring)
 }
 
@@ -940,17 +1014,17 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendHTTPHeaders() {
 		HTTPHeaders: &testcommon.BasicHeaders,
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	h := blob.ParseHTTPHeaders(resp)
 	_require.EqualValues(h, testcommon.BasicHeaders)
 }
 
 func validateAppendBlobPut(_require *require.Assertions, abClient *appendblob.Client) {
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp.Metadata)
 	_require.EqualValues(resp.Metadata, testcommon.BasicMetadata)
 	_require.EqualValues(blob.ParseHTTPHeaders(resp), testcommon.BasicHeaders)
@@ -970,7 +1044,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfModifiedSinceTrue()
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
@@ -986,7 +1060,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfModifiedSinceTrue()
 		},
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateAppendBlobPut(_require, abClient)
 }
@@ -1006,7 +1080,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfModifiedSinceFalse(
 
 	appendBlobCreateResp, err := abClient.Create(context.Background(), nil)
 
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
@@ -1022,7 +1096,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfModifiedSinceFalse(
 		},
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
@@ -1041,7 +1115,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
@@ -1057,7 +1131,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue
 		},
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateAppendBlobPut(_require, abClient)
 }
@@ -1076,7 +1150,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfUnmodifiedSinceFals
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
@@ -1092,7 +1166,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfUnmodifiedSinceFals
 		},
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
@@ -1122,7 +1196,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfMatchTrue() {
 		},
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateAppendBlobPut(_require, abClient)
 }
@@ -1141,28 +1215,28 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
-	_require.Nil(err)
+	_require.NoError(err)
 	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
 		Mode:                     &policy,
 		ModifiedAccessConditions: nil,
 	}
 	_, err = abClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.SetLegalHold(context.Background(), false, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.Delete(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	_, err = abClient.DeleteImmutabilityPolicy(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.Delete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
@@ -1179,23 +1253,23 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
-	_require.Nil(err)
+	_require.NoError(err)
 
 	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
 		Mode:                     &policy,
 		ModifiedAccessConditions: nil,
 	}
 	_, err = abClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.DeleteImmutabilityPolicy(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.Delete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendSetLegalHold() {
@@ -1212,20 +1286,20 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendSetLegalHold() {
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.SetLegalHold(context.Background(), true, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// should fail since time has not passed yet
 	_, err = abClient.Delete(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	_, err = abClient.SetLegalHold(context.Background(), false, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.Delete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 }
 
@@ -1252,7 +1326,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfMatchFalse() {
 		},
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
@@ -1281,7 +1355,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfNoneMatchTrue() {
 		},
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateAppendBlobPut(_require, abClient)
 }
@@ -1311,7 +1385,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfNoneMatchFalse() {
 		},
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
@@ -1330,7 +1404,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockNilBody() {
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(bytes.NewReader(nil)), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
 }
@@ -1349,7 +1423,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockEmptyBody() {
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("")), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
 }
@@ -1368,14 +1442,14 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockNonExistentBlob() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
 }
 
 func validateBlockAppended(_require *require.Assertions, abClient *appendblob.Client, expectedSize int) {
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*resp.ContentLength, int64(expectedSize))
 }
 
@@ -1393,7 +1467,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfModifiedSinceTrue() 
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
@@ -1407,7 +1481,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfModifiedSinceTrue() 
 		},
 	}
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &appendBlockOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateBlockAppended(_require, abClient, len(testcommon.BlockBlobDefaultData))
 }
@@ -1426,7 +1500,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfModifiedSinceFalse()
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
@@ -1440,7 +1514,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfModifiedSinceFalse()
 		},
 	}
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &appendBlockOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
@@ -1459,7 +1533,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue(
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
@@ -1473,7 +1547,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue(
 		},
 	}
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &appendBlockOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateBlockAppended(_require, abClient, len(testcommon.BlockBlobDefaultData))
 }
@@ -1492,7 +1566,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
@@ -1506,7 +1580,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse
 		},
 	}
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &appendBlockOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
@@ -1533,7 +1607,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfMatchTrue() {
 			},
 		},
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateBlockAppended(_require, abClient, len(testcommon.BlockBlobDefaultData))
 }
@@ -1558,7 +1632,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfMatchFalse() {
 			},
 		},
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
@@ -1582,7 +1656,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfNoneMatchTrue() {
 			},
 		},
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 	validateBlockAppended(_require, abClient, len(testcommon.BlockBlobDefaultData))
 }
 
@@ -1608,7 +1682,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 			},
 		},
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
@@ -1626,7 +1700,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////		},
 ////	}
 ////	_, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &appendBlockOptions) // This will cause the library to set the value of the header to 0
-////	_require.NotNil(err)
+////	_require.Error(err)
 ////
 ////	validateBlockAppended(c, abClient, len(testcommon.BlockBlobDefaultData))
 ////}
@@ -1638,7 +1712,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////	abClient, _ := createNewAppendBlob(c, containerClient)
 ////
 ////	_, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil) // The position will not match, but the condition should be ignored
-////	_require.Nil(err)
+////	_require.NoError(err)
 ////
 ////	appendPosition := int64(0)
 ////	appendBlockOptions := appendblob.AppendBlockOptions{
@@ -1647,7 +1721,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////		},
 ////	}
 ////	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &appendBlockOptions)
-////	_require.Nil(err)
+////	_require.NoError(err)
 ////
 ////	validateBlockAppended(c, abClient, 2*len(testcommon.BlockBlobDefaultData))
 ////}
@@ -1666,14 +1740,14 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfAppendPositionMatchT
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AppendPositionAccessConditions: &appendblob.AppendPositionAccessConditions{
 			AppendPosition: to.Ptr(int64(len(testcommon.BlockBlobDefaultData))),
 		},
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateBlockAppended(_require, abClient, len(testcommon.BlockBlobDefaultData)*2)
 }
@@ -1692,14 +1766,14 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfAppendPositionMatchF
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AppendPositionAccessConditions: &appendblob.AppendPositionAccessConditions{
 			AppendPosition: to.Ptr[int64](-1),
 		},
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
 }
 
@@ -1721,7 +1795,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfAppendPositionMatchF
 			AppendPosition: to.Ptr[int64](12),
 		},
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AppendPositionConditionNotMet)
 }
 
@@ -1743,7 +1817,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfMaxSizeTrue() {
 			MaxSize: to.Ptr(int64(len(testcommon.BlockBlobDefaultData) + 1)),
 		},
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 	validateBlockAppended(_require, abClient, len(testcommon.BlockBlobDefaultData))
 }
 
@@ -1765,7 +1839,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfMaxSizeFalse() {
 			MaxSize: to.Ptr(int64(len(testcommon.BlockBlobDefaultData) - 1)),
 		},
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MaxBlobSizeConditionNotMet)
 }
 
@@ -1783,21 +1857,21 @@ func (s *AppendBlobRecordedTestsSuite) TestSeal() {
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
 	appendResp, err := abClient.AppendBlock(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
 
 	resp, err := abClient.Seal(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*resp.IsSealed, true)
 
 	appendResp, err = abClient.AppendBlock(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, "BlobIsSealed")
 
 	getPropResp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*getPropResp.IsSealed, true)
 }
 
@@ -1815,7 +1889,7 @@ func (s *AppendBlobRecordedTestsSuite) TestSealWithAccessConditions() {
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
 	appendResp, err := abClient.AppendBlock(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
@@ -1828,18 +1902,18 @@ func (s *AppendBlobRecordedTestsSuite) TestSealWithAccessConditions() {
 
 	_, err = abClient.Seal(context.Background(), sealOpts)
 	// seal should fail on the condition
-	_require.NotNil(err)
+	_require.Error(err)
 
 	sealOpts = &appendblob.SealOptions{AccessConditions: &blob.AccessConditions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &pastTime},
 	}, AppendPositionAccessConditions: nil}
 
 	resp, err := abClient.Seal(context.Background(), sealOpts)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*resp.IsSealed, true)
 
 	_, err = abClient.Delete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 }
 
@@ -1864,7 +1938,7 @@ func (s *AppendBlobRecordedTestsSuite) TestSealWithAccessConditions() {
 //			AppendPosition: to.Ptr(1),
 //		},
 //	})
-//	_require.NotNil(err)
+//	_require.Error(err)
 //	_ = sealResp
 //
 //	sealResp, err = abClient.Seal(context.Background(), &AppendBlobSealOptions{
@@ -1888,47 +1962,47 @@ func (s *AppendBlobRecordedTestsSuite) TestCopySealedBlob() {
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
 	_, err = abClient.Seal(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	copiedBlob1 := getAppendBlobClient("copy1"+abName, containerClient)
 	// copy sealed blob will get a sealed blob
 	_, err = copiedBlob1.StartCopyFromURL(context.Background(), abClient.URL(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp1, err := copiedBlob1.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*getResp1.IsSealed, true)
 
 	_, err = copiedBlob1.AppendBlock(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, "BlobIsSealed")
 
 	copiedBlob2 := getAppendBlobClient("copy2"+abName, containerClient)
 	_, err = copiedBlob2.StartCopyFromURL(context.Background(), abClient.URL(), &blob.StartCopyFromURLOptions{
 		SealBlob: to.Ptr(true),
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp2, err := copiedBlob2.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*getResp2.IsSealed, true)
 
 	_, err = copiedBlob2.AppendBlock(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, "BlobIsSealed")
 
 	copiedBlob3 := getAppendBlobClient("copy3"+abName, containerClient)
 	_, err = copiedBlob3.StartCopyFromURL(context.Background(), abClient.URL(), &blob.StartCopyFromURLOptions{
 		SealBlob: to.Ptr(false),
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp3, err := copiedBlob3.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(getResp3.IsSealed)
 
 	appendResp3, err := copiedBlob3.AppendBlock(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(appendResp3.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp3.BlobAppendOffset, "0")
 	_require.Equal(*appendResp3.BlobCommittedBlockCount, int32(1))
@@ -1951,10 +2025,10 @@ func (s *AppendBlobRecordedTestsSuite) TestCopyUnsealedBlob() {
 	_, err = copiedBlob.StartCopyFromURL(context.Background(), abClient.URL(), &blob.StartCopyFromURLOptions{
 		SealBlob: to.Ptr(true),
 	})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	getResp, err := copiedBlob.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*getResp.IsSealed, true)
 }
 
@@ -1975,15 +2049,15 @@ func (s *AppendBlobUnrecordedTestsSuite) TestCreateAppendBlobWithTags() {
 		Tags: testcommon.SpecialCharBlobTagsMap,
 	}
 	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(createResp.VersionID)
 	time.Sleep(10 * time.Second)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	blobGetTagsResponse, err := abClient.GetTags(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
@@ -1993,15 +2067,15 @@ func (s *AppendBlobUnrecordedTestsSuite) TestCreateAppendBlobWithTags() {
 	}
 
 	resp, err := abClient.CreateSnapshot(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	snapshotURL, _ := abClient.WithSnapshot(*resp.Snapshot)
 	resp2, err := snapshotURL.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*resp2.TagCount, int64(len(testcommon.SpecialCharBlobTagsMap)))
 
 	blobGetTagsResponse, err = abClient.GetTags(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	blobTagsSet = blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
@@ -2013,7 +2087,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestCreateAppendBlobWithTags() {
 	// Tags with spaces
 	where := "\"GO \"='.Net'"
 	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
 	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[2])
 }
@@ -2039,7 +2113,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobGetPropertiesUsingVID() {
 		},
 	}
 	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(createResp.VersionID)
 	blobProp, _ = abClient.GetProperties(context.Background(), nil)
 	_require.EqualValues(createResp.VersionID, blobProp.VersionID)
@@ -2064,7 +2138,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobMetadataReturnsVID() {
 
 	metadata := map[string]*string{"test_key_1": to.Ptr("test_value_1"), "test_key_2": to.Ptr("2019")}
 	resp, err := bbClient.SetMetadata(context.Background(), metadata, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp.VersionID)
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
@@ -2073,7 +2147,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobMetadataReturnsVID() {
 
 	if pager.More() {
 		pageResp, err := pager.NextPage(context.Background())
-		_require.Nil(err) // check for an error first
+		_require.NoError(err) // check for an error first
 		// s.T().Fail()      // no page was gotten
 
 		_require.NotNil(pageResp.Segment.BlobItems)
@@ -2100,7 +2174,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPK() {
 		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(resp.RawResponse.StatusCode, 201)
 
 	words := []string{"AAA ", "BBB ", "CCC "}
@@ -2109,7 +2183,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPK() {
 			CPKInfo: &testcommon.TestCPKByValue,
 		}
 		resp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(word)), &appendBlockOptions)
-		_require.Nil(err)
+		_require.NoError(err)
 		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
 		_require.Equal(*resp.BlobCommittedBlockCount, int32(index+1))
@@ -2127,17 +2201,17 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPK() {
 
 	// Get blob content without encryption key should fail the request.
 	_, err = abClient.DownloadStream(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := blob.DownloadStreamOptions{
 		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	downloadResp, err := abClient.DownloadStream(context.Background(), &downloadBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	data, err := io.ReadAll(downloadResp.Body)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(string(data), "AAA BBB CCC ")
 	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
 }
@@ -2157,7 +2231,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 		CPKScopeInfo: &encryptionScope,
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	// _require.Equal(resp.RawResponse.StatusCode, 201)
 
 	words := []string{"AAA ", "BBB ", "CCC "}
@@ -2166,7 +2240,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 			CPKScopeInfo: &encryptionScope,
 		}
 		resp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(word)), &appendBlockOptions)
-		_require.Nil(err)
+		_require.NoError(err)
 		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
 		_require.Equal(*resp.BlobCommittedBlockCount, int32(index+1))
@@ -2187,10 +2261,10 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 		CPKScopeInfo: &encryptionScope,
 	}
 	downloadResp, err := abClient.DownloadStream(context.Background(), &downloadBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	data, err := io.ReadAll(downloadResp.Body)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(string(data), "AAA BBB CCC ")
 	_require.EqualValues(*downloadResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
@@ -2199,7 +2273,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Create container and blob, upload blob to container
 	containerName := testcommon.GenerateContainerName(testName)
@@ -2210,13 +2284,13 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 
 	createAppendBlobOptions := appendblob.CreateOptions{}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	parts, err := sas.ParseURL(abClient.URL()) // Get parts for BlobURL
-	_require.Nil(err)
+	_require.NoError(err)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Set Account SAS and set Permanent Delete to true
 	parts.SAS, err = sas.AccountSignatureValues{
@@ -2225,11 +2299,11 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Create snapshot of Blob and get snapshot URL
 	resp, err := abClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})
-	_require.Nil(err)
+	_require.NoError(err)
 	snapshotURL, _ := abClient.WithSnapshot(*resp.Snapshot)
 
 	// Check that there are two items in the container: one snapshot, one blob
@@ -2237,7 +2311,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	found := make([]*container.BlobItem, 0)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		found = append(found, resp.Segment.BlobItems...)
 		if err != nil {
 			break
@@ -2248,7 +2322,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	// Delete snapshot (snapshot will be soft deleted)
 	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
 	_, err = abClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Check that only blob exists (snapshot is soft-deleted)
 	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
@@ -2257,7 +2331,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	found = make([]*container.BlobItem, 0)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		found = append(found, resp.Segment.BlobItems...)
 		if err != nil {
 			break
@@ -2272,7 +2346,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	found = make([]*container.BlobItem, 0)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		found = append(found, resp.Segment.BlobItems...)
 		if err != nil {
 			break
@@ -2287,7 +2361,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	}
 	// Execute Delete with DeleteTypePermanent
 	pdResp, err := snapshotURL.Delete(context.Background(), &deleteBlobOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(pdResp)
 
 	// Check that only blob exists even after including snapshots and deleted items
@@ -2296,7 +2370,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	found = make([]*container.BlobItem, 0)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		found = append(found, resp.Segment.BlobItems...)
 		if err != nil {
 			break
@@ -2309,7 +2383,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Create container and blob, upload blob to container
 	containerName := testcommon.GenerateContainerName(testName)
@@ -2319,13 +2393,13 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
 
 	_, err = abClient.Create(context.Background(), &appendblob.CreateOptions{})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	parts, err := sas.ParseURL(abClient.URL()) // Get parts for BlobURL
-	_require.Nil(err)
+	_require.NoError(err)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Set Account SAS
 	parts.SAS, err = sas.AccountSignatureValues{
@@ -2334,11 +2408,11 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Create snapshot of Blob and get snapshot URL
 	resp, err := abClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})
-	_require.Nil(err)
+	_require.NoError(err)
 	snapshotURL, _ := abClient.WithSnapshot(*resp.Snapshot)
 
 	// Check that there are two items in the container: one snapshot, one blob
@@ -2346,7 +2420,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 	found := make([]*container.BlobItem, 0)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		found = append(found, resp.Segment.BlobItems...)
 		if err != nil {
 			break
@@ -2357,7 +2431,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 	// Delete snapshot
 	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
 	_, err = abClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Check that only blob exists
 	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
@@ -2366,7 +2440,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 	found = make([]*container.BlobItem, 0)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
+		_require.NoError(err)
 		found = append(found, resp.Segment.BlobItems...)
 		if err != nil {
 			break
@@ -2381,7 +2455,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 	}
 	// Execute Delete with DeleteTypePermanent,should fail because permissions are not set and snapshot is not soft-deleted
 	_, err = snapshotURL.Delete(context.Background(), &deleteBlobOptions)
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 // nolint
@@ -2405,11 +2479,11 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //	destBlob := containerClient.NewAppendBlobClient(generateName("dest"))
 //
 //	_, err = srcABClient.Create(ctx, nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 //
 //	resp, err := srcABClient.AppendBlock(ctx, streaming.NopCloser(r), nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(resp.RawResponse.StatusCode, 201)
 //	_require.Equal(*resp.BlobAppendOffset, "0")
 //	_require.Equal(*resp.BlobCommittedBlockCount, int32(1))
@@ -2425,7 +2499,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //	srcBlobParts, _ := NewBlobURLParts(srcABClient.URL())
 //
 //	credential, err := getGenericCredential(nil, testcommon.TestAccountDefault)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	srcBlobParts.SAS, err = BlobSASSignatureValues{
 //		Protocol:      SASProtocolHTTPS,
 //		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
@@ -2443,7 +2517,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	_, err = destBlob.Create(ctx, &createAppendBlobOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(cResp2.RawResponse.StatusCode, 201)
 //
 //	offset := int64(0)
@@ -2454,7 +2528,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
 //	_require.Equal(*appendFromURLResp.BlobAppendOffset, "0")
 //	_require.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
@@ -2471,27 +2545,27 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //
 //	// Get blob content without encryption key should fail the request.
 //	_, err = destBlob.DownloadStream(ctx, nil)
-//	_require.NotNil(err)
+//	_require.Error(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions := blob.downloadWriterAtOptions{
 //		CPKInfo: &testcommon.TestInvalidCPKByValue,
 //	}
 //	_, err = destBlob.DownloadStream(ctx, &downloadBlobOptions)
-//	_require.NotNil(err)
+//	_require.Error(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions = blob.downloadWriterAtOptions{
 //		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	downloadResp, err := destBlob.DownloadStream(ctx, &downloadBlobOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //
 //	_require.Equal(*downloadResp.IsServerEncrypted, true)
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
 //
 //	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CPKInfo: &testcommon.TestCPKByValue}))
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	_require.EqualValues(destData, srcData)
 // }
 
@@ -2514,11 +2588,11 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //	destBlob := containerClient.NewAppendBlobClient(generateName("dest"))
 //
 //	_, err = srcClient.Create(ctx, nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 //
 //	resp, err := srcClient.AppendBlock(ctx, streaming.NopCloser(r), nil)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	// _require.Equal(resp.RawResponse.StatusCode, 201)
 //	_require.Equal(*resp.BlobAppendOffset, "0")
 //	_require.Equal(*resp.BlobCommittedBlockCount, int32(1))
@@ -2534,7 +2608,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //	srcBlobParts, _ := NewBlobURLParts(srcClient.URL())
 //
 //	credential, err := getGenericCredential(nil, testcommon.TestAccountDefault)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	srcBlobParts.SAS, err = BlobSASSignatureValues{
 //		Protocol:      SASProtocolHTTPS,
 //		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
@@ -2552,7 +2626,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //		CPKScopeInfo: &testcommon.TestCPKByScope,
 //	}
 //	_, err = destBlob.Create(ctx, &createAppendBlobOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(cResp2.RawResponse.StatusCode, 201)
 //
 //	offset := int64(0)
@@ -2563,7 +2637,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //		CPKScopeInfo: &testcommon.TestCPKByScope,
 //	}
 //	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	//_require.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
 //	_require.Equal(*appendFromURLResp.BlobAppendOffset, "0")
 //	_require.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
@@ -2582,12 +2656,12 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //		CPKScopeInfo: &testcommon.TestCPKByScope,
 //	}
 //	downloadResp, err := destBlob.DownloadStream(ctx, &downloadBlobOptions)
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	_require.Equal(*downloadResp.IsServerEncrypted, true)
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
 //
 //	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CPKInfo: &testcommon.TestCPKByValue}))
-//	_require.Nil(err)
+//	_require.NoError(err)
 //	_require.EqualValues(destData, srcData)
 // }
 
@@ -2603,14 +2677,14 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobVersion() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	versions := make([]string, 0)
 	for i := 0; i < 5; i++ {
 		resp, err := abClient.CreateSnapshot(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.NotNil(resp.VersionID)
 		versions = append(versions, *resp.VersionID)
 	}
@@ -2623,9 +2697,9 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobVersion() {
 	// Deleting the 1st, 2nd and 3rd versions
 	for i := 0; i < 3; i++ {
 		abClientWithVersionID, err := abClient.WithVersionID(versions[i])
-		_require.Nil(err)
+		_require.NoError(err)
 		_, err = abClientWithVersionID.Delete(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 	}
 
 	// adding wait after delete
@@ -2637,7 +2711,7 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobVersion() {
 	testcommon.ListBlobsCount(context.Background(), _require, listPager, 3)
 
 	_, err = abClient.Undelete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// adding wait after undelete
 	time.Sleep(time.Second * 10)
@@ -2660,14 +2734,14 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	snapshots := make([]string, 0)
 	for i := 0; i < 5; i++ {
 		resp, err := abClient.CreateSnapshot(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 		_require.NotNil(resp.Snapshot)
 		snapshots = append(snapshots, *resp.Snapshot)
 	}
@@ -2680,9 +2754,9 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
 	// Deleting the 1st, 2nd and 3rd snapshots
 	for i := 0; i < 3; i++ {
 		abClientWithSnapshot, err := abClient.WithSnapshot(snapshots[i])
-		_require.Nil(err)
+		_require.NoError(err)
 		_, err = abClientWithSnapshot.Delete(context.Background(), nil)
-		_require.Nil(err)
+		_require.NoError(err)
 	}
 
 	// adding wait after delete
@@ -2694,7 +2768,7 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
 	testcommon.ListBlobsCount(context.Background(), _require, listPager, 3) // 2 snapshots and 1 current version
 
 	_, err = abClient.Undelete(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// adding wait after undelete
 	time.Sleep(time.Second * 10)
@@ -2717,19 +2791,19 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryToNeverExpire() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 
 	_, err = abClient.SetExpiry(context.Background(), appendblob.ExpiryTypeNever{}, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 }
 
@@ -2745,19 +2819,19 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToNow() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 
 	_, err = abClient.SetExpiry(context.Background(), appendblob.ExpiryTypeRelativeToNow(8*time.Second), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
 	time.Sleep(time.Second * 10)
@@ -2778,19 +2852,19 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToCreation
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 
 	_, err = abClient.SetExpiry(context.Background(), appendblob.ExpiryTypeRelativeToCreation(8*time.Second), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 
 	time.Sleep(time.Second * 10)
@@ -2811,20 +2885,20 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobSetExpiryToAbsolute() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Nil(resp.ExpiresOn)
 
 	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
 	_, err = abClient.SetExpiry(context.Background(), appendblob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(resp.ExpiresOn)
 	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*resp.ExpiresOn).UTC().Format(http.TimeFormat))
 
@@ -2846,16 +2920,16 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataNil() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.SetMetadata(context.Background(), map[string]*string{"not": to.Ptr("nil")}, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.SetMetadata(context.Background(), nil, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	blobGetResp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(blobGetResp.Metadata, 0)
 }
 
@@ -2871,16 +2945,16 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataEmpty() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.SetMetadata(context.Background(), map[string]*string{"not": to.Ptr("nil")}, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.SetMetadata(context.Background(), map[string]*string{}, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Len(resp.Metadata, 0)
 }
 
@@ -2896,16 +2970,16 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataInvalidField() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.SetMetadata(context.Background(), map[string]*string{"Invalid field!": to.Ptr("value")}, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 	_require.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring)
 }
 
 func validateMetadataSet(_require *require.Assertions, abClient *appendblob.Client) {
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.EqualValues(resp.Metadata, testcommon.BasicMetadata)
 }
 
@@ -2921,9 +2995,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfModifiedSinceT
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
 
@@ -2933,7 +3007,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfModifiedSinceT
 		},
 	}
 	_, err = abClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateMetadataSet(_require, abClient)
 }
@@ -2950,9 +3024,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfModifiedSinceF
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
 
@@ -2977,9 +3051,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfUnmodifiedSinc
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
 
@@ -2989,7 +3063,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfUnmodifiedSinc
 		},
 	}
 	_, err = abClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateMetadataSet(_require, abClient)
 }
@@ -3006,9 +3080,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfUnmodifiedSinc
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
 	setBlobMetadataOptions := blob.SetMetadataOptions{
@@ -3032,10 +3106,10 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfMatchTrue() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -3043,7 +3117,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfMatchTrue() {
 		},
 	}
 	_, err = abClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateMetadataSet(_require, abClient)
 }
@@ -3060,7 +3134,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfMatchFalse() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -3083,7 +3157,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfNoneMatchTrue(
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -3091,7 +3165,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfNoneMatchTrue(
 		},
 	}
 	_, err = abClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validateMetadataSet(_require, abClient)
 }
@@ -3108,10 +3182,10 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfNoneMatchFalse
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
 		AccessConditions: &blob.AccessConditions{
@@ -3124,7 +3198,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetMetadataIfNoneMatchFalse
 
 func validatePropertiesSet(_require *require.Assertions, abClient *appendblob.Client, disposition string) {
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.Equal(*resp.ContentDisposition, disposition)
 }
 
@@ -3140,9 +3214,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfModifiedSinc
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
 
@@ -3152,7 +3226,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfModifiedSinc
 				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime},
 			},
 		})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validatePropertiesSet(_require, abClient, "my_disposition")
 }
@@ -3169,9 +3243,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfModifiedSinc
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
 
@@ -3180,7 +3254,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfModifiedSinc
 			AccessConditions: &blob.AccessConditions{
 				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime},
 			}})
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfUnmodifiedSinceTrue() {
@@ -3195,9 +3269,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfUnmodifiedSi
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
 
@@ -3205,7 +3279,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfUnmodifiedSi
 		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validatePropertiesSet(_require, abClient, "my_disposition")
 }
@@ -3222,9 +3296,9 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfUnmodifiedSi
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	cResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
 
@@ -3232,7 +3306,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfUnmodifiedSi
 		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		}})
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfMatchTrue() {
@@ -3247,16 +3321,16 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfMatchTrue() 
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: resp.ETag},
 		}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validatePropertiesSet(_require, abClient, "my_disposition")
 }
@@ -3273,13 +3347,13 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfMatchFalse()
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr(azcore.ETag("garbage"))},
 		}})
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfNoneMatchTrue() {
@@ -3294,13 +3368,13 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfNoneMatchTru
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(azcore.ETag("garbage"))},
 		}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	validatePropertiesSet(_require, abClient, "my_disposition")
 }
@@ -3317,16 +3391,16 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetHTTPHeaderIfNoneMatchFal
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err := abClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: resp.ETag},
 		}})
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetBlobTags() {
@@ -3340,20 +3414,20 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetBlobTags() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	var tagsMap = map[string]string{
 		"azure": "blob",
 	}
 
 	_, err = abClient.SetTags(context.Background(), tagsMap, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	time.Sleep(10 * time.Second)
 
 	blobGetTagsResponse, err := abClient.GetTags(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
@@ -3374,7 +3448,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	blobLeaseClient, err := lease.NewBlobClient(abClient, &lease.BlobClientOptions{
 		LeaseID: to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
@@ -3382,18 +3456,18 @@ func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 	_require.NoError(err)
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, int32(60), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.LeaseID())
 
 	_, err = abClient.SetTags(ctx, testcommon.BasicBlobTagsMap, nil)
-	_require.NotNil(err)
+	_require.Error(err)
 	time.Sleep(10 * time.Second)
 
 	// add lease conditions
 	_, err = abClient.SetTags(ctx, testcommon.BasicBlobTagsMap, &blob.SetTagsOptions{AccessConditions: &blob.AccessConditions{
 		LeaseAccessConditions: &blob.LeaseAccessConditions{LeaseID: blobLeaseClient.LeaseID()}}})
-	_require.Nil(err)
+	_require.NoError(err)
 
 	_, err = abClient.GetTags(ctx, nil)
 	_require.NoError(err)
@@ -3422,10 +3496,30 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendGetAccountInfo() {
 
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
 	bAccInfo, err := abClient.GetAccountInfo(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	_require.NotZero(bAccInfo)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockSetTier() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abName := testcommon.GenerateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
+	_, err = abClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = abClient.SetTier(context.Background(), blob.AccessTierHot, nil)
+	_require.ErrorContains(err, "operation will not work on this blob type. SetTier only works for page blob in premium storage account and block blob in blob storage account")
 }

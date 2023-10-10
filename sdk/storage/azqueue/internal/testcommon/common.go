@@ -9,7 +9,6 @@ package testcommon
 import (
 	"errors"
 	"fmt"
-
 	"os"
 	"runtime"
 	"strconv"
@@ -56,7 +55,7 @@ func GenerateEntityName(testName string) string {
 }
 
 func ValidateHTTPErrorCode(_require *require.Assertions, err error, code int) {
-	_require.NotNil(err)
+	_require.Error(err)
 	var responseErr *azcore.ResponseError
 	errors.As(err, &responseErr)
 	if responseErr != nil {
@@ -95,7 +94,7 @@ func AfterTest(t *testing.T, suite string, test string) {
 }
 
 func ValidateQueueErrorCode(_require *require.Assertions, err error, code queueerror.Code) {
-	_require.NotNil(err)
+	_require.Error(err)
 	var responseErr *azcore.ResponseError
 	errors.As(err, &responseErr)
 	if responseErr != nil {

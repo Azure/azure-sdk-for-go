@@ -1,5 +1,17 @@
 # Release History
 
+## 1.2.0-beta.2 (2023-09-22)
+### Breaking Changes
+
+- Field `CollectionName` of struct `RoutingCosmosDBSQLAPIProperties` has been removed
+- Field `CosmosDBSQLCollections` of struct `RoutingEndpoints` has been removed
+
+### Features Added
+
+- New field `ContainerName` in struct `RoutingCosmosDBSQLAPIProperties`
+- New field `CosmosDBSQLContainers` in struct `RoutingEndpoints`
+
+
 ## 1.2.0-beta.1 (2023-04-28)
 ### Features Added
 

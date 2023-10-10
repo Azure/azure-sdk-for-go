@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/deletePolicyExemption.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/deletePolicyExemption.json
 func ExampleExemptionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,8 +35,8 @@ func ExampleExemptionsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/createOrUpdatePolicyExemption.json
-func ExampleExemptionsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/createOrUpdatePolicyExemption.json
+func ExampleExemptionsClient_CreateOrUpdate_createOrUpdateAPolicyExemption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -91,8 +91,88 @@ func ExampleExemptionsClient_CreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/getPolicyExemption.json
-func ExampleExemptionsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/createOrUpdatePolicyExemptionWithResourceSelectors.json
+func ExampleExemptionsClient_CreateOrUpdate_createOrUpdateAPolicyExemptionWithResourceSelectors() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpolicy.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExemptionsClient().CreateOrUpdate(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster", "DemoExpensiveVM", armpolicy.Exemption{
+		Properties: &armpolicy.ExemptionProperties{
+			Description:               to.Ptr("Exempt demo cluster from limit sku"),
+			AssignmentScopeValidation: to.Ptr(armpolicy.AssignmentScopeValidationDefault),
+			DisplayName:               to.Ptr("Exempt demo cluster"),
+			ExemptionCategory:         to.Ptr(armpolicy.ExemptionCategoryWaiver),
+			Metadata: map[string]any{
+				"reason": "Temporary exemption for a expensive VM demo",
+			},
+			PolicyAssignmentID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
+			PolicyDefinitionReferenceIDs: []*string{
+				to.Ptr("Limit_Skus")},
+			ResourceSelectors: []*armpolicy.ResourceSelector{
+				{
+					Name: to.Ptr("SDPRegions"),
+					Selectors: []*armpolicy.Selector{
+						{
+							In: []*string{
+								to.Ptr("eastus2euap"),
+								to.Ptr("centraluseuap")},
+							Kind: to.Ptr(armpolicy.SelectorKindResourceLocation),
+						}},
+				}},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Exemption = armpolicy.Exemption{
+	// 	Name: to.Ptr("DemoExpensiveVM"),
+	// 	Type: to.Ptr("Microsoft.Authorization/policyExemptions"),
+	// 	ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster/providers/Microsoft.Authorization/policyExemptions/DemoExpensiveVM"),
+	// 	Properties: &armpolicy.ExemptionProperties{
+	// 		Description: to.Ptr("Exempt demo cluster from limit sku"),
+	// 		AssignmentScopeValidation: to.Ptr(armpolicy.AssignmentScopeValidationDefault),
+	// 		DisplayName: to.Ptr("Exempt demo cluster"),
+	// 		ExemptionCategory: to.Ptr(armpolicy.ExemptionCategoryWaiver),
+	// 		Metadata: map[string]any{
+	// 			"reason": "Temporary exemption for a expensive VM demo",
+	// 		},
+	// 		PolicyAssignmentID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
+	// 		PolicyDefinitionReferenceIDs: []*string{
+	// 			to.Ptr("Limit_Skus")},
+	// 			ResourceSelectors: []*armpolicy.ResourceSelector{
+	// 				{
+	// 					Name: to.Ptr("SDPRegions"),
+	// 					Selectors: []*armpolicy.Selector{
+	// 						{
+	// 							In: []*string{
+	// 								to.Ptr("eastus2euap"),
+	// 								to.Ptr("centraluseuap")},
+	// 								Kind: to.Ptr(armpolicy.SelectorKindResourceLocation),
+	// 						}},
+	// 				}},
+	// 			},
+	// 			SystemData: &armpolicy.SystemData{
+	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-01T01:01:01.1075056Z"); return t}()),
+	// 				CreatedBy: to.Ptr("string"),
+	// 				CreatedByType: to.Ptr(armpolicy.CreatedByTypeUser),
+	// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-01T02:01:01.1075056Z"); return t}()),
+	// 				LastModifiedBy: to.Ptr("string"),
+	// 				LastModifiedByType: to.Ptr(armpolicy.CreatedByTypeUser),
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/getPolicyExemption.json
+func ExampleExemptionsClient_Get_retrieveAPolicyExemption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -135,7 +215,134 @@ func ExampleExemptionsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/getPolicyExemptionWithResourceSelectors.json
+func ExampleExemptionsClient_Get_retrieveAPolicyExemptionWithResourceSelectors() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpolicy.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExemptionsClient().Get(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster", "DemoExpensiveVM", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Exemption = armpolicy.Exemption{
+	// 	Name: to.Ptr("DemoExpensiveVM"),
+	// 	Type: to.Ptr("Microsoft.Authorization/policyExemptions"),
+	// 	ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster/providers/Microsoft.Authorization/policyExemptions/DemoExpensiveVM"),
+	// 	Properties: &armpolicy.ExemptionProperties{
+	// 		Description: to.Ptr("Exempt demo cluster from limit sku"),
+	// 		AssignmentScopeValidation: to.Ptr(armpolicy.AssignmentScopeValidationDefault),
+	// 		DisplayName: to.Ptr("Exempt demo cluster"),
+	// 		ExemptionCategory: to.Ptr(armpolicy.ExemptionCategoryWaiver),
+	// 		Metadata: map[string]any{
+	// 			"reason": "Temporary exemption for a expensive VM demo",
+	// 		},
+	// 		PolicyAssignmentID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
+	// 		PolicyDefinitionReferenceIDs: []*string{
+	// 			to.Ptr("Limit_Skus")},
+	// 			ResourceSelectors: []*armpolicy.ResourceSelector{
+	// 				{
+	// 					Name: to.Ptr("SDPRegions"),
+	// 					Selectors: []*armpolicy.Selector{
+	// 						{
+	// 							In: []*string{
+	// 								to.Ptr("eastus2euap"),
+	// 								to.Ptr("centraluseuap")},
+	// 								Kind: to.Ptr(armpolicy.SelectorKindResourceLocation),
+	// 						}},
+	// 				}},
+	// 			},
+	// 			SystemData: &armpolicy.SystemData{
+	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-01T01:01:01.1075056Z"); return t}()),
+	// 				CreatedBy: to.Ptr("string"),
+	// 				CreatedByType: to.Ptr(armpolicy.CreatedByTypeUser),
+	// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-01T02:01:01.1075056Z"); return t}()),
+	// 				LastModifiedBy: to.Ptr("string"),
+	// 				LastModifiedByType: to.Ptr(armpolicy.CreatedByTypeUser),
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/updatePolicyExemptionWithResourceSelectors.json
+func ExampleExemptionsClient_Update() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpolicy.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExemptionsClient().Update(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster", "DemoExpensiveVM", armpolicy.ExemptionUpdate{
+		Properties: &armpolicy.ExemptionUpdateProperties{
+			AssignmentScopeValidation: to.Ptr(armpolicy.AssignmentScopeValidationDefault),
+			ResourceSelectors: []*armpolicy.ResourceSelector{
+				{
+					Name: to.Ptr("SDPRegions"),
+					Selectors: []*armpolicy.Selector{
+						{
+							In: []*string{
+								to.Ptr("eastus2euap"),
+								to.Ptr("centraluseuap")},
+							Kind: to.Ptr(armpolicy.SelectorKindResourceLocation),
+						}},
+				}},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Exemption = armpolicy.Exemption{
+	// 	Name: to.Ptr("DemoExpensiveVM"),
+	// 	Type: to.Ptr("Microsoft.Authorization/policyExemptions"),
+	// 	ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster/providers/Microsoft.Authorization/policyExemptions/DemoExpensiveVM"),
+	// 	Properties: &armpolicy.ExemptionProperties{
+	// 		Description: to.Ptr("Exempt demo cluster from limit sku"),
+	// 		AssignmentScopeValidation: to.Ptr(armpolicy.AssignmentScopeValidationDefault),
+	// 		DisplayName: to.Ptr("Exempt demo cluster"),
+	// 		ExemptionCategory: to.Ptr(armpolicy.ExemptionCategoryWaiver),
+	// 		Metadata: map[string]any{
+	// 			"reason": "Temporary exemption for a expensive VM demo",
+	// 		},
+	// 		PolicyAssignmentID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
+	// 		PolicyDefinitionReferenceIDs: []*string{
+	// 			to.Ptr("Limit_Skus")},
+	// 			ResourceSelectors: []*armpolicy.ResourceSelector{
+	// 				{
+	// 					Name: to.Ptr("SDPRegions"),
+	// 					Selectors: []*armpolicy.Selector{
+	// 						{
+	// 							In: []*string{
+	// 								to.Ptr("eastus2euap"),
+	// 								to.Ptr("centraluseuap")},
+	// 								Kind: to.Ptr(armpolicy.SelectorKindResourceLocation),
+	// 						}},
+	// 				}},
+	// 			},
+	// 			SystemData: &armpolicy.SystemData{
+	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-01T01:01:01.1075056Z"); return t}()),
+	// 				CreatedBy: to.Ptr("string"),
+	// 				CreatedByType: to.Ptr(armpolicy.CreatedByTypeUser),
+	// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-01T02:01:01.1075056Z"); return t}()),
+	// 				LastModifiedBy: to.Ptr("string"),
+	// 				LastModifiedByType: to.Ptr(armpolicy.CreatedByTypeUser),
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/listPolicyExemptionsForSubscription.json
 func ExampleExemptionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,7 +416,7 @@ func ExampleExemptionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/listPolicyExemptionsForResourceGroup.json
 func ExampleExemptionsClient_NewListForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +490,7 @@ func ExampleExemptionsClient_NewListForResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/listPolicyExemptionsForResource.json
 func ExampleExemptionsClient_NewListForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +564,7 @@ func ExampleExemptionsClient_NewListForResourcePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/listPolicyExemptionsForManagementGroup.json
 func ExampleExemptionsClient_NewListForManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/getDataPolicyManifest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/getDataPolicyManifest.json
 func ExampleDataPolicyManifestsClient_GetByPolicyMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleDataPolicyManifestsClient_GetByPolicyMode() {
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/listDataPolicyManifests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/listDataPolicyManifests.json
 func ExampleDataPolicyManifestsClient_NewListPager_listDataPolicyManifests() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleDataPolicyManifestsClient_NewListPager_listDataPolicyManifests() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/listDataPolicyManifestsNamespaceFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e7b46ac4e63391b4d436265622f7b029a707d4f/specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/listDataPolicyManifestsNamespaceFilter.json
 func ExampleDataPolicyManifestsClient_NewListPager_listDataPolicyManifestsWithNamespaceFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

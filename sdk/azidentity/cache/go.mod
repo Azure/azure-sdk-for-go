@@ -2,6 +2,8 @@ module github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache
 
 go 1.18
 
+retract v0.1.0
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.8.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.5.0-beta.1

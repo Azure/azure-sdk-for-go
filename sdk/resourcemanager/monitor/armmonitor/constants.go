@@ -10,7 +10,7 @@ package armmonitor
 
 const (
 	moduleName    = "armmonitor"
-	moduleVersion = "v0.10.1"
+	moduleVersion = "v0.10.2"
 )
 
 // AccessMode - Access mode types.

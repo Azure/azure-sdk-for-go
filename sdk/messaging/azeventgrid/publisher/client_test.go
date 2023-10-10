@@ -90,7 +90,7 @@ func TestPublishCloudEvent(t *testing.T) {
 	})
 
 	t.Run("sharedkey", func(t *testing.T) {
-		client, err := publisher.NewClientWithSharedKeyCredential(vars.CE.Endpoint, azcore.NewKeyCredential(vars.EG.Key), newClientOptionsForTest(t, vars.CE))
+		client, err := publisher.NewClientWithSharedKeyCredential(vars.CE.Endpoint, azcore.NewKeyCredential(vars.CE.Key), newClientOptionsForTest(t, vars.CE))
 		require.NoError(t, err)
 		testPublish(t, client)
 	})

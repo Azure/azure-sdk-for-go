@@ -10,7 +10,7 @@ package armelasticsan
 
 const (
 	moduleName    = "armelasticsan"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.4.0"
 )
 
 // Action - The action of virtual network rule.

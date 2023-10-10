@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2023-10-27)
+## 0.4.0 (2023-10-27)
 ### Breaking Changes
 
 - Type of `SourceCreationData.CreateSource` has been changed from `*string` to `*VolumeCreateOption`

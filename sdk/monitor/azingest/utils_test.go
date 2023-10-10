@@ -50,7 +50,7 @@ func TestMain(m *testing.M) {
 		if err != nil {
 			panic(err)
 		}
-		if cloudEnv, ok := os.LookupEnv("AZQUERY_ENVIRONMENT"); ok {
+		if cloudEnv, ok := os.LookupEnv("AZINGEST_ENVIRONMENT"); ok {
 			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
 				clientCloud = cloud.AzureGovernment
 			}

@@ -23,7 +23,7 @@ type internalBatch interface {
 }
 
 type senderWrapper struct {
-	inner *azservicebus.Sender
+	inner *TrackingSender
 }
 
 func (sw *senderWrapper) SendMessageBatch(ctx context.Context, batch internalBatch) error {
@@ -34,7 +34,7 @@ func (sw *senderWrapper) NewMessageBatch(ctx context.Context, options *azservice
 	return sw.inner.NewMessageBatch(ctx, options)
 }
 
-func NewStreamingMessageBatch(ctx context.Context, sender internalBatchSender, stats *Stats) (*StreamingMessageBatch, error) {
+func NewStreamingMessageBatch(ctx context.Context, sender internalBatchSender) (*StreamingMessageBatch, error) {
 	batch, err := sender.NewMessageBatch(ctx, nil)
 
 	if err != nil {
@@ -43,14 +43,12 @@ func NewStreamingMessageBatch(ctx context.Context, sender internalBatchSender, s
 
 	return &StreamingMessageBatch{
 		sender:       sender,
-		stats:        stats,
 		currentBatch: batch,
 	}, nil
 }
 
 type StreamingMessageBatch struct {
 	sender       internalBatchSender
-	stats        *Stats
 	currentBatch internalBatch
 }
 
@@ -70,10 +68,6 @@ func (sb *StreamingMessageBatch) Add(ctx context.Context, msg *azservicebus.Mess
 	log.Printf("Sending message batch (%d messages)", sb.currentBatch.NumMessages())
 	if err := sb.sender.SendMessageBatch(ctx, sb.currentBatch); err != nil {
 		return err
-	}
-
-	if sb.stats != nil {
-		sb.stats.AddSent(sb.currentBatch.NumMessages())
 	}
 
 	// throttle a teeny bit.
@@ -106,8 +100,5 @@ func (sb *StreamingMessageBatch) Close(ctx context.Context) error {
 		return err
 	}
 
-	if sb.stats != nil {
-		sb.stats.AddSent(sb.currentBatch.NumMessages())
-	}
 	return nil
 }

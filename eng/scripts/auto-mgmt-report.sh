@@ -10,6 +10,5 @@ git clone https://github.com/Azure/azure-sdk-for-go.git
 cd ./azure-sdk-for-go
 sdkpath=`pwd`
 
-go install github.com/Azure/azure-sdk-for-go/eng/tools/mgmtreport@latest
 cd ./eng/tools/mgmtreport
-mgmtreport -sdkpath $sdkpath -storageaccount chenjieshistorage
+go run . -sdkpath $sdkpath -storageaccount chenjieshistorage

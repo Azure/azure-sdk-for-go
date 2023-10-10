@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
@@ -48,6 +49,9 @@ var (
 	cp1                = []string{"CP1"}
 	errInvalidTenantID = errors.New("invalid tenantID. You can locate your tenantID by following the instructions listed here: https://learn.microsoft.com/partner-center/find-ids-and-domain-names")
 )
+
+// TokenCachePersistenceOptions contains options for persistent token caching
+type TokenCachePersistenceOptions = internal.TokenCachePersistenceOptions
 
 // setAuthorityHost initializes the authority host for credentials. Precedence is:
 //  1. cloud.Configuration.ActiveDirectoryAuthorityHost value set by user

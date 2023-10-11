@@ -453,7 +453,9 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 	_, err = destBlob.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	appendFromURLResp, err := destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, nil)
+	appendFromURLResp, err := destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendblob.AppendBlockFromURLOptions{
+		SourceContentValidation: blob.SourceContentValidationTypeMD5(contentMD5[:]),
+	})
 
 	_require.NoError(err)
 	_require.Equal(*appendFromURLResp.BlobAppendOffset, "0")

@@ -1,4 +1,4 @@
-## Token caching in the Azure Identity client library
+## Token caching in the Azure Identity client module
 
 *Token caching* is a feature provided by the Azure Identity library that allows apps to:
 
@@ -18,7 +18,7 @@ Token caching, via the Azure Identity library, allows the app to store this acce
 
 #### Caching cannot be disabled
 
-As there are many levels of cache, it's not possible disable in-memory caching. However, the in-memory cache may be cleared by creating a new credential instance.
+As there are many levels of caching, it's not possible disable in-memory caching. However, the in-memory cache may be cleared by creating a new credential instance.
 
 ### Persistent token caching
 

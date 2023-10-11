@@ -8,7 +8,6 @@ package azappconfig_test
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 
@@ -78,9 +77,7 @@ func ExampleClient_AddSetting() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	fmt.Println(*resp.Key)
-	fmt.Println(*resp.Label)
-	fmt.Println(*resp.Value)
+	_ = resp // TODO: do something with resp
 
 	// Output:
 }
@@ -108,9 +105,7 @@ func ExampleClient_GetSetting() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	fmt.Println(*resp.Key)
-	fmt.Println(*resp.Label)
-	fmt.Println(*resp.Value)
+	_ = resp // TODO: do something with resp
 
 	// Output:
 }
@@ -138,9 +133,7 @@ func ExampleClient_SetSetting() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	fmt.Println(*resp.Key)
-	fmt.Println(*resp.Label)
-	fmt.Println(*resp.Value)
+	_ = resp // TODO: do something with resp
 
 	// Output:
 }
@@ -168,10 +161,7 @@ func ExampleClient_SetReadOnly() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	fmt.Println(*resp.Key)
-	fmt.Println(*resp.Label)
-	fmt.Println(*resp.Value)
-	fmt.Println(*resp.IsReadOnly)
+	_ = resp // TODO: do something with resp
 
 	// Remove read only status
 	resp, err = client.SetReadOnly(context.TODO(), "example-key", false, &azappconfig.SetReadOnlyOptions{
@@ -183,10 +173,7 @@ func ExampleClient_SetReadOnly() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	fmt.Println(*resp.Key)
-	fmt.Println(*resp.Label)
-	fmt.Println(*resp.Value)
-	fmt.Println(*resp.IsReadOnly)
+	_ = resp // TODO: do something with resp
 
 	// Output:
 }
@@ -251,9 +238,7 @@ func ExampleClient_DeleteSetting() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	fmt.Println(*resp.Key)
-	fmt.Println(*resp.Label)
-	fmt.Println(*resp.Value)
+	_ = resp // TODO: do something with resp
 
 	// Output:
 }

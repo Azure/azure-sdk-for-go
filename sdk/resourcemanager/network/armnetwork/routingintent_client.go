@@ -75,6 +75,10 @@ func (client *RoutingIntentClient) BeginCreateOrUpdate(ctx context.Context, reso
 // Generated from API version 2023-05-01
 func (client *RoutingIntentClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, routingIntentParameters RoutingIntent, options *RoutingIntentClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "RoutingIntentClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters, options)
 	if err != nil {
 		return nil, err
@@ -153,6 +157,10 @@ func (client *RoutingIntentClient) BeginDelete(ctx context.Context, resourceGrou
 // Generated from API version 2023-05-01
 func (client *RoutingIntentClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "RoutingIntentClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, routingIntentName, options)
 	if err != nil {
 		return nil, err
@@ -208,6 +216,10 @@ func (client *RoutingIntentClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - RoutingIntentClientGetOptions contains the optional parameters for the RoutingIntentClient.Get method.
 func (client *RoutingIntentClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentClientGetOptions) (RoutingIntentClientGetResponse, error) {
 	var err error
+	const operationName = "RoutingIntentClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, routingIntentName, options)
 	if err != nil {
 		return RoutingIntentClientGetResponse{}, err
@@ -275,6 +287,7 @@ func (client *RoutingIntentClient) NewListPager(resourceGroupName string, virtua
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RoutingIntentClientListResponse) (RoutingIntentClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoutingIntentClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -294,6 +307,7 @@ func (client *RoutingIntentClient) NewListPager(resourceGroupName string, virtua
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

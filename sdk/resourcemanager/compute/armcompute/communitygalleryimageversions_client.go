@@ -58,6 +58,10 @@ func NewCommunityGalleryImageVersionsClient(subscriptionID string, credential az
 //     method.
 func (client *CommunityGalleryImageVersionsClient) Get(ctx context.Context, location string, publicGalleryName string, galleryImageName string, galleryImageVersionName string, options *CommunityGalleryImageVersionsClientGetOptions) (CommunityGalleryImageVersionsClientGetResponse, error) {
 	var err error
+	const operationName = "CommunityGalleryImageVersionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, publicGalleryName, galleryImageName, galleryImageVersionName, options)
 	if err != nil {
 		return CommunityGalleryImageVersionsClientGetResponse{}, err
@@ -131,6 +135,7 @@ func (client *CommunityGalleryImageVersionsClient) NewListPager(location string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CommunityGalleryImageVersionsClientListResponse) (CommunityGalleryImageVersionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CommunityGalleryImageVersionsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -150,6 +155,7 @@ func (client *CommunityGalleryImageVersionsClient) NewListPager(location string,
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

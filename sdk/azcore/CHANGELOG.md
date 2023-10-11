@@ -1,15 +1,38 @@
 # Release History
 
-## 1.8.0-beta.4 (Unreleased)
+## 1.9.0-beta.2 (Unreleased)
 
 ### Features Added
 
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.9.0-beta.1 (2023-10-05)
+
+### Other Changes
+
+* The beta features for tracing and fakes have been reinstated.
+
+## 1.8.0 (2023-10-05)
+
+### Features Added
+
+* This includes the following features from `v1.8.0-beta.N` releases.
+  * Claims and CAE for authentication.
+  * New `messaging` package.
+  * Various helpers in the `runtime` package.
+  * Deprecation of `runtime.With*` funcs and their replacements in the `policy` package.
 * Added types `KeyCredential` and `SASCredential` to the `azcore` package.
   * Includes their respective constructor functions.
 * Added types `KeyCredentialPolicy` and `SASCredentialPolicy` to the `azcore/runtime` package.
   * Includes their respective constructor functions and options types.
 
 ### Breaking Changes
+> These changes affect only code written against beta versions of `v1.8.0`
+* The beta features for tracing and fakes have been omitted for this release.
 
 ### Bugs Fixed
 

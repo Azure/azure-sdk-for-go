@@ -75,14 +75,14 @@ func EmptySessions(remainingArgs []string) {
 
 			endMS := time.Since(start) / time.Millisecond
 
-			sc.TrackMetric(string(MetricNameSessionTimeoutMS), float64(endMS))
+			shared.TrackMetric(sc.Context, sc.TC, shared.MetricSessionTimeoutMS, float64(endMS), nil)
 
 			// the error should indicate that we timed out waiting for a new session
 			if sbErr := (*azservicebus.Error)(nil); errors.As(err, &sbErr) {
 				switch sbErr.Code {
 				case azservicebus.CodeConnectionLost:
 					// these are okay, we'll just let it recover on the next call.
-					sc.TrackMetric(string(MetricNameConnectionLost), 1)
+					shared.TrackMetric(sc.Context, sc.TC, shared.MetricConnectionLost, 1, nil)
 				case azservicebus.CodeTimeout:
 					// great! this is what we expect to get - the service-side timeout fires off since there's
 					// no session available.

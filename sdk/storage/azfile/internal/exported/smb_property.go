@@ -46,6 +46,8 @@ func FormatSMBProperties(sp *SMBProperties, isDir bool) (fileAttributes *string,
 			// Directories need to have this attribute included, if setting any attributes.
 			*fileAttributes += "|Directory"
 		}
+		*fileAttributes = strings.TrimPrefix(*fileAttributes, "|")
+		*fileAttributes = strings.TrimSuffix(*fileAttributes, "|")
 	}
 
 	creationTime = nil

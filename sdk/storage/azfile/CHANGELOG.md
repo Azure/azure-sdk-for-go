@@ -2,6 +2,14 @@
 
 ## 1.1.0 (2023-10-10)
 
+### Features Added
+
+* Updated service version to `2022-11-02`.
+
+### Bugs Fixed
+
+* Fixed a bug where the `x-ms-file-attributes` header could be set to contain invalid trailing or leading | characters.
+
 ## 1.1.0-beta.1 (2023-09-12)
 
 ### Features Added

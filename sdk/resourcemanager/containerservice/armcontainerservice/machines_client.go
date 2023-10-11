@@ -54,6 +54,10 @@ func NewMachinesClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - MachinesClientGetOptions contains the optional parameters for the MachinesClient.Get method.
 func (client *MachinesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, machineName string, options *MachinesClientGetOptions) (MachinesClientGetResponse, error) {
 	var err error
+	const operationName = "MachinesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, machineName, options)
 	if err != nil {
 		return MachinesClientGetResponse{}, err
@@ -126,6 +130,7 @@ func (client *MachinesClient) NewListPager(resourceGroupName string, resourceNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MachinesClientListResponse) (MachinesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MachinesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -145,6 +150,7 @@ func (client *MachinesClient) NewListPager(resourceGroupName string, resourceNam
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

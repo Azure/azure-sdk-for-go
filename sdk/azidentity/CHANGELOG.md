@@ -1,15 +1,29 @@
 # Release History
 
-## 1.4.0-beta.6 (Unreleased)
+## 1.5.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-* `ManagedIdentityCredential` will now retry when IMDS responds 410 or 503
 
 ### Other Changes
+
+## 1.5.0-beta.1 (2023-10-10)
+
+### Features Added
+* Optional persistent token caching for most credentials. Set `TokenCachePersistenceOptions`
+  on a credential's options to enable and configure this. See the package documentation for
+  this version and [TOKEN_CACHING.md](https://aka.ms/azsdk/go/identity/caching) for more
+  details.
+* `AzureDeveloperCLICredential` authenticates with the Azure Developer CLI (`azd`). This
+  credential is also part of the `DefaultAzureCredential` authentication flow.
+
+## 1.4.0 (2023-10-10)
+
+### Bugs Fixed
+* `ManagedIdentityCredential` will now retry when IMDS responds 410 or 503
 
 ## 1.4.0-beta.5 (2023-09-12)
 

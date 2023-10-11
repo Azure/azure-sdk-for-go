@@ -7,16 +7,12 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
 func ExampleNewClientForOpenAI() {
-	keyCredential, err := azopenai.NewKeyCredential("<OpenAI-APIKey>")
-
-	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
+	keyCredential := azcore.NewKeyCredential("<OpenAI-APIKey>")
 
 	// NOTE: this constructor creates a client that connects to the public OpenAI endpoint.
 	// To connect to an Azure OpenAI endpoint, use azopenai.NewClient() or azopenai.NewClientWithyKeyCredential.
@@ -51,12 +47,7 @@ func ExampleNewClient() {
 }
 
 func ExampleNewClientWithKeyCredential() {
-	keyCredential, err := azopenai.NewKeyCredential("<Azure-OpenAI-APIKey>")
-
-	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
+	keyCredential := azcore.NewKeyCredential("<Azure-OpenAI-APIKey>")
 
 	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
 	// To connect to the public OpenAI endpoint, use azopenai.NewClientForOpenAI

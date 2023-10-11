@@ -75,6 +75,10 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) BeginCreateOrUpdate(ctx
 // Generated from API version 2023-05-01
 func (client *ExpressRouteCrossConnectionPeeringsClient) createOrUpdate(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, peeringParameters ExpressRouteCrossConnectionPeering, options *ExpressRouteCrossConnectionPeeringsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExpressRouteCrossConnectionPeeringsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, crossConnectionName, peeringName, peeringParameters, options)
 	if err != nil {
 		return nil, err
@@ -153,6 +157,10 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) BeginDelete(ctx context
 // Generated from API version 2023-05-01
 func (client *ExpressRouteCrossConnectionPeeringsClient) deleteOperation(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExpressRouteCrossConnectionPeeringsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, crossConnectionName, peeringName, options)
 	if err != nil {
 		return nil, err
@@ -209,6 +217,10 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) deleteCreateRequest(ctx
 //     method.
 func (client *ExpressRouteCrossConnectionPeeringsClient) Get(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsClientGetOptions) (ExpressRouteCrossConnectionPeeringsClientGetResponse, error) {
 	var err error
+	const operationName = "ExpressRouteCrossConnectionPeeringsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, crossConnectionName, peeringName, options)
 	if err != nil {
 		return ExpressRouteCrossConnectionPeeringsClientGetResponse{}, err
@@ -277,6 +289,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) NewListPager(resourceGr
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExpressRouteCrossConnectionPeeringsClientListResponse) (ExpressRouteCrossConnectionPeeringsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpressRouteCrossConnectionPeeringsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -296,6 +309,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) NewListPager(resourceGr
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

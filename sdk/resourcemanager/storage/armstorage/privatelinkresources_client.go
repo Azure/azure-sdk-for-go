@@ -54,6 +54,10 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesClientListByStorageAccountOptions) (PrivateLinkResourcesClientListByStorageAccountResponse, error) {
 	var err error
+	const operationName = "PrivateLinkResourcesClient.ListByStorageAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByStorageAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return PrivateLinkResourcesClientListByStorageAccountResponse{}, err

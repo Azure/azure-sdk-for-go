@@ -55,6 +55,10 @@ func NewProximityPlacementGroupsClient(subscriptionID string, credential azcore.
 //     method.
 func (client *ProximityPlacementGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters ProximityPlacementGroup, options *ProximityPlacementGroupsClientCreateOrUpdateOptions) (ProximityPlacementGroupsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ProximityPlacementGroupsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, proximityPlacementGroupName, parameters, options)
 	if err != nil {
 		return ProximityPlacementGroupsClientCreateOrUpdateResponse{}, err
@@ -119,6 +123,10 @@ func (client *ProximityPlacementGroupsClient) createOrUpdateHandleResponse(resp 
 //     method.
 func (client *ProximityPlacementGroupsClient) Delete(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *ProximityPlacementGroupsClientDeleteOptions) (ProximityPlacementGroupsClientDeleteResponse, error) {
 	var err error
+	const operationName = "ProximityPlacementGroupsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, proximityPlacementGroupName, options)
 	if err != nil {
 		return ProximityPlacementGroupsClientDeleteResponse{}, err
@@ -170,6 +178,10 @@ func (client *ProximityPlacementGroupsClient) deleteCreateRequest(ctx context.Co
 //     method.
 func (client *ProximityPlacementGroupsClient) Get(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *ProximityPlacementGroupsClientGetOptions) (ProximityPlacementGroupsClientGetResponse, error) {
 	var err error
+	const operationName = "ProximityPlacementGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, proximityPlacementGroupName, options)
 	if err != nil {
 		return ProximityPlacementGroupsClientGetResponse{}, err
@@ -236,6 +248,7 @@ func (client *ProximityPlacementGroupsClient) NewListByResourceGroupPager(resour
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProximityPlacementGroupsClientListByResourceGroupResponse) (ProximityPlacementGroupsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProximityPlacementGroupsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -255,6 +268,7 @@ func (client *ProximityPlacementGroupsClient) NewListByResourceGroupPager(resour
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -300,6 +314,7 @@ func (client *ProximityPlacementGroupsClient) NewListBySubscriptionPager(options
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProximityPlacementGroupsClientListBySubscriptionResponse) (ProximityPlacementGroupsClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProximityPlacementGroupsClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -319,6 +334,7 @@ func (client *ProximityPlacementGroupsClient) NewListBySubscriptionPager(options
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -360,6 +376,10 @@ func (client *ProximityPlacementGroupsClient) listBySubscriptionHandleResponse(r
 //     method.
 func (client *ProximityPlacementGroupsClient) Update(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters ProximityPlacementGroupUpdate, options *ProximityPlacementGroupsClientUpdateOptions) (ProximityPlacementGroupsClientUpdateResponse, error) {
 	var err error
+	const operationName = "ProximityPlacementGroupsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, proximityPlacementGroupName, parameters, options)
 	if err != nil {
 		return ProximityPlacementGroupsClientUpdateResponse{}, err

@@ -23,11 +23,19 @@ type UsernamePasswordCredentialOptions struct {
 	// Add the wildcard value "*" to allow the credential to acquire tokens for any tenant in which the
 	// application is registered.
 	AdditionallyAllowedTenants []string
+
+	// AuthenticationRecord returned by a call to a credential's Authenticate method. Set this option
+	// to enable the credential to use data from a previous authentication.
+	AuthenticationRecord AuthenticationRecord
+
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
 	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
+
+	// TokenCachePersistenceOptions enables persistent token caching when not nil.
+	TokenCachePersistenceOptions *TokenCachePersistenceOptions
 }
 
 // UsernamePasswordCredential authenticates a user with a password. Microsoft doesn't recommend this kind of authentication,
@@ -45,17 +53,24 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 		options = &UsernamePasswordCredentialOptions{}
 	}
 	opts := publicClientOptions{
-		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
-		ClientOptions:              options.ClientOptions,
-		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
-		Password:                   password,
-		Username:                   username,
+		AdditionallyAllowedTenants:   options.AdditionallyAllowedTenants,
+		ClientOptions:                options.ClientOptions,
+		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
+		Password:                     password,
+		Record:                       options.AuthenticationRecord,
+		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
+		Username:                     username,
 	}
 	c, err := newPublicClient(tenantID, clientID, credNameUserPassword, opts)
 	if err != nil {
 		return nil, err
 	}
 	return &UsernamePasswordCredential{client: c}, err
+}
+
+// Authenticate the user. Subsequent calls to GetToken will automatically use the returned AuthenticationRecord.
+func (c *UsernamePasswordCredential) Authenticate(ctx context.Context, opts *policy.TokenRequestOptions) (AuthenticationRecord, error) {
+	return c.client.Authenticate(ctx, opts)
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.

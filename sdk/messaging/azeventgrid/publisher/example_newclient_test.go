@@ -11,6 +11,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher"
@@ -57,7 +58,7 @@ func ExampleNewClientWithSAS() {
 		return
 	}
 
-	client, err := publisher.NewClientWithSharedKeyCredential(endpoint, key, &publisher.ClientOptions{
+	client, err := publisher.NewClientWithSAS(endpoint, azcore.NewSASCredential(key), &publisher.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			PerCallPolicies: []policy.Policy{
 				dumpFullPolicy{"EventGridEvent"},
@@ -85,7 +86,7 @@ func ExampleNewClientWithSharedKeyCredential() {
 		return
 	}
 
-	client, err := publisher.NewClientWithSharedKeyCredential(endpoint, key, nil)
+	client, err := publisher.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(key), nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic

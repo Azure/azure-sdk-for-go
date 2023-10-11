@@ -54,6 +54,10 @@ func NewLoadBalancerProbesClient(subscriptionID string, credential azcore.TokenC
 //   - options - LoadBalancerProbesClientGetOptions contains the optional parameters for the LoadBalancerProbesClient.Get method.
 func (client *LoadBalancerProbesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string, options *LoadBalancerProbesClientGetOptions) (LoadBalancerProbesClientGetResponse, error) {
 	var err error
+	const operationName = "LoadBalancerProbesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, probeName, options)
 	if err != nil {
 		return LoadBalancerProbesClientGetResponse{}, err
@@ -122,6 +126,7 @@ func (client *LoadBalancerProbesClient) NewListPager(resourceGroupName string, l
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LoadBalancerProbesClientListResponse) (LoadBalancerProbesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoadBalancerProbesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -141,6 +146,7 @@ func (client *LoadBalancerProbesClient) NewListPager(resourceGroupName string, l
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

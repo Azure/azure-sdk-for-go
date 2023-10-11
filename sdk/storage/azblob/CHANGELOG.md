@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2023-10-10)
+## 1.2.0 (2023-10-11)
 
 ### Bugs Fixed
 * Fixed null pointer exception when `SetImmutabilityPolicyOptions` is passed as `nil`.

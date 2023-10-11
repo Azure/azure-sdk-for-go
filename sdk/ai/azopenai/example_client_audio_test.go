@@ -13,6 +13,7 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
@@ -29,12 +30,7 @@ func ExampleClient_GetAudioTranscription() {
 		return
 	}
 
-	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
-
-	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
+	keyCredential := azcore.NewKeyCredential(azureOpenAIKey)
 
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 

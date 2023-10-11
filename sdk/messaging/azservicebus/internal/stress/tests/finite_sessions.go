@@ -34,12 +34,17 @@ func FiniteSessions(remainingArgs []string) {
 	params := finiteSessionsArgs{}
 
 	fs.IntVar(&params.numSessions, "sessions", 2000, "Number of sessions to test")
-	fs.IntVar(&params.rounds, "rounds", 100, "Number of rounds to run with these parameters. -1 means math.MaxInt64")
+	fs.IntVar(&params.rounds, "rounds", 300, "Number of rounds to run with these parameters. -1 means math.MaxInt64")
 
 	sc := shared.MustCreateStressContext("FiniteSessions", nil)
 	defer sc.End()
 
 	topicName := strings.ToLower(fmt.Sprintf("topic-%X", time.Now().UnixNano()))
+
+	sc.Start(topicName, map[string]string{
+		"NumSessions": fmt.Sprintf("%d", params.numSessions),
+		"Rounds":      fmt.Sprintf("%d", params.rounds),
+	})
 
 	log.Printf("Creating topic %s", topicName)
 
@@ -55,13 +60,14 @@ func FiniteSessions(remainingArgs []string) {
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.NoError(err)
 
-	sender, err := client.NewSender(topicName, nil)
+	sender, err := shared.NewTrackingSender(sc.TC, client, topicName, nil)
 	sc.NoError(err)
 
 	defer sender.Close(sc.Context)
 
 	for round := 0; round < int(params.rounds); round++ {
 		var sessionReceivers []*azservicebus.SessionReceiver
+
 		wg := sync.WaitGroup{}
 
 		for i := 0; i < params.numSessions; i++ {
@@ -71,9 +77,13 @@ func FiniteSessions(remainingArgs []string) {
 				SessionID: &sessionID,
 			}, nil)
 			sc.NoError(err)
+			shared.TrackMetric(sc.Context, sc.TC, shared.MetricMessagesSent, 1, map[string]string{
+				"SessionID": sessionID,
+			})
 
 			sessionReceiver, err := client.AcceptNextSessionForSubscription(sc.Context, topicName, "sub1", nil)
 			sc.NoError(err)
+			shared.TrackMetric(sc.Context, sc.TC, shared.MetricSessionAccept, 1, nil)
 
 			// one of the things mentioned in the customer issue - they keep the session receivers
 			// alive for a long time.
@@ -85,6 +95,7 @@ func FiniteSessions(remainingArgs []string) {
 				defer wg.Done()
 
 				ctx, cancel := context.WithTimeout(sc.Context, time.Minute)
+
 				messages, err := sessionReceiver.ReceiveMessages(ctx, 2, nil)
 				cancel()
 
@@ -92,7 +103,11 @@ func FiniteSessions(remainingArgs []string) {
 				sc.Equal(1, len(messages))
 				sc.Equal(sessionID, *messages[0].SessionID)
 
+				shared.TrackMetric(ctx, sc.TC, shared.MetricMessageReceived, float64(len(messages)), nil)
+
+				trackDuration := shared.TrackDuration(ctx, sc.TC, shared.MetricSettlementRequestDuration)
 				sc.NoError(sessionReceiver.CompleteMessage(sc.Context, messages[0], nil))
+				trackDuration(nil)
 			}()
 		}
 

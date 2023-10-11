@@ -29,15 +29,20 @@ type ClientCertificateCredentialOptions struct {
 	// Add the wildcard value "*" to allow the credential to acquire tokens for any tenant in which the
 	// application is registered.
 	AdditionallyAllowedTenants []string
+
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
 	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
+
 	// SendCertificateChain controls whether the credential sends the public certificate chain in the x5c
 	// header of each token request's JWT. This is required for Subject Name/Issuer (SNI) authentication.
 	// Defaults to False.
 	SendCertificateChain bool
+
+	// TokenCachePersistenceOptions enables persistent token caching when not nil.
+	TokenCachePersistenceOptions *TokenCachePersistenceOptions
 }
 
 // ClientCertificateCredential authenticates a service principal with a certificate.
@@ -58,10 +63,11 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 		return nil, err
 	}
 	msalOpts := confidentialClientOptions{
-		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
-		ClientOptions:              options.ClientOptions,
-		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
-		SendX5C:                    options.SendCertificateChain,
+		AdditionallyAllowedTenants:   options.AdditionallyAllowedTenants,
+		ClientOptions:                options.ClientOptions,
+		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
+		SendX5C:                      options.SendCertificateChain,
+		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
 	}
 	c, err := newConfidentialClient(tenantID, clientID, credNameCert, cred, msalOpts)
 	if err != nil {

@@ -110,7 +110,7 @@ func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
 
 			httpClient := &http.Client{Transport: tp}
 
-			tmpClient, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, tv.Key, &azeventgrid.ClientOptions{
+			tmpClient, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), &azeventgrid.ClientOptions{
 				ClientOptions: azcore.ClientOptions{
 					Transport: httpClient,
 				},
@@ -118,14 +118,14 @@ func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
 			require.NoError(t, err)
 			client = tmpClient
 		} else {
-			tmpClient, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, tv.Key, nil)
+			tmpClient, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), nil)
 			require.NoError(t, err)
 			client = tmpClient
 		}
 
 		purgePreviousEvents(t, client, tv)
 	} else {
-		tmpClient, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, tv.Key, &azeventgrid.ClientOptions{
+		tmpClient, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), &azeventgrid.ClientOptions{
 			ClientOptions: azcore.ClientOptions{
 				Transport: newRecordingTransporter(t, tv),
 			},

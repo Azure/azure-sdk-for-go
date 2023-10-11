@@ -439,6 +439,45 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteNonDefault() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
+func (d *DirectoryRecordedTestsSuite) TestDirCreateEmptyAttributes() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirClient := testcommon.GetDirectoryClient(dirName, shareClient)
+
+	cResp, err := dirClient.Create(context.Background(), &directory.CreateOptions{
+		FileSMBProperties: &file.SMBProperties{
+			Attributes: &file.NTFSFileAttributes{},
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(cResp.FilePermissionKey)
+	_require.Equal(cResp.Date.IsZero(), false)
+	_require.NotNil(cResp.ETag)
+	_require.Equal(cResp.LastModified.IsZero(), false)
+	_require.NotNil(cResp.RequestID)
+
+	fileAttributes, err := file.ParseNTFSFileAttributes(cResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
+	_require.True(fileAttributes.Directory)
+
+	gResp, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	fileAttributes2, err := file.ParseNTFSFileAttributes(gResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes2)
+	_require.True(fileAttributes2.Directory)
+	_require.EqualValues(fileAttributes, fileAttributes2)
+}
+
 func (d *DirectoryRecordedTestsSuite) TestDirCreateNegativePermissions() {
 	_require := require.New(d.T())
 	testName := d.T().Name()

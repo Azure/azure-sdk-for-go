@@ -83,9 +83,6 @@ func ExampleClient_AddSetting() {
 	fmt.Println(*resp.Value)
 
 	// Output:
-	// example-key
-	// example-label
-	// example-value
 }
 
 func ExampleClient_GetSetting() {
@@ -116,9 +113,6 @@ func ExampleClient_GetSetting() {
 	fmt.Println(*resp.Value)
 
 	// Output:
-	// example-key
-	// example-label
-	// example-value
 }
 
 func ExampleClient_SetSetting() {
@@ -149,9 +143,6 @@ func ExampleClient_SetSetting() {
 	fmt.Println(*resp.Value)
 
 	// Output:
-	// example-key
-	// example-label
-	// example-new-value
 }
 
 func ExampleClient_SetReadOnly() {
@@ -198,14 +189,6 @@ func ExampleClient_SetReadOnly() {
 	fmt.Println(*resp.IsReadOnly)
 
 	// Output:
-	// example-key
-	// example-label
-	// example-new-value
-	// true
-	// example-key
-	// example-label
-	// example-new-value
-	// false
 }
 
 func ExampleClient_NewListRevisionsPager() {
@@ -273,7 +256,4 @@ func ExampleClient_DeleteSetting() {
 	fmt.Println(*resp.Value)
 
 	// Output:
-	// example-key
-	// example-label
-	// example-new-value
 }

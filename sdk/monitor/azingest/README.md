@@ -31,7 +31,7 @@ The [azidentity][azure_identity] module is used for Azure Active Directory authe
 
 An authenticated client object is required to upload logs. The examples demonstrate using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate; however, the client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
 
-The clients default to the Azure public cloud. For other cloud configurations, see the [cloud][cloud_documentation] package documentation.
+The clients defaults to the Azure public cloud. For other cloud configurations, see the [cloud][cloud_documentation] package documentation.
 
 #### Create a client
 

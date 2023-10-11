@@ -227,6 +227,8 @@ func (d *Client) NewFileClient(fileName string) (*file.Client, error) {
 	return (*file.Client)(base.NewPathClient(fileURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.FileClient), d.sharedKey(), d.identityCredential(), d.getClientOptions())), nil
 }
 
+// NewSubdirectoryClient creates a new directory.Client object by concatenating subdirectoryName to the end of this Client's URL.
+// The new directory.Client uses the same request policy pipeline as the Client.
 func (d *Client) NewSubdirectoryClient(subdirectoryName string) (*Client, error) {
 	subdirectoryName = url.PathEscape(strings.TrimRight(subdirectoryName, "/"))
 	subDirectoryURL := runtime.JoinPaths(d.DFSURL(), subdirectoryName)

@@ -63,14 +63,14 @@ type UnrecordedTestSuite struct {
 	suite.Suite
 }
 
-func (d *UnrecordedTestSuite) TestDirNewSubdirectoryClient() {
-	_require := require.New(d.T())
-	testName := d.T().Name()
+func (s *RecordedTestSuite) TestDirNewSubdirectoryClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
 
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
 	_require.Greater(len(accountName), 0)
 
-	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDatalake, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	fsName := testcommon.GenerateFileSystemName(testName)

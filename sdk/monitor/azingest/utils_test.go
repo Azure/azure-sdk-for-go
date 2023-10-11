@@ -10,10 +10,12 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -26,10 +28,11 @@ const fakeRuleID = "Custom-TestTable_CL"
 const fakeStreamName = "dcr-testing"
 
 var (
-	credential azcore.TokenCredential
-	endpoint   string
-	ruleID     string
-	streamName string
+	credential  azcore.TokenCredential
+	endpoint    string
+	ruleID      string
+	streamName  string
+	clientCloud cloud.Configuration
 )
 
 func TestMain(m *testing.M) {
@@ -46,6 +49,14 @@ func TestMain(m *testing.M) {
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
 			panic(err)
+		}
+		if cloudEnv, ok := os.LookupEnv("AZINGEST_ENVIRONMENT"); ok {
+			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
+				clientCloud = cloud.AzureGovernment
+			}
+			if strings.EqualFold(cloudEnv, "AzureChinaCloud") {
+				clientCloud = cloud.AzureChina
+			}
 		}
 	}
 	endpoint = getEnvVar("AZURE_MONITOR_DCE", fakeEndpoint)
@@ -69,7 +80,7 @@ func startTest(t *testing.T) *azingest.Client {
 	startRecording(t)
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
-	opts := &azingest.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
+	opts := &azingest.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport, Cloud: clientCloud}}
 
 	client, err := azingest.NewClient(endpoint, credential, opts)
 	if err != nil {

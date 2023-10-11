@@ -185,6 +185,16 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 Configuration is attempted in the above order. For example, if values for a
 client secret and certificate are both present, the client secret will be used.
 
+## Token caching
+
+Token caching is an `azidentity` feature that allows apps to:
+
+* Cache tokens in memory (default) or on disk (opt-in).
+* Improve resilience and performance.
+* Reduce the number of requests made to Microsoft Entra ID to obtain access tokens.
+
+For more details, see the [token caching documentation](https://aka.ms/azsdk/go/identity/caching).
+
 ## Troubleshooting
 
 ### Error Handling

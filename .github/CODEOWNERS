@@ -52,7 +52,7 @@
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
 
 # PRLabel: %Storage
-/sdk/storage/                 @siminsavani-msft @souravgupta-msft @tasherif-msft @jhendrixMSFT @gapra-msft @vibhansa-msft
+/sdk/storage/                 @siminsavani-msft @souravgupta-msft @tasherif-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
 
 # PRLabel: %Open Telemetry
 /sdk/tracing/azotel           @jhendrixMSFT @rickwinter

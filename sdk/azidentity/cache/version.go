@@ -6,4 +6,4 @@
 
 package cache
 
-const version = "v0.2.0" // nolint
+const version = "v0.2.1" // nolint

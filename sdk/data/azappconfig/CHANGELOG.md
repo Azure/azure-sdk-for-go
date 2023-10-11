@@ -1,15 +1,12 @@
 # Release History
 
-## 0.6.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0 (2023-10-11)
 
 ### Bugs Fixed
 * Check for a `Sync-Token` value before updating the cache.
 
 ### Other Changes
+* Cleaned up docs and added examples.
 
 ## 0.6.0 (2023-09-20)
 

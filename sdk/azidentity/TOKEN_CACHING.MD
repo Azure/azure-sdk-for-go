@@ -22,6 +22,8 @@ As there are many levels of caching, it's not possible disable in-memory caching
 
 ### Persistent token caching
 
+> Only azidentity v1.5.0-beta versions support persistent token caching
+
 *Persistent disk token caching* is an opt-in feature in the Azure Identity library. The feature allows apps to cache access tokens in an encrypted, persistent storage mechanism. As indicated in the following table, the storage mechanism differs across operating systems.
 
 | Operating system | Storage mechanism                     |

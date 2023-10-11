@@ -24,4 +24,4 @@ stages:
             inputs:
               scriptPath: 'eng/scripts/auto-mgmt-report.sh'
               cwd: '$(System.DefaultWorkingDirectory)'
-              args: '$(AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN) $(AZURE_STORAGE_PRIMARY_ACCOUNT_KEY)'
+              args: '$(AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN) $(AZURE_STORAGE_PRIMARY_ACCOUNT_KEY) $(azure_storage_account)'

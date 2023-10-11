@@ -11,4 +11,4 @@ cd ./azure-sdk-for-go
 sdkpath=`pwd`
 
 cd ./eng/tools/mgmtreport
-go run . -sdkpath $sdkpath -storageaccount chenjieshistorage
+go run . -sdkpath $sdkpath -storageaccount $3

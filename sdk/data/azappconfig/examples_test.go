@@ -39,6 +39,10 @@ func ExampleNewClient() {
 
 func ExampleNewClientFromConnectionString() {
 	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
 	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
 
 	if err != nil {
@@ -53,6 +57,10 @@ func ExampleNewClientFromConnectionString() {
 
 func ExampleClient_AddSetting() {
 	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
 	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
 
 	if err != nil {
@@ -82,6 +90,10 @@ func ExampleClient_AddSetting() {
 
 func ExampleClient_GetSetting() {
 	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
 	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
 
 	if err != nil {
@@ -111,6 +123,10 @@ func ExampleClient_GetSetting() {
 
 func ExampleClient_SetSetting() {
 	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
 	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
 
 	if err != nil {
@@ -140,6 +156,10 @@ func ExampleClient_SetSetting() {
 
 func ExampleClient_SetReadOnly() {
 	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
 	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
 
 	if err != nil {
@@ -190,6 +210,10 @@ func ExampleClient_SetReadOnly() {
 
 func ExampleClient_NewListRevisionsPager() {
 	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
 	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
 
 	if err != nil {
@@ -223,6 +247,10 @@ func ExampleClient_NewListRevisionsPager() {
 
 func ExampleClient_DeleteSetting() {
 	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
 	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
 
 	if err != nil {

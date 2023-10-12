@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed case in Blob Batch API when blob path has / in it. Fixes [#21649](https://github.com/Azure/azure-sdk-for-go/issues/21649).
+
 ### Other Changes
 
 ## 1.2.0 (2023-10-11)

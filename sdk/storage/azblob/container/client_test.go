@@ -2581,6 +2581,15 @@ func (s *ContainerUnrecordedTestsSuite) TestSASContainerClientTags() {
 	_require.NoError(err)
 }
 
+func getBlobNameForBatch(i int) string {
+	bbName := fmt.Sprintf("blockblob%v", i)
+	if i%2 == 0 {
+		// doing this so that there is a mix of blobs with and without / in its name
+		bbName = fmt.Sprintf("block/blob%v", i)
+	}
+	return bbName
+}
+
 func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteSuccessUsingSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2595,7 +2604,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteSuccessUsing
 	_require.NoError(err)
 
 	for i := 0; i < 10; i++ {
-		bbName := fmt.Sprintf("blockblob%v", i)
+		bbName := getBlobNameForBatch(i)
 		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
 		err = bb.Delete(bbName, nil)
 		_require.NoError(err)
@@ -2648,7 +2657,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierPartialFail
 
 	// add 5 blobs to BatchBuilder which does not exist
 	for i := 0; i < 15; i++ {
-		bbName := fmt.Sprintf("blockblob%v", i)
+		bbName := getBlobNameForBatch(i)
 		if i < 10 {
 			_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
 		}
@@ -2733,7 +2742,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingTokenCr
 	_require.NoError(err)
 
 	for i := 0; i < 10; i++ {
-		bbName := fmt.Sprintf("blockblob%v", i)
+		bbName := getBlobNameForBatch(i)
 		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
 		err = bb.Delete(bbName, nil)
 		_require.NoError(err)
@@ -2783,7 +2792,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingTokenC
 	_require.NoError(err)
 
 	for i := 0; i < 10; i++ {
-		bbName := fmt.Sprintf("blockblob%v", i)
+		bbName := getBlobNameForBatch(i)
 		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
 		err = bb.SetTier(bbName, blob.AccessTierCool, nil)
 		_require.NoError(err)
@@ -2851,7 +2860,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingAccount
 	_require.NoError(err)
 
 	for i := 0; i < 10; i++ {
-		bbName := fmt.Sprintf("blockblob%v", i)
+		bbName := getBlobNameForBatch(i)
 		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
 		err = bb.Delete(bbName, nil)
 		_require.NoError(err)
@@ -2904,7 +2913,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingAccoun
 	_require.NoError(err)
 
 	for i := 0; i < 10; i++ {
-		bbName := fmt.Sprintf("blockblob%v", i)
+		bbName := getBlobNameForBatch(i)
 		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
 		err = bb.SetTier(bbName, blob.AccessTierCool, nil)
 		_require.NoError(err)
@@ -2968,7 +2977,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingService
 	_require.NoError(err)
 
 	for i := 0; i < 10; i++ {
-		bbName := fmt.Sprintf("blockblob%v", i)
+		bbName := getBlobNameForBatch(i)
 		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, cntClientSAS)
 		err = bb.Delete(bbName, nil)
 		_require.NoError(err)
@@ -3017,7 +3026,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingServic
 	_require.NoError(err)
 
 	for i := 0; i < 10; i++ {
-		bbName := fmt.Sprintf("blockblob%v", i)
+		bbName := getBlobNameForBatch(i)
 		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, cntClientSAS)
 		err = bb.SetTier(bbName, blob.AccessTierCool, nil)
 		_require.NoError(err)
@@ -3087,7 +3096,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingUserDel
 	_require.NoError(err)
 
 	for i := 0; i < 10; i++ {
-		bbName := fmt.Sprintf("blockblob%v", i)
+		bbName := getBlobNameForBatch(i)
 		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, cntClientSAS)
 		err = bb.Delete(bbName, nil)
 		_require.NoError(err)
@@ -3142,7 +3151,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingUserDe
 	_require.NoError(err)
 
 	for i := 0; i < 10; i++ {
-		bbName := fmt.Sprintf("blockblob%v", i)
+		bbName := getBlobNameForBatch(i)
 		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, cntClientSAS)
 		err = bb.SetTier(bbName, blob.AccessTierCool, nil)
 		_require.NoError(err)
@@ -3200,7 +3209,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteMoreThan256(
 	_require.NoError(err)
 
 	for i := 0; i < 256; i++ {
-		bbName := fmt.Sprintf("blockblob%v", i)
+		bbName := getBlobNameForBatch(i)
 		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
 		err = bb.Delete(bbName, nil)
 		_require.NoError(err)

@@ -4253,4 +4253,40 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	_require.Equal("file", respFromCtxDir.Header.Get("x-ms-resource-type"))
 }
 
-// TODO tests all uploads/downloads with other opts
+func (s *UnrecordedTestSuite) TestFileCreateDeleteUsingOAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.RequestID)
+	_require.Equal(resp.LastModified.IsZero(), false)
+
+	gResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, int64(2048))
+
+	dResp, err := fClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(dResp.Date.IsZero(), false)
+	_require.NotNil(dResp.RequestID)
+	_require.NotNil(dResp.Version)
+
+	_, err = fClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ResourceNotFound)
+}

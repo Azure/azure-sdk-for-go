@@ -1169,7 +1169,7 @@ func batchSetup(containerName string, svcClient *service.Client, bb *service.Bat
 		}
 		cntClients = append(cntClients, cntClient)
 
-		bbName := fmt.Sprintf("blockblob%v", i*2)
+		bbName := fmt.Sprintf("block/blob%v", i*2)
 		bbClient := cntClient.NewBlockBlobClient(bbName)
 		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 		if err != nil {

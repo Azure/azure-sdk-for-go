@@ -189,9 +189,10 @@ func TestWithAllowedHeadersQueryParams(t *testing.T) {
 
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	require.NoError(t, err)
-	req.Raw().Header.Set(plAllowedHeader, "sent1")
-	req.Raw().Header.Set(clAllowedHeader, "sent2")
-	req.Raw().Header.Set(redactedHeader, "cantseeme")
+	// don't use Header.Set() as it canonicalizes the headers (our SDKs don't either)
+	req.Raw().Header[plAllowedHeader] = []string{"sent1"}
+	req.Raw().Header[clAllowedHeader] = []string{"sent2"}
+	req.Raw().Header[redactedHeader] = []string{"cantseeme"}
 	qp := req.Raw().URL.Query()
 	qp.Add(plAllowedQP, "sent1")
 	qp.Add(clAllowedQP, "sent2")
@@ -204,8 +205,8 @@ func TestWithAllowedHeadersQueryParams(t *testing.T) {
 
 	require.Len(t, rawlog, 3)
 	require.Contains(t, rawlog[log.EventRequest], "?client-allowed-qp=sent2&pipeline-allowed-qp=sent1&redacted-qp=REDACTED")
-	require.Regexp(t, `Client-Allowed: sent2\s+Pipeline-Allowed: sent1`, rawlog[log.EventRequest])
-	require.Regexp(t, `Client-Allowed: sent2\s+Pipeline-Allowed: sent1`, rawlog[log.EventResponse])
+	require.Regexp(t, `client-allowed: sent2\s+pipeline-allowed: sent1\s+redacted-header: REDACTED`, rawlog[log.EventRequest])
+	require.Regexp(t, `Client-Allowed: received2\s+Content-Length: 0\s+Date: (?:[a-zA-Z0-9:,\s]+)\s+Pipeline-Allowed: received1\s+Redacted-Header: REDACTED`, rawlog[log.EventResponse])
 }
 
 func TestSkipWriteReqBody(t *testing.T) {

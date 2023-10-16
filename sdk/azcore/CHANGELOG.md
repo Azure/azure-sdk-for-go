@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed an issue that could cause some allowed HTTP header values to not show up in logs.
+
 ### Other Changes
 
 ## 1.9.0-beta.1 (2023-10-05)

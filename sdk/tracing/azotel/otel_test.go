@@ -71,7 +71,7 @@ func TestConvertSpan(t *testing.T) {
 	assert.EqualValues(t, eventName, ts.eventName)
 	require.Len(t, ts.eventOptions, 1)
 
-	span.End(nil)
+	span.End()
 	assert.True(t, ts.endCalled)
 
 	attr := tracing.Attribute{

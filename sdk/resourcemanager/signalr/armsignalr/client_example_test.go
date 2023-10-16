@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_CheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_CheckNameAvailability.json
 func ExampleClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListBySubscription.json
 func ExampleClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,6 +137,19 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					NetworkACLs: &armsignalr.NetworkACLs{
 		// 						DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
+		// 						IPRules: []*armsignalr.IPRule{
+		// 							{
+		// 								Action: to.Ptr(armsignalr.ACLActionAllow),
+		// 								Value: to.Ptr("123.456.789.123/24"),
+		// 							},
+		// 							{
+		// 								Action: to.Ptr(armsignalr.ACLActionAllow),
+		// 								Value: to.Ptr("123.456.789.123"),
+		// 							},
+		// 							{
+		// 								Action: to.Ptr(armsignalr.ACLActionAllow),
+		// 								Value: to.Ptr("AppService"),
+		// 						}},
 		// 						PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
 		// 							{
 		// 								Allow: []*armsignalr.SignalRRequestType{
@@ -175,6 +188,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 							ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 		// 							PublicNetworkAccess: to.Ptr("Enabled"),
 		// 							PublicPort: to.Ptr[int32](443),
+		// 							RegionEndpointEnabled: to.Ptr("Enabled"),
 		// 							ResourceLogConfiguration: &armsignalr.ResourceLogConfiguration{
 		// 								Categories: []*armsignalr.ResourceLogCategory{
 		// 									{
@@ -182,6 +196,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 										Enabled: to.Ptr("true"),
 		// 								}},
 		// 							},
+		// 							ResourceStopped: to.Ptr("false"),
 		// 							ServerPort: to.Ptr[int32](443),
 		// 							Serverless: &armsignalr.ServerlessSettings{
 		// 								ConnectionTimeoutInSeconds: to.Ptr[int32](5),
@@ -208,7 +223,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListByResourceGroup.json
 func ExampleClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,6 +314,19 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					NetworkACLs: &armsignalr.NetworkACLs{
 		// 						DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
+		// 						IPRules: []*armsignalr.IPRule{
+		// 							{
+		// 								Action: to.Ptr(armsignalr.ACLActionAllow),
+		// 								Value: to.Ptr("123.456.789.123/24"),
+		// 							},
+		// 							{
+		// 								Action: to.Ptr(armsignalr.ACLActionAllow),
+		// 								Value: to.Ptr("123.456.789.123"),
+		// 							},
+		// 							{
+		// 								Action: to.Ptr(armsignalr.ACLActionAllow),
+		// 								Value: to.Ptr("AppService"),
+		// 						}},
 		// 						PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
 		// 							{
 		// 								Allow: []*armsignalr.SignalRRequestType{
@@ -337,6 +365,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 							ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 		// 							PublicNetworkAccess: to.Ptr("Enabled"),
 		// 							PublicPort: to.Ptr[int32](443),
+		// 							RegionEndpointEnabled: to.Ptr("Enabled"),
 		// 							ResourceLogConfiguration: &armsignalr.ResourceLogConfiguration{
 		// 								Categories: []*armsignalr.ResourceLogCategory{
 		// 									{
@@ -344,6 +373,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 										Enabled: to.Ptr("true"),
 		// 								}},
 		// 							},
+		// 							ResourceStopped: to.Ptr("false"),
 		// 							ServerPort: to.Ptr[int32](443),
 		// 							Serverless: &armsignalr.ServerlessSettings{
 		// 								ConnectionTimeoutInSeconds: to.Ptr[int32](5),
@@ -370,7 +400,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Get.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -455,6 +485,19 @@ func ExampleClient_Get() {
 	// 			},
 	// 			NetworkACLs: &armsignalr.NetworkACLs{
 	// 				DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
+	// 				IPRules: []*armsignalr.IPRule{
+	// 					{
+	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
+	// 						Value: to.Ptr("123.456.789.123/24"),
+	// 					},
+	// 					{
+	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
+	// 						Value: to.Ptr("123.456.789.123"),
+	// 					},
+	// 					{
+	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
+	// 						Value: to.Ptr("AppService"),
+	// 				}},
 	// 				PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
 	// 					{
 	// 						Allow: []*armsignalr.SignalRRequestType{
@@ -493,6 +536,7 @@ func ExampleClient_Get() {
 	// 					ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 	// 					PublicNetworkAccess: to.Ptr("Enabled"),
 	// 					PublicPort: to.Ptr[int32](443),
+	// 					RegionEndpointEnabled: to.Ptr("Enabled"),
 	// 					ResourceLogConfiguration: &armsignalr.ResourceLogConfiguration{
 	// 						Categories: []*armsignalr.ResourceLogCategory{
 	// 							{
@@ -500,6 +544,7 @@ func ExampleClient_Get() {
 	// 								Enabled: to.Ptr("true"),
 	// 						}},
 	// 					},
+	// 					ResourceStopped: to.Ptr("false"),
 	// 					ServerPort: to.Ptr[int32](443),
 	// 					Serverless: &armsignalr.ServerlessSettings{
 	// 						ConnectionTimeoutInSeconds: to.Ptr[int32](5),
@@ -524,7 +569,7 @@ func ExampleClient_Get() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_CreateOrUpdate.json
 func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -700,6 +745,19 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 			},
 	// 			NetworkACLs: &armsignalr.NetworkACLs{
 	// 				DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
+	// 				IPRules: []*armsignalr.IPRule{
+	// 					{
+	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
+	// 						Value: to.Ptr("123.456.789.123/24"),
+	// 					},
+	// 					{
+	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
+	// 						Value: to.Ptr("123.456.789.123"),
+	// 					},
+	// 					{
+	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
+	// 						Value: to.Ptr("AppService"),
+	// 				}},
 	// 				PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
 	// 					{
 	// 						Allow: []*armsignalr.SignalRRequestType{
@@ -738,6 +796,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 					ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 	// 					PublicNetworkAccess: to.Ptr("Enabled"),
 	// 					PublicPort: to.Ptr[int32](443),
+	// 					RegionEndpointEnabled: to.Ptr("Enabled"),
 	// 					ResourceLogConfiguration: &armsignalr.ResourceLogConfiguration{
 	// 						Categories: []*armsignalr.ResourceLogCategory{
 	// 							{
@@ -745,6 +804,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 								Enabled: to.Ptr("true"),
 	// 						}},
 	// 					},
+	// 					ResourceStopped: to.Ptr("false"),
 	// 					ServerPort: to.Ptr[int32](443),
 	// 					Serverless: &armsignalr.ServerlessSettings{
 	// 						ConnectionTimeoutInSeconds: to.Ptr[int32](5),
@@ -769,7 +829,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Delete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -790,7 +850,7 @@ func ExampleClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Update.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -966,6 +1026,19 @@ func ExampleClient_BeginUpdate() {
 	// 			},
 	// 			NetworkACLs: &armsignalr.NetworkACLs{
 	// 				DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
+	// 				IPRules: []*armsignalr.IPRule{
+	// 					{
+	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
+	// 						Value: to.Ptr("123.456.789.123/24"),
+	// 					},
+	// 					{
+	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
+	// 						Value: to.Ptr("123.456.789.123"),
+	// 					},
+	// 					{
+	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
+	// 						Value: to.Ptr("AppService"),
+	// 				}},
 	// 				PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
 	// 					{
 	// 						Allow: []*armsignalr.SignalRRequestType{
@@ -1004,6 +1077,7 @@ func ExampleClient_BeginUpdate() {
 	// 					ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 	// 					PublicNetworkAccess: to.Ptr("Enabled"),
 	// 					PublicPort: to.Ptr[int32](443),
+	// 					RegionEndpointEnabled: to.Ptr("Enabled"),
 	// 					ResourceLogConfiguration: &armsignalr.ResourceLogConfiguration{
 	// 						Categories: []*armsignalr.ResourceLogCategory{
 	// 							{
@@ -1011,6 +1085,7 @@ func ExampleClient_BeginUpdate() {
 	// 								Enabled: to.Ptr("true"),
 	// 						}},
 	// 					},
+	// 					ResourceStopped: to.Ptr("false"),
 	// 					ServerPort: to.Ptr[int32](443),
 	// 					Serverless: &armsignalr.ServerlessSettings{
 	// 						ConnectionTimeoutInSeconds: to.Ptr[int32](5),
@@ -1035,7 +1110,7 @@ func ExampleClient_BeginUpdate() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_ListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListKeys.json
 func ExampleClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1057,7 +1132,7 @@ func ExampleClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_RegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_RegenerateKey.json
 func ExampleClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1085,7 +1160,7 @@ func ExampleClient_BeginRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_ListReplicaSkus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListReplicaSkus.json
 func ExampleClient_ListReplicaSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1189,7 +1264,7 @@ func ExampleClient_ListReplicaSKUs() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Restart.json
 func ExampleClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1210,7 +1285,7 @@ func ExampleClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_ListSkus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListSkus.json
 func ExampleClient_ListSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

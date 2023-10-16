@@ -170,6 +170,15 @@ type Feature struct {
 	Properties map[string]*string
 }
 
+// IPRule - An IP rule
+type IPRule struct {
+	// Azure Networking ACL Action.
+	Action *ACLAction
+
+	// An IP or CIDR or ServiceTag
+	Value *string
+}
+
 // Keys - A class represents the access keys of the resource.
 type Keys struct {
 	// Connection string constructed via the primaryKey
@@ -301,6 +310,9 @@ type NetworkACL struct {
 type NetworkACLs struct {
 	// Azure Networking ACL Action.
 	DefaultAction *ACLAction
+
+	// IP rules for filtering public traffic
+	IPRules []*IPRule
 
 	// ACLs for requests from private endpoints
 	PrivateEndpoints []*PrivateEndpointACL
@@ -502,8 +514,17 @@ type Properties struct {
 	// network ACLs.
 	PublicNetworkAccess *string
 
+	// Enable or disable the regional endpoint. Default to "Enabled". When it's Disabled, new connections will not be routed to
+	// this endpoint, however existing connections will not be affected. This property
+	// is replica specific. Disable the regional endpoint without replica is not allowed.
+	RegionEndpointEnabled *string
+
 	// Resource log configuration of a Microsoft.SignalRService resource.
 	ResourceLogConfiguration *ResourceLogConfiguration
+
+	// Stop or start the resource. Default to "False". When it's true, the data plane of the resource is shutdown. When it's false,
+	// the data plane of the resource is started.
+	ResourceStopped *string
 
 	// Serverless settings.
 	Serverless *ServerlessSettings
@@ -598,6 +619,14 @@ type ReplicaList struct {
 }
 
 type ReplicaProperties struct {
+	// Enable or disable the regional endpoint. Default to "Enabled". When it's Disabled, new connections will not be routed to
+	// this endpoint, however existing connections will not be affected.
+	RegionEndpointEnabled *string
+
+	// Stop or start the resource. Default to "false". When it's true, the data plane of the resource is shutdown. When it's false,
+	// the data plane of the resource is started.
+	ResourceStopped *string
+
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }

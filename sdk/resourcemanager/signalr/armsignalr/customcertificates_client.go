@@ -46,7 +46,7 @@ func NewCustomCertificatesClient(subscriptionID string, credential azcore.TokenC
 // BeginCreateOrUpdate - Create or update a custom certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - certificateName - Custom certificate name
@@ -70,7 +70,7 @@ func (client *CustomCertificatesClient) BeginCreateOrUpdate(ctx context.Context,
 // CreateOrUpdate - Create or update a custom certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-08-01-preview
 func (client *CustomCertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, parameters CustomCertificate, options *CustomCertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, certificateName, parameters, options)
@@ -109,7 +109,7 @@ func (client *CustomCertificatesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -121,7 +121,7 @@ func (client *CustomCertificatesClient) createOrUpdateCreateRequest(ctx context.
 // Delete - Delete a custom certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - certificateName - Custom certificate name
@@ -165,7 +165,7 @@ func (client *CustomCertificatesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -174,7 +174,7 @@ func (client *CustomCertificatesClient) deleteCreateRequest(ctx context.Context,
 // Get - Get a custom certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - certificateName - Custom certificate name
@@ -218,7 +218,7 @@ func (client *CustomCertificatesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -235,7 +235,7 @@ func (client *CustomCertificatesClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - List all custom certificates.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - CustomCertificatesClientListOptions contains the optional parameters for the CustomCertificatesClient.NewListPager
@@ -285,7 +285,7 @@ func (client *CustomCertificatesClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

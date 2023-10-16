@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/ImpactedResources_ListBySubscriptionId_ListByEventId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/ImpactedResources_ListBySubscriptionId_ListByEventId.json
 func ExampleImpactedResourcesClient_NewListBySubscriptionIDAndEventIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,6 +47,11 @@ func ExampleImpactedResourcesClient_NewListBySubscriptionIDAndEventIDPager() {
 		// 			Type: to.Ptr("Microsoft.ResourceHealth/events/impactedResources"),
 		// 			ID: to.Ptr("/subscriptions/{subscripitionId}/providers/Microsoft.ResourceHealth/events/BC_1-FXZ/impactedResources/abc-123-ghj-456"),
 		// 			Properties: &armresourcehealth.EventImpactedResourceProperties{
+		// 				MaintenanceEndTime: to.Ptr("2023-08-30T00:00:00.00Z"),
+		// 				MaintenanceStartTime: to.Ptr("2023-08-15T23:32:39.76Z"),
+		// 				ResourceGroup: to.Ptr("TEST"),
+		// 				ResourceName: to.Ptr("testvm"),
+		// 				Status: to.Ptr("Pending"),
 		// 				TargetRegion: to.Ptr("westus"),
 		// 				TargetResourceID: to.Ptr("/subscriptions/4970d23e-ed41-4670-9c19-02a1d2808dd9/resourceGroups/TEST/providers/Microsoft.Compute/virtualMachines/testvm"),
 		// 				TargetResourceType: to.Ptr("Microsoft.Compute/VirtualMachines"),
@@ -81,6 +86,11 @@ func ExampleImpactedResourcesClient_NewListBySubscriptionIDAndEventIDPager() {
 		// 			Type: to.Ptr("Microsoft.ResourceHealth/events/impactedResources"),
 		// 			ID: to.Ptr("/subscriptions/{subscripitionId}/providers/Microsoft.ResourceHealth/events/BC_1-FXZ/impactedResources/wer-345-tyu-789"),
 		// 			Properties: &armresourcehealth.EventImpactedResourceProperties{
+		// 				MaintenanceEndTime: to.Ptr("2023-08-30T00:00:00.00Z"),
+		// 				MaintenanceStartTime: to.Ptr("2023-08-15T23:32:39.76Z"),
+		// 				ResourceGroup: to.Ptr("Dev2"),
+		// 				ResourceName: to.Ptr("testvm2"),
+		// 				Status: to.Ptr("Pending"),
 		// 				TargetRegion: to.Ptr("westus"),
 		// 				TargetResourceID: to.Ptr("/subscriptions/4970d23e-ed41-4670-9c19-02a1d2808dd9/resourceGroups/Dev2/providers/Microsoft.Compute/virtualMachines/testvm2"),
 		// 				TargetResourceType: to.Ptr("Microsoft.Compute/VirtualMachines"),
@@ -90,7 +100,7 @@ func ExampleImpactedResourcesClient_NewListBySubscriptionIDAndEventIDPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/ImpactedResources_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/ImpactedResources_Get.json
 func ExampleImpactedResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,6 +123,11 @@ func ExampleImpactedResourcesClient_Get() {
 	// 	Type: to.Ptr("Microsoft.ResourceHealth/events/impactedResources"),
 	// 	ID: to.Ptr("/subscriptions/{subscripitionId}/providers/Microsoft.ResourceHealth/events/BC_1-FXZ/impactedResources/abc-123-ghj-456"),
 	// 	Properties: &armresourcehealth.EventImpactedResourceProperties{
+	// 		MaintenanceEndTime: to.Ptr("2023-08-30T00:00:00.00Z"),
+	// 		MaintenanceStartTime: to.Ptr("2023-08-15T23:32:39.76Z"),
+	// 		ResourceGroup: to.Ptr("TEST"),
+	// 		ResourceName: to.Ptr("testvm"),
+	// 		Status: to.Ptr("Pending"),
 	// 		TargetRegion: to.Ptr("westus"),
 	// 		TargetResourceID: to.Ptr("/subscriptions/4970d23e-ed41-4670-9c19-02a1d2808dd9/resourceGroups/TEST/providers/Microsoft.Compute/virtualMachines/testvm"),
 	// 		TargetResourceType: to.Ptr("Microsoft.Compute/VirtualMachines"),
@@ -120,7 +135,7 @@ func ExampleImpactedResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/ImpactedResources_ListByTenantId_ListByEventId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/ImpactedResources_ListByTenantId_ListByEventId.json
 func ExampleImpactedResourcesClient_NewListByTenantIDAndEventIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +183,7 @@ func ExampleImpactedResourcesClient_NewListByTenantIDAndEventIDPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/ImpactedResources_GetByTenantId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/ImpactedResources_GetByTenantId.json
 func ExampleImpactedResourcesClient_GetByTenantID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

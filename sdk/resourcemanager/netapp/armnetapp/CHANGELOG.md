@@ -1,5 +1,49 @@
 # Release History
 
+## 5.0.0 (2023-10-27)
+### Breaking Changes
+
+- Enum `BackupType` has been removed
+- Function `NewAccountBackupsClient` has been removed
+- Function `*AccountBackupsClient.BeginDelete` has been removed
+- Function `*AccountBackupsClient.Get` has been removed
+- Function `*AccountBackupsClient.NewListPager` has been removed
+- Function `*BackupsClient.BeginCreate` has been removed
+- Function `*BackupsClient.BeginDelete` has been removed
+- Function `*BackupsClient.Get` has been removed
+- Function `*BackupsClient.GetStatus` has been removed
+- Function `*BackupsClient.NewListPager` has been removed
+- Function `*BackupsClient.BeginRestoreFiles` has been removed
+- Function `*BackupsClient.BeginUpdate` has been removed
+- Function `*ClientFactory.NewAccountBackupsClient` has been removed
+- Struct `Backup` has been removed
+- Struct `BackupPatch` has been removed
+- Struct `BackupProperties` has been removed
+- Struct `BackupRestoreFiles` has been removed
+- Struct `BackupStatus` has been removed
+- Struct `BackupsList` has been removed
+- Struct `VolumeBackupProperties` has been removed
+- Field `Backup` of struct `VolumePatchPropertiesDataProtection` has been removed
+- Field `Backup` of struct `VolumePropertiesDataProtection` has been removed
+
+### Features Added
+
+- New value `ApplicationTypeORACLE` added to enum type `ApplicationType`
+- New value `NetworkFeaturesBasicStandard`, `NetworkFeaturesStandardBasic` added to enum type `NetworkFeatures`
+- New enum type `CoolAccessRetrievalPolicy` with values `CoolAccessRetrievalPolicyDefault`, `CoolAccessRetrievalPolicyNever`, `CoolAccessRetrievalPolicyOnRead`
+- New enum type `NetworkSiblingSetProvisioningState` with values `NetworkSiblingSetProvisioningStateCanceled`, `NetworkSiblingSetProvisioningStateFailed`, `NetworkSiblingSetProvisioningStateSucceeded`, `NetworkSiblingSetProvisioningStateUpdating`
+- New function `*ResourceClient.QueryNetworkSiblingSet(context.Context, string, QueryNetworkSiblingSetRequest, *ResourceClientQueryNetworkSiblingSetOptions) (ResourceClientQueryNetworkSiblingSetResponse, error)`
+- New function `*ResourceClient.BeginUpdateNetworkSiblingSet(context.Context, string, UpdateNetworkSiblingSetRequest, *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*runtime.Poller[ResourceClientUpdateNetworkSiblingSetResponse], error)`
+- New function `*VolumesClient.BeginPopulateAvailabilityZone(context.Context, string, string, string, string, *VolumesClientBeginPopulateAvailabilityZoneOptions) (*runtime.Poller[VolumesClientPopulateAvailabilityZoneResponse], error)`
+- New struct `NetworkSiblingSet`
+- New struct `NicInfo`
+- New struct `QueryNetworkSiblingSetRequest`
+- New struct `UpdateNetworkSiblingSetRequest`
+- New field `Zones` in struct `VolumeGroupVolumeProperties`
+- New field `CoolAccessRetrievalPolicy`, `SmbAccessBasedEnumeration`, `SmbNonBrowsable` in struct `VolumePatchProperties`
+- New field `CoolAccessRetrievalPolicy` in struct `VolumeProperties`
+
+
 ## 4.1.0 (2023-07-28)
 ### Features Added
 

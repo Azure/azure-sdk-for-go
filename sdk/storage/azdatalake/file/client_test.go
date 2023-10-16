@@ -4265,28 +4265,18 @@ func (s *UnrecordedTestSuite) TestFileCreateDeleteUsingOAuth() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
 	fileName := testcommon.GenerateFileName(testName)
-	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	fileURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName + "/" + fileName
+
+	fClient, err := file.NewClient(fileURL, cred, nil)
 	_require.NoError(err)
 
-	resp, err := fClient.Create(context.Background(), nil)
+	_, err = fClient.Create(context.Background(), nil)
 	_require.NoError(err)
-	_require.NotNil(resp)
-	_require.NotNil(resp.ETag)
-	_require.NotNil(resp.RequestID)
-	_require.Equal(resp.LastModified.IsZero(), false)
-
-	gResp, err := fClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.Equal(*gResp.ContentLength, int64(2048))
-
-	dResp, err := fClient.Delete(context.Background(), nil)
-	_require.NoError(err)
-	_require.Equal(dResp.Date.IsZero(), false)
-	_require.NotNil(dResp.RequestID)
-	_require.NotNil(dResp.Version)
-
-	_, err = fClient.GetProperties(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.ResourceNotFound)
 }

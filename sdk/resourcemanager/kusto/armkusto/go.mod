@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto/v2
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.6.0
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.6.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.3.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.3.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal v1.1.2

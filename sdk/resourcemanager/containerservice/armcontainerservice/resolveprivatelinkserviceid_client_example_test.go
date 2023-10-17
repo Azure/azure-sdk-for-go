@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ResolvePrivateLinkServiceId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0a25ea9680cf080b7d34e8c5f35f564425c6b1f7/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ResolvePrivateLinkServiceId.json
 func ExampleResolvePrivateLinkServiceIDClient_POST() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

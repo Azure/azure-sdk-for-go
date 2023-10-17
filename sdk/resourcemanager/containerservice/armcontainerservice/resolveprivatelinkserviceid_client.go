@@ -54,10 +54,6 @@ func NewResolvePrivateLinkServiceIDClient(subscriptionID string, credential azco
 //     method.
 func (client *ResolvePrivateLinkServiceIDClient) POST(ctx context.Context, resourceGroupName string, resourceName string, parameters PrivateLinkResource, options *ResolvePrivateLinkServiceIDClientPOSTOptions) (ResolvePrivateLinkServiceIDClientPOSTResponse, error) {
 	var err error
-	const operationName = "ResolvePrivateLinkServiceIDClient.POST"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.postCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return ResolvePrivateLinkServiceIDClientPOSTResponse{}, err

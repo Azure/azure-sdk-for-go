@@ -54,10 +54,6 @@ func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential
 //     method.
 func (client *SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters Snapshot, options *SnapshotsClientCreateOrUpdateOptions) (SnapshotsClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "SnapshotsClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return SnapshotsClientCreateOrUpdateResponse{}, err
@@ -121,10 +117,6 @@ func (client *SnapshotsClient) createOrUpdateHandleResponse(resp *http.Response)
 //   - options - SnapshotsClientDeleteOptions contains the optional parameters for the SnapshotsClient.Delete method.
 func (client *SnapshotsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *SnapshotsClientDeleteOptions) (SnapshotsClientDeleteResponse, error) {
 	var err error
-	const operationName = "SnapshotsClient.Delete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return SnapshotsClientDeleteResponse{}, err
@@ -175,10 +167,6 @@ func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resource
 //   - options - SnapshotsClientGetOptions contains the optional parameters for the SnapshotsClient.Get method.
 func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *SnapshotsClientGetOptions) (SnapshotsClientGetResponse, error) {
 	var err error
-	const operationName = "SnapshotsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return SnapshotsClientGetResponse{}, err
@@ -240,7 +228,6 @@ func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions)
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SnapshotsClientListResponse) (SnapshotsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SnapshotsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -260,7 +247,6 @@ func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions)
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -303,7 +289,6 @@ func (client *SnapshotsClient) NewListByResourceGroupPager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SnapshotsClientListByResourceGroupResponse) (SnapshotsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SnapshotsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -323,7 +308,6 @@ func (client *SnapshotsClient) NewListByResourceGroupPager(resourceGroupName str
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -368,10 +352,6 @@ func (client *SnapshotsClient) listByResourceGroupHandleResponse(resp *http.Resp
 //   - options - SnapshotsClientUpdateTagsOptions contains the optional parameters for the SnapshotsClient.UpdateTags method.
 func (client *SnapshotsClient) UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject, options *SnapshotsClientUpdateTagsOptions) (SnapshotsClientUpdateTagsResponse, error) {
 	var err error
-	const operationName = "SnapshotsClient.UpdateTags"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return SnapshotsClientUpdateTagsResponse{}, err

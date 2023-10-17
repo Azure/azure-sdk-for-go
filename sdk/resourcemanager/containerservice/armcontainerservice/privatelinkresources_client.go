@@ -53,10 +53,6 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *PrivateLinkResourcesClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesClientListOptions) (PrivateLinkResourcesClientListResponse, error) {
 	var err error
-	const operationName = "PrivateLinkResourcesClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return PrivateLinkResourcesClientListResponse{}, err

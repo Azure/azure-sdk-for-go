@@ -2946,6 +2946,7 @@ func (s *RecordedTestSuite) TestDownloadDataContentMD5() {
 	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
 	resp, err := fClient.Create(context.Background(), createFileOpts)
 	_require.NoError(err)
 	_require.NotNil(resp)

@@ -4269,7 +4269,7 @@ func (s *UnrecordedTestSuite) TestFileCreateDeleteUsingOAuth() {
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
-	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
 	_require.Greater(len(accountName), 0)
 
 	fileName := testcommon.GenerateFileName(testName)
@@ -4279,5 +4279,8 @@ func (s *UnrecordedTestSuite) TestFileCreateDeleteUsingOAuth() {
 	_require.NoError(err)
 
 	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 }

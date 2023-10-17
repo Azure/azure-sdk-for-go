@@ -4,7 +4,6 @@
 package tests
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"sync"
@@ -47,12 +46,13 @@ func MostlyIdleReceiver(remainingArgs []string) {
 	}
 
 	for _, duration := range durations {
-		stats := sc.NewStat(fmt.Sprintf("Duration: %s", duration))
-
 		wg.Add(1)
 
-		go func(stats *shared.Stats, duration time.Duration) {
+		go func(duration time.Duration) {
 			defer wg.Done()
+			ctx := shared.WithBaggage(sc.Context, map[string]string{
+				"Duration": fmt.Sprintf("%d", duration/time.Second),
+			})
 
 			queueName := fmt.Sprintf("mostly-idle-receiver-%s-%s", sc.Nano, duration)
 			shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
@@ -61,36 +61,35 @@ func MostlyIdleReceiver(remainingArgs []string) {
 			sc.PanicOnError("failed to create client", err)
 
 			defer func() {
-				err = client.Close(context.Background())
-				sc.LogIfFailed("failed to close client", err, stats)
+				err = client.Close(ctx)
+				sc.LogIfFailed("failed to close client", err)
 			}()
 
-			receiver, err := client.NewReceiverForQueue(queueName, nil)
+			receiver, err := shared.NewTrackingReceiverForQueue(sc.TC, client, queueName, nil)
 			sc.PanicOnError("failed to create receiver", err)
 
-			sender, err := client.NewSender(queueName, nil)
+			sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)
 			sc.PanicOnError("failed to create sender", err)
 
 			time.AfterFunc(duration, func() {
 				log.Printf("Sending message for duration %s", duration)
-				err := sender.SendMessage(sc.Context, &azservicebus.Message{
+				err := sender.SendMessage(ctx, &azservicebus.Message{
 					Body: []byte(fmt.Sprintf("Message for %s", duration)),
 				}, nil)
 				sc.PanicOnError(fmt.Sprintf("failed sending message for duration %s", duration), err)
 			})
 
 			log.Printf("Waiting for message to arrive, after duration %s", duration)
-			messages, err := receiver.ReceiveMessages(sc.Context, 1, nil)
+			messages, err := receiver.ReceiveMessages(ctx, 1, nil)
 			sc.PanicOnError(fmt.Sprintf("failed receiving messages for duration %s", duration), err)
 
 			log.Printf("Received %d messages", len(messages))
-			stats.AddReceived(int32(len(messages)))
 
 			for _, msg := range messages {
-				err := receiver.CompleteMessage(sc.Context, msg, nil)
+				err := receiver.CompleteMessage(ctx, msg, nil)
 				sc.PanicOnError("failed to complete message", err)
 			}
-		}(stats, duration)
+		}(duration)
 	}
 
 	wg.Wait()

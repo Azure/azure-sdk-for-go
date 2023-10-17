@@ -13,6 +13,7 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
@@ -28,12 +29,7 @@ func ExampleClient_GetChatCompletions() {
 		return
 	}
 
-	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
-
-	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
+	keyCredential := azcore.NewKeyCredential(azureOpenAIKey)
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
 	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
@@ -121,12 +117,7 @@ func ExampleClient_GetChatCompletions_functions() {
 		return
 	}
 
-	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
-
-	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
+	keyCredential := azcore.NewKeyCredential(azureOpenAIKey)
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
 	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
@@ -214,12 +205,7 @@ func ExampleClient_GetChatCompletionsStream() {
 		return
 	}
 
-	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
-
-	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
+	keyCredential := azcore.NewKeyCredential(azureOpenAIKey)
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
 	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource

@@ -75,6 +75,10 @@ func (client *LogAnalyticsClient) BeginExportRequestRateByInterval(ctx context.C
 // Generated from API version 2023-07-01
 func (client *LogAnalyticsClient) exportRequestRateByInterval(ctx context.Context, location string, parameters RequestRateByIntervalInput, options *LogAnalyticsClientBeginExportRequestRateByIntervalOptions) (*http.Response, error) {
 	var err error
+	const operationName = "LogAnalyticsClient.BeginExportRequestRateByInterval"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exportRequestRateByIntervalCreateRequest(ctx, location, parameters, options)
 	if err != nil {
 		return nil, err
@@ -145,6 +149,10 @@ func (client *LogAnalyticsClient) BeginExportThrottledRequests(ctx context.Conte
 // Generated from API version 2023-07-01
 func (client *LogAnalyticsClient) exportThrottledRequests(ctx context.Context, location string, parameters ThrottledRequestsInput, options *LogAnalyticsClientBeginExportThrottledRequestsOptions) (*http.Response, error) {
 	var err error
+	const operationName = "LogAnalyticsClient.BeginExportThrottledRequests"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exportThrottledRequestsCreateRequest(ctx, location, parameters, options)
 	if err != nil {
 		return nil, err

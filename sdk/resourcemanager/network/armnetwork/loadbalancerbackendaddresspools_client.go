@@ -75,6 +75,10 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginCreateOrUpdate(ctx con
 // Generated from API version 2023-05-01
 func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, backendAddressPoolName string, parameters BackendAddressPool, options *LoadBalancerBackendAddressPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "LoadBalancerBackendAddressPoolsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, loadBalancerName, backendAddressPoolName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -153,6 +157,10 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginDelete(ctx context.Con
 // Generated from API version 2023-05-01
 func (client *LoadBalancerBackendAddressPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, loadBalancerName string, backendAddressPoolName string, options *LoadBalancerBackendAddressPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "LoadBalancerBackendAddressPoolsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, loadBalancerName, backendAddressPoolName, options)
 	if err != nil {
 		return nil, err
@@ -209,6 +217,10 @@ func (client *LoadBalancerBackendAddressPoolsClient) deleteCreateRequest(ctx con
 //     method.
 func (client *LoadBalancerBackendAddressPoolsClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, backendAddressPoolName string, options *LoadBalancerBackendAddressPoolsClientGetOptions) (LoadBalancerBackendAddressPoolsClientGetResponse, error) {
 	var err error
+	const operationName = "LoadBalancerBackendAddressPoolsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, backendAddressPoolName, options)
 	if err != nil {
 		return LoadBalancerBackendAddressPoolsClientGetResponse{}, err
@@ -277,6 +289,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) NewListPager(resourceGroupN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LoadBalancerBackendAddressPoolsClientListResponse) (LoadBalancerBackendAddressPoolsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoadBalancerBackendAddressPoolsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -296,6 +309,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) NewListPager(resourceGroupN
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

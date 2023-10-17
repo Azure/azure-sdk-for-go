@@ -1,14 +1,10 @@
 # Release History
 
-## 0.2.1 (Unreleased)
-
-### Features Added
+## 0.3.0 (2023-10-10)
 
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Client constructors that take a `key string` parameter for a credential now require an `*azcore.KeyCredential` or `*azcore.SASCredential`.
 
 ## 0.2.0 (2023-09-12)
 

@@ -77,6 +77,10 @@ func (client *VirtualNetworkGatewayNatRulesClient) BeginCreateOrUpdate(ctx conte
 // Generated from API version 2023-05-01
 func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, natRuleParameters VirtualNetworkGatewayNatRule, options *VirtualNetworkGatewayNatRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VirtualNetworkGatewayNatRulesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, natRuleName, natRuleParameters, options)
 	if err != nil {
 		return nil, err
@@ -155,6 +159,10 @@ func (client *VirtualNetworkGatewayNatRulesClient) BeginDelete(ctx context.Conte
 // Generated from API version 2023-05-01
 func (client *VirtualNetworkGatewayNatRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VirtualNetworkGatewayNatRulesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, natRuleName, options)
 	if err != nil {
 		return nil, err
@@ -211,6 +219,10 @@ func (client *VirtualNetworkGatewayNatRulesClient) deleteCreateRequest(ctx conte
 //     method.
 func (client *VirtualNetworkGatewayNatRulesClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesClientGetOptions) (VirtualNetworkGatewayNatRulesClientGetResponse, error) {
 	var err error
+	const operationName = "VirtualNetworkGatewayNatRulesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, natRuleName, options)
 	if err != nil {
 		return VirtualNetworkGatewayNatRulesClientGetResponse{}, err
@@ -279,6 +291,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) NewListByVirtualNetworkGatewa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse) (VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualNetworkGatewayNatRulesClient.NewListByVirtualNetworkGatewayPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -298,6 +311,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) NewListByVirtualNetworkGatewa
 			}
 			return client.listByVirtualNetworkGatewayHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

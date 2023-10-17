@@ -29,7 +29,7 @@ func ConstantDetachmentSender(remainingArgs []string) {
 
 	go func() {
 		defer wg.Done()
-		queueName, stats, sender := createDetachResources(sc, "send")
+		queueName, sender := createDetachResources(sc, "send")
 
 		for i := 0; i < numToSend; i++ {
 			err := shared.ForceQueueDetach(sc.Context, adminClient, queueName)
@@ -39,15 +39,14 @@ func ConstantDetachmentSender(remainingArgs []string) {
 				Body: []byte(fmt.Sprintf("test body %d", i)),
 			}, nil)
 			sc.PanicOnError("failed to send message", err)
-			stats.AddSent(1)
 		}
 
-		checkMessages(sc, queueName, numToSend, stats)
+		checkMessages(sc, queueName, numToSend)
 	}()
 
 	go func() {
 		defer wg.Done()
-		queueName, stats, sender := createDetachResources(sc, "sendBatch")
+		queueName, sender := createDetachResources(sc, "sendBatch")
 
 		for i := 0; i < numToSend; i++ {
 			err := shared.ForceQueueDetach(sc.Context, adminClient, queueName)
@@ -66,16 +65,15 @@ func ConstantDetachmentSender(remainingArgs []string) {
 
 			err = sender.SendMessageBatch(sc.Context, batch, nil)
 			sc.PanicOnError("failed to send message batch", err)
-			stats.AddSent(1)
 		}
 
-		checkMessages(sc, queueName, numToSend, stats)
+		checkMessages(sc, queueName, numToSend)
 	}()
 
 	wg.Wait()
 }
 
-func createDetachResources(sc *shared.StressContext, name string) (string, *shared.Stats, *azservicebus.Sender) {
+func createDetachResources(sc *shared.StressContext, name string) (string, *shared.TrackingSender) {
 	queueName := fmt.Sprintf("detach_%s-%s", name, sc.Nano)
 
 	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
@@ -83,19 +81,17 @@ func createDetachResources(sc *shared.StressContext, name string) (string, *shar
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create client", err)
 
-	senderStats := sc.NewStat(name)
-
-	sender, err := client.NewSender(queueName, nil)
+	sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)
 	sc.PanicOnError("failed to create a sender", err)
 
-	return queueName, senderStats, sender
+	return queueName, sender
 }
 
-func checkMessages(sc *shared.StressContext, queueName string, numSent int, stats *shared.Stats) {
+func checkMessages(sc *shared.StressContext, queueName string, numSent int) {
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create client", err)
 
-	receiver, err := client.NewReceiverForQueue(queueName, &azservicebus.ReceiverOptions{
+	receiver, err := shared.NewTrackingReceiverForQueue(sc.TC, client, queueName, &azservicebus.ReceiverOptions{
 		ReceiveMode: azservicebus.ReceiveModeReceiveAndDelete,
 	})
 	sc.PanicOnError("failed to create receiver", err)
@@ -123,7 +119,6 @@ func checkMessages(sc *shared.StressContext, queueName string, numSent int, stat
 		}
 
 		all = append(all, messages...)
-		stats.AddReceived(int32(len(messages)))
 	}
 
 	if numSent != len(all) {

@@ -74,6 +74,10 @@ func (client *VPNSitesConfigurationClient) BeginDownload(ctx context.Context, re
 // Generated from API version 2023-05-01
 func (client *VPNSitesConfigurationClient) download(ctx context.Context, resourceGroupName string, virtualWANName string, request GetVPNSitesConfigurationRequest, options *VPNSitesConfigurationClientBeginDownloadOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VPNSitesConfigurationClient.BeginDownload"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.downloadCreateRequest(ctx, resourceGroupName, virtualWANName, request, options)
 	if err != nil {
 		return nil, err

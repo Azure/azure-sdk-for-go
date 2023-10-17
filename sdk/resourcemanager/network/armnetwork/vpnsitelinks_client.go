@@ -54,6 +54,10 @@ func NewVPNSiteLinksClient(subscriptionID string, credential azcore.TokenCredent
 //   - options - VPNSiteLinksClientGetOptions contains the optional parameters for the VPNSiteLinksClient.Get method.
 func (client *VPNSiteLinksClient) Get(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteLinkName string, options *VPNSiteLinksClientGetOptions) (VPNSiteLinksClientGetResponse, error) {
 	var err error
+	const operationName = "VPNSiteLinksClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vpnSiteName, vpnSiteLinkName, options)
 	if err != nil {
 		return VPNSiteLinksClientGetResponse{}, err
@@ -122,6 +126,7 @@ func (client *VPNSiteLinksClient) NewListByVPNSitePager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VPNSiteLinksClientListByVPNSiteResponse) (VPNSiteLinksClientListByVPNSiteResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VPNSiteLinksClient.NewListByVPNSitePager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -141,6 +146,7 @@ func (client *VPNSiteLinksClient) NewListByVPNSitePager(resourceGroupName string
 			}
 			return client.listByVPNSiteHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

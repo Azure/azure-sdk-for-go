@@ -5,6 +5,7 @@ package azopenai_test
 
 import (
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -42,8 +43,7 @@ type endpoint struct {
 // See [newRecordingTransporter] for sanitization code.
 func newTestClient(t *testing.T, ep endpoint) *azopenai.Client {
 	if ep.Azure {
-		cred, err := azopenai.NewKeyCredential(ep.APIKey)
-		require.NoError(t, err)
+		cred := azcore.NewKeyCredential(ep.APIKey)
 
 		client, err := azopenai.NewClientWithKeyCredential(ep.URL, cred, newClientOptionsForTest(t))
 		require.NoError(t, err)
@@ -54,8 +54,7 @@ func newTestClient(t *testing.T, ep endpoint) *azopenai.Client {
 			t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
 		}
 
-		cred, err := azopenai.NewKeyCredential(ep.APIKey)
-		require.NoError(t, err)
+		cred := azcore.NewKeyCredential(ep.APIKey)
 
 		options := newClientOptionsForTest(t)
 
@@ -310,8 +309,7 @@ func newOpenAIClientForTest(t *testing.T) *azopenai.Client {
 // newBogusAzureOpenAIClient creates a client that uses an invalid key, which will cause Azure OpenAI to return
 // a failure.
 func newBogusAzureOpenAIClient(t *testing.T) *azopenai.Client {
-	cred, err := azopenai.NewKeyCredential("bogus-api-key")
-	require.NoError(t, err)
+	cred := azcore.NewKeyCredential("bogus-api-key")
 
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint.URL, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
@@ -322,8 +320,7 @@ func newBogusAzureOpenAIClient(t *testing.T) *azopenai.Client {
 // newBogusOpenAIClient creates a client that uses an invalid key, which will cause OpenAI to return
 // a failure.
 func newBogusOpenAIClient(t *testing.T) *azopenai.Client {
-	cred, err := azopenai.NewKeyCredential("bogus-api-key")
-	require.NoError(t, err)
+	cred := azcore.NewKeyCredential("bogus-api-key")
 
 	client, err := azopenai.NewClientForOpenAI(openAI.Endpoint.URL, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
@@ -348,4 +345,10 @@ func getRequired(name string) string {
 	}
 
 	return v
+}
+
+func skipNowIfThrottled(t *testing.T, err error) {
+	if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
+		t.Skipf("OpenAI resource overloaded, skipping this test")
+	}
 }

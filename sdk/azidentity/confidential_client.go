@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 )
@@ -28,6 +29,7 @@ type confidentialClientOptions struct {
 	// Assertion for on-behalf-of authentication
 	Assertion                         string
 	DisableInstanceDiscovery, SendX5C bool
+	TokenCachePersistenceOptions      *TokenCachePersistenceOptions
 }
 
 // confidentialClient wraps the MSAL confidential client
@@ -132,9 +134,14 @@ func (c *confidentialClient) client(ctx context.Context, tro policy.TokenRequest
 }
 
 func (c *confidentialClient) newMSALClient(enableCAE bool) (msalConfidentialClient, error) {
+	cache, err := internal.NewCache(c.opts.TokenCachePersistenceOptions, enableCAE)
+	if err != nil {
+		return nil, err
+	}
 	authority := runtime.JoinPaths(c.host, c.tenantID)
 	o := []confidential.Option{
 		confidential.WithAzureRegion(c.region),
+		confidential.WithCache(cache),
 		confidential.WithHTTPClient(newPipelineAdapter(&c.opts.ClientOptions)),
 	}
 	if enableCAE {
@@ -149,7 +156,7 @@ func (c *confidentialClient) newMSALClient(enableCAE bool) (msalConfidentialClie
 	return confidential.New(authority, c.clientID, c.cred, o...)
 }
 
-// resolveTenant returns the correct tenant for a token request given the client's
+// resolveTenant returns the correct WithTenantID() argument for a token request given the client's
 // configuration, or an error when that configuration doesn't allow the specified tenant
 func (c *confidentialClient) resolveTenant(specified string) (string, error) {
 	return resolveTenant(c.tenantID, specified, c.name, c.opts.AdditionallyAllowedTenants)

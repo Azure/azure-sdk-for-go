@@ -71,6 +71,10 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 // Generated from API version 2023-08-01
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -127,6 +131,10 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 //     method.
 func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
@@ -192,6 +200,10 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 //     method.
 func (client *PrivateEndpointConnectionsClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsClientListOptions) (PrivateEndpointConnectionsClientListResponse, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return PrivateEndpointConnectionsClientListResponse{}, err
@@ -255,6 +267,10 @@ func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Re
 //     method.
 func (client *PrivateEndpointConnectionsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionsClientUpdateOptions) (PrivateEndpointConnectionsClientUpdateResponse, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, parameters, options)
 	if err != nil {
 		return PrivateEndpointConnectionsClientUpdateResponse{}, err

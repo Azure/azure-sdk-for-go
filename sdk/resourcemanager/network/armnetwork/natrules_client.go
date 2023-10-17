@@ -75,6 +75,10 @@ func (client *NatRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // Generated from API version 2023-05-01
 func (client *NatRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, natRuleName string, natRuleParameters VPNGatewayNatRule, options *NatRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "NatRulesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, gatewayName, natRuleName, natRuleParameters, options)
 	if err != nil {
 		return nil, err
@@ -152,6 +156,10 @@ func (client *NatRulesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-05-01
 func (client *NatRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, gatewayName string, natRuleName string, options *NatRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "NatRulesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, gatewayName, natRuleName, options)
 	if err != nil {
 		return nil, err
@@ -207,6 +215,10 @@ func (client *NatRulesClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - NatRulesClientGetOptions contains the optional parameters for the NatRulesClient.Get method.
 func (client *NatRulesClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, natRuleName string, options *NatRulesClientGetOptions) (NatRulesClientGetResponse, error) {
 	var err error
+	const operationName = "NatRulesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, gatewayName, natRuleName, options)
 	if err != nil {
 		return NatRulesClientGetResponse{}, err
@@ -275,6 +287,7 @@ func (client *NatRulesClient) NewListByVPNGatewayPager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *NatRulesClientListByVPNGatewayResponse) (NatRulesClientListByVPNGatewayResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NatRulesClient.NewListByVPNGatewayPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -294,6 +307,7 @@ func (client *NatRulesClient) NewListByVPNGatewayPager(resourceGroupName string,
 			}
 			return client.listByVPNGatewayHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

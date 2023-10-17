@@ -73,6 +73,10 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) BeginList(c
 // Generated from API version 2023-05-01
 func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listOperation(ctx context.Context, resourceGroupName string, virtualWANName string, options *VPNServerConfigurationsAssociatedWithVirtualWanClientBeginListOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VPNServerConfigurationsAssociatedWithVirtualWanClient.BeginList"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, virtualWANName, options)
 	if err != nil {
 		return nil, err

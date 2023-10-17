@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid"
@@ -22,7 +23,7 @@ func ExampleNewClientWithSharedKeyCredential() {
 		return
 	}
 
-	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, sharedKey, nil)
+	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(sharedKey), nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -131,7 +132,7 @@ func getEventGridClient() *azeventgrid.Client {
 		return nil
 	}
 
-	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, sharedKey, nil)
+	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(sharedKey), nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic

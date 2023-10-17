@@ -54,6 +54,10 @@ func NewCloudServiceRolesClient(subscriptionID string, credential azcore.TokenCr
 //   - options - CloudServiceRolesClientGetOptions contains the optional parameters for the CloudServiceRolesClient.Get method.
 func (client *CloudServiceRolesClient) Get(ctx context.Context, roleName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRolesClientGetOptions) (CloudServiceRolesClientGetResponse, error) {
 	var err error
+	const operationName = "CloudServiceRolesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, roleName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return CloudServiceRolesClientGetResponse{}, err
@@ -123,6 +127,7 @@ func (client *CloudServiceRolesClient) NewListPager(resourceGroupName string, cl
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CloudServiceRolesClientListResponse) (CloudServiceRolesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceRolesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -142,6 +147,7 @@ func (client *CloudServiceRolesClient) NewListPager(resourceGroupName string, cl
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

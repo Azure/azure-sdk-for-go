@@ -74,6 +74,10 @@ func (client *DiskAccessesClient) BeginCreateOrUpdate(ctx context.Context, resou
 // Generated from API version 2023-04-02
 func (client *DiskAccessesClient) createOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DiskAccessesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
 		return nil, err
@@ -147,6 +151,10 @@ func (client *DiskAccessesClient) BeginDelete(ctx context.Context, resourceGroup
 // Generated from API version 2023-04-02
 func (client *DiskAccessesClient) deleteOperation(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DiskAccessesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
 		return nil, err
@@ -218,6 +226,10 @@ func (client *DiskAccessesClient) BeginDeleteAPrivateEndpointConnection(ctx cont
 // Generated from API version 2023-04-02
 func (client *DiskAccessesClient) deleteAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesClientBeginDeleteAPrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DiskAccessesClient.BeginDeleteAPrivateEndpointConnection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteAPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -274,6 +286,10 @@ func (client *DiskAccessesClient) deleteAPrivateEndpointConnectionCreateRequest(
 //   - options - DiskAccessesClientGetOptions contains the optional parameters for the DiskAccessesClient.Get method.
 func (client *DiskAccessesClient) Get(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesClientGetOptions) (DiskAccessesClientGetResponse, error) {
 	var err error
+	const operationName = "DiskAccessesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
 		return DiskAccessesClientGetResponse{}, err
@@ -338,6 +354,10 @@ func (client *DiskAccessesClient) getHandleResponse(resp *http.Response) (DiskAc
 //     method.
 func (client *DiskAccessesClient) GetAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesClientGetAPrivateEndpointConnectionOptions) (DiskAccessesClientGetAPrivateEndpointConnectionResponse, error) {
 	var err error
+	const operationName = "DiskAccessesClient.GetAPrivateEndpointConnection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getAPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, options)
 	if err != nil {
 		return DiskAccessesClientGetAPrivateEndpointConnectionResponse{}, err
@@ -405,6 +425,10 @@ func (client *DiskAccessesClient) getAPrivateEndpointConnectionHandleResponse(re
 //     method.
 func (client *DiskAccessesClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesClientGetPrivateLinkResourcesOptions) (DiskAccessesClientGetPrivateLinkResourcesResponse, error) {
 	var err error
+	const operationName = "DiskAccessesClient.GetPrivateLinkResources"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
 		return DiskAccessesClientGetPrivateLinkResourcesResponse{}, err
@@ -466,6 +490,7 @@ func (client *DiskAccessesClient) NewListPager(options *DiskAccessesClientListOp
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DiskAccessesClientListResponse) (DiskAccessesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskAccessesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -485,6 +510,7 @@ func (client *DiskAccessesClient) NewListPager(options *DiskAccessesClientListOp
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -527,6 +553,7 @@ func (client *DiskAccessesClient) NewListByResourceGroupPager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DiskAccessesClientListByResourceGroupResponse) (DiskAccessesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskAccessesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -546,6 +573,7 @@ func (client *DiskAccessesClient) NewListByResourceGroupPager(resourceGroupName 
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -595,6 +623,7 @@ func (client *DiskAccessesClient) NewListPrivateEndpointConnectionsPager(resourc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DiskAccessesClientListPrivateEndpointConnectionsResponse) (DiskAccessesClientListPrivateEndpointConnectionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskAccessesClient.NewListPrivateEndpointConnectionsPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -614,6 +643,7 @@ func (client *DiskAccessesClient) NewListPrivateEndpointConnectionsPager(resourc
 			}
 			return client.listPrivateEndpointConnectionsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -682,6 +712,10 @@ func (client *DiskAccessesClient) BeginUpdate(ctx context.Context, resourceGroup
 // Generated from API version 2023-04-02
 func (client *DiskAccessesClient) update(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DiskAccessesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
 		return nil, err
@@ -760,6 +794,10 @@ func (client *DiskAccessesClient) BeginUpdateAPrivateEndpointConnection(ctx cont
 // Generated from API version 2023-04-02
 func (client *DiskAccessesClient) updateAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *DiskAccessesClientBeginUpdateAPrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DiskAccessesClient.BeginUpdateAPrivateEndpointConnection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateAPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, options)
 	if err != nil {
 		return nil, err

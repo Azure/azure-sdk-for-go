@@ -74,6 +74,10 @@ func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resource
 // Generated from API version 2023-04-02
 func (client *SnapshotsClient) createOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SnapshotsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
 		return nil, err
@@ -146,6 +150,10 @@ func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-04-02
 func (client *SnapshotsClient) deleteOperation(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SnapshotsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
 		return nil, err
@@ -197,6 +205,10 @@ func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resource
 //   - options - SnapshotsClientGetOptions contains the optional parameters for the SnapshotsClient.Get method.
 func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientGetOptions) (SnapshotsClientGetResponse, error) {
 	var err error
+	const operationName = "SnapshotsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
 		return SnapshotsClientGetResponse{}, err
@@ -280,6 +292,10 @@ func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGro
 // Generated from API version 2023-04-02
 func (client *SnapshotsClient) grantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsClientBeginGrantAccessOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SnapshotsClient.BeginGrantAccess"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.grantAccessCreateRequest(ctx, resourceGroupName, snapshotName, grantAccessData, options)
 	if err != nil {
 		return nil, err
@@ -334,6 +350,7 @@ func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions)
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SnapshotsClientListResponse) (SnapshotsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SnapshotsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -353,6 +370,7 @@ func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -395,6 +413,7 @@ func (client *SnapshotsClient) NewListByResourceGroupPager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SnapshotsClientListByResourceGroupResponse) (SnapshotsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SnapshotsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -414,6 +433,7 @@ func (client *SnapshotsClient) NewListByResourceGroupPager(resourceGroupName str
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -479,6 +499,10 @@ func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGr
 // Generated from API version 2023-04-02
 func (client *SnapshotsClient) revokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientBeginRevokeAccessOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SnapshotsClient.BeginRevokeAccess"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.revokeAccessCreateRequest(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
 		return nil, err
@@ -548,6 +572,10 @@ func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-04-02
 func (client *SnapshotsClient) update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SnapshotsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
 		return nil, err

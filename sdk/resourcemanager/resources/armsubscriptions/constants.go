@@ -10,7 +10,7 @@ package armsubscriptions
 
 const (
 	moduleName    = "armsubscriptions"
-	moduleVersion = "v1.3.0-beta.2"
+	moduleVersion = "v1.3.0-beta.3"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

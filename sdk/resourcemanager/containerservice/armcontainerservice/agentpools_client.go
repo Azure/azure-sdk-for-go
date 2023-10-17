@@ -77,6 +77,10 @@ func (client *AgentPoolsClient) BeginAbortLatestOperation(ctx context.Context, r
 // Generated from API version 2023-08-01
 func (client *AgentPoolsClient) abortLatestOperation(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginAbortLatestOperationOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AgentPoolsClient.BeginAbortLatestOperation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.abortLatestOperationCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
 	if err != nil {
 		return nil, err
@@ -151,6 +155,10 @@ func (client *AgentPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // Generated from API version 2023-08-01
 func (client *AgentPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPool, options *AgentPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AgentPoolsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -226,6 +234,10 @@ func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Generated from API version 2023-08-01
 func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AgentPoolsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
 	if err != nil {
 		return nil, err
@@ -281,6 +293,10 @@ func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - AgentPoolsClientGetOptions contains the optional parameters for the AgentPoolsClient.Get method.
 func (client *AgentPoolsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientGetOptions) (AgentPoolsClientGetResponse, error) {
 	var err error
+	const operationName = "AgentPoolsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
 	if err != nil {
 		return AgentPoolsClientGetResponse{}, err
@@ -347,6 +363,10 @@ func (client *AgentPoolsClient) getHandleResponse(resp *http.Response) (AgentPoo
 //     method.
 func (client *AgentPoolsClient) GetAvailableAgentPoolVersions(ctx context.Context, resourceGroupName string, resourceName string, options *AgentPoolsClientGetAvailableAgentPoolVersionsOptions) (AgentPoolsClientGetAvailableAgentPoolVersionsResponse, error) {
 	var err error
+	const operationName = "AgentPoolsClient.GetAvailableAgentPoolVersions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getAvailableAgentPoolVersionsCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return AgentPoolsClientGetAvailableAgentPoolVersionsResponse{}, err
@@ -409,6 +429,10 @@ func (client *AgentPoolsClient) getAvailableAgentPoolVersionsHandleResponse(resp
 //     method.
 func (client *AgentPoolsClient) GetUpgradeProfile(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientGetUpgradeProfileOptions) (AgentPoolsClientGetUpgradeProfileResponse, error) {
 	var err error
+	const operationName = "AgentPoolsClient.GetUpgradeProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getUpgradeProfileCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
 	if err != nil {
 		return AgentPoolsClientGetUpgradeProfileResponse{}, err
@@ -476,6 +500,7 @@ func (client *AgentPoolsClient) NewListPager(resourceGroupName string, resourceN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AgentPoolsClientListResponse) (AgentPoolsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AgentPoolsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -495,6 +520,7 @@ func (client *AgentPoolsClient) NewListPager(resourceGroupName string, resourceN
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -567,6 +593,10 @@ func (client *AgentPoolsClient) BeginUpgradeNodeImageVersion(ctx context.Context
 // Generated from API version 2023-08-01
 func (client *AgentPoolsClient) upgradeNodeImageVersion(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginUpgradeNodeImageVersionOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AgentPoolsClient.BeginUpgradeNodeImageVersion"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.upgradeNodeImageVersionCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
 	if err != nil {
 		return nil, err

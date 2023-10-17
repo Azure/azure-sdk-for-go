@@ -74,6 +74,10 @@ func (client *DdosCustomPoliciesClient) BeginCreateOrUpdate(ctx context.Context,
 // Generated from API version 2023-05-01
 func (client *DdosCustomPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, parameters DdosCustomPolicy, options *DdosCustomPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DdosCustomPoliciesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, ddosCustomPolicyName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -147,6 +151,10 @@ func (client *DdosCustomPoliciesClient) BeginDelete(ctx context.Context, resourc
 // Generated from API version 2023-05-01
 func (client *DdosCustomPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, options *DdosCustomPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DdosCustomPoliciesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ddosCustomPolicyName, options)
 	if err != nil {
 		return nil, err
@@ -197,6 +205,10 @@ func (client *DdosCustomPoliciesClient) deleteCreateRequest(ctx context.Context,
 //   - options - DdosCustomPoliciesClientGetOptions contains the optional parameters for the DdosCustomPoliciesClient.Get method.
 func (client *DdosCustomPoliciesClient) Get(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, options *DdosCustomPoliciesClientGetOptions) (DdosCustomPoliciesClientGetResponse, error) {
 	var err error
+	const operationName = "DdosCustomPoliciesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ddosCustomPolicyName, options)
 	if err != nil {
 		return DdosCustomPoliciesClientGetResponse{}, err
@@ -259,6 +271,10 @@ func (client *DdosCustomPoliciesClient) getHandleResponse(resp *http.Response) (
 //     method.
 func (client *DdosCustomPoliciesClient) UpdateTags(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, parameters TagsObject, options *DdosCustomPoliciesClientUpdateTagsOptions) (DdosCustomPoliciesClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "DdosCustomPoliciesClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, ddosCustomPolicyName, parameters, options)
 	if err != nil {
 		return DdosCustomPoliciesClientUpdateTagsResponse{}, err

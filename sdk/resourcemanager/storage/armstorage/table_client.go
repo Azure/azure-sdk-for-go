@@ -55,6 +55,10 @@ func NewTableClient(subscriptionID string, credential azcore.TokenCredential, op
 //   - options - TableClientCreateOptions contains the optional parameters for the TableClient.Create method.
 func (client *TableClient) Create(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableClientCreateOptions) (TableClientCreateResponse, error) {
 	var err error
+	const operationName = "TableClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return TableClientCreateResponse{}, err
@@ -128,6 +132,10 @@ func (client *TableClient) createHandleResponse(resp *http.Response) (TableClien
 //   - options - TableClientDeleteOptions contains the optional parameters for the TableClient.Delete method.
 func (client *TableClient) Delete(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableClientDeleteOptions) (TableClientDeleteResponse, error) {
 	var err error
+	const operationName = "TableClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return TableClientDeleteResponse{}, err
@@ -185,6 +193,10 @@ func (client *TableClient) deleteCreateRequest(ctx context.Context, resourceGrou
 //   - options - TableClientGetOptions contains the optional parameters for the TableClient.Get method.
 func (client *TableClient) Get(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableClientGetOptions) (TableClientGetResponse, error) {
 	var err error
+	const operationName = "TableClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return TableClientGetResponse{}, err
@@ -253,6 +265,7 @@ func (client *TableClient) NewListPager(resourceGroupName string, accountName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TableClientListResponse) (TableClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TableClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -272,6 +285,7 @@ func (client *TableClient) NewListPager(resourceGroupName string, accountName st
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -322,6 +336,10 @@ func (client *TableClient) listHandleResponse(resp *http.Response) (TableClientL
 //   - options - TableClientUpdateOptions contains the optional parameters for the TableClient.Update method.
 func (client *TableClient) Update(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableClientUpdateOptions) (TableClientUpdateResponse, error) {
 	var err error
+	const operationName = "TableClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return TableClientUpdateResponse{}, err

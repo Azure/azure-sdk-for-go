@@ -54,6 +54,10 @@ func NewExpressRouteLinksClient(subscriptionID string, credential azcore.TokenCr
 //   - options - ExpressRouteLinksClientGetOptions contains the optional parameters for the ExpressRouteLinksClient.Get method.
 func (client *ExpressRouteLinksClient) Get(ctx context.Context, resourceGroupName string, expressRoutePortName string, linkName string, options *ExpressRouteLinksClientGetOptions) (ExpressRouteLinksClientGetResponse, error) {
 	var err error
+	const operationName = "ExpressRouteLinksClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, expressRoutePortName, linkName, options)
 	if err != nil {
 		return ExpressRouteLinksClientGetResponse{}, err
@@ -122,6 +126,7 @@ func (client *ExpressRouteLinksClient) NewListPager(resourceGroupName string, ex
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExpressRouteLinksClientListResponse) (ExpressRouteLinksClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpressRouteLinksClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -141,6 +146,7 @@ func (client *ExpressRouteLinksClient) NewListPager(resourceGroupName string, ex
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

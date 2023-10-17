@@ -55,6 +55,10 @@ func NewFileServicesClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *FileServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesClientGetServicePropertiesOptions) (FileServicesClientGetServicePropertiesResponse, error) {
 	var err error
+	const operationName = "FileServicesClient.GetServiceProperties"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return FileServicesClientGetServicePropertiesResponse{}, err
@@ -117,6 +121,10 @@ func (client *FileServicesClient) getServicePropertiesHandleResponse(resp *http.
 //   - options - FileServicesClientListOptions contains the optional parameters for the FileServicesClient.List method.
 func (client *FileServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesClientListOptions) (FileServicesClientListResponse, error) {
 	var err error
+	const operationName = "FileServicesClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return FileServicesClientListResponse{}, err
@@ -181,6 +189,10 @@ func (client *FileServicesClient) listHandleResponse(resp *http.Response) (FileS
 //     method.
 func (client *FileServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties, options *FileServicesClientSetServicePropertiesOptions) (FileServicesClientSetServicePropertiesResponse, error) {
 	var err error
+	const operationName = "FileServicesClient.SetServiceProperties"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return FileServicesClientSetServicePropertiesResponse{}, err

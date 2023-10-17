@@ -31,6 +31,8 @@ The [azidentity][azure_identity] module is used for Azure Active Directory authe
 
 An authenticated client object is required to upload logs. The examples demonstrate using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate; however, the client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
 
+The client defaults to the Azure public cloud. For other cloud configurations, see the [cloud][cloud_documentation] package documentation.
+
 #### Create a client
 
 [Example client][azingest_pkg_go_example_client]
@@ -92,6 +94,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/
 [azure_monitor_query]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
 [azure_subscription]: https://azure.microsoft.com/free/
+[cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
 [data_collection_endpoint]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-endpoint-overview
 [data_collection_rule]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-overview
 [data_collection_rule_structure]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure

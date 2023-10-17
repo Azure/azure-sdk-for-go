@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,14 @@
 
 ### Bugs Fixed
 
+* Fixed case in Blob Batch API when blob path has / in it. Fixes [#21649](https://github.com/Azure/azure-sdk-for-go/issues/21649).
+
 ### Other Changes
+
+## 1.2.0 (2023-10-11)
+
+### Bugs Fixed
+* Fixed null pointer exception when `SetImmutabilityPolicyOptions` is passed as `nil`.
 
 ## 1.2.0-beta.1 (2023-09-18)
 

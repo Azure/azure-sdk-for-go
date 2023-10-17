@@ -30,7 +30,7 @@ type DefaultAzureCredentialOptions struct {
 	// set as a semicolon delimited list of tenants in the environment variable AZURE_ADDITIONALLY_ALLOWED_TENANTS.
 	AdditionallyAllowedTenants []string
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
-	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
+	// private clouds such as Azure Stack. It determines whether the credential requests Microsoft Entra instance metadata
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
@@ -141,7 +141,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	return &DefaultAzureCredential{chain: chain}, nil
 }
 
-// GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
+// GetToken requests an access token from Microsoft Entra ID. This method is called automatically by Azure SDK clients.
 func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	return c.chain.GetToken(ctx, opts)
 }

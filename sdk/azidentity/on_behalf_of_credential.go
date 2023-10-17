@@ -21,9 +21,9 @@ const credNameOBO = "OnBehalfOfCredential"
 // OnBehalfOfCredential authenticates a service principal via the on-behalf-of flow. This is typically used by
 // middle-tier services that authorize requests to other services with a delegated user identity. Because this
 // is not an interactive authentication flow, an application using it must have admin consent for any delegated
-// permissions before requesting tokens for them. See [Azure Active Directory documentation] for more details.
+// permissions before requesting tokens for them. See [Microsoft Entra ID documentation] for more details.
 //
-// [Azure Active Directory documentation]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow
+// [Microsoft Entra ID documentation]: https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow
 type OnBehalfOfCredential struct {
 	client *confidentialClient
 }
@@ -38,7 +38,7 @@ type OnBehalfOfCredentialOptions struct {
 	AdditionallyAllowedTenants []string
 
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
-	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
+	// private clouds such as Azure Stack. It determines whether the credential requests Microsoft Entra instance metadata
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
@@ -86,7 +86,7 @@ func newOnBehalfOfCredential(tenantID, clientID, userAssertion string, cred conf
 	return &OnBehalfOfCredential{c}, nil
 }
 
-// GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
+// GetToken requests an access token from Microsoft Entra ID. This method is called automatically by Azure SDK clients.
 func (o *OnBehalfOfCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	return o.client.GetToken(ctx, opts)
 }

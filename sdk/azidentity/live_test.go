@@ -182,7 +182,7 @@ func run(m *testing.M) int {
 		if err != nil {
 			panic(err)
 		}
-		// redact secrets returned by AAD
+		// redact secrets returned by Microsoft Entra ID
 		for _, key := range []string{"access_token", "device_code", "message", "refresh_token", "user_code"} {
 			err = recording.AddBodyKeySanitizer("$."+key, "redacted", "", nil)
 			if err != nil {

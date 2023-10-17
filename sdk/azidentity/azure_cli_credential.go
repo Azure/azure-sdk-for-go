@@ -97,7 +97,7 @@ var defaultAzTokenProvider cliTokenProvider = func(ctx context.Context, scopes [
 	if !validScope(scopes[0]) {
 		return nil, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzureCLI, scopes[0])
 	}
-	// pass the CLI an AAD v1 resource because we don't know which CLI version is installed and older ones don't support v2 scopes
+	// pass the CLI a Microsoft Entra ID v1 resource because we don't know which CLI version is installed and older ones don't support v2 scopes
 	resource := strings.TrimSuffix(scopes[0], defaultSuffix)
 	// set a default timeout for this authentication iff the application hasn't done so already
 	var cancel context.CancelFunc

@@ -10,7 +10,6 @@
 - New field `Identity` in struct `MHSMPrivateEndpointConnection`
 - New field `Identity` in struct `MHSMPrivateLinkResource`
 - New field `Identity` in struct `ManagedHsm`
-- New field `Identity` in struct `ManagedHsmResource`
 
 
 ## 1.2.0 (2023-04-28)

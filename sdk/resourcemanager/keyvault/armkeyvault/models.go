@@ -32,24 +32,6 @@ type Action struct {
 	Type *KeyRotationPolicyActionType
 }
 
-// Attributes - The object attributes managed by the KeyVault service.
-type Attributes struct {
-	// Determines whether the object is enabled.
-	Enabled *bool
-
-	// Expiry date in seconds since 1970-01-01T00:00:00Z.
-	Expires *time.Time
-
-	// Not before date in seconds since 1970-01-01T00:00:00Z.
-	NotBefore *time.Time
-
-	// READ-ONLY; Creation time in seconds since 1970-01-01T00:00:00Z.
-	Created *time.Time
-
-	// READ-ONLY; Last updated time in seconds since 1970-01-01T00:00:00Z.
-	Updated *time.Time
-}
-
 // CheckMhsmNameAvailabilityParameters - The parameters used to check the availability of the managed hsm name.
 type CheckMhsmNameAvailabilityParameters struct {
 	// REQUIRED; The managed hsm name.
@@ -182,18 +164,6 @@ type DimensionProperties struct {
 
 	// Property to specify whether the dimension should be exported for Shoebox.
 	ToBeExportedForShoebox *bool
-}
-
-// Error - The server error.
-type Error struct {
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The inner error, contains a more specific error code.
-	InnerError *Error
-
-	// READ-ONLY; The error message.
-	Message *string
 }
 
 // IPRule - A rule governing the accessibility of a vault from a specific ip address or ip range.
@@ -561,12 +531,6 @@ type ManagedHsmAction struct {
 	Type *KeyRotationPolicyActionType
 }
 
-// ManagedHsmError - The error exception.
-type ManagedHsmError struct {
-	// READ-ONLY; The server error.
-	Error *Error
-}
-
 // ManagedHsmKey - The key resource.
 type ManagedHsmKey struct {
 	// REQUIRED; The properties of the key.
@@ -744,33 +708,6 @@ type ManagedHsmProperties struct {
 
 	// READ-ONLY; Resource Status Message.
 	StatusMessage *string
-}
-
-// ManagedHsmResource - Managed HSM resource
-type ManagedHsmResource struct {
-	// Managed service identity (system assigned and/or user assigned identities)
-	Identity *ManagedServiceIdentity
-
-	// The supported Azure location where the managed HSM Pool should be created.
-	Location *string
-
-	// SKU details
-	SKU *ManagedHsmSKU
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; The Azure Resource Manager resource ID for the managed HSM Pool.
-	ID *string
-
-	// READ-ONLY; The name of the managed HSM Pool.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the key vault resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The resource type of the managed HSM Pool.
-	Type *string
 }
 
 type ManagedHsmRotationPolicy struct {
@@ -1047,21 +984,6 @@ type PrivateLinkServiceConnectionState struct {
 
 	// Indicates whether the connection has been approved, rejected or removed by the key vault owner.
 	Status *PrivateEndpointServiceConnectionStatus
-}
-
-// ProxyResourceWithoutSystemData - Common fields that are returned in the response for all Azure Resource Manager resources
-type ProxyResourceWithoutSystemData struct {
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // Resource - Key Vault resource

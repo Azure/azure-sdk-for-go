@@ -58,12 +58,6 @@ func (a *AvailabilitySetResourceSettings) GetResourceSettings() *ResourceSetting
 	}
 }
 
-// AzureResourceReference - Defines reference to an Azure resource.
-type AzureResourceReference struct {
-	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
-	SourceArmResourceID *string
-}
-
 // BulkRemoveRequest - Defines the request body for bulk remove of move resources operation.
 type BulkRemoveRequest struct {
 	// Defines the move resource input type.
@@ -508,18 +502,6 @@ type MoveResourcePropertiesMoveStatus struct {
 	MoveState *MoveState
 }
 
-// MoveResourceStatus - Defines the move resource status.
-type MoveResourceStatus struct {
-	// An error response from the azure resource mover service.
-	Errors *MoveResourceError
-
-	// Defines the job status.
-	JobStatus *JobStatus
-
-	// READ-ONLY; Defines the MoveResource states.
-	MoveState *MoveState
-}
-
 // NetworkInterfaceResourceSettings - Defines the network interface resource settings.
 type NetworkInterfaceResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
@@ -756,15 +738,6 @@ type PrepareRequest struct {
 
 	// Gets or sets a value indicating whether the operation needs to only run pre-requisite.
 	ValidateOnly *bool
-}
-
-// ProxyResourceReference - Defines reference to a proxy resource.
-type ProxyResourceReference struct {
-	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
-	SourceArmResourceID *string
-
-	// Gets the name of the proxy resource on the target side.
-	Name *string
 }
 
 // PublicIPAddressResourceSettings - Defines the public IP address resource settings.

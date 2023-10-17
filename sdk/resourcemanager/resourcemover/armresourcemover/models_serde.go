@@ -124,33 +124,6 @@ func (a *AvailabilitySetResourceSettings) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureResourceReference.
-func (a AzureResourceReference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "sourceArmResourceId", a.SourceArmResourceID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureResourceReference.
-func (a *AzureResourceReference) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "sourceArmResourceId":
-			err = unpopulate(val, "SourceArmResourceID", &a.SourceArmResourceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type BulkRemoveRequest.
 func (b BulkRemoveRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1253,41 +1226,6 @@ func (m *MoveResourcePropertiesMoveStatus) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MoveResourceStatus.
-func (m MoveResourceStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "errors", m.Errors)
-	populate(objectMap, "jobStatus", m.JobStatus)
-	populate(objectMap, "moveState", m.MoveState)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MoveResourceStatus.
-func (m *MoveResourceStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", m, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "errors":
-			err = unpopulate(val, "Errors", &m.Errors)
-			delete(rawMsg, key)
-		case "jobStatus":
-			err = unpopulate(val, "JobStatus", &m.JobStatus)
-			delete(rawMsg, key)
-		case "moveState":
-			err = unpopulate(val, "MoveState", &m.MoveState)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", m, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type NetworkInterfaceResourceSettings.
 func (n NetworkInterfaceResourceSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1744,37 +1682,6 @@ func (p *PrepareRequest) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "validateOnly":
 			err = unpopulate(val, "ValidateOnly", &p.ValidateOnly)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", p, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ProxyResourceReference.
-func (p ProxyResourceReference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "sourceArmResourceId", p.SourceArmResourceID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProxyResourceReference.
-func (p *ProxyResourceReference) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", p, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "name":
-			err = unpopulate(val, "Name", &p.Name)
-			delete(rawMsg, key)
-		case "sourceArmResourceId":
-			err = unpopulate(val, "SourceArmResourceID", &p.SourceArmResourceID)
 			delete(rawMsg, key)
 		}
 		if err != nil {

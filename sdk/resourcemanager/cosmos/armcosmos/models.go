@@ -15,41 +15,6 @@ type APIProperties struct {
 	ServerVersion *ServerVersion
 }
 
-// ARMProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required
-// location and tags
-type ARMProxyResource struct {
-	// READ-ONLY; The unique resource identifier of the database account.
-	ID *string
-
-	// READ-ONLY; The name of the database account.
-	Name *string
-
-	// READ-ONLY; The type of Azure resource.
-	Type *string
-}
-
-// ARMResourceProperties - The core properties of ARM resources.
-type ARMResourceProperties struct {
-	// The location of the resource group to which the resource belongs.
-	Location *string
-
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a
-	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
-	// the default experience for a template type is set with "defaultExperience":
-	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
-	Tags map[string]*string
-
-	// READ-ONLY; The unique resource identifier of the ARM resource.
-	ID *string
-
-	// READ-ONLY; The name of the ARM resource.
-	Name *string
-
-	// READ-ONLY; The type of Azure resource.
-	Type *string
-}
-
 // AccountKeyMetadata - The metadata related to an access key for a given database account.
 type AccountKeyMetadata struct {
 	// READ-ONLY; Generation time in UTC of the key in ISO-8601 format. If the value is missing from the object, it means that
@@ -962,12 +927,6 @@ type DataTransferRegionalServiceResource struct {
 	Status *ServiceStatus
 }
 
-// DataTransferServiceResource - Describes the service response property.
-type DataTransferServiceResource struct {
-	// Properties for DataTransferServiceResource.
-	Properties *DataTransferServiceResourceProperties
-}
-
 // DataTransferServiceResourceProperties - Properties for DataTransferServiceResource.
 type DataTransferServiceResourceProperties struct {
 	// REQUIRED; ServiceType for the service.
@@ -1501,31 +1460,9 @@ type DatabaseRestoreResource struct {
 	DatabaseName *string
 }
 
-// ErrorResponse - Error Response.
-type ErrorResponse struct {
-	// Error code.
-	Code *string
-
-	// Error message indicating why the operation failed.
-	Message *string
-}
-
 type ExcludedPath struct {
 	// The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard (/path/*)
 	Path *string
-}
-
-// ExtendedResourceProperties - The system generated resource properties associated with SQL databases, SQL containers, Gremlin
-// databases and Gremlin graphs.
-type ExtendedResourceProperties struct {
-	// READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
-	Etag *string
-
-	// READ-ONLY; A system generated property. A unique identifier.
-	Rid *string
-
-	// READ-ONLY; A system generated property that denotes the last updated timestamp of the resource.
-	Ts *float32
 }
 
 // FailoverPolicies - The list of new failover policies for the failover priority change.
@@ -1561,12 +1498,6 @@ type GraphAPIComputeRegionalServiceResource struct {
 
 	// READ-ONLY; Describes the status of a service.
 	Status *ServiceStatus
-}
-
-// GraphAPIComputeServiceResource - Describes the service response property for GraphAPICompute.
-type GraphAPIComputeServiceResource struct {
-	// Properties for GraphAPIComputeServiceResource.
-	Properties *GraphAPIComputeServiceResourceProperties
 }
 
 // GraphAPIComputeServiceResourceProperties - Properties for GraphAPIComputeServiceResource.
@@ -2004,31 +1935,6 @@ type LocationProperties struct {
 	SupportsAvailabilityZone *bool
 }
 
-// ManagedCassandraARMResourceProperties - The core properties of ARM resources.
-type ManagedCassandraARMResourceProperties struct {
-	// Identity for the resource.
-	Identity *ManagedCassandraManagedServiceIdentity
-
-	// The location of the resource group to which the resource belongs.
-	Location *string
-
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a
-	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
-	// the default experience for a template type is set with "defaultExperience":
-	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
-	Tags map[string]*string
-
-	// READ-ONLY; The unique resource identifier of the ARM resource.
-	ID *string
-
-	// READ-ONLY; The name of the ARM resource.
-	Name *string
-
-	// READ-ONLY; The type of Azure resource.
-	Type *string
-}
-
 // ManagedCassandraManagedServiceIdentity - Identity for the resource.
 type ManagedCassandraManagedServiceIdentity struct {
 	// The type of the resource.
@@ -2081,12 +1987,6 @@ type MaterializedViewsBuilderRegionalServiceResource struct {
 
 	// READ-ONLY; Describes the status of a service.
 	Status *ServiceStatus
-}
-
-// MaterializedViewsBuilderServiceResource - Describes the service response property for MaterializedViewsBuilder.
-type MaterializedViewsBuilderServiceResource struct {
-	// Properties for MaterializedViewsBuilderServiceResource.
-	Properties *MaterializedViewsBuilderServiceResourceProperties
 }
 
 // MaterializedViewsBuilderServiceResourceProperties - Properties for MaterializedViewsBuilderServiceResource.
@@ -2637,16 +2537,6 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
-// OptionsResource - Cosmos DB options resource object
-type OptionsResource struct {
-	// Specifies the Autoscale settings.
-	AutoscaleSettings *AutoscaleSettings
-
-	// Value of the Cosmos DB resource throughput or autoscaleSettings. Use the ThroughputSetting resource when retrieving offer
-	// details.
-	Throughput *int32
-}
-
 // PartitionMetric - The metric values for a single partition.
 type PartitionMetric struct {
 	// READ-ONLY; The end time for the metric (ISO-8601 format).
@@ -2925,47 +2815,10 @@ type PrivilegeResource struct {
 	Db *string
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // RegionForOnlineOffline - Cosmos DB region to online or offline.
 type RegionForOnlineOffline struct {
 	// REQUIRED; Cosmos DB region, with spaces between words and each word capitalized.
 	Region *string
-}
-
-// RegionalServiceResource - Resource for a regional service location.
-type RegionalServiceResource struct {
-	// READ-ONLY; The location name.
-	Location *string
-
-	// READ-ONLY; The regional service name.
-	Name *string
-
-	// READ-ONLY; Describes the status of a service.
-	Status *ServiceStatus
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // RestorableDatabaseAccountGetResult - A Azure Cosmos DB restorable database account.
@@ -3801,12 +3654,6 @@ type SQLDedicatedGatewayRegionalServiceResource struct {
 
 	// READ-ONLY; Describes the status of a service.
 	Status *ServiceStatus
-}
-
-// SQLDedicatedGatewayServiceResource - Describes the service response property for SqlDedicatedGateway.
-type SQLDedicatedGatewayServiceResource struct {
-	// Properties for SqlDedicatedGatewayServiceResource.
-	Properties *SQLDedicatedGatewayServiceResourceProperties
 }
 
 // SQLDedicatedGatewayServiceResourceProperties - Properties for SqlDedicatedGatewayServiceResource.

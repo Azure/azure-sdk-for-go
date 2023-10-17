@@ -6,6 +6,10 @@
 
 * Add support for auto-installing the test proxy standalone tooling in the test recording package
 
+### Other Changes
+
+* Updated dependencies.
+
 ## 1.3.0 (2023-04-04)
 
 ### Features Added

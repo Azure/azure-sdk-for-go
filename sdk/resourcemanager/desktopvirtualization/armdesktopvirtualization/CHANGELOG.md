@@ -40,7 +40,6 @@
 - New struct `PrivateLinkResourceListResult`
 - New struct `PrivateLinkResourceProperties`
 - New struct `PrivateLinkServiceConnectionState`
-- New struct `ProxyResource`
 - New struct `ScalingPlanPersonalSchedule`
 - New struct `ScalingPlanPersonalScheduleList`
 - New struct `ScalingPlanPersonalSchedulePatch`

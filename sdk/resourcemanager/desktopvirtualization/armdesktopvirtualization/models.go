@@ -270,15 +270,6 @@ type ApplicationProperties struct {
 	ObjectID *string
 }
 
-// CloudErrorProperties - Cloud error object properties.
-type CloudErrorProperties struct {
-	// Error code
-	Code *string
-
-	// Error message indicating why the operation failed.
-	Message *string
-}
-
 // Desktop - Schema for Desktop properties.
 type Desktop struct {
 	// Detailed properties for Desktop
@@ -608,18 +599,6 @@ type HostPoolProperties struct {
 	PrivateEndpointConnections []*PrivateEndpointConnection
 }
 
-// Identity for the resource.
-type Identity struct {
-	// The identity type.
-	Type *string
-
-	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string
-
-	// READ-ONLY; The tenant ID of resource.
-	TenantID *string
-}
-
 // LogSpecification - Specifications of the Log for Azure Monitoring
 type LogSpecification struct {
 	// Blob duration of the log
@@ -788,25 +767,6 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification
 }
 
-// Plan for the resource.
-type Plan struct {
-	// REQUIRED; A user defined name of the 3rd Party Artifact that is being procured.
-	Name *string
-
-	// REQUIRED; The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact
-	// at the time of Data Market onboarding.
-	Product *string
-
-	// REQUIRED; The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
-	Publisher *string
-
-	// A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
-	PromotionCode *string
-
-	// The version of the desired product/artifact.
-	Version *string
-}
-
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
@@ -917,19 +877,6 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // RegistrationInfo - Represents a RegistrationInfo definition.
 type RegistrationInfo struct {
 	// Expiration time of registration token.
@@ -949,57 +896,6 @@ type RegistrationInfoPatch struct {
 
 	// The type of resetting the token.
 	RegistrationTokenOperation *RegistrationTokenOperation
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ResourceModelWithAllowedPropertySet - The resource model definition containing the full set of allowed properties for a
-// resource. Except properties bag, there cannot be a top level property outside of this set.
-type ResourceModelWithAllowedPropertySet struct {
-	Identity *ResourceModelWithAllowedPropertySetIdentity
-
-	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are
-	// a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
-	Kind *string
-
-	// The geo-location where the resource lives
-	Location *string
-
-	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
-	// Azure resource. If this is present, complete mode deployment will not
-	// delete the resource if it is removed from the template since it is managed by another resource.
-	ManagedBy *string
-	Plan      *ResourceModelWithAllowedPropertySetPlan
-	SKU       *ResourceModelWithAllowedPropertySetSKU
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; The etag field is not required. If it is provided in the response body, it must also be provided as a header
-	// per the normal etag convention. Entity tags are used for comparing two or more entities
-	// from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match
-	// (section 14.26), and If-Range (section 14.27) header fields.
-	Etag *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 type ResourceModelWithAllowedPropertySetIdentity struct {
@@ -1087,26 +983,6 @@ type ResourceProviderOperationList struct {
 
 	// READ-ONLY; Link to the next page of results.
 	NextLink *string
-}
-
-// SKU - The resource model definition representing SKU
-type SKU struct {
-	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
-	Name *string
-
-	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
-	// resource this may be omitted.
-	Capacity *int32
-
-	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
-	Family *string
-
-	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
-	Size *string
-
-	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
-	// on a PUT.
-	Tier *SKUTier
 }
 
 // ScalingHostPoolReference - Scaling plan reference to hostpool.

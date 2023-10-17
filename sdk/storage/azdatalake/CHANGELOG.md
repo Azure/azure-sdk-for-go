@@ -1,16 +1,10 @@
 # Release History
 
-## 0.2.0 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0 (2023-10-18)
 
 ### Bugs Fixed
 * Fixed an issue where customers could not capture the raw HTTP response of directory and file GetProperties operations.
 * Fixed an issue where file/directory renames with source/destination SAS tokens fail with authorization failures.
-
-### Other Changes
 
 ## 0.1.0-beta.1 (2023-08-16)
 

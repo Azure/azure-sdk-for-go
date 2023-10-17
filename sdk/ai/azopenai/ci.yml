@@ -25,15 +25,18 @@ pr:
 stages:
   - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
+      # We need to allow for longer retry times with tests that run against the public endpoint
+      # which throttles under load.
+      TimeoutInMinutes: 30
       ServiceDirectory: "ai/azopenai"
       RunLiveTests: true
       CloudConfig:
         Public:
           SubscriptionConfigurations:
             - $(sub-config-azure-cloud-test-resources)
-            - $(sub-config-openai-test-resources)  # TestSecrets-openai
+            - $(sub-config-openai-test-resources) # TestSecrets-openai
       EnvVars:
-        AZURE_TEST_RUN_LIVE: 'true' # use when utilizing the New-TestResources Script
+        AZURE_TEST_RUN_LIVE: "true" # use when utilizing the New-TestResources Script
         AZURE_CLIENT_ID: $(AZOPENAI_CLIENT_ID)
         AZURE_CLIENT_SECRET: $(AZOPENAI_CLIENT_SECRET)
         AZURE_TENANT_ID: $(AZOPENAI_TENANT_ID)

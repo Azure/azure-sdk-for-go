@@ -155,7 +155,6 @@
 - New function `*NetworkInterfacesClient.NewListPager(string, *NetworkInterfacesClientListOptions) *runtime.Pager[NetworkInterfacesClientListResponse]`
 - New function `*NetworkInterfacesClient.BeginUpdate(context.Context, string, string, NetworkInterfacesUpdateRequest, *NetworkInterfacesClientBeginUpdateOptions) (*runtime.Poller[NetworkInterfacesClientUpdateResponse], error)`
 - New struct `ExtendedLocation`
-- New struct `GalleryDiskImage`
 - New struct `GalleryImageIdentifier`
 - New struct `GalleryImageProperties`
 - New struct `GalleryImageStatus`
@@ -256,9 +255,6 @@
 - New struct `VirtualMachineInstanceUpdateProperties`
 - New struct `VirtualMachineInstanceUpdateRequest`
 - New struct `VirtualMachineInstanceView`
-- New field `SystemData` in struct `ProxyResource`
-- New field `SystemData` in struct `Resource`
-- New field `SystemData` in struct `TrackedResource`
 
 
 ## 1.1.1 (2023-04-14)

@@ -106,40 +106,6 @@ type CreateResourceSupportedResponseList struct {
 	Value []*CreateResourceSupportedResponse
 }
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
-
-	// READ-ONLY; The additional info type.
-	Type *string
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
-
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail
-
-	// READ-ONLY; The error message.
-	Message *string
-
-	// READ-ONLY; The error target.
-	Target *string
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail
-}
-
 // FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them
 // from being monitored.
 type FilteringTag struct {

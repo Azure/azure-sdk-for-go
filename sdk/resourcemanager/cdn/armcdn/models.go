@@ -390,15 +390,6 @@ type AFDOriginUpdatePropertiesParameters struct {
 	OriginGroupName *string
 }
 
-// AFDStateProperties - The tracking states for afd resources.
-type AFDStateProperties struct {
-	// READ-ONLY
-	DeploymentStatus *DeploymentStatus
-
-	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState
-}
-
 // ActivatedResourceReference - Reference to another resource along with its state.
 type ActivatedResourceReference struct {
 	// Resource ID.
@@ -406,13 +397,6 @@ type ActivatedResourceReference struct {
 
 	// READ-ONLY; Whether the resource is active or inactive
 	IsActive *bool
-}
-
-// AfdErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type AfdErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail
 }
 
 // AfdPurgeParameters - Parameters required for content purge.
@@ -437,19 +421,6 @@ type AfdRouteCacheConfiguration struct {
 	// specific query strings, cache every request with a unique URL, or cache specific
 	// query strings.
 	QueryStringCachingBehavior *AfdQueryStringCachingBehavior
-}
-
-// AzureFirstPartyManagedCertificate - Azure FirstParty Managed Certificate provided by other first party resource providers
-// to enable HTTPS.
-type AzureFirstPartyManagedCertificate struct {
-	// The type of the secret resource.
-	Type *SecretType
-
-	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *string
-
-	// READ-ONLY; Subject name in the certificate.
-	Subject *string
 }
 
 // AzureFirstPartyManagedCertificateParameters - Azure FirstParty Managed Certificate provided by other first party resource
@@ -560,18 +531,6 @@ type CanMigrateResult struct {
 
 	// READ-ONLY; Resource type.
 	Type *string
-}
-
-// Certificate used for https
-type Certificate struct {
-	// The type of the secret resource.
-	Type *SecretType
-
-	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *string
-
-	// READ-ONLY; Subject name in the certificate.
-	Subject *string
 }
 
 // CertificateSourceParameters - Defines the parameters for using CDN managed certificate for securing custom domain.
@@ -833,37 +792,6 @@ type CustomRule struct {
 type CustomRuleList struct {
 	// List of rules
 	Rules []*CustomRule
-}
-
-// CustomerCertificate - Customer Certificate used for https
-type CustomerCertificate struct {
-	// Resource reference to the Azure Key Vault certificate. Expected to be in format of
-	// /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
-	SecretSource *ResourceReference
-
-	// Certificate version.
-	SecretVersion *string
-
-	// The list of SANs.
-	SubjectAlternativeNames []*string
-
-	// The type of the secret resource.
-	Type *SecretType
-
-	// Whether to use the latest version for the certificate
-	UseLatestVersion *bool
-
-	// READ-ONLY; Certificate issuing authority.
-	CertificateAuthority *string
-
-	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *string
-
-	// READ-ONLY; Subject name in the certificate.
-	Subject *string
-
-	// READ-ONLY; Certificate thumbprint.
-	Thumbprint *string
 }
 
 // CustomerCertificateParameters - Customer Certificate used for https
@@ -1676,40 +1604,6 @@ type EndpointUpdateParameters struct {
 	Tags map[string]*string
 }
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
-
-	// READ-ONLY; The additional info type.
-	Type *string
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
-
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail
-
-	// READ-ONLY; The error message.
-	Message *string
-
-	// READ-ONLY; The error target.
-	Target *string
-}
-
-// ErrorResponse - Error response indicates Azure Front Door Standard or Azure Front Door Premium or CDN service is not able
-// to process the incoming request. The reason is provided in the error message.
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail
-}
-
 // GeoFilter - Rules defining user's geo access within a CDN endpoint.
 type GeoFilter struct {
 	// REQUIRED; Action of the geo filter, i.e. allow or block access.
@@ -1913,18 +1807,6 @@ type LogSpecification struct {
 
 	// Name of log specification.
 	Name *string
-}
-
-// ManagedCertificate - Managed Certificate used for https
-type ManagedCertificate struct {
-	// The type of the secret resource.
-	Type *SecretType
-
-	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *string
-
-	// READ-ONLY; Subject name in the certificate.
-	Subject *string
 }
 
 // ManagedCertificateParameters - Managed Certificate used for https
@@ -2654,22 +2536,6 @@ type ProfileUpgradeParameters struct {
 	WafMappingList []*ProfileChangeSKUWafMapping
 }
 
-// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
-// and tags
-type ProxyResource struct {
-	// READ-ONLY; Resource ID.
-	ID *string
-
-	// READ-ONLY; Resource name.
-	Name *string
-
-	// READ-ONLY; Read only system data
-	SystemData *SystemData
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
 // PurgeParameters - Parameters required for content purge.
 type PurgeParameters struct {
 	// REQUIRED; The path to the content to be purged. Can describe a file path or a wild card directory.
@@ -2857,21 +2723,6 @@ type RequestURIMatchConditionParameters struct {
 
 	// List of transforms
 	Transforms []*Transform
-}
-
-// Resource - The core properties of ARM resources
-type Resource struct {
-	// READ-ONLY; Resource ID.
-	ID *string
-
-	// READ-ONLY; Resource name.
-	Name *string
-
-	// READ-ONLY; Read only system data
-	SystemData *SystemData
-
-	// READ-ONLY; Resource type.
-	Type *string
 }
 
 // ResourceReference - Reference to another resource.
@@ -3479,27 +3330,6 @@ type SystemData struct {
 	LastModifiedByType *IdentityType
 }
 
-// TrackedResource - The resource model definition for a ARM tracked top level resource.
-type TrackedResource struct {
-	// REQUIRED; Resource location.
-	Location *string
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Resource ID.
-	ID *string
-
-	// READ-ONLY; Resource name.
-	Name *string
-
-	// READ-ONLY; Read only system data
-	SystemData *SystemData
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
 // URLFileExtensionMatchConditionParameters - Defines the parameters for UrlFileExtension match conditions
 type URLFileExtensionMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
@@ -3825,12 +3655,6 @@ type ValidateSecretOutput struct {
 
 	// The validation status.
 	Status *Status
-}
-
-// ValidationToken - The validation token.
-type ValidationToken struct {
-	// READ-ONLY
-	Token *string
 }
 
 // WafMetricsResponse - Waf Metrics Response

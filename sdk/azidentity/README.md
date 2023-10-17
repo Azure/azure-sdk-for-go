@@ -1,9 +1,9 @@
 # Azure Identity Client Module for Go
 
-The Azure Identity module provides Azure Active Directory (Azure AD) token authentication support across the Azure SDK. It includes a set of `TokenCredential` implementations, which can be used with Azure SDK clients supporting token authentication.
+The Azure Identity module provides Microsoft Entra ID ([formerly Azure Active Directory](https://learn.microsoft.com/azure/active-directory/fundamentals/new-name)) token authentication support across the Azure SDK. It includes a set of `TokenCredential` implementations, which can be used with Azure SDK clients supporting token authentication.
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/azidentity)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity)
-| [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/)
+| [Microsoft Entra ID documentation](https://learn.microsoft.com/azure/active-directory/)
 | [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity)
 
 # Getting started
@@ -50,9 +50,7 @@ service client to authenticate requests. Service clients across the Azure SDK
 accept a credential instance when they are constructed, and use that credential
 to authenticate requests.
 
-The `azidentity` module focuses on OAuth authentication with Azure Active
-Directory (AAD). It offers a variety of credential types capable of acquiring
-an Azure AD access token. See [Credential Types](#credential-types "Credential Types") for a list of this module's credential types.
+The `azidentity` module focuses on OAuth authentication with Microsoft Entra ID. It offers a variety of credential types capable of acquiring a Microsoft Entra access token. See [Credential Types](#credential-types "Credential Types") for a list of this module's credential types.
 
 ### DefaultAzureCredential
 
@@ -169,16 +167,16 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 
 |variable name|value
 |-|-
-|`AZURE_CLIENT_ID`|ID of an Azure Active Directory application
-|`AZURE_TENANT_ID`|ID of the application's Azure Active Directory tenant
+|`AZURE_CLIENT_ID`|ID of a Microsoft Entra application
+|`AZURE_TENANT_ID`|ID of the application's Microsoft Entra tenant
 |`AZURE_CLIENT_SECRET`|one of the application's client secrets
 
 #### Service principal with certificate
 
 |variable name|value
 |-|-
-|`AZURE_CLIENT_ID`|ID of an Azure Active Directory application
-|`AZURE_TENANT_ID`|ID of the application's Azure Active Directory tenant
+|`AZURE_CLIENT_ID`|ID of a Microsoft Entra application
+|`AZURE_TENANT_ID`|ID of the application's Microsoft Entra tenant
 |`AZURE_CLIENT_CERTIFICATE_PATH`|path to a certificate file including private key
 |`AZURE_CLIENT_CERTIFICATE_PASSWORD`|password of the certificate file, if any
 
@@ -186,7 +184,7 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 
 |variable name|value
 |-|-
-|`AZURE_CLIENT_ID`|ID of an Azure Active Directory application
+|`AZURE_CLIENT_ID`|ID of a Microsoft Entra application
 |`AZURE_USERNAME`|a username (usually an email address)
 |`AZURE_PASSWORD`|that user's password
 
@@ -209,9 +207,7 @@ For more details, see the [token caching documentation](https://aka.ms/azsdk/go/
 
 Credentials return an `error` when they fail to authenticate or lack data they require to authenticate. For guidance on resolving errors from specific credential types, see the [troubleshooting guide](https://aka.ms/azsdk/go/identity/troubleshoot).
 
-For more details on handling specific Azure Active Directory errors please refer to the
-Azure Active Directory
-[error code documentation](https://docs.microsoft.com/azure/active-directory/develop/reference-aadsts-error-codes).
+For more details on handling specific Microsoft Entra errors, see the Microsoft Entra [error code documentation](https://learn.microsoft.com/azure/active-directory/develop/reference-error-codes).
 
 ### Logging
 

@@ -20,9 +20,9 @@ const credNameAssertion = "ClientAssertionCredential"
 // ClientAssertionCredential authenticates an application with assertions provided by a callback function.
 // This credential is for advanced scenarios. [ClientCertificateCredential] has a more convenient API for
 // the most common assertion scenario, authenticating a service principal with a certificate. See
-// [Azure AD documentation] for details of the assertion format.
+// [Microsoft Entra ID documentation] for details of the assertion format.
 //
-// [Azure AD documentation]: https://docs.microsoft.com/azure/active-directory/develop/active-directory-certificate-credentials#assertion-format
+// [Microsoft Entra ID documentation]: https://learn.microsoft.com/azure/active-directory/develop/active-directory-certificate-credentials#assertion-format
 type ClientAssertionCredential struct {
 	client *confidentialClient
 }
@@ -37,7 +37,7 @@ type ClientAssertionCredentialOptions struct {
 	AdditionallyAllowedTenants []string
 
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
-	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
+	// private clouds such as Azure Stack. It determines whether the credential requests Microsoft Entra instance metadata
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
@@ -72,7 +72,7 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 	return &ClientAssertionCredential{client: c}, nil
 }
 
-// GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
+// GetToken requests an access token from Microsoft Entra ID. This method is called automatically by Azure SDK clients.
 func (c *ClientAssertionCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	return c.client.GetToken(ctx, opts)
 }

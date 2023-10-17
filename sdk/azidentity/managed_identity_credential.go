@@ -67,8 +67,8 @@ type ManagedIdentityCredentialOptions struct {
 
 // ManagedIdentityCredential authenticates an Azure managed identity in any hosting environment supporting managed identities.
 // This credential authenticates a system-assigned identity by default. Use ManagedIdentityCredentialOptions.ID to specify a
-// user-assigned identity. See Azure Active Directory documentation for more information about managed identities:
-// https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+// user-assigned identity. See Microsoft Entra ID documentation for more information about managed identities:
+// https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 type ManagedIdentityCredential struct {
 	client *confidentialClient
 	mic    *managedIdentityClient
@@ -105,7 +105,7 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.To
 		err := fmt.Errorf("%s.GetToken() requires exactly one scope", credNameManagedIdentity)
 		return azcore.AccessToken{}, err
 	}
-	// managed identity endpoints require an AADv1 resource (i.e. token audience), not a v2 scope, so we remove "/.default" here
+	// managed identity endpoints require a Microsoft Entra ID v1 resource (i.e. token audience), not a v2 scope, so we remove "/.default" here
 	opts.Scopes = []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
 	return c.client.GetToken(ctx, opts)
 }

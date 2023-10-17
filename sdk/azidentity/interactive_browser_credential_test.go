@@ -85,7 +85,7 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 	})
 	t.Run("RedirectURL", func(t *testing.T) {
 		url := "http://localhost:8180"
-		fmt.Printf("\t%s: consider this test passing when AAD redirects to %s\n", t.Name(), url)
+		fmt.Printf("\t%s: consider this test passing when Microsoft Entra redirects to %s\n", t.Name(), url)
 		cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{RedirectURL: url})
 		if err != nil {
 			t.Fatal(err)

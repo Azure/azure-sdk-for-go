@@ -114,14 +114,14 @@
 ### Features Added
 * By default, credentials set client capability "CP1" to enable support for
   [Continuous Access Evaluation (CAE)](https://docs.microsoft.com/azure/active-directory/develop/app-resilience-continuous-access-evaluation).
-  This indicates to Azure Active Directory that your application can handle CAE claims challenges.
+  This indicates to Microsoft Entra ID that your application can handle CAE claims challenges.
   You can disable this behavior by setting the environment variable "AZURE_IDENTITY_DISABLE_CP1" to "true".
 * `InteractiveBrowserCredentialOptions.LoginHint` enables pre-populating the login
   prompt with a username ([#15599](https://github.com/Azure/azure-sdk-for-go/pull/15599))
 * Service principal and user credentials support ADFS authentication on Azure Stack.
   Specify "adfs" as the credential's tenant.
 * Applications running in private or disconnected clouds can prevent credentials from
-  requesting Azure AD instance metadata by setting the `DisableInstanceDiscovery`
+  requesting Microsoft Entra instance metadata by setting the `DisableInstanceDiscovery`
   field on credential options.
 * Many credentials can now be configured to authenticate in multiple tenants. The
   options types for these credentials have an `AdditionallyAllowedTenants` field
@@ -474,4 +474,4 @@
 
 ## 0.1.0 (2020-07-23)
 ### Features Added
-* Initial Release. Azure Identity library that provides Azure Active Directory token authentication support for the SDK.
+* Initial Release. Azure Identity library that provides Microsoft Entra token authentication support for the SDK.

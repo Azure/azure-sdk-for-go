@@ -343,25 +343,6 @@ func PossibleSearchServiceStatusValues() []SearchServiceStatus {
 	}
 }
 
-// SharedPrivateLinkResourceAsyncOperationResult - The current status of the long running asynchronous shared private link
-// resource operation.
-type SharedPrivateLinkResourceAsyncOperationResult string
-
-const (
-	SharedPrivateLinkResourceAsyncOperationResultFailed    SharedPrivateLinkResourceAsyncOperationResult = "Failed"
-	SharedPrivateLinkResourceAsyncOperationResultRunning   SharedPrivateLinkResourceAsyncOperationResult = "Running"
-	SharedPrivateLinkResourceAsyncOperationResultSucceeded SharedPrivateLinkResourceAsyncOperationResult = "Succeeded"
-)
-
-// PossibleSharedPrivateLinkResourceAsyncOperationResultValues returns the possible values for the SharedPrivateLinkResourceAsyncOperationResult const type.
-func PossibleSharedPrivateLinkResourceAsyncOperationResultValues() []SharedPrivateLinkResourceAsyncOperationResult {
-	return []SharedPrivateLinkResourceAsyncOperationResult{
-		SharedPrivateLinkResourceAsyncOperationResultFailed,
-		SharedPrivateLinkResourceAsyncOperationResultRunning,
-		SharedPrivateLinkResourceAsyncOperationResultSucceeded,
-	}
-}
-
 // SharedPrivateLinkResourceProvisioningState - The provisioning state of the shared private link resource. Can be Updating,
 // Deleting, Failed, Succeeded or Incomplete.
 type SharedPrivateLinkResourceProvisioningState string

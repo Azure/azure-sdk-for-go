@@ -17,12 +17,6 @@ type AdminKeyResult struct {
 	SecondaryKey *string
 }
 
-// AsyncOperationResult - The details of a long running asynchronous shared private link resource operation
-type AsyncOperationResult struct {
-	// The current status of the long running asynchronous shared private link resource operation.
-	Status *SharedPrivateLinkResourceAsyncOperationResult
-}
-
 // CheckNameAvailabilityInput - Input of check name availability API.
 type CheckNameAvailabilityInput struct {
 	// REQUIRED; The search service name to validate. Search service names must only contain lowercase letters, digits or dashes,
@@ -285,18 +279,6 @@ type QuotaUsageResultName struct {
 	Value *string
 }
 
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // SKU - Defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity limits.
 type SKU struct {
 	// The SKU of the search service. Valid values include: 'free': Shared service. 'basic': Dedicated service with up to 3 replicas.
@@ -521,23 +503,4 @@ type SharedPrivateLinkResourceProperties struct {
 
 	// Status of the shared private link resource. Can be Pending, Approved, Rejected or Disconnected.
 	Status *SharedPrivateLinkResourceStatus
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }

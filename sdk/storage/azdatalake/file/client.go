@@ -63,6 +63,11 @@ func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptio
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
+	if options.ClientOptions.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	}
+	options.ClientOptions.PerCallPolicies = perCallPolicies
 	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}

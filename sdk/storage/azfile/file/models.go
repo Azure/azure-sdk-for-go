@@ -9,6 +9,7 @@ package file
 import (
 	"encoding/binary"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
@@ -88,12 +89,17 @@ type CreateOptions struct {
 
 func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
-		return nil, nil, nil
+		return &generated.FileClientCreateOptions{
+			FileAttributes:    to.Ptr(shared.FileAttributesNone),
+			FileCreationTime:  to.Ptr(shared.DefaultCurrentTimeString),
+			FileLastWriteTime: to.Ptr(shared.DefaultCurrentTimeString),
+			FilePermission:    to.Ptr(shared.DefaultFilePermissionString),
+		}, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, to.Ptr(shared.FileAttributesNone), to.Ptr(shared.DefaultCurrentTimeString), false)
 
-	permission, permissionKey := exported.FormatPermissions(o.Permissions)
+	permission, permissionKey := exported.FormatPermissions(o.Permissions, to.Ptr(shared.DefaultFilePermissionString))
 
 	createOptions := &generated.FileClientCreateOptions{
 		FileAttributes:    fileAttributes,
@@ -154,9 +160,9 @@ func (o *RenameOptions) format() (*generated.FileClientRenameOptions, *generated
 		return nil, nil, nil, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, nil, nil, false)
 
-	permission, permissionKey := exported.FormatPermissions(o.Permissions)
+	permission, permissionKey := exported.FormatPermissions(o.Permissions, nil)
 
 	renameOpts := &generated.FileClientRenameOptions{
 		FilePermission:    permission,
@@ -218,12 +224,17 @@ type SetHTTPHeadersOptions struct {
 
 func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
-		return nil, nil, nil
+		return &generated.FileClientSetHTTPHeadersOptions{
+			FileAttributes:    to.Ptr(shared.DefaultPreserveString),
+			FileCreationTime:  to.Ptr(shared.DefaultCurrentTimeString),
+			FileLastWriteTime: to.Ptr(shared.DefaultCurrentTimeString),
+			FilePermission:    to.Ptr(shared.DefaultFilePermissionString),
+		}, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, to.Ptr(shared.DefaultPreserveString), to.Ptr(shared.DefaultCurrentTimeString), false)
 
-	permission, permissionKey := exported.FormatPermissions(o.Permissions)
+	permission, permissionKey := exported.FormatPermissions(o.Permissions, to.Ptr(shared.DefaultFilePermissionString))
 
 	opts := &generated.FileClientSetHTTPHeadersOptions{
 		FileAttributes:    fileAttributes,

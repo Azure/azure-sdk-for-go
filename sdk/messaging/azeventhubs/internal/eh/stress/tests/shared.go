@@ -50,6 +50,9 @@ type stressTestData struct {
 	Namespace               string
 	HubName                 string
 	StorageConnectionString string
+
+	// CC is a container client instance with the container name set to [runID]
+	CC *container.Client
 }
 
 func (td *stressTestData) Close() {
@@ -126,6 +129,13 @@ func newStressTestData(name string, verbose bool, baggage map[string]string) (*s
 	}
 
 	td.Namespace = props.FullyQualifiedNamespace
+	tmpCC, err := container.NewClientFromConnectionString(td.StorageConnectionString, td.runID, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	td.CC = tmpCC
 
 	startBaggage := map[string]string{
 		"Namespace": td.Namespace,

@@ -362,12 +362,7 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 
 	oldChangelog := string(b)
 	newChangelog := "# Release History\n\n"
-	var matchResults [][]int
-	if version.Prerelease() == "" {
-		matchResults = changelogPosWithoutPreviewRegex.FindAllStringSubmatchIndex(oldChangelog, -1)
-	} else {
-		matchResults = changelogPosWithPreviewRegex.FindAllStringSubmatchIndex(oldChangelog, -1)
-	}
+	matchResults := changelogPosWithPreviewRegex.FindAllStringSubmatchIndex(oldChangelog, -1)
 	additionalChangelog := changelog.ToCompactMarkdown()
 	if releaseDate == "" {
 		releaseDate = time.Now().Format("2006-01-02")

@@ -279,6 +279,17 @@ type QuotaUsageResultName struct {
 	Value *string
 }
 
+// QuotaUsagesListResult - Response containing the quota usage information for all the supported skus of Azure Cognitive Search
+// service.
+type QuotaUsagesListResult struct {
+	// READ-ONLY; Request URL that can be used to query next page of quota usages. Returned when the total number of requested
+	// quota usages exceed maximum page size.
+	NextLink *string
+
+	// READ-ONLY; The quota usages for the SKUs supported by Azure Cognitive Search.
+	Value []*QuotaUsageResult
+}
+
 // SKU - Defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity limits.
 type SKU struct {
 	// The SKU of the search service. Valid values include: 'free': Shared service. 'basic': Dedicated service with up to 3 replicas.

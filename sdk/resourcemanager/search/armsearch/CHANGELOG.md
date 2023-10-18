@@ -19,6 +19,7 @@
 - New struct `EncryptionWithCmk`
 - New struct `QuotaUsageResult`
 - New struct `QuotaUsageResultName`
+- New struct `QuotaUsagesListResult`
 - New field `GroupID`, `ProvisioningState` in struct `PrivateEndpointConnectionProperties`
 - New field `AuthOptions`, `DisableLocalAuth`, `EncryptionWithCmk`, `SemanticSearch` in struct `ServiceProperties`
 

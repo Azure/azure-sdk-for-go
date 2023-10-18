@@ -26,8 +26,10 @@ stages:
   - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
       # We need to allow for longer retry times with tests that run against the public endpoint
-      # which throttles under load.
-      TimeoutInMinutes: 30
+      # which throttles under load. Note, I left a little wiggle room since the TimeoutInMinutes
+      # controls the overall pipeline and TestRunTime configures the individual `go test -timeout` parameter.
+      TimeoutInMinutes: 35
+      TestRunTime: 30m
       ServiceDirectory: "ai/azopenai"
       RunLiveTests: true
       CloudConfig:

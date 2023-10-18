@@ -71,13 +71,7 @@ func newTestClient(t *testing.T, ep endpoint, options ...testClientOption) *azop
 
 		cred := azcore.NewKeyCredential(ep.APIKey)
 
-		options := newClientOptionsForTest(t)
-
-		if options == nil {
-			options = &azopenai.ClientOptions{}
-		}
-
-		client, err := azopenai.NewClientForOpenAI(ep.URL, cred, options)
+		client, err := azopenai.NewClientForOpenAI(ep.URL, cred, clientOptions)
 		require.NoError(t, err)
 
 		return client

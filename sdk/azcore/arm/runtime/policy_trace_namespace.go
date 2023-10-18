@@ -18,7 +18,7 @@ import (
 // httpTraceNamespacePolicy is a policy that adds the az.namespace attribute to the current Span
 func httpTraceNamespacePolicy(req *policy.Request) (resp *http.Response, err error) {
 	rawTracer := req.Raw().Context().Value(shared.CtxWithTracingTracer{})
-	if tracer, ok := rawTracer.(tracing.Tracer); ok {
+	if tracer, ok := rawTracer.(tracing.Tracer); ok && tracer.Enabled() {
 		rt, err := resource.ParseResourceType(req.Raw().URL.Path)
 		if err == nil {
 			// add the namespace attribute to the current span

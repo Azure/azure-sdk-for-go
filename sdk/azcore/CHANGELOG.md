@@ -9,8 +9,11 @@
 ### Bugs Fixed
 
 * Fixed an issue that could cause some allowed HTTP header values to not show up in logs.
+* Include error text instead of error type in traces when the transport returns an error.
 
 ### Other Changes
+
+* Skip generating trace info for no-op tracers.
 
 ## 1.9.0-beta.1 (2023-10-05)
 

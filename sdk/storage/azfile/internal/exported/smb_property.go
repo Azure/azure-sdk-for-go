@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"strings"
 	"time"
 )
@@ -36,7 +37,7 @@ func (sp *SMBProperties) Format(isDir bool, defaultFileAttributes string, defaul
 // FormatSMBProperties returns file attributes, creation time, last write time and change time.
 func FormatSMBProperties(sp *SMBProperties, defaultAttributes *string, defaultCurrentTime *string, isDir bool) (fileAttributes *string, creationTime *string, lastWriteTime *string, changeTime *string) {
 	if sp == nil {
-		return defaultAttributes, defaultCurrentTime, defaultCurrentTime, defaultCurrentTime
+		return defaultAttributes, defaultCurrentTime, defaultCurrentTime, to.Ptr(shared.DefaultCurrentTimeString)
 	}
 
 	fileAttributes = defaultAttributes
@@ -60,7 +61,7 @@ func FormatSMBProperties(sp *SMBProperties, defaultAttributes *string, defaultCu
 		lastWriteTime = to.Ptr(sp.LastWriteTime.UTC().Format(generated.ISO8601))
 	}
 
-	changeTime = defaultCurrentTime
+	changeTime = to.Ptr(shared.DefaultCurrentTimeString)
 	if sp.ChangeTime != nil {
 		changeTime = to.Ptr(sp.ChangeTime.UTC().Format(generated.ISO8601))
 	}

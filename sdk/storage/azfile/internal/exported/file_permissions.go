@@ -30,10 +30,7 @@ func FormatPermissions(p *Permissions, defaultPermission *string) (*string, *str
 		return defaultPermission, nil
 	}
 
-	if p.Permission == nil || p.PermissionKey == nil {
-		if p.Permission == nil {
-			return nil, p.PermissionKey
-		}
+	if p.Permission == nil && p.PermissionKey == nil {
 		return defaultPermission, nil
 	} else {
 		return p.Permission, p.PermissionKey

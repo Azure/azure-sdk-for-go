@@ -35,6 +35,7 @@ func init() {
 			Renegotiation: tls.RenegotiateFreelyAsClient,
 		},
 	}
+	// TODO: evaluate removing this once https://github.com/golang/go/issues/59690 has been fixed
 	if http2Transport, err := http2.ConfigureTransports(defaultTransport); err == nil {
 		// if the connection has been idle for 10 seconds, send a ping frame for a health check
 		http2Transport.ReadIdleTimeout = 10 * time.Second

@@ -228,7 +228,7 @@ func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOpt
 			FileAttributes:    to.Ptr(shared.DefaultPreserveString),
 			FileCreationTime:  to.Ptr(shared.DefaultPreserveString),
 			FileLastWriteTime: to.Ptr(shared.DefaultPreserveString),
-			FilePermission:    to.Ptr(shared.DefaultFilePermissionString),
+			FilePermission:    to.Ptr(shared.DefaultPreserveString),
 		}, nil, nil
 	}
 

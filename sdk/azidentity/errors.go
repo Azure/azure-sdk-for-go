@@ -57,7 +57,13 @@ func (e *AuthenticationFailedError) Error() string {
 	}
 	msg := &bytes.Buffer{}
 	fmt.Fprintf(msg, e.credType+" authentication failed\n")
-	fmt.Fprintf(msg, "%s %s://%s%s\n", e.RawResponse.Request.Method, e.RawResponse.Request.URL.Scheme, e.RawResponse.Request.URL.Host, e.RawResponse.Request.URL.Path)
+	if e.RawResponse.Request != nil {
+		fmt.Fprintf(msg, "%s %s://%s%s\n", e.RawResponse.Request.Method, e.RawResponse.Request.URL.Scheme, e.RawResponse.Request.URL.Host, e.RawResponse.Request.URL.Path)
+	} else {
+		// this happens when the response is created from a custom HTTP transporter,
+		// which doesn't guarantee to bind the original request to the response
+		fmt.Fprint(msg, "Request information not available\n")
+	}
 	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
 	fmt.Fprintf(msg, "RESPONSE %s\n", e.RawResponse.Status)
 	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")

@@ -61,7 +61,7 @@ func FormatSMBProperties(sp *SMBProperties, defaultAttributes *string, defaultCu
 		lastWriteTime = to.Ptr(sp.LastWriteTime.UTC().Format(generated.ISO8601))
 	}
 
-	changeTime = to.Ptr(shared.DefaultCurrentTimeString)
+	changeTime = nil
 	if sp.ChangeTime != nil {
 		changeTime = to.Ptr(sp.ChangeTime.UTC().Format(generated.ISO8601))
 	}

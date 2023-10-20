@@ -40,12 +40,7 @@ if ($incrementVersion) {
     exit 1
   }
 
-  if ($semVer.PrereleaseLabel -ne "zzz") {
-    $semVer.PrereleaseNumber++
-  }
-  else {
-    $semVer.Patch++
-  }
+  $semVer.IncrementAndSetToPrerelease()  
 }
 else {
   $semVer = [AzureEngSemanticVersion]::ParseVersionString($NewVersionString)

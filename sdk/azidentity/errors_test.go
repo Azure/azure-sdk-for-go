@@ -71,7 +71,7 @@ func TestAuthenticationFailedErrorWithoutResponse(t *testing.T) {
 	}
 }
 
-func TestAuthenticationFailedErrorWithoutOriginalRequest(t *testing.T) {
+func TestAuthenticationFailedErrorWithoutRequest(t *testing.T) {
 	resBodyString := "Test Error Response Body"
 	res := &http.Response{
 		Status:     "400 Bad Request",

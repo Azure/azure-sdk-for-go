@@ -62,7 +62,7 @@ func (e *AuthenticationFailedError) Error() string {
 	} else {
 		// this happens when the response is created from a custom HTTP transporter,
 		// which doesn't guarantee to bind the original request to the response
-		fmt.Fprint(msg, "Request information not available\n")
+		fmt.Fprintln(msg, "Request information not available")
 	}
 	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
 	fmt.Fprintf(msg, "RESPONSE %s\n", e.RawResponse.Status)

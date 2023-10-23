@@ -147,39 +147,6 @@ type EndpointDetail struct {
 	Port *int32
 }
 
-// ErrorDetail - Error details.
-type ErrorDetail struct {
-	// REQUIRED; The error's code.
-	Code *string
-
-	// REQUIRED; A human readable error message.
-	Message *string
-
-	// Indicates which property in the request is responsible for the error.
-	Target *string
-}
-
-// ErrorInfo - The code and message for an error.
-type ErrorInfo struct {
-	// REQUIRED; A machine readable error code.
-	Code *string
-
-	// REQUIRED; A human readable error message.
-	Message *string
-
-	// error details.
-	Details []*ErrorDetail
-
-	// Inner error details if they exist.
-	Innererror *string
-}
-
-// ErrorResponse - Contains details when the response code indicates an error.
-type ErrorResponse struct {
-	// REQUIRED; The error details.
-	Error *ErrorInfo
-}
-
 // GroupIDInformation - The group information for creating a private endpoint on a workspace
 type GroupIDInformation struct {
 	// REQUIRED; The group id properties.
@@ -372,18 +339,6 @@ type PrivateLinkServiceConnectionState struct {
 	Description *string
 }
 
-// Resource - The core properties of ARM resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string
-}
-
 // SKU for the resource.
 type SKU struct {
 	// REQUIRED; The SKU name.
@@ -412,24 +367,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
-}
-
-// TrackedResource - The resource model definition for a ARM tracked top level resource
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string
 }
 
 // UserAssignedIdentity - User assigned identity properties

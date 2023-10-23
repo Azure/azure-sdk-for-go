@@ -796,13 +796,6 @@ type ContentFilterResultsError struct {
 	Target *string
 }
 
-// Deployment - A specific deployment
-type Deployment struct {
-	// READ-ONLY; Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI)
-	// to use for this request.
-	DeploymentID *string
-}
-
 // EmbeddingItem - Representation of a single embeddings relatedness comparison.
 type EmbeddingItem struct {
 	// REQUIRED; List of embeddings value for the input prompt. These represent a measurement of the vector-based relatedness

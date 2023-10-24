@@ -18,11 +18,17 @@ spec:
       # NOTE: -verbose activates _all_ the Azure internal logging, which can get quite large.
       # so it's not enabled for every target in here. We also have an issue filed to whittle it
       # down (https://github.com/Azure/azure-sdk-for-go/issues/19459)
+      {{if eq .Stress.testTarget "checkpoints"}}
+      args: 
+        - >
+          /app/stress "{{.Stress.testTarget}}" "-rounds" "{{.Stress.rounds}}" -partitions {{.Stress.partitions}} -workers {{.Stress.workers}}
+      {{else}}
       args: 
         - >
           set -ex;
           mkdir -p "$DEBUG_SHARE";
           /app/stress "{{.Stress.testTarget}}" "-rounds" "{{.Stress.rounds}}" "-prefetch" "{{.Stress.prefetch}}" "{{.Stress.verbose}}" "-sleepAfter" "{{.Stress.sleepAfter}}" 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+      {{end}}
       # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
       # when iterating, so this is a must.
       imagePullPolicy: Always
@@ -33,8 +39,13 @@ spec:
       # just uses 'limits' for both.
       resources:
         limits:
+          {{if eq .Stress.testTarget "checkpoints"}}
+          memory: "1.0Gi"
+          cpu: "0.5"
+          {{else}}
           memory: "0.5Gi"
           cpu: "0.5"
+          {{end}}
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
 

@@ -1,12 +1,15 @@
 # Release History
 
-## 1.0.2 (Unreleased)
+## 1.1.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Checkpoint store blob paths were previously written in mixed-case, when they should have been lower-case. Checkpoints will be automatically
+  migrated the lowercase format, if needed. This affected compatibility with other Azure SDKs. (PR#21805)
 
 ### Other Changes
 

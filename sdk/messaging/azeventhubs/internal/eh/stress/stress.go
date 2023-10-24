@@ -18,6 +18,7 @@ func main() {
 	}{
 		{name: "batch", fn: tests.BatchStressTester},
 		{name: "processor", fn: tests.ProcessorStressTester},
+		{name: "checkpoints", fn: tests.CheckpointStressTester},
 	}
 
 	sort.Slice(tests, func(i, j int) bool {

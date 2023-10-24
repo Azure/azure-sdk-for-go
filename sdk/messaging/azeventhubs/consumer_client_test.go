@@ -882,7 +882,9 @@ func mustSendEventsToAllPartitions(t *testing.T, events []*azeventhubs.EventData
 		}(partitionID)
 	}
 
+	t.Logf("Sending all events to %d partitions", len(hubProps.PartitionIDs))
 	wg.Wait()
+	t.Logf("Done sending events")
 	close(partitionsCh)
 
 	var partitions []azeventhubs.PartitionProperties
@@ -918,6 +920,8 @@ func getSortedBodies(events []*azeventhubs.ReceivedEventData) []string {
 	return bodies
 }
 
+const destPartitionIDKey = "DestPartitionID"
+
 func sendEventToPartition(t *testing.T, producer *azeventhubs.ProducerClient, partitionID string, events []*azeventhubs.EventData) azeventhubs.PartitionProperties {
 	partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, nil)
 	require.NoError(t, err)
@@ -932,7 +936,7 @@ func sendEventToPartition(t *testing.T, producer *azeventhubs.ProducerClient, pa
 		eventToSend := *event
 
 		props := map[string]any{
-			"DestPartitionID": partitionID,
+			destPartitionIDKey: partitionID,
 		}
 
 		for k, v := range event.Properties {
@@ -941,7 +945,7 @@ func sendEventToPartition(t *testing.T, producer *azeventhubs.ProducerClient, pa
 
 		eventToSend.Properties = props
 
-		err = batch.AddEventData(event, nil)
+		err = batch.AddEventData(&eventToSend, nil)
 		require.NoError(t, err)
 	}
 

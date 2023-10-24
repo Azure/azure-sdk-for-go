@@ -9,6 +9,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"strings"
 	"sync"
 	"sync/atomic"
 
@@ -31,10 +32,12 @@ Give me a bar chart that shows me how many claims we grabbed per worker.
 
 // pick a round number to check out
 let round="1";
-let earliest=ago(1h);
+// timeframe.
+let startAt=ago(24h);
+// this is just your pod name.
 let appRoleInstance="go18-checkpoints-goeh-5-4sjnn";
 AppMetrics
-| where TimeGenerated > earliest
+| where TimeGenerated > startAt
 | where AppRoleInstance == appRoleInstance
 | where Name in ('stress.claimed')
 | extend Round=tostring(Properties["Round"]), Worker=tostring(Properties["Worker"])
@@ -79,7 +82,11 @@ func CheckpointStressTester(ctx context.Context) error {
 		"Partitions": fmt.Sprintf("%d", cpFlags.Partitions),
 	})
 
-	log.Printf("Starting checkpoints test %s, rounds: %d, partitions: %d", testData.runID, cpFlags.Rounds, cpFlags.Partitions)
+	if err != nil {
+		return err
+	}
+
+	log.Printf("Starting checkpoints test %s, rounds: %d, partitions: %d, workers: %d", testData.runID, cpFlags.Rounds, cpFlags.Partitions, cpFlags.Workers)
 	defer log.Printf("Done with checkpoints test %s", testData.runID)
 
 	if err != nil {
@@ -119,7 +126,7 @@ func CheckpointStressTester(ctx context.Context) error {
 					defer wg.Done()
 
 					for {
-						checkpointStore, err := checkpoints.NewBlobStore(testData.CC, nil)
+						checkpointStore, err := checkpoints.NewBlobStore(testData.MustNewCC(), nil)
 
 						if err != nil {
 							return fmt.Errorf("[r:%d,w:%d] failed to create blobstore: %s", round, worker, err)
@@ -170,6 +177,29 @@ func CheckpointStressTester(ctx context.Context) error {
 
 			// everything should be balanced.
 			if remaining == 0 {
+				// validate that blob storage _only_ has lowercase checkpoints.
+				var badBlobPaths []string
+
+				blobsPager := testData.CC.NewListBlobsFlatPager(nil)
+
+				for blobsPager.More() {
+					page, err := blobsPager.NextPage(context.Background())
+
+					if err != nil {
+						return err
+					}
+
+					for _, blob := range page.Segment.BlobItems {
+						if strings.ToLower(*blob.Name) != *blob.Name {
+							badBlobPaths = append(badBlobPaths, *blob.Name)
+						}
+					}
+				}
+
+				if len(badBlobPaths) > 0 {
+					return fmt.Errorf("found blob paths that were NOT lowercase: %s", strings.Join(badBlobPaths, "\n"))
+				}
+
 				testData.TC.TrackEvent(string(MetricStressSuccess), map[string]string{
 					"Round": fmt.Sprintf("%d", round),
 				})

@@ -9,11 +9,13 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"sort"
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
@@ -53,6 +55,25 @@ type stressTestData struct {
 
 	// CC is a container client instance with the container name set to [runID]
 	CC *container.Client
+}
+
+func (td *stressTestData) MustNewCC() *container.Client {
+	httpClient := &http.Client{
+		Transport: http.DefaultTransport.(*http.Transport).Clone(),
+	}
+
+	// don't share connections between these clients.
+	cc, err := container.NewClientFromConnectionString(td.StorageConnectionString, td.runID, &container.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: httpClient,
+		},
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	return cc
 }
 
 func (td *stressTestData) Close() {

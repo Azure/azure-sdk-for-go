@@ -84,7 +84,9 @@ func IsNullValue[T any](v T) bool {
 	return false
 }
 
-// ClientOptions contains configuration settings for a client's pipeline.
+// ClientOptions contains optional settings for a client's pipeline.
+// Instances can be shared across calls to SDK client constructors when uniform configuration is desired.
+// Zero-value fields will have their specified default values applied during use.
 type ClientOptions = policy.ClientOptions
 
 // Client is a basic HTTP client.  It consists of a pipeline and tracing provider.

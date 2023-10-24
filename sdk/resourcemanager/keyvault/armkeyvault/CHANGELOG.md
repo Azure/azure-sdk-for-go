@@ -1,5 +1,17 @@
 # Release History
 
+## 1.3.0 (2023-10-27)
+### Features Added
+
+- New value `ManagedHsmSKUNameCustomB6` added to enum type `ManagedHsmSKUName`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New struct `ManagedServiceIdentity`
+- New struct `UserAssignedIdentity`
+- New field `Identity` in struct `MHSMPrivateEndpointConnection`
+- New field `Identity` in struct `MHSMPrivateLinkResource`
+- New field `Identity` in struct `ManagedHsm`
+
+
 ## 1.2.0 (2023-04-28)
 ### Features Added
 

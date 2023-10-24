@@ -3,6 +3,7 @@
 ## 4.5.0-beta.1 (2023-10-27)
 ### Features Added
 
+- Support for test fakes and OpenTelemetry trace spans.
 - New value `NetworkPolicyNone` added to enum type `NetworkPolicy`
 - New value `NodeOSUpgradeChannelSecurityPatch` added to enum type `NodeOSUpgradeChannel`
 - New value `OSSKUMariner` added to enum type `OSSKU`

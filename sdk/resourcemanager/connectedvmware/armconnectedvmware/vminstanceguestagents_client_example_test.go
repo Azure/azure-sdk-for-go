@@ -26,8 +26,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7473936304533e6716fc4563401bf265dda4cb64/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/CreateGuestAgent.json
-func ExampleGuestAgentsClient_BeginCreate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateVMInstanceGuestAgent.json
+func ExampleVMInstanceGuestAgentsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -37,7 +37,7 @@ func ExampleGuestAgentsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewGuestAgentsClient().BeginCreate(ctx, "testrg", "ContosoVm", "default", armconnectedvmware.GuestAgent{
+	poller, err := clientFactory.NewVMInstanceGuestAgentsClient().BeginCreate(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM", armconnectedvmware.GuestAgent{
 		Properties: &armconnectedvmware.GuestAgentProperties{
 			Credentials: &armconnectedvmware.GuestCredential{
 				Password: to.Ptr("<password>"),
@@ -46,7 +46,8 @@ func ExampleGuestAgentsClient_BeginCreate() {
 			HTTPProxyConfig: &armconnectedvmware.HTTPProxyConfiguration{
 				HTTPSProxy: to.Ptr("http://192.1.2.3:8080"),
 			},
-			ProvisioningAction: to.Ptr(armconnectedvmware.ProvisioningActionInstall),
+			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+			ProvisioningAction:         to.Ptr(armconnectedvmware.ProvisioningActionInstall),
 		},
 	}, nil)
 	if err != nil {
@@ -61,18 +62,18 @@ func ExampleGuestAgentsClient_BeginCreate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.GuestAgent = armconnectedvmware.GuestAgent{
 	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("Microsoft.ConnectedVMwarevSphere/VitualMachines/guestAgents"),
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VitualMachines/ContosoVm/guestAgents/default"),
+	// 	Type: to.Ptr("Microsoft.ConnectedVMwarevSphere/VirtualMachineInstances/guestAgents"),
+	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineInstances/default/guestAgents/default"),
 	// 	Properties: &armconnectedvmware.GuestAgentProperties{
 	// 		ProvisioningAction: to.Ptr(armconnectedvmware.ProvisioningActionInstall),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armconnectedvmware.ProvisioningStateSucceeded),
 	// 		Status: to.Ptr("connected"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7473936304533e6716fc4563401bf265dda4cb64/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/GetGuestAgent.json
-func ExampleGuestAgentsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetVMInstanceGuestAgent.json
+func ExampleVMInstanceGuestAgentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -82,7 +83,7 @@ func ExampleGuestAgentsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewGuestAgentsClient().Get(ctx, "testrg", "ContosoVm", "default", nil)
+	res, err := clientFactory.NewVMInstanceGuestAgentsClient().Get(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -91,18 +92,18 @@ func ExampleGuestAgentsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.GuestAgent = armconnectedvmware.GuestAgent{
 	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("Microsoft.ConnectedVMwarevSphere/VitualMachines/guestAgents"),
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VitualMachines/ContosoVm/guestAgents/default"),
+	// 	Type: to.Ptr("Microsoft.ConnectedVMwarevSphere/VitualMachineInstances/guestAgents"),
+	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineInstances/default/guestAgents/default"),
 	// 	Properties: &armconnectedvmware.GuestAgentProperties{
 	// 		ProvisioningAction: to.Ptr(armconnectedvmware.ProvisioningActionInstall),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armconnectedvmware.ProvisioningStateSucceeded),
 	// 		Status: to.Ptr("connected"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7473936304533e6716fc4563401bf265dda4cb64/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/DeleteGuestAgent.json
-func ExampleGuestAgentsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteVMInstanceGuestAgent.json
+func ExampleVMInstanceGuestAgentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -112,7 +113,7 @@ func ExampleGuestAgentsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewGuestAgentsClient().BeginDelete(ctx, "testrg", "ContosoVm", "default", nil)
+	poller, err := clientFactory.NewVMInstanceGuestAgentsClient().BeginDelete(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -122,8 +123,8 @@ func ExampleGuestAgentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7473936304533e6716fc4563401bf265dda4cb64/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/GuestAgent_ListByVm.json
-func ExampleGuestAgentsClient_NewListByVMPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/VMInstanceGuestAgent_ListByVm.json
+func ExampleVMInstanceGuestAgentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -133,7 +134,7 @@ func ExampleGuestAgentsClient_NewListByVMPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewGuestAgentsClient().NewListByVMPager("testrg", "ContosoVm", nil)
+	pager := clientFactory.NewVMInstanceGuestAgentsClient().NewListPager("subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -148,11 +149,11 @@ func ExampleGuestAgentsClient_NewListByVMPager() {
 		// 	Value: []*armconnectedvmware.GuestAgent{
 		// 		{
 		// 			Name: to.Ptr("default"),
-		// 			Type: to.Ptr("Microsoft.ConnectedVMwarevSphere/VitualMachines/guestAgents"),
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VitualMachines/ContosoVm/guestAgents/default"),
+		// 			Type: to.Ptr("Microsoft.ConnectedVMwarevSphere/VitualMachineInstances/guestAgents"),
+		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineInstances/default/guestAgents/default"),
 		// 			Properties: &armconnectedvmware.GuestAgentProperties{
 		// 				ProvisioningAction: to.Ptr(armconnectedvmware.ProvisioningActionInstall),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				ProvisioningState: to.Ptr(armconnectedvmware.ProvisioningStateSucceeded),
 		// 				Status: to.Ptr("connected"),
 		// 			},
 		// 	}},

@@ -26,7 +26,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7473936304533e6716fc4563401bf265dda4cb64/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/CreateVCenter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateVCenter.json
 func ExampleVCentersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,13 +78,13 @@ func ExampleVCentersClient_BeginCreate() {
 	// 		Fqdn: to.Ptr("ContosoVMware.contoso.com"),
 	// 		InstanceUUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 	// 		Port: to.Ptr[int32](1234),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armconnectedvmware.ProvisioningStateSucceeded),
 	// 		Version: to.Ptr("1.0"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7473936304533e6716fc4563401bf265dda4cb64/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/GetVCenter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetVCenter.json
 func ExampleVCentersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,13 +118,13 @@ func ExampleVCentersClient_Get() {
 	// 		Fqdn: to.Ptr("ContosoVMware.contoso.com"),
 	// 		InstanceUUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 	// 		Port: to.Ptr[int32](1234),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armconnectedvmware.ProvisioningStateSucceeded),
 	// 		Version: to.Ptr("1.0"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7473936304533e6716fc4563401bf265dda4cb64/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/UpdateVCenter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateVCenter.json
 func ExampleVCentersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleVCentersClient_Update() {
 	// 		Fqdn: to.Ptr("ContosoVMware.contoso.com"),
 	// 		InstanceUUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 	// 		Port: to.Ptr[int32](1234),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armconnectedvmware.ProvisioningStateSucceeded),
 	// 		Version: to.Ptr("1.0"),
 	// 	},
 	// 	Tags: map[string]*string{
@@ -173,7 +173,7 @@ func ExampleVCentersClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7473936304533e6716fc4563401bf265dda4cb64/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/DeleteVCenter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteVCenter.json
 func ExampleVCentersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleVCentersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7473936304533e6716fc4563401bf265dda4cb64/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/ListVCenters.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListVCenters.json
 func ExampleVCentersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,7 +234,7 @@ func ExampleVCentersClient_NewListPager() {
 		// 				Fqdn: to.Ptr("ContosoVMware.contoso.com"),
 		// 				InstanceUUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 				Port: to.Ptr[int32](1234),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				ProvisioningState: to.Ptr(armconnectedvmware.ProvisioningStateSucceeded),
 		// 				Version: to.Ptr("1.0"),
 		// 			},
 		// 	}},
@@ -242,7 +242,7 @@ func ExampleVCentersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7473936304533e6716fc4563401bf265dda4cb64/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/ListVCentersByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListVCentersByResourceGroup.json
 func ExampleVCentersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleVCentersClient_NewListByResourceGroupPager() {
 		// 				Fqdn: to.Ptr("ContosoVMware.contoso.com"),
 		// 				InstanceUUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 				Port: to.Ptr[int32](1234),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				ProvisioningState: to.Ptr(armconnectedvmware.ProvisioningStateSucceeded),
 		// 				Version: to.Ptr("1.0"),
 		// 			},
 		// 	}},

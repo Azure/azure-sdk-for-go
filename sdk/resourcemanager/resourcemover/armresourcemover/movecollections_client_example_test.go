@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcemover/armresourcemover"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_Create.json
 func ExampleMoveCollectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,6 +35,7 @@ func ExampleMoveCollectionsClient_Create() {
 		},
 		Location: to.Ptr("eastus2"),
 		Properties: &armresourcemover.MoveCollectionProperties{
+			MoveType:     to.Ptr(armresourcemover.MoveTypeRegionToRegion),
 			SourceRegion: to.Ptr("eastus"),
 			TargetRegion: to.Ptr("westus"),
 		},
@@ -60,6 +61,7 @@ func ExampleMoveCollectionsClient_Create() {
 	// 		ProvisioningState: to.Ptr(armresourcemover.ProvisioningStateSucceeded),
 	// 		SourceRegion: to.Ptr("eastus"),
 	// 		TargetRegion: to.Ptr("westus"),
+	// 		Version: to.Ptr("V1"),
 	// 	},
 	// 	SystemData: &armresourcemover.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-29T15:06:54.2757906Z"); return t}()),
@@ -72,7 +74,7 @@ func ExampleMoveCollectionsClient_Create() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_Update.json
 func ExampleMoveCollectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,9 +111,11 @@ func ExampleMoveCollectionsClient_Update() {
 	// 	},
 	// 	Location: to.Ptr("United States"),
 	// 	Properties: &armresourcemover.MoveCollectionProperties{
+	// 		MoveType: to.Ptr(armresourcemover.MoveTypeRegionToRegion),
 	// 		ProvisioningState: to.Ptr(armresourcemover.ProvisioningStateSucceeded),
 	// 		SourceRegion: to.Ptr("eastus"),
 	// 		TargetRegion: to.Ptr("westus"),
+	// 		Version: to.Ptr("V1"),
 	// 	},
 	// 	SystemData: &armresourcemover.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-01T15:06:54.2757906Z"); return t}()),
@@ -124,7 +128,7 @@ func ExampleMoveCollectionsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_Delete.json
 func ExampleMoveCollectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +161,7 @@ func ExampleMoveCollectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_Get.json
 func ExampleMoveCollectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,9 +190,11 @@ func ExampleMoveCollectionsClient_Get() {
 	// 	},
 	// 	Location: to.Ptr("United States"),
 	// 	Properties: &armresourcemover.MoveCollectionProperties{
+	// 		MoveType: to.Ptr(armresourcemover.MoveTypeRegionToRegion),
 	// 		ProvisioningState: to.Ptr(armresourcemover.ProvisioningStateSucceeded),
 	// 		SourceRegion: to.Ptr("eastus"),
 	// 		TargetRegion: to.Ptr("westus"),
+	// 		Version: to.Ptr("V1"),
 	// 	},
 	// 	SystemData: &armresourcemover.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-01T15:06:54.2757906Z"); return t}()),
@@ -201,7 +207,7 @@ func ExampleMoveCollectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Prepare.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_Prepare.json
 func ExampleMoveCollectionsClient_BeginPrepare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +245,7 @@ func ExampleMoveCollectionsClient_BeginPrepare() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_InitiateMove.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_InitiateMove.json
 func ExampleMoveCollectionsClient_BeginInitiateMove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,7 +283,7 @@ func ExampleMoveCollectionsClient_BeginInitiateMove() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Commit.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_Commit.json
 func ExampleMoveCollectionsClient_BeginCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,7 +321,7 @@ func ExampleMoveCollectionsClient_BeginCommit() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Discard.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_Discard.json
 func ExampleMoveCollectionsClient_BeginDiscard() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +359,7 @@ func ExampleMoveCollectionsClient_BeginDiscard() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_ResolveDependencies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_ResolveDependencies.json
 func ExampleMoveCollectionsClient_BeginResolveDependencies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +392,7 @@ func ExampleMoveCollectionsClient_BeginResolveDependencies() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_BulkRemove.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_BulkRemove.json
 func ExampleMoveCollectionsClient_BeginBulkRemove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -424,7 +430,7 @@ func ExampleMoveCollectionsClient_BeginBulkRemove() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_ListMoveCollectionsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_ListMoveCollectionsBySubscription.json
 func ExampleMoveCollectionsClient_NewListMoveCollectionsBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -459,9 +465,11 @@ func ExampleMoveCollectionsClient_NewListMoveCollectionsBySubscriptionPager() {
 		// 			},
 		// 			Location: to.Ptr("United States"),
 		// 			Properties: &armresourcemover.MoveCollectionProperties{
+		// 				MoveType: to.Ptr(armresourcemover.MoveTypeRegionToRegion),
 		// 				ProvisioningState: to.Ptr(armresourcemover.ProvisioningStateSucceeded),
 		// 				SourceRegion: to.Ptr("eastus"),
 		// 				TargetRegion: to.Ptr("westus"),
+		// 				Version: to.Ptr("V1"),
 		// 			},
 		// 			SystemData: &armresourcemover.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-29T15:06:54.2757906Z"); return t}()),
@@ -476,7 +484,7 @@ func ExampleMoveCollectionsClient_NewListMoveCollectionsBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_ListMoveCollectionsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_ListMoveCollectionsByResourceGroup.json
 func ExampleMoveCollectionsClient_NewListMoveCollectionsByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -511,9 +519,11 @@ func ExampleMoveCollectionsClient_NewListMoveCollectionsByResourceGroupPager() {
 		// 			},
 		// 			Location: to.Ptr("United States"),
 		// 			Properties: &armresourcemover.MoveCollectionProperties{
+		// 				MoveType: to.Ptr(armresourcemover.MoveTypeRegionToRegion),
 		// 				ProvisioningState: to.Ptr(armresourcemover.ProvisioningStateSucceeded),
 		// 				SourceRegion: to.Ptr("eastus"),
 		// 				TargetRegion: to.Ptr("westus"),
+		// 				Version: to.Ptr("V1"),
 		// 			},
 		// 			SystemData: &armresourcemover.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-29T15:06:54.2757906Z"); return t}()),
@@ -528,7 +538,7 @@ func ExampleMoveCollectionsClient_NewListMoveCollectionsByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/RequiredFor_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/RequiredFor_Get.json
 func ExampleMoveCollectionsClient_ListRequiredFor() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

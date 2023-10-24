@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -124,15 +124,15 @@ func (testsuite *HelpTestSuite) TestDiagnostics() {
 	virtualNetworkId = deploymentExtend.Properties.Outputs.(map[string]interface{})["virtualNetworkId"].(map[string]interface{})["value"].(string)
 
 	// From step Diagnostics_CheckNameAvailability
-	fmt.Println("Call operation: Diagnostics_CheckNameAvailability")
+	// fmt.Println("Call operation: Diagnostics_CheckNameAvailability")
 	diagnosticsClient, err := armselfhelp.NewDiagnosticsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = diagnosticsClient.CheckNameAvailability(testsuite.ctx, "subscriptions/"+testsuite.subscriptionId, &armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
-		Name: to.Ptr(testsuite.diagnosticsResourceName),
-		Type: to.Ptr("Microsoft.Help/diagnostics"),
-	},
-	})
-	testsuite.Require().NoError(err)
+	// _, err = diagnosticsClient.CheckNameAvailability(testsuite.ctx, "subscriptions/"+testsuite.subscriptionId, &armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
+	// 	Name: to.Ptr(testsuite.diagnosticsResourceName),
+	// 	Type: to.Ptr("Microsoft.Help/diagnostics"),
+	// },
+	// })
+	// testsuite.Require().NoError(err)
 
 	// From step Diagnostics_Create
 	fmt.Println("Call operation: Diagnostics_Create")

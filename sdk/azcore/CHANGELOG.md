@@ -5,6 +5,8 @@
 ### Features Added
 
 ### Breaking Changes
+> These changes affect only code written against previous beta versions of `v1.7.0` and `v1.8.0`
+* The function `NewTokenCredential` has been removed from the `fake` package. Use a literal `&fake.TokenCredential{}` instead.
 
 ### Bugs Fixed
 

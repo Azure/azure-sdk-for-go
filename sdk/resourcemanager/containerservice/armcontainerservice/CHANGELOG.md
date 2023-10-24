@@ -1,5 +1,32 @@
 # Release History
 
+## 4.4.0 (2023-10-27)
+### Features Added
+
+- New enum type `IstioIngressGatewayMode` with values `IstioIngressGatewayModeExternal`, `IstioIngressGatewayModeInternal`
+- New enum type `ServiceMeshMode` with values `ServiceMeshModeDisabled`, `ServiceMeshModeIstio`
+- New function `*ManagedClustersClient.GetMeshRevisionProfile(context.Context, string, string, *ManagedClustersClientGetMeshRevisionProfileOptions) (ManagedClustersClientGetMeshRevisionProfileResponse, error)`
+- New function `*ManagedClustersClient.GetMeshUpgradeProfile(context.Context, string, string, string, *ManagedClustersClientGetMeshUpgradeProfileOptions) (ManagedClustersClientGetMeshUpgradeProfileResponse, error)`
+- New function `*ManagedClustersClient.NewListMeshRevisionProfilesPager(string, *ManagedClustersClientListMeshRevisionProfilesOptions) *runtime.Pager[ManagedClustersClientListMeshRevisionProfilesResponse]`
+- New function `*ManagedClustersClient.NewListMeshUpgradeProfilesPager(string, string, *ManagedClustersClientListMeshUpgradeProfilesOptions) *runtime.Pager[ManagedClustersClientListMeshUpgradeProfilesResponse]`
+- New struct `CompatibleVersions`
+- New struct `IstioCertificateAuthority`
+- New struct `IstioComponents`
+- New struct `IstioEgressGateway`
+- New struct `IstioIngressGateway`
+- New struct `IstioPluginCertificateAuthority`
+- New struct `IstioServiceMesh`
+- New struct `MeshRevision`
+- New struct `MeshRevisionProfile`
+- New struct `MeshRevisionProfileList`
+- New struct `MeshRevisionProfileProperties`
+- New struct `MeshUpgradeProfile`
+- New struct `MeshUpgradeProfileList`
+- New struct `MeshUpgradeProfileProperties`
+- New struct `ServiceMeshProfile`
+- New field `ResourceUID`, `ServiceMeshProfile` in struct `ManagedClusterProperties`
+
+
 ## 4.4.0-beta.2 (2023-10-09)
 ### Features Added
 

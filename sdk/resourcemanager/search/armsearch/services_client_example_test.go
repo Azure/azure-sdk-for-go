@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchCreateOrUpdateService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateService.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,143 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateServiceAuthOptions.json
+func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceAuthOptions() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsearch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+		},
+		Properties: &armsearch.ServiceProperties{
+			AuthOptions: &armsearch.DataPlaneAuthOptions{
+				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
+					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
+				},
+			},
+			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount: to.Ptr[int32](1),
+			ReplicaCount:   to.Ptr[int32](3),
+		},
+		SKU: &armsearch.SKU{
+			Name: to.Ptr(armsearch.SKUNameStandard),
+		},
+	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Service = armsearch.Service{
+	// 	Name: to.Ptr("mysearchservice"),
+	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"app-name": to.Ptr("My e-commerce app"),
+	// 	},
+	// 	Properties: &armsearch.ServiceProperties{
+	// 		AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 			AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
+	// 				AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
+	// 			},
+	// 		},
+	// 		HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 		NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 			IPRules: []*armsearch.IPRule{
+	// 			},
+	// 		},
+	// 		PartitionCount: to.Ptr[int32](1),
+	// 		ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 		PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 		ReplicaCount: to.Ptr[int32](3),
+	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 		StatusDetails: to.Ptr(""),
+	// 	},
+	// 	SKU: &armsearch.SKU{
+	// 		Name: to.Ptr(armsearch.SKUNameStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateServiceDisableLocalAuth.json
+func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceDisableLocalAuth() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsearch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+		},
+		Properties: &armsearch.ServiceProperties{
+			DisableLocalAuth: to.Ptr(true),
+			HostingMode:      to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount:   to.Ptr[int32](1),
+			ReplicaCount:     to.Ptr[int32](3),
+		},
+		SKU: &armsearch.SKU{
+			Name: to.Ptr(armsearch.SKUNameStandard),
+		},
+	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Service = armsearch.Service{
+	// 	Name: to.Ptr("mysearchservice"),
+	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"app-name": to.Ptr("My e-commerce app"),
+	// 	},
+	// 	Properties: &armsearch.ServiceProperties{
+	// 		DisableLocalAuth: to.Ptr(true),
+	// 		HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 		NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 			IPRules: []*armsearch.IPRule{
+	// 			},
+	// 		},
+	// 		PartitionCount: to.Ptr[int32](1),
+	// 		ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 		PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 		ReplicaCount: to.Ptr[int32](3),
+	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 		StatusDetails: to.Ptr(""),
+	// 	},
+	// 	SKU: &armsearch.SKU{
+	// 		Name: to.Ptr(armsearch.SKUNameStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +283,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +361,85 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchCreateOrUpdateServiceWithIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateServiceWithCmkEnforcement.json
+func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithCmkEnforcement() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsearch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+		},
+		Properties: &armsearch.ServiceProperties{
+			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
+			},
+			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount: to.Ptr[int32](1),
+			ReplicaCount:   to.Ptr[int32](3),
+		},
+		SKU: &armsearch.SKU{
+			Name: to.Ptr(armsearch.SKUNameStandard),
+		},
+	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Service = armsearch.Service{
+	// 	Name: to.Ptr("mysearchservice"),
+	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"app-name": to.Ptr("My e-commerce app"),
+	// 	},
+	// 	Properties: &armsearch.ServiceProperties{
+	// 		AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 			APIKeyOnly: map[string]any{
+	// 			},
+	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
+	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
+	// 		},
+	// 		HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 		NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 			IPRules: []*armsearch.IPRule{
+	// 			},
+	// 		},
+	// 		PartitionCount: to.Ptr[int32](1),
+	// 		PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 		},
+	// 		ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 		PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 		ReplicaCount: to.Ptr[int32](3),
+	// 		SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 		},
+	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 		StatusDetails: to.Ptr(""),
+	// 	},
+	// 	SKU: &armsearch.SKU{
+	// 		Name: to.Ptr(armsearch.SKUNameStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateServiceWithIdentity.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +511,84 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithId
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchUpdateService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateWithSemanticSearch.json
+func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithSemanticSearch() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsearch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+		},
+		Properties: &armsearch.ServiceProperties{
+			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount: to.Ptr[int32](1),
+			ReplicaCount:   to.Ptr[int32](3),
+			SemanticSearch: to.Ptr(armsearch.SearchSemanticSearchFree),
+		},
+		SKU: &armsearch.SKU{
+			Name: to.Ptr(armsearch.SKUNameStandard),
+		},
+	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Service = armsearch.Service{
+	// 	Name: to.Ptr("mysearchservice"),
+	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"app-name": to.Ptr("My e-commerce app"),
+	// 	},
+	// 	Properties: &armsearch.ServiceProperties{
+	// 		AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 			APIKeyOnly: map[string]any{
+	// 			},
+	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
+	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 		},
+	// 		HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 		NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 			IPRules: []*armsearch.IPRule{
+	// 			},
+	// 		},
+	// 		PartitionCount: to.Ptr[int32](1),
+	// 		PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 		},
+	// 		ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 		PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 		ReplicaCount: to.Ptr[int32](3),
+	// 		SemanticSearch: to.Ptr(armsearch.SearchSemanticSearchFree),
+	// 		SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 		},
+	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 		StatusDetails: to.Ptr(""),
+	// 	},
+	// 	SKU: &armsearch.SKU{
+	// 		Name: to.Ptr(armsearch.SKUNameStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateService.json
 func ExampleServicesClient_Update_searchUpdateService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,8 +644,8 @@ func ExampleServicesClient_Update_searchUpdateService() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchUpdateServiceToRemoveIdentity.json
-func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceAuthOptions.json
+func ExampleServicesClient_Update_searchUpdateServiceAuthOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -365,11 +656,17 @@ func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
-		Identity: &armsearch.Identity{
-			Type: to.Ptr(armsearch.IdentityTypeNone),
+		Properties: &armsearch.ServiceProperties{
+			AuthOptions: &armsearch.DataPlaneAuthOptions{
+				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
+					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
+				},
+			},
+			ReplicaCount: to.Ptr[int32](2),
 		},
-		SKU: &armsearch.SKU{
-			Name: to.Ptr(armsearch.SKUNameStandard),
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+			"new-tag":  to.Ptr("Adding a new tag"),
 		},
 	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
 	if err != nil {
@@ -384,23 +681,25 @@ func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
-	// 	},
-	// 	Identity: &armsearch.Identity{
-	// 		Type: to.Ptr(armsearch.IdentityTypeNone),
+	// 		"app-name": to.Ptr("My e-commerce app"),
+	// 		"new-tag": to.Ptr("Adding a new tag"),
 	// 	},
 	// 	Properties: &armsearch.ServiceProperties{
+	// 		AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 			AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
+	// 				AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
+	// 			},
+	// 		},
 	// 		HostingMode: to.Ptr(armsearch.HostingModeDefault),
 	// 		NetworkRuleSet: &armsearch.NetworkRuleSet{
 	// 			IPRules: []*armsearch.IPRule{
 	// 			},
 	// 		},
 	// 		PartitionCount: to.Ptr[int32](1),
-	// 		PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
-	// 		},
 	// 		ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
 	// 		PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
-	// 		ReplicaCount: to.Ptr[int32](3),
-	// 		Status: to.Ptr(armsearch.SearchServiceStatusRunning),
+	// 		ReplicaCount: to.Ptr[int32](2),
+	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
 	// 	},
 	// 	SKU: &armsearch.SKU{
@@ -409,7 +708,63 @@ func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceDisableLocalAuth.json
+func ExampleServicesClient_Update_searchUpdateServiceDisableLocalAuth() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsearch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
+		Properties: &armsearch.ServiceProperties{
+			DisableLocalAuth: to.Ptr(true),
+			ReplicaCount:     to.Ptr[int32](2),
+		},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+			"new-tag":  to.Ptr("Adding a new tag"),
+		},
+	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Service = armsearch.Service{
+	// 	Name: to.Ptr("mysearchservice"),
+	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"app-name": to.Ptr("My e-commerce app"),
+	// 		"new-tag": to.Ptr("Adding a new tag"),
+	// 	},
+	// 	Properties: &armsearch.ServiceProperties{
+	// 		DisableLocalAuth: to.Ptr(true),
+	// 		HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 		NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 			IPRules: []*armsearch.IPRule{
+	// 			},
+	// 		},
+	// 		PartitionCount: to.Ptr[int32](1),
+	// 		ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 		PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 		ReplicaCount: to.Ptr[int32](2),
+	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 		StatusDetails: to.Ptr(""),
+	// 	},
+	// 	SKU: &armsearch.SKU{
+	// 		Name: to.Ptr(armsearch.SKUNameStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
 func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -463,7 +818,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEnd
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
 func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCustomIPs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -528,7 +883,202 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchGetService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceToRemoveIdentity.json
+func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsearch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
+		Identity: &armsearch.Identity{
+			Type: to.Ptr(armsearch.IdentityTypeNone),
+		},
+		SKU: &armsearch.SKU{
+			Name: to.Ptr(armsearch.SKUNameStandard),
+		},
+	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Service = armsearch.Service{
+	// 	Name: to.Ptr("mysearchservice"),
+	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Identity: &armsearch.Identity{
+	// 		Type: to.Ptr(armsearch.IdentityTypeNone),
+	// 	},
+	// 	Properties: &armsearch.ServiceProperties{
+	// 		HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 		NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 			IPRules: []*armsearch.IPRule{
+	// 			},
+	// 		},
+	// 		PartitionCount: to.Ptr[int32](1),
+	// 		PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 		},
+	// 		ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 		PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 		ReplicaCount: to.Ptr[int32](3),
+	// 		Status: to.Ptr(armsearch.SearchServiceStatusRunning),
+	// 		StatusDetails: to.Ptr(""),
+	// 	},
+	// 	SKU: &armsearch.SKU{
+	// 		Name: to.Ptr(armsearch.SKUNameStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceWithCmkEnforcement.json
+func ExampleServicesClient_Update_searchUpdateServiceWithCmkEnforcement() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsearch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
+		Properties: &armsearch.ServiceProperties{
+			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
+			},
+			ReplicaCount: to.Ptr[int32](2),
+		},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+			"new-tag":  to.Ptr("Adding a new tag"),
+		},
+	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Service = armsearch.Service{
+	// 	Name: to.Ptr("mysearchservice"),
+	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"app-name": to.Ptr("My e-commerce app"),
+	// 		"new-tag": to.Ptr("Adding a new tag"),
+	// 	},
+	// 	Properties: &armsearch.ServiceProperties{
+	// 		AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 			APIKeyOnly: map[string]any{
+	// 			},
+	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
+	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
+	// 		},
+	// 		HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 		NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 			IPRules: []*armsearch.IPRule{
+	// 			},
+	// 		},
+	// 		PartitionCount: to.Ptr[int32](1),
+	// 		PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 		},
+	// 		ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 		PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 		ReplicaCount: to.Ptr[int32](2),
+	// 		SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 		},
+	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 		StatusDetails: to.Ptr(""),
+	// 	},
+	// 	SKU: &armsearch.SKU{
+	// 		Name: to.Ptr(armsearch.SKUNameStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceWithSemanticSearch.json
+func ExampleServicesClient_Update_searchUpdateServiceWithSemanticSearch() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsearch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
+		Properties: &armsearch.ServiceProperties{
+			ReplicaCount:   to.Ptr[int32](2),
+			SemanticSearch: to.Ptr(armsearch.SearchSemanticSearchStandard),
+		},
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+			"new-tag":  to.Ptr("Adding a new tag"),
+		},
+	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Service = armsearch.Service{
+	// 	Name: to.Ptr("mysearchservice"),
+	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"app-name": to.Ptr("My e-commerce app"),
+	// 		"new-tag": to.Ptr("Adding a new tag"),
+	// 	},
+	// 	Properties: &armsearch.ServiceProperties{
+	// 		AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 			APIKeyOnly: map[string]any{
+	// 			},
+	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
+	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 		},
+	// 		HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 		NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 			IPRules: []*armsearch.IPRule{
+	// 			},
+	// 		},
+	// 		PartitionCount: to.Ptr[int32](1),
+	// 		PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 		},
+	// 		ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
+	// 		PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 		ReplicaCount: to.Ptr[int32](2),
+	// 		SemanticSearch: to.Ptr(armsearch.SearchSemanticSearchStandard),
+	// 		SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 		},
+	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 		StatusDetails: to.Ptr(""),
+	// 	},
+	// 	SKU: &armsearch.SKU{
+	// 		Name: to.Ptr(armsearch.SKUNameStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchGetService.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -575,7 +1125,7 @@ func ExampleServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchDeleteService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchDeleteService.json
 func ExampleServicesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -592,7 +1142,7 @@ func ExampleServicesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchListServicesByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchListServicesByResourceGroup.json
 func ExampleServicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -674,7 +1224,7 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchListServicesBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchListServicesBySubscription.json
 func ExampleServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -756,7 +1306,7 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCheckNameAvailability.json
 func ExampleServicesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

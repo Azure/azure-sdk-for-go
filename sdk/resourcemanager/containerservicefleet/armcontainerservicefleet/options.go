@@ -48,6 +48,40 @@ type FleetMembersClientListByFleetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// FleetUpdateStrategiesClientBeginCreateOrUpdateOptions contains the optional parameters for the FleetUpdateStrategiesClient.BeginCreateOrUpdate
+// method.
+type FleetUpdateStrategiesClientBeginCreateOrUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// The request should only proceed if no entity matches this string.
+	IfNoneMatch *string
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FleetUpdateStrategiesClientBeginDeleteOptions contains the optional parameters for the FleetUpdateStrategiesClient.BeginDelete
+// method.
+type FleetUpdateStrategiesClientBeginDeleteOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FleetUpdateStrategiesClientGetOptions contains the optional parameters for the FleetUpdateStrategiesClient.Get method.
+type FleetUpdateStrategiesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FleetUpdateStrategiesClientListByFleetOptions contains the optional parameters for the FleetUpdateStrategiesClient.NewListByFleetPager
+// method.
+type FleetUpdateStrategiesClientListByFleetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // FleetsClientBeginCreateOrUpdateOptions contains the optional parameters for the FleetsClient.BeginCreateOrUpdate method.
 type FleetsClientBeginCreateOrUpdateOptions struct {
 	// The request should only proceed if an entity matches this string.

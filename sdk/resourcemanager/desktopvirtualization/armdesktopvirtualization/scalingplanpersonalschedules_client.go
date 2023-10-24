@@ -21,60 +21,60 @@ import (
 	"strings"
 )
 
-// ScalingPlanPooledSchedulesClient contains the methods for the ScalingPlanPooledSchedules group.
-// Don't use this type directly, use NewScalingPlanPooledSchedulesClient() instead.
-type ScalingPlanPooledSchedulesClient struct {
+// ScalingPlanPersonalSchedulesClient contains the methods for the ScalingPlanPersonalSchedules group.
+// Don't use this type directly, use NewScalingPlanPersonalSchedulesClient() instead.
+type ScalingPlanPersonalSchedulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewScalingPlanPooledSchedulesClient creates a new instance of ScalingPlanPooledSchedulesClient with the specified values.
+// NewScalingPlanPersonalSchedulesClient creates a new instance of ScalingPlanPersonalSchedulesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewScalingPlanPooledSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScalingPlanPooledSchedulesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ScalingPlanPooledSchedulesClient", moduleVersion, credential, options)
+func NewScalingPlanPersonalSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScalingPlanPersonalSchedulesClient, error) {
+	cl, err := arm.NewClient(moduleName+".ScalingPlanPersonalSchedulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ScalingPlanPooledSchedulesClient{
+	client := &ScalingPlanPersonalSchedulesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Create - Create or update a ScalingPlanPooledSchedule.
+// Create - Create or update a ScalingPlanPersonalSchedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-05
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scalingPlanName - The name of the scaling plan.
 //   - scalingPlanScheduleName - The name of the ScalingPlanSchedule
-//   - scalingPlanSchedule - Object containing ScalingPlanPooledSchedule definitions.
-//   - options - ScalingPlanPooledSchedulesClientCreateOptions contains the optional parameters for the ScalingPlanPooledSchedulesClient.Create
+//   - scalingPlanSchedule - Object containing ScalingPlanPersonalSchedule definitions.
+//   - options - ScalingPlanPersonalSchedulesClientCreateOptions contains the optional parameters for the ScalingPlanPersonalSchedulesClient.Create
 //     method.
-func (client *ScalingPlanPooledSchedulesClient) Create(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, scalingPlanSchedule ScalingPlanPooledSchedule, options *ScalingPlanPooledSchedulesClientCreateOptions) (ScalingPlanPooledSchedulesClientCreateResponse, error) {
+func (client *ScalingPlanPersonalSchedulesClient) Create(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, scalingPlanSchedule ScalingPlanPersonalSchedule, options *ScalingPlanPersonalSchedulesClientCreateOptions) (ScalingPlanPersonalSchedulesClientCreateResponse, error) {
 	var err error
 	req, err := client.createCreateRequest(ctx, resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule, options)
 	if err != nil {
-		return ScalingPlanPooledSchedulesClientCreateResponse{}, err
+		return ScalingPlanPersonalSchedulesClientCreateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ScalingPlanPooledSchedulesClientCreateResponse{}, err
+		return ScalingPlanPersonalSchedulesClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return ScalingPlanPooledSchedulesClientCreateResponse{}, err
+		return ScalingPlanPersonalSchedulesClientCreateResponse{}, err
 	}
 	resp, err := client.createHandleResponse(httpResp)
 	return resp, err
 }
 
 // createCreateRequest creates the Create request.
-func (client *ScalingPlanPooledSchedulesClient) createCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, scalingPlanSchedule ScalingPlanPooledSchedule, options *ScalingPlanPooledSchedulesClientCreateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules/{scalingPlanScheduleName}"
+func (client *ScalingPlanPersonalSchedulesClient) createCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, scalingPlanSchedule ScalingPlanPersonalSchedule, options *ScalingPlanPersonalSchedulesClientCreateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/personalSchedules/{scalingPlanScheduleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -106,43 +106,43 @@ func (client *ScalingPlanPooledSchedulesClient) createCreateRequest(ctx context.
 }
 
 // createHandleResponse handles the Create response.
-func (client *ScalingPlanPooledSchedulesClient) createHandleResponse(resp *http.Response) (ScalingPlanPooledSchedulesClientCreateResponse, error) {
-	result := ScalingPlanPooledSchedulesClientCreateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlanPooledSchedule); err != nil {
-		return ScalingPlanPooledSchedulesClientCreateResponse{}, err
+func (client *ScalingPlanPersonalSchedulesClient) createHandleResponse(resp *http.Response) (ScalingPlanPersonalSchedulesClientCreateResponse, error) {
+	result := ScalingPlanPersonalSchedulesClientCreateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlanPersonalSchedule); err != nil {
+		return ScalingPlanPersonalSchedulesClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// Delete - Remove a ScalingPlanPooledSchedule.
+// Delete - Remove a ScalingPlanPersonalSchedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-05
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scalingPlanName - The name of the scaling plan.
 //   - scalingPlanScheduleName - The name of the ScalingPlanSchedule
-//   - options - ScalingPlanPooledSchedulesClientDeleteOptions contains the optional parameters for the ScalingPlanPooledSchedulesClient.Delete
+//   - options - ScalingPlanPersonalSchedulesClientDeleteOptions contains the optional parameters for the ScalingPlanPersonalSchedulesClient.Delete
 //     method.
-func (client *ScalingPlanPooledSchedulesClient) Delete(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPooledSchedulesClientDeleteOptions) (ScalingPlanPooledSchedulesClientDeleteResponse, error) {
+func (client *ScalingPlanPersonalSchedulesClient) Delete(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPersonalSchedulesClientDeleteOptions) (ScalingPlanPersonalSchedulesClientDeleteResponse, error) {
 	var err error
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, scalingPlanName, scalingPlanScheduleName, options)
 	if err != nil {
-		return ScalingPlanPooledSchedulesClientDeleteResponse{}, err
+		return ScalingPlanPersonalSchedulesClientDeleteResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ScalingPlanPooledSchedulesClientDeleteResponse{}, err
+		return ScalingPlanPersonalSchedulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return ScalingPlanPooledSchedulesClientDeleteResponse{}, err
+		return ScalingPlanPersonalSchedulesClientDeleteResponse{}, err
 	}
-	return ScalingPlanPooledSchedulesClientDeleteResponse{}, nil
+	return ScalingPlanPersonalSchedulesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ScalingPlanPooledSchedulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPooledSchedulesClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules/{scalingPlanScheduleName}"
+func (client *ScalingPlanPersonalSchedulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPersonalSchedulesClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/personalSchedules/{scalingPlanScheduleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -170,36 +170,36 @@ func (client *ScalingPlanPooledSchedulesClient) deleteCreateRequest(ctx context.
 	return req, nil
 }
 
-// Get - Get a ScalingPlanPooledSchedule.
+// Get - Get a ScalingPlanPersonalSchedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-05
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scalingPlanName - The name of the scaling plan.
 //   - scalingPlanScheduleName - The name of the ScalingPlanSchedule
-//   - options - ScalingPlanPooledSchedulesClientGetOptions contains the optional parameters for the ScalingPlanPooledSchedulesClient.Get
+//   - options - ScalingPlanPersonalSchedulesClientGetOptions contains the optional parameters for the ScalingPlanPersonalSchedulesClient.Get
 //     method.
-func (client *ScalingPlanPooledSchedulesClient) Get(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPooledSchedulesClientGetOptions) (ScalingPlanPooledSchedulesClientGetResponse, error) {
+func (client *ScalingPlanPersonalSchedulesClient) Get(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPersonalSchedulesClientGetOptions) (ScalingPlanPersonalSchedulesClientGetResponse, error) {
 	var err error
 	req, err := client.getCreateRequest(ctx, resourceGroupName, scalingPlanName, scalingPlanScheduleName, options)
 	if err != nil {
-		return ScalingPlanPooledSchedulesClientGetResponse{}, err
+		return ScalingPlanPersonalSchedulesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ScalingPlanPooledSchedulesClientGetResponse{}, err
+		return ScalingPlanPersonalSchedulesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ScalingPlanPooledSchedulesClientGetResponse{}, err
+		return ScalingPlanPersonalSchedulesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *ScalingPlanPooledSchedulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPooledSchedulesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules/{scalingPlanScheduleName}"
+func (client *ScalingPlanPersonalSchedulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPersonalSchedulesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/personalSchedules/{scalingPlanScheduleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -228,27 +228,27 @@ func (client *ScalingPlanPooledSchedulesClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *ScalingPlanPooledSchedulesClient) getHandleResponse(resp *http.Response) (ScalingPlanPooledSchedulesClientGetResponse, error) {
-	result := ScalingPlanPooledSchedulesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlanPooledSchedule); err != nil {
-		return ScalingPlanPooledSchedulesClientGetResponse{}, err
+func (client *ScalingPlanPersonalSchedulesClient) getHandleResponse(resp *http.Response) (ScalingPlanPersonalSchedulesClientGetResponse, error) {
+	result := ScalingPlanPersonalSchedulesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlanPersonalSchedule); err != nil {
+		return ScalingPlanPersonalSchedulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - List ScalingPlanPooledSchedules.
+// NewListPager - List ScalingPlanPersonalSchedules.
 //
 // Generated from API version 2023-09-05
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scalingPlanName - The name of the scaling plan.
-//   - options - ScalingPlanPooledSchedulesClientListOptions contains the optional parameters for the ScalingPlanPooledSchedulesClient.NewListPager
+//   - options - ScalingPlanPersonalSchedulesClientListOptions contains the optional parameters for the ScalingPlanPersonalSchedulesClient.NewListPager
 //     method.
-func (client *ScalingPlanPooledSchedulesClient) NewListPager(resourceGroupName string, scalingPlanName string, options *ScalingPlanPooledSchedulesClientListOptions) *runtime.Pager[ScalingPlanPooledSchedulesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ScalingPlanPooledSchedulesClientListResponse]{
-		More: func(page ScalingPlanPooledSchedulesClientListResponse) bool {
+func (client *ScalingPlanPersonalSchedulesClient) NewListPager(resourceGroupName string, scalingPlanName string, options *ScalingPlanPersonalSchedulesClientListOptions) *runtime.Pager[ScalingPlanPersonalSchedulesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ScalingPlanPersonalSchedulesClientListResponse]{
+		More: func(page ScalingPlanPersonalSchedulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ScalingPlanPooledSchedulesClientListResponse) (ScalingPlanPooledSchedulesClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *ScalingPlanPersonalSchedulesClientListResponse) (ScalingPlanPersonalSchedulesClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -257,14 +257,14 @@ func (client *ScalingPlanPooledSchedulesClient) NewListPager(resourceGroupName s
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ScalingPlanPooledSchedulesClientListResponse{}, err
+				return ScalingPlanPersonalSchedulesClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ScalingPlanPooledSchedulesClientListResponse{}, err
+				return ScalingPlanPersonalSchedulesClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ScalingPlanPooledSchedulesClientListResponse{}, runtime.NewResponseError(resp)
+				return ScalingPlanPersonalSchedulesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -272,8 +272,8 @@ func (client *ScalingPlanPooledSchedulesClient) NewListPager(resourceGroupName s
 }
 
 // listCreateRequest creates the List request.
-func (client *ScalingPlanPooledSchedulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlanPooledSchedulesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules"
+func (client *ScalingPlanPersonalSchedulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlanPersonalSchedulesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/personalSchedules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -307,44 +307,44 @@ func (client *ScalingPlanPooledSchedulesClient) listCreateRequest(ctx context.Co
 }
 
 // listHandleResponse handles the List response.
-func (client *ScalingPlanPooledSchedulesClient) listHandleResponse(resp *http.Response) (ScalingPlanPooledSchedulesClientListResponse, error) {
-	result := ScalingPlanPooledSchedulesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlanPooledScheduleList); err != nil {
-		return ScalingPlanPooledSchedulesClientListResponse{}, err
+func (client *ScalingPlanPersonalSchedulesClient) listHandleResponse(resp *http.Response) (ScalingPlanPersonalSchedulesClientListResponse, error) {
+	result := ScalingPlanPersonalSchedulesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlanPersonalScheduleList); err != nil {
+		return ScalingPlanPersonalSchedulesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// Update - Update a ScalingPlanPooledSchedule.
+// Update - Update a ScalingPlanPersonalSchedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-05
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scalingPlanName - The name of the scaling plan.
 //   - scalingPlanScheduleName - The name of the ScalingPlanSchedule
-//   - options - ScalingPlanPooledSchedulesClientUpdateOptions contains the optional parameters for the ScalingPlanPooledSchedulesClient.Update
+//   - options - ScalingPlanPersonalSchedulesClientUpdateOptions contains the optional parameters for the ScalingPlanPersonalSchedulesClient.Update
 //     method.
-func (client *ScalingPlanPooledSchedulesClient) Update(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPooledSchedulesClientUpdateOptions) (ScalingPlanPooledSchedulesClientUpdateResponse, error) {
+func (client *ScalingPlanPersonalSchedulesClient) Update(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPersonalSchedulesClientUpdateOptions) (ScalingPlanPersonalSchedulesClientUpdateResponse, error) {
 	var err error
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, scalingPlanName, scalingPlanScheduleName, options)
 	if err != nil {
-		return ScalingPlanPooledSchedulesClientUpdateResponse{}, err
+		return ScalingPlanPersonalSchedulesClientUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ScalingPlanPooledSchedulesClientUpdateResponse{}, err
+		return ScalingPlanPersonalSchedulesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ScalingPlanPooledSchedulesClientUpdateResponse{}, err
+		return ScalingPlanPersonalSchedulesClientUpdateResponse{}, err
 	}
 	resp, err := client.updateHandleResponse(httpResp)
 	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ScalingPlanPooledSchedulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPooledSchedulesClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules/{scalingPlanScheduleName}"
+func (client *ScalingPlanPersonalSchedulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPersonalSchedulesClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/personalSchedules/{scalingPlanScheduleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -379,10 +379,10 @@ func (client *ScalingPlanPooledSchedulesClient) updateCreateRequest(ctx context.
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ScalingPlanPooledSchedulesClient) updateHandleResponse(resp *http.Response) (ScalingPlanPooledSchedulesClientUpdateResponse, error) {
-	result := ScalingPlanPooledSchedulesClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlanPooledSchedule); err != nil {
-		return ScalingPlanPooledSchedulesClientUpdateResponse{}, err
+func (client *ScalingPlanPersonalSchedulesClient) updateHandleResponse(resp *http.Response) (ScalingPlanPersonalSchedulesClientUpdateResponse, error) {
+	result := ScalingPlanPersonalSchedulesClientUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScalingPlanPersonalSchedule); err != nil {
+		return ScalingPlanPersonalSchedulesClientUpdateResponse{}, err
 	}
 	return result, nil
 }

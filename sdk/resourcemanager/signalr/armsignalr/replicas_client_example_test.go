@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_List.json
 func ExampleReplicasClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,6 +60,8 @@ func ExampleReplicasClient_NewListPager() {
 		// 			},
 		// 			Properties: &armsignalr.ReplicaProperties{
 		// 				ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
+		// 				RegionEndpointEnabled: to.Ptr("Enabled"),
+		// 				ResourceStopped: to.Ptr("false"),
 		// 			},
 		// 			SKU: &armsignalr.ResourceSKU{
 		// 				Name: to.Ptr("Premium_P1"),
@@ -72,7 +74,7 @@ func ExampleReplicasClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_Get.json
 func ExampleReplicasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,6 +110,8 @@ func ExampleReplicasClient_Get() {
 	// 	},
 	// 	Properties: &armsignalr.ReplicaProperties{
 	// 		ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
+	// 		RegionEndpointEnabled: to.Ptr("Enabled"),
+	// 		ResourceStopped: to.Ptr("false"),
 	// 	},
 	// 	SKU: &armsignalr.ResourceSKU{
 	// 		Name: to.Ptr("Premium_P1"),
@@ -118,7 +122,7 @@ func ExampleReplicasClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_CreateOrUpdate.json
 func ExampleReplicasClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +138,9 @@ func ExampleReplicasClient_BeginCreateOrUpdate() {
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
-		Properties: &armsignalr.ReplicaProperties{},
+		Properties: &armsignalr.ReplicaProperties{
+			ResourceStopped: to.Ptr("false"),
+		},
 		SKU: &armsignalr.ResourceSKU{
 			Name:     to.Ptr("Premium_P1"),
 			Capacity: to.Ptr[int32](1),
@@ -169,6 +175,8 @@ func ExampleReplicasClient_BeginCreateOrUpdate() {
 	// 	},
 	// 	Properties: &armsignalr.ReplicaProperties{
 	// 		ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
+	// 		RegionEndpointEnabled: to.Ptr("Enabled"),
+	// 		ResourceStopped: to.Ptr("false"),
 	// 	},
 	// 	SKU: &armsignalr.ResourceSKU{
 	// 		Name: to.Ptr("Premium_P1"),
@@ -179,7 +187,7 @@ func ExampleReplicasClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_Delete.json
 func ExampleReplicasClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +204,7 @@ func ExampleReplicasClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_Update.json
 func ExampleReplicasClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +220,9 @@ func ExampleReplicasClient_BeginUpdate() {
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
-		Properties: &armsignalr.ReplicaProperties{},
+		Properties: &armsignalr.ReplicaProperties{
+			ResourceStopped: to.Ptr("false"),
+		},
 		SKU: &armsignalr.ResourceSKU{
 			Name:     to.Ptr("Premium_P1"),
 			Capacity: to.Ptr[int32](1),
@@ -247,6 +257,8 @@ func ExampleReplicasClient_BeginUpdate() {
 	// 	},
 	// 	Properties: &armsignalr.ReplicaProperties{
 	// 		ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
+	// 		RegionEndpointEnabled: to.Ptr("Enabled"),
+	// 		ResourceStopped: to.Ptr("false"),
 	// 	},
 	// 	SKU: &armsignalr.ResourceSKU{
 	// 		Name: to.Ptr("Premium_P1"),
@@ -257,7 +269,7 @@ func ExampleReplicasClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_Restart.json
 func ExampleReplicasClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

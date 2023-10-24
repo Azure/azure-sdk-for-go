@@ -46,7 +46,7 @@ func NewSharedPrivateLinkResourcesClient(subscriptionID string, credential azcor
 // BeginCreateOrUpdate - Create or update a shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-08-01-preview
 //   - sharedPrivateLinkResourceName - The name of the shared private link resource
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
@@ -71,7 +71,7 @@ func (client *SharedPrivateLinkResourcesClient) BeginCreateOrUpdate(ctx context.
 // CreateOrUpdate - Create or update a shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-08-01-preview
 func (client *SharedPrivateLinkResourcesClient) createOrUpdate(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, parameters SharedPrivateLinkResource, options *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	req, err := client.createOrUpdateCreateRequest(ctx, sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters, options)
@@ -110,7 +110,7 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -122,7 +122,7 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx 
 // BeginDelete - Delete the specified shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-08-01-preview
 //   - sharedPrivateLinkResourceName - The name of the shared private link resource
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
@@ -146,7 +146,7 @@ func (client *SharedPrivateLinkResourcesClient) BeginDelete(ctx context.Context,
 // Delete - Delete the specified shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-08-01-preview
 func (client *SharedPrivateLinkResourcesClient) deleteOperation(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, options *SharedPrivateLinkResourcesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	req, err := client.deleteCreateRequest(ctx, sharedPrivateLinkResourceName, resourceGroupName, resourceName, options)
@@ -185,7 +185,7 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -194,7 +194,7 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 // Get - Get the specified shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-08-01-preview
 //   - sharedPrivateLinkResourceName - The name of the shared private link resource
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
@@ -239,7 +239,7 @@ func (client *SharedPrivateLinkResourcesClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -256,7 +256,7 @@ func (client *SharedPrivateLinkResourcesClient) getHandleResponse(resp *http.Res
 
 // NewListPager - List shared private link resources
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - SharedPrivateLinkResourcesClientListOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.NewListPager
@@ -306,7 +306,7 @@ func (client *SharedPrivateLinkResourcesClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

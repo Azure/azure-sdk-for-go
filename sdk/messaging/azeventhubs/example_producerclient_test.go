@@ -14,6 +14,8 @@ import (
 var producerClient *azeventhubs.ProducerClient
 
 func ExampleNewProducerClient() {
+	// `DefaultAzureCredential` tries several common credential types. For more credential types
+	// see this link: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#readme-credential-types.
 	defaultAzureCred, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil {

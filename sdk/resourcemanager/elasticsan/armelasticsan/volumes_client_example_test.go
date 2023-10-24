@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Volumes_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Volumes_Create_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginCreate_volumesCreateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,10 +32,13 @@ func ExampleVolumesClient_BeginCreate_volumesCreateMaximumSetGen() {
 	poller, err := clientFactory.NewVolumesClient().BeginCreate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", armelasticsan.Volume{
 		Properties: &armelasticsan.VolumeProperties{
 			CreationData: &armelasticsan.SourceCreationData{
-				CreateSource: to.Ptr("None"),
-				SourceURI:    to.Ptr(" ARM Id of resource"),
+				CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
+				SourceID:     to.Ptr("ARM Id of Resource"),
 			},
-			SizeGiB: to.Ptr[int64](23),
+			ManagedBy: &armelasticsan.ManagedByInfo{
+				ResourceID: to.Ptr("mtkeip"),
+			},
+			SizeGiB: to.Ptr[int64](9),
 		},
 	}, nil)
 	if err != nil {
@@ -49,36 +52,40 @@ func ExampleVolumesClient_BeginCreate_volumesCreateMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Volume = armelasticsan.Volume{
-	// 	Name: to.Ptr("ipmipjggodoxjua"),
-	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans"),
+	// 	Name: to.Ptr("o"),
+	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups/volumes"),
 	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}"),
 	// 	SystemData: &armelasticsan.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 		CreatedBy: to.Ptr("zloujisrarsox"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+	// 		CreatedBy: to.Ptr("kakcyehdrphqkilgkhpbdtvpupak"),
 	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("lmdztjjcmdfzam"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("bcclmbseed"),
 	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armelasticsan.VolumeProperties{
 	// 		CreationData: &armelasticsan.SourceCreationData{
-	// 			CreateSource: to.Ptr("None"),
-	// 			SourceURI: to.Ptr(" ARM Id of resource"),
+	// 			CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
+	// 			SourceID: to.Ptr("ARM Id of Resource"),
 	// 		},
-	// 		SizeGiB: to.Ptr[int64](23),
+	// 		ManagedBy: &armelasticsan.ManagedByInfo{
+	// 			ResourceID: to.Ptr("mtkeip"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 		SizeGiB: to.Ptr[int64](9),
 	// 		StorageTarget: &armelasticsan.IscsiTargetInfo{
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
 	// 			Status: to.Ptr(armelasticsan.OperationalStatusInvalid),
-	// 			TargetIqn: to.Ptr("yuuex"),
-	// 			TargetPortalHostname: to.Ptr("yktnmynpdjpmztwuwcvipp"),
-	// 			TargetPortalPort: to.Ptr[int32](3),
+	// 			TargetIqn: to.Ptr("izdwogzjedsfug"),
+	// 			TargetPortalHostname: to.Ptr("wyfbjobugmad"),
+	// 			TargetPortalPort: to.Ptr[int32](21),
 	// 		},
-	// 		VolumeID: to.Ptr("hkbhievbyopwjqawbyvqi"),
+	// 		VolumeID: to.Ptr("umwjlxntntjejiyrywrytkzbfbluhk"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Volumes_Create_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Volumes_Create_MinimumSet_Gen.json
 func ExampleVolumesClient_BeginCreate_volumesCreateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +98,7 @@ func ExampleVolumesClient_BeginCreate_volumesCreateMinimumSetGen() {
 	}
 	poller, err := clientFactory.NewVolumesClient().BeginCreate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", armelasticsan.Volume{
 		Properties: &armelasticsan.VolumeProperties{
-			SizeGiB: to.Ptr[int64](23),
+			SizeGiB: to.Ptr[int64](9),
 		},
 	}, nil)
 	if err != nil {
@@ -105,36 +112,40 @@ func ExampleVolumesClient_BeginCreate_volumesCreateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Volume = armelasticsan.Volume{
-	// 	Name: to.Ptr("ipmipjggodoxjua"),
-	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans"),
+	// 	Name: to.Ptr("o"),
+	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups/volumes"),
 	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}"),
 	// 	SystemData: &armelasticsan.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 		CreatedBy: to.Ptr("zloujisrarsox"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+	// 		CreatedBy: to.Ptr("kakcyehdrphqkilgkhpbdtvpupak"),
 	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("lmdztjjcmdfzam"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("bcclmbseed"),
 	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armelasticsan.VolumeProperties{
 	// 		CreationData: &armelasticsan.SourceCreationData{
-	// 			CreateSource: to.Ptr("None"),
-	// 			SourceURI: to.Ptr(" ARM Id of resource"),
+	// 			CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
+	// 			SourceID: to.Ptr("ARM Id of Resource"),
 	// 		},
-	// 		SizeGiB: to.Ptr[int64](23),
+	// 		ManagedBy: &armelasticsan.ManagedByInfo{
+	// 			ResourceID: to.Ptr("mtkeip"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 		SizeGiB: to.Ptr[int64](9),
 	// 		StorageTarget: &armelasticsan.IscsiTargetInfo{
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
 	// 			Status: to.Ptr(armelasticsan.OperationalStatusInvalid),
-	// 			TargetIqn: to.Ptr("yuuex"),
-	// 			TargetPortalHostname: to.Ptr("yktnmynpdjpmztwuwcvipp"),
-	// 			TargetPortalPort: to.Ptr[int32](3),
+	// 			TargetIqn: to.Ptr("izdwogzjedsfug"),
+	// 			TargetPortalHostname: to.Ptr("wyfbjobugmad"),
+	// 			TargetPortalPort: to.Ptr[int32](21),
 	// 		},
-	// 		VolumeID: to.Ptr("hkbhievbyopwjqawbyvqi"),
+	// 		VolumeID: to.Ptr("umwjlxntntjejiyrywrytkzbfbluhk"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Volumes_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Volumes_Update_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginUpdate_volumesUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,36 +172,40 @@ func ExampleVolumesClient_BeginUpdate_volumesUpdateMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Volume = armelasticsan.Volume{
-	// 	Name: to.Ptr("ipmipjggodoxjua"),
-	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans"),
-	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}"),
+	// 	Name: to.Ptr("o"),
+	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups/volumes"),
+	// 	ID: to.Ptr("swkcmwglncgtsnejzvldnbpsifxez"),
 	// 	SystemData: &armelasticsan.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 		CreatedBy: to.Ptr("zloujisrarsox"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+	// 		CreatedBy: to.Ptr("kakcyehdrphqkilgkhpbdtvpupak"),
 	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("lmdztjjcmdfzam"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("bcclmbseed"),
 	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armelasticsan.VolumeProperties{
 	// 		CreationData: &armelasticsan.SourceCreationData{
-	// 			CreateSource: to.Ptr("None"),
-	// 			SourceURI: to.Ptr(" ARM Id of resource"),
+	// 			CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
+	// 			SourceID: to.Ptr("ARM Id of Resource"),
 	// 		},
-	// 		SizeGiB: to.Ptr[int64](23),
+	// 		ManagedBy: &armelasticsan.ManagedByInfo{
+	// 			ResourceID: to.Ptr("mtkeip"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 		SizeGiB: to.Ptr[int64](9),
 	// 		StorageTarget: &armelasticsan.IscsiTargetInfo{
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
 	// 			Status: to.Ptr(armelasticsan.OperationalStatusInvalid),
-	// 			TargetIqn: to.Ptr("yuuex"),
-	// 			TargetPortalHostname: to.Ptr("yktnmynpdjpmztwuwcvipp"),
-	// 			TargetPortalPort: to.Ptr[int32](3),
+	// 			TargetIqn: to.Ptr("izdwogzjedsfug"),
+	// 			TargetPortalHostname: to.Ptr("wyfbjobugmad"),
+	// 			TargetPortalPort: to.Ptr[int32](21),
 	// 		},
-	// 		VolumeID: to.Ptr("hkbhievbyopwjqawbyvqi"),
+	// 		VolumeID: to.Ptr("umwjlxntntjejiyrywrytkzbfbluhk"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Volumes_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Volumes_Update_MinimumSet_Gen.json
 func ExampleVolumesClient_BeginUpdate_volumesUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,36 +228,40 @@ func ExampleVolumesClient_BeginUpdate_volumesUpdateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Volume = armelasticsan.Volume{
-	// 	Name: to.Ptr("ipmipjggodoxjua"),
-	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans"),
-	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}"),
+	// 	Name: to.Ptr("o"),
+	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups/volumes"),
+	// 	ID: to.Ptr("swkcmwglncgtsnejzvldnbpsifxez"),
 	// 	SystemData: &armelasticsan.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 		CreatedBy: to.Ptr("zloujisrarsox"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+	// 		CreatedBy: to.Ptr("kakcyehdrphqkilgkhpbdtvpupak"),
 	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("lmdztjjcmdfzam"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("bcclmbseed"),
 	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armelasticsan.VolumeProperties{
 	// 		CreationData: &armelasticsan.SourceCreationData{
-	// 			CreateSource: to.Ptr("None"),
-	// 			SourceURI: to.Ptr(" ARM Id of resource"),
+	// 			CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
+	// 			SourceID: to.Ptr("ARM Id of Resource"),
 	// 		},
-	// 		SizeGiB: to.Ptr[int64](23),
+	// 		ManagedBy: &armelasticsan.ManagedByInfo{
+	// 			ResourceID: to.Ptr("mtkeip"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 		SizeGiB: to.Ptr[int64](9),
 	// 		StorageTarget: &armelasticsan.IscsiTargetInfo{
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
 	// 			Status: to.Ptr(armelasticsan.OperationalStatusInvalid),
-	// 			TargetIqn: to.Ptr("yuuex"),
-	// 			TargetPortalHostname: to.Ptr("yktnmynpdjpmztwuwcvipp"),
-	// 			TargetPortalPort: to.Ptr[int32](3),
+	// 			TargetIqn: to.Ptr("izdwogzjedsfug"),
+	// 			TargetPortalHostname: to.Ptr("wyfbjobugmad"),
+	// 			TargetPortalPort: to.Ptr[int32](21),
 	// 		},
-	// 		VolumeID: to.Ptr("hkbhievbyopwjqawbyvqi"),
+	// 		VolumeID: to.Ptr("umwjlxntntjejiyrywrytkzbfbluhk"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Volumes_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Volumes_Delete_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginDelete_volumesDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +272,9 @@ func ExampleVolumesClient_BeginDelete_volumesDeleteMaximumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVolumesClient().BeginDelete(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", nil)
+	poller, err := clientFactory.NewVolumesClient().BeginDelete(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", &armelasticsan.VolumesClientBeginDeleteOptions{XMSDeleteSnapshots: to.Ptr(armelasticsan.XMSDeleteSnapshotsTrue),
+		XMSForceDelete: to.Ptr(armelasticsan.XMSForceDeleteTrue),
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -263,7 +284,7 @@ func ExampleVolumesClient_BeginDelete_volumesDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Volumes_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Volumes_Delete_MinimumSet_Gen.json
 func ExampleVolumesClient_BeginDelete_volumesDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,7 +295,9 @@ func ExampleVolumesClient_BeginDelete_volumesDeleteMinimumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVolumesClient().BeginDelete(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", nil)
+	poller, err := clientFactory.NewVolumesClient().BeginDelete(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", &armelasticsan.VolumesClientBeginDeleteOptions{XMSDeleteSnapshots: nil,
+		XMSForceDelete: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -284,7 +307,7 @@ func ExampleVolumesClient_BeginDelete_volumesDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Volumes_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Volumes_Get_MaximumSet_Gen.json
 func ExampleVolumesClient_Get_volumesGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,36 +326,40 @@ func ExampleVolumesClient_Get_volumesGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Volume = armelasticsan.Volume{
-	// 	Name: to.Ptr("ipmipjggodoxjua"),
-	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans"),
-	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}"),
+	// 	Name: to.Ptr("o"),
+	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups/volumes"),
+	// 	ID: to.Ptr("swkcmwglncgtsnejzvldnbpsifxez"),
 	// 	SystemData: &armelasticsan.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 		CreatedBy: to.Ptr("zloujisrarsox"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+	// 		CreatedBy: to.Ptr("kakcyehdrphqkilgkhpbdtvpupak"),
 	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("lmdztjjcmdfzam"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("bcclmbseed"),
 	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armelasticsan.VolumeProperties{
 	// 		CreationData: &armelasticsan.SourceCreationData{
-	// 			CreateSource: to.Ptr("None"),
-	// 			SourceURI: to.Ptr(" ARM Id of resource"),
+	// 			CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
+	// 			SourceID: to.Ptr("ARM Id of Resource"),
 	// 		},
-	// 		SizeGiB: to.Ptr[int64](23),
+	// 		ManagedBy: &armelasticsan.ManagedByInfo{
+	// 			ResourceID: to.Ptr("mtkeip"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 		SizeGiB: to.Ptr[int64](9),
 	// 		StorageTarget: &armelasticsan.IscsiTargetInfo{
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
 	// 			Status: to.Ptr(armelasticsan.OperationalStatusInvalid),
-	// 			TargetIqn: to.Ptr("yuuex"),
-	// 			TargetPortalHostname: to.Ptr("yktnmynpdjpmztwuwcvipp"),
-	// 			TargetPortalPort: to.Ptr[int32](3),
+	// 			TargetIqn: to.Ptr("izdwogzjedsfug"),
+	// 			TargetPortalHostname: to.Ptr("wyfbjobugmad"),
+	// 			TargetPortalPort: to.Ptr[int32](21),
 	// 		},
-	// 		VolumeID: to.Ptr("hkbhievbyopwjqawbyvqi"),
+	// 		VolumeID: to.Ptr("umwjlxntntjejiyrywrytkzbfbluhk"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Volumes_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Volumes_Get_MinimumSet_Gen.json
 func ExampleVolumesClient_Get_volumesGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -351,36 +378,40 @@ func ExampleVolumesClient_Get_volumesGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Volume = armelasticsan.Volume{
-	// 	Name: to.Ptr("ipmipjggodoxjua"),
-	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans"),
-	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}"),
+	// 	Name: to.Ptr("o"),
+	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups/volumes"),
+	// 	ID: to.Ptr("swkcmwglncgtsnejzvldnbpsifxez"),
 	// 	SystemData: &armelasticsan.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 		CreatedBy: to.Ptr("zloujisrarsox"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+	// 		CreatedBy: to.Ptr("kakcyehdrphqkilgkhpbdtvpupak"),
 	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("lmdztjjcmdfzam"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("bcclmbseed"),
 	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armelasticsan.VolumeProperties{
 	// 		CreationData: &armelasticsan.SourceCreationData{
-	// 			CreateSource: to.Ptr("None"),
-	// 			SourceURI: to.Ptr(" ARM Id of resource"),
+	// 			CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
+	// 			SourceID: to.Ptr("ARM Id of Resource"),
 	// 		},
-	// 		SizeGiB: to.Ptr[int64](23),
+	// 		ManagedBy: &armelasticsan.ManagedByInfo{
+	// 			ResourceID: to.Ptr("mtkeip"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 		SizeGiB: to.Ptr[int64](9),
 	// 		StorageTarget: &armelasticsan.IscsiTargetInfo{
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
 	// 			Status: to.Ptr(armelasticsan.OperationalStatusInvalid),
-	// 			TargetIqn: to.Ptr("yuuex"),
-	// 			TargetPortalHostname: to.Ptr("yktnmynpdjpmztwuwcvipp"),
-	// 			TargetPortalPort: to.Ptr[int32](3),
+	// 			TargetIqn: to.Ptr("izdwogzjedsfug"),
+	// 			TargetPortalHostname: to.Ptr("wyfbjobugmad"),
+	// 			TargetPortalPort: to.Ptr[int32](21),
 	// 		},
-	// 		VolumeID: to.Ptr("hkbhievbyopwjqawbyvqi"),
+	// 		VolumeID: to.Ptr("umwjlxntntjejiyrywrytkzbfbluhk"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
 func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -405,38 +436,42 @@ func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMaxi
 		// page.VolumeList = armelasticsan.VolumeList{
 		// 	Value: []*armelasticsan.Volume{
 		// 		{
-		// 			Name: to.Ptr("ipmipjggodoxjua"),
-		// 			Type: to.Ptr("Microsoft.ElasticSan/elasticSans"),
-		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}"),
+		// 			Name: to.Ptr("o"),
+		// 			Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups/volumes"),
+		// 			ID: to.Ptr("swkcmwglncgtsnejzvldnbpsifxez"),
 		// 			SystemData: &armelasticsan.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-		// 				CreatedBy: to.Ptr("zloujisrarsox"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+		// 				CreatedBy: to.Ptr("kakcyehdrphqkilgkhpbdtvpupak"),
 		// 				CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("lmdztjjcmdfzam"),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-23T12:16:10.057Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("bcclmbseed"),
 		// 				LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 		// 			},
 		// 			Properties: &armelasticsan.VolumeProperties{
 		// 				CreationData: &armelasticsan.SourceCreationData{
-		// 					CreateSource: to.Ptr("None"),
-		// 					SourceURI: to.Ptr(" ARM Id of resource"),
+		// 					CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
+		// 					SourceID: to.Ptr("ARM Id of Resource"),
 		// 				},
-		// 				SizeGiB: to.Ptr[int64](23),
+		// 				ManagedBy: &armelasticsan.ManagedByInfo{
+		// 					ResourceID: to.Ptr("mtkeip"),
+		// 				},
+		// 				ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+		// 				SizeGiB: to.Ptr[int64](9),
 		// 				StorageTarget: &armelasticsan.IscsiTargetInfo{
 		// 					ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
 		// 					Status: to.Ptr(armelasticsan.OperationalStatusInvalid),
-		// 					TargetIqn: to.Ptr("yuuex"),
-		// 					TargetPortalHostname: to.Ptr("yktnmynpdjpmztwuwcvipp"),
-		// 					TargetPortalPort: to.Ptr[int32](3),
+		// 					TargetIqn: to.Ptr("izdwogzjedsfug"),
+		// 					TargetPortalHostname: to.Ptr("wyfbjobugmad"),
+		// 					TargetPortalPort: to.Ptr[int32](21),
 		// 				},
-		// 				VolumeID: to.Ptr("hkbhievbyopwjqawbyvqi"),
+		// 				VolumeID: to.Ptr("umwjlxntntjejiyrywrytkzbfbluhk"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Volumes_ListByVolumeGroup_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Volumes_ListByVolumeGroup_MinimumSet_Gen.json
 func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -459,35 +494,6 @@ func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMini
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.VolumeList = armelasticsan.VolumeList{
-		// 	Value: []*armelasticsan.Volume{
-		// 		{
-		// 			Name: to.Ptr("ipmipjggodoxjua"),
-		// 			Type: to.Ptr("Microsoft.ElasticSan/elasticSans"),
-		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}"),
-		// 			SystemData: &armelasticsan.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-		// 				CreatedBy: to.Ptr("zloujisrarsox"),
-		// 				CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("lmdztjjcmdfzam"),
-		// 				LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-		// 			},
-		// 			Properties: &armelasticsan.VolumeProperties{
-		// 				CreationData: &armelasticsan.SourceCreationData{
-		// 					CreateSource: to.Ptr("None"),
-		// 					SourceURI: to.Ptr(" ARM Id of resource"),
-		// 				},
-		// 				SizeGiB: to.Ptr[int64](23),
-		// 				StorageTarget: &armelasticsan.IscsiTargetInfo{
-		// 					ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
-		// 					Status: to.Ptr(armelasticsan.OperationalStatusInvalid),
-		// 					TargetIqn: to.Ptr("yuuex"),
-		// 					TargetPortalHostname: to.Ptr("yktnmynpdjpmztwuwcvipp"),
-		// 					TargetPortalPort: to.Ptr[int32](3),
-		// 				},
-		// 				VolumeID: to.Ptr("hkbhievbyopwjqawbyvqi"),
-		// 			},
-		// 	}},
 		// }
 	}
 }

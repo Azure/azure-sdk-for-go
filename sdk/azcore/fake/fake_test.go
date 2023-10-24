@@ -34,8 +34,7 @@ type widgets struct {
 }
 
 func TestNewTokenCredential(t *testing.T) {
-	cred := fake.NewTokenCredential()
-	require.NotNil(t, cred)
+	cred := fake.TokenCredential{}
 
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{})
 	require.NoError(t, err)

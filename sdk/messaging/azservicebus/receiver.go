@@ -253,10 +253,12 @@ type PeekMessagesOptions struct {
 // start location for the next PeekMessages() call. You can override this behavior by passing an
 // explicit sequence number in PeekMessagesOptions.FromSequenceNumber.
 //
-// Messages that are peeked do not have lock tokens, so settlement methods
-// like CompleteMessage, AbandonMessage, DeferMessage or DeadLetterMessage
-// will not work with them.
+// Messages that are peeked are not locked, so settlement methods like CompleteMessage,
+// AbandonMessage, DeferMessage or DeadLetterMessage will not work with them.
+//
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+//
+// For more information about peeking/message-browsing see https://aka.ms/azsdk/servicebus/message-browsing
 func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekMessagesOptions) ([]*ReceivedMessage, error) {
 	var receivedMessages []*ReceivedMessage
 

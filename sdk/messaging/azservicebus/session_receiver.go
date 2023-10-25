@@ -146,10 +146,17 @@ func (r *SessionReceiver) ReceiveDeferredMessages(ctx context.Context, sequenceN
 }
 
 // PeekMessages will peek messages without locking or deleting messages.
-// Messages that are peeked do not have lock tokens, so settlement methods
-// like CompleteMessage, AbandonMessage, DeferMessage or DeadLetterMessage
-// will not work with them.
+//
+// The SessionReceiver stores the last peeked sequence number internally, and will use it as the
+// start location for the next PeekMessages() call. You can override this behavior by passing an
+// explicit sequence number in PeekMessagesOptions.FromSequenceNumber.
+//
+// Messages that are peeked are not locked, so settlement methods like CompleteMessage,
+// AbandonMessage, DeferMessage or DeadLetterMessage will not work with them.
+//
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+//
+// For more information about peeking/message-browsing see https://aka.ms/azsdk/servicebus/message-browsing
 func (r *SessionReceiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekMessagesOptions) ([]*ReceivedMessage, error) {
 	return r.inner.PeekMessages(ctx, maxMessageCount, options)
 }

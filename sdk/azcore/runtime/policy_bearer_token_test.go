@@ -237,3 +237,12 @@ func TestBearerTokenPolicy_RequiresHTTPS(t *testing.T) {
 	var nre errorinfo.NonRetriable
 	require.ErrorAs(t, err, &nre)
 }
+
+func TestCheckHTTPSForAuth(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodGet, "http://contoso.com")
+	require.NoError(t, err)
+	require.Error(t, checkHTTPSForAuth(req))
+	req, err = NewRequest(context.Background(), http.MethodGet, "https://contoso.com")
+	require.NoError(t, err)
+	require.NoError(t, checkHTTPSForAuth(req))
+}

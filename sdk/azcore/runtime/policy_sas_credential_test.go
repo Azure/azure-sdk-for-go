@@ -26,9 +26,26 @@ func TestSASCredentialPolicy(t *testing.T) {
 		return &http.Response{}, nil
 	}), policy)
 
-	req, err := NewRequest(context.Background(), http.MethodGet, "http://contoso.com")
+	req, err := NewRequest(context.Background(), http.MethodGet, "https://contoso.com")
 	require.NoError(t, err)
 
 	_, err = pl.Do(req)
 	require.NoError(t, err)
+}
+
+func TestSASCredentialPolicy_RequiresHTTPS(t *testing.T) {
+	cred := exported.NewSASCredential("foo")
+
+	policy := NewSASCredentialPolicy(cred, "fake-auth", nil)
+	require.NotNil(t, policy)
+
+	pl := exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{}, nil
+	}), policy)
+
+	req, err := NewRequest(context.Background(), http.MethodGet, "http://contoso.com")
+	require.NoError(t, err)
+
+	_, err = pl.Do(req)
+	require.Error(t, err)
 }

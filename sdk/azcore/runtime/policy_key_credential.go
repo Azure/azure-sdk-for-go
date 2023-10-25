@@ -40,6 +40,9 @@ func NewKeyCredentialPolicy(cred *exported.KeyCredential, header string, options
 
 // Do implementes the Do method on the [policy.Polilcy] interface.
 func (k *KeyCredentialPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if err := checkHTTPSForAuth(req); err != nil {
+		return nil, err
+	}
 	val := exported.KeyCredentialGet(k.cred)
 	if k.prefix != "" {
 		val = k.prefix + val

@@ -72,9 +72,17 @@ func (b *BearerTokenPolicy) authenticateAndAuthorize(req *policy.Request) func(p
 
 // Do authorizes a request with a bearer token
 func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
+	// skip adding the authorization header if no TokenCredential was provided.
+	// this prevents a panic that might be hard to diagnose and allows testing
+	// against http endpoints that don't require authentication.
+	if b.cred == nil {
+		return req.Next()
+	}
+
 	if err := checkHTTPSForAuth(req); err != nil {
 		return nil, err
 	}
+
 	var err error
 	if b.authzHandler.OnRequest != nil {
 		err = b.authzHandler.OnRequest(req, b.authenticateAndAuthorize(req))

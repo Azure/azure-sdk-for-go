@@ -49,3 +49,20 @@ func TestSASCredentialPolicy_RequiresHTTPS(t *testing.T) {
 	_, err = pl.Do(req)
 	require.Error(t, err)
 }
+
+func TestSASCredentialPolicy_NilCredential(t *testing.T) {
+	const headerName = "fake-auth"
+	policy := NewSASCredentialPolicy(nil, headerName, nil)
+	require.NotNil(t, policy)
+
+	pl := exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		require.Zero(t, req.Header.Get(headerName))
+		return &http.Response{}, nil
+	}), policy)
+
+	req, err := NewRequest(context.Background(), http.MethodGet, "http://contoso.com")
+	require.NoError(t, err)
+
+	_, err = pl.Do(req)
+	require.NoError(t, err)
+}

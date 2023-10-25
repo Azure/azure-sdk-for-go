@@ -34,12 +34,12 @@ func (sp *SMBProperties) Format(isDir bool, defaultFileAttributes string, defaul
 }
 
 // FormatSMBProperties returns file attributes, creation time, last write time and change time.
-func FormatSMBProperties(sp *SMBProperties, isDir bool) (fileAttributes *string, creationTime *string, lastWriteTime *string, changeTime *string) {
+func FormatSMBProperties(sp *SMBProperties, defaultAttributes *string, defaultCurrentTime *string, isDir bool) (fileAttributes *string, creationTime *string, lastWriteTime *string, changeTime *string) {
 	if sp == nil {
-		return nil, nil, nil, nil
+		return defaultAttributes, defaultCurrentTime, defaultCurrentTime, nil
 	}
 
-	fileAttributes = nil
+	fileAttributes = defaultAttributes
 	if sp.Attributes != nil {
 		fileAttributes = to.Ptr(sp.Attributes.String())
 		if isDir && fileAttributes != nil && strings.ToLower(*fileAttributes) != "none" {
@@ -50,12 +50,12 @@ func FormatSMBProperties(sp *SMBProperties, isDir bool) (fileAttributes *string,
 		*fileAttributes = strings.TrimSuffix(*fileAttributes, "|")
 	}
 
-	creationTime = nil
+	creationTime = defaultCurrentTime
 	if sp.CreationTime != nil {
 		creationTime = to.Ptr(sp.CreationTime.UTC().Format(generated.ISO8601))
 	}
 
-	lastWriteTime = nil
+	lastWriteTime = defaultCurrentTime
 	if sp.LastWriteTime != nil {
 		lastWriteTime = to.Ptr(sp.LastWriteTime.UTC().Format(generated.ISO8601))
 	}

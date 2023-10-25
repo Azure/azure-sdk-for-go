@@ -12,7 +12,6 @@ import (
 	"regexp"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -39,13 +38,29 @@ type endpoint struct {
 	Azure  bool
 }
 
+type testClientOption func(opt *azopenai.ClientOptions)
+
+func withForgivingRetryOption() testClientOption {
+	return func(opt *azopenai.ClientOptions) {
+		opt.Retry = policy.RetryOptions{
+			MaxRetries: 10,
+		}
+	}
+}
+
 // newTestClient creates a client enabled for HTTP recording, if needed.
 // See [newRecordingTransporter] for sanitization code.
-func newTestClient(t *testing.T, ep endpoint) *azopenai.Client {
+func newTestClient(t *testing.T, ep endpoint, options ...testClientOption) *azopenai.Client {
+	clientOptions := newClientOptionsForTest(t)
+
+	for _, opt := range options {
+		opt(clientOptions)
+	}
+
 	if ep.Azure {
 		cred := azcore.NewKeyCredential(ep.APIKey)
 
-		client, err := azopenai.NewClientWithKeyCredential(ep.URL, cred, newClientOptionsForTest(t))
+		client, err := azopenai.NewClientWithKeyCredential(ep.URL, cred, clientOptions)
 		require.NoError(t, err)
 
 		return client
@@ -56,21 +71,7 @@ func newTestClient(t *testing.T, ep endpoint) *azopenai.Client {
 
 		cred := azcore.NewKeyCredential(ep.APIKey)
 
-		options := newClientOptionsForTest(t)
-
-		if options == nil {
-			options = &azopenai.ClientOptions{}
-		}
-
-		// We get rate limited quite a bit with OpenAI so we use this _very_ forgiving retry
-		// policy to make our tests pass consistently.
-		options.Retry = policy.RetryOptions{
-			MaxRetries:    60,
-			RetryDelay:    time.Second,
-			MaxRetryDelay: time.Second,
-		}
-
-		client, err := azopenai.NewClientForOpenAI(ep.URL, cred, options)
+		client, err := azopenai.NewClientForOpenAI(ep.URL, cred, clientOptions)
 		require.NoError(t, err)
 
 		return client
@@ -271,7 +272,7 @@ func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 		keyLogPath := os.Getenv("SSLKEYLOGFILE")
 
 		if keyLogPath == "" {
-			return nil
+			return &azopenai.ClientOptions{}
 		}
 
 		keyLogWriter, err := os.OpenFile(keyLogPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)

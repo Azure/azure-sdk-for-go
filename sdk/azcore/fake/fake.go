@@ -18,11 +18,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-// NewTokenCredential creates an instance of the TokenCredential type.
-func NewTokenCredential() *TokenCredential {
-	return &TokenCredential{}
-}
-
 // TokenCredential is a fake credential that implements the azcore.TokenCredential interface.
 type TokenCredential struct {
 	err error

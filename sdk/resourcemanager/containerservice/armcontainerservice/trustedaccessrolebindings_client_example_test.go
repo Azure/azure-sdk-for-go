@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-07-02-preview/examples/TrustedAccessRoleBindings_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/TrustedAccessRoleBindings_List.json
 func ExampleTrustedAccessRoleBindingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleTrustedAccessRoleBindingsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-07-02-preview/examples/TrustedAccessRoleBindings_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/TrustedAccessRoleBindings_Get.json
 func ExampleTrustedAccessRoleBindingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,8 +88,8 @@ func ExampleTrustedAccessRoleBindingsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-07-02-preview/examples/TrustedAccessRoleBindings_CreateOrUpdate.json
-func ExampleTrustedAccessRoleBindingsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/TrustedAccessRoleBindings_CreateOrUpdate.json
+func ExampleTrustedAccessRoleBindingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -99,7 +99,7 @@ func ExampleTrustedAccessRoleBindingsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewTrustedAccessRoleBindingsClient().CreateOrUpdate(ctx, "rg1", "clustername1", "binding1", armcontainerservice.TrustedAccessRoleBinding{
+	poller, err := clientFactory.NewTrustedAccessRoleBindingsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "binding1", armcontainerservice.TrustedAccessRoleBinding{
 		Properties: &armcontainerservice.TrustedAccessRoleBindingProperties{
 			Roles: []*string{
 				to.Ptr("Microsoft.MachineLearningServices/workspaces/reader"),
@@ -109,6 +109,10 @@ func ExampleTrustedAccessRoleBindingsClient_CreateOrUpdate() {
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -126,8 +130,8 @@ func ExampleTrustedAccessRoleBindingsClient_CreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-07-02-preview/examples/TrustedAccessRoleBindings_Delete.json
-func ExampleTrustedAccessRoleBindingsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/TrustedAccessRoleBindings_Delete.json
+func ExampleTrustedAccessRoleBindingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -137,8 +141,12 @@ func ExampleTrustedAccessRoleBindingsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewTrustedAccessRoleBindingsClient().Delete(ctx, "rg1", "clustername1", "binding1", nil)
+	poller, err := clientFactory.NewTrustedAccessRoleBindingsClient().BeginDelete(ctx, "rg1", "clustername1", "binding1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

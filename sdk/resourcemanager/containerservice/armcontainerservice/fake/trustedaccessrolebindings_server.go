@@ -24,13 +24,13 @@ import (
 
 // TrustedAccessRoleBindingsServer is a fake server for instances of the armcontainerservice.TrustedAccessRoleBindingsClient type.
 type TrustedAccessRoleBindingsServer struct {
-	// CreateOrUpdate is the fake for method TrustedAccessRoleBindingsClient.CreateOrUpdate
+	// BeginCreateOrUpdate is the fake for method TrustedAccessRoleBindingsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, trustedAccessRoleBinding armcontainerservice.TrustedAccessRoleBinding, options *armcontainerservice.TrustedAccessRoleBindingsClientCreateOrUpdateOptions) (resp azfake.Responder[armcontainerservice.TrustedAccessRoleBindingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, trustedAccessRoleBinding armcontainerservice.TrustedAccessRoleBinding, options *armcontainerservice.TrustedAccessRoleBindingsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcontainerservice.TrustedAccessRoleBindingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method TrustedAccessRoleBindingsClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, options *armcontainerservice.TrustedAccessRoleBindingsClientDeleteOptions) (resp azfake.Responder[armcontainerservice.TrustedAccessRoleBindingsClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method TrustedAccessRoleBindingsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, options *armcontainerservice.TrustedAccessRoleBindingsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerservice.TrustedAccessRoleBindingsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method TrustedAccessRoleBindingsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -46,16 +46,20 @@ type TrustedAccessRoleBindingsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTrustedAccessRoleBindingsServerTransport(srv *TrustedAccessRoleBindingsServer) *TrustedAccessRoleBindingsServerTransport {
 	return &TrustedAccessRoleBindingsServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armcontainerservice.TrustedAccessRoleBindingsClientListResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcontainerservice.TrustedAccessRoleBindingsClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armcontainerservice.TrustedAccessRoleBindingsClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armcontainerservice.TrustedAccessRoleBindingsClientListResponse]](),
 	}
 }
 
 // TrustedAccessRoleBindingsServerTransport connects instances of armcontainerservice.TrustedAccessRoleBindingsClient to instances of TrustedAccessRoleBindingsServer.
 // Don't use this type directly, use NewTrustedAccessRoleBindingsServerTransport instead.
 type TrustedAccessRoleBindingsServerTransport struct {
-	srv          *TrustedAccessRoleBindingsServer
-	newListPager *tracker[azfake.PagerResponder[armcontainerservice.TrustedAccessRoleBindingsClientListResponse]]
+	srv                 *TrustedAccessRoleBindingsServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcontainerservice.TrustedAccessRoleBindingsClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armcontainerservice.TrustedAccessRoleBindingsClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armcontainerservice.TrustedAccessRoleBindingsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TrustedAccessRoleBindingsServerTransport.
@@ -70,10 +74,10 @@ func (t *TrustedAccessRoleBindingsServerTransport) Do(req *http.Request) (*http.
 	var err error
 
 	switch method {
-	case "TrustedAccessRoleBindingsClient.CreateOrUpdate":
-		resp, err = t.dispatchCreateOrUpdate(req)
-	case "TrustedAccessRoleBindingsClient.Delete":
-		resp, err = t.dispatchDelete(req)
+	case "TrustedAccessRoleBindingsClient.BeginCreateOrUpdate":
+		resp, err = t.dispatchBeginCreateOrUpdate(req)
+	case "TrustedAccessRoleBindingsClient.BeginDelete":
+		resp, err = t.dispatchBeginDelete(req)
 	case "TrustedAccessRoleBindingsClient.Get":
 		resp, err = t.dispatchGet(req)
 	case "TrustedAccessRoleBindingsClient.NewListPager":
@@ -89,81 +93,103 @@ func (t *TrustedAccessRoleBindingsServerTransport) Do(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (t *TrustedAccessRoleBindingsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if t.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+func (t *TrustedAccessRoleBindingsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoleBindings/(?P<trustedAccessRoleBindingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginCreateOrUpdate := t.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoleBindings/(?P<trustedAccessRoleBindingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerservice.TrustedAccessRoleBinding](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		trustedAccessRoleBindingNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("trustedAccessRoleBindingName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, resourceNameUnescaped, trustedAccessRoleBindingNameUnescaped, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		t.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcontainerservice.TrustedAccessRoleBinding](req)
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		t.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		t.beginCreateOrUpdate.remove(req)
 	}
-	trustedAccessRoleBindingNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("trustedAccessRoleBindingName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.CreateOrUpdate(req.Context(), resourceGroupNameUnescaped, resourceNameUnescaped, trustedAccessRoleBindingNameUnescaped, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TrustedAccessRoleBinding, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
-func (t *TrustedAccessRoleBindingsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if t.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (t *TrustedAccessRoleBindingsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoleBindings/(?P<trustedAccessRoleBindingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := t.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoleBindings/(?P<trustedAccessRoleBindingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		trustedAccessRoleBindingNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("trustedAccessRoleBindingName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, resourceNameUnescaped, trustedAccessRoleBindingNameUnescaped, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		t.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		t.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	trustedAccessRoleBindingNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("trustedAccessRoleBindingName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginDelete) {
+		t.beginDelete.remove(req)
 	}
-	respr, errRespr := t.srv.Delete(req.Context(), resourceGroupNameUnescaped, resourceNameUnescaped, trustedAccessRoleBindingNameUnescaped, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 

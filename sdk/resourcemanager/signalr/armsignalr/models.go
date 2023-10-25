@@ -113,40 +113,6 @@ type Dimension struct {
 	ToBeExportedForShoebox *bool
 }
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
-
-	// READ-ONLY; The additional info type.
-	Type *string
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
-
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail
-
-	// READ-ONLY; The error message.
-	Message *string
-
-	// READ-ONLY; The error target.
-	Target *string
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail
-}
-
 // Feature of a resource, which controls the runtime behavior.
 type Feature struct {
 	// REQUIRED; FeatureFlags is the supported features of Azure SignalR service.
@@ -168,6 +134,15 @@ type Feature struct {
 
 	// Optional properties related to this feature.
 	Properties map[string]*string
+}
+
+// IPRule - An IP rule
+type IPRule struct {
+	// Azure Networking ACL Action.
+	Action *ACLAction
+
+	// An IP or CIDR or ServiceTag
+	Value *string
 }
 
 // Keys - A class represents the access keys of the resource.
@@ -301,6 +276,9 @@ type NetworkACL struct {
 type NetworkACLs struct {
 	// Azure Networking ACL Action.
 	DefaultAction *ACLAction
+
+	// IP rules for filtering public traffic
+	IPRules []*IPRule
 
 	// ACLs for requests from private endpoints
 	PrivateEndpoints []*PrivateEndpointACL
@@ -502,8 +480,17 @@ type Properties struct {
 	// network ACLs.
 	PublicNetworkAccess *string
 
+	// Enable or disable the regional endpoint. Default to "Enabled". When it's Disabled, new connections will not be routed to
+	// this endpoint, however existing connections will not be affected. This property
+	// is replica specific. Disable the regional endpoint without replica is not allowed.
+	RegionEndpointEnabled *string
+
 	// Resource log configuration of a Microsoft.SignalRService resource.
 	ResourceLogConfiguration *ResourceLogConfiguration
+
+	// Stop or start the resource. Default to "False". When it's true, the data plane of the resource is shutdown. When it's false,
+	// the data plane of the resource is started.
+	ResourceStopped *string
 
 	// Serverless settings.
 	Serverless *ServerlessSettings
@@ -540,22 +527,6 @@ type Properties struct {
 
 	// READ-ONLY; Version of the resource. Probably you need the same or higher version of client SDKs.
 	Version *string
-}
-
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // RegenerateKeyParameters - Parameters describes the request to regenerate access keys
@@ -598,23 +569,16 @@ type ReplicaList struct {
 }
 
 type ReplicaProperties struct {
+	// Enable or disable the regional endpoint. Default to "Enabled". When it's Disabled, new connections will not be routed to
+	// this endpoint, however existing connections will not be affected.
+	RegionEndpointEnabled *string
+
+	// Stop or start the resource. Default to "false". When it's true, the data plane of the resource is shutdown. When it's false,
+	// the data plane of the resource is started.
+	ResourceStopped *string
+
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // ResourceInfo - A class represent a resource.
@@ -862,28 +826,6 @@ type TLSSettings struct {
 	// Request client certificate during TLS handshake if enabled. Not supported for free tier. Any input will be ignored for
 	// free tier.
 	ClientCertEnabled *bool
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // UpstreamAuthSettings - Upstream auth settings. If not set, no auth is used for upstream messages.

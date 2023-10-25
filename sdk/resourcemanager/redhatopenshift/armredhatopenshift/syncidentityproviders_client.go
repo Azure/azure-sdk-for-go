@@ -46,7 +46,7 @@ func NewSyncIdentityProvidersClient(subscriptionID string, credential azcore.Tok
 // CreateOrUpdate - The operation returns properties of a SyncIdentityProvider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-09-04
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the SyncIdentityProvider resource.
@@ -95,7 +95,7 @@ func (client *SyncIdentityProvidersClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -116,7 +116,7 @@ func (client *SyncIdentityProvidersClient) createOrUpdateHandleResponse(resp *ht
 // Delete - The operation returns nothing.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-09-04
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the SyncIdentityProvider resource.
@@ -163,7 +163,7 @@ func (client *SyncIdentityProvidersClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -172,7 +172,7 @@ func (client *SyncIdentityProvidersClient) deleteCreateRequest(ctx context.Conte
 // Get - The operation returns properties of a SyncIdentityProvider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-09-04
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the SyncIdentityProvider resource.
@@ -220,7 +220,7 @@ func (client *SyncIdentityProvidersClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -237,7 +237,7 @@ func (client *SyncIdentityProvidersClient) getHandleResponse(resp *http.Response
 
 // NewListPager - The operation returns properties of each SyncIdentityProvider.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-09-04
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - options - SyncIdentityProvidersClientListOptions contains the optional parameters for the SyncIdentityProvidersClient.NewListPager
@@ -290,7 +290,7 @@ func (client *SyncIdentityProvidersClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -308,7 +308,7 @@ func (client *SyncIdentityProvidersClient) listHandleResponse(resp *http.Respons
 // Update - The operation returns properties of a SyncIdentityProvider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-09-04
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the SyncIdentityProvider resource.
@@ -357,7 +357,7 @@ func (client *SyncIdentityProvidersClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

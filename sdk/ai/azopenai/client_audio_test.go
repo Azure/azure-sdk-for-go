@@ -22,7 +22,7 @@ func TestClient_GetAudioTranscription_AzureOpenAI(t *testing.T) {
 		t.Skipf("Recording needs to be revisited for multipart: https://github.com/Azure/azure-sdk-for-go/issues/21598")
 	}
 
-	client := newTestClient(t, azureWhisper)
+	client := newTestClient(t, azureWhisper, withForgivingRetryOption())
 	runTranscriptionTests(t, client, azureWhisperModel)
 }
 
@@ -54,7 +54,7 @@ func TestClient_GetAudioTranslation_AzureOpenAI(t *testing.T) {
 		t.Skipf("Recording needs to be revisited for multipart: https://github.com/Azure/azure-sdk-for-go/issues/21598")
 	}
 
-	client := newTestClient(t, azureWhisper)
+	client := newTestClient(t, azureWhisper, withForgivingRetryOption())
 	runTranslationTests(t, client, azureWhisperModel)
 }
 

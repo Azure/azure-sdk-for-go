@@ -372,13 +372,13 @@ type SnapshotsClientUpdateTagsResponse struct {
 	Snapshot
 }
 
-// TrustedAccessRoleBindingsClientCreateOrUpdateResponse contains the response from method TrustedAccessRoleBindingsClient.CreateOrUpdate.
+// TrustedAccessRoleBindingsClientCreateOrUpdateResponse contains the response from method TrustedAccessRoleBindingsClient.BeginCreateOrUpdate.
 type TrustedAccessRoleBindingsClientCreateOrUpdateResponse struct {
 	// Defines binding between a resource and role
 	TrustedAccessRoleBinding
 }
 
-// TrustedAccessRoleBindingsClientDeleteResponse contains the response from method TrustedAccessRoleBindingsClient.Delete.
+// TrustedAccessRoleBindingsClientDeleteResponse contains the response from method TrustedAccessRoleBindingsClient.BeginDelete.
 type TrustedAccessRoleBindingsClientDeleteResponse struct {
 	// placeholder for future response values
 }

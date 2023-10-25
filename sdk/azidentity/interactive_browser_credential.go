@@ -37,7 +37,7 @@ type InteractiveBrowserCredentialOptions struct {
 	DisableAutomaticAuthentication bool
 
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
-	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
+	// private clouds such as Azure Stack. It determines whether the credential requests Microsoft Entra instance metadata
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
@@ -45,12 +45,12 @@ type InteractiveBrowserCredentialOptions struct {
 	// LoginHint pre-populates the account prompt with a username. Users may choose to authenticate a different account.
 	LoginHint string
 
-	// RedirectURL is the URL Azure Active Directory will redirect to with the access token. This is required
+	// RedirectURL is the URL Microsoft Entra ID will redirect to with the access token. This is required
 	// only when setting ClientID, and must match a redirect URI in the application's registration.
 	// Applications which have registered "http://localhost" as a redirect URI need not set this option.
 	RedirectURL string
 
-	// TenantID is the Azure Active Directory tenant the credential authenticates in. Defaults to the
+	// TenantID is the Microsoft Entra tenant the credential authenticates in. Defaults to the
 	// "organizations" tenant, which can authenticate work and school accounts.
 	TenantID string
 
@@ -100,7 +100,7 @@ func (c *InteractiveBrowserCredential) Authenticate(ctx context.Context, opts *p
 	return c.client.Authenticate(ctx, opts)
 }
 
-// GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
+// GetToken requests an access token from Microsoft Entra ID. This method is called automatically by Azure SDK clients.
 func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	return c.client.GetToken(ctx, opts)
 }

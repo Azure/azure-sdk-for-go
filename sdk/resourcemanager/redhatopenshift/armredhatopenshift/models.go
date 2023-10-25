@@ -22,27 +22,6 @@ type APIServerProfile struct {
 	Visibility *Visibility
 }
 
-// CloudError represents a cloud error.
-type CloudError struct {
-	// An error response from the service.
-	Error *CloudErrorBody
-}
-
-// CloudErrorBody represents the body of a cloud error.
-type CloudErrorBody struct {
-	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string
-
-	// A list of additional details about the error.
-	Details []*CloudErrorBody
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string
-
-	// The target of the particular error. For example, the name of the property in error.
-	Target *string
-}
-
 // ClusterProfile represents a cluster profile.
 type ClusterProfile struct {
 	// The domain for the cluster.
@@ -158,6 +137,9 @@ type NetworkProfile struct {
 	// The CIDR used for OpenShift/Kubernetes Pods.
 	PodCidr *string
 
+	// Specifies whether subnets are pre-attached with an NSG
+	PreconfiguredNSG *PreconfiguredNSG
+
 	// The CIDR used for OpenShift/Kubernetes Services.
 	ServiceCidr *string
 }
@@ -238,6 +220,9 @@ type OpenShiftClusterProperties struct {
 
 	// The cluster worker profiles.
 	WorkerProfiles []*WorkerProfile
+
+	// READ-ONLY; The cluster worker profiles status.
+	WorkerProfilesStatus []*WorkerProfile
 }
 
 // OpenShiftClusterUpdate - OpenShiftCluster represents an Azure Red Hat OpenShift cluster.
@@ -304,37 +289,6 @@ type OperationList struct {
 
 	// List of operations supported by the resource provider.
 	Value []*Operation
-}
-
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // Secret represents a secret.
@@ -490,28 +444,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // WorkerProfile represents a worker profile.

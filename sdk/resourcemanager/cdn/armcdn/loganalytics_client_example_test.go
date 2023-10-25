@@ -16,10 +16,10 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsMetrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetLogAnalyticsMetrics.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	// res.MetricsResponse = armcdn.MetricsResponse{
 	// 	DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T12:30:27.554+08:00"); return t}()),
 	// 	DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T13:00:27.554+08:00"); return t}()),
-	// 	Granularity: to.Ptr(armcdn.MetricsResponseGranularityPT5M),
+	// 	Granularity: to.Ptr(armcdn.MetricsGranularityPT5M),
 	// 	Series: []*armcdn.MetricsResponseSeriesItem{
 	// 		{
 	// 			Data: []*armcdn.Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems{
@@ -82,12 +82,12 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	// 					Value: to.Ptr("https"),
 	// 			}},
 	// 			Metric: to.Ptr("clientRequestCount"),
-	// 			Unit: to.Ptr(armcdn.MetricsResponseSeriesItemUnitCount),
+	// 			Unit: to.Ptr(armcdn.MetricsSeriesUnitCount),
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsRankings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetLogAnalyticsRankings.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsLocations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetLogAnalyticsLocations.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsLocations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsLocations() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetLogAnalyticsResources.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -280,7 +280,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsResources() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetWafLogAnalyticsMetrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetWafLogAnalyticsMetrics.json
 func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +307,7 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	// res.WafMetricsResponse = armcdn.WafMetricsResponse{
 	// 	DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T14:30:27.554+08:00"); return t}()),
 	// 	DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T17:00:27.554+08:00"); return t}()),
-	// 	Granularity: to.Ptr(armcdn.WafMetricsResponseGranularityPT5M),
+	// 	Granularity: to.Ptr(armcdn.WafMetricsGranularityPT5M),
 	// 	Series: []*armcdn.WafMetricsResponseSeriesItem{
 	// 		{
 	// 			Data: []*armcdn.Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems{
@@ -410,12 +410,12 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	// 			Groups: []*armcdn.WafMetricsResponseSeriesPropertiesItemsItem{
 	// 			},
 	// 			Metric: to.Ptr("clientRequestCount"),
-	// 			Unit: to.Ptr(armcdn.WafMetricsResponseSeriesItemUnitCount),
+	// 			Unit: to.Ptr(armcdn.WafMetricsSeriesUnitCount),
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetWafLogAnalyticsRankings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetWafLogAnalyticsRankings.json
 func ExampleLogAnalyticsClient_GetWafLogAnalyticsRankings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -10,7 +10,7 @@ package armsignalr
 
 const (
 	moduleName    = "armsignalr"
-	moduleVersion = "v1.2.0-beta.1"
+	moduleVersion = "v1.2.0-beta.2"
 )
 
 // ACLAction - Azure Networking ACL Action.

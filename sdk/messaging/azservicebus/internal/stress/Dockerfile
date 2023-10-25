@@ -15,5 +15,5 @@ RUN go build -o stress .
 FROM mcr.microsoft.com/cbl-mariner/base/core:2.0
 WORKDIR /app
 COPY --from=build /src/internal/stress/stress /app/stress
-RUN yum update && yum install -y ca-certificates
+RUN yum update -y && yum install -y ca-certificates
 ENTRYPOINT ["/bin/bash"]

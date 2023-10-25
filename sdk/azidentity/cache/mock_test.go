@@ -21,7 +21,7 @@ const (
 
 var accessTokenRespSuccess = []byte(fmt.Sprintf(`{"access_token": "%s", "expires_in": 3600}`, "tokenValue"))
 
-// mockSTS returns mock Azure AD responses so tests don't have to account for
+// mockSTS returns mock Microsoft Entra responses so tests don't have to account for
 // MSAL metadata requests. By default, all responses are success responses
 // having a token which expires in 1 hour and whose value is the "tokenValue"
 // constant. Set tokenRequestCallback to return a different *http.Response.

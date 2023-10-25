@@ -1,5 +1,14 @@
 # Release History
 
+## 1.2.0-beta.2 (2023-10-27)
+### Features Added
+
+- New struct `IPRule`
+- New field `IPRules` in struct `NetworkACLs`
+- New field `RegionEndpointEnabled`, `ResourceStopped` in struct `Properties`
+- New field `RegionEndpointEnabled`, `ResourceStopped` in struct `ReplicaProperties`
+
+
 ## 1.2.0-beta.1 (2023-09-22)
 ### Features Added
 

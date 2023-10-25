@@ -38,12 +38,12 @@ type DeviceCodeCredentialOptions struct {
 	DisableAutomaticAuthentication bool
 
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
-	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
+	// private clouds such as Azure Stack. It determines whether the credential requests Microsoft Entra instance metadata
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
 
-	// TenantID is the Azure Active Directory tenant the credential authenticates in. Defaults to the
+	// TenantID is the Microsoft Entra tenant the credential authenticates in. Defaults to the
 	// "organizations" tenant, which can authenticate work and school accounts. Required for single-tenant
 	// applications.
 	TenantID string
@@ -78,12 +78,12 @@ type DeviceCodeMessage struct {
 	UserCode string `json:"user_code"`
 	// VerificationURL is the URL at which the user must authenticate.
 	VerificationURL string `json:"verification_uri"`
-	// Message is user instruction from Azure Active Directory.
+	// Message is user instruction from Microsoft Entra ID.
 	Message string `json:"message"`
 }
 
 // DeviceCodeCredential acquires tokens for a user via the device code flow, which has the
-// user browse to an Azure Active Directory URL, enter a code, and authenticate. It's useful
+// user browse to a Microsoft Entra URL, enter a code, and authenticate. It's useful
 // for authenticating a user in an environment without a web browser, such as an SSH session.
 // If a web browser is available, [InteractiveBrowserCredential] is more convenient because it
 // automatically opens a browser to the login page.
@@ -120,7 +120,7 @@ func (c *DeviceCodeCredential) Authenticate(ctx context.Context, opts *policy.To
 	return c.client.Authenticate(ctx, opts)
 }
 
-// GetToken requests an access token from Azure Active Directory. It will begin the device code flow and poll until the user completes authentication.
+// GetToken requests an access token from Microsoft Entra ID. It will begin the device code flow and poll until the user completes authentication.
 // This method is called automatically by Azure SDK clients.
 func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	return c.client.GetToken(ctx, opts)

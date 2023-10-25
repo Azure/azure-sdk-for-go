@@ -42,6 +42,11 @@ func (c *ClientFactory) NewFleetMembersClient() *FleetMembersClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewFleetUpdateStrategiesClient() *FleetUpdateStrategiesClient {
+	subClient, _ := NewFleetUpdateStrategiesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewFleetsClient() *FleetsClient {
 	subClient, _ := NewFleetsClient(c.subscriptionID, c.credential, c.options)
 	return subClient

@@ -1,5 +1,15 @@
 # Release History
 
+## 4.0.0-beta.2 (2023-10-27)
+### Breaking Changes
+
+- Field `IopsTier` of struct `Storage` has been removed
+
+### Features Added
+
+- New field `Tier` in struct `Storage`
+
+
 ## 4.0.0-beta.1 (2023-05-26)
 ### Breaking Changes
 

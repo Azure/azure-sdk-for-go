@@ -1,16 +1,24 @@
 # Release History
 
-## 1.3.1 (Unreleased)
+## 1.4.1 (Unreleased)
 
 ### Features Added
-
-* Add support for auto-installing the test proxy standalone tooling in the test recording package
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0 (2023-10-17)
+
+### Features Added
+
+* Add support for auto-installing the test proxy standalone tooling in the test recording package
+
+### Other Changes
+
+* Updated dependencies.
 
 ## 1.3.0 (2023-04-04)
 

@@ -20,13 +20,9 @@ import (
 )
 
 func TestBlobStore_Checkpoints(t *testing.T) {
-	testData := getContainerClient(t)
-	defer testData.Cleanup()
+	testData := newBlobStoreTestData(t)
 
-	cc, err := container.NewClientFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
-	require.NoError(t, err)
-
-	store, err := checkpoints.NewBlobStore(cc, nil)
+	store, err := checkpoints.NewBlobStore(testData.CC, nil)
 	require.NoError(t, err)
 
 	checkpoints, err := store.ListCheckpoints(context.Background(), "fully-qualified-namespace", "event-hub-name", "consumer-group", nil)
@@ -47,7 +43,7 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, azeventhubs.Checkpoint{
-		ConsumerGroup:           "$Default",
+		ConsumerGroup:           "$default",
 		EventHubName:            "event-hub-name",
 		FullyQualifiedNamespace: "ns.servicebus.windows.net",
 		PartitionID:             "partition-id",
@@ -71,7 +67,7 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, azeventhubs.Checkpoint{
-		ConsumerGroup:           "$Default",
+		ConsumerGroup:           "$default",
 		EventHubName:            "event-hub-name",
 		FullyQualifiedNamespace: "ns.servicebus.windows.net",
 		PartitionID:             "partition-id",
@@ -81,28 +77,21 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 }
 
 func TestBlobStore_Ownership(t *testing.T) {
-	testData := getContainerClient(t)
-	defer testData.Cleanup()
+	testData := newBlobStoreTestData(t)
 
-	cc, err := container.NewClientFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
-	require.NoError(t, err)
-
-	store, err := checkpoints.NewBlobStore(cc, nil)
-	require.NoError(t, err)
-
-	ownerships, err := store.ListOwnership(context.Background(), "fully-qualified-namespace", "event-hub-name", "consumer-group", nil)
+	ownerships, err := testData.BlobStore.ListOwnership(context.Background(), "fully-qualified-namespace", "event-hub-name", "consumer-group", nil)
 	require.NoError(t, err)
 	require.Empty(t, ownerships, "no ownerships yet")
 
-	ownerships, err = store.ClaimOwnership(context.Background(), nil, nil)
+	ownerships, err = testData.BlobStore.ClaimOwnership(context.Background(), nil, nil)
 	require.NoError(t, err)
 	require.Empty(t, ownerships)
 
-	ownerships, err = store.ClaimOwnership(context.Background(), []azeventhubs.Ownership{}, nil)
+	ownerships, err = testData.BlobStore.ClaimOwnership(context.Background(), []azeventhubs.Ownership{}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ownerships)
 
-	ownerships, err = store.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
+	ownerships, err = testData.BlobStore.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
 		{
 			ConsumerGroup:           "$Default",
 			EventHubName:            "event-hub-name",
@@ -129,7 +118,7 @@ func TestBlobStore_Ownership(t *testing.T) {
 
 	// if we attempt to claim it with a non-matching etag it will fail to claim
 	// but not fail the call.
-	ownerships, err = store.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
+	ownerships, err = testData.BlobStore.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
 		{
 			ConsumerGroup:           "$Default",
 			EventHubName:            "event-hub-name",
@@ -143,7 +132,7 @@ func TestBlobStore_Ownership(t *testing.T) {
 	require.Empty(t, ownerships, "we're out of date (based on the non-matching etag), so no ownerships were claimed")
 
 	// now we'll use the actual etag
-	ownerships, err = store.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
+	ownerships, err = testData.BlobStore.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
 		{
 			ConsumerGroup:           "$Default",
 			EventHubName:            "event-hub-name",
@@ -172,18 +161,11 @@ func TestBlobStore_Ownership(t *testing.T) {
 
 func TestBlobStore_ListAndClaim(t *testing.T) {
 	// listing ownerships is a slightly different code path
-	testData := getContainerClient(t)
-	defer testData.Cleanup()
+	testData := newBlobStoreTestData(t)
 
-	cc, err := container.NewClientFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
-	require.NoError(t, err)
-
-	store, err := checkpoints.NewBlobStore(cc, nil)
-	require.NoError(t, err)
-
-	claimedOwnerships, err := store.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
+	claimedOwnerships, err := testData.BlobStore.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
 		{
-			ConsumerGroup:           "$Default",
+			ConsumerGroup:           "$default",
 			EventHubName:            "event-hub-name",
 			FullyQualifiedNamespace: "ns.servicebus.windows.net",
 			PartitionID:             "partition-id",
@@ -193,39 +175,32 @@ func TestBlobStore_ListAndClaim(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, claimedOwnerships)
 
-	listedOwnerships, err := store.ListOwnership(context.Background(), "ns.servicebus.windows.net", "event-hub-name", "$Default", nil)
+	listedOwnerships, err := testData.BlobStore.ListOwnership(context.Background(), "ns.servicebus.windows.net", "event-hub-name", "$Default", nil)
 	require.NoError(t, err)
 
 	require.Equal(t, "first-client", listedOwnerships[0].OwnerID)
 	require.NotEmpty(t, listedOwnerships[0].ETag)
 	require.NotZero(t, listedOwnerships[0].LastModifiedTime)
 
-	require.Equal(t, "$Default", listedOwnerships[0].ConsumerGroup)
+	require.Equal(t, "$default", listedOwnerships[0].ConsumerGroup)
 	require.Equal(t, "event-hub-name", listedOwnerships[0].EventHubName)
 	require.Equal(t, "ns.servicebus.windows.net", listedOwnerships[0].FullyQualifiedNamespace)
 	require.Equal(t, "partition-id", listedOwnerships[0].PartitionID)
 
 	// update using the etag
-	claimedOwnerships, err = store.ClaimOwnership(context.Background(), listedOwnerships, nil)
+	claimedOwnerships, err = testData.BlobStore.ClaimOwnership(context.Background(), listedOwnerships, nil)
 	require.NoError(t, err)
 
 	require.Equal(t, "partition-id", claimedOwnerships[0].PartitionID)
 
 	// try to do it again and it'll fail since we don't have an updated etag
-	claimedOwnerships, err = store.ClaimOwnership(context.Background(), listedOwnerships, nil)
+	claimedOwnerships, err = testData.BlobStore.ClaimOwnership(context.Background(), listedOwnerships, nil)
 	require.NoError(t, err)
 	require.Empty(t, claimedOwnerships)
 }
 
 func TestBlobStore_OnlyOneOwnershipClaimSucceeds(t *testing.T) {
-	testData := getContainerClient(t)
-	defer testData.Cleanup()
-
-	cc, err := container.NewClientFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
-	require.NoError(t, err)
-
-	store, err := checkpoints.NewBlobStore(cc, nil)
-	require.NoError(t, err)
+	testData := newBlobStoreTestData(t)
 
 	// we're going to make multiple calls to the blob store but only _one_ should succeed
 	// since it's "first one in wins"
@@ -240,7 +215,7 @@ func TestBlobStore_OnlyOneOwnershipClaimSucceeds(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 			defer cancel()
 
-			ownerships, err := store.ClaimOwnership(ctx, []azeventhubs.Ownership{
+			ownerships, err := testData.BlobStore.ClaimOwnership(ctx, []azeventhubs.Ownership{
 				{ConsumerGroup: azeventhubs.DefaultConsumerGroup, EventHubName: "name", FullyQualifiedNamespace: "ns", PartitionID: "0", OwnerID: "ownerID"},
 			}, nil)
 
@@ -275,14 +250,7 @@ func TestBlobStore_OnlyOneOwnershipClaimSucceeds(t *testing.T) {
 }
 
 func TestBlobStore_OnlyOneOwnershipUpdateSucceeds(t *testing.T) {
-	testData := getContainerClient(t)
-	defer testData.Cleanup()
-
-	cc, err := container.NewClientFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
-	require.NoError(t, err)
-
-	store, err := checkpoints.NewBlobStore(cc, nil)
-	require.NoError(t, err)
+	testData := newBlobStoreTestData(t)
 
 	// we're going to make multiple calls to the blob store but only _one_ should succeed
 	// since it's "first one in wins"
@@ -291,7 +259,7 @@ func TestBlobStore_OnlyOneOwnershipUpdateSucceeds(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	ownerships, err := store.ClaimOwnership(ctx, []azeventhubs.Ownership{
+	ownerships, err := testData.BlobStore.ClaimOwnership(ctx, []azeventhubs.Ownership{
 		{ConsumerGroup: azeventhubs.DefaultConsumerGroup, EventHubName: "name", FullyQualifiedNamespace: "ns", PartitionID: "0", OwnerID: "ownerID"},
 	}, nil)
 	require.NoError(t, err)
@@ -305,7 +273,7 @@ func TestBlobStore_OnlyOneOwnershipUpdateSucceeds(t *testing.T) {
 	for i := 0; i < cap(claimsCh); i++ {
 		go func() {
 
-			ownerships, err := store.ClaimOwnership(ctx, ownerships, nil)
+			ownerships, err := testData.BlobStore.ClaimOwnership(ctx, ownerships, nil)
 
 			if err != nil {
 				claimsCh <- nil
@@ -337,22 +305,21 @@ func TestBlobStore_OnlyOneOwnershipUpdateSucceeds(t *testing.T) {
 	require.Equal(t, cap(claimsCh)-1, numFailedClaims, fmt.Sprintf("One of the 1/%d wins and the rest all fail to claim", cap(claimsCh)))
 }
 
-func getContainerClient(t *testing.T) struct {
-	ConnectionString string
-	ContainerName    string
-	Cleanup          func()
-} {
+type blobStoreTestData struct {
+	CC        *container.Client
+	BlobStore *checkpoints.BlobStore
+}
+
+// newBlobStoreTestData creates an Azure Blob storage container
+// and returns the associated ContainerClient and BlobStore instance.
+func newBlobStoreTestData(t *testing.T) blobStoreTestData {
 	_ = godotenv.Load("../.env")
 
 	storageCS := os.Getenv("CHECKPOINTSTORE_STORAGE_CONNECTION_STRING")
 
 	if storageCS == "" {
 		t.Skipf("CHECKPOINTSTORE_STORAGE_CONNECTION_STRING is not defined in the environment. Skipping blob checkpoint store live tests")
-		return struct {
-			ConnectionString string
-			ContainerName    string
-			Cleanup          func()
-		}{}
+		return blobStoreTestData{}
 	}
 
 	nano := time.Now().UTC().UnixNano()
@@ -364,16 +331,16 @@ func getContainerClient(t *testing.T) struct {
 	_, err = client.Create(context.Background(), nil)
 	require.NoError(t, err)
 
-	return struct {
-		ConnectionString string
-		ContainerName    string
-		Cleanup          func()
-	}{
-		ConnectionString: storageCS,
-		ContainerName:    containerName,
-		Cleanup: func() {
-			_, err := client.Delete(context.Background(), nil)
-			require.NoError(t, err)
-		},
+	t.Cleanup(func() {
+		_, err := client.Delete(context.Background(), nil)
+		require.NoError(t, err)
+	})
+
+	blobStore, err := checkpoints.NewBlobStore(client, nil)
+	require.NoError(t, err)
+
+	return blobStoreTestData{
+		CC:        client,
+		BlobStore: blobStore,
 	}
 }

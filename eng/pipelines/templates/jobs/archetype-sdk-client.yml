@@ -187,6 +187,7 @@ stages:
                   ServiceDirectory: ${{ parameters.ServiceDirectory }}
                   EnvVars: ${{ parameters.EnvVars }}
                   TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+                  TestRunTime: ${{ parameters.TestRunTime }}
                   Location: ${{ parameters.Location }}
                   PreSteps:
                     - ${{ parameters.PreSteps }}

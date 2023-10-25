@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"strings"
 	"time"
 )

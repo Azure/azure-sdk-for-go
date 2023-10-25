@@ -37,7 +37,7 @@ func (sp *SMBProperties) Format(isDir bool, defaultFileAttributes string, defaul
 // FormatSMBProperties returns file attributes, creation time, last write time and change time.
 func FormatSMBProperties(sp *SMBProperties, defaultAttributes *string, defaultCurrentTime *string, isDir bool) (fileAttributes *string, creationTime *string, lastWriteTime *string, changeTime *string) {
 	if sp == nil {
-		return defaultAttributes, defaultCurrentTime, defaultCurrentTime, to.Ptr(shared.DefaultCurrentTimeString)
+		return defaultAttributes, defaultCurrentTime, defaultCurrentTime, nil
 	}
 
 	fileAttributes = defaultAttributes

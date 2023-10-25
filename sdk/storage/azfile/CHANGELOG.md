@@ -1,5 +1,17 @@
 # Release History
 
+## 1.1.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+* Fixed a bug where Optional fields which were mandatory earlier create a failure when passed an older service version
+
+### Other Changes
+
 ## 1.1.0 (2023-10-11)
 
 ### Features Added

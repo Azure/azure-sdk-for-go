@@ -13,6 +13,7 @@
 * Fixed an issue that could cause some allowed HTTP header values to not show up in logs.
 * Include error text instead of error type in traces when the transport returns an error.
 * Fixed an issue that could cause an HTTP/2 request to hang when the TCP connection becomes unresponsive.
+* Block key and SAS authentication for non TLS protected endpoints.
 
 ### Other Changes
 

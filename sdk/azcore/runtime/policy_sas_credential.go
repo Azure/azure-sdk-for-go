@@ -34,6 +34,9 @@ func NewSASCredentialPolicy(cred *exported.SASCredential, header string, options
 
 // Do implementes the Do method on the [policy.Polilcy] interface.
 func (k *SASCredentialPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if err := checkHTTPSForAuth(req); err != nil {
+		return nil, err
+	}
 	req.Raw().Header.Add(k.header, exported.SASCredentialGet(k.cred))
 	return req.Next()
 }

@@ -72,8 +72,8 @@ func (b *BearerTokenPolicy) authenticateAndAuthorize(req *policy.Request) func(p
 
 // Do authorizes a request with a bearer token
 func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
-	if strings.ToLower(req.Raw().URL.Scheme) != "https" {
-		return nil, shared.NonRetriableError(errors.New("bearer token authentication is not permitted for non TLS protected (https) endpoints"))
+	if err := checkHTTPSForAuth(req); err != nil {
+		return nil, err
 	}
 	var err error
 	if b.authzHandler.OnRequest != nil {
@@ -102,4 +102,11 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 		err = shared.NonRetriableError(err)
 	}
 	return res, err
+}
+
+func checkHTTPSForAuth(req *policy.Request) error {
+	if strings.ToLower(req.Raw().URL.Scheme) != "https" {
+		return shared.NonRetriableError(errors.New("authenticated requests are not permitted for non TLS protected (https) endpoints"))
+	}
+	return nil
 }

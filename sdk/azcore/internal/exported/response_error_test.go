@@ -453,6 +453,18 @@ func TestExtractErrorCodeFromJSON(t *testing.T) {
 }
 
 func TestNilRawResponse(t *testing.T) {
-	const expected = "nil RawResponse\n--------------------------------------------------------------------------------\nERROR CODE UNAVAILABLE\n--------------------------------------------------------------------------------\n"
+	const expected = "Missing RawResponse\n--------------------------------------------------------------------------------\nERROR CODE UNAVAILABLE\n--------------------------------------------------------------------------------\n"
 	require.EqualValues(t, expected, (&ResponseError{}).Error())
+}
+
+func TestNilRequestInRawResponse(t *testing.T) {
+	const expected = "Request information not available\n--------------------------------------------------------------------------------\nRESPONSE 400: status\nERROR CODE UNAVAILABLE\n--------------------------------------------------------------------------------\nResponse contained no body\n--------------------------------------------------------------------------------\n"
+	respErr := &ResponseError{
+		RawResponse: &http.Response{
+			Body:       http.NoBody,
+			Status:     "status",
+			StatusCode: http.StatusBadRequest,
+		},
+	}
+	require.EqualValues(t, expected, respErr.Error())
 }

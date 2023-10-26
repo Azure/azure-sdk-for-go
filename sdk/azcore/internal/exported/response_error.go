@@ -117,11 +117,15 @@ func (e *ResponseError) Error() string {
 	// write the request method and URL with response status code
 	msg := &bytes.Buffer{}
 	if e.RawResponse != nil {
-		fmt.Fprintf(msg, "%s %s://%s%s\n", e.RawResponse.Request.Method, e.RawResponse.Request.URL.Scheme, e.RawResponse.Request.URL.Host, e.RawResponse.Request.URL.Path)
+		if e.RawResponse.Request != nil {
+			fmt.Fprintf(msg, "%s %s://%s%s\n", e.RawResponse.Request.Method, e.RawResponse.Request.URL.Scheme, e.RawResponse.Request.URL.Host, e.RawResponse.Request.URL.Path)
+		} else {
+			fmt.Fprintln(msg, "Request information not available")
+		}
 		fmt.Fprintln(msg, separator)
 		fmt.Fprintf(msg, "RESPONSE %d: %s\n", e.RawResponse.StatusCode, e.RawResponse.Status)
 	} else {
-		fmt.Fprintln(msg, "nil RawResponse")
+		fmt.Fprintln(msg, "Missing RawResponse")
 		fmt.Fprintln(msg, separator)
 	}
 	if e.ErrorCode != "" {

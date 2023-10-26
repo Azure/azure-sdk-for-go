@@ -15,6 +15,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNewResponseErrorNoBodyNoErrorCode(t *testing.T) {
@@ -449,4 +450,9 @@ func TestExtractErrorCodeFromJSON(t *testing.T) {
 	if code != "ResourceNotFound" {
 		t.Fatalf("expected %s got %s", "ResourceNotFound", code)
 	}
+}
+
+func TestNilRawResponse(t *testing.T) {
+	const expected = "nil RawResponse\n--------------------------------------------------------------------------------\nERROR CODE UNAVAILABLE\n--------------------------------------------------------------------------------\n"
+	require.EqualValues(t, expected, (&ResponseError{}).Error())
 }

@@ -15,6 +15,7 @@
 * Fixed an issue that could cause an HTTP/2 request to hang when the TCP connection becomes unresponsive.
 * Block key and SAS authentication for non TLS protected endpoints.
 * Passing a `nil` credential value will no longer cause a panic. Instead, the authentication is skipped.
+* Calling `Error` on a zero-value `azcore.ResponseError` will no longer panic.
 
 ### Other Changes
 

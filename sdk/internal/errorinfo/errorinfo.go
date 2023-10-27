@@ -14,3 +14,24 @@ type NonRetriable interface {
 	error
 	NonRetriable()
 }
+
+// NonRetriableError marks the specified error as non-retriable.
+func NonRetriableError(err error) error {
+	return &nonRetriableError{err}
+}
+
+type nonRetriableError struct {
+	error
+}
+
+func (p *nonRetriableError) Error() string {
+	return p.error.Error()
+}
+
+func (*nonRetriableError) NonRetriable() {
+	// marker method
+}
+
+func (p *nonRetriableError) Unwrap() error {
+	return p.error
+}

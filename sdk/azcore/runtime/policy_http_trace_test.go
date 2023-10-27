@@ -27,17 +27,10 @@ func TestHTTPTracePolicy(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 
-	pl := exported.NewPipeline(srv, newHTTPTracePolicy([]string{"visibleqp"}))
+	pl := exported.NewPipeline(tracing.Tracer{}, srv, newHTTPTracePolicy([]string{"visibleqp"}))
 
 	// no tracer
 	req, err := exported.NewRequest(context.Background(), http.MethodGet, srv.URL())
-	require.NoError(t, err)
-	srv.AppendResponse()
-	_, err = pl.Do(req)
-	require.NoError(t, err)
-
-	// wrong tracer type
-	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, 0), http.MethodGet, srv.URL())
 	require.NoError(t, err)
 	srv.AppendResponse()
 	_, err = pl.Do(req)
@@ -62,9 +55,12 @@ func TestHTTPTracePolicy(t *testing.T) {
 		}
 		return ctx, tracing.NewSpan(spanImpl)
 	}, nil)
+	exported.SetTracer(&pl, tr)
 
 	// HTTP ok
-	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr), http.MethodGet, srv.URL()+"?foo=redactme&visibleqp=bar")
+	ctx, endSpan := StartSpan(context.Background(), "TestHTTPTracePolicy", pl.Tracer(), nil)
+	req, err = exported.NewRequest(ctx, http.MethodGet, srv.URL()+"?foo=redactme&visibleqp=bar")
+	endSpan(err)
 	require.NoError(t, err)
 	req.Raw().Header.Add(shared.HeaderUserAgent, "my-user-agent")
 	req.Raw().Header.Add(shared.HeaderXMSClientRequestID, "my-client-request")
@@ -84,7 +80,9 @@ func TestHTTPTracePolicy(t *testing.T) {
 	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrAZServiceReqID, Value: "request-id"})
 
 	// HTTP bad request
-	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr), http.MethodGet, srv.URL())
+	ctx, endSpan = StartSpan(context.Background(), "TestHTTPTracePolicy", pl.Tracer(), nil)
+	req, err = exported.NewRequest(ctx, http.MethodGet, srv.URL())
+	endSpan(err)
 	require.NoError(t, err)
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 	_, err = pl.Do(req)
@@ -94,7 +92,9 @@ func TestHTTPTracePolicy(t *testing.T) {
 	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrHTTPStatusCode, Value: http.StatusBadRequest})
 
 	// HTTP error
-	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr), http.MethodGet, srv.URL())
+	ctx, endSpan = StartSpan(context.Background(), "TestHTTPTracePolicy", pl.Tracer(), nil)
+	req, err = exported.NewRequest(ctx, http.MethodGet, srv.URL())
+	endSpan(err)
 	require.NoError(t, err)
 	srv.AppendError(net.ErrClosed)
 	_, err = pl.Do(req)
@@ -104,7 +104,9 @@ func TestHTTPTracePolicy(t *testing.T) {
 	require.EqualValues(t, "use of closed network connection", spanStatusStr)
 
 	const urlErrText = "the endpoint is invalid"
-	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr), http.MethodGet, srv.URL())
+	ctx, endSpan = StartSpan(context.Background(), "TestHTTPTracePolicy", pl.Tracer(), nil)
+	req, err = exported.NewRequest(ctx, http.MethodGet, srv.URL())
+	endSpan(err)
 	require.NoError(t, err)
 	srv.AppendError(&url.Error{
 		Op:  http.MethodGet,
@@ -141,9 +143,9 @@ func TestStartSpan(t *testing.T) {
 	}, nil)
 	ctx, end = StartSpan(context.Background(), "TestStartSpan", tr, nil)
 	end(nil)
-	ctxTr := ctx.Value(shared.CtxWithTracingTracer{})
-	require.NotNil(t, ctxTr)
-	_, ok := ctxTr.(tracing.Tracer)
+	ctxSpan := ctx.Value(ctxActiveSpan{})
+	require.NotNil(t, ctxSpan)
+	_, ok := ctxSpan.(tracing.SpanKind)
 	require.True(t, ok)
 	require.True(t, startCalled)
 	require.True(t, endCalled)
@@ -184,8 +186,6 @@ func TestStartSpansDontNest(t *testing.T) {
 	srv.SetResponse() // always return http.StatusOK
 	defer close()
 
-	pl := exported.NewPipeline(srv, newHTTPTracePolicy(nil))
-
 	apiSpanCount := 0
 	httpSpanCount := 0
 	endCalled := 0
@@ -202,6 +202,7 @@ func TestStartSpansDontNest(t *testing.T) {
 		}
 		return ctx, tracing.NewSpan(spanImpl)
 	}, nil)
+	pl := exported.NewPipeline(tr, srv, newHTTPTracePolicy(nil))
 
 	barMethod := func(ctx context.Context) {
 		ourCtx, endSpan := StartSpan(ctx, "BarMethod", tr, nil)

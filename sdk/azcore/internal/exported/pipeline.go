@@ -9,6 +9,8 @@ package exported
 import (
 	"errors"
 	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
 // Policy represents an extensibility point for the Pipeline that can mutate the specified
@@ -26,6 +28,7 @@ type Policy interface {
 // Exported as runtime.Pipeline.
 type Pipeline struct {
 	policies []Policy
+	tracer   tracing.Tracer
 }
 
 // Transporter represents an HTTP pipeline transport used to send HTTP requests and receive responses.
@@ -57,12 +60,19 @@ func (tp transportPolicy) Do(req *Request) (*http.Response, error) {
 
 // NewPipeline creates a new Pipeline object from the specified Policies.
 // Not directly exported, but used as part of runtime.NewPipeline().
-func NewPipeline(transport Transporter, policies ...Policy) Pipeline {
+func NewPipeline(tr tracing.Tracer, transport Transporter, policies ...Policy) Pipeline {
 	// transport policy must always be the last in the slice
 	policies = append(policies, transportPolicy{trans: transport})
 	return Pipeline{
 		policies: policies,
+		tracer:   tr,
 	}
+}
+
+// SetTracer sets the provided [tracing.Tracer] on [Pipeline].
+// Not directly exported, but used when creating/cloning clients.
+func SetTracer(pl *Pipeline, tracer tracing.Tracer) {
+	pl.tracer = tracer
 }
 
 // Do is called for each and every HTTP request. It passes the request through all
@@ -72,6 +82,13 @@ func (p Pipeline) Do(req *Request) (*http.Response, error) {
 	if req == nil {
 		return nil, errors.New("request cannot be nil")
 	}
+	// add the tracer to the in-flight request so any pipeline policies can access it
+	req.SetOperationValue(p.tracer)
 	req.policies = p.policies
 	return req.Next()
+}
+
+// Tracer returns the [tracing.Tracer] associated with this pipeline.
+func (p Pipeline) Tracer() tracing.Tracer {
+	return p.tracer
 }

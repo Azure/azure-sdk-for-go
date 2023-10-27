@@ -11,10 +11,12 @@ import (
 	"errors"
 	"net/http"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
 func TestPipelineErrors(t *testing.T) {
-	pl := NewPipeline(nil)
+	pl := NewPipeline(tracing.Tracer{}, nil)
 	resp, err := pl.Do(nil)
 	if err == nil {
 		t.Fatal("unexpected nil error")
@@ -76,7 +78,7 @@ func TestPipelineDo(t *testing.T) {
 		t.Fatal(err)
 	}
 	tp := mockTransport{succeed: true}
-	pl := NewPipeline(&tp)
+	pl := NewPipeline(tracing.Tracer{}, &tp)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)

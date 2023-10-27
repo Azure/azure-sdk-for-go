@@ -92,7 +92,6 @@ type ClientOptions = policy.ClientOptions
 // Client is a basic HTTP client.  It consists of a pipeline and tracing provider.
 type Client struct {
 	pl runtime.Pipeline
-	tr tracing.Tracer
 
 	// cached on the client to support shallow copying with new values
 	tp        tracing.Provider
@@ -103,7 +102,7 @@ type Client struct {
 // NewClient creates a new Client instance with the provided values.
 //   - clientName - the fully qualified name of the client ("module/package.Client"); this is used by the telemetry policy and tracing provider.
 //     if module and package are the same value, the "module/" prefix can be omitted.
-//   - moduleVersion - the semantic version of the containing module; used by the telemetry policy
+//   - moduleVersion - the semantic version of the containing module; used by the telemetry policy and tracing provider.
 //   - plOpts - pipeline configuration options; can be the zero-value
 //   - options - optional client configurations; pass nil to accept the default values
 func NewClient(clientName, moduleVersion string, plOpts runtime.PipelineOptions, options *ClientOptions) (*Client, error) {
@@ -125,16 +124,18 @@ func NewClient(clientName, moduleVersion string, plOpts runtime.PipelineOptions,
 	pl := runtime.NewPipeline(mod, moduleVersion, plOpts, options)
 
 	tr := options.TracingProvider.NewTracer(client, moduleVersion)
-	if tr.Enabled() && plOpts.TracingNamespace != "" {
-		tr.SetAttributes(tracing.Attribute{Key: "az.namespace", Value: plOpts.TracingNamespace})
+	if tr.Enabled() && plOpts.Tracing.Namespace != "" {
+		tr.SetAttributes(tracing.Attribute{Key: shared.TracingNamespaceAttrName, Value: plOpts.Tracing.Namespace})
 	}
+
+	// replace the vanilla tracer with this client-specific one
+	exported.SetTracer(&pl, tr)
 
 	return &Client{
 		pl:        pl,
-		tr:        tr,
 		tp:        options.TracingProvider,
 		modVer:    moduleVersion,
-		namespace: plOpts.TracingNamespace,
+		namespace: plOpts.Tracing.Namespace,
 	}, nil
 }
 
@@ -145,7 +146,7 @@ func (c *Client) Pipeline() runtime.Pipeline {
 
 // Tracer returns the tracer for this client.
 func (c *Client) Tracer() tracing.Tracer {
-	return c.tr
+	return c.pl.Tracer()
 }
 
 // WithClientName returns a shallow copy of the Client with its tracing client name changed to clientName.
@@ -154,7 +155,10 @@ func (c *Client) Tracer() tracing.Tracer {
 func (c *Client) WithClientName(clientName string) *Client {
 	tr := c.tp.NewTracer(clientName, c.modVer)
 	if tr.Enabled() && c.namespace != "" {
-		tr.SetAttributes(tracing.Attribute{Key: "az.namespace", Value: c.namespace})
+		tr.SetAttributes(tracing.Attribute{Key: shared.TracingNamespaceAttrName, Value: c.namespace})
 	}
-	return &Client{pl: c.pl, tr: tr, tp: c.tp, modVer: c.modVer, namespace: c.namespace}
+	// make a copy of this client's pipeline and update it with the new [tracing.Tracer]
+	pl := c.pl
+	exported.SetTracer(&pl, tr)
+	return &Client{pl: pl, tp: c.tp, modVer: c.modVer, namespace: c.namespace}
 }

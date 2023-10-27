@@ -16,6 +16,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/poller"
 	"github.com/stretchr/testify/require"
 )
@@ -78,7 +79,7 @@ func TestNew(t *testing.T) {
 func TestUpdateSucceeded(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[struct{}](exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusNoContent,
 			Body:       http.NoBody,
@@ -96,7 +97,7 @@ func TestUpdateSucceeded(t *testing.T) {
 func TestUpdateFailed(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[struct{}](exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		if surl := req.URL.String(); surl == fakeLocationURL {
 			resp := &http.Response{
 				StatusCode: http.StatusAccepted,
@@ -130,7 +131,7 @@ func TestUpdateFailed(t *testing.T) {
 func TestUpdateFailedWithProvisioningState(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[struct{}](exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		if surl := req.URL.String(); surl == fakeLocationURL {
 			resp := &http.Response{
 				StatusCode: http.StatusAccepted,

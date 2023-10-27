@@ -16,6 +16,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/poller"
 	"github.com/stretchr/testify/require"
 )
@@ -98,7 +99,7 @@ type widget struct {
 func TestUpdateNoProvStateFail(t *testing.T) {
 	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.StatusCode = http.StatusOK
-	bp, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	bp, err := New[widget](exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Body:       http.NoBody,
@@ -115,7 +116,7 @@ func TestUpdateNoProvStateFail(t *testing.T) {
 func TestUpdateNoProvStateSuccess(t *testing.T) {
 	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.StatusCode = http.StatusOK
-	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[widget](exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Body:       io.NopCloser(strings.NewReader(`{ "shape": "rectangle" }`)),
@@ -136,7 +137,7 @@ func TestUpdateNoProvStateSuccess(t *testing.T) {
 func TestUpdateNoProvState204(t *testing.T) {
 	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.StatusCode = http.StatusOK
-	poller, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[struct{}](exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusNoContent,
 			Body:       http.NoBody,
@@ -154,7 +155,7 @@ func TestUpdateNoProvState204(t *testing.T) {
 
 func TestPollFailed(t *testing.T) {
 	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
-	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[widget](exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Header:     http.Header{},
@@ -176,7 +177,7 @@ func TestPollFailed(t *testing.T) {
 
 func TestPollFailedError(t *testing.T) {
 	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
-	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[widget](exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return nil, errors.New("failed")
 	})), resp)
 	require.NoError(t, err)
@@ -188,7 +189,7 @@ func TestPollFailedError(t *testing.T) {
 
 func TestPollError(t *testing.T) {
 	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
-	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[widget](exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusNotFound,
 			Header:     http.Header{},

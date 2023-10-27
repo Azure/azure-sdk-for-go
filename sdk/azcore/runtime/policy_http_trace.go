@@ -45,8 +45,12 @@ type httpTracePolicy struct {
 
 // Do implements the pipeline.Policy interfaces for the httpTracePolicy type.
 func (h *httpTracePolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	rawTracer := req.Raw().Context().Value(shared.CtxWithTracingTracer{})
-	if tracer, ok := rawTracer.(tracing.Tracer); ok && tracer.Enabled() {
+	var tracer tracing.Tracer
+	// check if there's an active SDK span. if not then don't create the HTTP span.
+	// this is to prevent creating HTTP spans for clients that have this policy in the
+	// pipeline, tracing is enabled, but haven't yet added spans for its methods.
+	activeSpan := req.Raw().Context().Value(ctxActiveSpan{})
+	if activeSpan != nil && req.OperationValue(&tracer) && tracer.Enabled() {
 		attributes := []tracing.Attribute{
 			{Key: attrHTTPMethod, Value: req.Raw().Method},
 			{Key: attrHTTPURL, Value: getSanitizedURL(*req.Raw().URL, h.allowedQP)},
@@ -125,7 +129,6 @@ func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options 
 	ctx, span := tracer.Start(ctx, name, &tracing.SpanOptions{
 		Kind: newSpanKind,
 	})
-	ctx = context.WithValue(ctx, shared.CtxWithTracingTracer{}, tracer)
 	ctx = context.WithValue(ctx, ctxActiveSpan{}, newSpanKind)
 	return ctx, func(err error) {
 		if err != nil {

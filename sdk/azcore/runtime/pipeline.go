@@ -8,7 +8,9 @@ package runtime
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
 // PipelineOptions contains Pipeline options for SDK developers
@@ -34,8 +36,14 @@ type PipelineOptions struct {
 	// Each policy is executed once per request, and for each retry of that request.
 	PerRetry []policy.Policy
 
-	// TracingNamespace contains the value to use for the az.namespace span attribute.
-	TracingNamespace string
+	// Tracing contains options used to configure distributed tracing.
+	Tracing TracingOptions
+}
+
+// TracingOptions contains tracing options for SDK developers.
+type TracingOptions struct {
+	// Namespace contains the value to use for the az.namespace span attribute.
+	Namespace string
 }
 
 // Pipeline represents a primitive for sending HTTP requests and receiving responses.
@@ -84,5 +92,11 @@ func NewPipeline(module, version string, plOpts PipelineOptions, options *policy
 	if transport == nil {
 		transport = defaultHTTPClient
 	}
-	return exported.NewPipeline(transport, policies...)
+	// create a vanilla tracer. this is to support tracing when creating just a pipeline.
+	// client constructors will replace this with their client-specific tracers.
+	tr := cp.TracingProvider.NewTracer("runtime.Pipeline", shared.Version)
+	if tr.Enabled() && plOpts.Tracing.Namespace != "" {
+		tr.SetAttributes(tracing.Attribute{Key: shared.TracingNamespaceAttrName, Value: plOpts.Tracing.Namespace})
+	}
+	return exported.NewPipeline(tr, transport, policies...)
 }

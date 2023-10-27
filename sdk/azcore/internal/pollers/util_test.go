@@ -16,6 +16,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/stretchr/testify/require"
 )
 
@@ -114,7 +115,7 @@ func TestPollHelper(t *testing.T) {
 	})
 	require.Error(t, err)
 
-	pl := exported.NewPipeline(shared.TransportFunc(func(*http.Request) (*http.Response, error) {
+	pl := exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(*http.Request) (*http.Response, error) {
 		return nil, errors.New("failed")
 	}))
 	err = PollHelper(context.Background(), fakeEndpoint, pl, func(*http.Response) (string, error) {
@@ -124,7 +125,7 @@ func TestPollHelper(t *testing.T) {
 	require.Error(t, err)
 
 	require.Error(t, err)
-	pl = exported.NewPipeline(shared.TransportFunc(func(*http.Request) (*http.Response, error) {
+	pl = exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(*http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusNotFound,
 			Body:       http.NoBody,
@@ -136,7 +137,7 @@ func TestPollHelper(t *testing.T) {
 	require.Error(t, err)
 
 	require.Error(t, err)
-	pl = exported.NewPipeline(shared.TransportFunc(func(*http.Request) (*http.Response, error) {
+	pl = exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(*http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Body:       http.NoBody,

@@ -15,8 +15,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -167,4 +169,45 @@ func TestPipelineDoConcurrent(t *testing.T) {
 	default:
 		// no error
 	}
+}
+
+func TestNewPipelineTracingEnabled(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+
+	var attrString string
+	var spanCount int
+	pl := NewPipeline(shared.Module, shared.Version, PipelineOptions{
+		Tracing: TracingOptions{
+			Namespace: "Widget.Factory",
+		},
+	}, &policy.ClientOptions{
+		TracingProvider: tracing.NewProvider(func(name, version string) tracing.Tracer {
+			return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+				require.NotNil(t, options)
+				for _, attr := range options.Attributes {
+					if attr.Key == shared.TracingNamespaceAttrName {
+						v, ok := attr.Value.(string)
+						require.True(t, ok)
+						attrString = attr.Key + ":" + v
+					}
+				}
+				spanCount++
+				return ctx, tracing.Span{}
+			}, nil)
+		}, nil),
+		Transport: srv,
+	})
+
+	const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fakeResourceGroup/providers/Microsoft.Storage/storageAccounts/fakeAccountName"
+	ctx, endSpan := StartSpan(context.Background(), "TestNewPipelineTracingEnabled", pl.Tracer(), nil)
+	req, err := exported.NewRequest(ctx, http.MethodGet, srv.URL()+requestEndpoint)
+	require.NoError(t, err)
+	srv.AppendResponse()
+	_, err = pl.Do(req)
+	endSpan(err)
+	require.NoError(t, err)
+	require.EqualValues(t, "az.namespace:Widget.Factory", attrString)
+	// there should be two spans. the one we started, and the one from the http trace policy
+	require.EqualValues(t, 2, spanCount)
 }

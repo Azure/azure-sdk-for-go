@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
@@ -249,7 +250,7 @@ func TestCheckHTTPSForAuth(t *testing.T) {
 
 func TestBearerTokenPolicy_NilCredential(t *testing.T) {
 	policy := NewBearerTokenPolicy(nil, nil, nil)
-	pl := exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	pl := exported.NewPipeline(tracing.Tracer{}, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		require.Zero(t, req.Header.Get(shared.HeaderAuthorization))
 		return &http.Response{}, nil
 	}), policy)

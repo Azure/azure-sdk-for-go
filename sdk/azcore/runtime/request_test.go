@@ -19,6 +19,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/stretchr/testify/require"
 )
 
@@ -224,7 +225,7 @@ func TestRequestValidFail(t *testing.T) {
 		t.Fatal(err)
 	}
 	req.Raw().Header.Add("inval d", "header")
-	p := exported.NewPipeline(nil)
+	p := exported.NewPipeline(tracing.Tracer{}, nil)
 	resp, err := p.Do(req)
 	if err == nil {
 		t.Fatal("unexpected nil error")

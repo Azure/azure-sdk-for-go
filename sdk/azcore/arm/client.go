@@ -11,6 +11,7 @@ import (
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
@@ -23,7 +24,6 @@ type ClientOptions = armpolicy.ClientOptions
 type Client struct {
 	ep string
 	pl runtime.Pipeline
-	tr tracing.Tracer
 }
 
 // NewClient creates a new Client instance with the provided values.
@@ -59,7 +59,9 @@ func NewClient(clientName, moduleVersion string, cred azcore.TokenCredential, op
 	}
 
 	tr := options.TracingProvider.NewTracer(client, moduleVersion)
-	return &Client{ep: ep, pl: pl, tr: tr}, nil
+	// replace the vanilla tracer with this client-specific one
+	exported.SetTracer(&pl, tr)
+	return &Client{ep: ep, pl: pl}, nil
 }
 
 // Endpoint returns the service's base URL for this client.
@@ -74,5 +76,5 @@ func (c *Client) Pipeline() runtime.Pipeline {
 
 // Tracer returns the tracer for this client.
 func (c *Client) Tracer() tracing.Tracer {
-	return c.tr
+	return c.pl.Tracer()
 }

@@ -27,9 +27,6 @@ type CtxWithRetryOptionsKey struct{}
 // CtxWithCaptureResponse is used as a context key for retrieving the raw response.
 type CtxWithCaptureResponse struct{}
 
-// CtxWithTracingTracer is used as a context key for adding/retrieving tracing.Tracer.
-type CtxWithTracingTracer struct{}
-
 // CtxAPINameKey is used as a context key for adding/retrieving the API name.
 type CtxAPINameKey struct{}
 

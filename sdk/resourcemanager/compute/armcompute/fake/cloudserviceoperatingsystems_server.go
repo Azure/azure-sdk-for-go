@@ -95,21 +95,21 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchGetOSFamily(req *h
 	if c.srv.GetOSFamily == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetOSFamily not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsFamilies/(?P<osFamilyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsFamilies/(?P<osFamilyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
 	}
-	osFamilyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("osFamilyName")])
+	osFamilyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("osFamilyName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := c.srv.GetOSFamily(req.Context(), locationUnescaped, osFamilyNameUnescaped, nil)
+	respr, errRespr := c.srv.GetOSFamily(req.Context(), locationParam, osFamilyNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -128,21 +128,21 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchGetOSVersion(req *
 	if c.srv.GetOSVersion == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetOSVersion not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsVersions/(?P<osVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsVersions/(?P<osVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
 	}
-	osVersionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("osVersionName")])
+	osVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("osVersionName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := c.srv.GetOSVersion(req.Context(), locationUnescaped, osVersionNameUnescaped, nil)
+	respr, errRespr := c.srv.GetOSVersion(req.Context(), locationParam, osVersionNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -163,17 +163,17 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchNewListOSFamiliesP
 	}
 	newListOSFamiliesPager := c.newListOSFamiliesPager.get(req)
 	if newListOSFamiliesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsFamilies`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsFamilies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		resp := c.srv.NewListOSFamiliesPager(locationUnescaped, nil)
+		resp := c.srv.NewListOSFamiliesPager(locationParam, nil)
 		newListOSFamiliesPager = &resp
 		c.newListOSFamiliesPager.add(req, newListOSFamiliesPager)
 		server.PagerResponderInjectNextLinks(newListOSFamiliesPager, req, func(page *armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse, createLink func() string) {
@@ -200,17 +200,17 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchNewListOSVersionsP
 	}
 	newListOSVersionsPager := c.newListOSVersionsPager.get(req)
 	if newListOSVersionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsVersions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsVersions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		resp := c.srv.NewListOSVersionsPager(locationUnescaped, nil)
+		resp := c.srv.NewListOSVersionsPager(locationParam, nil)
 		newListOSVersionsPager = &resp
 		c.newListOSVersionsPager.add(req, newListOSVersionsPager)
 		server.PagerResponderInjectNextLinks(newListOSVersionsPager, req, func(page *armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse, createLink func() string) {

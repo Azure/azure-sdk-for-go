@@ -361,22 +361,15 @@ func (client *DedicatedHostsClient) NewListByHostGroupPager(resourceGroupName st
 		},
 		Fetcher: func(ctx context.Context, page *DedicatedHostsClientListByHostGroupResponse) (DedicatedHostsClientListByHostGroupResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DedicatedHostsClient.NewListByHostGroupPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByHostGroupCreateRequest(ctx, resourceGroupName, hostGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByHostGroupCreateRequest(ctx, resourceGroupName, hostGroupName, options)
+			}, nil)
 			if err != nil {
 				return DedicatedHostsClientListByHostGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DedicatedHostsClientListByHostGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DedicatedHostsClientListByHostGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByHostGroupHandleResponse(resp)
 		},

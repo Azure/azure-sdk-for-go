@@ -542,10 +542,10 @@ func (a AvailablePatchSummary) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "assessmentActivityId", a.AssessmentActivityID)
 	populate(objectMap, "criticalAndSecurityPatchCount", a.CriticalAndSecurityPatchCount)
 	populate(objectMap, "error", a.Error)
-	populateTimeRFC3339(objectMap, "lastModifiedTime", a.LastModifiedTime)
+	populateDateTimeRFC3339(objectMap, "lastModifiedTime", a.LastModifiedTime)
 	populate(objectMap, "otherPatchCount", a.OtherPatchCount)
 	populate(objectMap, "rebootPending", a.RebootPending)
-	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", a.StartTime)
 	populate(objectMap, "status", a.Status)
 	return json.Marshal(objectMap)
 }
@@ -569,7 +569,7 @@ func (a *AvailablePatchSummary) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Error", &a.Error)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &a.LastModifiedTime)
+			err = unpopulateDateTimeRFC3339(val, "LastModifiedTime", &a.LastModifiedTime)
 			delete(rawMsg, key)
 		case "otherPatchCount":
 			err = unpopulate(val, "OtherPatchCount", &a.OtherPatchCount)
@@ -578,7 +578,7 @@ func (a *AvailablePatchSummary) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RebootPending", &a.RebootPending)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &a.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &a.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &a.Status)
@@ -1044,9 +1044,9 @@ func (c CapacityReservationProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "instanceView", c.InstanceView)
 	populate(objectMap, "platformFaultDomainCount", c.PlatformFaultDomainCount)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populateTimeRFC3339(objectMap, "provisioningTime", c.ProvisioningTime)
+	populateDateTimeRFC3339(objectMap, "provisioningTime", c.ProvisioningTime)
 	populate(objectMap, "reservationId", c.ReservationID)
-	populateTimeRFC3339(objectMap, "timeCreated", c.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", c.TimeCreated)
 	populate(objectMap, "virtualMachinesAssociated", c.VirtualMachinesAssociated)
 	return json.Marshal(objectMap)
 }
@@ -1070,13 +1070,13 @@ func (c *CapacityReservationProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)
 			delete(rawMsg, key)
 		case "provisioningTime":
-			err = unpopulateTimeRFC3339(val, "ProvisioningTime", &c.ProvisioningTime)
+			err = unpopulateDateTimeRFC3339(val, "ProvisioningTime", &c.ProvisioningTime)
 			delete(rawMsg, key)
 		case "reservationId":
 			err = unpopulate(val, "ReservationID", &c.ReservationID)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, "TimeCreated", &c.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &c.TimeCreated)
 			delete(rawMsg, key)
 		case "virtualMachinesAssociated":
 			err = unpopulate(val, "VirtualMachinesAssociated", &c.VirtualMachinesAssociated)
@@ -1997,7 +1997,7 @@ func (c CommunityGalleryImageProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "architecture", c.Architecture)
 	populate(objectMap, "disallowed", c.Disallowed)
-	populateTimeRFC3339(objectMap, "endOfLifeDate", c.EndOfLifeDate)
+	populateDateTimeRFC3339(objectMap, "endOfLifeDate", c.EndOfLifeDate)
 	populate(objectMap, "eula", c.Eula)
 	populate(objectMap, "features", c.Features)
 	populate(objectMap, "hyperVGeneration", c.HyperVGeneration)
@@ -2026,7 +2026,7 @@ func (c *CommunityGalleryImageProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Disallowed", &c.Disallowed)
 			delete(rawMsg, key)
 		case "endOfLifeDate":
-			err = unpopulateTimeRFC3339(val, "EndOfLifeDate", &c.EndOfLifeDate)
+			err = unpopulateDateTimeRFC3339(val, "EndOfLifeDate", &c.EndOfLifeDate)
 			delete(rawMsg, key)
 		case "eula":
 			err = unpopulate(val, "Eula", &c.Eula)
@@ -2140,9 +2140,9 @@ func (c *CommunityGalleryImageVersionList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CommunityGalleryImageVersionProperties.
 func (c CommunityGalleryImageVersionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "endOfLifeDate", c.EndOfLifeDate)
+	populateDateTimeRFC3339(objectMap, "endOfLifeDate", c.EndOfLifeDate)
 	populate(objectMap, "excludeFromLatest", c.ExcludeFromLatest)
-	populateTimeRFC3339(objectMap, "publishedDate", c.PublishedDate)
+	populateDateTimeRFC3339(objectMap, "publishedDate", c.PublishedDate)
 	populate(objectMap, "storageProfile", c.StorageProfile)
 	return json.Marshal(objectMap)
 }
@@ -2157,13 +2157,13 @@ func (c *CommunityGalleryImageVersionProperties) UnmarshalJSON(data []byte) erro
 		var err error
 		switch key {
 		case "endOfLifeDate":
-			err = unpopulateTimeRFC3339(val, "EndOfLifeDate", &c.EndOfLifeDate)
+			err = unpopulateDateTimeRFC3339(val, "EndOfLifeDate", &c.EndOfLifeDate)
 			delete(rawMsg, key)
 		case "excludeFromLatest":
 			err = unpopulate(val, "ExcludeFromLatest", &c.ExcludeFromLatest)
 			delete(rawMsg, key)
 		case "publishedDate":
-			err = unpopulateTimeRFC3339(val, "PublishedDate", &c.PublishedDate)
+			err = unpopulateDateTimeRFC3339(val, "PublishedDate", &c.PublishedDate)
 			delete(rawMsg, key)
 		case "storageProfile":
 			err = unpopulate(val, "StorageProfile", &c.StorageProfile)
@@ -2899,8 +2899,8 @@ func (d DedicatedHostProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "licenseType", d.LicenseType)
 	populate(objectMap, "platformFaultDomain", d.PlatformFaultDomain)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populateTimeRFC3339(objectMap, "provisioningTime", d.ProvisioningTime)
-	populateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "provisioningTime", d.ProvisioningTime)
+	populateDateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
 	populate(objectMap, "virtualMachines", d.VirtualMachines)
 	return json.Marshal(objectMap)
 }
@@ -2933,10 +2933,10 @@ func (d *DedicatedHostProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ProvisioningState", &d.ProvisioningState)
 			delete(rawMsg, key)
 		case "provisioningTime":
-			err = unpopulateTimeRFC3339(val, "ProvisioningTime", &d.ProvisioningTime)
+			err = unpopulateDateTimeRFC3339(val, "ProvisioningTime", &d.ProvisioningTime)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, "TimeCreated", &d.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &d.TimeCreated)
 			delete(rawMsg, key)
 		case "virtualMachines":
 			err = unpopulate(val, "VirtualMachines", &d.VirtualMachines)
@@ -3277,7 +3277,7 @@ func (d DiskAccessProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "privateEndpointConnections", d.PrivateEndpointConnections)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
 	return json.Marshal(objectMap)
 }
 
@@ -3297,7 +3297,7 @@ func (d *DiskAccessProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ProvisioningState", &d.ProvisioningState)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, "TimeCreated", &d.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &d.TimeCreated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3649,7 +3649,7 @@ func (d *DiskList) UnmarshalJSON(data []byte) error {
 func (d DiskProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "burstingEnabled", d.BurstingEnabled)
-	populateTimeRFC3339(objectMap, "burstingEnabledTime", d.BurstingEnabledTime)
+	populateDateTimeRFC3339(objectMap, "burstingEnabledTime", d.BurstingEnabledTime)
 	populate(objectMap, "completionPercent", d.CompletionPercent)
 	populate(objectMap, "creationData", d.CreationData)
 	populate(objectMap, "dataAccessAuthMode", d.DataAccessAuthMode)
@@ -3664,7 +3664,7 @@ func (d DiskProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "encryption", d.Encryption)
 	populate(objectMap, "encryptionSettingsCollection", d.EncryptionSettingsCollection)
 	populate(objectMap, "hyperVGeneration", d.HyperVGeneration)
-	populateTimeRFC3339(objectMap, "LastOwnershipUpdateTime", d.LastOwnershipUpdateTime)
+	populateDateTimeRFC3339(objectMap, "LastOwnershipUpdateTime", d.LastOwnershipUpdateTime)
 	populate(objectMap, "maxShares", d.MaxShares)
 	populate(objectMap, "networkAccessPolicy", d.NetworkAccessPolicy)
 	populate(objectMap, "osType", d.OSType)
@@ -3678,7 +3678,7 @@ func (d DiskProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "supportedCapabilities", d.SupportedCapabilities)
 	populate(objectMap, "supportsHibernation", d.SupportsHibernation)
 	populate(objectMap, "tier", d.Tier)
-	populateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
 	populate(objectMap, "uniqueId", d.UniqueID)
 	return json.Marshal(objectMap)
 }
@@ -3696,7 +3696,7 @@ func (d *DiskProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "BurstingEnabled", &d.BurstingEnabled)
 			delete(rawMsg, key)
 		case "burstingEnabledTime":
-			err = unpopulateTimeRFC3339(val, "BurstingEnabledTime", &d.BurstingEnabledTime)
+			err = unpopulateDateTimeRFC3339(val, "BurstingEnabledTime", &d.BurstingEnabledTime)
 			delete(rawMsg, key)
 		case "completionPercent":
 			err = unpopulate(val, "CompletionPercent", &d.CompletionPercent)
@@ -3741,7 +3741,7 @@ func (d *DiskProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "HyperVGeneration", &d.HyperVGeneration)
 			delete(rawMsg, key)
 		case "LastOwnershipUpdateTime":
-			err = unpopulateTimeRFC3339(val, "LastOwnershipUpdateTime", &d.LastOwnershipUpdateTime)
+			err = unpopulateDateTimeRFC3339(val, "LastOwnershipUpdateTime", &d.LastOwnershipUpdateTime)
 			delete(rawMsg, key)
 		case "maxShares":
 			err = unpopulate(val, "MaxShares", &d.MaxShares)
@@ -3783,7 +3783,7 @@ func (d *DiskProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Tier", &d.Tier)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, "TimeCreated", &d.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &d.TimeCreated)
 			delete(rawMsg, key)
 		case "uniqueId":
 			err = unpopulate(val, "UniqueID", &d.UniqueID)
@@ -3990,7 +3990,7 @@ func (d DiskRestorePointProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sourceUniqueId", d.SourceUniqueID)
 	populate(objectMap, "supportedCapabilities", d.SupportedCapabilities)
 	populate(objectMap, "supportsHibernation", d.SupportsHibernation)
-	populateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", d.TimeCreated)
 	return json.Marshal(objectMap)
 }
 
@@ -4052,7 +4052,7 @@ func (d *DiskRestorePointProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "SupportsHibernation", &d.SupportsHibernation)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, "TimeCreated", &d.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &d.TimeCreated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4401,7 +4401,7 @@ func (e EncryptionSetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "autoKeyRotationError", e.AutoKeyRotationError)
 	populate(objectMap, "encryptionType", e.EncryptionType)
 	populate(objectMap, "federatedClientId", e.FederatedClientID)
-	populateTimeRFC3339(objectMap, "lastKeyRotationTimestamp", e.LastKeyRotationTimestamp)
+	populateDateTimeRFC3339(objectMap, "lastKeyRotationTimestamp", e.LastKeyRotationTimestamp)
 	populate(objectMap, "previousKeys", e.PreviousKeys)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
 	populate(objectMap, "rotationToLatestKeyVersionEnabled", e.RotationToLatestKeyVersionEnabled)
@@ -4430,7 +4430,7 @@ func (e *EncryptionSetProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "FederatedClientID", &e.FederatedClientID)
 			delete(rawMsg, key)
 		case "lastKeyRotationTimestamp":
-			err = unpopulateTimeRFC3339(val, "LastKeyRotationTimestamp", &e.LastKeyRotationTimestamp)
+			err = unpopulateDateTimeRFC3339(val, "LastKeyRotationTimestamp", &e.LastKeyRotationTimestamp)
 			delete(rawMsg, key)
 		case "previousKeys":
 			err = unpopulate(val, "PreviousKeys", &e.PreviousKeys)
@@ -4789,7 +4789,7 @@ func (g GalleryApplicationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "customActions", g.CustomActions)
 	populate(objectMap, "description", g.Description)
-	populateTimeRFC3339(objectMap, "endOfLifeDate", g.EndOfLifeDate)
+	populateDateTimeRFC3339(objectMap, "endOfLifeDate", g.EndOfLifeDate)
 	populate(objectMap, "eula", g.Eula)
 	populate(objectMap, "privacyStatementUri", g.PrivacyStatementURI)
 	populate(objectMap, "releaseNoteUri", g.ReleaseNoteURI)
@@ -4813,7 +4813,7 @@ func (g *GalleryApplicationProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Description", &g.Description)
 			delete(rawMsg, key)
 		case "endOfLifeDate":
-			err = unpopulateTimeRFC3339(val, "EndOfLifeDate", &g.EndOfLifeDate)
+			err = unpopulateDateTimeRFC3339(val, "EndOfLifeDate", &g.EndOfLifeDate)
 			delete(rawMsg, key)
 		case "eula":
 			err = unpopulate(val, "Eula", &g.Eula)
@@ -5001,10 +5001,10 @@ func (g GalleryApplicationVersionPublishingProfile) MarshalJSON() ([]byte, error
 	populate(objectMap, "advancedSettings", g.AdvancedSettings)
 	populate(objectMap, "customActions", g.CustomActions)
 	populate(objectMap, "enableHealthCheck", g.EnableHealthCheck)
-	populateTimeRFC3339(objectMap, "endOfLifeDate", g.EndOfLifeDate)
+	populateDateTimeRFC3339(objectMap, "endOfLifeDate", g.EndOfLifeDate)
 	populate(objectMap, "excludeFromLatest", g.ExcludeFromLatest)
 	populate(objectMap, "manageActions", g.ManageActions)
-	populateTimeRFC3339(objectMap, "publishedDate", g.PublishedDate)
+	populateDateTimeRFC3339(objectMap, "publishedDate", g.PublishedDate)
 	populate(objectMap, "replicaCount", g.ReplicaCount)
 	populate(objectMap, "replicationMode", g.ReplicationMode)
 	populate(objectMap, "settings", g.Settings)
@@ -5034,7 +5034,7 @@ func (g *GalleryApplicationVersionPublishingProfile) UnmarshalJSON(data []byte) 
 			err = unpopulate(val, "EnableHealthCheck", &g.EnableHealthCheck)
 			delete(rawMsg, key)
 		case "endOfLifeDate":
-			err = unpopulateTimeRFC3339(val, "EndOfLifeDate", &g.EndOfLifeDate)
+			err = unpopulateDateTimeRFC3339(val, "EndOfLifeDate", &g.EndOfLifeDate)
 			delete(rawMsg, key)
 		case "excludeFromLatest":
 			err = unpopulate(val, "ExcludeFromLatest", &g.ExcludeFromLatest)
@@ -5043,7 +5043,7 @@ func (g *GalleryApplicationVersionPublishingProfile) UnmarshalJSON(data []byte) 
 			err = unpopulate(val, "ManageActions", &g.ManageActions)
 			delete(rawMsg, key)
 		case "publishedDate":
-			err = unpopulateTimeRFC3339(val, "PublishedDate", &g.PublishedDate)
+			err = unpopulateDateTimeRFC3339(val, "PublishedDate", &g.PublishedDate)
 			delete(rawMsg, key)
 		case "replicaCount":
 			err = unpopulate(val, "ReplicaCount", &g.ReplicaCount)
@@ -5147,9 +5147,9 @@ func (g *GalleryApplicationVersionUpdate) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GalleryArtifactPublishingProfileBase.
 func (g GalleryArtifactPublishingProfileBase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "endOfLifeDate", g.EndOfLifeDate)
+	populateDateTimeRFC3339(objectMap, "endOfLifeDate", g.EndOfLifeDate)
 	populate(objectMap, "excludeFromLatest", g.ExcludeFromLatest)
-	populateTimeRFC3339(objectMap, "publishedDate", g.PublishedDate)
+	populateDateTimeRFC3339(objectMap, "publishedDate", g.PublishedDate)
 	populate(objectMap, "replicaCount", g.ReplicaCount)
 	populate(objectMap, "replicationMode", g.ReplicationMode)
 	populate(objectMap, "storageAccountType", g.StorageAccountType)
@@ -5168,13 +5168,13 @@ func (g *GalleryArtifactPublishingProfileBase) UnmarshalJSON(data []byte) error 
 		var err error
 		switch key {
 		case "endOfLifeDate":
-			err = unpopulateTimeRFC3339(val, "EndOfLifeDate", &g.EndOfLifeDate)
+			err = unpopulateDateTimeRFC3339(val, "EndOfLifeDate", &g.EndOfLifeDate)
 			delete(rawMsg, key)
 		case "excludeFromLatest":
 			err = unpopulate(val, "ExcludeFromLatest", &g.ExcludeFromLatest)
 			delete(rawMsg, key)
 		case "publishedDate":
-			err = unpopulateTimeRFC3339(val, "PublishedDate", &g.PublishedDate)
+			err = unpopulateDateTimeRFC3339(val, "PublishedDate", &g.PublishedDate)
 			delete(rawMsg, key)
 		case "replicaCount":
 			err = unpopulate(val, "ReplicaCount", &g.ReplicaCount)
@@ -5628,7 +5628,7 @@ func (g GalleryImageProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "architecture", g.Architecture)
 	populate(objectMap, "description", g.Description)
 	populate(objectMap, "disallowed", g.Disallowed)
-	populateTimeRFC3339(objectMap, "endOfLifeDate", g.EndOfLifeDate)
+	populateDateTimeRFC3339(objectMap, "endOfLifeDate", g.EndOfLifeDate)
 	populate(objectMap, "eula", g.Eula)
 	populate(objectMap, "features", g.Features)
 	populate(objectMap, "hyperVGeneration", g.HyperVGeneration)
@@ -5662,7 +5662,7 @@ func (g *GalleryImageProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Disallowed", &g.Disallowed)
 			delete(rawMsg, key)
 		case "endOfLifeDate":
-			err = unpopulateTimeRFC3339(val, "EndOfLifeDate", &g.EndOfLifeDate)
+			err = unpopulateDateTimeRFC3339(val, "EndOfLifeDate", &g.EndOfLifeDate)
 			delete(rawMsg, key)
 		case "eula":
 			err = unpopulate(val, "Eula", &g.Eula)
@@ -5872,9 +5872,9 @@ func (g *GalleryImageVersionProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GalleryImageVersionPublishingProfile.
 func (g GalleryImageVersionPublishingProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "endOfLifeDate", g.EndOfLifeDate)
+	populateDateTimeRFC3339(objectMap, "endOfLifeDate", g.EndOfLifeDate)
 	populate(objectMap, "excludeFromLatest", g.ExcludeFromLatest)
-	populateTimeRFC3339(objectMap, "publishedDate", g.PublishedDate)
+	populateDateTimeRFC3339(objectMap, "publishedDate", g.PublishedDate)
 	populate(objectMap, "replicaCount", g.ReplicaCount)
 	populate(objectMap, "replicationMode", g.ReplicationMode)
 	populate(objectMap, "storageAccountType", g.StorageAccountType)
@@ -5893,13 +5893,13 @@ func (g *GalleryImageVersionPublishingProfile) UnmarshalJSON(data []byte) error 
 		var err error
 		switch key {
 		case "endOfLifeDate":
-			err = unpopulateTimeRFC3339(val, "EndOfLifeDate", &g.EndOfLifeDate)
+			err = unpopulateDateTimeRFC3339(val, "EndOfLifeDate", &g.EndOfLifeDate)
 			delete(rawMsg, key)
 		case "excludeFromLatest":
 			err = unpopulate(val, "ExcludeFromLatest", &g.ExcludeFromLatest)
 			delete(rawMsg, key)
 		case "publishedDate":
-			err = unpopulateTimeRFC3339(val, "PublishedDate", &g.PublishedDate)
+			err = unpopulateDateTimeRFC3339(val, "PublishedDate", &g.PublishedDate)
 			delete(rawMsg, key)
 		case "replicaCount":
 			err = unpopulate(val, "ReplicaCount", &g.ReplicaCount)
@@ -6417,7 +6417,7 @@ func (i ImageDeprecationStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alternativeOption", i.AlternativeOption)
 	populate(objectMap, "imageState", i.ImageState)
-	populateTimeRFC3339(objectMap, "scheduledDeprecationTime", i.ScheduledDeprecationTime)
+	populateDateTimeRFC3339(objectMap, "scheduledDeprecationTime", i.ScheduledDeprecationTime)
 	return json.Marshal(objectMap)
 }
 
@@ -6437,7 +6437,7 @@ func (i *ImageDeprecationStatus) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ImageState", &i.ImageState)
 			delete(rawMsg, key)
 		case "scheduledDeprecationTime":
-			err = unpopulateTimeRFC3339(val, "ScheduledDeprecationTime", &i.ScheduledDeprecationTime)
+			err = unpopulateDateTimeRFC3339(val, "ScheduledDeprecationTime", &i.ScheduledDeprecationTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -6891,7 +6891,7 @@ func (i InstanceViewStatus) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "displayStatus", i.DisplayStatus)
 	populate(objectMap, "level", i.Level)
 	populate(objectMap, "message", i.Message)
-	populateTimeRFC3339(objectMap, "time", i.Time)
+	populateDateTimeRFC3339(objectMap, "time", i.Time)
 	return json.Marshal(objectMap)
 }
 
@@ -6917,7 +6917,7 @@ func (i *InstanceViewStatus) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Message", &i.Message)
 			delete(rawMsg, key)
 		case "time":
-			err = unpopulateTimeRFC3339(val, "Time", &i.Time)
+			err = unpopulateDateTimeRFC3339(val, "Time", &i.Time)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -7117,11 +7117,11 @@ func (l LastPatchInstallationSummary) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "failedPatchCount", l.FailedPatchCount)
 	populate(objectMap, "installationActivityId", l.InstallationActivityID)
 	populate(objectMap, "installedPatchCount", l.InstalledPatchCount)
-	populateTimeRFC3339(objectMap, "lastModifiedTime", l.LastModifiedTime)
+	populateDateTimeRFC3339(objectMap, "lastModifiedTime", l.LastModifiedTime)
 	populate(objectMap, "maintenanceWindowExceeded", l.MaintenanceWindowExceeded)
 	populate(objectMap, "notSelectedPatchCount", l.NotSelectedPatchCount)
 	populate(objectMap, "pendingPatchCount", l.PendingPatchCount)
-	populateTimeRFC3339(objectMap, "startTime", l.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", l.StartTime)
 	populate(objectMap, "status", l.Status)
 	return json.Marshal(objectMap)
 }
@@ -7151,7 +7151,7 @@ func (l *LastPatchInstallationSummary) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "InstalledPatchCount", &l.InstalledPatchCount)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &l.LastModifiedTime)
+			err = unpopulateDateTimeRFC3339(val, "LastModifiedTime", &l.LastModifiedTime)
 			delete(rawMsg, key)
 		case "maintenanceWindowExceeded":
 			err = unpopulate(val, "MaintenanceWindowExceeded", &l.MaintenanceWindowExceeded)
@@ -7163,7 +7163,7 @@ func (l *LastPatchInstallationSummary) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "PendingPatchCount", &l.PendingPatchCount)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &l.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &l.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &l.Status)
@@ -7518,13 +7518,13 @@ func (l *LoadBalancerFrontendIPConfigurationProperties) UnmarshalJSON(data []byt
 func (l LogAnalyticsInputBase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "blobContainerSasUri", l.BlobContainerSasURI)
-	populateTimeRFC3339(objectMap, "fromTime", l.FromTime)
+	populateDateTimeRFC3339(objectMap, "fromTime", l.FromTime)
 	populate(objectMap, "groupByClientApplicationId", l.GroupByClientApplicationID)
 	populate(objectMap, "groupByOperationName", l.GroupByOperationName)
 	populate(objectMap, "groupByResourceName", l.GroupByResourceName)
 	populate(objectMap, "groupByThrottlePolicy", l.GroupByThrottlePolicy)
 	populate(objectMap, "groupByUserAgent", l.GroupByUserAgent)
-	populateTimeRFC3339(objectMap, "toTime", l.ToTime)
+	populateDateTimeRFC3339(objectMap, "toTime", l.ToTime)
 	return json.Marshal(objectMap)
 }
 
@@ -7541,7 +7541,7 @@ func (l *LogAnalyticsInputBase) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "BlobContainerSasURI", &l.BlobContainerSasURI)
 			delete(rawMsg, key)
 		case "fromTime":
-			err = unpopulateTimeRFC3339(val, "FromTime", &l.FromTime)
+			err = unpopulateDateTimeRFC3339(val, "FromTime", &l.FromTime)
 			delete(rawMsg, key)
 		case "groupByClientApplicationId":
 			err = unpopulate(val, "GroupByClientApplicationID", &l.GroupByClientApplicationID)
@@ -7559,7 +7559,7 @@ func (l *LogAnalyticsInputBase) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "GroupByUserAgent", &l.GroupByUserAgent)
 			delete(rawMsg, key)
 		case "toTime":
-			err = unpopulateTimeRFC3339(val, "ToTime", &l.ToTime)
+			err = unpopulateDateTimeRFC3339(val, "ToTime", &l.ToTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -7629,10 +7629,10 @@ func (m MaintenanceRedeployStatus) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isCustomerInitiatedMaintenanceAllowed", m.IsCustomerInitiatedMaintenanceAllowed)
 	populate(objectMap, "lastOperationMessage", m.LastOperationMessage)
 	populate(objectMap, "lastOperationResultCode", m.LastOperationResultCode)
-	populateTimeRFC3339(objectMap, "maintenanceWindowEndTime", m.MaintenanceWindowEndTime)
-	populateTimeRFC3339(objectMap, "maintenanceWindowStartTime", m.MaintenanceWindowStartTime)
-	populateTimeRFC3339(objectMap, "preMaintenanceWindowEndTime", m.PreMaintenanceWindowEndTime)
-	populateTimeRFC3339(objectMap, "preMaintenanceWindowStartTime", m.PreMaintenanceWindowStartTime)
+	populateDateTimeRFC3339(objectMap, "maintenanceWindowEndTime", m.MaintenanceWindowEndTime)
+	populateDateTimeRFC3339(objectMap, "maintenanceWindowStartTime", m.MaintenanceWindowStartTime)
+	populateDateTimeRFC3339(objectMap, "preMaintenanceWindowEndTime", m.PreMaintenanceWindowEndTime)
+	populateDateTimeRFC3339(objectMap, "preMaintenanceWindowStartTime", m.PreMaintenanceWindowStartTime)
 	return json.Marshal(objectMap)
 }
 
@@ -7655,16 +7655,16 @@ func (m *MaintenanceRedeployStatus) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "LastOperationResultCode", &m.LastOperationResultCode)
 			delete(rawMsg, key)
 		case "maintenanceWindowEndTime":
-			err = unpopulateTimeRFC3339(val, "MaintenanceWindowEndTime", &m.MaintenanceWindowEndTime)
+			err = unpopulateDateTimeRFC3339(val, "MaintenanceWindowEndTime", &m.MaintenanceWindowEndTime)
 			delete(rawMsg, key)
 		case "maintenanceWindowStartTime":
-			err = unpopulateTimeRFC3339(val, "MaintenanceWindowStartTime", &m.MaintenanceWindowStartTime)
+			err = unpopulateDateTimeRFC3339(val, "MaintenanceWindowStartTime", &m.MaintenanceWindowStartTime)
 			delete(rawMsg, key)
 		case "preMaintenanceWindowEndTime":
-			err = unpopulateTimeRFC3339(val, "PreMaintenanceWindowEndTime", &m.PreMaintenanceWindowEndTime)
+			err = unpopulateDateTimeRFC3339(val, "PreMaintenanceWindowEndTime", &m.PreMaintenanceWindowEndTime)
 			delete(rawMsg, key)
 		case "preMaintenanceWindowStartTime":
-			err = unpopulateTimeRFC3339(val, "PreMaintenanceWindowStartTime", &m.PreMaintenanceWindowStartTime)
+			err = unpopulateDateTimeRFC3339(val, "PreMaintenanceWindowStartTime", &m.PreMaintenanceWindowStartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -9627,14 +9627,14 @@ func (r *ReplicationStatus) UnmarshalJSON(data []byte) error {
 func (r RequestRateByIntervalInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "blobContainerSasUri", r.BlobContainerSasURI)
-	populateTimeRFC3339(objectMap, "fromTime", r.FromTime)
+	populateDateTimeRFC3339(objectMap, "fromTime", r.FromTime)
 	populate(objectMap, "groupByClientApplicationId", r.GroupByClientApplicationID)
 	populate(objectMap, "groupByOperationName", r.GroupByOperationName)
 	populate(objectMap, "groupByResourceName", r.GroupByResourceName)
 	populate(objectMap, "groupByThrottlePolicy", r.GroupByThrottlePolicy)
 	populate(objectMap, "groupByUserAgent", r.GroupByUserAgent)
 	populate(objectMap, "intervalLength", r.IntervalLength)
-	populateTimeRFC3339(objectMap, "toTime", r.ToTime)
+	populateDateTimeRFC3339(objectMap, "toTime", r.ToTime)
 	return json.Marshal(objectMap)
 }
 
@@ -9651,7 +9651,7 @@ func (r *RequestRateByIntervalInput) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "BlobContainerSasURI", &r.BlobContainerSasURI)
 			delete(rawMsg, key)
 		case "fromTime":
-			err = unpopulateTimeRFC3339(val, "FromTime", &r.FromTime)
+			err = unpopulateDateTimeRFC3339(val, "FromTime", &r.FromTime)
 			delete(rawMsg, key)
 		case "groupByClientApplicationId":
 			err = unpopulate(val, "GroupByClientApplicationID", &r.GroupByClientApplicationID)
@@ -9672,7 +9672,7 @@ func (r *RequestRateByIntervalInput) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "IntervalLength", &r.IntervalLength)
 			delete(rawMsg, key)
 		case "toTime":
-			err = unpopulateTimeRFC3339(val, "ToTime", &r.ToTime)
+			err = unpopulateDateTimeRFC3339(val, "ToTime", &r.ToTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -9732,7 +9732,7 @@ func (r ResourceInstanceViewStatus) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "displayStatus", r.DisplayStatus)
 	populate(objectMap, "level", r.Level)
 	populate(objectMap, "message", r.Message)
-	populateTimeRFC3339(objectMap, "time", r.Time)
+	populateDateTimeRFC3339(objectMap, "time", r.Time)
 	return json.Marshal(objectMap)
 }
 
@@ -9758,7 +9758,7 @@ func (r *ResourceInstanceViewStatus) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Message", &r.Message)
 			delete(rawMsg, key)
 		case "time":
-			err = unpopulateTimeRFC3339(val, "Time", &r.Time)
+			err = unpopulateDateTimeRFC3339(val, "Time", &r.Time)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -10517,7 +10517,7 @@ func (r RestorePointProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", r.ProvisioningState)
 	populate(objectMap, "sourceMetadata", r.SourceMetadata)
 	populate(objectMap, "sourceRestorePoint", r.SourceRestorePoint)
-	populateTimeRFC3339(objectMap, "timeCreated", r.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", r.TimeCreated)
 	return json.Marshal(objectMap)
 }
 
@@ -10549,7 +10549,7 @@ func (r *RestorePointProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "SourceRestorePoint", &r.SourceRestorePoint)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, "TimeCreated", &r.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &r.TimeCreated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -11130,8 +11130,8 @@ func (r RollingUpgradeRunningStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", r.Code)
 	populate(objectMap, "lastAction", r.LastAction)
-	populateTimeRFC3339(objectMap, "lastActionTime", r.LastActionTime)
-	populateTimeRFC3339(objectMap, "startTime", r.StartTime)
+	populateDateTimeRFC3339(objectMap, "lastActionTime", r.LastActionTime)
+	populateDateTimeRFC3339(objectMap, "startTime", r.StartTime)
 	return json.Marshal(objectMap)
 }
 
@@ -11151,10 +11151,10 @@ func (r *RollingUpgradeRunningStatus) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "LastAction", &r.LastAction)
 			delete(rawMsg, key)
 		case "lastActionTime":
-			err = unpopulateTimeRFC3339(val, "LastActionTime", &r.LastActionTime)
+			err = unpopulateDateTimeRFC3339(val, "LastActionTime", &r.LastActionTime)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &r.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &r.StartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -12187,7 +12187,7 @@ func (s SharedGalleryImageProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "architecture", s.Architecture)
 	populate(objectMap, "disallowed", s.Disallowed)
-	populateTimeRFC3339(objectMap, "endOfLifeDate", s.EndOfLifeDate)
+	populateDateTimeRFC3339(objectMap, "endOfLifeDate", s.EndOfLifeDate)
 	populate(objectMap, "eula", s.Eula)
 	populate(objectMap, "features", s.Features)
 	populate(objectMap, "hyperVGeneration", s.HyperVGeneration)
@@ -12216,7 +12216,7 @@ func (s *SharedGalleryImageProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Disallowed", &s.Disallowed)
 			delete(rawMsg, key)
 		case "endOfLifeDate":
-			err = unpopulateTimeRFC3339(val, "EndOfLifeDate", &s.EndOfLifeDate)
+			err = unpopulateDateTimeRFC3339(val, "EndOfLifeDate", &s.EndOfLifeDate)
 			delete(rawMsg, key)
 		case "eula":
 			err = unpopulate(val, "Eula", &s.Eula)
@@ -12326,9 +12326,9 @@ func (s *SharedGalleryImageVersionList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SharedGalleryImageVersionProperties.
 func (s SharedGalleryImageVersionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "endOfLifeDate", s.EndOfLifeDate)
+	populateDateTimeRFC3339(objectMap, "endOfLifeDate", s.EndOfLifeDate)
 	populate(objectMap, "excludeFromLatest", s.ExcludeFromLatest)
-	populateTimeRFC3339(objectMap, "publishedDate", s.PublishedDate)
+	populateDateTimeRFC3339(objectMap, "publishedDate", s.PublishedDate)
 	populate(objectMap, "storageProfile", s.StorageProfile)
 	return json.Marshal(objectMap)
 }
@@ -12343,13 +12343,13 @@ func (s *SharedGalleryImageVersionProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endOfLifeDate":
-			err = unpopulateTimeRFC3339(val, "EndOfLifeDate", &s.EndOfLifeDate)
+			err = unpopulateDateTimeRFC3339(val, "EndOfLifeDate", &s.EndOfLifeDate)
 			delete(rawMsg, key)
 		case "excludeFromLatest":
 			err = unpopulate(val, "ExcludeFromLatest", &s.ExcludeFromLatest)
 			delete(rawMsg, key)
 		case "publishedDate":
-			err = unpopulateTimeRFC3339(val, "PublishedDate", &s.PublishedDate)
+			err = unpopulateDateTimeRFC3339(val, "PublishedDate", &s.PublishedDate)
 			delete(rawMsg, key)
 		case "storageProfile":
 			err = unpopulate(val, "StorageProfile", &s.StorageProfile)
@@ -12697,7 +12697,7 @@ func (s SnapshotProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "securityProfile", s.SecurityProfile)
 	populate(objectMap, "supportedCapabilities", s.SupportedCapabilities)
 	populate(objectMap, "supportsHibernation", s.SupportsHibernation)
-	populateTimeRFC3339(objectMap, "timeCreated", s.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", s.TimeCreated)
 	populate(objectMap, "uniqueId", s.UniqueID)
 	return json.Marshal(objectMap)
 }
@@ -12775,7 +12775,7 @@ func (s *SnapshotProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "SupportsHibernation", &s.SupportsHibernation)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, "TimeCreated", &s.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &s.TimeCreated)
 			delete(rawMsg, key)
 		case "uniqueId":
 			err = unpopulate(val, "UniqueID", &s.UniqueID)
@@ -13195,8 +13195,8 @@ func (s *SupportedCapabilities) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	return json.Marshal(objectMap)
 }
 
@@ -13210,10 +13210,10 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -13301,13 +13301,13 @@ func (t *TerminateNotificationProfile) UnmarshalJSON(data []byte) error {
 func (t ThrottledRequestsInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "blobContainerSasUri", t.BlobContainerSasURI)
-	populateTimeRFC3339(objectMap, "fromTime", t.FromTime)
+	populateDateTimeRFC3339(objectMap, "fromTime", t.FromTime)
 	populate(objectMap, "groupByClientApplicationId", t.GroupByClientApplicationID)
 	populate(objectMap, "groupByOperationName", t.GroupByOperationName)
 	populate(objectMap, "groupByResourceName", t.GroupByResourceName)
 	populate(objectMap, "groupByThrottlePolicy", t.GroupByThrottlePolicy)
 	populate(objectMap, "groupByUserAgent", t.GroupByUserAgent)
-	populateTimeRFC3339(objectMap, "toTime", t.ToTime)
+	populateDateTimeRFC3339(objectMap, "toTime", t.ToTime)
 	return json.Marshal(objectMap)
 }
 
@@ -13324,7 +13324,7 @@ func (t *ThrottledRequestsInput) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "BlobContainerSasURI", &t.BlobContainerSasURI)
 			delete(rawMsg, key)
 		case "fromTime":
-			err = unpopulateTimeRFC3339(val, "FromTime", &t.FromTime)
+			err = unpopulateDateTimeRFC3339(val, "FromTime", &t.FromTime)
 			delete(rawMsg, key)
 		case "groupByClientApplicationId":
 			err = unpopulate(val, "GroupByClientApplicationID", &t.GroupByClientApplicationID)
@@ -13342,7 +13342,7 @@ func (t *ThrottledRequestsInput) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "GroupByUserAgent", &t.GroupByUserAgent)
 			delete(rawMsg, key)
 		case "toTime":
-			err = unpopulateTimeRFC3339(val, "ToTime", &t.ToTime)
+			err = unpopulateDateTimeRFC3339(val, "ToTime", &t.ToTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -13597,8 +13597,8 @@ func (u *UpgradeOperationHistoricalStatusInfoProperties) UnmarshalJSON(data []by
 func (u UpgradeOperationHistoryStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", u.Code)
-	populateTimeRFC3339(objectMap, "endTime", u.EndTime)
-	populateTimeRFC3339(objectMap, "startTime", u.StartTime)
+	populateDateTimeRFC3339(objectMap, "endTime", u.EndTime)
+	populateDateTimeRFC3339(objectMap, "startTime", u.StartTime)
 	return json.Marshal(objectMap)
 }
 
@@ -13615,10 +13615,10 @@ func (u *UpgradeOperationHistoryStatus) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Code", &u.Code)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &u.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &u.EndTime)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &u.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &u.StartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -14228,7 +14228,7 @@ func (v VirtualMachineAssessPatchesResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "error", v.Error)
 	populate(objectMap, "otherPatchCount", v.OtherPatchCount)
 	populate(objectMap, "rebootPending", v.RebootPending)
-	populateTimeRFC3339(objectMap, "startDateTime", v.StartDateTime)
+	populateDateTimeRFC3339(objectMap, "startDateTime", v.StartDateTime)
 	populate(objectMap, "status", v.Status)
 	return json.Marshal(objectMap)
 }
@@ -14261,7 +14261,7 @@ func (v *VirtualMachineAssessPatchesResult) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RebootPending", &v.RebootPending)
 			delete(rawMsg, key)
 		case "startDateTime":
-			err = unpopulateTimeRFC3339(val, "StartDateTime", &v.StartDateTime)
+			err = unpopulateDateTimeRFC3339(val, "StartDateTime", &v.StartDateTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &v.Status)
@@ -15092,7 +15092,7 @@ func (v VirtualMachineInstallPatchesResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "patches", v.Patches)
 	populate(objectMap, "pendingPatchCount", v.PendingPatchCount)
 	populate(objectMap, "rebootStatus", v.RebootStatus)
-	populateTimeRFC3339(objectMap, "startDateTime", v.StartDateTime)
+	populateDateTimeRFC3339(objectMap, "startDateTime", v.StartDateTime)
 	populate(objectMap, "status", v.Status)
 	return json.Marshal(objectMap)
 }
@@ -15137,7 +15137,7 @@ func (v *VirtualMachineInstallPatchesResult) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RebootStatus", &v.RebootStatus)
 			delete(rawMsg, key)
 		case "startDateTime":
-			err = unpopulateTimeRFC3339(val, "StartDateTime", &v.StartDateTime)
+			err = unpopulateDateTimeRFC3339(val, "StartDateTime", &v.StartDateTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &v.Status)
@@ -15539,7 +15539,7 @@ func (v VirtualMachineProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "scheduledEventsProfile", v.ScheduledEventsProfile)
 	populate(objectMap, "securityProfile", v.SecurityProfile)
 	populate(objectMap, "storageProfile", v.StorageProfile)
-	populateTimeRFC3339(objectMap, "timeCreated", v.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", v.TimeCreated)
 	populate(objectMap, "userData", v.UserData)
 	populate(objectMap, "vmId", v.VMID)
 	populate(objectMap, "virtualMachineScaleSet", v.VirtualMachineScaleSet)
@@ -15622,7 +15622,7 @@ func (v *VirtualMachineProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "StorageProfile", &v.StorageProfile)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, "TimeCreated", &v.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &v.TimeCreated)
 			delete(rawMsg, key)
 		case "userData":
 			err = unpopulate(val, "UserData", &v.UserData)
@@ -15843,13 +15843,13 @@ func (v *VirtualMachineRunCommand) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachineRunCommandInstanceView.
 func (v VirtualMachineRunCommandInstanceView) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "endTime", v.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", v.EndTime)
 	populate(objectMap, "error", v.Error)
 	populate(objectMap, "executionMessage", v.ExecutionMessage)
 	populate(objectMap, "executionState", v.ExecutionState)
 	populate(objectMap, "exitCode", v.ExitCode)
 	populate(objectMap, "output", v.Output)
-	populateTimeRFC3339(objectMap, "startTime", v.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", v.StartTime)
 	populate(objectMap, "statuses", v.Statuses)
 	return json.Marshal(objectMap)
 }
@@ -15864,7 +15864,7 @@ func (v *VirtualMachineRunCommandInstanceView) UnmarshalJSON(data []byte) error 
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &v.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &v.EndTime)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &v.Error)
@@ -15882,7 +15882,7 @@ func (v *VirtualMachineRunCommandInstanceView) UnmarshalJSON(data []byte) error 
 			err = unpopulate(val, "Output", &v.Output)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &v.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &v.StartTime)
 			delete(rawMsg, key)
 		case "statuses":
 			err = unpopulate(val, "Statuses", &v.Statuses)
@@ -17127,7 +17127,7 @@ func (v VirtualMachineScaleSetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "scaleInPolicy", v.ScaleInPolicy)
 	populate(objectMap, "singlePlacementGroup", v.SinglePlacementGroup)
 	populate(objectMap, "spotRestorePolicy", v.SpotRestorePolicy)
-	populateTimeRFC3339(objectMap, "timeCreated", v.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", v.TimeCreated)
 	populate(objectMap, "uniqueId", v.UniqueID)
 	populate(objectMap, "upgradePolicy", v.UpgradePolicy)
 	populate(objectMap, "virtualMachineProfile", v.VirtualMachineProfile)
@@ -17187,7 +17187,7 @@ func (v *VirtualMachineScaleSetProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "SpotRestorePolicy", &v.SpotRestorePolicy)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, "TimeCreated", &v.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &v.TimeCreated)
 			delete(rawMsg, key)
 		case "uniqueId":
 			err = unpopulate(val, "UniqueID", &v.UniqueID)
@@ -18588,7 +18588,7 @@ func (v VirtualMachineScaleSetVMProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "securityProfile", v.SecurityProfile)
 	populate(objectMap, "storageProfile", v.StorageProfile)
-	populateTimeRFC3339(objectMap, "timeCreated", v.TimeCreated)
+	populateDateTimeRFC3339(objectMap, "timeCreated", v.TimeCreated)
 	populate(objectMap, "userData", v.UserData)
 	populate(objectMap, "vmId", v.VMID)
 	return json.Marshal(objectMap)
@@ -18649,7 +18649,7 @@ func (v *VirtualMachineScaleSetVMProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "StorageProfile", &v.StorageProfile)
 			delete(rawMsg, key)
 		case "timeCreated":
-			err = unpopulateTimeRFC3339(val, "TimeCreated", &v.TimeCreated)
+			err = unpopulateDateTimeRFC3339(val, "TimeCreated", &v.TimeCreated)
 			delete(rawMsg, key)
 		case "userData":
 			err = unpopulate(val, "UserData", &v.UserData)
@@ -18812,10 +18812,10 @@ func (v VirtualMachineSoftwarePatchProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "assessmentState", v.AssessmentState)
 	populate(objectMap, "classifications", v.Classifications)
 	populate(objectMap, "kbId", v.KbID)
-	populateTimeRFC3339(objectMap, "lastModifiedDateTime", v.LastModifiedDateTime)
+	populateDateTimeRFC3339(objectMap, "lastModifiedDateTime", v.LastModifiedDateTime)
 	populate(objectMap, "name", v.Name)
 	populate(objectMap, "patchId", v.PatchID)
-	populateTimeRFC3339(objectMap, "publishedDate", v.PublishedDate)
+	populateDateTimeRFC3339(objectMap, "publishedDate", v.PublishedDate)
 	populate(objectMap, "rebootBehavior", v.RebootBehavior)
 	populate(objectMap, "version", v.Version)
 	return json.Marshal(objectMap)
@@ -18843,7 +18843,7 @@ func (v *VirtualMachineSoftwarePatchProperties) UnmarshalJSON(data []byte) error
 			err = unpopulate(val, "KbID", &v.KbID)
 			delete(rawMsg, key)
 		case "lastModifiedDateTime":
-			err = unpopulateTimeRFC3339(val, "LastModifiedDateTime", &v.LastModifiedDateTime)
+			err = unpopulateDateTimeRFC3339(val, "LastModifiedDateTime", &v.LastModifiedDateTime)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &v.Name)
@@ -18852,7 +18852,7 @@ func (v *VirtualMachineSoftwarePatchProperties) UnmarshalJSON(data []byte) error
 			err = unpopulate(val, "PatchID", &v.PatchID)
 			delete(rawMsg, key)
 		case "publishedDate":
-			err = unpopulateTimeRFC3339(val, "PublishedDate", &v.PublishedDate)
+			err = unpopulateDateTimeRFC3339(val, "PublishedDate", &v.PublishedDate)
 			delete(rawMsg, key)
 		case "rebootBehavior":
 			err = unpopulate(val, "RebootBehavior", &v.RebootBehavior)
@@ -19058,7 +19058,7 @@ func (w WindowsParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "excludeKbsRequiringReboot", w.ExcludeKbsRequiringReboot)
 	populate(objectMap, "kbNumbersToExclude", w.KbNumbersToExclude)
 	populate(objectMap, "kbNumbersToInclude", w.KbNumbersToInclude)
-	populateTimeRFC3339(objectMap, "maxPatchPublishDate", w.MaxPatchPublishDate)
+	populateDateTimeRFC3339(objectMap, "maxPatchPublishDate", w.MaxPatchPublishDate)
 	return json.Marshal(objectMap)
 }
 
@@ -19084,7 +19084,7 @@ func (w *WindowsParameters) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "KbNumbersToInclude", &w.KbNumbersToInclude)
 			delete(rawMsg, key)
 		case "maxPatchPublishDate":
-			err = unpopulateTimeRFC3339(val, "MaxPatchPublishDate", &w.MaxPatchPublishDate)
+			err = unpopulateDateTimeRFC3339(val, "MaxPatchPublishDate", &w.MaxPatchPublishDate)
 			delete(rawMsg, key)
 		}
 		if err != nil {

@@ -1,5 +1,11 @@
 # Release History
 
+## 5.3.0-beta.2 (2023-10-30)
+
+### Other Changes
+
+- Updated with latest code generator to fix a few issues in fakes.
+
 ## 5.3.0-beta.1 (2023-10-09)
 ### Features Added
 

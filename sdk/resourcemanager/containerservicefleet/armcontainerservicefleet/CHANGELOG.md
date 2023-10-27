@@ -1,5 +1,14 @@
 # Release History
 
+## 1.0.0 (2023-10-27)
+### Breaking Changes
+
+- Struct `APIServerAccessProfile` has been removed
+- Struct `AgentProfile` has been removed
+- Struct `FleetHubProfile` has been removed
+- Field `HubProfile` of struct `FleetProperties` has been removed
+
+
 ## 0.3.0 (2023-10-27)
 ### Features Added
 

@@ -10,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 	"sync"
 
@@ -26,8 +27,6 @@ import (
 )
 
 type publicClientOptions struct {
-	azcore.ClientOptions
-
 	AdditionallyAllowedTenants     []string
 	DeviceCodePrompt               func(context.Context, DeviceCodeMessage) error
 	DisableAutomaticAuthentication bool
@@ -48,20 +47,21 @@ type publicClient struct {
 	name                     string
 	opts                     publicClientOptions
 	record                   AuthenticationRecord
+	azClient                 *azcore.Client
 }
 
 var errScopeRequired = errors.New("authenticating in this environment requires specifying a scope in TokenRequestOptions")
 
-func newPublicClient(tenantID, clientID, name string, o publicClientOptions) (*publicClient, error) {
+func newPublicClient(clientName, tenantID, clientID, name string, o publicClientOptions, clientOpts azcore.ClientOptions) (*publicClient, error) {
 	if !validTenantID(tenantID) {
 		return nil, errInvalidTenantID
 	}
-	host, err := setAuthorityHost(o.Cloud)
+	host, err := setAuthorityHost(clientOpts.Cloud)
 	if err != nil {
 		return nil, err
 	}
 	// if the application specified a cloud configuration, use its ARM audience as the default scope for Authenticate()
-	audience := o.Cloud.Services[cloud.ResourceManager].Audience
+	audience := clientOpts.Cloud.Services[cloud.ResourceManager].Audience
 	if audience == "" {
 		// no cloud configuration, or no ARM audience, specified; try to map the host to a well-known one (all of which have a trailing slash)
 		if !strings.HasSuffix(host, "/") {
@@ -81,6 +81,14 @@ func newPublicClient(tenantID, clientID, name string, o publicClientOptions) (*p
 	if audience != "" {
 		defaultScope = []string{audience + defaultSuffix}
 	}
+	client, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{
+		Tracing: runtime.TracingOptions{
+			Namespace: traceNamespace,
+		},
+	}, &clientOpts)
+	if err != nil {
+		return nil, err
+	}
 	o.AdditionallyAllowedTenants = resolveAdditionalTenants(o.AdditionallyAllowedTenants)
 	return &publicClient{
 		caeMu:        &sync.Mutex{},
@@ -93,6 +101,7 @@ func newPublicClient(tenantID, clientID, name string, o publicClientOptions) (*p
 		opts:         o,
 		record:       o.Record,
 		tenantID:     tenantID,
+		azClient:     client,
 	}, nil
 }
 
@@ -218,7 +227,7 @@ func (p *publicClient) newMSALClient(enableCAE bool) (msalPublicClient, error) {
 	o := []public.Option{
 		public.WithAuthority(runtime.JoinPaths(p.host, p.tenantID)),
 		public.WithCache(cache),
-		public.WithHTTPClient(newPipelineAdapter(&p.opts.ClientOptions)),
+		public.WithHTTPClient(p),
 	}
 	if enableCAE {
 		o = append(o, public.WithClientCapabilities(cp1))
@@ -249,4 +258,14 @@ func (p *publicClient) resolveTenant(specified string) (string, error) {
 		t = ""
 	}
 	return t, err
+}
+
+// these methods satisfy the MSAL ops.HTTPClient interface
+
+func (p *publicClient) CloseIdleConnections() {
+	// do nothing
+}
+
+func (p *publicClient) Do(r *http.Request) (*http.Response, error) {
+	return doForClient(p.azClient, r)
 }

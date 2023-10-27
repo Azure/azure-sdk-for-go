@@ -50,7 +50,7 @@ func TestManagedIdentityClient_UserAgent(t *testing.T) {
 			Transport: &mockSTS{}, PerCallPolicies: []policy.Policy{userAgentValidatingPolicy{t: t}},
 		},
 	}
-	client, err := newManagedIdentityClient(&options)
+	client, err := newManagedIdentityClient(miClientName, &options)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,7 +68,7 @@ func TestManagedIdentityClient_ApplicationID(t *testing.T) {
 		},
 	}
 	options.Telemetry.ApplicationID = appID
-	client, err := newManagedIdentityClient(&options)
+	client, err := newManagedIdentityClient(miClientName, &options)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -98,7 +98,7 @@ func TestManagedIdentityClient_IMDSErrors(t *testing.T) {
 			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 			defer close()
 			srv.SetResponse(mock.WithBody([]byte(test.body)), mock.WithStatusCode(test.code))
-			client, err := newManagedIdentityClient(&ManagedIdentityCredentialOptions{
+			client, err := newManagedIdentityClient(miClientName, &ManagedIdentityCredentialOptions{
 				ClientOptions: azcore.ClientOptions{Transport: srv},
 			})
 			if err != nil {
@@ -158,7 +158,7 @@ func TestManagedIdentityClient_UserAssignedIDWarning(t *testing.T) {
 						msgs = append(msgs, msg)
 					}
 				})
-				client, err := newManagedIdentityClient(&ManagedIdentityCredentialOptions{
+				client, err := newManagedIdentityClient(miClientName, &ManagedIdentityCredentialOptions{
 					ID: id,
 				})
 				if err != nil {

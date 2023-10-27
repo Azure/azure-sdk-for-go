@@ -4,6 +4,7 @@
 
 ### Features Added
 * `DefaultAzureCredential` and `ManagedIdentityCredential` support Azure ML managed identity
+* Added spans for distributed tracing.
 
 ### Breaking Changes
 

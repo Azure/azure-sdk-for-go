@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"golang.org/x/crypto/pkcs12"
 )
@@ -64,12 +65,11 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	}
 	msalOpts := confidentialClientOptions{
 		AdditionallyAllowedTenants:   options.AdditionallyAllowedTenants,
-		ClientOptions:                options.ClientOptions,
 		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
 		SendX5C:                      options.SendCertificateChain,
 		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
 	}
-	c, err := newConfidentialClient(tenantID, clientID, credNameCert, cred, msalOpts)
+	c, err := newConfidentialClient(component+"."+credNameCert, tenantID, clientID, credNameCert, cred, msalOpts, options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,11 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 
 // GetToken requests an access token from Microsoft Entra ID. This method is called automatically by Azure SDK clients.
 func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return c.client.GetToken(ctx, opts)
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, credNameCert+"."+traceOpGetToken, c.client.azClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	tk, err := c.client.GetToken(ctx, opts)
+	return tk, err
 }
 
 // ParseCertificates loads certificates and a private key, in PEM or PKCS12 format, for use with NewClientCertificateCredential.

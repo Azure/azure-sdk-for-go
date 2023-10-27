@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 const credNameUserPassword = "UsernamePasswordCredential"
@@ -54,14 +55,13 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 	}
 	opts := publicClientOptions{
 		AdditionallyAllowedTenants:   options.AdditionallyAllowedTenants,
-		ClientOptions:                options.ClientOptions,
 		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
 		Password:                     password,
 		Record:                       options.AuthenticationRecord,
 		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
 		Username:                     username,
 	}
-	c, err := newPublicClient(tenantID, clientID, credNameUserPassword, opts)
+	c, err := newPublicClient(component+"."+credNameUserPassword, tenantID, clientID, credNameUserPassword, opts, options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -70,12 +70,20 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 
 // Authenticate the user. Subsequent calls to GetToken will automatically use the returned AuthenticationRecord.
 func (c *UsernamePasswordCredential) Authenticate(ctx context.Context, opts *policy.TokenRequestOptions) (AuthenticationRecord, error) {
-	return c.client.Authenticate(ctx, opts)
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, credNameUserPassword+"."+traceOpAuthenticate, c.client.azClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	tk, err := c.client.Authenticate(ctx, opts)
+	return tk, err
 }
 
 // GetToken requests an access token from Microsoft Entra ID. This method is called automatically by Azure SDK clients.
 func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return c.client.GetToken(ctx, opts)
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, credNameUserPassword+"."+traceOpGetToken, c.client.azClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	tk, err := c.client.GetToken(ctx, opts)
+	return tk, err
 }
 
 var _ azcore.TokenCredential = (*UsernamePasswordCredential)(nil)

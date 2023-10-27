@@ -83,6 +83,7 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		ClientOptions:              options.ClientOptions,
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
+	// TODO: this will incorrectly report ClientAssertionCredential in traces
 	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, &caco)
 	if err != nil {
 		return nil, err

@@ -13,6 +13,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 )
 
@@ -75,11 +76,10 @@ func newOnBehalfOfCredential(tenantID, clientID, userAssertion string, cred conf
 	opts := confidentialClientOptions{
 		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
 		Assertion:                  userAssertion,
-		ClientOptions:              options.ClientOptions,
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 		SendX5C:                    options.SendCertificateChain,
 	}
-	c, err := newConfidentialClient(tenantID, clientID, credNameOBO, cred, opts)
+	c, err := newConfidentialClient(component+"."+credNameOBO, tenantID, clientID, credNameOBO, cred, opts, options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,11 @@ func newOnBehalfOfCredential(tenantID, clientID, userAssertion string, cred conf
 
 // GetToken requests an access token from Microsoft Entra ID. This method is called automatically by Azure SDK clients.
 func (o *OnBehalfOfCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return o.client.GetToken(ctx, opts)
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, credNameOBO+"."+traceOpGetToken, o.client.azClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	tk, err := o.client.GetToken(ctx, opts)
+	return tk, err
 }
 
 var _ azcore.TokenCredential = (*OnBehalfOfCredential)(nil)

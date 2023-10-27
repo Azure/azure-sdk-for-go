@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 const credNameBrowser = "InteractiveBrowserCredential"
@@ -80,7 +81,6 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	}
 	cp.init()
 	msalOpts := publicClientOptions{
-		ClientOptions:                  cp.ClientOptions,
 		DisableAutomaticAuthentication: cp.DisableAutomaticAuthentication,
 		DisableInstanceDiscovery:       cp.DisableInstanceDiscovery,
 		LoginHint:                      cp.LoginHint,
@@ -88,7 +88,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		RedirectURL:                    cp.RedirectURL,
 		TokenCachePersistenceOptions:   cp.TokenCachePersistenceOptions,
 	}
-	c, err := newPublicClient(cp.TenantID, cp.ClientID, credNameBrowser, msalOpts)
+	c, err := newPublicClient(component+"."+credNameBrowser, cp.TenantID, cp.ClientID, credNameBrowser, msalOpts, cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -97,12 +97,20 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 
 // Authenticate a user via the default browser. Subsequent calls to GetToken will automatically use the returned AuthenticationRecord.
 func (c *InteractiveBrowserCredential) Authenticate(ctx context.Context, opts *policy.TokenRequestOptions) (AuthenticationRecord, error) {
-	return c.client.Authenticate(ctx, opts)
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, credNameBrowser+"."+traceOpAuthenticate, c.client.azClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	tk, err := c.client.Authenticate(ctx, opts)
+	return tk, err
 }
 
 // GetToken requests an access token from Microsoft Entra ID. This method is called automatically by Azure SDK clients.
 func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return c.client.GetToken(ctx, opts)
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, credNameBrowser+"."+traceOpGetToken, c.client.azClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	tk, err := c.client.GetToken(ctx, opts)
+	return tk, err
 }
 
 var _ azcore.TokenCredential = (*InteractiveBrowserCredential)(nil)

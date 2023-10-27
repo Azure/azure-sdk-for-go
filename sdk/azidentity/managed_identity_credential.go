@@ -13,10 +13,12 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 )
 
 const credNameManagedIdentity = "ManagedIdentityCredential"
+const miClientName = component + "." + credNameManagedIdentity
 
 type managedIdentityIDKind int
 
@@ -79,7 +81,7 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 	if options == nil {
 		options = &ManagedIdentityCredentialOptions{}
 	}
-	mic, err := newManagedIdentityClient(options)
+	mic, err := newManagedIdentityClient(miClientName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +94,7 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 		clientID = options.ID.String()
 	}
 	// similarly, it's okay to give MSAL an incorrect tenant because MSAL won't use the value
-	c, err := newConfidentialClient("common", clientID, credNameManagedIdentity, cred, confidentialClientOptions{})
+	c, err := newConfidentialClient(miClientName, "common", clientID, credNameManagedIdentity, cred, confidentialClientOptions{}, options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -101,13 +103,18 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 
 // GetToken requests an access token from the hosting environment. This method is called automatically by Azure SDK clients.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, credNameManagedIdentity+"."+traceOpGetToken, c.client.azClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if len(opts.Scopes) != 1 {
-		err := fmt.Errorf("%s.GetToken() requires exactly one scope", credNameManagedIdentity)
+		err = fmt.Errorf("%s.GetToken() requires exactly one scope", credNameManagedIdentity)
 		return azcore.AccessToken{}, err
 	}
 	// managed identity endpoints require a Microsoft Entra ID v1 resource (i.e. token audience), not a v2 scope, so we remove "/.default" here
 	opts.Scopes = []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
-	return c.client.GetToken(ctx, opts)
+	tk, err := c.client.GetToken(ctx, opts)
+	return tk, err
 }
 
 var _ azcore.TokenCredential = (*ManagedIdentityCredential)(nil)

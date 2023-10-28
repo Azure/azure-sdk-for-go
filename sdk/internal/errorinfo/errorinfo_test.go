@@ -7,33 +7,22 @@
 package errorinfo
 
 import (
+	"errors"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestNonRetriableError(t *testing.T) {
 	//Create sample error.
-	err := NonRetriableError(NewSampleError("Do Not Retry"))
-
-	// Check if the error is of type NonRetriableError
-	if _, ok := err.(*nonRetriableError); !ok {
-		t.Fatal("Expected error to be of type NonRetriableError")
-	}
+	err := NonRetriableError(errors.New("Do Not Retry"))
 
 	// Check error message is correct
 	errMsg := "Do Not Retry"
 	if err.Error() != errMsg {
 		t.Fatalf("Expected error message to be '%q' but got '%q'.", errMsg, err.Error())
 	}
-}
 
-func NewSampleError(message string) error {
-	return &sampleError{message}
-}
-
-type sampleError struct {
-	message string
-}
-
-func (e *sampleError) Error() string {
-	return e.message
+	var nonRetriableErr interface{ NonRetriable() }
+	require.True(t, errors.As(&nonRetriableError{}, &nonRetriableErr))
 }

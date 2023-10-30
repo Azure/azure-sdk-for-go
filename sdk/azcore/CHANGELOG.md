@@ -16,6 +16,7 @@
 * Block key and SAS authentication for non TLS protected endpoints.
 * Passing a `nil` credential value will no longer cause a panic. Instead, the authentication is skipped.
 * Calling `Error` on a zero-value `azcore.ResponseError` will no longer panic.
+* Fixed an issue in `fake.PagerResponder[T]` that would cause a trailing error to be omitted when iterating over pages.
 
 ### Other Changes
 

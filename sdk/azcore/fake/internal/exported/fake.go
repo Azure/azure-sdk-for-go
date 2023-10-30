@@ -133,7 +133,7 @@ type AddPageOptions struct {
 // This function is called by the fake server internals.
 func (p *PagerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 	if len(p.pages) == 0 {
-		return nil, shared.NonRetriableError(errors.New("paged response has no pages"))
+		return nil, shared.NonRetriableError(errors.New("fake paged response is empty"))
 	}
 
 	page := p.pages[0]
@@ -175,11 +175,6 @@ func (p *PagerResponder[T]) More() bool {
 	return len(p.pages) > 0
 }
 
-type pageindex[T any] struct {
-	i    int
-	page pageResp[T]
-}
-
 // nextLinkURLSuffix is the URL path suffix for a faked next page followed by one or more digits.
 const nextLinkURLSuffix = "/fake_page_"
 
@@ -187,22 +182,20 @@ const nextLinkURLSuffix = "/fake_page_"
 // The inject callback is executed for every T in the sequence except for the last one.
 // This function is called by the fake server internals.
 func (p *PagerResponder[T]) InjectNextLinks(req *http.Request, inject func(page *T, createLink func() string)) {
-	// first find all the actual pages in the list
-	pages := make([]pageindex[T], 0, len(p.pages))
+	// populate the next links, including pageResp[T] where the next
+	// "page" is an error response. this allows an error response to
+	// be returned when there are no subsequent pages.
+	pageNum := 1
 	for i := range p.pages {
-		if pageT, ok := p.pages[i].(pageResp[T]); ok {
-			pages = append(pages, pageindex[T]{
-				i:    i,
-				page: pageT,
-			})
-		}
-	}
-
-	// now populate the next links
-	for i := range pages {
-		if i+1 == len(pages) {
+		if i+1 == len(p.pages) {
 			// no nextLink for last page
 			break
+		}
+
+		pageT, ok := p.pages[i].(pageResp[T])
+		if !ok {
+			// error entry, no next link
+			continue
 		}
 
 		qp := ""
@@ -210,13 +203,14 @@ func (p *PagerResponder[T]) InjectNextLinks(req *http.Request, inject func(page 
 			qp = "?" + req.URL.RawQuery
 		}
 
-		inject(&pages[i].page.entry, func() string {
+		inject(&pageT.entry, func() string {
 			// NOTE: any changes to this path format MUST be reflected in SanitizePagerPath()
-			return fmt.Sprintf("%s://%s%s%s%d%s", req.URL.Scheme, req.URL.Host, req.URL.Path, nextLinkURLSuffix, i+1, qp)
+			return fmt.Sprintf("%s://%s%s%s%d%s", req.URL.Scheme, req.URL.Host, req.URL.Path, nextLinkURLSuffix, pageNum, qp)
 		})
+		pageNum++
 
 		// update the original slice with the modified page
-		p.pages[pages[i].i] = pages[i].page
+		p.pages[i] = pageT
 	}
 }
 
@@ -326,7 +320,7 @@ func (p *PollerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 		httpResp.Header.Set(shared.HeaderFakePollerStatus, "Succeeded")
 		return httpResp, nil
 	} else {
-		return nil, shared.NonRetriableError(fmt.Errorf("%T has no terminal response", p))
+		return nil, shared.NonRetriableError(errors.New("fake poller response is emtpy"))
 	}
 }
 

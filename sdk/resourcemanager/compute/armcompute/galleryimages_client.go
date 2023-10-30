@@ -287,22 +287,15 @@ func (client *GalleryImagesClient) NewListByGalleryPager(resourceGroupName strin
 		},
 		Fetcher: func(ctx context.Context, page *GalleryImagesClientListByGalleryResponse) (GalleryImagesClientListByGalleryResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GalleryImagesClient.NewListByGalleryPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByGalleryCreateRequest(ctx, resourceGroupName, galleryName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByGalleryCreateRequest(ctx, resourceGroupName, galleryName, options)
+			}, nil)
 			if err != nil {
 				return GalleryImagesClientListByGalleryResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GalleryImagesClientListByGalleryResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GalleryImagesClientListByGalleryResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByGalleryHandleResponse(resp)
 		},

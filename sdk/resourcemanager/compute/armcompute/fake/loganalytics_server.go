@@ -84,7 +84,7 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportRequestRateByInterval(r
 	}
 	beginExportRequestRateByInterval := l.beginExportRequestRateByInterval.get(req)
 	if beginExportRequestRateByInterval == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logAnalytics/apiAccess/getRequestRateByInterval`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logAnalytics/apiAccess/getRequestRateByInterval`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
@@ -94,11 +94,11 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportRequestRateByInterval(r
 		if err != nil {
 			return nil, err
 		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := l.srv.BeginExportRequestRateByInterval(req.Context(), locationUnescaped, body, nil)
+		respr, errRespr := l.srv.BeginExportRequestRateByInterval(req.Context(), locationParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -128,7 +128,7 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportThrottledRequests(req *
 	}
 	beginExportThrottledRequests := l.beginExportThrottledRequests.get(req)
 	if beginExportThrottledRequests == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logAnalytics/apiAccess/getThrottledRequests`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logAnalytics/apiAccess/getThrottledRequests`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
@@ -138,11 +138,11 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportThrottledRequests(req *
 		if err != nil {
 			return nil, err
 		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := l.srv.BeginExportThrottledRequests(req.Context(), locationUnescaped, body, nil)
+		respr, errRespr := l.srv.BeginExportThrottledRequests(req.Context(), locationParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

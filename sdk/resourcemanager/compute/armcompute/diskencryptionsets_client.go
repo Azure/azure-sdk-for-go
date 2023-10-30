@@ -274,22 +274,15 @@ func (client *DiskEncryptionSetsClient) NewListPager(options *DiskEncryptionSets
 		},
 		Fetcher: func(ctx context.Context, page *DiskEncryptionSetsClientListResponse) (DiskEncryptionSetsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskEncryptionSetsClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return DiskEncryptionSetsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DiskEncryptionSetsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DiskEncryptionSetsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -340,22 +333,15 @@ func (client *DiskEncryptionSetsClient) NewListAssociatedResourcesPager(resource
 		},
 		Fetcher: func(ctx context.Context, page *DiskEncryptionSetsClientListAssociatedResourcesResponse) (DiskEncryptionSetsClientListAssociatedResourcesResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskEncryptionSetsClient.NewListAssociatedResourcesPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAssociatedResourcesCreateRequest(ctx, resourceGroupName, diskEncryptionSetName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAssociatedResourcesCreateRequest(ctx, resourceGroupName, diskEncryptionSetName, options)
+			}, nil)
 			if err != nil {
 				return DiskEncryptionSetsClientListAssociatedResourcesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DiskEncryptionSetsClientListAssociatedResourcesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DiskEncryptionSetsClientListAssociatedResourcesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAssociatedResourcesHandleResponse(resp)
 		},
@@ -411,22 +397,15 @@ func (client *DiskEncryptionSetsClient) NewListByResourceGroupPager(resourceGrou
 		},
 		Fetcher: func(ctx context.Context, page *DiskEncryptionSetsClientListByResourceGroupResponse) (DiskEncryptionSetsClientListByResourceGroupResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskEncryptionSetsClient.NewListByResourceGroupPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return DiskEncryptionSetsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DiskEncryptionSetsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DiskEncryptionSetsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},

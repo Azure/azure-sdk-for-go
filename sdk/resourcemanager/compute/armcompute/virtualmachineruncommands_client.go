@@ -353,22 +353,15 @@ func (client *VirtualMachineRunCommandsClient) NewListPager(location string, opt
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachineRunCommandsClientListResponse) (VirtualMachineRunCommandsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineRunCommandsClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, location, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return VirtualMachineRunCommandsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualMachineRunCommandsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VirtualMachineRunCommandsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -421,22 +414,15 @@ func (client *VirtualMachineRunCommandsClient) NewListByVirtualMachinePager(reso
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachineRunCommandsClientListByVirtualMachineResponse) (VirtualMachineRunCommandsClientListByVirtualMachineResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineRunCommandsClient.NewListByVirtualMachinePager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByVirtualMachineCreateRequest(ctx, resourceGroupName, vmName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByVirtualMachineCreateRequest(ctx, resourceGroupName, vmName, options)
+			}, nil)
 			if err != nil {
 				return VirtualMachineRunCommandsClientListByVirtualMachineResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualMachineRunCommandsClientListByVirtualMachineResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VirtualMachineRunCommandsClientListByVirtualMachineResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByVirtualMachineHandleResponse(resp)
 		},

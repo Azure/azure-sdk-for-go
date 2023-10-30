@@ -50,7 +50,7 @@ func ExampleVirtualMachinesServer() {
 	}
 
 	// now create the corresponding client, connecting the fake server via the client options
-	client, err := armcompute.NewVirtualMachinesClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
+	client, err := armcompute.NewVirtualMachinesClient("subscriptionID", &azfake.TokenCredential{}, &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: fake.NewVirtualMachinesServerTransport(&fakeVirtualMachinesServer),
 		},

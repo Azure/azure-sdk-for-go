@@ -113,7 +113,7 @@ func (s *SSHPublicKeysServerTransport) dispatchCreate(req *http.Request) (*http.
 	if s.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/sshPublicKeys/(?P<sshPublicKeyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/sshPublicKeys/(?P<sshPublicKeyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
@@ -123,15 +123,15 @@ func (s *SSHPublicKeysServerTransport) dispatchCreate(req *http.Request) (*http.
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	sshPublicKeyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("sshPublicKeyName")])
+	sshPublicKeyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sshPublicKeyName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.Create(req.Context(), resourceGroupNameUnescaped, sshPublicKeyNameUnescaped, body, nil)
+	respr, errRespr := s.srv.Create(req.Context(), resourceGroupNameParam, sshPublicKeyNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -150,21 +150,21 @@ func (s *SSHPublicKeysServerTransport) dispatchDelete(req *http.Request) (*http.
 	if s.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/sshPublicKeys/(?P<sshPublicKeyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/sshPublicKeys/(?P<sshPublicKeyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	sshPublicKeyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("sshPublicKeyName")])
+	sshPublicKeyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sshPublicKeyName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.Delete(req.Context(), resourceGroupNameUnescaped, sshPublicKeyNameUnescaped, nil)
+	respr, errRespr := s.srv.Delete(req.Context(), resourceGroupNameParam, sshPublicKeyNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -183,21 +183,21 @@ func (s *SSHPublicKeysServerTransport) dispatchGenerateKeyPair(req *http.Request
 	if s.srv.GenerateKeyPair == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GenerateKeyPair not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/sshPublicKeys/(?P<sshPublicKeyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateKeyPair`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/sshPublicKeys/(?P<sshPublicKeyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateKeyPair`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	sshPublicKeyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("sshPublicKeyName")])
+	sshPublicKeyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sshPublicKeyName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.GenerateKeyPair(req.Context(), resourceGroupNameUnescaped, sshPublicKeyNameUnescaped, nil)
+	respr, errRespr := s.srv.GenerateKeyPair(req.Context(), resourceGroupNameParam, sshPublicKeyNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -216,21 +216,21 @@ func (s *SSHPublicKeysServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/sshPublicKeys/(?P<sshPublicKeyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/sshPublicKeys/(?P<sshPublicKeyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	sshPublicKeyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("sshPublicKeyName")])
+	sshPublicKeyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sshPublicKeyName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameUnescaped, sshPublicKeyNameUnescaped, nil)
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, sshPublicKeyNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -251,17 +251,17 @@ func (s *SSHPublicKeysServerTransport) dispatchNewListByResourceGroupPager(req *
 	}
 	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/sshPublicKeys`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/sshPublicKeys`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.SSHPublicKeysClientListByResourceGroupResponse, createLink func() string) {
@@ -288,7 +288,7 @@ func (s *SSHPublicKeysServerTransport) dispatchNewListBySubscriptionPager(req *h
 	}
 	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/sshPublicKeys`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/sshPublicKeys`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
@@ -319,7 +319,7 @@ func (s *SSHPublicKeysServerTransport) dispatchUpdate(req *http.Request) (*http.
 	if s.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/sshPublicKeys/(?P<sshPublicKeyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/sshPublicKeys/(?P<sshPublicKeyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
@@ -329,15 +329,15 @@ func (s *SSHPublicKeysServerTransport) dispatchUpdate(req *http.Request) (*http.
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	sshPublicKeyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("sshPublicKeyName")])
+	sshPublicKeyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sshPublicKeyName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.Update(req.Context(), resourceGroupNameUnescaped, sshPublicKeyNameUnescaped, body, nil)
+	respr, errRespr := s.srv.Update(req.Context(), resourceGroupNameParam, sshPublicKeyNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

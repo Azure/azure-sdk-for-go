@@ -128,22 +128,15 @@ func (client *CloudServicesUpdateDomainClient) NewListUpdateDomainsPager(resourc
 		},
 		Fetcher: func(ctx context.Context, page *CloudServicesUpdateDomainClientListUpdateDomainsResponse) (CloudServicesUpdateDomainClientListUpdateDomainsResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServicesUpdateDomainClient.NewListUpdateDomainsPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listUpdateDomainsCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listUpdateDomainsCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
+			}, nil)
 			if err != nil {
 				return CloudServicesUpdateDomainClientListUpdateDomainsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CloudServicesUpdateDomainClientListUpdateDomainsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CloudServicesUpdateDomainClientListUpdateDomainsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listUpdateDomainsHandleResponse(resp)
 		},

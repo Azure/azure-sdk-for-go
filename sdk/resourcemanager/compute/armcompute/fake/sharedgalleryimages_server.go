@@ -81,25 +81,25 @@ func (s *SharedGalleryImagesServerTransport) dispatchGet(req *http.Request) (*ht
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGalleries/(?P<galleryUniqueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGalleries/(?P<galleryUniqueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
 	}
-	galleryUniqueNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryUniqueName")])
+	galleryUniqueNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryUniqueName")])
 	if err != nil {
 		return nil, err
 	}
-	galleryImageNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryImageName")])
+	galleryImageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryImageName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.Get(req.Context(), locationUnescaped, galleryUniqueNameUnescaped, galleryImageNameUnescaped, nil)
+	respr, errRespr := s.srv.Get(req.Context(), locationParam, galleryUniqueNameParam, galleryImageNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -120,18 +120,18 @@ func (s *SharedGalleryImagesServerTransport) dispatchNewListPager(req *http.Requ
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGalleries/(?P<galleryUniqueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGalleries/(?P<galleryUniqueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		galleryUniqueNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryUniqueName")])
+		galleryUniqueNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryUniqueName")])
 		if err != nil {
 			return nil, err
 		}
@@ -146,7 +146,7 @@ func (s *SharedGalleryImagesServerTransport) dispatchNewListPager(req *http.Requ
 				SharedTo: sharedToParam,
 			}
 		}
-		resp := s.srv.NewListPager(locationUnescaped, galleryUniqueNameUnescaped, options)
+		resp := s.srv.NewListPager(locationParam, galleryUniqueNameParam, options)
 		newListPager = &resp
 		s.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.SharedGalleryImagesClientListResponse, createLink func() string) {

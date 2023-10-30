@@ -640,22 +640,15 @@ func (client *VirtualMachineScaleSetsClient) NewGetOSUpgradeHistoryPager(resourc
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse) (VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineScaleSetsClient.NewGetOSUpgradeHistoryPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getOSUpgradeHistoryCreateRequest(ctx, resourceGroupName, vmScaleSetName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getOSUpgradeHistoryCreateRequest(ctx, resourceGroupName, vmScaleSetName, options)
+			}, nil)
 			if err != nil {
 				return VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getOSUpgradeHistoryHandleResponse(resp)
 		},
@@ -711,22 +704,15 @@ func (client *VirtualMachineScaleSetsClient) NewListPager(resourceGroupName stri
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachineScaleSetsClientListResponse) (VirtualMachineScaleSetsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineScaleSetsClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return VirtualMachineScaleSetsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualMachineScaleSetsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VirtualMachineScaleSetsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -779,22 +765,15 @@ func (client *VirtualMachineScaleSetsClient) NewListAllPager(options *VirtualMac
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachineScaleSetsClientListAllResponse) (VirtualMachineScaleSetsClientListAllResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineScaleSetsClient.NewListAllPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAllCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAllCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return VirtualMachineScaleSetsClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualMachineScaleSetsClientListAllResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VirtualMachineScaleSetsClientListAllResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAllHandleResponse(resp)
 		},
@@ -842,22 +821,15 @@ func (client *VirtualMachineScaleSetsClient) NewListByLocationPager(location str
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachineScaleSetsClientListByLocationResponse) (VirtualMachineScaleSetsClientListByLocationResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineScaleSetsClient.NewListByLocationPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByLocationCreateRequest(ctx, location, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByLocationCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return VirtualMachineScaleSetsClientListByLocationResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualMachineScaleSetsClientListByLocationResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VirtualMachineScaleSetsClientListByLocationResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByLocationHandleResponse(resp)
 		},
@@ -911,22 +883,15 @@ func (client *VirtualMachineScaleSetsClient) NewListSKUsPager(resourceGroupName 
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachineScaleSetsClientListSKUsResponse) (VirtualMachineScaleSetsClientListSKUsResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineScaleSetsClient.NewListSKUsPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listSKUsCreateRequest(ctx, resourceGroupName, vmScaleSetName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listSKUsCreateRequest(ctx, resourceGroupName, vmScaleSetName, options)
+			}, nil)
 			if err != nil {
 				return VirtualMachineScaleSetsClientListSKUsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualMachineScaleSetsClientListSKUsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VirtualMachineScaleSetsClientListSKUsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listSKUsHandleResponse(resp)
 		},

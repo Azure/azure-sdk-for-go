@@ -136,22 +136,15 @@ func (client *SharedGalleryImageVersionsClient) NewListPager(location string, ga
 		},
 		Fetcher: func(ctx context.Context, page *SharedGalleryImageVersionsClientListResponse) (SharedGalleryImageVersionsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SharedGalleryImageVersionsClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, location, galleryUniqueName, galleryImageName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, location, galleryUniqueName, galleryImageName, options)
+			}, nil)
 			if err != nil {
 				return SharedGalleryImageVersionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SharedGalleryImageVersionsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SharedGalleryImageVersionsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},

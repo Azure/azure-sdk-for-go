@@ -491,22 +491,15 @@ func (client *DiskAccessesClient) NewListPager(options *DiskAccessesClientListOp
 		},
 		Fetcher: func(ctx context.Context, page *DiskAccessesClientListResponse) (DiskAccessesClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskAccessesClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return DiskAccessesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DiskAccessesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DiskAccessesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -554,22 +547,15 @@ func (client *DiskAccessesClient) NewListByResourceGroupPager(resourceGroupName 
 		},
 		Fetcher: func(ctx context.Context, page *DiskAccessesClientListByResourceGroupResponse) (DiskAccessesClientListByResourceGroupResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskAccessesClient.NewListByResourceGroupPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return DiskAccessesClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DiskAccessesClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DiskAccessesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -624,22 +610,15 @@ func (client *DiskAccessesClient) NewListPrivateEndpointConnectionsPager(resourc
 		},
 		Fetcher: func(ctx context.Context, page *DiskAccessesClientListPrivateEndpointConnectionsResponse) (DiskAccessesClientListPrivateEndpointConnectionsResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskAccessesClient.NewListPrivateEndpointConnectionsPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, diskAccessName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, diskAccessName, options)
+			}, nil)
 			if err != nil {
 				return DiskAccessesClientListPrivateEndpointConnectionsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DiskAccessesClientListPrivateEndpointConnectionsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DiskAccessesClientListPrivateEndpointConnectionsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listPrivateEndpointConnectionsHandleResponse(resp)
 		},

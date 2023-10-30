@@ -191,22 +191,15 @@ func (client *CloudServiceOperatingSystemsClient) NewListOSFamiliesPager(locatio
 		},
 		Fetcher: func(ctx context.Context, page *CloudServiceOperatingSystemsClientListOSFamiliesResponse) (CloudServiceOperatingSystemsClientListOSFamiliesResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceOperatingSystemsClient.NewListOSFamiliesPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listOSFamiliesCreateRequest(ctx, location, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listOSFamiliesCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return CloudServiceOperatingSystemsClientListOSFamiliesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CloudServiceOperatingSystemsClientListOSFamiliesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CloudServiceOperatingSystemsClientListOSFamiliesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listOSFamiliesHandleResponse(resp)
 		},
@@ -260,22 +253,15 @@ func (client *CloudServiceOperatingSystemsClient) NewListOSVersionsPager(locatio
 		},
 		Fetcher: func(ctx context.Context, page *CloudServiceOperatingSystemsClientListOSVersionsResponse) (CloudServiceOperatingSystemsClientListOSVersionsResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceOperatingSystemsClient.NewListOSVersionsPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listOSVersionsCreateRequest(ctx, location, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listOSVersionsCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return CloudServiceOperatingSystemsClientListOSVersionsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CloudServiceOperatingSystemsClientListOSVersionsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CloudServiceOperatingSystemsClientListOSVersionsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listOSVersionsHandleResponse(resp)
 		},

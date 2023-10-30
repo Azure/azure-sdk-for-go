@@ -134,7 +134,7 @@ func TestPagerResponder(t *testing.T) {
 			require.NotNil(t, resp)
 			page, err := unmarshal[widgets](resp)
 			require.NoError(t, err)
-			require.Nil(t, page.NextPage)
+			require.NotNil(t, page.NextPage)
 			require.Equal(t, []widget{{Name: "baz"}}, page.Widgets)
 		case 4:
 			require.Error(t, err)
@@ -149,6 +149,104 @@ func TestPagerResponder(t *testing.T) {
 		iterations++
 	}
 	require.Equal(t, 5, iterations)
+
+	// single page with subsequent error
+	pagerResp = PagerResponder[widgets]{}
+
+	pagerResp.AddPage(http.StatusOK, widgets{
+		Widgets: []widget{
+			{Name: "foo"},
+			{Name: "bar"},
+		},
+	}, nil)
+	pagerResp.AddError(errors.New("two"))
+
+	pagerResp.InjectNextLinks(req, func(p *widgets, create func() string) {
+		p.NextPage = to.Ptr(create())
+	})
+
+	iterations = 0
+	for pagerResp.More() {
+		resp, err := pagerResp.Next(req)
+		switch iterations {
+		case 0:
+			require.NoError(t, err)
+			require.NotNil(t, resp)
+			page, err := unmarshal[widgets](resp)
+			require.NoError(t, err)
+			require.NotNil(t, page.NextPage)
+			require.Equal(t, []widget{{Name: "foo"}, {Name: "bar"}}, page.Widgets)
+		case 1:
+			require.Error(t, err)
+			require.Nil(t, resp)
+		}
+		iterations++
+	}
+	require.EqualValues(t, 2, iterations)
+
+	// single page with subsequent response error
+	pagerResp = PagerResponder[widgets]{}
+
+	pagerResp.AddPage(http.StatusOK, widgets{
+		Widgets: []widget{
+			{Name: "foo"},
+			{Name: "bar"},
+		},
+	}, nil)
+	pagerResp.AddResponseError(http.StatusBadRequest, "BadRequest")
+
+	pagerResp.InjectNextLinks(req, func(p *widgets, create func() string) {
+		p.NextPage = to.Ptr(create())
+	})
+
+	iterations = 0
+	for pagerResp.More() {
+		resp, err := pagerResp.Next(req)
+		switch iterations {
+		case 0:
+			require.NoError(t, err)
+			require.NotNil(t, resp)
+			page, err := unmarshal[widgets](resp)
+			require.NoError(t, err)
+			require.NotNil(t, page.NextPage)
+			require.Equal(t, []widget{{Name: "foo"}, {Name: "bar"}}, page.Widgets)
+		case 1:
+			require.Error(t, err)
+			require.Nil(t, resp)
+		}
+		iterations++
+	}
+	require.EqualValues(t, 2, iterations)
+
+	// single page
+	pagerResp = PagerResponder[widgets]{}
+
+	pagerResp.AddPage(http.StatusOK, widgets{
+		Widgets: []widget{
+			{Name: "foo"},
+			{Name: "bar"},
+		},
+	}, nil)
+
+	pagerResp.InjectNextLinks(req, func(p *widgets, create func() string) {
+		p.NextPage = to.Ptr(create())
+	})
+
+	iterations = 0
+	for pagerResp.More() {
+		resp, err := pagerResp.Next(req)
+		switch iterations {
+		case 0:
+			require.NoError(t, err)
+			require.NotNil(t, resp)
+			page, err := unmarshal[widgets](resp)
+			require.NoError(t, err)
+			require.Nil(t, page.NextPage)
+			require.Equal(t, []widget{{Name: "foo"}, {Name: "bar"}}, page.Widgets)
+		}
+		iterations++
+	}
+	require.EqualValues(t, 1, iterations)
 }
 
 func TestPollerResponder(t *testing.T) {

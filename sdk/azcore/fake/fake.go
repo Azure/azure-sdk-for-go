@@ -74,7 +74,9 @@ func (e *ErrorResponder) SetResponseError(httpStatus int, errorCode string) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // PagerResponder represents a sequence of paged responses.
-// Responses are replayed in the order in which they were added.
+// Responses are consumed in the order in which they were added.
+// If no pages or errors have been added, calls to Pager[T].NextPage
+// will return an error.
 type PagerResponder[T any] exported.PagerResponder[T]
 
 // AddPage adds a page to the sequence of respones.
@@ -102,8 +104,10 @@ type AddPageOptions = exported.AddPageOptions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // PollerResponder represents a sequence of responses for a long-running operation.
-// Any non-terminal responses are replayed in the order in which they were added.
+// Any non-terminal responses are consumed in the order in which they were added.
 // The terminal response, success or error, is always the final response.
+// If no responses or errors have been added, the following method calls on Poller[T]
+// will return an error: PollUntilDone, Poll, Result.
 type PollerResponder[T any] exported.PollerResponder[T]
 
 // AddNonTerminalResponse adds a non-terminal response to the sequence of responses.

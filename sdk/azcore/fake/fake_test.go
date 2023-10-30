@@ -161,7 +161,7 @@ func TestPagerResponder(t *testing.T) {
 			require.NotNil(t, resp)
 			page, err := unmarshal[widgets](resp)
 			require.NoError(t, err)
-			require.Nil(t, page.NextPage)
+			require.NotNil(t, page.NextPage)
 			require.Equal(t, []widget{{Name: "baz"}}, page.Widgets)
 		case 4:
 			require.Error(t, err)

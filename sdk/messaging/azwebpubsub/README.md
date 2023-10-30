@@ -1,33 +1,110 @@
-# Azure Template Package client library for Go
+# Azure Web PubSub service client library for Go
 
-Azure Template Package client library for Go (`aztemplate`)  matches necessary patterns that the development team has established to create a unified SDK written in the Go programming language. These libraries follow the Azure SDK Design Guidelines for Go.
+[Azure Web PubSub service](https://aka.ms/awps/doc) is an Azure-managed service that helps developers easily build web applications with real-time features and publish-subscribe pattern. Any scenario that requires real-time publish-subscribe messaging between server and clients or among clients can use Azure Web PubSub service. Traditional real-time features that often require polling from server or submitting HTTP requests can also use Azure Web PubSub service.
 
-The library allows client libraries to expose common functionality in a consistent fashion.  Once you learn how to use these APIs in one client library, you will know how to use them in other client libraries.
+You can use this library in your app server side to manage the WebSocket client connections, as shown in below diagram:
+
+![overflow](https://user-images.githubusercontent.com/668244/140014067-25a00959-04dc-47e8-ac25-6957bd0a71ce.png).
+
+- Send messages to hubs and groups.
+- Send messages to particular users and connections.
+- Organize users and connections into groups.
+- Close connections
+- Grant, revoke, and check permissions for an existing connection
+
+Details about the terms used here are described in [Key concepts](#key-concepts) section.
+
+Key links:
+- [Source code][source]
+- [API Reference Documentation][godoc]
+- [Product documentation][product]
+- [Samples][godoc_examples]
 
 ## Getting started
 
-For a rich example of a well formatted readme, please check [here.](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-TEMPLATE.md) In addition, this is an [example readme](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-EXAMPLE.md) that should be emulated. Note that the top-level sections in this template align with that of the [template.](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-TEMPLATE.md)
+### Install the package
+
+Install the Azure Web PubSub service client module for Go with `go get`:
+
+```bash
+go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub
+```
+
+### Prerequisites
+
+- Go, version 1.18 or higher
+- An [Azure subscription](https://azure.microsoft.com/free/)
+- An existing Azure Web PubSub service instance.
+
+
+### Authenticate the client
+
+Web PubSub service clients are created using a TokenCredential from the [Azure Identity package][azure_identity_pkg], like [DefaultAzureCredential][default_azure_credential].
+You can also create a client using a connection string.
+
+#### Using a service principal
+
+#### Using a connection string
 
 # Key concepts
 
-Bullet point list of your library's main concepts.
+### Connection
+
+A connection, also known as a client or a client connection, represents an individual WebSocket connection connected to the Web PubSub service. When successfully connected, a unique connection ID is assigned to this connection by the Web PubSub service.
+
+### Hub
+
+A hub is a logical concept for a set of client connections. Usually you use one hub for one purpose, for example, a chat hub, or a notification hub. When a client connection is created, it connects to a hub, and during its lifetime, it belongs to that hub. Different applications can share one Azure Web PubSub service by using different hub names.
+
+### Group
+
+A group is a subset of connections to the hub. You can add a client connection to a group, or remove the client connection from the group, anytime you want. For example, when a client joins a chat room, or when a client leaves the chat room, this chat room can be considered to be a group. A client can join multiple groups, and a group can contain multiple clients.
+
+### User
+
+Connections to Web PubSub can belong to one user. A user might have multiple connections, for example when a single user is connected across multiple devices or multiple browser tabs.
+
+### Message
+
+When the client is connected, it can send messages to the upstream application, or receive messages from the upstream application, through the WebSocket connection.
 
 # Examples
 
-Examples of some of the key concepts for your library.
+Examples for various scenarios can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub#pkg-examples) or in the example*_test.go files in our GitHub repo for [azwebpubsub](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azwebpubsub).
 
 # Troubleshooting
 
-Running into issues? This section should contain details as to what to do there.
+### Live Trace
 
-# Next steps
+Use **Live Trace** from the Web PubSub service portal to view the live traffic.
 
-More sample code should go here, along with links out to the appropriate example tests.
+### Logging
+
+This module uses the classification-based logging implementation in `azcore`. To enable console logging for all SDK modules, set the environment variable `AZURE_SDK_GO_LOGGING` to `all`. 
+
+Use the `azcore/log` package to control log event output or to enable logs for `azwebpubsub` only. For example:
+
+```go
+import (
+  "fmt"
+  azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+)
+
+// print log output to stdout
+azlog.SetListener(func(event azlog.Event, s string) {
+    fmt.Printf("[%s] %s\n", event, s)
+})
+
+// pick the set of events to log
+azlog.SetEvents(
+  azwebpubsub
+)
+```
 
 ## Contributing
 For details on contributing to this repository, see the [contributing guide][azure_sdk_for_go_contributing].
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
@@ -67,3 +144,10 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [azure_sub]: https://azure.microsoft.com/free/
 [cloud_shell]: https://docs.microsoft.com/azure/cloud-shell/overview
 [cloud_shell_bash]: https://shell.azure.com/bash
+
+[azure_identity_pkg]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
+[default_azure_credential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
+[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azwebpubsub
+[godoc]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub
+[godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub#pkg-examples
+[product]: https://aka.ms/awps/doc

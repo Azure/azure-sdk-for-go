@@ -36,16 +36,32 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	err := recording.ResetProxy(nil)
-	if err != nil {
-		panic(err)
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy("sdk/monitor/azingest/testdata", nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
 	}
+
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
 		tenantID := lookupEnvVar("AZINGEST_TENANT_ID")
 		clientID := lookupEnvVar("AZINGEST_CLIENT_ID")
 		secret := lookupEnvVar("AZINGEST_CLIENT_SECRET")
+		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
 			panic(err)
@@ -63,8 +79,7 @@ func TestMain(m *testing.M) {
 	ruleID = getEnvVar("AZURE_MONITOR_DCR_ID", fakeRuleID)
 	streamName = getEnvVar("AZURE_MONITOR_STREAM_NAME", fakeStreamName)
 
-	code := m.Run()
-	os.Exit(code)
+	return m.Run()
 }
 
 func startRecording(t *testing.T) {

@@ -35,16 +35,32 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	err := recording.ResetProxy(nil)
-	if err != nil {
-		panic(err)
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy("sdk/security/keyvault/azadmin/testdata", nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
 	}
+
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
 		tenantID := lookupEnvVar("AZADMIN_TENANT_ID")
 		clientID := lookupEnvVar("AZADMIN_CLIENT_ID")
 		secret := lookupEnvVar("AZADMIN_CLIENT_SECRET")
+		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
 			panic(err)
@@ -56,13 +72,13 @@ func TestMain(m *testing.M) {
 	token = getEnvVar("BLOB_STORAGE_SAS_TOKEN", fakeToken)
 
 	if recording.GetRecordMode() == recording.RecordingMode {
-		err = recording.AddBodyRegexSanitizer(fakeToken, `sv=[^"]*`, nil)
+		err := recording.AddBodyRegexSanitizer(fakeToken, `sv=[^"]*`, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
-	code := m.Run()
-	os.Exit(code)
+
+	return m.Run()
 }
 
 func startRecording(t *testing.T) {

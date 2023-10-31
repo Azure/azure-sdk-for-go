@@ -37,6 +37,25 @@ var (
 )
 
 func TestMain(m *testing.M) {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy("sdk/security/keyvault/azcertificates/testdata", nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
+
 	vaultURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL), "/")
 	if vaultURL == "" {
 		if recording.GetRecordMode() != recording.PlaybackMode {
@@ -44,29 +63,20 @@ func TestMain(m *testing.M) {
 		}
 		vaultURL = fakeVaultURL
 	}
-	proxy, err := recording.StartTestProxy("sdk/security/keyvault/azcertificates/testdata", nil)
-	if err != nil {
-		panic(err)
-	}
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
 		tenantId := lookupEnvVar("AZCERTIFICATES_TENANT_ID")
 		clientId := lookupEnvVar("AZCERTIFICATES_CLIENT_ID")
 		secret := lookupEnvVar("AZCERTIFICATES_CLIENT_SECRET")
+		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantId, clientId, secret, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
 	if recording.GetRecordMode() == recording.RecordingMode {
-		defer func() {
-			err := recording.ResetProxy(nil)
-			if err != nil {
-				panic(err)
-			}
-		}()
-		err = recording.AddURISanitizer(fakeVaultURL, vaultURL, nil)
+		err := recording.AddURISanitizer(fakeVaultURL, vaultURL, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -110,11 +120,7 @@ func TestMain(m *testing.M) {
 		}
 	}
 
-	err = recording.StopTestProxy(proxy)
-	if err != nil {
-		panic(err)
-	}
-	os.Exit(code)
+	return code
 }
 
 func startTest(t *testing.T) *azcertificates.Client {

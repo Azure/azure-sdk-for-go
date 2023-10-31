@@ -22,21 +22,28 @@ Recording and playing back tests relies on the [Test Proxy](https://github.com/A
 
 ```golang
 func TestMain(m *testing.M) {
-	proxy, err := recording.StartTestProxy("<path to service directory with assets.json file>/testdata", nil)
-	if err != nil {
-		panic(err)
-	}
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+        proxy, err := recording.StartTestProxy("<path to service directory with assets.json file>/testdata", nil)
+        if err != nil {
+            panic(err)
+        }
+
+        // NOTE: defer should not be used directly within TestMain as it will not be executed due to os.Exit()
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+    }
 
     ... all other test code, including proxy recording setup ...
-
-	code := m.Run()
-
-	err = recording.StopTestProxy(proxy)
-	if err != nil {
-		panic(err)
-	}
-
-	os.Exit(code)
+	return m.Run()
 }
 ```
 

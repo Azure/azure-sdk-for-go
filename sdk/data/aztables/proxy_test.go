@@ -19,6 +19,25 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy("sdk/data/aztables/testdata", nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
+
 	// 1. Set up session level sanitizers
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
@@ -44,19 +63,7 @@ func TestMain(m *testing.M) {
 
 	}
 	// Run tests
-	exitVal := m.Run()
-
-	// 3. Reset
-	// TODO: Add after sanitizer PR
-	if recording.GetRecordMode() != "live" {
-		err := recording.ResetProxy(nil)
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	// 4. Error out if applicable
-	os.Exit(exitVal)
+	return m.Run()
 }
 
 var pathToPackage = "sdk/data/aztables/testdata"

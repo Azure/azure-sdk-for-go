@@ -25,9 +25,18 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) int {
-	err := recording.ResetProxy(nil)
-	if err != nil {
-		panic(err)
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy("sdk/data/azappconfig/testdata", nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
 	}
 
 	switch recording.GetRecordMode() {
@@ -39,13 +48,6 @@ func run(m *testing.M) int {
 		}
 
 	case recording.RecordingMode:
-		defer func() {
-			err := recording.ResetProxy(nil)
-			if err != nil {
-				panic(err)
-			}
-		}()
-
 		if err := recording.AddURISanitizer("https://contoso.azconfig.io", `https://\w+\.azconfig\.io`, nil); err != nil {
 			panic(err)
 		}

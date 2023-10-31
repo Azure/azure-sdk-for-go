@@ -40,6 +40,23 @@ var (
 )
 
 func TestMain(m *testing.M) {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy("sdk/monitor/azquery/testdata", nil)
+		if err != nil {
+			panic(err)
+		}
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
 	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
 		workspaceID, workspaceID2, resourceURI = os.Getenv("WORKSPACE_ID"), os.Getenv("WORKSPACE_ID2"), os.Getenv("RESOURCE_URI")
 	}
@@ -61,16 +78,13 @@ func TestMain(m *testing.M) {
 		}
 		resourceURI = fakeResourceURI
 	}
-	err := recording.ResetProxy(nil)
-	if err != nil {
-		panic(err)
-	}
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
 		tenantID := lookupEnvVar("AZQUERY_TENANT_ID")
 		clientID := lookupEnvVar("AZQUERY_CLIENT_ID")
 		secret := lookupEnvVar("AZQUERY_CLIENT_SECRET")
+		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
 			panic(err)
@@ -99,15 +113,8 @@ func TestMain(m *testing.M) {
 		if err != nil {
 			panic(err)
 		}
-		defer func() {
-			err := recording.ResetProxy(nil)
-			if err != nil {
-				panic(err)
-			}
-		}()
 	}
-	code := m.Run()
-	os.Exit(code)
+	return m.Run()
 }
 
 func startRecording(t *testing.T) {

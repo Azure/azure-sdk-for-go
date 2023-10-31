@@ -268,14 +268,29 @@ To add a scrubber that replaces the URL of your account use the `TestMain()` fun
 
 ```go
 func TestMain(m *testing.M) {
-	// Initialize
-	if recording.GetRecordMode() == "record" {
-		// start all tests with a proxy using it's defaults.
-		err := recording.ResetProxy(nil)
-		if err != nil {
-			panic(err)
-		}
+	code := run(m)
+	os.Exit(code)
+}
 
+func run(m *testing.M) int {
+	// Initialize
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+        proxy, err := recording.StartTestProxy("<path to service directory with assets.json file>/testdata", nil)
+        if err != nil {
+            panic(err)
+        }
+
+        // NOTE: defer should not be used directly within TestMain as it will not be executed due to os.Exit()
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+    }
+
+    // Set sanitizers in record mode
+	if recording.GetRecordMode() == "record" {
 		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 		err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
 		if err != nil {
@@ -283,16 +298,8 @@ func TestMain(m *testing.M) {
 		}
 	}
 
-	exitVal := m.Run()
-
-	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		// reset the proxy to it's defaults
-		err := recording.ResetProxy(nil)
-		if err != nil {
-			panic(err)
-		}
-	}
-
+	return m.Run()
+}
 ```
 
 Note that removing the names of accounts and other values in your recording can have side effects when running your tests in playback. To take care of this, there are additional methods in the `internal/recording` module for reading environment variables and defaulting to the processed recording value. For example, an `aztables` test for the client constructor and "requiring" the account name to be the same as provided could look like this:

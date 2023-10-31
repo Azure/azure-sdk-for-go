@@ -44,7 +44,7 @@ func TestMain(m *testing.M) {
 		}
 		vaultURL = fakeVaultURL
 	}
-	proxy, err := recording.StartTestProxy("", nil)
+	proxy, err := recording.StartTestProxy("sdk/security/keyvault/azcertificates/testdata", nil)
 	if err != nil {
 		panic(err)
 	}

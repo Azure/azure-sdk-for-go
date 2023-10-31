@@ -27,4 +27,5 @@ stages:
   parameters:
     ServiceDirectory: 'security/keyvault/azcertificates'
     RunLiveTests: true
+    UsePipelineProxy: false
     TestRunTime: '900s'

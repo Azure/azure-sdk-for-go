@@ -22,8 +22,8 @@ func TestNonRetriableError(t *testing.T) {
 		t.Fatalf("Expected error message to be '%q' but got '%q'.", dnr, err.Error())
 	}
 
-	var e *nonRetriableError
+	var e NonRetriable
 	if !errors.As(err, &e) {
-		t.Fatalf("Expected error to be of type nonRetriableError")
+		t.Fatalf("Expected error to be of type NonRetriable")
 	}
 }

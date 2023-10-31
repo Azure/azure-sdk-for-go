@@ -24,6 +24,7 @@ stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: 'data/azcosmos'
+    UsePipelineProxy: false
 - stage: Emulator
   displayName: 'Cosmos Emulator'
   variables:

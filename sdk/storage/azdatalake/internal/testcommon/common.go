@@ -20,9 +20,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 )
 
 const (
+	RecordingDirectory          = "sdk/storage/azdatalake/testdata"
 	FileSystemPrefix            = "gofs"
 	FilePrefix                  = "gotestfile"
 	DirPrefix                   = "gotestdir"
@@ -46,6 +48,22 @@ func GenerateEntityName(testName string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(testName), "/", ""), "test", "")
 }
 
+func SetupSuite(suite *suite.Suite) *recording.TestProxyInstance {
+	proxy, err := recording.StartTestProxy(RecordingDirectory, nil)
+	if err != nil {
+		suite.T().Fatal(err)
+	}
+
+	return proxy
+}
+
+func TearDownSuite(suite *suite.Suite, proxy *recording.TestProxyInstance) {
+	err := recording.StopTestProxy(proxy)
+	if err != nil {
+		suite.T().Fatal(err)
+	}
+}
+
 func BeforeTest(t *testing.T, suite string, test string) {
 	const blobURLRegex = `https://\S+\.blob\.core\.windows\.net`
 	const dfsURLRegex = `https://\S+\.dfs\.core\.windows\.net`
@@ -64,7 +82,7 @@ func BeforeTest(t *testing.T, suite string, test string) {
 	// TODO: more freezing
 	//testframework.AddBodyRegexSanitizer("RequestId:00000000-0000-0000-0000-000000000000", `RequestId:\w{8}-\w{4}-\w{4}-\w{4}-\w{12}`, nil)
 	//testframework.AddBodyRegexSanitizer("Time:2022-08-11T00:21:56.4562741Z", `Time:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)?Z`, nil)
-	require.NoError(t, recording.Start(t, "sdk/storage/azdatalake/testdata", nil))
+	require.NoError(t, recording.Start(t, RecordingDirectory, nil))
 }
 
 func AfterTest(t *testing.T, suite string, test string) {

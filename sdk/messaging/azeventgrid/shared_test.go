@@ -144,7 +144,7 @@ func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	err = recording.Start(t, "sdk/messaging/azeventgrid/testdata", nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 
 	// err = recording.ResetProxy(nil)

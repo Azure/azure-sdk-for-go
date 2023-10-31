@@ -27,4 +27,5 @@ stages:
   parameters:
     ServiceDirectory: 'monitor/azingest'
     RunLiveTests: true
+    UsePipelineProxy: false
     SupportedClouds: 'Public,UsGov,China'

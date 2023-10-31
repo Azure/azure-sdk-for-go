@@ -48,7 +48,7 @@ func TestMain(m *testing.M) {
 			panic("no value for AZURE_KEYVAULT_URL")
 		}
 	}
-	proxy, err := recording.StartTestProxy("", nil)
+	proxy, err := recording.StartTestProxy("sdk/security/keyvault/azsecrets/testdata", nil)
 	if err != nil {
 		panic(err)
 	}

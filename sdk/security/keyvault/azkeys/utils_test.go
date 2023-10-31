@@ -59,7 +59,7 @@ func TestMain(m *testing.M) {
 		vaultURL = fakeVaultURL
 	}
 	enableHSM = mhsmURL != fakeMHSMURL
-	proxy, err := recording.StartTestProxy("", nil)
+	proxy, err := recording.StartTestProxy("sdk/security/keyvault/azkeys/testdata", nil)
 	if err != nil {
 		panic(err)
 	}

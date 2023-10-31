@@ -21,8 +21,11 @@ $ENV:PROXY_CERT="C:/ <path-to-repo> /azure-sdk-for-go/eng/common/testproxy/dotne
 Recording and playing back tests relies on the [Test Proxy](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md) to intercept traffic. The recording package can automatically install and run an instance of the test-proxy server per package. The following code needs to be added to test setup and teardown in order to achieve this:
 
 ```golang
+// This should be a 'testdata' directory in your module. `testdata` is ignored by the go tool, making it perfect for ancillary data
+var pathToPackage = "sdk/data/aztables/testdata"
+
 func TestMain(m *testing.M) {
-	proxy, err := recording.StartTestProxy(nil)
+	proxy, err := recording.StartTestProxy(pathToPackage, nil)
 	if err != nil {
 		panic(err)
 	}

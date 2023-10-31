@@ -44,7 +44,7 @@ func TestMain(m *testing.M) {
 		}
 		vaultURL = fakeVaultURL
 	}
-	proxy, err := recording.ResetProxy("", nil)
+	proxy, err := recording.StartTestProxy("", nil)
 	if err != nil {
 		panic(err)
 	}

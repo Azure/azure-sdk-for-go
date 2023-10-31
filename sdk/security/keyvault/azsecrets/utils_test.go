@@ -48,7 +48,7 @@ func TestMain(m *testing.M) {
 			panic("no value for AZURE_KEYVAULT_URL")
 		}
 	}
-	err := recording.ResetProxy(nil)
+	proxy, err := recording.StartTestProxy("", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -108,6 +108,11 @@ func TestMain(m *testing.M) {
 				}
 			}
 		}
+	}
+
+	err = recording.StopTestProxy(proxy)
+	if err != nil {
+		panic(err)
 	}
 	os.Exit(code)
 }

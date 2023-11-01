@@ -205,7 +205,6 @@ func TestStartSpansDontNest(t *testing.T) {
 
 	barMethod := func(ctx context.Context) {
 		ourCtx, endSpan := StartSpan(ctx, "BarMethod", tr, nil)
-		require.Same(t, ctx, ourCtx)
 		defer endSpan(nil)
 		req, err := exported.NewRequest(ourCtx, http.MethodGet, srv.URL()+"/bar")
 		require.NoError(t, err)

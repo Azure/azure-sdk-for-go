@@ -136,3 +136,23 @@ func TestExtractModuleName(t *testing.T) {
 	require.Empty(t, mod)
 	require.Empty(t, client)
 }
+
+func TestContextWithDeniedValues(t *testing.T) {
+	type testKey struct{}
+	const value = "value"
+
+	ctx := context.WithValue(context.Background(), testKey{}, value)
+	ctx = context.WithValue(ctx, CtxAPINameKey{}, value)
+	ctx = context.WithValue(ctx, CtxWithCaptureResponse{}, value)
+	ctx = context.WithValue(ctx, CtxWithHTTPHeaderKey{}, value)
+	ctx = context.WithValue(ctx, CtxWithRetryOptionsKey{}, value)
+	ctx = context.WithValue(ctx, CtxWithTracingTracer{}, value)
+	ctx = &ContextWithDeniedValues{Context: ctx}
+
+	require.Nil(t, ctx.Value(CtxAPINameKey{}))
+	require.Nil(t, ctx.Value(CtxWithCaptureResponse{}))
+	require.Nil(t, ctx.Value(CtxWithHTTPHeaderKey{}))
+	require.Nil(t, ctx.Value(CtxWithRetryOptionsKey{}))
+	require.Nil(t, ctx.Value(CtxWithTracingTracer{}))
+	require.NotNil(t, ctx.Value(testKey{}))
+}

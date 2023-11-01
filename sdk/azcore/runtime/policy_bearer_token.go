@@ -34,7 +34,7 @@ type acquiringResourceState struct {
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
 func acquire(state acquiringResourceState) (newResource exported.AccessToken, newExpiration time.Time, err error) {
-	tk, err := state.p.cred.GetToken(state.req.Raw().Context(), state.tro)
+	tk, err := state.p.cred.GetToken(&shared.ContextWithDeniedValues{Context: state.req.Raw().Context()}, state.tro)
 	if err != nil {
 		return exported.AccessToken{}, time.Time{}, err
 	}

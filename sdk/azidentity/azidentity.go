@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"regexp"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -113,13 +112,13 @@ func resolveTenant(defaultTenant, specified, credName string, additionalTenants 
 	return "", fmt.Errorf(`%s isn't configured to acquire tokens for tenant %q. To enable acquiring tokens for this tenant add it to the AdditionallyAllowedTenants on the credential options, or add "*" to allow acquiring tokens for any tenant`, credName, specified)
 }
 
-// validTenantID return true is it receives a valid tenantID, returns false otherwise
 func validTenantID(tenantID string) bool {
-	match, err := regexp.MatchString("^[0-9a-zA-Z-.]+$", tenantID)
-	if err != nil {
-		return false
+	for _, r := range tenantID {
+		if !(('0' <= r && r <= '9') || ('a' <= r && r <= 'z') || ('A' <= r && r <= 'Z') || r == '.' || r == '-') {
+			return false
+		}
 	}
-	return match
+	return true
 }
 
 func newPipelineAdapter(opts *azcore.ClientOptions) pipelineAdapter {

@@ -143,12 +143,16 @@ func TestNewClientTracingEnabled(t *testing.T) {
 	defer close()
 
 	var attrString string
-	client, err := NewClient("package.Client", "v1.0.0", runtime.PipelineOptions{TracingNamespace: "Widget.Factory"}, &policy.ClientOptions{
+	client, err := NewClient("package.Client", "v1.0.0", runtime.PipelineOptions{
+		Tracing: runtime.TracingOptions{
+			Namespace: "Widget.Factory",
+		},
+	}, &policy.ClientOptions{
 		TracingProvider: tracing.NewProvider(func(name, version string) tracing.Tracer {
 			return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 				require.NotNil(t, options)
 				for _, attr := range options.Attributes {
-					if attr.Key == "az.namespace" {
+					if attr.Key == shared.TracingNamespaceAttrName {
 						v, ok := attr.Value.(string)
 						require.True(t, ok)
 						attrString = attr.Key + ":" + v
@@ -180,14 +184,18 @@ func TestClientWithClientName(t *testing.T) {
 	var clientName string
 	var modVersion string
 	var attrString string
-	client, err := NewClient("module/package.Client", "v1.0.0", runtime.PipelineOptions{TracingNamespace: "Widget.Factory"}, &policy.ClientOptions{
+	client, err := NewClient("module/package.Client", "v1.0.0", runtime.PipelineOptions{
+		Tracing: runtime.TracingOptions{
+			Namespace: "Widget.Factory",
+		},
+	}, &policy.ClientOptions{
 		TracingProvider: tracing.NewProvider(func(name, version string) tracing.Tracer {
 			clientName = name
 			modVersion = version
 			return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 				require.NotNil(t, options)
 				for _, attr := range options.Attributes {
-					if attr.Key == "az.namespace" {
+					if attr.Key == shared.TracingNamespaceAttrName {
 						v, ok := attr.Value.(string)
 						require.True(t, ok)
 						attrString = attr.Key + ":" + v

@@ -18,6 +18,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
+// NOTE: when adding a new context key type, it likely needs to be
+// added to the deny-list of key types in ContextWithDeniedValues
+
 // CtxWithHTTPHeaderKey is used as a context key for adding/retrieving http.Header.
 type CtxWithHTTPHeaderKey struct{}
 
@@ -108,6 +111,25 @@ func ExtractModuleName(clientName string) (string, string, error) {
 		return matches[1], matches[2], nil
 	}
 	return matches[3], matches[2], nil
+}
+
+// ContextWithDeniedValues wraps an existing [context.Context], denying access to certain context values.
+// Pipeline policies that create new requests to be sent down their own pipeline MUST wrap the caller's
+// context with an instance of this type. This is to prevent context values from flowing across disjoint
+// requests which can have unintended side-effects.
+type ContextWithDeniedValues struct {
+	context.Context
+}
+
+// Value implements part of the [context.Context] interface.
+// It acts as a deny-list for certain context keys.
+func (c *ContextWithDeniedValues) Value(key any) any {
+	switch key.(type) {
+	case CtxAPINameKey, CtxWithCaptureResponse, CtxWithHTTPHeaderKey, CtxWithRetryOptionsKey, CtxWithTracingTracer:
+		return nil
+	default:
+		return c.Context.Value(key)
+	}
 }
 
 // NonRetriableError marks the specified error as non-retriable.

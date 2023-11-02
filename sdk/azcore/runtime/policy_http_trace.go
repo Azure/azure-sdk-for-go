@@ -110,6 +110,10 @@ func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options 
 	if !tracer.Enabled() {
 		return ctx, func(err error) {}
 	}
+
+	// we MUST propagate the active tracer before returning so that the trace policy can access it
+	ctx = context.WithValue(ctx, shared.CtxWithTracingTracer{}, tracer)
+
 	const newSpanKind = tracing.SpanKindInternal
 	if activeSpan := ctx.Value(ctxActiveSpan{}); activeSpan != nil {
 		// per the design guidelines, if a SDK method Foo() calls SDK method Bar(),
@@ -125,7 +129,6 @@ func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options 
 	ctx, span := tracer.Start(ctx, name, &tracing.SpanOptions{
 		Kind: newSpanKind,
 	})
-	ctx = context.WithValue(ctx, shared.CtxWithTracingTracer{}, tracer)
 	ctx = context.WithValue(ctx, ctxActiveSpan{}, newSpanKind)
 	return ctx, func(err error) {
 		if err != nil {

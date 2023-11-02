@@ -60,6 +60,14 @@ func Test(t *testing.T) {
 	}
 }
 
+func (s *BlockBlobRecordedTestsSuite) SetupSuite() {
+	s.proxy = testcommon.SetupSuite(&s.Suite)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&s.Suite, s.proxy)
+}
+
 func (s *BlockBlobRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
@@ -78,6 +86,7 @@ func (s *BlockBlobUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 type BlockBlobRecordedTestsSuite struct {
 	suite.Suite
+	proxy *recording.TestProxyInstance
 }
 
 type BlockBlobUnrecordedTestsSuite struct {

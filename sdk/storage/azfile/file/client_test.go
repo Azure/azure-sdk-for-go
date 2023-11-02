@@ -51,24 +51,33 @@ func Test(t *testing.T) {
 	}
 }
 
-func (f *FileRecordedTestsSuite) BeforeTest(suite string, test string) {
-	testcommon.BeforeTest(f.T(), suite, test)
+func (s *FileRecordedTestsSuite) SetupSuite() {
+	s.proxy = testcommon.SetupSuite(&s.Suite)
 }
 
-func (f *FileRecordedTestsSuite) AfterTest(suite string, test string) {
-	testcommon.AfterTest(f.T(), suite, test)
+func (s *FileRecordedTestsSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&s.Suite, s.proxy)
 }
 
-func (f *FileUnrecordedTestsSuite) BeforeTest(suite string, test string) {
+func (s *FileRecordedTestsSuite) BeforeTest(suite string, test string) {
+	testcommon.BeforeTest(s.T(), suite, test)
+}
+
+func (s *FileRecordedTestsSuite) AfterTest(suite string, test string) {
+	testcommon.AfterTest(s.T(), suite, test)
+}
+
+func (s *FileUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-func (f *FileUnrecordedTestsSuite) AfterTest(suite string, test string) {
+func (s *FileUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
 
 type FileRecordedTestsSuite struct {
 	suite.Suite
+	proxy *recording.TestProxyInstance
 }
 
 type FileUnrecordedTestsSuite struct {

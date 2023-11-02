@@ -14,8 +14,6 @@ import (
 	"regexp"
 	"strconv"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
 // NOTE: when adding a new context key type, it likely needs to be
@@ -131,26 +129,3 @@ func (c *ContextWithDeniedValues) Value(key any) any {
 		return c.Context.Value(key)
 	}
 }
-
-// NonRetriableError marks the specified error as non-retriable.
-func NonRetriableError(err error) error {
-	return &nonRetriableError{err}
-}
-
-type nonRetriableError struct {
-	error
-}
-
-func (p *nonRetriableError) Error() string {
-	return p.error.Error()
-}
-
-func (*nonRetriableError) NonRetriable() {
-	// marker method
-}
-
-func (p *nonRetriableError) Unwrap() error {
-	return p.error
-}
-
-var _ errorinfo.NonRetriable = (*nonRetriableError)(nil)

@@ -21,6 +21,8 @@ $ENV:PROXY_CERT="C:/ <path-to-repo> /azure-sdk-for-go/eng/common/testproxy/dotne
 Recording and playing back tests relies on the [Test Proxy](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md) to intercept traffic. The recording package can automatically install and run an instance of the test-proxy server per package. The below code needs to be added to test setup and teardown in order to achieve this. The service directory value should correspond to the `testdata` directory within the directory containing the [assets.json](https://github.com/Azure/azure-sdk-tools/blob/main/tools/assets-automation/asset-sync/README.md#assetsjson-discovery) config, see [examples](https://github.com/search?q=repo%3AAzure%2Fazure-sdk-for-go+assets.json+language%3AJSON&type=code&l=JSON).
 
 ```golang
+const recordingDirectory = "<path to service directory with assets.json file>/testdata"
+
 func TestMain(m *testing.M) {
 	code := run(m)
 	os.Exit(code)
@@ -28,7 +30,7 @@ func TestMain(m *testing.M) {
 
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-        proxy, err := recording.StartTestProxy("<path to service directory with assets.json file>/testdata", nil)
+        proxy, err := recording.StartTestProxy(recordingDirectory, nil)
         if err != nil {
             panic(err)
         }

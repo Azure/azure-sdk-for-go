@@ -161,8 +161,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-var pathToPackage = "sdk/data/aztables/testdata"
-
 func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred SharedKeyCredential) (*Client, error) {
 	transport, err := recording.NewRecordingHTTPClient(t)
 	require.NoError(t, err)
@@ -216,7 +214,7 @@ const (
 
 // Test creating a single table
 func TestCreateTable(t *testing.T) {
-	err := recording.Start(t, pathToPackage, nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	defer func() {
 		err := recording.Stop(t, nil)
@@ -267,6 +265,8 @@ The recording files eventually live in the main repository (`github.com/Azure/az
 To add a scrubber that replaces the URL of your account use the `TestMain()` function to set sanitizers before you begin running tests.
 
 ```go
+const recordingDirectory = "<path to service directory with assets.json file>/testdata"
+
 func TestMain(m *testing.M) {
 	code := run(m)
 	os.Exit(code)
@@ -275,7 +275,7 @@ func TestMain(m *testing.M) {
 func run(m *testing.M) int {
 	// Initialize
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-        proxy, err := recording.StartTestProxy("<path to service directory with assets.json file>/testdata", nil)
+        proxy, err := recording.StartTestProxy(recordingDirectory, nil)
         if err != nil {
             panic(err)
         }

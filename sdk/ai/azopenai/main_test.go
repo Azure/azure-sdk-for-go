@@ -4,14 +4,15 @@
 package azopenai_test
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"os"
 	"testing"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 const RecordingDirectory = "sdk/ai/azopenai/testdata"
 
 func TestMain(m *testing.M) {
+	initEnvVars()
 	code := run(m)
 	os.Exit(code)
 }

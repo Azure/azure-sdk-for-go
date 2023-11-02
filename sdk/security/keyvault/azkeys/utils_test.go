@@ -29,11 +29,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const (
-	fakeAttestationUrl = "https://fakeattestation"
-	fakeMHSMURL        = "https://fakemhsm.local"
-	fakeVaultURL       = "https://fakevault.local"
-)
+const recordingDirectory = "sdk/security/keyvault/azkeys/testdata"
+const fakeAttestationUrl = "https://fakeattestation"
+const fakeMHSMURL = "https://fakemhsm.local"
+const fakeVaultURL = "https://fakevault.local"
 
 var (
 	keysToPurge = struct {
@@ -55,7 +54,7 @@ func TestMain(m *testing.M) {
 
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		proxy, err := recording.StartTestProxy("sdk/security/keyvault/azkeys/testdata", nil)
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -175,7 +174,7 @@ func startTest(t *testing.T, MHSMtest bool) *azkeys.Client {
 	if recording.GetRecordMode() != recording.PlaybackMode && MHSMtest && !enableHSM {
 		t.Skip("set AZURE_MANAGEDHSM_URL to run this test")
 	}
-	err := recording.Start(t, "sdk/security/keyvault/azkeys/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

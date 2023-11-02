@@ -57,6 +57,7 @@ var liveUser = struct {
 }
 
 const (
+	recordingDirectory       = "sdk/azidentity/testdata"
 	azidentityRunManualTests = "AZIDENTITY_RUN_MANUAL_TESTS"
 	fakeClientID             = "fake-client-id"
 	fakeResourceID           = "/fake/resource/ID"
@@ -127,7 +128,7 @@ func TestMain(m *testing.M) {
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
 		var err error
-		proxy, err = recording.StartTestProxy("sdk/azidentity/testdata", nil)
+		proxy, err = recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -195,7 +196,7 @@ func run(m *testing.M) int {
 }
 
 func initRecording(t *testing.T) (policy.ClientOptions, func()) {
-	err := recording.Start(t, "sdk/azidentity/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

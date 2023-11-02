@@ -15,6 +15,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
+const recordingDirectory = "sdk/messaging/azeventgrid/testdata"
+
 func TestMain(m *testing.M) {
 	code := run(m)
 	os.Exit(code)
@@ -22,7 +24,7 @@ func TestMain(m *testing.M) {
 
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		proxy, err := recording.StartTestProxy("sdk/azidentity/testdata", nil)
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}

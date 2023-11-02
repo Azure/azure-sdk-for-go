@@ -23,6 +23,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const recordingDirectory = "sdk/monitor/azingest/testdata"
 const fakeEndpoint = "https://test.eastus-1.ingest.monitor.azure.com"
 const fakeRuleID = "Custom-TestTable_CL"
 const fakeStreamName = "dcr-testing"
@@ -42,7 +43,7 @@ func TestMain(m *testing.M) {
 
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		proxy, err := recording.StartTestProxy("sdk/monitor/azingest/testdata", nil)
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -83,7 +84,7 @@ func run(m *testing.M) int {
 }
 
 func startRecording(t *testing.T) {
-	err := recording.Start(t, "sdk/monitor/azingest/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

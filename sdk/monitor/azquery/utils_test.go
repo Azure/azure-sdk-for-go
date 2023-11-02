@@ -27,6 +27,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const recordingDirectory = "sdk/monitor/azquery/testdata"
 const fakeWorkspaceID = "32d1e136-gg81-4b0a-b647-260cdc471f68"
 const fakeWorkspaceID2 = "asdjkfj8k20-gg81-4b0a-9fu2-260c09fn1f68"
 const fakeResourceURI = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
@@ -46,7 +47,7 @@ func TestMain(m *testing.M) {
 
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		proxy, err := recording.StartTestProxy("sdk/monitor/azquery/testdata", nil)
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -118,7 +119,7 @@ func run(m *testing.M) int {
 }
 
 func startRecording(t *testing.T) {
-	err := recording.Start(t, "sdk/monitor/azquery/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

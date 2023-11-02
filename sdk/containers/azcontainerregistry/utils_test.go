@@ -23,6 +23,8 @@ import (
 	"time"
 )
 
+const recordingDirectory = "sdk/containers/azcontainerregistry/testdata"
+
 // FakeCredential is an empty credential for testing.
 type FakeCredential struct {
 }
@@ -69,7 +71,7 @@ func getEndpointCredAndClientOptions(t *testing.T) (string, azcore.TokenCredenti
 
 // startRecording starts the recording.
 func startRecording(t *testing.T) {
-	err := recording.Start(t, "sdk/containers/azcontainerregistry/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)
@@ -84,7 +86,7 @@ func TestMain(m *testing.M) {
 
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		proxy, err := recording.StartTestProxy("sdk/containers/azcontainerregistry/testdata", nil)
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}

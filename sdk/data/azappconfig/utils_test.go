@@ -16,9 +16,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const (
-	fakeConnStr = "Endpoint=https://contoso.azconfig.io;Id=fake-id:fake-value;Secret=ZmFrZS1zZWNyZXQ="
-)
+const recordingDirectory = "sdk/data/azappconfig/testdata"
+const fakeConnStr = "Endpoint=https://contoso.azconfig.io;Id=fake-id:fake-value;Secret=ZmFrZS1zZWNyZXQ="
 
 func TestMain(m *testing.M) {
 	os.Exit(run(m))
@@ -26,7 +25,7 @@ func TestMain(m *testing.M) {
 
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		proxy, err := recording.StartTestProxy("sdk/data/azappconfig/testdata", nil)
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -66,7 +65,7 @@ func NewClientFromConnectionString(t *testing.T) *azappconfig.Client {
 		t.Skip("set APPCONFIGURATION_CONNECTION_STRING to run this test")
 	}
 
-	err := recording.Start(t, "sdk/data/azappconfig/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 
 	t.Cleanup(func() {

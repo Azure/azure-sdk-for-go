@@ -18,6 +18,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const recordingDirectory = "sdk/data/aztables/testdata"
+
 func TestMain(m *testing.M) {
 	code := run(m)
 	os.Exit(code)
@@ -25,7 +27,7 @@ func TestMain(m *testing.M) {
 
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		proxy, err := recording.StartTestProxy("sdk/data/aztables/testdata", nil)
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -65,8 +67,6 @@ func run(m *testing.M) int {
 	// Run tests
 	return m.Run()
 }
-
-var pathToPackage = "sdk/data/aztables/testdata"
 
 const tableNamePrefix = "tableName"
 
@@ -147,7 +147,7 @@ func initClientTest(t *testing.T, service string, createTable bool) (*Client, fu
 		require.NoError(t, err)
 	}
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 
 	if createTable {
@@ -174,7 +174,7 @@ func initServiceTest(t *testing.T, service string) (*ServiceClient, func()) {
 		require.NoError(t, err)
 	}
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 
 	return client, func() {

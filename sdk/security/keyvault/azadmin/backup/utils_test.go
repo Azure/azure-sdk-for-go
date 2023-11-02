@@ -23,6 +23,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const recordingDirectory = "sdk/security/keyvault/azadmin/testdata"
 const fakeHsmURL = "https://fakehsm.managedhsm.azure.net/"
 const fakeBlobURL = "https://fakestorageaccount.blob.core.windows.net/backup"
 const fakeToken = "fakeSasToken"
@@ -41,7 +42,7 @@ func TestMain(m *testing.M) {
 
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		proxy, err := recording.StartTestProxy("sdk/security/keyvault/azadmin/testdata", nil)
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -82,7 +83,7 @@ func run(m *testing.M) int {
 }
 
 func startRecording(t *testing.T) {
-	err := recording.Start(t, "sdk/security/keyvault/azadmin/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

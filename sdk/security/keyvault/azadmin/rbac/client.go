@@ -30,7 +30,7 @@ type Client struct {
 // CreateOrUpdateRoleDefinition - Creates or updates a custom role definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 //   - scope - The scope of the role definition to create or update. Managed HSM only supports '/'.
 //   - roleDefinitionName - The name of the role definition to create or update. It can be any valid GUID.
 //   - parameters - Parameters for the role definition.
@@ -64,7 +64,7 @@ func (client *Client) createOrUpdateRoleDefinitionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.4")
+	reqQP.Set("api-version", "7.5-preview.1")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -82,7 +82,7 @@ func (client *Client) createOrUpdateRoleDefinitionHandleResponse(resp *http.Resp
 // CreateRoleAssignment - Creates a role assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 //   - scope - The scope of the role assignment to create.
 //   - roleAssignmentName - The name of the role assignment to create. It can be any valid GUID.
 //   - parameters - Parameters for the role assignment.
@@ -115,7 +115,7 @@ func (client *Client) createRoleAssignmentCreateRequest(ctx context.Context, sco
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.4")
+	reqQP.Set("api-version", "7.5-preview.1")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -133,7 +133,7 @@ func (client *Client) createRoleAssignmentHandleResponse(resp *http.Response) (C
 // DeleteRoleAssignment - Deletes a role assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 //   - scope - The scope of the role assignment to delete.
 //   - roleAssignmentName - The name of the role assignment to delete.
 //   - options - DeleteRoleAssignmentOptions contains the optional parameters for the Client.DeleteRoleAssignment method.
@@ -165,7 +165,7 @@ func (client *Client) deleteRoleAssignmentCreateRequest(ctx context.Context, sco
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.4")
+	reqQP.Set("api-version", "7.5-preview.1")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +183,7 @@ func (client *Client) deleteRoleAssignmentHandleResponse(resp *http.Response) (D
 // DeleteRoleDefinition - Deletes a custom role definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 //   - scope - The scope of the role definition to delete. Managed HSM only supports '/'.
 //   - roleDefinitionName - The name (GUID) of the role definition to delete.
 //   - options - DeleteRoleDefinitionOptions contains the optional parameters for the Client.DeleteRoleDefinition method.
@@ -215,7 +215,7 @@ func (client *Client) deleteRoleDefinitionCreateRequest(ctx context.Context, sco
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.4")
+	reqQP.Set("api-version", "7.5-preview.1")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -233,7 +233,7 @@ func (client *Client) deleteRoleDefinitionHandleResponse(resp *http.Response) (D
 // GetRoleAssignment - Get the specified role assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 //   - scope - The scope of the role assignment.
 //   - roleAssignmentName - The name of the role assignment to get.
 //   - options - GetRoleAssignmentOptions contains the optional parameters for the Client.GetRoleAssignment method.
@@ -265,7 +265,7 @@ func (client *Client) getRoleAssignmentCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.4")
+	reqQP.Set("api-version", "7.5-preview.1")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *Client) getRoleAssignmentHandleResponse(resp *http.Response) (GetR
 // GetRoleDefinition - Get the specified role definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 //   - scope - The scope of the role definition to get. Managed HSM only supports '/'.
 //   - roleDefinitionName - The name of the role definition to get.
 //   - options - GetRoleDefinitionOptions contains the optional parameters for the Client.GetRoleDefinition method.
@@ -315,7 +315,7 @@ func (client *Client) getRoleDefinitionCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.4")
+	reqQP.Set("api-version", "7.5-preview.1")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -332,7 +332,7 @@ func (client *Client) getRoleDefinitionHandleResponse(resp *http.Response) (GetR
 
 // NewListRoleAssignmentsPager - Gets role assignments for a scope.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 //   - scope - The scope of the role assignments.
 //   - options - ListRoleAssignmentsOptions contains the optional parameters for the Client.NewListRoleAssignmentsPager
 //     method.
@@ -376,7 +376,7 @@ func (client *Client) listRoleAssignmentsCreateRequest(ctx context.Context, scop
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "7.4")
+	reqQP.Set("api-version", "7.5-preview.1")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -393,7 +393,7 @@ func (client *Client) listRoleAssignmentsHandleResponse(resp *http.Response) (Li
 
 // NewListRoleDefinitionsPager - Get all role definitions that are applicable at scope and above.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 //   - scope - The scope of the role definition.
 //   - options - ListRoleDefinitionsOptions contains the optional parameters for the Client.NewListRoleDefinitionsPager
 //     method.
@@ -437,7 +437,7 @@ func (client *Client) listRoleDefinitionsCreateRequest(ctx context.Context, scop
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "7.4")
+	reqQP.Set("api-version", "7.5-preview.1")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

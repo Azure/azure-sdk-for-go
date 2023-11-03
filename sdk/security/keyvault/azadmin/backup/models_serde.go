@@ -150,6 +150,7 @@ func (s SASTokenParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "storageResourceUri", s.StorageResourceURI)
 	populate(objectMap, "token", s.Token)
+	populate(objectMap, "useManagedIdentity", s.UseManagedIdentity)
 	return json.Marshal(objectMap)
 }
 
@@ -167,6 +168,9 @@ func (s *SASTokenParameters) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "token":
 			err = unpopulate(val, "Token", &s.Token)
+			delete(rawMsg, key)
+		case "useManagedIdentity":
+			err = unpopulate(val, "UseManagedIdentity", &s.UseManagedIdentity)
 			delete(rawMsg, key)
 		}
 		if err != nil {

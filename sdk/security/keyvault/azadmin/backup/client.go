@@ -30,7 +30,7 @@ type Client struct {
 // BeginFullBackup - Creates a full backup using a user-provided SAS token to an Azure blob storage container.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 //   - azureStorageBlobContainerURI - Azure blob shared access signature token pointing to a valid Azure blob container where
 //     full backup needs to be stored. This token needs to be valid for at least next 24 hours from the time of making
 //     this call
@@ -52,7 +52,7 @@ func (client *Client) BeginFullBackup(ctx context.Context, azureStorageBlobConta
 // FullBackup - Creates a full backup using a user-provided SAS token to an Azure blob storage container.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 func (client *Client) fullBackup(ctx context.Context, azureStorageBlobContainerURI SASTokenParameters, options *BeginFullBackupOptions) (*http.Response, error) {
 	req, err := client.fullBackupCreateRequest(ctx, azureStorageBlobContainerURI, options)
 	if err != nil {
@@ -76,7 +76,7 @@ func (client *Client) fullBackupCreateRequest(ctx context.Context, azureStorageB
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.4")
+	reqQP.Set("api-version", "7.5-preview.1")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, azureStorageBlobContainerURI)
@@ -86,7 +86,7 @@ func (client *Client) fullBackupCreateRequest(ctx context.Context, azureStorageB
 // folder
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 //   - restoreBlobDetails - The Azure blob SAS token pointing to a folder where the previous successful full backup was stored
 //   - options - BeginFullRestoreOptions contains the optional parameters for the Client.BeginFullRestore method.
 func (client *Client) BeginFullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *BeginFullRestoreOptions) (*runtime.Poller[FullRestoreResponse], error) {
@@ -97,7 +97,7 @@ func (client *Client) BeginFullRestore(ctx context.Context, restoreBlobDetails R
 // folder
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 func (client *Client) fullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *BeginFullRestoreOptions) (*http.Response, error) {
 	req, err := client.fullRestoreCreateRequest(ctx, restoreBlobDetails, options)
 	if err != nil {
@@ -121,7 +121,7 @@ func (client *Client) fullRestoreCreateRequest(ctx context.Context, restoreBlobD
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.4")
+	reqQP.Set("api-version", "7.5-preview.1")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, restoreBlobDetails)
@@ -131,7 +131,7 @@ func (client *Client) fullRestoreCreateRequest(ctx context.Context, restoreBlobD
 // stored Azure Blob storage backup folder
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 //   - keyName - The name of the key to be restored from the user supplied backup
 //   - restoreBlobDetails - The Azure blob SAS token pointing to a folder where the previous successful full backup was stored
 //   - options - BeginSelectiveKeyRestoreOptions contains the optional parameters for the Client.BeginSelectiveKeyRestore
@@ -144,7 +144,7 @@ func (client *Client) BeginSelectiveKeyRestore(ctx context.Context, keyName stri
 // Azure Blob storage backup folder
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.4
+// Generated from API version 7.5-preview.1
 func (client *Client) selectiveKeyRestore(ctx context.Context, keyName string, restoreBlobDetails SelectiveKeyRestoreOperationParameters, options *BeginSelectiveKeyRestoreOptions) (*http.Response, error) {
 	req, err := client.selectiveKeyRestoreCreateRequest(ctx, keyName, restoreBlobDetails, options)
 	if err != nil {
@@ -172,7 +172,7 @@ func (client *Client) selectiveKeyRestoreCreateRequest(ctx context.Context, keyN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.4")
+	reqQP.Set("api-version", "7.5-preview.1")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, restoreBlobDetails)

@@ -6,7 +6,7 @@ These settings apply only when `--go` is specified on the command line.
 clear-output-folder: false
 export-clients: true
 go: true
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/secrets.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/5dd1107d5f2be8d600325d795450e1d854fbe7e8/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.5-preview.1/secrets.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets
 openapi-type: "data-plane"

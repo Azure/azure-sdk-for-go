@@ -6,7 +6,7 @@ package query
 import (
 	"context"
 
-	"github.com/google/go-github/v32/github"
+	"github.com/google/go-github/v53/github"
 )
 
 // Client ...

@@ -136,6 +136,11 @@ directive:
     where: $.definitions.ReleaseParameters.properties.enc
     transform: $["x-ms-client-name"] = "algorithm"
 
+  # rename ActionType to KeyRotationPolicyAction to maintain consistency
+  - from: swagger-document
+    where: $.definitions.LifetimeActionType.properties.type.x-ms-enum
+    transform: $["name"] = "KeyRotationPolicyAction"
+
   # rename KeyOperationsParameters fields
   - from: swagger-document
     where: $.definitions.KeyOperationParameters.properties.aad

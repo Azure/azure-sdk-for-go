@@ -364,7 +364,7 @@ type LifetimeActionTrigger struct {
 // LifetimeActionType - The action that will be executed.
 type LifetimeActionType struct {
 	// The type of the action. The value should be compared case-insensitively.
-	Type *ActionType
+	Type *KeyRotationPolicyAction
 }
 
 // RandomBytes - The get random bytes response object containing the bytes.

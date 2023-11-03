@@ -8,24 +8,6 @@
 
 package azkeys
 
-// ActionType - The type of the action. The value should be compared case-insensitively.
-type ActionType string
-
-const (
-	// ActionTypeNotify - Trigger Event Grid events. Defaults to 30 days before expiry. Key Vault only.
-	ActionTypeNotify ActionType = "Notify"
-	// ActionTypeRotate - Rotate the key based on the key policy.
-	ActionTypeRotate ActionType = "Rotate"
-)
-
-// PossibleActionTypeValues returns the possible values for the ActionType const type.
-func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
-		ActionTypeNotify,
-		ActionTypeRotate,
-	}
-}
-
 // CurveName - Elliptic curve name.
 type CurveName string
 
@@ -207,5 +189,23 @@ func PossibleKeyEncryptionAlgorithmValues() []KeyEncryptionAlgorithm {
 		KeyEncryptionAlgorithmCKMRSAAESKEYWRAP,
 		KeyEncryptionAlgorithmRSAAESKEYWRAP256,
 		KeyEncryptionAlgorithmRSAAESKEYWRAP384,
+	}
+}
+
+// KeyRotationPolicyAction - The type of the action. The value should be compared case-insensitively.
+type KeyRotationPolicyAction string
+
+const (
+	// KeyRotationPolicyActionNotify - Trigger Event Grid events. Defaults to 30 days before expiry. Key Vault only.
+	KeyRotationPolicyActionNotify KeyRotationPolicyAction = "Notify"
+	// KeyRotationPolicyActionRotate - Rotate the key based on the key policy.
+	KeyRotationPolicyActionRotate KeyRotationPolicyAction = "Rotate"
+)
+
+// PossibleKeyRotationPolicyActionValues returns the possible values for the KeyRotationPolicyAction const type.
+func PossibleKeyRotationPolicyActionValues() []KeyRotationPolicyAction {
+	return []KeyRotationPolicyAction{
+		KeyRotationPolicyActionNotify,
+		KeyRotationPolicyActionRotate,
 	}
 }

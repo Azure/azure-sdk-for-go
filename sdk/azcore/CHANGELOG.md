@@ -1,8 +1,6 @@
 # Release History
 
-## 1.9.0-beta.2 (Unreleased)
-
-### Features Added
+## 1.9.0 (2023-11-06)
 
 ### Breaking Changes
 > These changes affect only code written against previous beta versions of `v1.7.0` and `v1.8.0`

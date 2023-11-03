@@ -58,6 +58,7 @@ var liveUser = struct {
 }
 
 const (
+	recordingDirectory       = "sdk/azidentity/testdata"
 	azidentityRunManualTests = "AZIDENTITY_RUN_MANUAL_TESTS"
 	fakeClientID             = "fake-client-id"
 	fakeResourceID           = "/fake/resource/ID"
@@ -96,6 +97,8 @@ var (
 	_, runManualTests = os.LookupEnv(azidentityRunManualTests)
 )
 
+var proxy *recording.TestProxyInstance
+
 func setFakeValues() {
 	liveManagedIdentity.clientID = fakeClientID
 	liveManagedIdentity.resourceID = fakeResourceID
@@ -125,15 +128,14 @@ func TestMain(m *testing.M) {
 
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		// Start from a fresh proxy
-		err := recording.ResetProxy(nil)
+		var err error
+		proxy, err = recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}
 
-		// At the end of testing we want to reset as to not interfere with other tests.
 		defer func() {
-			err := recording.ResetProxy(nil)
+			err := recording.StopTestProxy(proxy)
 			if err != nil {
 				panic(err)
 			}
@@ -207,7 +209,7 @@ func run(m *testing.M) int {
 }
 
 func initRecording(t *testing.T) (policy.ClientOptions, func()) {
-	err := recording.Start(t, "sdk/azidentity/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -240,7 +242,7 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 		r.Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
 		r.Header.Set(recording.ModeHeader, mode)
 		r.Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%s://%s", originalURL.Scheme, originalURL.Host))
-		r.Host = "localhost:5001"
+		r.Host = fmt.Sprintf("localhost:%d", proxy.Options.ProxyPort)
 		r.URL.Host = r.Host
 		r.URL.Scheme = "https"
 	}

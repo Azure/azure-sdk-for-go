@@ -13,10 +13,12 @@ require (
 
 require (
 	github.com/dnaeon/go-vcr v1.2.0 // indirect
+	github.com/keybase/go-keychain v0.0.0-20230523030712-b5615109f100 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

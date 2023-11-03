@@ -206,7 +206,7 @@ func TestBearerTokenPolicy_AuthZHandlerErrors(t *testing.T) {
 	// the policy should propagate the handler's errors, wrapping them to make them nonretriable, if necessary
 	fatalErr := errors.New("something went wrong")
 	var nre errorinfo.NonRetriable
-	for i, e := range []error{fatalErr, shared.NonRetriableError(fatalErr)} {
+	for i, e := range []error{fatalErr, errorinfo.NonRetriableError(fatalErr)} {
 		handler.onReqErr = e
 		_, err = pl.Do(req)
 		require.ErrorAs(t, err, &nre)

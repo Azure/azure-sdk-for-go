@@ -14,8 +14,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
 // TokenCredential is a fake credential that implements the azcore.TokenCredential interface.
@@ -26,13 +26,13 @@ type TokenCredential struct {
 // SetError sets the specified error to be returned from GetToken().
 // Use this to simulate an error during authentication.
 func (t *TokenCredential) SetError(err error) {
-	t.err = shared.NonRetriableError(err)
+	t.err = errorinfo.NonRetriableError(err)
 }
 
 // GetToken implements the azcore.TokenCredential for the TokenCredential type.
 func (t *TokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if t.err != nil {
-		return azcore.AccessToken{}, shared.NonRetriableError(t.err)
+		return azcore.AccessToken{}, errorinfo.NonRetriableError(t.err)
 	}
 	return azcore.AccessToken{Token: "fake_token", ExpiresOn: time.Now().Add(24 * time.Hour)}, nil
 }

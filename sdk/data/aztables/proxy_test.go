@@ -18,7 +18,28 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const recordingDirectory = "sdk/data/aztables/testdata"
+
 func TestMain(m *testing.M) {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
+
 	// 1. Set up session level sanitizers
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
@@ -44,22 +65,8 @@ func TestMain(m *testing.M) {
 
 	}
 	// Run tests
-	exitVal := m.Run()
-
-	// 3. Reset
-	// TODO: Add after sanitizer PR
-	if recording.GetRecordMode() != "live" {
-		err := recording.ResetProxy(nil)
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	// 4. Error out if applicable
-	os.Exit(exitVal)
+	return m.Run()
 }
-
-var pathToPackage = "sdk/data/aztables/testdata"
 
 const tableNamePrefix = "tableName"
 
@@ -140,7 +147,7 @@ func initClientTest(t *testing.T, service string, createTable bool) (*Client, fu
 		require.NoError(t, err)
 	}
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 
 	if createTable {
@@ -167,7 +174,7 @@ func initServiceTest(t *testing.T, service string) (*ServiceClient, func()) {
 		require.NoError(t, err)
 	}
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 
 	return client, func() {

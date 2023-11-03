@@ -169,7 +169,7 @@ func TestGetStatistics(t *testing.T) {
 	var cred *SharedKeyCredential
 	var err error
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	stop := func() {
 		err = recording.Stop(t, nil)

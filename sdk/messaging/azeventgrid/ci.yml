@@ -27,6 +27,7 @@ stages:
   parameters:
     ServiceDirectory: "messaging/azeventgrid"
     RunLiveTests: true
+    UsePipelineProxy: false
     Location: westus2
     EnvVars:
       AZURE_CLIENT_ID: $(AZEVENTGRID_CLIENT_ID)

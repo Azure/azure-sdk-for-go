@@ -28,3 +28,4 @@ stages:
   parameters:
     ServiceDirectory: 'data/aztables'
     RunLiveTests: true
+    UsePipelineProxy: false

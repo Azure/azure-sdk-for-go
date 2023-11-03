@@ -39,24 +39,33 @@ func Test(t *testing.T) {
 	}
 }
 
-func (d *DirectoryRecordedTestsSuite) BeforeTest(suite string, test string) {
-	testcommon.BeforeTest(d.T(), suite, test)
+func (s *DirectoryRecordedTestsSuite) SetupSuite() {
+	s.proxy = testcommon.SetupSuite(&s.Suite)
 }
 
-func (d *DirectoryRecordedTestsSuite) AfterTest(suite string, test string) {
-	testcommon.AfterTest(d.T(), suite, test)
+func (s *DirectoryRecordedTestsSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&s.Suite, s.proxy)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) BeforeTest(suite string, test string) {
+func (s *DirectoryRecordedTestsSuite) BeforeTest(suite string, test string) {
+	testcommon.BeforeTest(s.T(), suite, test)
+}
+
+func (s *DirectoryRecordedTestsSuite) AfterTest(suite string, test string) {
+	testcommon.AfterTest(s.T(), suite, test)
+}
+
+func (s *DirectoryUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-func (d *DirectoryUnrecordedTestsSuite) AfterTest(suite string, test string) {
+func (s *DirectoryUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
 
 type DirectoryRecordedTestsSuite struct {
 	suite.Suite
+	proxy *recording.TestProxyInstance
 }
 
 type DirectoryUnrecordedTestsSuite struct {

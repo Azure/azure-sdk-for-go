@@ -57,7 +57,7 @@ func TestSASServiceClient(t *testing.T) {
 	sasUrl, err := serviceClient.GetAccountSASURL(resources, permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	svcClient, err := createServiceClientForRecordingWithNoCredential(t, sasUrl)
 	require.NoError(t, err)
@@ -104,7 +104,7 @@ func TestSASClient(t *testing.T) {
 	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	client, err := createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
@@ -159,7 +159,7 @@ func TestSASClientReadOnly(t *testing.T) {
 	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
@@ -229,7 +229,7 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)

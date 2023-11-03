@@ -122,6 +122,7 @@ const (
 	NoAuthenticationInformation                       Code = "NoAuthenticationInformation"
 	NoPendingCopyOperation                            Code = "NoPendingCopyOperation"
 	OperationNotAllowedOnIncrementalCopyBlob          Code = "OperationNotAllowedOnIncrementalCopyBlob"
+	OperationNotAllowedOnRootBlob                     Code = "OperationNotAllowedOnRootBlob"
 	OperationTimedOut                                 Code = "OperationTimedOut"
 	OutOfRangeInput                                   Code = "OutOfRangeInput"
 	OutOfRangeQueryParameterValue                     Code = "OutOfRangeQueryParameterValue"

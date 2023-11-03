@@ -60,12 +60,14 @@ const (
 	recordingDirectory       = "sdk/azidentity/testdata"
 	azidentityRunManualTests = "AZIDENTITY_RUN_MANUAL_TESTS"
 	fakeClientID             = "fake-client-id"
+	fakeMIEndpoint           = "https://fake.local"
 	fakeResourceID           = "/fake/resource/ID"
 	fakeTenantID             = "fake-tenant"
 	fakeUsername             = "fake@user"
 	fakeAdfsAuthority        = "fake.adfs.local"
 	fakeAdfsScope            = "fake.adfs.local/fake-scope/.default"
 	liveTestScope            = "https://management.core.windows.net//.default"
+	redacted                 = "redacted"
 )
 
 var adfsLiveSP = struct {
@@ -159,6 +161,9 @@ func run(m *testing.M) int {
 			strings.TrimPrefix(adfsScope, "https://"):       fakeAdfsScope,
 			strings.TrimPrefix(adfsAuthority, "https://"):   fakeAdfsAuthority,
 		}
+		if id := os.Getenv(defaultIdentityClientID); id != "" {
+			pathVars[id] = fakeClientID
+		}
 		for target, replacement := range pathVars {
 			if target != "" {
 				err := recording.AddURISanitizer(replacement, target, nil)
@@ -183,6 +188,23 @@ func run(m *testing.M) int {
 		err := recording.AddBodyRegexSanitizer("{}", `^\S+=.*`, nil)
 		if err != nil {
 			panic(err)
+		}
+		// some managed identity requests include a "secret" header. It isn't dangerous
+		// to record the value, however it must be static for matching to work in playback
+		err = recording.AddHeaderRegexSanitizer("secret", redacted, "", nil)
+		if err != nil {
+			panic(err)
+		}
+		if url, ok := os.LookupEnv(msiEndpoint); ok {
+			err = recording.AddURISanitizer(fakeMIEndpoint, url, nil)
+			if err == nil {
+				if clientID, ok := os.LookupEnv(defaultIdentityClientID); ok {
+					err = recording.AddURISanitizer(fakeClientID, clientID, nil)
+				}
+			}
+			if err != nil {
+				panic(err)
+			}
 		}
 		// redact secrets returned by Microsoft Entra ID
 		for _, key := range []string{"access_token", "device_code", "message", "refresh_token", "user_code"} {

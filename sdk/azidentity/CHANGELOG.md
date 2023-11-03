@@ -3,6 +3,7 @@
 ## 1.5.0-beta.2 (Unreleased)
 
 ### Features Added
+* `DefaultAzureCredential` and `ManagedIdentityCredential` support Azure ML managed identity
 
 ### Breaking Changes
 

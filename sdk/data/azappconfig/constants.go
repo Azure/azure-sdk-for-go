@@ -8,7 +8,7 @@ package azappconfig
 
 import "github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
 
-// SettingFields are fields to retrieve from a configuration setting.
+// KeyValueFields are fields to retrieve from a configuration setting.
 type KeyValueFields = generated.KeyValueFields
 
 const (

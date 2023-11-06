@@ -29,8 +29,8 @@ type SettingSelector struct {
 	Fields []KeyValueFields
 }
 
-// AllSettingFields returns a collection of all setting fields to use in SettingSelector.
-func AllSettingFields() []KeyValueFields {
+// AllKeyValueFields returns a collection of all setting fields to use in SettingSelector.
+func AllKeyValueFields() []KeyValueFields {
 	return []KeyValueFields{
 		KeyValueFieldsKey,
 		KeyValueFieldsLabel,

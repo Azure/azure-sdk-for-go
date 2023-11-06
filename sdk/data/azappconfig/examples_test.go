@@ -194,7 +194,7 @@ func ExampleClient_NewListRevisionsPager() {
 	pager := client.NewListRevisionsPager(azappconfig.SettingSelector{
 		KeyFilter:   to.Ptr("*"),
 		LabelFilter: to.Ptr("*"),
-		Fields:      azappconfig.AllSettingFields(),
+		Fields:      azappconfig.AllKeyValueFields(),
 	}, nil)
 
 	for pager.More() {

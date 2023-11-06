@@ -205,7 +205,7 @@ func TestClient(t *testing.T) {
 	revPgr := client.NewListRevisionsPager(azappconfig.SettingSelector{
 		KeyFilter:   &any,
 		LabelFilter: &any,
-		Fields:      azappconfig.AllSettingFields(),
+		Fields:      azappconfig.AllKeyValueFields(),
 	}, nil)
 	require.NotEmpty(t, revPgr)
 	hasMoreRevs := revPgr.More()
@@ -219,7 +219,7 @@ func TestClient(t *testing.T) {
 	settsPgr := client.NewListSettingsPager(azappconfig.SettingSelector{
 		KeyFilter:   &any,
 		LabelFilter: &any,
-		Fields:      azappconfig.AllSettingFields(),
+		Fields:      azappconfig.AllKeyValueFields(),
 	}, nil)
 	require.NotEmpty(t, settsPgr)
 	hasMoreSetts := settsPgr.More()

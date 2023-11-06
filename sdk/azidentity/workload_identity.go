@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 const credNameWorkloadIdentity = "WorkloadIdentityCredential"
@@ -83,7 +84,6 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		ClientOptions:              options.ClientOptions,
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
-	// TODO: this will incorrectly report ClientAssertionCredential in traces
 	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, &caco)
 	if err != nil {
 		return nil, err
@@ -96,7 +96,11 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 
 // GetToken requests an access token from Microsoft Entra ID. Azure SDK clients call this method automatically.
 func (w *WorkloadIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return w.cred.GetToken(ctx, opts)
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, credNameWorkloadIdentity+"."+traceOpGetToken, w.cred.client.azClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	tk, err := w.cred.GetToken(ctx, opts)
+	return tk, err
 }
 
 // getAssertion returns the specified file's content, which is expected to be a Kubernetes service account token.

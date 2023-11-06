@@ -61,7 +61,7 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
 		Username:                     username,
 	}
-	c, err := newPublicClient(component+"."+credNameUserPassword, tenantID, clientID, credNameUserPassword, opts, options.ClientOptions)
+	c, err := newPublicClient(tenantID, clientID, credNameUserPassword, opts, options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

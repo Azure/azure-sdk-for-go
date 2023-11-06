@@ -52,7 +52,7 @@ type publicClient struct {
 
 var errScopeRequired = errors.New("authenticating in this environment requires specifying a scope in TokenRequestOptions")
 
-func newPublicClient(clientName, tenantID, clientID, name string, o publicClientOptions, clientOpts azcore.ClientOptions) (*publicClient, error) {
+func newPublicClient(tenantID, clientID, name string, o publicClientOptions, clientOpts azcore.ClientOptions) (*publicClient, error) {
 	if !validTenantID(tenantID) {
 		return nil, errInvalidTenantID
 	}
@@ -81,7 +81,7 @@ func newPublicClient(clientName, tenantID, clientID, name string, o publicClient
 	if audience != "" {
 		defaultScope = []string{audience + defaultSuffix}
 	}
-	client, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{
+	client, err := azcore.NewClient(module, version, runtime.PipelineOptions{
 		Tracing: runtime.TracingOptions{
 			Namespace: traceNamespace,
 		},

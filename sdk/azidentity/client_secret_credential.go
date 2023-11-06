@@ -55,7 +55,7 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
 		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
 	}
-	c, err := newConfidentialClient(component+"."+credNameSecret, tenantID, clientID, credNameSecret, cred, msalOpts, options.ClientOptions)
+	c, err := newConfidentialClient(tenantID, clientID, credNameSecret, cred, msalOpts, options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

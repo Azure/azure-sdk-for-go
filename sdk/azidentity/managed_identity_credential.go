@@ -18,7 +18,6 @@ import (
 )
 
 const credNameManagedIdentity = "ManagedIdentityCredential"
-const miClientName = component + "." + credNameManagedIdentity
 
 type managedIdentityIDKind int
 
@@ -81,7 +80,7 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 	if options == nil {
 		options = &ManagedIdentityCredentialOptions{}
 	}
-	mic, err := newManagedIdentityClient(miClientName, options)
+	mic, err := newManagedIdentityClient(options)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +93,7 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 		clientID = options.ID.String()
 	}
 	// similarly, it's okay to give MSAL an incorrect tenant because MSAL won't use the value
-	c, err := newConfidentialClient(miClientName, "common", clientID, credNameManagedIdentity, cred, confidentialClientOptions{}, options.ClientOptions)
+	c, err := newConfidentialClient("common", clientID, credNameManagedIdentity, cred, confidentialClientOptions{}, options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

@@ -107,7 +107,7 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 		Record:                         cp.AuthenticationRecord,
 		TokenCachePersistenceOptions:   cp.TokenCachePersistenceOptions,
 	}
-	c, err := newPublicClient(component+"."+credNameDeviceCode, cp.TenantID, cp.ClientID, credNameDeviceCode, msalOpts, cp.ClientOptions)
+	c, err := newPublicClient(cp.TenantID, cp.ClientID, credNameDeviceCode, msalOpts, cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

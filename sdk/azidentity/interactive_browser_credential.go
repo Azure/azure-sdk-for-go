@@ -88,7 +88,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		RedirectURL:                    cp.RedirectURL,
 		TokenCachePersistenceOptions:   cp.TokenCachePersistenceOptions,
 	}
-	c, err := newPublicClient(component+"."+credNameBrowser, cp.TenantID, cp.ClientID, credNameBrowser, msalOpts, cp.ClientOptions)
+	c, err := newPublicClient(cp.TenantID, cp.ClientID, credNameBrowser, msalOpts, cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

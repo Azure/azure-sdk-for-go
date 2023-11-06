@@ -44,7 +44,7 @@ type confidentialClient struct {
 	azClient                 *azcore.Client
 }
 
-func newConfidentialClient(clientName, tenantID, clientID, name string, cred confidential.Credential, opts confidentialClientOptions, clientOpts azcore.ClientOptions) (*confidentialClient, error) {
+func newConfidentialClient(tenantID, clientID, name string, cred confidential.Credential, opts confidentialClientOptions, clientOpts azcore.ClientOptions) (*confidentialClient, error) {
 	if !validTenantID(tenantID) {
 		return nil, errInvalidTenantID
 	}
@@ -52,7 +52,7 @@ func newConfidentialClient(clientName, tenantID, clientID, name string, cred con
 	if err != nil {
 		return nil, err
 	}
-	client, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{
+	client, err := azcore.NewClient(module, version, runtime.PipelineOptions{
 		Tracing: runtime.TracingOptions{
 			Namespace: traceNamespace,
 		},

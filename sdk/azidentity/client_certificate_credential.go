@@ -69,7 +69,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 		SendX5C:                      options.SendCertificateChain,
 		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
 	}
-	c, err := newConfidentialClient(component+"."+credNameCert, tenantID, clientID, credNameCert, cred, msalOpts, options.ClientOptions)
+	c, err := newConfidentialClient(tenantID, clientID, credNameCert, cred, msalOpts, options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

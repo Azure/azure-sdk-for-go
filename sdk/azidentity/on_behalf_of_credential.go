@@ -79,7 +79,7 @@ func newOnBehalfOfCredential(tenantID, clientID, userAssertion string, cred conf
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 		SendX5C:                    options.SendCertificateChain,
 	}
-	c, err := newConfidentialClient(component+"."+credNameOBO, tenantID, clientID, credNameOBO, cred, opts, options.ClientOptions)
+	c, err := newConfidentialClient(tenantID, clientID, credNameOBO, cred, opts, options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

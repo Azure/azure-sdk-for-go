@@ -114,7 +114,7 @@ func setIMDSRetryOptionDefaults(o *policy.RetryOptions) {
 // that are passed into it along with a default pipeline.
 // options: ManagedIdentityCredentialOptions configure policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
-func newManagedIdentityClient(clientName string, options *ManagedIdentityCredentialOptions) (*managedIdentityClient, error) {
+func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*managedIdentityClient, error) {
 	if options == nil {
 		options = &ManagedIdentityCredentialOptions{}
 	}
@@ -150,7 +150,7 @@ func newManagedIdentityClient(clientName string, options *ManagedIdentityCredent
 		setIMDSRetryOptionDefaults(&cp.Retry)
 	}
 
-	client, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{
+	client, err := azcore.NewClient(module, version, runtime.PipelineOptions{
 		Tracing: runtime.TracingOptions{
 			Namespace: traceNamespace,
 		},

@@ -24,14 +24,14 @@ func (mc fakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 }
 
 func TestNewClient(t *testing.T) {
-	client, err := NewClient("package.Client", "v1.0.0", fakeCredential{}, nil)
+	client, err := NewClient("module", "v1.0.0", fakeCredential{}, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
 	require.Equal(t, cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint, client.Endpoint())
 	require.NotZero(t, client.Pipeline())
 	require.Zero(t, client.Tracer())
 
-	client, err = NewClient("package.Client", "", fakeCredential{}, &ClientOptions{
+	client, err = NewClient("module", "", fakeCredential{}, &ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Cloud: cloud.AzureChina,
 			Telemetry: policy.TelemetryOptions{
@@ -45,11 +45,7 @@ func TestNewClient(t *testing.T) {
 }
 
 func TestNewClientError(t *testing.T) {
-	client, err := NewClient("malformed", "v1.0.0", fakeCredential{}, nil)
-	require.Error(t, err)
-	require.Nil(t, client)
-
-	client, err = NewClient("package.Client", "malformed", fakeCredential{}, nil)
+	client, err := NewClient("module", "malformed", fakeCredential{}, nil)
 	require.Error(t, err)
 	require.Nil(t, client)
 
@@ -60,7 +56,7 @@ func TestNewClientError(t *testing.T) {
 			},
 		},
 	}
-	client, err = NewClient("package.Client", "v1.0.0", fakeCredential{}, &ClientOptions{
+	client, err = NewClient("module", "v1.0.0", fakeCredential{}, &ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Cloud: badCloud,
 		},

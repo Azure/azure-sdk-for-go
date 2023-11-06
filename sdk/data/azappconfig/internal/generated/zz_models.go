@@ -10,6 +10,13 @@ package generated
 
 import "time"
 
+// AzureAppConfigurationClientBeginCreateSnapshotOptions contains the optional parameters for the AzureAppConfigurationClient.BeginCreateSnapshot
+// method.
+type AzureAppConfigurationClientBeginCreateSnapshotOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // AzureAppConfigurationClientCheckKeyValueOptions contains the optional parameters for the AzureAppConfigurationClient.CheckKeyValue
 // method.
 type AzureAppConfigurationClientCheckKeyValueOptions struct {
@@ -22,7 +29,7 @@ type AzureAppConfigurationClientCheckKeyValueOptions struct {
 	// The label of the key-value to retrieve.
 	Label *string
 	// Used to select what fields are present in the returned resource(s).
-	Select []SettingFields
+	Select []KeyValueFields
 }
 
 // AzureAppConfigurationClientCheckKeyValuesOptions contains the optional parameters for the AzureAppConfigurationClient.CheckKeyValues
@@ -32,12 +39,18 @@ type AzureAppConfigurationClientCheckKeyValuesOptions struct {
 	AcceptDatetime *string
 	// Instructs the server to return elements that appear after the element referred to by the specified token.
 	After *string
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
 	// A filter used to match keys.
 	Key *string
 	// A filter used to match labels
 	Label *string
 	// Used to select what fields are present in the returned resource(s).
-	Select []SettingFields
+	Select []KeyValueFields
+	// A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+	Snapshot *string
 }
 
 // AzureAppConfigurationClientCheckKeysOptions contains the optional parameters for the AzureAppConfigurationClient.CheckKeys
@@ -76,7 +89,23 @@ type AzureAppConfigurationClientCheckRevisionsOptions struct {
 	// A filter used to match labels
 	Label *string
 	// Used to select what fields are present in the returned resource(s).
-	Select []SettingFields
+	Select []KeyValueFields
+}
+
+// AzureAppConfigurationClientCheckSnapshotOptions contains the optional parameters for the AzureAppConfigurationClient.CheckSnapshot
+// method.
+type AzureAppConfigurationClientCheckSnapshotOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+}
+
+// AzureAppConfigurationClientCheckSnapshotsOptions contains the optional parameters for the AzureAppConfigurationClient.CheckSnapshots
+// method.
+type AzureAppConfigurationClientCheckSnapshotsOptions struct {
+	// Instructs the server to return elements that appear after the element referred to by the specified token.
+	After *string
 }
 
 // AzureAppConfigurationClientDeleteKeyValueOptions contains the optional parameters for the AzureAppConfigurationClient.DeleteKeyValue
@@ -111,7 +140,7 @@ type AzureAppConfigurationClientGetKeyValueOptions struct {
 	// The label of the key-value to retrieve.
 	Label *string
 	// Used to select what fields are present in the returned resource(s).
-	Select []SettingFields
+	Select []KeyValueFields
 }
 
 // AzureAppConfigurationClientGetKeyValuesOptions contains the optional parameters for the AzureAppConfigurationClient.NewGetKeyValuesPager
@@ -121,12 +150,19 @@ type AzureAppConfigurationClientGetKeyValuesOptions struct {
 	AcceptDatetime *string
 	// Instructs the server to return elements that appear after the element referred to by the specified token.
 	After *string
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
 	// A filter used to match keys.
 	Key *string
 	// A filter used to match labels
 	Label *string
 	// Used to select what fields are present in the returned resource(s).
-	Select []SettingFields
+	Select []KeyValueFields
+	// A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not valid when used with 'key'
+	// and 'label' filters.
+	Snapshot *string
 }
 
 // AzureAppConfigurationClientGetKeysOptions contains the optional parameters for the AzureAppConfigurationClient.NewGetKeysPager
@@ -153,6 +189,12 @@ type AzureAppConfigurationClientGetLabelsOptions struct {
 	Select []LabelFields
 }
 
+// AzureAppConfigurationClientGetOperationDetailsOptions contains the optional parameters for the AzureAppConfigurationClient.GetOperationDetails
+// method.
+type AzureAppConfigurationClientGetOperationDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AzureAppConfigurationClientGetRevisionsOptions contains the optional parameters for the AzureAppConfigurationClient.NewGetRevisionsPager
 // method.
 type AzureAppConfigurationClientGetRevisionsOptions struct {
@@ -165,7 +207,31 @@ type AzureAppConfigurationClientGetRevisionsOptions struct {
 	// A filter used to match labels
 	Label *string
 	// Used to select what fields are present in the returned resource(s).
-	Select []SettingFields
+	Select []KeyValueFields
+}
+
+// AzureAppConfigurationClientGetSnapshotOptions contains the optional parameters for the AzureAppConfigurationClient.GetSnapshot
+// method.
+type AzureAppConfigurationClientGetSnapshotOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+	// Used to select what fields are present in the returned resource(s).
+	Select []SnapshotFields
+}
+
+// AzureAppConfigurationClientGetSnapshotsOptions contains the optional parameters for the AzureAppConfigurationClient.NewGetSnapshotsPager
+// method.
+type AzureAppConfigurationClientGetSnapshotsOptions struct {
+	// Instructs the server to return elements that appear after the element referred to by the specified token.
+	After *string
+	// A filter for the name of the returned snapshots.
+	Name *string
+	// Used to select what fields are present in the returned resource(s).
+	Select []SnapshotFields
+	// Used to filter returned snapshots by their status property.
+	Status []SnapshotStatus
 }
 
 // AzureAppConfigurationClientPutKeyValueOptions contains the optional parameters for the AzureAppConfigurationClient.PutKeyValue
@@ -190,6 +256,15 @@ type AzureAppConfigurationClientPutLockOptions struct {
 	Label *string
 }
 
+// AzureAppConfigurationClientUpdateSnapshotOptions contains the optional parameters for the AzureAppConfigurationClient.UpdateSnapshot
+// method.
+type AzureAppConfigurationClientUpdateSnapshotOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+}
+
 // Error - Azure App Configuration error object.
 type Error struct {
 	// A detailed description of the error.
@@ -208,8 +283,32 @@ type Error struct {
 	Type *string
 }
 
+// ErrorDetail - The details of an error.
+type ErrorDetail struct {
+	// REQUIRED; One of a server-defined set of error codes.
+	Code *string
+
+	// REQUIRED; A human-readable representation of the error.
+	Message *string
+
+	// An array of details about specific errors that led to this reported error.
+	Details []*ErrorDetail
+
+	// An object containing more specific information than the current object about the error.
+	Innererror *InnerError
+}
+
+// InnerError - An object containing specific information about an error.
+type InnerError struct {
+	// One of a server-defined set of error codes.
+	Code *string
+
+	// An object containing more specific information than the current object about the error.
+	Innererror *InnerError
+}
+
 type Key struct {
-	// READ-ONLY
+	// READ-ONLY; The name of the key.
 	Name *string
 }
 
@@ -223,20 +322,45 @@ type KeyListResult struct {
 }
 
 type KeyValue struct {
-	ContentType  *string
-	Etag         *string
-	Key          *string
-	Label        *string
-	LastModified *time.Time
-	Locked       *bool
+	// The content type of the value stored within the key-value.
+	ContentType *string
 
-	// Dictionary of
-	Tags  map[string]*string
+	// A value representing the current state of the resource.
+	Etag *string
+
+	// The key of the key-value.
+	Key *string
+
+	// The label the key-value belongs to.
+	Label *string
+
+	// A date representing the last time the key-value was modified.
+	LastModified *time.Time
+
+	// Indicates whether the key-value is locked.
+	Locked *bool
+
+	// The tags of the key-value
+	Tags map[string]*string
+
+	// The value of the key-value.
 	Value *string
+}
+
+// KeyValueFilter - Enables filtering of key-values.
+type KeyValueFilter struct {
+	// REQUIRED; Filters key-values by their key field.
+	Key *string
+
+	// Filters key-values by their label field.
+	Label *string
 }
 
 // KeyValueListResult - The result of a list request.
 type KeyValueListResult struct {
+	// An identifier representing the returned state of the resource.
+	Etag *string
+
 	// The collection value.
 	Items []*KeyValue
 
@@ -245,7 +369,7 @@ type KeyValueListResult struct {
 }
 
 type Label struct {
-	// READ-ONLY
+	// READ-ONLY; The name of the label.
 	Name *string
 }
 
@@ -256,4 +380,70 @@ type LabelListResult struct {
 
 	// The URI that can be used to request the next set of paged results.
 	NextLink *string
+}
+
+// OperationDetails - Details of a long running operation.
+type OperationDetails struct {
+	// REQUIRED; The unique id of the operation.
+	ID *string
+
+	// REQUIRED; The current status of the operation
+	Status *State
+
+	// An error, available when the status is Failed, describing why the operation failed.
+	Error *ErrorDetail
+}
+
+type Snapshot struct {
+	// REQUIRED; A list of filters used to filter the key-values included in the snapshot.
+	Filters []*KeyValueFilter
+
+	// The composition type describes how the key-values within the snapshot are composed. The 'key' composition type ensures
+	// there are no two key-values containing the same key. The 'key_label' composition
+	// type ensures there are no two key-values containing the same key and label.
+	CompositionType *CompositionType
+
+	// The amount of time, in seconds, that a snapshot will remain in the archived state before expiring. This property is only
+	// writable during the creation of a snapshot. If not specified, the default
+	// lifetime of key-value revisions will be used.
+	RetentionPeriod *int64
+
+	// The tags of the snapshot.
+	Tags map[string]*string
+
+	// READ-ONLY; The time that the snapshot was created.
+	Created *time.Time
+
+	// READ-ONLY; A value representing the current state of the snapshot.
+	Etag *string
+
+	// READ-ONLY; The time that the snapshot will expire.
+	Expires *time.Time
+
+	// READ-ONLY; The amount of key-values in the snapshot.
+	ItemsCount *int64
+
+	// READ-ONLY; The name of the snapshot.
+	Name *string
+
+	// READ-ONLY; The size in bytes of the snapshot.
+	Size *int64
+
+	// READ-ONLY; The current status of the snapshot.
+	Status *SnapshotStatus
+}
+
+// SnapshotListResult - The result of a snapshot list request.
+type SnapshotListResult struct {
+	// The collection value.
+	Items []*Snapshot
+
+	// The URI that can be used to request the next set of paged results.
+	NextLink *string
+}
+
+// SnapshotUpdateParameters - Parameters used to update a snapshot.
+type SnapshotUpdateParameters struct {
+	// The desired status of the snapshot.
+	Status *SnapshotStatus
 }

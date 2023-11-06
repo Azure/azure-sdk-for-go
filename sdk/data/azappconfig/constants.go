@@ -9,30 +9,30 @@ package azappconfig
 import "github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
 
 // SettingFields are fields to retrieve from a configuration setting.
-type SettingFields = generated.SettingFields
+type KeyValueFields = generated.KeyValueFields
 
 const (
 	// The primary identifier of a configuration setting.
-	SettingFieldsKey SettingFields = generated.SettingFieldsKey
+	KeyValueFieldsKey KeyValueFields = generated.KeyValueFieldsKey
 
 	// A label used to group configuration settings.
-	SettingFieldsLabel SettingFields = generated.SettingFieldsLabel
+	KeyValueFieldsLabel KeyValueFields = generated.KeyValueFieldsLabel
 
 	// The value of the configuration setting.
-	SettingFieldsValue SettingFields = generated.SettingFieldsValue
+	KeyValueFieldsValue KeyValueFields = generated.KeyValueFieldsValue
 
 	// The content type of the configuration setting's value.
-	SettingFieldsContentType SettingFields = generated.SettingFieldsContentType
+	KeyValueFieldsContentType KeyValueFields = generated.KeyValueFieldsContentType
 
 	// An ETag indicating the version of a configuration setting within a configuration store.
-	SettingFieldsETag SettingFields = generated.SettingFieldsEtag
+	KeyValueFieldsETag KeyValueFields = generated.KeyValueFieldsEtag
 
 	// The last time a modifying operation was performed on the given configuration setting.
-	SettingFieldsLastModified SettingFields = generated.SettingFieldsLastModified
+	KeyValueFieldsLastModified KeyValueFields = generated.KeyValueFieldsLastModified
 
 	// A value indicating whether the configuration setting is read-only.
-	SettingFieldsIsReadOnly SettingFields = generated.SettingFieldsLocked
+	KeyValueFieldsIsReadOnly KeyValueFields = generated.KeyValueFieldsLocked
 
 	// A list of tags that can help identify what a configuration setting may be applicable for.
-	SettingFieldsTags SettingFields = generated.SettingFieldsTags
+	KeyValueFieldsTags KeyValueFields = generated.KeyValueFieldsTags
 )

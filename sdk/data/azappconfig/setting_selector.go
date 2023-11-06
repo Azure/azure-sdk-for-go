@@ -26,20 +26,20 @@ type SettingSelector struct {
 	AcceptDateTime *time.Time
 
 	// The fields of the configuration setting to retrieve for each setting in the retrieved group.
-	Fields []SettingFields
+	Fields []KeyValueFields
 }
 
 // AllSettingFields returns a collection of all setting fields to use in SettingSelector.
-func AllSettingFields() []SettingFields {
-	return []SettingFields{
-		SettingFieldsKey,
-		SettingFieldsLabel,
-		SettingFieldsValue,
-		SettingFieldsContentType,
-		SettingFieldsETag,
-		SettingFieldsLastModified,
-		SettingFieldsIsReadOnly,
-		SettingFieldsTags,
+func AllSettingFields() []KeyValueFields {
+	return []KeyValueFields{
+		KeyValueFieldsKey,
+		KeyValueFieldsLabel,
+		KeyValueFieldsValue,
+		KeyValueFieldsContentType,
+		KeyValueFieldsETag,
+		KeyValueFieldsLastModified,
+		KeyValueFieldsIsReadOnly,
+		KeyValueFieldsTags,
 	}
 }
 
@@ -50,9 +50,9 @@ func (sc SettingSelector) toGeneratedGetRevisions() *generated.AzureAppConfigura
 		dt = &str
 	}
 
-	sf := make([]SettingFields, len(sc.Fields))
+	sf := make([]KeyValueFields, len(sc.Fields))
 	for i := range sc.Fields {
-		sf[i] = SettingFields(sc.Fields[i])
+		sf[i] = KeyValueFields(sc.Fields[i])
 	}
 
 	return &generated.AzureAppConfigurationClientGetRevisionsOptions{
@@ -70,9 +70,9 @@ func (sc SettingSelector) toGeneratedGetKeyValues() *generated.AzureAppConfigura
 		dt = &str
 	}
 
-	sf := make([]SettingFields, len(sc.Fields))
+	sf := make([]KeyValueFields, len(sc.Fields))
 	for i := range sc.Fields {
-		sf[i] = SettingFields(sc.Fields[i])
+		sf[i] = KeyValueFields(sc.Fields[i])
 	}
 
 	return &generated.AzureAppConfigurationClientGetKeyValuesOptions{

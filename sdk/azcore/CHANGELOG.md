@@ -1,12 +1,21 @@
 # Release History
 
-## 1.9.0-beta.2 (Unreleased)
+## 1.9.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.9.0 (2023-11-06)
+
+### Breaking Changes
 > These changes affect only code written against previous beta versions of `v1.7.0` and `v1.8.0`
 * The function `NewTokenCredential` has been removed from the `fake` package. Use a literal `&fake.TokenCredential{}` instead.
+* The field `TracingNamespace` in `runtime.PipelineOptions` has been replaced by `TracingOptions`.
 
 ### Bugs Fixed
 
@@ -17,10 +26,12 @@
 * Passing a `nil` credential value will no longer cause a panic. Instead, the authentication is skipped.
 * Calling `Error` on a zero-value `azcore.ResponseError` will no longer panic.
 * Fixed an issue in `fake.PagerResponder[T]` that would cause a trailing error to be omitted when iterating over pages.
+* Context values created by `azcore` will no longer flow across disjoint HTTP requests.
 
 ### Other Changes
 
 * Skip generating trace info for no-op tracers.
+* The `clientName` paramater in client constructors has been renamed to `moduleName`.
 
 ## 1.9.0-beta.1 (2023-10-05)
 

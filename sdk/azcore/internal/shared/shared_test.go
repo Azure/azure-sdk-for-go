@@ -85,54 +85,22 @@ func TestValidateModVer(t *testing.T) {
 	require.Error(t, ValidateModVer("v1.2"))
 }
 
-func TestExtractModuleName(t *testing.T) {
-	mod, client, err := ExtractModuleName("module/package.Client")
-	require.NoError(t, err)
-	require.Equal(t, "module", mod)
-	require.Equal(t, "package.Client", client)
+func TestContextWithDeniedValues(t *testing.T) {
+	type testKey struct{}
+	const value = "value"
 
-	mod, client, err = ExtractModuleName("malformed/")
-	require.Error(t, err)
-	require.Empty(t, mod)
-	require.Empty(t, client)
+	ctx := context.WithValue(context.Background(), testKey{}, value)
+	ctx = context.WithValue(ctx, CtxAPINameKey{}, value)
+	ctx = context.WithValue(ctx, CtxWithCaptureResponse{}, value)
+	ctx = context.WithValue(ctx, CtxWithHTTPHeaderKey{}, value)
+	ctx = context.WithValue(ctx, CtxWithRetryOptionsKey{}, value)
+	ctx = context.WithValue(ctx, CtxWithTracingTracer{}, value)
+	ctx = &ContextWithDeniedValues{Context: ctx}
 
-	mod, client, err = ExtractModuleName("malformed/malformed")
-	require.Error(t, err)
-	require.Empty(t, mod)
-	require.Empty(t, client)
-
-	mod, client, err = ExtractModuleName("malformed/malformed.")
-	require.Error(t, err)
-	require.Empty(t, mod)
-	require.Empty(t, client)
-
-	mod, client, err = ExtractModuleName("malformed/.malformed")
-	require.Error(t, err)
-	require.Empty(t, mod)
-	require.Empty(t, client)
-
-	mod, client, err = ExtractModuleName("package.Client")
-	require.NoError(t, err)
-	require.Equal(t, "package", mod)
-	require.Equal(t, "package.Client", client)
-
-	mod, client, err = ExtractModuleName("malformed")
-	require.Error(t, err)
-	require.Empty(t, mod)
-	require.Empty(t, client)
-
-	mod, client, err = ExtractModuleName(".malformed")
-	require.Error(t, err)
-	require.Empty(t, mod)
-	require.Empty(t, client)
-
-	mod, client, err = ExtractModuleName("malformed.")
-	require.Error(t, err)
-	require.Empty(t, mod)
-	require.Empty(t, client)
-
-	mod, client, err = ExtractModuleName("")
-	require.Error(t, err)
-	require.Empty(t, mod)
-	require.Empty(t, client)
+	require.Nil(t, ctx.Value(CtxAPINameKey{}))
+	require.Nil(t, ctx.Value(CtxWithCaptureResponse{}))
+	require.Nil(t, ctx.Value(CtxWithHTTPHeaderKey{}))
+	require.Nil(t, ctx.Value(CtxWithRetryOptionsKey{}))
+	require.Nil(t, ctx.Value(CtxWithTracingTracer{}))
+	require.NotNil(t, ctx.Value(testKey{}))
 }

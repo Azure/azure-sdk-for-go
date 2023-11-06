@@ -61,8 +61,3 @@ matrix:
       prefetch: 0
       verbose: ""
       sleepAfter: "5m"
-    checkpoints:
-      testTarget: checkpoints
-      rounds: 1000
-      partitions: 100
-      workers: 100

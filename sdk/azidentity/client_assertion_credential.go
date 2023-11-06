@@ -12,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 )
 
@@ -74,7 +75,11 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 
 // GetToken requests an access token from Microsoft Entra ID. This method is called automatically by Azure SDK clients.
 func (c *ClientAssertionCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return c.client.GetToken(ctx, opts)
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, credNameAssertion+"."+traceOpGetToken, c.client.azClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	tk, err := c.client.GetToken(ctx, opts)
+	return tk, err
 }
 
 var _ azcore.TokenCredential = (*ClientAssertionCredential)(nil)

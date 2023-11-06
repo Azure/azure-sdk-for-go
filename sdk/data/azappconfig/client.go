@@ -9,7 +9,6 @@ package azappconfig
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"net/url"
 	"time"
 
@@ -139,19 +138,10 @@ func (c *Client) GetSetting(ctx context.Context, key string, options *GetSetting
 		return GetSettingResponse{}, err
 	}
 
-	var lastModified *time.Time
-	if resp.LastModified != nil {
-		tt, err := time.Parse(http.TimeFormat, *resp.LastModified)
-		if err != nil {
-			return GetSettingResponse{}, err
-		}
-		lastModified = &tt
-	}
-
 	return GetSettingResponse{
 		Setting:      settingFromGenerated(resp.KeyValue),
 		SyncToken:    SyncToken(*resp.SyncToken),
-		LastModified: lastModified,
+		LastModified: resp.KeyValue.LastModified,
 	}, nil
 }
 

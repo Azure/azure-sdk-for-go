@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.1 (Unreleased)
+## 1.5.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0 (2023-11-02)
+
+### Features Added
+
+* Added a new `NonRetriableError` func to the `errorinfo` package. New func serves as an error wrapper for non-retriable errors in the `azure-sdk-for-go/sdk` folder.
 
 ## 1.4.0 (2023-10-17)
 

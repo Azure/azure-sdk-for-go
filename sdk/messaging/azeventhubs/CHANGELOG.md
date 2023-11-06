@@ -1,17 +1,10 @@
 # Release History
 
-## 1.1.0 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.2 (2023-11-07)
 
 ### Bugs Fixed
 
-- Checkpoint store blob paths were previously written in mixed-case, when they should have been lower-case. Checkpoints will be automatically
-  migrated the lowercase format, if needed. This affected compatibility with other Azure SDKs. (PR#21805)
-
-### Other Changes
+- Processor now relinquishes ownership of partitions when it shuts down, making them immediately available to other active Processor instances. (PR#21899)
 
 ## 1.0.1 (2023-06-06)
 

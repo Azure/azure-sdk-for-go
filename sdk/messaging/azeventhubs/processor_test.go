@@ -13,15 +13,45 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/stretchr/testify/require"
 )
+
+func TestProcessor_PartitionsAreReqlinquished(t *testing.T) {
+	res := mustCreateProcessorForTest(t, TestProcessorArgs{
+		Prefix: "loadbalance",
+		ProcessorOptions: &azeventhubs.ProcessorOptions{
+			LoadBalancingStrategy: azeventhubs.ProcessorStrategyGreedy,
+		},
+	})
+
+	hubProps, err := res.Consumer.GetEventHubProperties(context.Background(), nil)
+	require.NoError(t, err)
+
+	ctx, stopProcessor := context.WithCancel(context.Background())
+	defer stopProcessor()
+	processorClosed := make(chan struct{})
+
+	go func() {
+		err := res.Processor.Run(ctx)
+		require.NoError(t, err)
+		close(processorClosed)
+	}()
+
+	// we expect to own all the partitions so we'll just wait until they're all claimed.
+	for i := 0; i < len(hubProps.PartitionIDs); i++ {
+		_ = res.Processor.NextPartitionClient(context.Background())
+	}
+
+	stopProcessor()
+	<-processorClosed
+
+	requireAllOwnershipsRelinquished(t, res)
+}
 
 func TestProcessor_Balanced(t *testing.T) {
 	testWithLoadBalancer(t, azeventhubs.ProcessorStrategyBalanced)
@@ -191,110 +221,39 @@ func TestProcessor_Contention(t *testing.T) {
 	}
 }
 
-func TestProcessor_ResumeFromLegacyCheckpoints(t *testing.T) {
-	const ownerID = "ownerID"
+func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.ProcessorStrategy) {
+	testParams := test.GetConnectionParamsForTest(t)
 
-	res := mustCreateProcessorForTest(t, TestProcessorArgs{
-		Prefix: "legacycheck",
-		ConsumerOptions: &azeventhubs.ConsumerClientOptions{
-			InstanceID: ownerID,
-		},
-	})
+	containerName := test.RandomString("proctest", 10)
+	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	require.NoError(t, err)
 
-	now := time.Now()
-	msg := fmt.Sprintf("Most recent message at %d", now.UnixNano())
+	t.Logf("Creating storage container %s", containerName)
+	_, err = cc.Create(context.Background(), nil)
+	require.NoError(t, err)
 
-	t.Logf("Generating events and a legacy formatted checkpoint store")
-	numPartitions := generateLegacyStore(t, res.TestParams, res.ContainerName, ownerID, msg)
-
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
-	defer cancel()
-
-	type ReceivedTestData struct {
-		Event  *azeventhubs.ReceivedEventData
-		Client *azeventhubs.ProcessorPartitionClient
-	}
-
-	eventsCh := make(chan *ReceivedTestData, numPartitions)
-	wg := sync.WaitGroup{}
-	wg.Add(numPartitions)
-
-	go func() {
-		for {
-			pc := res.Processor.NextPartitionClient(ctx)
-
-			if pc == nil {
-				break
-			}
-
-			t.Logf("Acquired partition %s", pc.PartitionID())
-
-			go func() {
-				defer wg.Done()
-
-				t.Logf("Waiting to receive event for partition %s", pc.PartitionID())
-
-				receivedEvents, err := pc.ReceiveEvents(ctx, 1, nil)
-				require.NoError(t, err)
-				require.Equal(t, 1, len(receivedEvents), "Only one event should be available")
-
-				t.Logf("Received event for partition %s", pc.PartitionID())
-
-				select {
-				case eventsCh <- &ReceivedTestData{
-					Event:  receivedEvents[0],
-					Client: pc,
-				}:
-				default:
-					require.Fail(t, "No space left in channel - received more events than we should have")
-				}
-
-				// make sure the partition matches our partition ID
-				require.Equal(t, msg, string(receivedEvents[0].Body))
-
-				destPartitionID := receivedEvents[0].Properties[destPartitionIDKey].(string)
-				require.Equal(t, pc.PartitionID(), destPartitionID)
-
-				err = pc.UpdateCheckpoint(ctx, receivedEvents[len(receivedEvents)-1], nil)
-				require.NoError(t, err)
-			}()
-		}
-	}()
-
-	go func() {
-		err = res.Processor.Run(ctx)
+	defer func() {
+		t.Logf("Deleting storage container")
+		_, err = cc.Delete(context.Background(), nil)
 		require.NoError(t, err)
 	}()
 
-	t.Logf("Waiting for all ProcessorPartitionClients to receive their event")
-	wg.Wait()
-	close(eventsCh)
-	cancel()
-	count := 0
+	// Create the checkpoint store
+	// NOTE: the container must exist before the checkpoint store can be used.
+	t.Logf("Checkpoint store created")
+	checkpointStore, err := checkpoints.NewBlobStore(cc, nil)
+	require.NoError(t, err)
 
-	t.Logf("Validating all events were received")
+	t.Logf("Consumer client created")
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	require.NoError(t, err)
 
-	for evt := range eventsCh {
-		test.RequireClose(t, evt.Client)
-		count++
-	}
-
-	require.Equal(t, numPartitions, count)
-
-	// make sure all blobs are properly cased
-	for _, name := range getAllBlobNames(context.Background(), t, res.ContainerClient) {
-		require.Equal(t, name, strings.ToLower(name))
-	}
-}
-
-func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.ProcessorStrategy) {
-	res := mustCreateProcessorForTest(t, TestProcessorArgs{
-		Prefix: "partacq",
-		ProcessorOptions: &azeventhubs.ProcessorOptions{
-			UpdateInterval:        time.Millisecond,
-			LoadBalancingStrategy: loadBalancerStrategy,
-		},
+	t.Logf("Processor created")
+	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.ProcessorOptions{
+		UpdateInterval:        time.Millisecond,
+		LoadBalancingStrategy: loadBalancerStrategy,
 	})
+	require.NoError(t, err)
 
 	runCtx, cancelRun := context.WithCancel(context.TODO())
 	defer cancelRun()
@@ -307,12 +266,12 @@ func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.Pro
 		defer close(processorClosed)
 
 		t.Logf("Starting processor in separate goroutine")
-		err := res.Processor.Run(runCtx)
+		err := processor.Run(runCtx)
 		require.NoError(t, err)
 	}()
 
 	// get the connection warmed up
-	ehProps, err := res.Consumer.GetEventHubProperties(context.Background(), nil)
+	ehProps, err := consumerClient.GetEventHubProperties(context.Background(), nil)
 	require.NoError(t, err)
 
 	partitionsAcquired := map[string]bool{}
@@ -320,7 +279,7 @@ func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.Pro
 	// acquire all the partitions
 	for i := 0; i < len(ehProps.PartitionIDs); i++ {
 		t.Logf("Waiting for next partition client")
-		partitionClient := res.Processor.NextPartitionClient(runCtx)
+		partitionClient := processor.NextPartitionClient(runCtx)
 		require.False(t, partitionsAcquired[partitionClient.PartitionID()], "No previous client for %s", partitionClient.PartitionID())
 	}
 
@@ -332,19 +291,44 @@ func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.Pro
 }
 
 func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.ProcessorStrategy) {
-	res := mustCreateProcessorForTest(t, TestProcessorArgs{
-		Prefix: "loadbalance",
-		ProcessorOptions: &azeventhubs.ProcessorOptions{
-			UpdateInterval:        time.Millisecond,
-			LoadBalancingStrategy: loadBalancerStrategy,
-		},
-	})
+	testParams := test.GetConnectionParamsForTest(t)
 
-	// get the connection warmed up
-	ehProps, err := res.Consumer.GetEventHubProperties(context.Background(), nil)
+	containerName := test.RandomString("proctest", 10)
+	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
 	require.NoError(t, err)
 
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(res.TestParams.ConnectionString, res.TestParams.EventHubName, nil)
+	t.Logf("Creating storage container %s", containerName)
+	_, err = cc.Create(context.Background(), nil)
+	require.NoError(t, err)
+
+	defer func() {
+		t.Logf("Deleting storage container")
+		_, err = cc.Delete(context.Background(), nil)
+		require.NoError(t, err)
+	}()
+
+	// Create the checkpoint store
+	// NOTE: the container must exist before the checkpoint store can be used.
+	t.Logf("Checkpoint store created")
+	checkpointStore, err := checkpoints.NewBlobStore(cc, nil)
+	require.NoError(t, err)
+
+	t.Logf("Consumer client created")
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	require.NoError(t, err)
+
+	t.Logf("Processor created")
+	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.ProcessorOptions{
+		UpdateInterval:        time.Millisecond,
+		LoadBalancingStrategy: loadBalancerStrategy,
+	})
+	require.NoError(t, err)
+
+	// get the connection warmed up
+	ehProps, err := consumerClient.GetEventHubProperties(context.Background(), nil)
+	require.NoError(t, err)
+
+	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -364,7 +348,7 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 		// acquire all the partitions
 		for i := 0; i < len(ehProps.PartitionIDs); i++ {
 			t.Logf("Waiting for next partition client")
-			partitionClient := res.Processor.NextPartitionClient(runCtx)
+			partitionClient := processor.NextPartitionClient(runCtx)
 
 			wg.Add(1)
 
@@ -384,7 +368,7 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	}()
 
 	t.Logf("Starting processor in separate goroutine")
-	err = res.Processor.Run(runCtx)
+	err = processor.Run(runCtx)
 	require.NoError(t, err)
 }
 
@@ -515,43 +499,6 @@ func printOwnerships(ctx context.Context, t *testing.T, cps azeventhubs.Checkpoi
 		sb.String())
 }
 
-func generateLegacyStore(t *testing.T, testParams test.ConnectionParamsForTest, containerName string, ownerID string, msg string) int {
-	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
-	require.NoError(t, err)
-
-	// we want to set it up so our checkpoints start just before the message that we sent.
-	allPartitionProps := mustSendEventsToAllPartitions(t, []*azeventhubs.EventData{
-		{Body: []byte(msg)},
-	})
-
-	// write it out in the "incorrect" mixed-case format for the blob paths.
-	for _, pp := range allPartitionProps {
-		ownershipBlobPath := fmt.Sprintf("%s/%s/%s/ownership/%s", testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, pp.PartitionID)
-		checkpointBlobPath := fmt.Sprintf("%s/%s/%s/checkpoint/%s", testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, pp.PartitionID)
-
-		ownershipBlob := cc.NewBlockBlobClient(ownershipBlobPath)
-
-		// we'll allow continuity on ownerships here so we don't have to wait for stale ownerships to expire
-		_, err := ownershipBlob.UploadBuffer(context.Background(), nil, &blockblob.UploadBufferOptions{
-			Metadata: map[string]*string{"ownerid": to.Ptr(ownerID)},
-		})
-		require.NoError(t, err)
-
-		// upload a checkpoint blob pointing to the right place (but again, with the "mixed-case"/bad path)
-		checkpointBlob := cc.NewBlockBlobClient(checkpointBlobPath)
-
-		_, err = checkpointBlob.UploadBuffer(context.Background(), nil, &blockblob.UploadBufferOptions{
-			Metadata: map[string]*string{
-				"sequencenumber": to.Ptr(fmt.Sprintf("%d", pp.LastEnqueuedSequenceNumber)),
-				"offset":         to.Ptr(fmt.Sprintf("%d", pp.LastEnqueuedOffset)),
-			},
-		})
-		require.NoError(t, err)
-	}
-
-	return len(allPartitionProps)
-}
-
 type TestProcessorArgs struct {
 	Prefix           string
 	ProcessorOptions *azeventhubs.ProcessorOptions
@@ -562,6 +509,7 @@ type TestProcessorResult struct {
 	ContainerName   string
 	TestParams      test.ConnectionParamsForTest
 	ContainerClient *container.Client
+	CheckpointStore azeventhubs.CheckpointStore
 	Processor       *azeventhubs.Processor
 	Consumer        *azeventhubs.ConsumerClient
 }
@@ -602,6 +550,7 @@ func mustCreateProcessorForTest(t *testing.T, args TestProcessorArgs) TestProces
 	require.NoError(t, err)
 
 	return TestProcessorResult{
+		CheckpointStore: checkpointStore,
 		ContainerClient: cc,
 		ContainerName:   containerName,
 		TestParams:      testParams,
@@ -610,18 +559,12 @@ func mustCreateProcessorForTest(t *testing.T, args TestProcessorArgs) TestProces
 	}
 }
 
-func getAllBlobNames(ctx context.Context, t *testing.T, cc *container.Client) []string {
-	pager := cc.NewListBlobsFlatPager(nil)
-	var names []string
+func requireAllOwnershipsRelinquished(t *testing.T, res TestProcessorResult) {
+	// now check that the ownerships exist but were all cleared out.
+	ownerships, err := res.CheckpointStore.ListOwnership(context.Background(), res.TestParams.EventHubNamespace, res.TestParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	require.NoError(t, err)
 
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		require.NoError(t, err)
-
-		for _, bi := range page.Segment.BlobItems {
-			names = append(names, *bi.Name)
-		}
+	for _, o := range ownerships {
+		require.Empty(t, o.OwnerID)
 	}
-
-	return names
 }

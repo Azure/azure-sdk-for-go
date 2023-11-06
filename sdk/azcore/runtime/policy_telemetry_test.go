@@ -36,6 +36,24 @@ func TestPolicyTelemetryDefault(t *testing.T) {
 	}
 }
 
+func TestPolicyTelemetryDefaultFullQualified(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse()
+	pl := exported.NewPipeline(srv, NewTelemetryPolicy("github.com/foo/bar/test", "v1.2.3", nil))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if v := resp.Request.Header.Get(shared.HeaderUserAgent); v != "azsdk-go-test/v1.2.3 "+platformInfo {
+		t.Fatalf("unexpected user agent value: %s", v)
+	}
+}
+
 func TestPolicyTelemetryPreserveExisting(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()

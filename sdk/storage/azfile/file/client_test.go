@@ -1773,9 +1773,8 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURL() {
 	destFClient := shareClient.NewRootDirectoryClient().NewFileClient("dest" + testcommon.GenerateFileName(testName))
 	_, err = destFClient.Create(context.Background(), fileSize, nil)
 	_require.NoError(err)
-
 	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
-		SourceContentCRC64: contentCRC64,
+		SourceContentValidation: file.SourceContentValidationTypeCRC64(contentCRC64),
 	})
 	_require.NoError(err)
 	_require.NotNil(uResp.XMSContentCRC64)
@@ -1825,7 +1824,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURLNegative() {
 	destFClient := testcommon.CreateNewFileFromShare(context.Background(), _require, "dest"+testcommon.GenerateFileName(testName), fileSize, shareClient)
 
 	_, err = destFClient.UploadRangeFromURL(context.Background(), srcFClient.URL(), 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
-		SourceContentCRC64: contentCRC64,
+		SourceContentValidation: file.SourceContentValidationTypeCRC64(contentCRC64),
 	})
 	_require.Error(err)
 }
@@ -1906,7 +1905,7 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLCopySourceAuthBlob(
 
 	blobURL := blobClient.ServiceClient().NewContainerClient(containerName).NewBlockBlobClient(blobName).URL()
 	uResp, err := destFClient.UploadRangeFromURL(context.Background(), blobURL, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
-		SourceContentCRC64:      contentCRC64,
+		SourceContentValidation: file.SourceContentValidationTypeCRC64(contentCRC64),
 		CopySourceAuthorization: to.Ptr("Bearer " + accessToken.Token),
 	})
 	_require.NoError(err)
@@ -4065,7 +4064,7 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLTrailingDot() {
 	destFClient := testcommon.CreateNewFileFromShare(context.Background(), _require, "destFile..", fileSize, shareClient)
 
 	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
-		SourceContentCRC64: contentCRC64,
+		SourceContentValidation: file.SourceContentValidationTypeCRC64(contentCRC64),
 	})
 	_require.NoError(err)
 	_require.NotNil(uResp.XMSContentCRC64)
@@ -4201,8 +4200,8 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLPreserve() {
 	_require.NotNil(cResp.FileLastWriteTime)
 
 	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
-		SourceContentCRC64: contentCRC64,
-		LastWrittenMode:    to.Ptr(file.LastWrittenModePreserve),
+		SourceContentValidation: file.SourceContentValidationTypeCRC64(contentCRC64),
+		LastWrittenMode:         to.Ptr(file.LastWrittenModePreserve),
 	})
 	_require.NoError(err)
 	_require.NotNil(uResp.XMSContentCRC64)
@@ -4256,8 +4255,8 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLNow() {
 	_require.NotNil(cResp.FileLastWriteTime)
 
 	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
-		SourceContentCRC64: contentCRC64,
-		LastWrittenMode:    to.Ptr(file.LastWrittenModeNow),
+		SourceContentValidation: file.SourceContentValidationTypeCRC64(contentCRC64),
+		LastWrittenMode:         to.Ptr(file.LastWrittenModeNow),
 	})
 	_require.NoError(err)
 	_require.NotNil(uResp.XMSContentCRC64)

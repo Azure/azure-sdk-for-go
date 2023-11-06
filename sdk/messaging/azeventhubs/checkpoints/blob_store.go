@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -54,15 +53,12 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 
 	// TODO: in parallel?
 	for _, po := range partitionOwnership {
-		legacyBlobName, err := nameForOwnershipBlob(po)
+		blobName, err := nameForOwnershipBlob(po)
 
 		if err != nil {
 			return nil, err
 		}
-
-		correctBlobName := strings.ToLower(legacyBlobName)
-
-		lastModified, etag, err := b.setOwnershipMetadata(ctx, correctBlobName, po)
+		lastModified, etag, err := b.setOwnershipMetadata(ctx, blobName, po)
 
 		if err != nil {
 			if bloberror.HasCode(err,
@@ -81,17 +77,6 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 		newOwnership.LastModifiedTime = *lastModified
 
 		ownerships = append(ownerships, newOwnership)
-
-		if legacyBlobName != correctBlobName {
-			// Kill the legacy blob since it was written with mixed-case, which is incorrect.
-			bc := b.cc.NewBlobClient(legacyBlobName)
-
-			// Best effort to delete the old blob if it exists.
-			// If we fail here it doesn't break anything - future List* operations will just not show this older blob.
-			if _, err = bc.Delete(ctx, nil); err != nil {
-				log.Writef(azeventhubs.EventConsumer, "[%s] failed to delete legacy blob (%s): %s", po.OwnerID, legacyBlobName, err)
-			}
-		}
 	}
 
 	return ownerships, nil
@@ -99,7 +84,7 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 
 // ListCheckpoints lists all the available checkpoints.
 func (b *BlobStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListCheckpointsOptions) ([]azeventhubs.Checkpoint, error) {
-	legacyPrefix, err := prefixForCheckpointBlobs(azeventhubs.Checkpoint{
+	prefix, err := prefixForCheckpointBlobs(azeventhubs.Checkpoint{
 		FullyQualifiedNamespace: fullyQualifiedNamespace,
 		EventHubName:            eventHubName,
 		ConsumerGroup:           consumerGroup,
@@ -109,70 +94,38 @@ func (b *BlobStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace
 		return nil, err
 	}
 
-	correctPrefix := strings.ToLower(legacyPrefix)
-
-	checkpointsMap := map[string]azeventhubs.Checkpoint{}
-
-	addCheckpointsToMap := func(prefix string, isLegacy bool) error {
-		pager := b.cc.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-			Prefix: &prefix,
-			Include: container.ListBlobsInclude{
-				Metadata: true,
-			},
-		})
-
-		for pager.More() {
-			resp, err := pager.NextPage(ctx)
-
-			if err != nil {
-				return err
-			}
-
-			for _, blob := range resp.Segment.BlobItems {
-				partitionID := partitionIDRegexp.FindString(*blob.Name)
-
-				cp := azeventhubs.Checkpoint{
-					FullyQualifiedNamespace: fullyQualifiedNamespace,
-					EventHubName:            eventHubName,
-					ConsumerGroup:           consumerGroup,
-					PartitionID:             partitionID,
-				}
-
-				if err := copyCheckpointPropsFromMetadata(blob.Metadata, &cp); err != nil {
-					return err
-				}
-
-				if !isLegacy {
-					cp.ConsumerGroup = strings.ToLower(cp.ConsumerGroup)
-					cp.EventHubName = strings.ToLower(cp.EventHubName)
-					cp.FullyQualifiedNamespace = strings.ToLower(cp.FullyQualifiedNamespace)
-					cp.PartitionID = strings.ToLower(cp.PartitionID)
-				}
-
-				checkpointsMap[strings.ToLower(*blob.Name)] = cp
-			}
-		}
-
-		return nil
-	}
-
-	if correctPrefix != legacyPrefix {
-		// we've got a casing difference - we need to make sure we look at both possible
-		// casings because of our previous bug where we didn't ToLower() the blob name by
-		// default.
-		if err := addCheckpointsToMap(legacyPrefix, true); err != nil {
-			return nil, err
-		}
-	}
-
-	if err := addCheckpointsToMap(correctPrefix, false); err != nil {
-		return nil, err
-	}
+	pager := b.cc.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Prefix: &prefix,
+		Include: container.ListBlobsInclude{
+			Metadata: true,
+		},
+	})
 
 	var checkpoints []azeventhubs.Checkpoint
 
-	for _, cp := range checkpointsMap {
-		checkpoints = append(checkpoints, cp)
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+
+		if err != nil {
+			return nil, err
+		}
+
+		for _, blob := range resp.Segment.BlobItems {
+			partitionID := partitionIDRegexp.FindString(*blob.Name)
+
+			cp := azeventhubs.Checkpoint{
+				FullyQualifiedNamespace: fullyQualifiedNamespace,
+				EventHubName:            eventHubName,
+				ConsumerGroup:           consumerGroup,
+				PartitionID:             partitionID,
+			}
+
+			if err := updateCheckpoint(blob.Metadata, &cp); err != nil {
+				return nil, err
+			}
+
+			checkpoints = append(checkpoints, cp)
+		}
 	}
 
 	return checkpoints, nil
@@ -182,7 +135,7 @@ var partitionIDRegexp = regexp.MustCompile("[^/]+?$")
 
 // ListOwnership lists all ownerships.
 func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListOwnershipOptions) ([]azeventhubs.Ownership, error) {
-	legacyPrefix, err := prefixForOwnershipBlobs(azeventhubs.Ownership{
+	prefix, err := prefixForOwnershipBlobs(azeventhubs.Ownership{
 		FullyQualifiedNamespace: fullyQualifiedNamespace,
 		EventHubName:            eventHubName,
 		ConsumerGroup:           consumerGroup,
@@ -193,75 +146,38 @@ func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace s
 		return nil, err
 	}
 
-	blobsMap := map[string]azeventhubs.Ownership{}
-
-	addOwnershipsToMap := func(prefix string, isLegacy bool) error {
-		pager := b.cc.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-			Prefix: &prefix,
-			Include: container.ListBlobsInclude{
-				Metadata: true,
-			},
-		})
-
-		for pager.More() {
-			resp, err := pager.NextPage(ctx)
-
-			if err != nil {
-				return err
-			}
-
-			for _, blob := range resp.Segment.BlobItems {
-				partitionID := partitionIDRegexp.FindString(*blob.Name)
-
-				o := azeventhubs.Ownership{
-					FullyQualifiedNamespace: fullyQualifiedNamespace,
-					EventHubName:            eventHubName,
-					ConsumerGroup:           consumerGroup,
-					PartitionID:             partitionID,
-				}
-
-				if err := copyOwnershipPropsFromBlob(blob, &o); err != nil {
-					return err
-				}
-
-				if isLegacy {
-					// we clear the etag if we're loading up the "old" ownership blobs, where we incorrectly
-					// wrote them using mixed-case, which was a bug. This makes it so any consumers of this
-					// ownership record understand they need to create a new blob, not update it.
-					o.ETag = nil
-				} else {
-					o.ConsumerGroup = strings.ToLower(o.ConsumerGroup)
-					o.EventHubName = strings.ToLower(o.EventHubName)
-					o.FullyQualifiedNamespace = strings.ToLower(o.FullyQualifiedNamespace)
-					o.PartitionID = strings.ToLower(o.PartitionID)
-				}
-
-				blobsMap[strings.ToLower(*blob.Name)] = o
-			}
-		}
-
-		return nil
-	}
-
-	correctPrefix := strings.ToLower(legacyPrefix)
-
-	if legacyPrefix != correctPrefix {
-		// we've got a casing difference - we need to make sure we look at both possible
-		// casings because of our previous bug where we didn't ToLower() the blob name by
-		// default.
-		if err := addOwnershipsToMap(legacyPrefix, true); err != nil {
-			return nil, err
-		}
-	}
-
-	if err := addOwnershipsToMap(correctPrefix, false); err != nil {
-		return nil, err
-	}
+	pager := b.cc.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Prefix: &prefix,
+		Include: container.ListBlobsInclude{
+			Metadata: true,
+		},
+	})
 
 	var ownerships []azeventhubs.Ownership
 
-	for _, o := range blobsMap {
-		ownerships = append(ownerships, o)
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+
+		if err != nil {
+			return nil, err
+		}
+
+		for _, blob := range resp.Segment.BlobItems {
+			partitionID := partitionIDRegexp.FindString(*blob.Name)
+
+			o := azeventhubs.Ownership{
+				FullyQualifiedNamespace: fullyQualifiedNamespace,
+				EventHubName:            eventHubName,
+				ConsumerGroup:           consumerGroup,
+				PartitionID:             partitionID,
+			}
+
+			if err := updateOwnership(blob, &o); err != nil {
+				return nil, err
+			}
+
+			ownerships = append(ownerships, o)
+		}
 	}
 
 	return ownerships, nil
@@ -271,24 +187,13 @@ func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace s
 //
 // NOTE: This function doesn't attempt to prevent simultaneous checkpoint updates - ownership is assumed.
 func (b *BlobStore) SetCheckpoint(ctx context.Context, checkpoint azeventhubs.Checkpoint, options *azeventhubs.SetCheckpointOptions) error {
-	legacyBlobName, err := nameForCheckpointBlob(checkpoint)
+	blobName, err := nameForCheckpointBlob(checkpoint)
 
 	if err != nil {
 		return err
 	}
 
-	correctBlobName := strings.ToLower(legacyBlobName)
-	_, _, err = b.setCheckpointMetadata(ctx, correctBlobName, checkpoint)
-
-	if legacyBlobName != correctBlobName {
-		// delete the old blob
-		bc := b.cc.NewBlobClient(legacyBlobName)
-
-		if _, err := bc.Delete(ctx, nil); err != nil {
-			log.Writef(azeventhubs.EventConsumer, "Failed to delete legacy blob (%s): %s", legacyBlobName, err)
-		}
-	}
-
+	_, _, err = b.setCheckpointMetadata(ctx, blobName, checkpoint)
 	return err
 }
 
@@ -392,10 +297,11 @@ func prefixForOwnershipBlobs(a azeventhubs.Ownership) (string, error) {
 		return "", errors.New("missing fields for blob prefix")
 	}
 
+	// ownership : fully-qualified-namespace/event-hub-name/consumer-group/ownership/
 	return fmt.Sprintf("%s/%s/%s/ownership/", a.FullyQualifiedNamespace, a.EventHubName, a.ConsumerGroup), nil
 }
 
-func copyCheckpointPropsFromMetadata(metadata map[string]*string, destCheckpoint *azeventhubs.Checkpoint) error {
+func updateCheckpoint(metadata map[string]*string, destCheckpoint *azeventhubs.Checkpoint) error {
 	if metadata == nil {
 		return fmt.Errorf("no checkpoint metadata for blob")
 	}
@@ -443,7 +349,7 @@ func newCheckpointBlobMetadata(cpd azeventhubs.Checkpoint) map[string]*string {
 	return m
 }
 
-func copyOwnershipPropsFromBlob(b *container.BlobItem, destOwnership *azeventhubs.Ownership) error {
+func updateOwnership(b *container.BlobItem, destOwnership *azeventhubs.Ownership) error {
 	if b == nil || b.Metadata == nil || b.Properties == nil {
 		return fmt.Errorf("no ownership metadata for blob")
 	}

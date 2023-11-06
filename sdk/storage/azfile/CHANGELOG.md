@@ -6,6 +6,10 @@
 
 ### Breaking Changes
 
+* Changed type of SourceContentCRC64 header from uint64 to a generic interface implementation, so that it is considered 
+  optional. These changes impact:
+  * `file.UploadRangeFromURL()`
+
 ### Bugs Fixed
 
 * Fixed a bug where Optional fields which were mandatory earlier create a failure when passed an older service version
@@ -21,6 +25,8 @@
 ### Bugs Fixed
 
 * Fixed a bug where the `x-ms-file-attributes` header could be set to contain invalid trailing or leading | characters.
+
+### Breaking Changes
 
 ## 1.1.0-beta.1 (2023-09-12)
 

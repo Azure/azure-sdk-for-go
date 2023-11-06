@@ -78,8 +78,10 @@ type SourceContentValidationType interface {
 	notPubliclyImplementable()
 }
 
+// SourceContentValidationTypeCRC64 is a SourceContentValidationType used to provide a precomputed CRC64.
 type SourceContentValidationTypeCRC64 uint64
 
+// Apply implements the SourceContentValidationType interface for type SourceContentValidationTypeCRC64.
 func (s SourceContentValidationTypeCRC64) Apply(cfg generated.SourceContentSetter) error {
 	buf := make([]byte, 8)
 	binary.LittleEndian.PutUint64(buf, uint64(s))

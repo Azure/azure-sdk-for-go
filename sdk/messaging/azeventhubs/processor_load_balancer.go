@@ -152,11 +152,16 @@ func (lb *processorLoadBalancer) getAvailablePartitions(ctx context.Context, par
 	var unownedOrExpired []Ownership
 
 	// split out partitions by whether they're currently owned
-	// and if they're expired.
+	// and if they're expired/relinquished.
 	for _, o := range ownerships {
 		alreadyAdded[o.PartitionID] = true
 
 		if time.Since(o.LastModifiedTime.UTC()) > lb.partitionExpirationDuration {
+			unownedOrExpired = append(unownedOrExpired, o)
+			continue
+		}
+
+		if o.OwnerID == relinquishedOwnershipID {
 			unownedOrExpired = append(unownedOrExpired, o)
 			continue
 		}

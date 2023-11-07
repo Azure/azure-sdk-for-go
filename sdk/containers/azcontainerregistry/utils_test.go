@@ -23,6 +23,8 @@ import (
 	"time"
 )
 
+const recordingDirectory = "sdk/containers/azcontainerregistry/testdata"
+
 // FakeCredential is an empty credential for testing.
 type FakeCredential struct {
 }
@@ -69,7 +71,7 @@ func getEndpointCredAndClientOptions(t *testing.T) (string, azcore.TokenCredenti
 
 // startRecording starts the recording.
 func startRecording(t *testing.T) {
-	err := recording.Start(t, "sdk/containers/azcontainerregistry/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)
@@ -78,19 +80,26 @@ func startRecording(t *testing.T) {
 }
 
 func TestMain(m *testing.M) {
-	err := recording.ResetProxy(nil)
-	if err != nil {
-		panic(err)
-	}
-	if recording.GetRecordMode() == recording.RecordingMode {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
+		if err != nil {
+			panic(err)
+		}
 		defer func() {
-			err := recording.ResetProxy(nil)
+			err := recording.StopTestProxy(proxy)
 			if err != nil {
 				panic(err)
 			}
 		}()
+	}
+	if recording.GetRecordMode() == recording.RecordingMode {
 		// sanitizer for any uuid string, e.g., subscriptionID
-		err = recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", `[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}`, nil)
+		err := recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", `[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}`, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -159,6 +168,5 @@ func TestMain(m *testing.M) {
 			}
 		}
 	}
-	code := m.Run()
-	os.Exit(code)
+	return m.Run()
 }

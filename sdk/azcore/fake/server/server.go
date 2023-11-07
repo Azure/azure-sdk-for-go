@@ -19,6 +19,7 @@ import (
 	azexported "github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	fakepoller "github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
 // ResponseContent is used when building the *http.Response.
@@ -64,7 +65,7 @@ func MarshalResponseAsByteArray(content ResponseContent, body []byte, format aze
 func MarshalResponseAsJSON(content ResponseContent, v any, req *http.Request) (*http.Response, error) {
 	body, err := json.Marshal(v)
 	if err != nil {
-		return nil, shared.NonRetriableError(err)
+		return nil, errorinfo.NonRetriableError(err)
 	}
 	resp, err := exported.NewResponse(content, req)
 	if err != nil {
@@ -94,7 +95,7 @@ func MarshalResponseAsText(content ResponseContent, body *string, req *http.Requ
 func MarshalResponseAsXML(content ResponseContent, v any, req *http.Request) (*http.Response, error) {
 	body, err := xml.Marshal(v)
 	if err != nil {
-		return nil, shared.NonRetriableError(err)
+		return nil, errorinfo.NonRetriableError(err)
 	}
 	resp, err := exported.NewResponse(content, req)
 	if err != nil {
@@ -112,12 +113,12 @@ func UnmarshalRequestAsByteArray(req *http.Request, format azexported.Base64Enco
 	}
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
-		return nil, shared.NonRetriableError(err)
+		return nil, errorinfo.NonRetriableError(err)
 	}
 	req.Body.Close()
 	var val []byte
 	if err := azexported.DecodeByteArray(string(body), &val, format); err != nil {
-		return nil, shared.NonRetriableError(err)
+		return nil, errorinfo.NonRetriableError(err)
 	}
 	return val, nil
 }
@@ -131,11 +132,11 @@ func UnmarshalRequestAsJSON[T any](req *http.Request) (T, error) {
 	}
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
-		return tt, shared.NonRetriableError(err)
+		return tt, errorinfo.NonRetriableError(err)
 	}
 	req.Body.Close()
 	if err = json.Unmarshal(body, &tt); err != nil {
-		err = shared.NonRetriableError(err)
+		err = errorinfo.NonRetriableError(err)
 	}
 	return tt, err
 }
@@ -148,7 +149,7 @@ func UnmarshalRequestAsText(req *http.Request) (string, error) {
 	}
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
-		return "", shared.NonRetriableError(err)
+		return "", errorinfo.NonRetriableError(err)
 	}
 	req.Body.Close()
 	return string(body), nil
@@ -163,11 +164,11 @@ func UnmarshalRequestAsXML[T any](req *http.Request) (T, error) {
 	}
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
-		return tt, shared.NonRetriableError(err)
+		return tt, errorinfo.NonRetriableError(err)
 	}
 	req.Body.Close()
 	if err = xml.Unmarshal(body, &tt); err != nil {
-		err = shared.NonRetriableError(err)
+		err = errorinfo.NonRetriableError(err)
 	}
 	return tt, err
 }

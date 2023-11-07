@@ -26,6 +26,7 @@ stages:
     parameters:
       ServiceDirectory: 'storage/azdatalake'
       RunLiveTests: true
+      UsePipelineProxy: false
       EnvVars:
         AZURE_CLIENT_ID: $(AZDATALAKE_CLIENT_ID)
         AZURE_TENANT_ID: $(AZDATALAKE_TENANT_ID)

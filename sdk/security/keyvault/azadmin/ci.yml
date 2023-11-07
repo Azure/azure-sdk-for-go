@@ -27,6 +27,7 @@ stages:
     TimeoutInMinutes: 120
     ServiceDirectory: 'security/keyvault/azadmin'
     RunLiveTests: true
+    UsePipelineProxy: false
     MatrixConfigs:
       - Name: keyvault_test_matrix_addons
         Path: sdk/security/keyvault/azadmin/platform-matrix.json

@@ -27,6 +27,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const recordingDirectory = "sdk/monitor/azquery/testdata"
 const fakeWorkspaceID = "32d1e136-gg81-4b0a-b647-260cdc471f68"
 const fakeWorkspaceID2 = "asdjkfj8k20-gg81-4b0a-9fu2-260c09fn1f68"
 const fakeResourceURI = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
@@ -40,6 +41,23 @@ var (
 )
 
 func TestMain(m *testing.M) {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
+		if err != nil {
+			panic(err)
+		}
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
 	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
 		workspaceID, workspaceID2, resourceURI = os.Getenv("WORKSPACE_ID"), os.Getenv("WORKSPACE_ID2"), os.Getenv("RESOURCE_URI")
 	}
@@ -61,16 +79,13 @@ func TestMain(m *testing.M) {
 		}
 		resourceURI = fakeResourceURI
 	}
-	err := recording.ResetProxy(nil)
-	if err != nil {
-		panic(err)
-	}
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
 		tenantID := lookupEnvVar("AZQUERY_TENANT_ID")
 		clientID := lookupEnvVar("AZQUERY_CLIENT_ID")
 		secret := lookupEnvVar("AZQUERY_CLIENT_SECRET")
+		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
 			panic(err)
@@ -99,19 +114,12 @@ func TestMain(m *testing.M) {
 		if err != nil {
 			panic(err)
 		}
-		defer func() {
-			err := recording.ResetProxy(nil)
-			if err != nil {
-				panic(err)
-			}
-		}()
 	}
-	code := m.Run()
-	os.Exit(code)
+	return m.Run()
 }
 
 func startRecording(t *testing.T) {
-	err := recording.Start(t, "sdk/monitor/azquery/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

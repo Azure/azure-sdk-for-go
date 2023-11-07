@@ -33,24 +33,33 @@ func Test(t *testing.T) {
 	}
 }
 
-func (l *LeaseRecordedTestsSuite) BeforeTest(suite string, test string) {
-	testcommon.BeforeTest(l.T(), suite, test)
+func (s *LeaseRecordedTestsSuite) SetupSuite() {
+	s.proxy = testcommon.SetupSuite(&s.Suite)
 }
 
-func (l *LeaseRecordedTestsSuite) AfterTest(suite string, test string) {
-	testcommon.AfterTest(l.T(), suite, test)
+func (s *LeaseRecordedTestsSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&s.Suite, s.proxy)
 }
 
-func (l *LeaseUnrecordedTestsSuite) BeforeTest(suite string, test string) {
+func (s *LeaseRecordedTestsSuite) BeforeTest(suite string, test string) {
+	testcommon.BeforeTest(s.T(), suite, test)
+}
+
+func (s *LeaseRecordedTestsSuite) AfterTest(suite string, test string) {
+	testcommon.AfterTest(s.T(), suite, test)
+}
+
+func (s *LeaseUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-func (l *LeaseUnrecordedTestsSuite) AfterTest(suite string, test string) {
+func (s *LeaseUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
 
 type LeaseRecordedTestsSuite struct {
 	suite.Suite
+	proxy *recording.TestProxyInstance
 }
 
 type LeaseUnrecordedTestsSuite struct {

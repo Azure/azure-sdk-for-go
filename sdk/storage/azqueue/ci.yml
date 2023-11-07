@@ -26,3 +26,4 @@ stages:
     parameters:
       ServiceDirectory: 'storage/azqueue'
       RunLiveTests: true
+      UsePipelineProxy: false

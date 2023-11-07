@@ -47,6 +47,14 @@ func Test(t *testing.T) {
 	}
 }
 
+func (s *PageBlobRecordedTestsSuite) SetupSuite() {
+	s.proxy = testcommon.SetupSuite(&s.Suite)
+}
+
+func (s *PageBlobRecordedTestsSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&s.Suite, s.proxy)
+}
+
 func (s *PageBlobRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
@@ -65,6 +73,7 @@ func (s *PageBlobUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 type PageBlobRecordedTestsSuite struct {
 	suite.Suite
+	proxy *recording.TestProxyInstance
 }
 
 type PageBlobUnrecordedTestsSuite struct {

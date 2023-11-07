@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"regexp"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -42,6 +41,10 @@ const (
 	organizationsTenantID   = "organizations"
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 	defaultSuffix           = "/.default"
+
+	traceNamespace      = "Microsoft.Entra"
+	traceOpGetToken     = "GetToken"
+	traceOpAuthenticate = "Authenticate"
 )
 
 var (
@@ -113,29 +116,16 @@ func resolveTenant(defaultTenant, specified, credName string, additionalTenants 
 	return "", fmt.Errorf(`%s isn't configured to acquire tokens for tenant %q. To enable acquiring tokens for this tenant add it to the AdditionallyAllowedTenants on the credential options, or add "*" to allow acquiring tokens for any tenant`, credName, specified)
 }
 
-// validTenantID return true is it receives a valid tenantID, returns false otherwise
 func validTenantID(tenantID string) bool {
-	match, err := regexp.MatchString("^[0-9a-zA-Z-.]+$", tenantID)
-	if err != nil {
-		return false
+	for _, r := range tenantID {
+		if !(('0' <= r && r <= '9') || ('a' <= r && r <= 'z') || ('A' <= r && r <= 'Z') || r == '.' || r == '-') {
+			return false
+		}
 	}
-	return match
+	return true
 }
 
-func newPipelineAdapter(opts *azcore.ClientOptions) pipelineAdapter {
-	pl := runtime.NewPipeline(component, version, runtime.PipelineOptions{}, opts)
-	return pipelineAdapter{pl: pl}
-}
-
-type pipelineAdapter struct {
-	pl runtime.Pipeline
-}
-
-func (p pipelineAdapter) CloseIdleConnections() {
-	// do nothing
-}
-
-func (p pipelineAdapter) Do(r *http.Request) (*http.Response, error) {
+func doForClient(client *azcore.Client, r *http.Request) (*http.Response, error) {
 	req, err := runtime.NewRequest(r.Context(), r.Method, r.URL.String())
 	if err != nil {
 		return nil, err
@@ -157,7 +147,7 @@ func (p pipelineAdapter) Do(r *http.Request) (*http.Response, error) {
 			return nil, err
 		}
 	}
-	resp, err := p.pl.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}

@@ -23,6 +23,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const recordingDirectory = "sdk/monitor/azingest/testdata"
 const fakeEndpoint = "https://test.eastus-1.ingest.monitor.azure.com"
 const fakeRuleID = "Custom-TestTable_CL"
 const fakeStreamName = "dcr-testing"
@@ -36,16 +37,32 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	err := recording.ResetProxy(nil)
-	if err != nil {
-		panic(err)
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
 	}
+
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
 		tenantID := lookupEnvVar("AZINGEST_TENANT_ID")
 		clientID := lookupEnvVar("AZINGEST_CLIENT_ID")
 		secret := lookupEnvVar("AZINGEST_CLIENT_SECRET")
+		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
 			panic(err)
@@ -63,12 +80,11 @@ func TestMain(m *testing.M) {
 	ruleID = getEnvVar("AZURE_MONITOR_DCR_ID", fakeRuleID)
 	streamName = getEnvVar("AZURE_MONITOR_STREAM_NAME", fakeStreamName)
 
-	code := m.Run()
-	os.Exit(code)
+	return m.Run()
 }
 
 func startRecording(t *testing.T) {
-	err := recording.Start(t, "sdk/monitor/azingest/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

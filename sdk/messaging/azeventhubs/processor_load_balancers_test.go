@@ -294,6 +294,40 @@ func TestProcessorLoadBalancers_InvalidStrategy(t *testing.T) {
 	require.EqualError(t, err, "invalid load balancing strategy 'super-greedy'")
 }
 
+func TestProcessorLoadBalancers_AnyStrategy_GrabRelinquishedPartition(t *testing.T) {
+	for _, strategy := range []ProcessorStrategy{ProcessorStrategyBalanced, ProcessorStrategyGreedy} {
+		t.Run(string(strategy), func(t *testing.T) {
+			cps := newCheckpointStoreForTest()
+
+			const clientA = "clientA"
+			const clientB = "clientB"
+			const clientCWithExpiredPartition = "clientC"
+
+			middleOwnership := newTestOwnership("2", clientCWithExpiredPartition)
+
+			_, err := cps.ClaimOwnership(context.Background(), []Ownership{
+				newTestOwnership("0", clientA),
+				newTestOwnership("1", clientA),
+				middleOwnership,
+				newTestOwnership("3", clientB),
+				newTestOwnership("4", clientB),
+			}, nil)
+			require.NoError(t, err)
+
+			// expire the middle partition (simulating that ClientC died, so nobody's updated it's ownership in awhile)
+			cps.ReqlinquishOwnership(middleOwnership)
+
+			lb := newProcessorLoadBalancer(cps, newTestConsumerDetails(clientB), strategy, time.Hour)
+
+			ownerships, err := lb.LoadBalance(context.Background(), []string{"0", "1", "2", "3", "4"})
+			require.NoError(t, err)
+			require.NotEmpty(t, mapToStrings(ownerships, extractPartitionID))
+
+			requireBalanced(t, cps, 5, 2)
+		})
+	}
+}
+
 func mapToStrings[T any](src []T, fn func(t T) string) []string {
 	var dest []string
 

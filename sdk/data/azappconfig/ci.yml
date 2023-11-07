@@ -26,3 +26,4 @@ stages:
     parameters:
       ServiceDirectory: 'data/azappconfig'
       RunLiveTests: true
+      UsePipelineProxy: false

@@ -22,14 +22,11 @@ import (
 func TestBlobStore_Checkpoints(t *testing.T) {
 	testData := newBlobStoreTestData(t)
 
-	store, err := checkpoints.NewBlobStore(testData.CC, nil)
-	require.NoError(t, err)
-
-	checkpoints, err := store.ListCheckpoints(context.Background(), "fully-qualified-namespace", "event-hub-name", "consumer-group", nil)
+	checkpoints, err := testData.BlobStore.ListCheckpoints(context.Background(), "fully-qualified-namespace", "event-hub-name", "consumer-group", nil)
 	require.NoError(t, err)
 	require.Empty(t, checkpoints)
 
-	err = store.SetCheckpoint(context.Background(), azeventhubs.Checkpoint{
+	err = testData.BlobStore.SetCheckpoint(context.Background(), azeventhubs.Checkpoint{
 		ConsumerGroup:           "$Default",
 		EventHubName:            "event-hub-name",
 		FullyQualifiedNamespace: "ns.servicebus.windows.net",
@@ -39,11 +36,11 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
-	checkpoints, err = store.ListCheckpoints(context.Background(), "ns.servicebus.windows.net", "event-hub-name", "$Default", nil)
+	checkpoints, err = testData.BlobStore.ListCheckpoints(context.Background(), "ns.servicebus.windows.net", "event-hub-name", "$Default", nil)
 	require.NoError(t, err)
 
 	require.Equal(t, azeventhubs.Checkpoint{
-		ConsumerGroup:           "$default",
+		ConsumerGroup:           "$Default",
 		EventHubName:            "event-hub-name",
 		FullyQualifiedNamespace: "ns.servicebus.windows.net",
 		PartitionID:             "partition-id",
@@ -53,7 +50,7 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 
 	// There's a code path to allow updating the blob after it's been created but without an etag
 	// in which case it just updates it.
-	err = store.SetCheckpoint(context.Background(), azeventhubs.Checkpoint{
+	err = testData.BlobStore.SetCheckpoint(context.Background(), azeventhubs.Checkpoint{
 		ConsumerGroup:           "$Default",
 		EventHubName:            "event-hub-name",
 		FullyQualifiedNamespace: "ns.servicebus.windows.net",
@@ -63,11 +60,11 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
-	checkpoints, err = store.ListCheckpoints(context.Background(), "ns.servicebus.windows.net", "event-hub-name", "$Default", nil)
+	checkpoints, err = testData.BlobStore.ListCheckpoints(context.Background(), "ns.servicebus.windows.net", "event-hub-name", "$Default", nil)
 	require.NoError(t, err)
 
 	require.Equal(t, azeventhubs.Checkpoint{
-		ConsumerGroup:           "$default",
+		ConsumerGroup:           "$Default",
 		EventHubName:            "event-hub-name",
 		FullyQualifiedNamespace: "ns.servicebus.windows.net",
 		PartitionID:             "partition-id",
@@ -165,7 +162,7 @@ func TestBlobStore_ListAndClaim(t *testing.T) {
 
 	claimedOwnerships, err := testData.BlobStore.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
 		{
-			ConsumerGroup:           "$default",
+			ConsumerGroup:           "$Default",
 			EventHubName:            "event-hub-name",
 			FullyQualifiedNamespace: "ns.servicebus.windows.net",
 			PartitionID:             "partition-id",
@@ -182,7 +179,7 @@ func TestBlobStore_ListAndClaim(t *testing.T) {
 	require.NotEmpty(t, listedOwnerships[0].ETag)
 	require.NotZero(t, listedOwnerships[0].LastModifiedTime)
 
-	require.Equal(t, "$default", listedOwnerships[0].ConsumerGroup)
+	require.Equal(t, "$Default", listedOwnerships[0].ConsumerGroup)
 	require.Equal(t, "event-hub-name", listedOwnerships[0].EventHubName)
 	require.Equal(t, "ns.servicebus.windows.net", listedOwnerships[0].FullyQualifiedNamespace)
 	require.Equal(t, "partition-id", listedOwnerships[0].PartitionID)
@@ -305,6 +302,35 @@ func TestBlobStore_OnlyOneOwnershipUpdateSucceeds(t *testing.T) {
 	require.Equal(t, cap(claimsCh)-1, numFailedClaims, fmt.Sprintf("One of the 1/%d wins and the rest all fail to claim", cap(claimsCh)))
 }
 
+func TestBlobStore_RelinquishClaim(t *testing.T) {
+	testData := newBlobStoreTestData(t)
+
+	initialClaims, err := testData.BlobStore.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
+		{
+			ConsumerGroup:           azeventhubs.DefaultConsumerGroup,
+			EventHubName:            "eventhubname",
+			FullyQualifiedNamespace: "fullyQualifiedNamespace",
+			PartitionID:             "partitionID",
+			OwnerID:                 "ownerID",
+			LastModifiedTime:        time.Now().UTC(),
+		},
+	}, nil)
+	require.NoError(t, err)
+	require.Equal(t, "ownerID", initialClaims[0].OwnerID)
+
+	// relinquish our ownership claim
+	initialClaims[0].OwnerID = ""
+	relinquishedClaims, err := testData.BlobStore.ClaimOwnership(context.Background(), initialClaims, nil)
+	require.NoError(t, err)
+	require.Empty(t, relinquishedClaims[0].OwnerID)
+
+	// now be some other person and claim it.
+	relinquishedClaims[0].OwnerID = "new owner!"
+	lastClaimed, err := testData.BlobStore.ClaimOwnership(context.Background(), relinquishedClaims, nil)
+	require.NoError(t, err)
+	require.Equal(t, "new owner!", lastClaimed[0].OwnerID)
+}
+
 type blobStoreTestData struct {
 	CC        *container.Client
 	BlobStore *checkpoints.BlobStore
@@ -331,13 +357,12 @@ func newBlobStoreTestData(t *testing.T) blobStoreTestData {
 	_, err = client.Create(context.Background(), nil)
 	require.NoError(t, err)
 
-	t.Cleanup(func() {
-		_, err := client.Delete(context.Background(), nil)
-		require.NoError(t, err)
-	})
-
 	blobStore, err := checkpoints.NewBlobStore(client, nil)
 	require.NoError(t, err)
+
+	t.Cleanup(func() {
+
+	})
 
 	return blobStoreTestData{
 		CC:        client,

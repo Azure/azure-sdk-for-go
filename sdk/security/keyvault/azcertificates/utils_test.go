@@ -24,6 +24,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const recordingDirectory = "sdk/security/keyvault/azcertificates/testdata"
 const fakeVaultURL = "https://fakevault.local"
 
 var (
@@ -37,6 +38,25 @@ var (
 )
 
 func TestMain(m *testing.M) {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
+
 	vaultURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL), "/")
 	if vaultURL == "" {
 		if recording.GetRecordMode() != recording.PlaybackMode {
@@ -54,19 +74,14 @@ func TestMain(m *testing.M) {
 		tenantId := lookupEnvVar("AZCERTIFICATES_TENANT_ID")
 		clientId := lookupEnvVar("AZCERTIFICATES_CLIENT_ID")
 		secret := lookupEnvVar("AZCERTIFICATES_CLIENT_SECRET")
+		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantId, clientId, secret, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
 	if recording.GetRecordMode() == recording.RecordingMode {
-		defer func() {
-			err := recording.ResetProxy(nil)
-			if err != nil {
-				panic(err)
-			}
-		}()
-		err = recording.AddURISanitizer(fakeVaultURL, vaultURL, nil)
+		err := recording.AddURISanitizer(fakeVaultURL, vaultURL, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -113,7 +128,7 @@ func TestMain(m *testing.M) {
 }
 
 func startTest(t *testing.T) *azcertificates.Client {
-	err := recording.Start(t, "sdk/security/keyvault/azcertificates/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

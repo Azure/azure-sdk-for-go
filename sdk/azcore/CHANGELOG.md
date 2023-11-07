@@ -1,8 +1,16 @@
 # Release History
 
-## 1.9.0-beta.2 (Unreleased)
+## 1.9.1 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.9.0 (2023-11-06)
 
 ### Breaking Changes
 > These changes affect only code written against previous beta versions of `v1.7.0` and `v1.8.0`
@@ -23,6 +31,7 @@
 ### Other Changes
 
 * Skip generating trace info for no-op tracers.
+* The `clientName` paramater in client constructors has been renamed to `moduleName`.
 
 ## 1.9.0-beta.1 (2023-10-05)
 

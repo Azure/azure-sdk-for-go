@@ -156,6 +156,34 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 	})
 }
 
+func TestManagedIdentityCredential_AzureMLLive(t *testing.T) {
+	switch recording.GetRecordMode() {
+	case recording.LiveMode:
+		t.Skip("this test doesn't run in live mode because it can't pass in CI")
+	case recording.PlaybackMode:
+		t.Setenv(defaultIdentityClientID, fakeClientID)
+		t.Setenv(msiEndpoint, fakeMIEndpoint)
+		t.Setenv(msiSecret, redacted)
+	case recording.RecordingMode:
+		missing := []string{}
+		for _, v := range []string{defaultIdentityClientID, msiEndpoint, msiSecret} {
+			if len(os.Getenv(v)) == 0 {
+				missing = append(missing, v)
+			}
+		}
+		if len(missing) > 0 {
+			t.Skip("no value for " + strings.Join(missing, ", "))
+		}
+	}
+	opts, stop := initRecording(t)
+	defer stop()
+	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts})
+	if err != nil {
+		t.Fatal(err)
+	}
+	testGetTokenSuccess(t, cred)
+}
+
 func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 	validateReq := func(req *http.Request) *http.Response {
 		err := req.ParseForm()

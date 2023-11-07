@@ -41,6 +41,10 @@ const (
 	organizationsTenantID   = "organizations"
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 	defaultSuffix           = "/.default"
+
+	traceNamespace      = "Microsoft.Entra"
+	traceOpGetToken     = "GetToken"
+	traceOpAuthenticate = "Authenticate"
 )
 
 var (
@@ -121,20 +125,7 @@ func validTenantID(tenantID string) bool {
 	return true
 }
 
-func newPipelineAdapter(opts *azcore.ClientOptions) pipelineAdapter {
-	pl := runtime.NewPipeline(component, version, runtime.PipelineOptions{}, opts)
-	return pipelineAdapter{pl: pl}
-}
-
-type pipelineAdapter struct {
-	pl runtime.Pipeline
-}
-
-func (p pipelineAdapter) CloseIdleConnections() {
-	// do nothing
-}
-
-func (p pipelineAdapter) Do(r *http.Request) (*http.Response, error) {
+func doForClient(client *azcore.Client, r *http.Request) (*http.Response, error) {
 	req, err := runtime.NewRequest(r.Context(), r.Method, r.URL.String())
 	if err != nil {
 		return nil, err
@@ -156,7 +147,7 @@ func (p pipelineAdapter) Do(r *http.Request) (*http.Response, error) {
 			return nil, err
 		}
 	}
-	resp, err := p.pl.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}

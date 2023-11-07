@@ -10,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 	"sync"
 
@@ -48,6 +49,7 @@ type publicClient struct {
 	name                     string
 	opts                     publicClientOptions
 	record                   AuthenticationRecord
+	azClient                 *azcore.Client
 }
 
 var errScopeRequired = errors.New("authenticating in this environment requires specifying a scope in TokenRequestOptions")
@@ -81,6 +83,14 @@ func newPublicClient(tenantID, clientID, name string, o publicClientOptions) (*p
 	if audience != "" {
 		defaultScope = []string{audience + defaultSuffix}
 	}
+	client, err := azcore.NewClient(module, version, runtime.PipelineOptions{
+		Tracing: runtime.TracingOptions{
+			Namespace: traceNamespace,
+		},
+	}, &o.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 	o.AdditionallyAllowedTenants = resolveAdditionalTenants(o.AdditionallyAllowedTenants)
 	return &publicClient{
 		caeMu:        &sync.Mutex{},
@@ -93,6 +103,7 @@ func newPublicClient(tenantID, clientID, name string, o publicClientOptions) (*p
 		opts:         o,
 		record:       o.Record,
 		tenantID:     tenantID,
+		azClient:     client,
 	}, nil
 }
 
@@ -218,7 +229,7 @@ func (p *publicClient) newMSALClient(enableCAE bool) (msalPublicClient, error) {
 	o := []public.Option{
 		public.WithAuthority(runtime.JoinPaths(p.host, p.tenantID)),
 		public.WithCache(cache),
-		public.WithHTTPClient(newPipelineAdapter(&p.opts.ClientOptions)),
+		public.WithHTTPClient(p),
 	}
 	if enableCAE {
 		o = append(o, public.WithClientCapabilities(cp1))
@@ -249,4 +260,14 @@ func (p *publicClient) resolveTenant(specified string) (string, error) {
 		t = ""
 	}
 	return t, err
+}
+
+// these methods satisfy the MSAL ops.HTTPClient interface
+
+func (p *publicClient) CloseIdleConnections() {
+	// do nothing
+}
+
+func (p *publicClient) Do(r *http.Request) (*http.Response, error) {
+	return doForClient(p.azClient, r)
 }

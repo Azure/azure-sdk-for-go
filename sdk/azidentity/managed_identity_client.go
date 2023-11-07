@@ -58,7 +58,7 @@ const (
 // managedIdentityClient provides the base for authenticating in managed identity environments
 // This type includes an runtime.Pipeline and TokenCredentialOptions.
 type managedIdentityClient struct {
-	pipeline runtime.Pipeline
+	azClient *azcore.Client
 	msiType  msiType
 	endpoint string
 	id       ManagedIDKind
@@ -149,7 +149,16 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	} else {
 		setIMDSRetryOptionDefaults(&cp.Retry)
 	}
-	c.pipeline = runtime.NewPipeline(component, version, runtime.PipelineOptions{}, &cp)
+
+	client, err := azcore.NewClient(module, version, runtime.PipelineOptions{
+		Tracing: runtime.TracingOptions{
+			Namespace: traceNamespace,
+		},
+	}, &cp)
+	if err != nil {
+		return nil, err
+	}
+	c.azClient = client
 
 	if log.Should(EventAuthentication) {
 		log.Writef(EventAuthentication, "Managed Identity Credential will use %s managed identity", env)
@@ -176,7 +185,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		return azcore.AccessToken{}, err
 	}
 
-	resp, err := c.pipeline.Do(msg)
+	resp, err := c.azClient.Pipeline().Do(msg)
 	if err != nil {
 		return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, err.Error(), nil, err)
 	}
@@ -363,7 +372,7 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	q.Add("resource", strings.Join(resources, " "))
 	request.Raw().URL.RawQuery = q.Encode()
 	// send the initial request to get the short-lived secret key
-	response, err := c.pipeline.Do(request)
+	response, err := c.azClient.Pipeline().Do(request)
 	if err != nil {
 		return "", err
 	}

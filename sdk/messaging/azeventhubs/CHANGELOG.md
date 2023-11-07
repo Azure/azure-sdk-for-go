@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- Processor now relinquishes ownership of partitions when it shuts down, making them immediately available to other active Processor instances. (PR#TBD)
+- Processor now relinquishes ownership of partitions when it shuts down, making them immediately available to other active Processor instances. (PR#21899)
 
 ## 1.0.1 (2023-06-06)
 

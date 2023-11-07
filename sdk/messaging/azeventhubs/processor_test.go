@@ -559,22 +559,6 @@ func mustCreateProcessorForTest(t *testing.T, args TestProcessorArgs) TestProces
 	}
 }
 
-func getAllBlobNames(ctx context.Context, t *testing.T, cc *container.Client) []string {
-	pager := cc.NewListBlobsFlatPager(nil)
-	var names []string
-
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		require.NoError(t, err)
-
-		for _, bi := range page.Segment.BlobItems {
-			names = append(names, *bi.Name)
-		}
-	}
-
-	return names
-}
-
 func requireAllOwnershipsRelinquished(t *testing.T, res TestProcessorResult) {
 	// now check that the ownerships exist but were all cleared out.
 	ownerships, err := res.CheckpointStore.ListOwnership(context.Background(), res.TestParams.EventHubNamespace, res.TestParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)

@@ -1,16 +1,14 @@
 # Release History
 
-## 0.3.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 0.4.0 (2023-11-07)
 
 ### Other Changes
 
+* Updated to latest release of `azcore` and cleaned up example.
+
 ## 0.3.0 (2023-10-16)
+
+### Other Changes
 
 * Updated to latest beta of `azcore`.
 

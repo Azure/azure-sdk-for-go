@@ -172,7 +172,7 @@ func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace s
 				PartitionID:             partitionID,
 			}
 
-			if err := updateOwnership(blob, &o); err != nil {
+			if err := copyOwnershipPropsFromBlob(blob, &o); err != nil {
 				return nil, err
 			}
 
@@ -349,18 +349,35 @@ func newCheckpointBlobMetadata(cpd azeventhubs.Checkpoint) map[string]*string {
 	return m
 }
 
-func updateOwnership(b *container.BlobItem, destOwnership *azeventhubs.Ownership) error {
-	if b == nil || b.Metadata == nil || b.Properties == nil {
+func copyOwnershipPropsFromBlob(b *container.BlobItem, destOwnership *azeventhubs.Ownership) error {
+	if b == nil || b.Properties == nil {
 		return fmt.Errorf("no ownership metadata for blob")
 	}
 
-	ownerID, ok := b.Metadata["ownerid"]
+	// there are two states for ownerID
+	// nil (empty string when mapped across): a partition that was owned but was relinquished.
+	// a valid string: the owner ID or instanceID of the owning partition client.
+	//
+	// By default we'll represent it as relinquished.
+	var ownerID string
 
-	if !ok || ownerID == nil {
-		return errors.New("ownerid is missing from metadata")
+	// There's a bug in azblob where it omits metadata keys entirely if
+	// the value is nil. For now, I'll assume an empty metadata means
+	// we have a nil ownerid.
+	// https://github.com/Azure/azure-sdk-for-go/issues/21887
+	if b.Metadata != nil {
+		tmpOwnerID, ok := b.Metadata["ownerid"]
+
+		if !ok {
+			return errors.New("ownerid is missing from metadata")
+		}
+
+		if tmpOwnerID != nil {
+			ownerID = *tmpOwnerID
+		}
 	}
 
-	destOwnership.OwnerID = *ownerID
+	destOwnership.OwnerID = ownerID
 	destOwnership.LastModifiedTime = *b.Properties.LastModified
 	destOwnership.ETag = b.Properties.ETag
 	return nil

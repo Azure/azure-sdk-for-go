@@ -46,20 +46,6 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) int {
-	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
-		if err != nil {
-			panic(err)
-		}
-
-		defer func() {
-			err := recording.StopTestProxy(proxy)
-			if err != nil {
-				panic(err)
-			}
-		}()
-	}
-
 	vaultURL = fakeVaultURL
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		if u, ok := os.LookupEnv("AZURE_KEYVAULT_URL"); ok && u != "" {
@@ -124,7 +110,7 @@ func run(m *testing.M) int {
 			}
 		}
 	}
-	os.Exit(code)
+	return code
 }
 
 func startTest(t *testing.T) *azsecrets.Client {

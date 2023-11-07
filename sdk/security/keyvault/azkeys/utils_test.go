@@ -53,20 +53,6 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) int {
-	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
-		if err != nil {
-			panic(err)
-		}
-
-		defer func() {
-			err := recording.StopTestProxy(proxy)
-			if err != nil {
-				panic(err)
-			}
-		}()
-	}
-
 	attestationURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationUrl), "/")
 	mhsmURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeMHSMURL), "/")
 	vaultURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL), "/")
@@ -170,7 +156,7 @@ func run(m *testing.M) int {
 			}
 		}
 	}
-	os.Exit(code)
+	return code
 }
 
 func startTest(t *testing.T, MHSMtest bool) *azkeys.Client {

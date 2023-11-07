@@ -12,7 +12,8 @@ output-folder: ../rbac
 override-client-name: Client
 security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.46"
+use: "@autorest/go@4.0.0-preview.57"
+inject-spans: true
 version: "^3.0.0"
 
 directive:
@@ -76,9 +77,14 @@ directive:
   - from:
       - client.go
       - models.go
+      - options.go
       - response_types.go
       - options.go
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 
+  # fix up span names
+  - from: client.go
+    where: $
+    transform: return $.replace(/StartSpan\(ctx, "Client/, "StartSpan(ctx, \"rbac.Client");
 ```

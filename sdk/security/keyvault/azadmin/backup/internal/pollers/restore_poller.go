@@ -15,8 +15,11 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"reflect"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/poller"
 )
 
@@ -68,6 +71,8 @@ func resultHelper[T any](resp *http.Response, failed bool, out *T) error {
 type restorePoller[T any] struct {
 	pl runtime.Pipeline
 
+	tr tracing.Tracer
+
 	resp *http.Response
 
 	// The URL from Azure-AsyncOperation header.
@@ -91,9 +96,9 @@ type restorePoller[T any] struct {
 
 // NewRestorePoller creates a new Poller from the provided initial response and final-state type.
 // Pass nil for response to create an empty Poller for rehydration.
-func NewRestorePoller[T any](pl runtime.Pipeline, resp *http.Response, finalState runtime.FinalStateVia) (*restorePoller[T], error) {
+func NewRestorePoller[T any](pl runtime.Pipeline, tr tracing.Tracer, resp *http.Response, finalState runtime.FinalStateVia) (*restorePoller[T], error) {
 	if resp == nil {
-		return &restorePoller[T]{pl: pl}, nil
+		return &restorePoller[T]{pl: pl, tr: tr}, nil
 	}
 	//log.Write(log.EventLRO, "Using Azure-AsyncOperation poller.")
 	asyncURL := resp.Header.Get("Azure-AsyncOperation")
@@ -112,6 +117,7 @@ func NewRestorePoller[T any](pl runtime.Pipeline, resp *http.Response, finalStat
 	}
 	p := &restorePoller[T]{
 		pl:         pl,
+		tr:         tr,
 		resp:       resp,
 		AsyncURL:   asyncURL,
 		LocURL:     resp.Header.Get("Location"),
@@ -130,7 +136,11 @@ func (p *restorePoller[T]) Done() bool {
 
 // Poll retrieves the current state of the LRO.
 func (p *restorePoller[T]) Poll(ctx context.Context) (*http.Response, error) {
-	err := pollHelper(ctx, p.AsyncURL, p.pl, func(resp *http.Response) (string, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, fmt.Sprintf("%s.Poll", shortenTypeName(reflect.TypeOf(*p).Name())), p.tr, nil)
+	defer func() { endSpan(err) }()
+
+	err = pollHelper(ctx, p.AsyncURL, p.pl, func(resp *http.Response) (string, error) {
 		if !poller.StatusCodeValid(resp) {
 			p.resp = resp
 			return "", runtime.NewResponseError(resp)
@@ -159,4 +169,23 @@ func (p *restorePoller[T]) Result(ctx context.Context, out *T) error {
 	}
 
 	return resultHelper(p.resp, poller.Failed(p.CurState), out)
+}
+
+// extracts the type name from the string returned from reflect.Value.Name()
+func shortenTypeName(s string) string {
+	// the value is formatted as follows
+	// Poller[module/Package.Type].Method
+	// we want to shorten the generic type parameter string to Type
+	// anything we don't recognize will be left as-is
+	begin := strings.Index(s, "[")
+	end := strings.Index(s, "]")
+	if begin == -1 || end == -1 {
+		return s
+	}
+
+	typeName := s[begin+1 : end]
+	if i := strings.LastIndex(typeName, "."); i > -1 {
+		typeName = typeName[i+1:]
+	}
+	return s[:begin+1] + typeName + s[end:]
 }

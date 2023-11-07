@@ -4,7 +4,7 @@
 clear-output-folder: false
 export-clients: true
 go: true
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/5dd1107d5f2be8d600325d795450e1d854fbe7e8/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.5-preview.1/keys.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/a2f6f742d088dcc712e67cb2745d8271eaa370ff/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.5-preview.1/keys.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys
 openapi-type: "data-plane"
@@ -135,11 +135,6 @@ directive:
   - from: swagger-document
     where: $.definitions.ReleaseParameters.properties.enc
     transform: $["x-ms-client-name"] = "algorithm"
-
-  # rename ActionType to KeyRotationPolicyAction to maintain consistency
-  - from: swagger-document
-    where: $.definitions.LifetimeActionType.properties.type.x-ms-enum
-    transform: $["name"] = "KeyRotationPolicyAction"
 
   # rename KeyOperationsParameters fields
   - from: swagger-document

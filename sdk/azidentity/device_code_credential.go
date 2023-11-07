@@ -101,7 +101,7 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	cp.init()
 	msalOpts := publicClientOptions{
 		AdditionallyAllowedTenants:     cp.AdditionallyAllowedTenants,
-		ClientOptions:                  options.ClientOptions,
+		ClientOptions:                  cp.ClientOptions,
 		DeviceCodePrompt:               cp.UserPrompt,
 		DisableAutomaticAuthentication: cp.DisableAutomaticAuthentication,
 		DisableInstanceDiscovery:       cp.DisableInstanceDiscovery,

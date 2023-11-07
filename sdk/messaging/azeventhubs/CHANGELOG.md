@@ -1,14 +1,10 @@
 # Release History
 
-## 1.0.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.2 (2023-11-07)
 
 ### Bugs Fixed
 
-### Other Changes
+- Processor now relinquishes ownership of partitions when it shuts down, making them immediately available to other active Processor instances. (PR#TBD)
 
 ## 1.0.1 (2023-06-06)
 

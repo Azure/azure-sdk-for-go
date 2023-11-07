@@ -21,6 +21,38 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestProcessor_PartitionsAreReqlinquished(t *testing.T) {
+	res := mustCreateProcessorForTest(t, TestProcessorArgs{
+		Prefix: "loadbalance",
+		ProcessorOptions: &azeventhubs.ProcessorOptions{
+			LoadBalancingStrategy: azeventhubs.ProcessorStrategyGreedy,
+		},
+	})
+
+	hubProps, err := res.Consumer.GetEventHubProperties(context.Background(), nil)
+	require.NoError(t, err)
+
+	ctx, stopProcessor := context.WithCancel(context.Background())
+	defer stopProcessor()
+	processorClosed := make(chan struct{})
+
+	go func() {
+		err := res.Processor.Run(ctx)
+		require.NoError(t, err)
+		close(processorClosed)
+	}()
+
+	// we expect to own all the partitions so we'll just wait until they're all claimed.
+	for i := 0; i < len(hubProps.PartitionIDs); i++ {
+		_ = res.Processor.NextPartitionClient(context.Background())
+	}
+
+	stopProcessor()
+	<-processorClosed
+
+	requireAllOwnershipsRelinquished(t, res)
+}
+
 func TestProcessor_Balanced(t *testing.T) {
 	testWithLoadBalancer(t, azeventhubs.ProcessorStrategyBalanced)
 }
@@ -465,4 +497,74 @@ func printOwnerships(ctx context.Context, t *testing.T, cps azeventhubs.Checkpoi
 		len(owners),
 		max,
 		sb.String())
+}
+
+type TestProcessorArgs struct {
+	Prefix           string
+	ProcessorOptions *azeventhubs.ProcessorOptions
+	ConsumerOptions  *azeventhubs.ConsumerClientOptions
+}
+
+type TestProcessorResult struct {
+	ContainerName   string
+	TestParams      test.ConnectionParamsForTest
+	ContainerClient *container.Client
+	CheckpointStore azeventhubs.CheckpointStore
+	Processor       *azeventhubs.Processor
+	Consumer        *azeventhubs.ConsumerClient
+}
+
+func mustCreateProcessorForTest(t *testing.T, args TestProcessorArgs) TestProcessorResult {
+	require.NotEmpty(t, args.Prefix)
+
+	testParams := test.GetConnectionParamsForTest(t)
+
+	containerName := test.RandomString(args.Prefix, 10)
+	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	require.NoError(t, err)
+
+	t.Logf("Creating storage container %s", containerName)
+	_, err = cc.Create(context.Background(), nil)
+	require.NoError(t, err)
+
+	t.Cleanup(func() {
+		t.Logf("Deleting storage container")
+		_, err = cc.Delete(context.Background(), nil)
+		require.NoError(t, err)
+	})
+
+	// Create the checkpoint store
+	// NOTE: the container must exist before the checkpoint store can be used.
+	t.Logf("Checkpoint store created")
+	checkpointStore, err := checkpoints.NewBlobStore(cc, nil)
+	require.NoError(t, err)
+
+	t.Logf("Consumer client created")
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, args.ConsumerOptions)
+	require.NoError(t, err)
+
+	t.Cleanup(func() { test.RequireClose(t, consumerClient) })
+
+	t.Logf("Processor created")
+	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, args.ProcessorOptions)
+	require.NoError(t, err)
+
+	return TestProcessorResult{
+		CheckpointStore: checkpointStore,
+		ContainerClient: cc,
+		ContainerName:   containerName,
+		TestParams:      testParams,
+		Consumer:        consumerClient,
+		Processor:       processor,
+	}
+}
+
+func requireAllOwnershipsRelinquished(t *testing.T, res TestProcessorResult) {
+	// now check that the ownerships exist but were all cleared out.
+	ownerships, err := res.CheckpointStore.ListOwnership(context.Background(), res.TestParams.EventHubNamespace, res.TestParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	require.NoError(t, err)
+
+	for _, o := range ownerships {
+		require.Empty(t, o.OwnerID)
+	}
 }

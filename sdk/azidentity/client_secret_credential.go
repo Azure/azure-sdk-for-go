@@ -52,10 +52,11 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 	}
 	msalOpts := confidentialClientOptions{
 		AdditionallyAllowedTenants:   options.AdditionallyAllowedTenants,
+		ClientOptions:                options.ClientOptions,
 		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
 		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
 	}
-	c, err := newConfidentialClient(tenantID, clientID, credNameSecret, cred, msalOpts, options.ClientOptions)
+	c, err := newConfidentialClient(tenantID, clientID, credNameSecret, cred, msalOpts)
 	if err != nil {
 		return nil, err
 	}

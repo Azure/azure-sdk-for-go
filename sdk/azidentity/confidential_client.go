@@ -24,6 +24,8 @@ import (
 )
 
 type confidentialClientOptions struct {
+	azcore.ClientOptions
+
 	AdditionallyAllowedTenants []string
 	// Assertion for on-behalf-of authentication
 	Assertion                         string
@@ -44,11 +46,11 @@ type confidentialClient struct {
 	azClient                 *azcore.Client
 }
 
-func newConfidentialClient(tenantID, clientID, name string, cred confidential.Credential, opts confidentialClientOptions, clientOpts azcore.ClientOptions) (*confidentialClient, error) {
+func newConfidentialClient(tenantID, clientID, name string, cred confidential.Credential, opts confidentialClientOptions) (*confidentialClient, error) {
 	if !validTenantID(tenantID) {
 		return nil, errInvalidTenantID
 	}
-	host, err := setAuthorityHost(clientOpts.Cloud)
+	host, err := setAuthorityHost(opts.Cloud)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +58,7 @@ func newConfidentialClient(tenantID, clientID, name string, cred confidential.Cr
 		Tracing: runtime.TracingOptions{
 			Namespace: traceNamespace,
 		},
-	}, &clientOpts)
+	}, &opts.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

@@ -55,13 +55,14 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 	}
 	opts := publicClientOptions{
 		AdditionallyAllowedTenants:   options.AdditionallyAllowedTenants,
+		ClientOptions:                options.ClientOptions,
 		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
 		Password:                     password,
 		Record:                       options.AuthenticationRecord,
 		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
 		Username:                     username,
 	}
-	c, err := newPublicClient(tenantID, clientID, credNameUserPassword, opts, options.ClientOptions)
+	c, err := newPublicClient(tenantID, clientID, credNameUserPassword, opts)
 	if err != nil {
 		return nil, err
 	}

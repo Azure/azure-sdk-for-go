@@ -62,10 +62,11 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 	)
 	msalOpts := confidentialClientOptions{
 		AdditionallyAllowedTenants:   options.AdditionallyAllowedTenants,
+		ClientOptions:                options.ClientOptions,
 		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
 		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
 	}
-	c, err := newConfidentialClient(tenantID, clientID, credNameAssertion, cred, msalOpts, options.ClientOptions)
+	c, err := newConfidentialClient(tenantID, clientID, credNameAssertion, cred, msalOpts)
 	if err != nil {
 		return nil, err
 	}

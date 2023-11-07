@@ -27,6 +27,8 @@ import (
 )
 
 type publicClientOptions struct {
+	azcore.ClientOptions
+
 	AdditionallyAllowedTenants     []string
 	DeviceCodePrompt               func(context.Context, DeviceCodeMessage) error
 	DisableAutomaticAuthentication bool
@@ -52,16 +54,16 @@ type publicClient struct {
 
 var errScopeRequired = errors.New("authenticating in this environment requires specifying a scope in TokenRequestOptions")
 
-func newPublicClient(tenantID, clientID, name string, o publicClientOptions, clientOpts azcore.ClientOptions) (*publicClient, error) {
+func newPublicClient(tenantID, clientID, name string, o publicClientOptions) (*publicClient, error) {
 	if !validTenantID(tenantID) {
 		return nil, errInvalidTenantID
 	}
-	host, err := setAuthorityHost(clientOpts.Cloud)
+	host, err := setAuthorityHost(o.Cloud)
 	if err != nil {
 		return nil, err
 	}
 	// if the application specified a cloud configuration, use its ARM audience as the default scope for Authenticate()
-	audience := clientOpts.Cloud.Services[cloud.ResourceManager].Audience
+	audience := o.Cloud.Services[cloud.ResourceManager].Audience
 	if audience == "" {
 		// no cloud configuration, or no ARM audience, specified; try to map the host to a well-known one (all of which have a trailing slash)
 		if !strings.HasSuffix(host, "/") {
@@ -85,7 +87,7 @@ func newPublicClient(tenantID, clientID, name string, o publicClientOptions, cli
 		Tracing: runtime.TracingOptions{
 			Namespace: traceNamespace,
 		},
-	}, &clientOpts)
+	}, &o.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

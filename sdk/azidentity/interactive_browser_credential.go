@@ -81,6 +81,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	}
 	cp.init()
 	msalOpts := publicClientOptions{
+		ClientOptions:                  cp.ClientOptions,
 		DisableAutomaticAuthentication: cp.DisableAutomaticAuthentication,
 		DisableInstanceDiscovery:       cp.DisableInstanceDiscovery,
 		LoginHint:                      cp.LoginHint,
@@ -88,7 +89,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		RedirectURL:                    cp.RedirectURL,
 		TokenCachePersistenceOptions:   cp.TokenCachePersistenceOptions,
 	}
-	c, err := newPublicClient(cp.TenantID, cp.ClientID, credNameBrowser, msalOpts, cp.ClientOptions)
+	c, err := newPublicClient(cp.TenantID, cp.ClientID, credNameBrowser, msalOpts)
 	if err != nil {
 		return nil, err
 	}

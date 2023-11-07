@@ -93,7 +93,9 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 		clientID = options.ID.String()
 	}
 	// similarly, it's okay to give MSAL an incorrect tenant because MSAL won't use the value
-	c, err := newConfidentialClient("common", clientID, credNameManagedIdentity, cred, confidentialClientOptions{}, options.ClientOptions)
+	c, err := newConfidentialClient("common", clientID, credNameManagedIdentity, cred, confidentialClientOptions{
+		ClientOptions: options.ClientOptions,
+	})
 	if err != nil {
 		return nil, err
 	}

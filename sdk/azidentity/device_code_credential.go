@@ -101,13 +101,14 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	cp.init()
 	msalOpts := publicClientOptions{
 		AdditionallyAllowedTenants:     cp.AdditionallyAllowedTenants,
+		ClientOptions:                  options.ClientOptions,
 		DeviceCodePrompt:               cp.UserPrompt,
 		DisableAutomaticAuthentication: cp.DisableAutomaticAuthentication,
 		DisableInstanceDiscovery:       cp.DisableInstanceDiscovery,
 		Record:                         cp.AuthenticationRecord,
 		TokenCachePersistenceOptions:   cp.TokenCachePersistenceOptions,
 	}
-	c, err := newPublicClient(cp.TenantID, cp.ClientID, credNameDeviceCode, msalOpts, cp.ClientOptions)
+	c, err := newPublicClient(cp.TenantID, cp.ClientID, credNameDeviceCode, msalOpts)
 	if err != nil {
 		return nil, err
 	}

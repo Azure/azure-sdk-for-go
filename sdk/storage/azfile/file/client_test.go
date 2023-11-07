@@ -1927,6 +1927,72 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLCopySourceAuthBlob(
 	_require.EqualValues(data, content)
 }
 
+func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLWithEmptyUploadRangeFromURLOptions() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 20
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+	srcFClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	contentSize := 1024 * 8 // 8KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+
+	_, err = srcFClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	perms := sas.FilePermissions{Read: true, Write: true}
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:    sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:  time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ShareName:   shareName,
+		FilePath:    srcFileName,
+		Permissions: perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	srcFileSAS := srcFClient.URL() + "?" + sasQueryParams.Encode()
+
+	destFClient := shareClient.NewRootDirectoryClient().NewFileClient("dest" + testcommon.GenerateFileName(testName))
+	_, err = destFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{})
+	_require.NoError(err)
+	_require.NotNil(uResp.XMSContentCRC64)
+
+	rangeList, err := destFClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(rangeList.Ranges, 1)
+	_require.Equal(*rangeList.Ranges[0].Start, int64(0))
+	_require.Equal(*rangeList.Ranges[0].End, int64(contentSize-1))
+
+	cResp, err := destFClient.ClearRange(context.Background(), file.HTTPRange{Offset: 0, Count: int64(contentSize)}, nil)
+	_require.NoError(err)
+	_require.Nil(cResp.ContentMD5)
+
+	rangeList2, err := destFClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(rangeList2.Ranges, 0)
+}
+
 func (f *FileUnrecordedTestsSuite) TestFileUploadBuffer() {
 	_require := require.New(f.T())
 	testName := f.T().Name()

@@ -19,7 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.49"
+use: "@autorest/go@4.0.0-preview.61"
 ```
 
 ### Updating service version to 2023-08-03
@@ -280,7 +280,9 @@ directive:
 
 ``` yaml
 directive:
-- from: zz_models.go
+- from:
+  - zz_models.go
+  - zz_options.go
   where: $
   transform: >-
     return $.

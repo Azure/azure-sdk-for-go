@@ -43,16 +43,26 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
+
 	vaultURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL), "/")
 	if vaultURL == "" {
 		if recording.GetRecordMode() != recording.PlaybackMode {
 			panic("no value for AZURE_KEYVAULT_URL")
 		}
 		vaultURL = fakeVaultURL
-	}
-	err := recording.ResetProxy(nil)
-	if err != nil {
-		panic(err)
 	}
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
@@ -110,6 +120,7 @@ func run(m *testing.M) int {
 			}
 		}
 	}
+
 	return code
 }
 

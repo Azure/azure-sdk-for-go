@@ -12,6 +12,9 @@
 ### Other Changes
 * Upgraded service version to `7.5-preview.1`
 
+* Updated to latest version of `azcore`.
+* Fixed value of `otel.library.name` in traces.
+
 ## 1.1.0-beta.1 (2023-10-11)
 
 ### Features Added

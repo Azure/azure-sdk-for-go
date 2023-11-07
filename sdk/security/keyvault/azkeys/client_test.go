@@ -537,7 +537,13 @@ func TestRecoverDeletedKey(t *testing.T) {
 }
 
 func TestReleaseKey(t *testing.T) {
-	t.Run("KV", func(t *testing.T) {
+	// Skipping managed HSM tests for now, service failure
+	//for _, mhsm := range []bool{false, true} {
+	name := "KV"
+	// if mhsm {
+	// 	name = "MHSM"
+	// }
+	t.Run(name, func(t *testing.T) {
 		client := startTest(t, false)
 		key := createRandomName(t, "testreleasekey")
 
@@ -595,6 +601,8 @@ func TestReleaseKey(t *testing.T) {
 		testSerde(t, &releaseResp.KeyReleaseResult)
 	})
 }
+
+//}
 
 func TestRotateKey(t *testing.T) {
 	for _, mhsm := range []bool{false, true} {

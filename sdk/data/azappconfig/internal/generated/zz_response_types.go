@@ -13,15 +13,15 @@ type AzureAppConfigurationClientCheckKeyValueResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
-	// LastModified contains the information returned from the Last-Modified header response.
-	LastModified *string
-
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
 
 // AzureAppConfigurationClientCheckKeyValuesResponse contains the response from method AzureAppConfigurationClient.CheckKeyValues.
 type AzureAppConfigurationClientCheckKeyValuesResponse struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
@@ -40,8 +40,34 @@ type AzureAppConfigurationClientCheckLabelsResponse struct {
 
 // AzureAppConfigurationClientCheckRevisionsResponse contains the response from method AzureAppConfigurationClient.CheckRevisions.
 type AzureAppConfigurationClientCheckRevisionsResponse struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
+}
+
+// AzureAppConfigurationClientCheckSnapshotResponse contains the response from method AzureAppConfigurationClient.CheckSnapshot.
+type AzureAppConfigurationClientCheckSnapshotResponse struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken *string
+}
+
+// AzureAppConfigurationClientCheckSnapshotsResponse contains the response from method AzureAppConfigurationClient.CheckSnapshots.
+type AzureAppConfigurationClientCheckSnapshotsResponse struct {
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken *string
+}
+
+// AzureAppConfigurationClientCreateSnapshotResponse contains the response from method AzureAppConfigurationClient.BeginCreateSnapshot.
+type AzureAppConfigurationClientCreateSnapshotResponse struct {
+	Snapshot
 }
 
 // AzureAppConfigurationClientDeleteKeyValueResponse contains the response from method AzureAppConfigurationClient.DeleteKeyValue.
@@ -70,9 +96,6 @@ type AzureAppConfigurationClientGetKeyValueResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
-	// LastModified contains the information returned from the Last-Modified header response.
-	LastModified *string
-
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
@@ -80,6 +103,9 @@ type AzureAppConfigurationClientGetKeyValueResponse struct {
 // AzureAppConfigurationClientGetKeyValuesResponse contains the response from method AzureAppConfigurationClient.NewGetKeyValuesPager.
 type AzureAppConfigurationClientGetKeyValuesResponse struct {
 	KeyValueListResult
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
@@ -105,9 +131,37 @@ type AzureAppConfigurationClientGetNextPageResponse struct {
 	SyncToken *string
 }
 
+// AzureAppConfigurationClientGetOperationDetailsResponse contains the response from method AzureAppConfigurationClient.GetOperationDetails.
+type AzureAppConfigurationClientGetOperationDetailsResponse struct {
+	OperationDetails
+}
+
 // AzureAppConfigurationClientGetRevisionsResponse contains the response from method AzureAppConfigurationClient.NewGetRevisionsPager.
 type AzureAppConfigurationClientGetRevisionsResponse struct {
 	KeyValueListResult
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken *string
+}
+
+// AzureAppConfigurationClientGetSnapshotResponse contains the response from method AzureAppConfigurationClient.GetSnapshot.
+type AzureAppConfigurationClientGetSnapshotResponse struct {
+	Snapshot
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken *string
+}
+
+// AzureAppConfigurationClientGetSnapshotsResponse contains the response from method AzureAppConfigurationClient.NewGetSnapshotsPager.
+type AzureAppConfigurationClientGetSnapshotsResponse struct {
+	SnapshotListResult
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
@@ -127,6 +181,19 @@ type AzureAppConfigurationClientPutLockResponse struct {
 	KeyValue
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken *string
+}
+
+// AzureAppConfigurationClientUpdateSnapshotResponse contains the response from method AzureAppConfigurationClient.UpdateSnapshot.
+type AzureAppConfigurationClientUpdateSnapshotResponse struct {
+	Snapshot
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Link contains the information returned from the Link header response.
+	Link *string
 
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string

@@ -12,6 +12,7 @@
 ### Other Changes
 * Updated to latest version of `azcore`.
 * Clients now share the underlying `*azcore.Client`.
+* Enabled spans for distributed tracing.
 
 ## 1.0.2 (2023-07-20)
 

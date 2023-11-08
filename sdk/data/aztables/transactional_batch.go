@@ -71,15 +71,20 @@ type SubmitTransactionOptions struct {
 // when a transaction fails, the multipart data will have 4XX responses for the batch request that failed. For
 // more information about error responses see https://docs.microsoft.com/en-us/rest/api/storageservices/performing-entity-group-transactions#sample-error-response
 func (t *Client) SubmitTransaction(ctx context.Context, transactionActions []TransactionAction, tableSubmitTransactionOptions *SubmitTransactionOptions) (TransactionResponse, error) {
-	u1, err := uuid.New()
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.SubmitTransaction", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
+	batchID, err := uuid.New()
 	if err != nil {
 		return TransactionResponse{}, err
 	}
-	u2, err := uuid.New()
+	changesetID, err := uuid.New()
 	if err != nil {
 		return TransactionResponse{}, err
 	}
-	return t.submitTransactionInternal(ctx, transactionActions, u1, u2, tableSubmitTransactionOptions)
+	resp, err := t.submitTransactionInternal(ctx, transactionActions, batchID, changesetID, tableSubmitTransactionOptions)
+	return resp, err
 }
 
 // submitTransactionInternal is the internal implementation for SubmitTransaction. It allows for explicit configuration of the batch and changeset UUID values for testing.

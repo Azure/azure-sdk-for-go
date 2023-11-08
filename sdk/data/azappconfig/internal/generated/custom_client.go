@@ -8,6 +8,7 @@ package generated
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
 func NewAzureAppConfigurationClient(endpoint string, client *azcore.Client) *AzureAppConfigurationClient {
@@ -15,4 +16,8 @@ func NewAzureAppConfigurationClient(endpoint string, client *azcore.Client) *Azu
 		internal: client,
 		endpoint: endpoint,
 	}
+}
+
+func (a *AzureAppConfigurationClient) Tracer() tracing.Tracer {
+	return a.internal.Tracer()
 }

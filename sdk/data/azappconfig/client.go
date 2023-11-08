@@ -61,8 +61,11 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 	}
 
 	cache := synctoken.NewCache()
-	client, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
+	client, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache)},
+		Tracing: runtime.TracingOptions{
+			Namespace: "Microsoft.AppConfig",
+		},
 	}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
@@ -87,6 +90,10 @@ func (c *Client) SetSyncToken(syncToken SyncToken) error {
 //   - value is the value for the setting. pass nil if the setting doesn't have a value
 //   - options contains the optional values. can be nil
 func (c *Client) AddSetting(ctx context.Context, key string, value *string, options *AddSettingOptions) (AddSettingResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.AddSetting", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &AddSettingOptions{}
 	}
@@ -108,6 +115,10 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 
 // DeleteSetting deletes a configuration setting from the configuration store.
 func (c *Client) DeleteSetting(ctx context.Context, key string, options *DeleteSettingOptions) (DeleteSettingResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteSetting", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &DeleteSettingOptions{}
 	}
@@ -127,6 +138,10 @@ func (c *Client) DeleteSetting(ctx context.Context, key string, options *DeleteS
 
 // GetSetting retrieves an existing configuration setting from the configuration store.
 func (c *Client) GetSetting(ctx context.Context, key string, options *GetSettingOptions) (GetSettingResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetSetting", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &GetSettingOptions{}
 	}
@@ -147,13 +162,16 @@ func (c *Client) GetSetting(ctx context.Context, key string, options *GetSetting
 
 // SetReadOnly sets an existing configuration setting to read only or read write state in the configuration store.
 func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.SetReadOnly", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &SetReadOnlyOptions{}
 	}
 
 	setting := Setting{Key: &key, Label: options.Label}
 
-	var err error
 	if isReadOnly {
 		var resp generated.AzureAppConfigurationClientPutLockResponse
 		resp, err = c.appConfigClient.PutLock(ctx, *setting.Key, setting.toGeneratedPutLockOptions(options.OnlyIfUnchanged))
@@ -183,6 +201,10 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 //   - value is the value for the setting. pass nil if the setting doesn't have a value
 //   - options contains the optional values. can be nil
 func (c *Client) SetSetting(ctx context.Context, key string, value *string, options *SetSettingOptions) (SetSettingResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.SetSetting", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &SetSettingOptions{}
 	}
@@ -226,6 +248,7 @@ func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRe
 				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
 		},
+		Tracer: c.appConfigClient.Tracer(),
 	})
 }
 
@@ -253,5 +276,6 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
 		},
+		Tracer: c.appConfigClient.Tracer(),
 	})
 }

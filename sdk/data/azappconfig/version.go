@@ -7,6 +7,6 @@
 package azappconfig
 
 const (
-	moduleName    = "azappconfig"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig"
 	moduleVersion = "v1.0.1"
 )

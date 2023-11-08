@@ -11,15 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-func NewServiceClient(endpoint string, plOpts runtime.PipelineOptions, options *azcore.ClientOptions) (*ServiceClient, error) {
-	client, err := azcore.NewClient(moduleName+".ServiceClient", version, plOpts, options)
-	if err != nil {
-		return nil, err
-	}
+func NewServiceClient(endpoint string, client *azcore.Client) *ServiceClient {
 	return &ServiceClient{
 		endpoint: endpoint,
 		internal: client,
-	}, nil
+	}
 }
 
 func (s *ServiceClient) Endpoint() string {

@@ -12,8 +12,7 @@ output-folder: internal
 file-prefix: "zz_"
 tag: package-2019-02
 credential-scope: none
-use: "@autorest/go@4.0.0-preview.53"
-module-version: 1.0.2
+use: "@autorest/go@4.0.0-preview.59"
 security: "AADToken"
 security-scopes: "https://storage.azure.com/.default"
 honor-body-placement: true
@@ -26,7 +25,6 @@ directive:
     where: $
     transform: >-
       return $.
-        replace(/moduleName\s+=\s+"internal"/, `moduleName = "aztables"`).
         replace(/\(client \*TableClient\) deleteEntityCreateRequest\(/, `(client *TableClient) DeleteEntityCreateRequest(`).
         replace(/\(client \*TableClient\) insertEntityCreateRequest\(/, `(client *TableClient) InsertEntityCreateRequest(`).
         replace(/\(client \*TableClient\) mergeEntityCreateRequest\(/, `(client *TableClient) MergeEntityCreateRequest(`).

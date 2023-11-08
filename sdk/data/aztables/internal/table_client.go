@@ -11,15 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-func NewTableClient(endpoint string, plOpts runtime.PipelineOptions, options *azcore.ClientOptions) (*TableClient, error) {
-	client, err := azcore.NewClient(moduleName+".TableClient", version, plOpts, options)
-	if err != nil {
-		return nil, err
-	}
+func NewTableClient(endpoint string, client *azcore.Client) *TableClient {
 	return &TableClient{
 		endpoint: endpoint,
 		internal: client,
-	}, nil
+	}
 }
 
 func (t *TableClient) Endpoint() string {

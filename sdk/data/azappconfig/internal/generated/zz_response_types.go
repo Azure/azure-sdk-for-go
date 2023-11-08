@@ -73,6 +73,7 @@ type AzureAppConfigurationClientCreateSnapshotResponse struct {
 // AzureAppConfigurationClientDeleteKeyValueResponse contains the response from method AzureAppConfigurationClient.DeleteKeyValue.
 type AzureAppConfigurationClientDeleteKeyValueResponse struct {
 	KeyValue
+
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -83,6 +84,7 @@ type AzureAppConfigurationClientDeleteKeyValueResponse struct {
 // AzureAppConfigurationClientDeleteLockResponse contains the response from method AzureAppConfigurationClient.DeleteLock.
 type AzureAppConfigurationClientDeleteLockResponse struct {
 	KeyValue
+
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -93,6 +95,7 @@ type AzureAppConfigurationClientDeleteLockResponse struct {
 // AzureAppConfigurationClientGetKeyValueResponse contains the response from method AzureAppConfigurationClient.GetKeyValue.
 type AzureAppConfigurationClientGetKeyValueResponse struct {
 	KeyValue
+
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -102,7 +105,9 @@ type AzureAppConfigurationClientGetKeyValueResponse struct {
 
 // AzureAppConfigurationClientGetKeyValuesResponse contains the response from method AzureAppConfigurationClient.NewGetKeyValuesPager.
 type AzureAppConfigurationClientGetKeyValuesResponse struct {
+	// The result of a list request.
 	KeyValueListResult
+
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -112,33 +117,33 @@ type AzureAppConfigurationClientGetKeyValuesResponse struct {
 
 // AzureAppConfigurationClientGetKeysResponse contains the response from method AzureAppConfigurationClient.NewGetKeysPager.
 type AzureAppConfigurationClientGetKeysResponse struct {
+	// The result of a list request.
 	KeyListResult
+
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
 
 // AzureAppConfigurationClientGetLabelsResponse contains the response from method AzureAppConfigurationClient.NewGetLabelsPager.
 type AzureAppConfigurationClientGetLabelsResponse struct {
+	// The result of a list request.
 	LabelListResult
-	// SyncToken contains the information returned from the Sync-Token header response.
-	SyncToken *string
-}
 
-// AzureAppConfigurationClientGetNextPageResponse contains the response from method AzureAppConfigurationClient.NewGetNextPagePager.
-type AzureAppConfigurationClientGetNextPageResponse struct {
-	KeyListResult
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
 
 // AzureAppConfigurationClientGetOperationDetailsResponse contains the response from method AzureAppConfigurationClient.GetOperationDetails.
 type AzureAppConfigurationClientGetOperationDetailsResponse struct {
+	// Details of a long running operation.
 	OperationDetails
 }
 
 // AzureAppConfigurationClientGetRevisionsResponse contains the response from method AzureAppConfigurationClient.NewGetRevisionsPager.
 type AzureAppConfigurationClientGetRevisionsResponse struct {
+	// The result of a list request.
 	KeyValueListResult
+
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -149,6 +154,7 @@ type AzureAppConfigurationClientGetRevisionsResponse struct {
 // AzureAppConfigurationClientGetSnapshotResponse contains the response from method AzureAppConfigurationClient.GetSnapshot.
 type AzureAppConfigurationClientGetSnapshotResponse struct {
 	Snapshot
+
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -161,7 +167,9 @@ type AzureAppConfigurationClientGetSnapshotResponse struct {
 
 // AzureAppConfigurationClientGetSnapshotsResponse contains the response from method AzureAppConfigurationClient.NewGetSnapshotsPager.
 type AzureAppConfigurationClientGetSnapshotsResponse struct {
+	// The result of a snapshot list request.
 	SnapshotListResult
+
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
@@ -169,6 +177,7 @@ type AzureAppConfigurationClientGetSnapshotsResponse struct {
 // AzureAppConfigurationClientPutKeyValueResponse contains the response from method AzureAppConfigurationClient.PutKeyValue.
 type AzureAppConfigurationClientPutKeyValueResponse struct {
 	KeyValue
+
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -179,6 +188,7 @@ type AzureAppConfigurationClientPutKeyValueResponse struct {
 // AzureAppConfigurationClientPutLockResponse contains the response from method AzureAppConfigurationClient.PutLock.
 type AzureAppConfigurationClientPutLockResponse struct {
 	KeyValue
+
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -189,6 +199,7 @@ type AzureAppConfigurationClientPutLockResponse struct {
 // AzureAppConfigurationClientUpdateSnapshotResponse contains the response from method AzureAppConfigurationClient.UpdateSnapshot.
 type AzureAppConfigurationClientUpdateSnapshotResponse struct {
 	Snapshot
+
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 

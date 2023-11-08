@@ -91,11 +91,11 @@ func (client *AzureAppConfigurationClient) checkKeyValueCreateRequest(ctx contex
 // checkKeyValueHandleResponse handles the CheckKeyValue response.
 func (client *AzureAppConfigurationClient) checkKeyValueHandleResponse(resp *http.Response) (AzureAppConfigurationClientCheckKeyValueResponse, error) {
 	result := AzureAppConfigurationClientCheckKeyValueResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
+	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
 	}
 	return result, nil
 }
@@ -167,11 +167,11 @@ func (client *AzureAppConfigurationClient) checkKeyValuesCreateRequest(ctx conte
 // checkKeyValuesHandleResponse handles the CheckKeyValues response.
 func (client *AzureAppConfigurationClient) checkKeyValuesHandleResponse(resp *http.Response) (AzureAppConfigurationClientCheckKeyValuesResponse, error) {
 	result := AzureAppConfigurationClientCheckKeyValuesResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
+	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
 	}
 	return result, nil
 }
@@ -353,11 +353,11 @@ func (client *AzureAppConfigurationClient) checkRevisionsCreateRequest(ctx conte
 // checkRevisionsHandleResponse handles the CheckRevisions response.
 func (client *AzureAppConfigurationClient) checkRevisionsHandleResponse(resp *http.Response) (AzureAppConfigurationClientCheckRevisionsResponse, error) {
 	result := AzureAppConfigurationClientCheckRevisionsResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
+	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
 	}
 	return result, nil
 }
@@ -416,14 +416,14 @@ func (client *AzureAppConfigurationClient) checkSnapshotCreateRequest(ctx contex
 // checkSnapshotHandleResponse handles the CheckSnapshot response.
 func (client *AzureAppConfigurationClient) checkSnapshotHandleResponse(resp *http.Response) (AzureAppConfigurationClientCheckSnapshotResponse, error) {
 	result := AzureAppConfigurationClientCheckSnapshotResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Link"); val != "" {
 		result.Link = &val
+	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
 	}
 	return result, nil
 }
@@ -601,11 +601,11 @@ func (client *AzureAppConfigurationClient) deleteKeyValueCreateRequest(ctx conte
 // deleteKeyValueHandleResponse handles the DeleteKeyValue response.
 func (client *AzureAppConfigurationClient) deleteKeyValueHandleResponse(resp *http.Response) (AzureAppConfigurationClientDeleteKeyValueResponse, error) {
 	result := AzureAppConfigurationClientDeleteKeyValueResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
+	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
 		return AzureAppConfigurationClientDeleteKeyValueResponse{}, err
@@ -671,11 +671,11 @@ func (client *AzureAppConfigurationClient) deleteLockCreateRequest(ctx context.C
 // deleteLockHandleResponse handles the DeleteLock response.
 func (client *AzureAppConfigurationClient) deleteLockHandleResponse(resp *http.Response) (AzureAppConfigurationClientDeleteLockResponse, error) {
 	result := AzureAppConfigurationClientDeleteLockResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
+	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
 		return AzureAppConfigurationClientDeleteLockResponse{}, err
@@ -747,11 +747,11 @@ func (client *AzureAppConfigurationClient) getKeyValueCreateRequest(ctx context.
 // getKeyValueHandleResponse handles the GetKeyValue response.
 func (client *AzureAppConfigurationClient) getKeyValueHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetKeyValueResponse, error) {
 	result := AzureAppConfigurationClientGetKeyValueResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
+	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
 		return AzureAppConfigurationClientGetKeyValueResponse{}, err
@@ -770,22 +770,19 @@ func (client *AzureAppConfigurationClient) NewGetKeyValuesPager(options *AzureAp
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AzureAppConfigurationClientGetKeyValuesResponse) (AzureAppConfigurationClientGetKeyValuesResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getKeyValuesCreateRequest(ctx, options)
-			} else {
-				req, err = client.getNextPageCreateRequest(ctx, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getKeyValuesCreateRequest(ctx, options)
+			}, &runtime.FetcherForNextLinkOptions{
+				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
+					return client.getNextPageCreateRequest(ctx, encodedNextLink)
+				},
+			})
 			if err != nil {
 				return AzureAppConfigurationClientGetKeyValuesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AzureAppConfigurationClientGetKeyValuesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AzureAppConfigurationClientGetKeyValuesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getKeyValuesHandleResponse(resp)
 		},
@@ -836,11 +833,11 @@ func (client *AzureAppConfigurationClient) getKeyValuesCreateRequest(ctx context
 // getKeyValuesHandleResponse handles the GetKeyValues response.
 func (client *AzureAppConfigurationClient) getKeyValuesHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetKeyValuesResponse, error) {
 	result := AzureAppConfigurationClientGetKeyValuesResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
+	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValueListResult); err != nil {
 		return AzureAppConfigurationClientGetKeyValuesResponse{}, err
@@ -859,22 +856,19 @@ func (client *AzureAppConfigurationClient) NewGetKeysPager(options *AzureAppConf
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AzureAppConfigurationClientGetKeysResponse) (AzureAppConfigurationClientGetKeysResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getKeysCreateRequest(ctx, options)
-			} else {
-				req, err = client.getNextPageCreateRequest(ctx, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getKeysCreateRequest(ctx, options)
+			}, &runtime.FetcherForNextLinkOptions{
+				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
+					return client.getNextPageCreateRequest(ctx, encodedNextLink)
+				},
+			})
 			if err != nil {
 				return AzureAppConfigurationClientGetKeysResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AzureAppConfigurationClientGetKeysResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AzureAppConfigurationClientGetKeysResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getKeysHandleResponse(resp)
 		},
@@ -930,22 +924,19 @@ func (client *AzureAppConfigurationClient) NewGetLabelsPager(options *AzureAppCo
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AzureAppConfigurationClientGetLabelsResponse) (AzureAppConfigurationClientGetLabelsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getLabelsCreateRequest(ctx, options)
-			} else {
-				req, err = client.getNextPageCreateRequest(ctx, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getLabelsCreateRequest(ctx, options)
+			}, &runtime.FetcherForNextLinkOptions{
+				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
+					return client.getNextPageCreateRequest(ctx, encodedNextLink)
+				},
+			})
 			if err != nil {
 				return AzureAppConfigurationClientGetLabelsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AzureAppConfigurationClientGetLabelsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AzureAppConfigurationClientGetLabelsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getLabelsHandleResponse(resp)
 		},
@@ -989,30 +980,6 @@ func (client *AzureAppConfigurationClient) getLabelsHandleResponse(resp *http.Re
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabelListResult); err != nil {
 		return AzureAppConfigurationClientGetLabelsResponse{}, err
-	}
-	return result, nil
-}
-
-// getNextPageCreateRequest creates the GetNextPage request.
-func (client *AzureAppConfigurationClient) getNextPageCreateRequest(ctx context.Context, nextLink string) (*policy.Request, error) {
-	urlPath := "/{nextLink}"
-	urlPath = strings.ReplaceAll(urlPath, "{nextLink}", nextLink)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getNextPageHandleResponse handles the GetNextPage response.
-func (client *AzureAppConfigurationClient) getNextPageHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetNextPageResponse, error) {
-	result := AzureAppConfigurationClientGetNextPageResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
-		return AzureAppConfigurationClientGetNextPageResponse{}, err
 	}
 	return result, nil
 }
@@ -1077,22 +1044,19 @@ func (client *AzureAppConfigurationClient) NewGetRevisionsPager(options *AzureAp
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AzureAppConfigurationClientGetRevisionsResponse) (AzureAppConfigurationClientGetRevisionsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getRevisionsCreateRequest(ctx, options)
-			} else {
-				req, err = client.getNextPageCreateRequest(ctx, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getRevisionsCreateRequest(ctx, options)
+			}, &runtime.FetcherForNextLinkOptions{
+				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
+					return client.getNextPageCreateRequest(ctx, encodedNextLink)
+				},
+			})
 			if err != nil {
 				return AzureAppConfigurationClientGetRevisionsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AzureAppConfigurationClientGetRevisionsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AzureAppConfigurationClientGetRevisionsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getRevisionsHandleResponse(resp)
 		},
@@ -1134,11 +1098,11 @@ func (client *AzureAppConfigurationClient) getRevisionsCreateRequest(ctx context
 // getRevisionsHandleResponse handles the GetRevisions response.
 func (client *AzureAppConfigurationClient) getRevisionsHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetRevisionsResponse, error) {
 	result := AzureAppConfigurationClientGetRevisionsResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
+	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValueListResult); err != nil {
 		return AzureAppConfigurationClientGetRevisionsResponse{}, err
@@ -1204,14 +1168,14 @@ func (client *AzureAppConfigurationClient) getSnapshotCreateRequest(ctx context.
 // getSnapshotHandleResponse handles the GetSnapshot response.
 func (client *AzureAppConfigurationClient) getSnapshotHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetSnapshotResponse, error) {
 	result := AzureAppConfigurationClientGetSnapshotResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Link"); val != "" {
 		result.Link = &val
+	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Snapshot); err != nil {
 		return AzureAppConfigurationClientGetSnapshotResponse{}, err
@@ -1230,22 +1194,19 @@ func (client *AzureAppConfigurationClient) NewGetSnapshotsPager(options *AzureAp
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AzureAppConfigurationClientGetSnapshotsResponse) (AzureAppConfigurationClientGetSnapshotsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getSnapshotsCreateRequest(ctx, options)
-			} else {
-				req, err = client.getNextPageCreateRequest(ctx, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getSnapshotsCreateRequest(ctx, options)
+			}, &runtime.FetcherForNextLinkOptions{
+				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
+					return client.getNextPageCreateRequest(ctx, encodedNextLink)
+				},
+			})
 			if err != nil {
 				return AzureAppConfigurationClientGetSnapshotsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AzureAppConfigurationClientGetSnapshotsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AzureAppConfigurationClientGetSnapshotsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getSnapshotsHandleResponse(resp)
 		},
@@ -1355,11 +1316,11 @@ func (client *AzureAppConfigurationClient) putKeyValueCreateRequest(ctx context.
 // putKeyValueHandleResponse handles the PutKeyValue response.
 func (client *AzureAppConfigurationClient) putKeyValueHandleResponse(resp *http.Response) (AzureAppConfigurationClientPutKeyValueResponse, error) {
 	result := AzureAppConfigurationClientPutKeyValueResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
+	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
 		return AzureAppConfigurationClientPutKeyValueResponse{}, err
@@ -1425,11 +1386,11 @@ func (client *AzureAppConfigurationClient) putLockCreateRequest(ctx context.Cont
 // putLockHandleResponse handles the PutLock response.
 func (client *AzureAppConfigurationClient) putLockHandleResponse(resp *http.Response) (AzureAppConfigurationClientPutLockResponse, error) {
 	result := AzureAppConfigurationClientPutLockResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
+	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
 		return AzureAppConfigurationClientPutLockResponse{}, err
@@ -1496,17 +1457,29 @@ func (client *AzureAppConfigurationClient) updateSnapshotCreateRequest(ctx conte
 // updateSnapshotHandleResponse handles the UpdateSnapshot response.
 func (client *AzureAppConfigurationClient) updateSnapshotHandleResponse(resp *http.Response) (AzureAppConfigurationClientUpdateSnapshotResponse, error) {
 	result := AzureAppConfigurationClientUpdateSnapshotResponse{}
-	if val := resp.Header.Get("Sync-Token"); val != "" {
-		result.SyncToken = &val
-	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if val := resp.Header.Get("Link"); val != "" {
 		result.Link = &val
 	}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Snapshot); err != nil {
 		return AzureAppConfigurationClientUpdateSnapshotResponse{}, err
 	}
 	return result, nil
+}
+
+// getNextPageCreateRequest creates the getNextPageCreateRequest request.
+func (client *AzureAppConfigurationClient) getNextPageCreateRequest(ctx context.Context, nextLink string) (*policy.Request, error) {
+	urlPath := "/{nextLink}"
+	urlPath = strings.ReplaceAll(urlPath, "{nextLink}", nextLink)
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
 }

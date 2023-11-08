@@ -88,7 +88,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 		return TransactionResponse{}, errEmptyTransaction
 	}
 	changesetBoundary := fmt.Sprintf("changeset_%s", changesetUuid.String())
-	changeSetBody, err := t.generateChangesetBody(changesetBoundary, transactionActions)
+	changeSetBody, err := t.generateChangesetBody(ctx, changesetBoundary, transactionActions)
 	if err != nil {
 		return TransactionResponse{}, err
 	}
@@ -192,7 +192,7 @@ func getBoundaryName(bytesBody []byte) string {
 
 // generateChangesetBody generates the individual changesets for the various operations within the batch request.
 // There is a changeset for Insert, Delete, Merge etc.
-func (t *Client) generateChangesetBody(changesetBoundary string, transactionActions []TransactionAction) (*bytes.Buffer, error) {
+func (t *Client) generateChangesetBody(ctx context.Context, changesetBoundary string, transactionActions []TransactionAction) (*bytes.Buffer, error) {
 
 	body := new(bytes.Buffer)
 	writer := multipart.NewWriter(body)
@@ -202,7 +202,7 @@ func (t *Client) generateChangesetBody(changesetBoundary string, transactionActi
 	}
 
 	for _, be := range transactionActions {
-		err := t.generateEntitySubset(&be, writer)
+		err := t.generateEntitySubset(ctx, &be, writer)
 		if err != nil {
 			return nil, err
 		}
@@ -213,7 +213,7 @@ func (t *Client) generateChangesetBody(changesetBoundary string, transactionActi
 }
 
 // generateEntitySubset generates body payload for particular batch entity
-func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writer *multipart.Writer) error {
+func (t *Client) generateEntitySubset(ctx context.Context, transactionAction *TransactionAction, writer *multipart.Writer) error {
 	h := make(textproto.MIMEHeader)
 	h.Set(headerContentTransferEncoding, "binary")
 	h.Set(headerContentType, "application/http")

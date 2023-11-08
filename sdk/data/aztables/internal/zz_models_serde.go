@@ -22,12 +22,12 @@ func (a AccessPolicy) MarshalXML(enc *xml.Encoder, start xml.StartElement) error
 	type alias AccessPolicy
 	aux := &struct {
 		*alias
-		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start  *timeRFC3339 `xml:"Start"`
+		Expiry *dateTimeRFC3339 `xml:"Expiry"`
+		Start  *dateTimeRFC3339 `xml:"Start"`
 	}{
 		alias:  (*alias)(&a),
-		Expiry: (*timeRFC3339)(a.Expiry),
-		Start:  (*timeRFC3339)(a.Start),
+		Expiry: (*dateTimeRFC3339)(a.Expiry),
+		Start:  (*dateTimeRFC3339)(a.Start),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -37,8 +37,8 @@ func (a *AccessPolicy) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) er
 	type alias AccessPolicy
 	aux := &struct {
 		*alias
-		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start  *timeRFC3339 `xml:"Start"`
+		Expiry *dateTimeRFC3339 `xml:"Expiry"`
+		Start  *dateTimeRFC3339 `xml:"Start"`
 	}{
 		alias: (*alias)(a),
 	}
@@ -55,10 +55,10 @@ func (g GeoReplication) MarshalXML(enc *xml.Encoder, start xml.StartElement) err
 	type alias GeoReplication
 	aux := &struct {
 		*alias
-		LastSyncTime *timeRFC1123 `xml:"LastSyncTime"`
+		LastSyncTime *dateTimeRFC1123 `xml:"LastSyncTime"`
 	}{
 		alias:        (*alias)(&g),
-		LastSyncTime: (*timeRFC1123)(g.LastSyncTime),
+		LastSyncTime: (*dateTimeRFC1123)(g.LastSyncTime),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -68,7 +68,7 @@ func (g *GeoReplication) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) 
 	type alias GeoReplication
 	aux := &struct {
 		*alias
-		LastSyncTime *timeRFC1123 `xml:"LastSyncTime"`
+		LastSyncTime *dateTimeRFC1123 `xml:"LastSyncTime"`
 	}{
 		alias: (*alias)(g),
 	}

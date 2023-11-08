@@ -25,6 +25,11 @@ type Client struct {
 	name    string
 }
 
+// ClientOptions contains the optional parameters for client constructors.
+type ClientOptions struct {
+	azcore.ClientOptions
+}
+
 // NewClient creates a Client struct in the context of the table specified in the serviceURL, authorizing requests with an Azure AD access token.
 // The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.table.core.windows.net/<myTableName>".
 // Pass in nil for options to construct the client with the default ClientOptions.

@@ -7,8 +7,11 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Internal calls in `Client.SubmitTransaction` now honor the caller's context.
 
 ### Other Changes
+* Updated to latest version of `azcore`.
+* Clients now share the underlying `*azcore.Client`.
 
 ## 1.0.2 (2023-07-20)
 

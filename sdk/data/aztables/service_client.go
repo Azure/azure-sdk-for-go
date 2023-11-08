@@ -27,15 +27,18 @@ type ServiceClient struct {
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
-	conOptions := getConnectionOptions(serviceURL, options)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil)},
 	}
-	serviceClient, err := generated.NewServiceClient(serviceURL, plOpts, conOptions)
+	client, err := newClient(serviceURL, plOpts, options)
 	if err != nil {
 		return nil, err
 	}
-	tableClient, err := generated.NewTableClient(serviceURL, plOpts, conOptions)
+	serviceClient, err := generated.NewServiceClient(serviceURL, client)
+	if err != nil {
+		return nil, err
+	}
+	tableClient, err := generated.NewTableClient(serviceURL, client)
 	if err != nil {
 		return nil, err
 	}
@@ -49,12 +52,15 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 // Call this method when serviceURL contains a SAS token.
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
-	conOptions := getConnectionOptions(serviceURL, options)
-	serviceClient, err := generated.NewServiceClient(serviceURL, runtime.PipelineOptions{}, conOptions)
+	client, err := newClient(serviceURL, runtime.PipelineOptions{}, options)
 	if err != nil {
 		return nil, err
 	}
-	tableClient, err := generated.NewTableClient(serviceURL, runtime.PipelineOptions{}, conOptions)
+	serviceClient, err := generated.NewServiceClient(serviceURL, client)
+	if err != nil {
+		return nil, err
+	}
+	tableClient, err := generated.NewTableClient(serviceURL, client)
 	if err != nil {
 		return nil, err
 	}
@@ -67,15 +73,18 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 // NewServiceClientWithSharedKey creates a ServiceClient struct using the specified serviceURL, credential, and options.
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
-	conOptions := getConnectionOptions(serviceURL, options)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{newSharedKeyCredPolicy(cred)},
 	}
-	serviceClient, err := generated.NewServiceClient(serviceURL, plOpts, conOptions)
+	client, err := newClient(serviceURL, plOpts, options)
 	if err != nil {
 		return nil, err
 	}
-	tableClient, err := generated.NewTableClient(serviceURL, plOpts, conOptions)
+	serviceClient, err := generated.NewServiceClient(serviceURL, client)
+	if err != nil {
+		return nil, err
+	}
+	tableClient, err := generated.NewTableClient(serviceURL, client)
 	if err != nil {
 		return nil, err
 	}
@@ -86,15 +95,14 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 	}, nil
 }
 
-func getConnectionOptions(serviceURL string, options *ClientOptions) *policy.ClientOptions {
+func newClient(serviceURL string, plOpts runtime.PipelineOptions, options *ClientOptions) (*azcore.Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	conOptions := options.toPolicyOptions()
 	if isCosmosEndpoint(serviceURL) {
-		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
+		plOpts.PerCall = append(plOpts.PerCall, cosmosPatchTransformPolicy{})
 	}
-	return conOptions
+	return azcore.NewClient(generated.ModuleName, generated.Version, plOpts, &options.ClientOptions)
 }
 
 // NewClient returns a pointer to a Client affinitized to the specified table name and initialized with the same serviceURL and credentials as this ServiceClient

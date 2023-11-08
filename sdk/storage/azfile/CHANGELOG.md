@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 * Fixed a bug where Optional fields which were mandatory earlier create a failure when passed an older service version
+* Made SourceContentCRC64 header as optional. Changed the type from uint64 to a generic interface implementation. 
+  These changes impact: `file.UploadRangeFromURL()`
 
 ### Other Changes
 

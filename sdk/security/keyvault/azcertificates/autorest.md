@@ -224,7 +224,6 @@ directive:
       - models.go
       - options.go
       - response_types.go
-      - options.go
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 

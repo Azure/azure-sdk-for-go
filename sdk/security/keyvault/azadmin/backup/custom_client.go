@@ -90,16 +90,17 @@ func (client *Client) beginFullRestore(ctx context.Context, restoreBlobDetails R
 		if err != nil {
 			return nil, err
 		}
-		handler, err := pollers.NewRestorePoller[FullRestoreResponse](client.internal.Pipeline(), client.internal.Tracer(), resp, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := pollers.NewRestorePoller[FullRestoreResponse](client.internal.Pipeline(), resp, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FullRestoreResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Handler:       handler,
+			Tracer:        client.internal.Tracer(),
 		})
 	} else {
-		handler, err := pollers.NewRestorePoller[FullRestoreResponse](client.internal.Pipeline(), client.internal.Tracer(), nil, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := pollers.NewRestorePoller[FullRestoreResponse](client.internal.Pipeline(), nil, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
@@ -115,16 +116,17 @@ func (client *Client) beginSelectiveKeyRestore(ctx context.Context, keyName stri
 		if err != nil {
 			return nil, err
 		}
-		handler, err := pollers.NewRestorePoller[SelectiveKeyRestoreResponse](client.internal.Pipeline(), client.internal.Tracer(), resp, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := pollers.NewRestorePoller[SelectiveKeyRestoreResponse](client.internal.Pipeline(), resp, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SelectiveKeyRestoreResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Handler:       handler,
+			Tracer:        client.internal.Tracer(),
 		})
 	} else {
-		handler, err := pollers.NewRestorePoller[SelectiveKeyRestoreResponse](client.internal.Pipeline(), client.internal.Tracer(), nil, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := pollers.NewRestorePoller[SelectiveKeyRestoreResponse](client.internal.Pipeline(), nil, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}

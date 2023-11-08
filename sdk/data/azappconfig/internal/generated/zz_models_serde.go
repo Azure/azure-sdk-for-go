@@ -193,7 +193,7 @@ func (k KeyValue) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "etag", k.Etag)
 	populate(objectMap, "key", k.Key)
 	populate(objectMap, "label", k.Label)
-	populateTimeRFC3339(objectMap, "last_modified", k.LastModified)
+	populateDateTimeRFC3339(objectMap, "last_modified", k.LastModified)
 	populate(objectMap, "locked", k.Locked)
 	populate(objectMap, "tags", k.Tags)
 	populate(objectMap, "value", k.Value)
@@ -222,7 +222,7 @@ func (k *KeyValue) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Label", &k.Label)
 			delete(rawMsg, key)
 		case "last_modified":
-			err = unpopulateTimeRFC3339(val, "LastModified", &k.LastModified)
+			err = unpopulateDateTimeRFC3339(val, "LastModified", &k.LastModified)
 			delete(rawMsg, key)
 		case "locked":
 			err = unpopulate(val, "Locked", &k.Locked)
@@ -404,9 +404,9 @@ func (o *OperationDetails) UnmarshalJSON(data []byte) error {
 func (s Snapshot) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "composition_type", s.CompositionType)
-	populateTimeRFC3339(objectMap, "created", s.Created)
+	populateDateTimeRFC3339(objectMap, "created", s.Created)
 	populate(objectMap, "etag", s.Etag)
-	populateTimeRFC3339(objectMap, "expires", s.Expires)
+	populateDateTimeRFC3339(objectMap, "expires", s.Expires)
 	populate(objectMap, "filters", s.Filters)
 	populate(objectMap, "items_count", s.ItemsCount)
 	populate(objectMap, "name", s.Name)
@@ -430,13 +430,13 @@ func (s *Snapshot) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CompositionType", &s.CompositionType)
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateTimeRFC3339(val, "Created", &s.Created)
+			err = unpopulateDateTimeRFC3339(val, "Created", &s.Created)
 			delete(rawMsg, key)
 		case "etag":
 			err = unpopulate(val, "Etag", &s.Etag)
 			delete(rawMsg, key)
 		case "expires":
-			err = unpopulateTimeRFC3339(val, "Expires", &s.Expires)
+			err = unpopulateDateTimeRFC3339(val, "Expires", &s.Expires)
 			delete(rawMsg, key)
 		case "filters":
 			err = unpopulate(val, "Filters", &s.Filters)

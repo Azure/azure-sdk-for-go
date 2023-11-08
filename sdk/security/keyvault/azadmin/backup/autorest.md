@@ -100,5 +100,5 @@ directive:
   # fix up span names
   - from: client.go
     where: $
-    transform: return $.replace(/StartSpan\(ctx, "Client/, "StartSpan(ctx, \"backup.Client");
+    transform: return $.replace(/StartSpan\(ctx, "Client/g, "StartSpan(ctx, \"backup.Client");
 ```

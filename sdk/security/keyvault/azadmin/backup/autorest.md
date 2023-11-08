@@ -12,7 +12,8 @@ output-folder: ../backup
 override-client-name: Client
 security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.46"
+use: "@autorest/go@4.0.0-preview.59"
+inject-spans: true
 version: "^3.0.0"
 
 directive:
@@ -79,6 +80,7 @@ directive:
   - from:
       - client.go
       - models.go
+      - options.go
       - response_types.go
       - options.go
     where: $
@@ -94,4 +96,9 @@ directive:
   - from: swagger-document
     where: $.definitions.SelectiveKeyRestoreOperationParameters
     transform: $["description"] = "Parameters for the selective restore operation"
+
+  # fix up span names
+  - from: client.go
+    where: $
+    transform: return $.replace(/StartSpan\(ctx, "Client/, "StartSpan(ctx, \"backup.Client");
 ```

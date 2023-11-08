@@ -26,6 +26,8 @@ import (
 
 const credNameAzureDeveloperCLI = "AzureDeveloperCLICredential"
 
+type azdTokenProvider func(ctx context.Context, scopes []string, tenant string) ([]byte, error)
+
 // AzureDeveloperCLICredentialOptions contains optional parameters for AzureDeveloperCLICredential.
 type AzureDeveloperCLICredentialOptions struct {
 	// AdditionallyAllowedTenants specifies tenants for which the credential may acquire tokens, in addition
@@ -40,7 +42,7 @@ type AzureDeveloperCLICredentialOptions struct {
 	// inDefaultChain is true when the credential is part of DefaultAzureCredential
 	inDefaultChain bool
 	// tokenProvider is used by tests to fake invoking azd
-	tokenProvider cliTokenProvider
+	tokenProvider azdTokenProvider
 }
 
 // AzureDeveloperCLICredential authenticates as the identity logged in to the [Azure Developer CLI].
@@ -92,7 +94,7 @@ func (c *AzureDeveloperCLICredential) GetToken(ctx context.Context, opts policy.
 	return at, nil
 }
 
-var defaultAzdTokenProvider cliTokenProvider = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+var defaultAzdTokenProvider azdTokenProvider = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
 	// set a default timeout for this authentication iff the application hasn't done so already
 	var cancel context.CancelFunc
 	if _, hasDeadline := ctx.Deadline(); !hasDeadline {

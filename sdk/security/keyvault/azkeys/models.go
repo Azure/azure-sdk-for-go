@@ -196,7 +196,7 @@ type KeyAttributes struct {
 	Created *time.Time
 
 	// READ-ONLY; The underlying HSM Platform.
-	HsmPlatform *string
+	HSMPlatform *string
 
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32

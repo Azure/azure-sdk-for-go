@@ -1,13 +1,9 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2023-11-08)
 
 ### Features Added
-* Added `HsmPlatform` property to `KeyAttributes`
-
-### Breaking Changes
-
-### Bugs Fixed
+* Added the `HSMPlatform` field to the `KeyAttributes` struct
 
 ### Other Changes
 * Upgraded service version to `7.5-preview.1`

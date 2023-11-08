@@ -1,13 +1,9 @@
 ## Release History
 
-### 1.1.0-beta.1 (Unreleased)
+### 1.1.0-beta.1 (2023-11-08)
 
 #### Features Added
 * Managed Identity can now be used in place of a SAS token to access the blob storage resource when performing backup and restore operations.
-
-#### Breaking Changes
-
-#### Bugs Fixed
 
 #### Other Changes
 * Upgraded service version to `7.5-preview.1`

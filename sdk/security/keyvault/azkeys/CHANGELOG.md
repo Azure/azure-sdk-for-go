@@ -3,7 +3,7 @@
 ## 1.1.0-beta.2 (2023-11-08)
 
 ### Features Added
-* Added the `HsmPlatform` field to the `KeyAttributes` struct
+* Added the `HSMPlatform` field to the `KeyAttributes` struct
 
 ### Other Changes
 * Upgraded service version to `7.5-preview.1`

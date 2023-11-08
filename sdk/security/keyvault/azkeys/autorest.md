@@ -96,6 +96,12 @@ directive:
   - rename-model:
       from: LifetimeActionsTrigger
       to: LifetimeActionTrigger
+  
+  # Rename HsmPlatform to HSMPlatform for consistency
+  - where-model: KeyAttributes
+    rename-property:
+      from: hsmPlatform
+      to: HSMPlatform
 
   # Remove MaxResults parameter
   - where: "$.paths..*"

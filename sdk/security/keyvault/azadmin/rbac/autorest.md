@@ -5,7 +5,7 @@ clear-output-folder: false
 export-clients: true
 go: true
 input-file: 
-    - https://github.com/Azure/azure-rest-api-specs/blob/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/rbac.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/a2f6f742d088dcc712e67cb2745d8271eaa370ff/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.5-preview.1/rbac.json
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: "data-plane"
 output-folder: ../rbac
@@ -21,11 +21,6 @@ directive:
   - from: swagger-document
     where: $["x-ms-parameterized-host"]
     transform: $.parameters[0]["x-ms-parameter-location"] = "client"
-
-  # delete generated client constructor
-  - from: client.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func NewClient.+\{\s(?:.+\s)+\}\s/, "");
 
     # rename role definition and role assignment operations so they will generate as one access control client
   - rename-operation:
@@ -82,6 +77,7 @@ directive:
       - client.go
       - models.go
       - response_types.go
+      - options.go
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 

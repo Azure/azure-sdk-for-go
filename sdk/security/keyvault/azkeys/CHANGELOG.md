@@ -3,12 +3,14 @@
 ## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
+* Added `HsmPlatform` property to `KeyAttributes`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* Upgraded service version to `7.5-preview.1`
 
 ## 1.1.0-beta.1 (2023-10-11)
 

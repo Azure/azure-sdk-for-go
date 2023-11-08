@@ -8,5 +8,5 @@ package internal
 
 const (
 	ModuleName = "azadmin"
-	Version    = "v1.0.2"
+	Version    = "v1.1.0-beta.1"
 )

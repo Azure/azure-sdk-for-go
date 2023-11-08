@@ -11,11 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-func NewTableClient(endpoint string, client *azcore.Client) (*TableClient, error) {
+func NewTableClient(endpoint string, client *azcore.Client) *TableClient {
 	return &TableClient{
 		endpoint: endpoint,
 		internal: client,
-	}, nil
+	}
 }
 
 func (t *TableClient) Endpoint() string {

@@ -11,11 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-func NewServiceClient(endpoint string, client *azcore.Client) (*ServiceClient, error) {
+func NewServiceClient(endpoint string, client *azcore.Client) *ServiceClient {
 	return &ServiceClient{
 		endpoint: endpoint,
 		internal: client,
-	}, nil
+	}
 }
 
 func (s *ServiceClient) Endpoint() string {

@@ -34,17 +34,9 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 	if err != nil {
 		return nil, err
 	}
-	serviceClient, err := generated.NewServiceClient(serviceURL, client)
-	if err != nil {
-		return nil, err
-	}
-	tableClient, err := generated.NewTableClient(serviceURL, client)
-	if err != nil {
-		return nil, err
-	}
 	return &ServiceClient{
-		client:  tableClient,
-		service: serviceClient,
+		client:  generated.NewTableClient(serviceURL, client),
+		service: generated.NewServiceClient(serviceURL, client),
 	}, nil
 }
 
@@ -56,17 +48,9 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 	if err != nil {
 		return nil, err
 	}
-	serviceClient, err := generated.NewServiceClient(serviceURL, client)
-	if err != nil {
-		return nil, err
-	}
-	tableClient, err := generated.NewTableClient(serviceURL, client)
-	if err != nil {
-		return nil, err
-	}
 	return &ServiceClient{
-		client:  tableClient,
-		service: serviceClient,
+		client:  generated.NewTableClient(serviceURL, client),
+		service: generated.NewServiceClient(serviceURL, client),
 	}, nil
 }
 
@@ -80,17 +64,9 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 	if err != nil {
 		return nil, err
 	}
-	serviceClient, err := generated.NewServiceClient(serviceURL, client)
-	if err != nil {
-		return nil, err
-	}
-	tableClient, err := generated.NewTableClient(serviceURL, client)
-	if err != nil {
-		return nil, err
-	}
 	return &ServiceClient{
-		client:  tableClient,
-		service: serviceClient,
+		client:  generated.NewTableClient(serviceURL, client),
+		service: generated.NewServiceClient(serviceURL, client),
 		cred:    cred,
 	}, nil
 }

@@ -70,12 +70,12 @@ type SASTokenParameters struct {
 	StorageResourceURI *string
 
 	// The SAS token pointing to an Azure Blob storage container
-	Token *string `json:"token,omitempty"`
+	Token *string
 
 	// Indicates which authentication method should be used. If set to true, Managed HSM will use the configured user-assigned
 	// managed identity to authenticate with Azure Storage. Otherwise, a SAS token has
 	// to be specified.
-	UseManagedIdentity *bool `json:"useManagedIdentity,omitempty"`
+	UseManagedIdentity *bool
 }
 
 // SelectiveKeyRestoreOperation - Selective Key Restore operation

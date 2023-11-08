@@ -31,7 +31,7 @@ type AzureAppConfigurationClient struct {
 // CheckKeyValue - Requests the headers and status of the given resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - key - The key of the key-value to retrieve.
 //   - options - AzureAppConfigurationClientCheckKeyValueOptions contains the optional parameters for the AzureAppConfigurationClient.CheckKeyValue
 //     method.
@@ -68,7 +68,7 @@ func (client *AzureAppConfigurationClient) checkKeyValueCreateRequest(ctx contex
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Select != nil {
 		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
 	}
@@ -97,16 +97,13 @@ func (client *AzureAppConfigurationClient) checkKeyValueHandleResponse(resp *htt
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if val := resp.Header.Get("Last-Modified"); val != "" {
-		result.LastModified = &val
-	}
 	return result, nil
 }
 
 // CheckKeyValues - Requests the headers and status of the given resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - options - AzureAppConfigurationClientCheckKeyValuesOptions contains the optional parameters for the AzureAppConfigurationClient.CheckKeyValues
 //     method.
 func (client *AzureAppConfigurationClient) CheckKeyValues(ctx context.Context, options *AzureAppConfigurationClientCheckKeyValuesOptions) (AzureAppConfigurationClientCheckKeyValuesResponse, error) {
@@ -141,12 +138,15 @@ func (client *AzureAppConfigurationClient) checkKeyValuesCreateRequest(ctx conte
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
 	if options != nil && options.Select != nil {
 		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
+	}
+	if options != nil && options.Snapshot != nil {
+		reqQP.Set("snapshot", *options.Snapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.syncToken != nil {
@@ -154,6 +154,12 @@ func (client *AzureAppConfigurationClient) checkKeyValuesCreateRequest(ctx conte
 	}
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
+	}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
 	return req, nil
 }
@@ -164,13 +170,16 @@ func (client *AzureAppConfigurationClient) checkKeyValuesHandleResponse(resp *ht
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
+	}
 	return result, nil
 }
 
 // CheckKeys - Requests the headers and status of the given resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - options - AzureAppConfigurationClientCheckKeysOptions contains the optional parameters for the AzureAppConfigurationClient.CheckKeys
 //     method.
 func (client *AzureAppConfigurationClient) CheckKeys(ctx context.Context, options *AzureAppConfigurationClientCheckKeysOptions) (AzureAppConfigurationClientCheckKeysResponse, error) {
@@ -202,7 +211,7 @@ func (client *AzureAppConfigurationClient) checkKeysCreateRequest(ctx context.Co
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
@@ -228,7 +237,7 @@ func (client *AzureAppConfigurationClient) checkKeysHandleResponse(resp *http.Re
 // CheckLabels - Requests the headers and status of the given resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - options - AzureAppConfigurationClientCheckLabelsOptions contains the optional parameters for the AzureAppConfigurationClient.CheckLabels
 //     method.
 func (client *AzureAppConfigurationClient) CheckLabels(ctx context.Context, options *AzureAppConfigurationClientCheckLabelsOptions) (AzureAppConfigurationClientCheckLabelsResponse, error) {
@@ -260,7 +269,7 @@ func (client *AzureAppConfigurationClient) checkLabelsCreateRequest(ctx context.
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
@@ -289,7 +298,7 @@ func (client *AzureAppConfigurationClient) checkLabelsHandleResponse(resp *http.
 // CheckRevisions - Requests the headers and status of the given resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - options - AzureAppConfigurationClientCheckRevisionsOptions contains the optional parameters for the AzureAppConfigurationClient.CheckRevisions
 //     method.
 func (client *AzureAppConfigurationClient) CheckRevisions(ctx context.Context, options *AzureAppConfigurationClientCheckRevisionsOptions) (AzureAppConfigurationClientCheckRevisionsResponse, error) {
@@ -324,7 +333,7 @@ func (client *AzureAppConfigurationClient) checkRevisionsCreateRequest(ctx conte
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
@@ -347,13 +356,200 @@ func (client *AzureAppConfigurationClient) checkRevisionsHandleResponse(resp *ht
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
+	}
 	return result, nil
+}
+
+// CheckSnapshot - Requests the headers and status of the given resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01
+//   - name - The name of the key-value snapshot to check.
+//   - options - AzureAppConfigurationClientCheckSnapshotOptions contains the optional parameters for the AzureAppConfigurationClient.CheckSnapshot
+//     method.
+func (client *AzureAppConfigurationClient) CheckSnapshot(ctx context.Context, name string, options *AzureAppConfigurationClientCheckSnapshotOptions) (AzureAppConfigurationClientCheckSnapshotResponse, error) {
+	var err error
+	req, err := client.checkSnapshotCreateRequest(ctx, name, options)
+	if err != nil {
+		return AzureAppConfigurationClientCheckSnapshotResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AzureAppConfigurationClientCheckSnapshotResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AzureAppConfigurationClientCheckSnapshotResponse{}, err
+	}
+	resp, err := client.checkSnapshotHandleResponse(httpResp)
+	return resp, err
+}
+
+// checkSnapshotCreateRequest creates the CheckSnapshot request.
+func (client *AzureAppConfigurationClient) checkSnapshotCreateRequest(ctx context.Context, name string, options *AzureAppConfigurationClientCheckSnapshotOptions) (*policy.Request, error) {
+	urlPath := "/snapshots/{name}"
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	return req, nil
+}
+
+// checkSnapshotHandleResponse handles the CheckSnapshot response.
+func (client *AzureAppConfigurationClient) checkSnapshotHandleResponse(resp *http.Response) (AzureAppConfigurationClientCheckSnapshotResponse, error) {
+	result := AzureAppConfigurationClientCheckSnapshotResponse{}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
+	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
+	}
+	if val := resp.Header.Get("Link"); val != "" {
+		result.Link = &val
+	}
+	return result, nil
+}
+
+// CheckSnapshots - Requests the headers and status of the given resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01
+//   - options - AzureAppConfigurationClientCheckSnapshotsOptions contains the optional parameters for the AzureAppConfigurationClient.CheckSnapshots
+//     method.
+func (client *AzureAppConfigurationClient) CheckSnapshots(ctx context.Context, options *AzureAppConfigurationClientCheckSnapshotsOptions) (AzureAppConfigurationClientCheckSnapshotsResponse, error) {
+	var err error
+	req, err := client.checkSnapshotsCreateRequest(ctx, options)
+	if err != nil {
+		return AzureAppConfigurationClientCheckSnapshotsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AzureAppConfigurationClientCheckSnapshotsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AzureAppConfigurationClientCheckSnapshotsResponse{}, err
+	}
+	resp, err := client.checkSnapshotsHandleResponse(httpResp)
+	return resp, err
+}
+
+// checkSnapshotsCreateRequest creates the CheckSnapshots request.
+func (client *AzureAppConfigurationClient) checkSnapshotsCreateRequest(ctx context.Context, options *AzureAppConfigurationClientCheckSnapshotsOptions) (*policy.Request, error) {
+	urlPath := "/snapshots"
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01")
+	if options != nil && options.After != nil {
+		reqQP.Set("After", *options.After)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
+	return req, nil
+}
+
+// checkSnapshotsHandleResponse handles the CheckSnapshots response.
+func (client *AzureAppConfigurationClient) checkSnapshotsHandleResponse(resp *http.Response) (AzureAppConfigurationClientCheckSnapshotsResponse, error) {
+	result := AzureAppConfigurationClientCheckSnapshotsResponse{}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
+	}
+	return result, nil
+}
+
+// BeginCreateSnapshot - Creates a key-value snapshot.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01
+//   - name - The name of the key-value snapshot to create.
+//   - entity - The key-value snapshot to create.
+//   - options - AzureAppConfigurationClientBeginCreateSnapshotOptions contains the optional parameters for the AzureAppConfigurationClient.BeginCreateSnapshot
+//     method.
+func (client *AzureAppConfigurationClient) BeginCreateSnapshot(ctx context.Context, name string, entity Snapshot, options *AzureAppConfigurationClientBeginCreateSnapshotOptions) (*runtime.Poller[AzureAppConfigurationClientCreateSnapshotResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createSnapshot(ctx, name, entity, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller[AzureAppConfigurationClientCreateSnapshotResponse](resp, client.internal.Pipeline(), nil)
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken[AzureAppConfigurationClientCreateSnapshotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// CreateSnapshot - Creates a key-value snapshot.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01
+func (client *AzureAppConfigurationClient) createSnapshot(ctx context.Context, name string, entity Snapshot, options *AzureAppConfigurationClientBeginCreateSnapshotOptions) (*http.Response, error) {
+	var err error
+	req, err := client.createSnapshotCreateRequest(ctx, name, entity, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createSnapshotCreateRequest creates the CreateSnapshot request.
+func (client *AzureAppConfigurationClient) createSnapshotCreateRequest(ctx context.Context, name string, entity Snapshot, options *AzureAppConfigurationClientBeginCreateSnapshotOptions) (*policy.Request, error) {
+	urlPath := "/snapshots/{name}"
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshot+json, application/problem+json"}
+	if err := runtime.MarshalAsJSON(req, entity); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // DeleteKeyValue - Deletes a key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - key - The key of the key-value to delete.
 //   - options - AzureAppConfigurationClientDeleteKeyValueOptions contains the optional parameters for the AzureAppConfigurationClient.DeleteKeyValue
 //     method.
@@ -390,7 +586,7 @@ func (client *AzureAppConfigurationClient) deleteKeyValueCreateRequest(ctx conte
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.syncToken != nil {
 		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
@@ -398,7 +594,7 @@ func (client *AzureAppConfigurationClient) deleteKeyValueCreateRequest(ctx conte
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/json, application/problem+json"}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
 	return req, nil
 }
 
@@ -420,7 +616,7 @@ func (client *AzureAppConfigurationClient) deleteKeyValueHandleResponse(resp *ht
 // DeleteLock - Unlocks a key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - key - The key of the key-value to unlock.
 //   - options - AzureAppConfigurationClientDeleteLockOptions contains the optional parameters for the AzureAppConfigurationClient.DeleteLock
 //     method.
@@ -457,7 +653,7 @@ func (client *AzureAppConfigurationClient) deleteLockCreateRequest(ctx context.C
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.syncToken != nil {
 		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
@@ -468,7 +664,7 @@ func (client *AzureAppConfigurationClient) deleteLockCreateRequest(ctx context.C
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/json, application/problem+json"}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
 	return req, nil
 }
 
@@ -490,7 +686,7 @@ func (client *AzureAppConfigurationClient) deleteLockHandleResponse(resp *http.R
 // GetKeyValue - Gets a single key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - key - The key of the key-value to retrieve.
 //   - options - AzureAppConfigurationClientGetKeyValueOptions contains the optional parameters for the AzureAppConfigurationClient.GetKeyValue
 //     method.
@@ -527,7 +723,7 @@ func (client *AzureAppConfigurationClient) getKeyValueCreateRequest(ctx context.
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.Select != nil {
 		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
 	}
@@ -544,7 +740,7 @@ func (client *AzureAppConfigurationClient) getKeyValueCreateRequest(ctx context.
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/json, application/problem+json"}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
 	return req, nil
 }
 
@@ -557,9 +753,6 @@ func (client *AzureAppConfigurationClient) getKeyValueHandleResponse(resp *http.
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if val := resp.Header.Get("Last-Modified"); val != "" {
-		result.LastModified = &val
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
 		return AzureAppConfigurationClientGetKeyValueResponse{}, err
 	}
@@ -568,7 +761,7 @@ func (client *AzureAppConfigurationClient) getKeyValueHandleResponse(resp *http.
 
 // NewGetKeyValuesPager - Gets a list of key-values.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - options - AzureAppConfigurationClientGetKeyValuesOptions contains the optional parameters for the AzureAppConfigurationClient.NewGetKeyValuesPager
 //     method.
 func (client *AzureAppConfigurationClient) NewGetKeyValuesPager(options *AzureAppConfigurationClientGetKeyValuesOptions) *runtime.Pager[AzureAppConfigurationClientGetKeyValuesResponse] {
@@ -613,12 +806,15 @@ func (client *AzureAppConfigurationClient) getKeyValuesCreateRequest(ctx context
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
 	if options != nil && options.Select != nil {
 		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
+	}
+	if options != nil && options.Snapshot != nil {
+		reqQP.Set("snapshot", *options.Snapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.syncToken != nil {
@@ -627,7 +823,13 @@ func (client *AzureAppConfigurationClient) getKeyValuesCreateRequest(ctx context
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kvset+json, application/json, application/problem+json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kvset+json, application/problem+json"}
 	return req, nil
 }
 
@@ -637,6 +839,9 @@ func (client *AzureAppConfigurationClient) getKeyValuesHandleResponse(resp *http
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValueListResult); err != nil {
 		return AzureAppConfigurationClientGetKeyValuesResponse{}, err
 	}
@@ -645,7 +850,7 @@ func (client *AzureAppConfigurationClient) getKeyValuesHandleResponse(resp *http
 
 // NewGetKeysPager - Gets a list of keys.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - options - AzureAppConfigurationClientGetKeysOptions contains the optional parameters for the AzureAppConfigurationClient.NewGetKeysPager
 //     method.
 func (client *AzureAppConfigurationClient) NewGetKeysPager(options *AzureAppConfigurationClientGetKeysOptions) *runtime.Pager[AzureAppConfigurationClientGetKeysResponse] {
@@ -687,7 +892,7 @@ func (client *AzureAppConfigurationClient) getKeysCreateRequest(ctx context.Cont
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
@@ -698,7 +903,7 @@ func (client *AzureAppConfigurationClient) getKeysCreateRequest(ctx context.Cont
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.keyset+json, application/json, application/problem+json"}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.keyset+json, application/problem+json"}
 	return req, nil
 }
 
@@ -716,7 +921,7 @@ func (client *AzureAppConfigurationClient) getKeysHandleResponse(resp *http.Resp
 
 // NewGetLabelsPager - Gets a list of labels.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - options - AzureAppConfigurationClientGetLabelsOptions contains the optional parameters for the AzureAppConfigurationClient.NewGetLabelsPager
 //     method.
 func (client *AzureAppConfigurationClient) NewGetLabelsPager(options *AzureAppConfigurationClientGetLabelsOptions) *runtime.Pager[AzureAppConfigurationClientGetLabelsResponse] {
@@ -758,7 +963,7 @@ func (client *AzureAppConfigurationClient) getLabelsCreateRequest(ctx context.Co
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
@@ -772,7 +977,7 @@ func (client *AzureAppConfigurationClient) getLabelsCreateRequest(ctx context.Co
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.labelset+json, application/json, application/problem+json"}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.labelset+json, application/problem+json"}
 	return req, nil
 }
 
@@ -812,9 +1017,58 @@ func (client *AzureAppConfigurationClient) getNextPageHandleResponse(resp *http.
 	return result, nil
 }
 
+// GetOperationDetails - Gets the state of a long running operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01
+//   - snapshot - Snapshot identifier for the long running operation.
+//   - options - AzureAppConfigurationClientGetOperationDetailsOptions contains the optional parameters for the AzureAppConfigurationClient.GetOperationDetails
+//     method.
+func (client *AzureAppConfigurationClient) GetOperationDetails(ctx context.Context, snapshot string, options *AzureAppConfigurationClientGetOperationDetailsOptions) (AzureAppConfigurationClientGetOperationDetailsResponse, error) {
+	var err error
+	req, err := client.getOperationDetailsCreateRequest(ctx, snapshot, options)
+	if err != nil {
+		return AzureAppConfigurationClientGetOperationDetailsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AzureAppConfigurationClientGetOperationDetailsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AzureAppConfigurationClientGetOperationDetailsResponse{}, err
+	}
+	resp, err := client.getOperationDetailsHandleResponse(httpResp)
+	return resp, err
+}
+
+// getOperationDetailsCreateRequest creates the GetOperationDetails request.
+func (client *AzureAppConfigurationClient) getOperationDetailsCreateRequest(ctx context.Context, snapshot string, options *AzureAppConfigurationClientGetOperationDetailsOptions) (*policy.Request, error) {
+	urlPath := "/operations"
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01")
+	reqQP.Set("snapshot", snapshot)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getOperationDetailsHandleResponse handles the GetOperationDetails response.
+func (client *AzureAppConfigurationClient) getOperationDetailsHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetOperationDetailsResponse, error) {
+	result := AzureAppConfigurationClientGetOperationDetailsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationDetails); err != nil {
+		return AzureAppConfigurationClientGetOperationDetailsResponse{}, err
+	}
+	return result, nil
+}
+
 // NewGetRevisionsPager - Gets a list of key-value revisions.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - options - AzureAppConfigurationClientGetRevisionsOptions contains the optional parameters for the AzureAppConfigurationClient.NewGetRevisionsPager
 //     method.
 func (client *AzureAppConfigurationClient) NewGetRevisionsPager(options *AzureAppConfigurationClientGetRevisionsOptions) *runtime.Pager[AzureAppConfigurationClientGetRevisionsResponse] {
@@ -859,7 +1113,7 @@ func (client *AzureAppConfigurationClient) getRevisionsCreateRequest(ctx context
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
@@ -873,7 +1127,7 @@ func (client *AzureAppConfigurationClient) getRevisionsCreateRequest(ctx context
 	if options != nil && options.AcceptDatetime != nil {
 		req.Raw().Header["Accept-Datetime"] = []string{*options.AcceptDatetime}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kvset+json, application/json, application/problem+json"}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kvset+json, application/problem+json"}
 	return req, nil
 }
 
@@ -883,8 +1137,158 @@ func (client *AzureAppConfigurationClient) getRevisionsHandleResponse(resp *http
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValueListResult); err != nil {
 		return AzureAppConfigurationClientGetRevisionsResponse{}, err
+	}
+	return result, nil
+}
+
+// GetSnapshot - Gets a single key-value snapshot.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01
+//   - name - The name of the key-value snapshot to retrieve.
+//   - options - AzureAppConfigurationClientGetSnapshotOptions contains the optional parameters for the AzureAppConfigurationClient.GetSnapshot
+//     method.
+func (client *AzureAppConfigurationClient) GetSnapshot(ctx context.Context, name string, options *AzureAppConfigurationClientGetSnapshotOptions) (AzureAppConfigurationClientGetSnapshotResponse, error) {
+	var err error
+	req, err := client.getSnapshotCreateRequest(ctx, name, options)
+	if err != nil {
+		return AzureAppConfigurationClientGetSnapshotResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AzureAppConfigurationClientGetSnapshotResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AzureAppConfigurationClientGetSnapshotResponse{}, err
+	}
+	resp, err := client.getSnapshotHandleResponse(httpResp)
+	return resp, err
+}
+
+// getSnapshotCreateRequest creates the GetSnapshot request.
+func (client *AzureAppConfigurationClient) getSnapshotCreateRequest(ctx context.Context, name string, options *AzureAppConfigurationClientGetSnapshotOptions) (*policy.Request, error) {
+	urlPath := "/snapshots/{name}"
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01")
+	if options != nil && options.Select != nil {
+		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshot+json, application/problem+json"}
+	return req, nil
+}
+
+// getSnapshotHandleResponse handles the GetSnapshot response.
+func (client *AzureAppConfigurationClient) getSnapshotHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetSnapshotResponse, error) {
+	result := AzureAppConfigurationClientGetSnapshotResponse{}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
+	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
+	}
+	if val := resp.Header.Get("Link"); val != "" {
+		result.Link = &val
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Snapshot); err != nil {
+		return AzureAppConfigurationClientGetSnapshotResponse{}, err
+	}
+	return result, nil
+}
+
+// NewGetSnapshotsPager - Gets a list of key-value snapshots.
+//
+// Generated from API version 2023-10-01
+//   - options - AzureAppConfigurationClientGetSnapshotsOptions contains the optional parameters for the AzureAppConfigurationClient.NewGetSnapshotsPager
+//     method.
+func (client *AzureAppConfigurationClient) NewGetSnapshotsPager(options *AzureAppConfigurationClientGetSnapshotsOptions) *runtime.Pager[AzureAppConfigurationClientGetSnapshotsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AzureAppConfigurationClientGetSnapshotsResponse]{
+		More: func(page AzureAppConfigurationClientGetSnapshotsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AzureAppConfigurationClientGetSnapshotsResponse) (AzureAppConfigurationClientGetSnapshotsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getSnapshotsCreateRequest(ctx, options)
+			} else {
+				req, err = client.getNextPageCreateRequest(ctx, *page.NextLink)
+			}
+			if err != nil {
+				return AzureAppConfigurationClientGetSnapshotsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AzureAppConfigurationClientGetSnapshotsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AzureAppConfigurationClientGetSnapshotsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getSnapshotsHandleResponse(resp)
+		},
+	})
+}
+
+// getSnapshotsCreateRequest creates the GetSnapshots request.
+func (client *AzureAppConfigurationClient) getSnapshotsCreateRequest(ctx context.Context, options *AzureAppConfigurationClientGetSnapshotsOptions) (*policy.Request, error) {
+	urlPath := "/snapshots"
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Name != nil {
+		reqQP.Set("name", *options.Name)
+	}
+	reqQP.Set("api-version", "2023-10-01")
+	if options != nil && options.After != nil {
+		reqQP.Set("After", *options.After)
+	}
+	if options != nil && options.Select != nil {
+		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
+	}
+	if options != nil && options.Status != nil {
+		reqQP.Set("status", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Status), "[]")), ","))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json"}
+	return req, nil
+}
+
+// getSnapshotsHandleResponse handles the GetSnapshots response.
+func (client *AzureAppConfigurationClient) getSnapshotsHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetSnapshotsResponse, error) {
+	result := AzureAppConfigurationClientGetSnapshotsResponse{}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotListResult); err != nil {
+		return AzureAppConfigurationClientGetSnapshotsResponse{}, err
 	}
 	return result, nil
 }
@@ -892,7 +1296,7 @@ func (client *AzureAppConfigurationClient) getRevisionsHandleResponse(resp *http
 // PutKeyValue - Creates a key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - key - The key of the key-value to create.
 //   - entity - The key-value to create.
 //   - options - AzureAppConfigurationClientPutKeyValueOptions contains the optional parameters for the AzureAppConfigurationClient.PutKeyValue
@@ -930,7 +1334,7 @@ func (client *AzureAppConfigurationClient) putKeyValueCreateRequest(ctx context.
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.syncToken != nil {
 		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
@@ -941,7 +1345,7 @@ func (client *AzureAppConfigurationClient) putKeyValueCreateRequest(ctx context.
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/json, application/problem+json"}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
 	if err := runtime.MarshalAsJSON(req, entity); err != nil {
 		return nil, err
 	}
@@ -966,7 +1370,7 @@ func (client *AzureAppConfigurationClient) putKeyValueHandleResponse(resp *http.
 // PutLock - Locks a key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 1.0
+// Generated from API version 2023-10-01
 //   - key - The key of the key-value to lock.
 //   - options - AzureAppConfigurationClientPutLockOptions contains the optional parameters for the AzureAppConfigurationClient.PutLock
 //     method.
@@ -1003,7 +1407,7 @@ func (client *AzureAppConfigurationClient) putLockCreateRequest(ctx context.Cont
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
-	reqQP.Set("api-version", "1.0")
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.syncToken != nil {
 		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
@@ -1014,7 +1418,7 @@ func (client *AzureAppConfigurationClient) putLockCreateRequest(ctx context.Cont
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/json, application/problem+json"}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.kv+json, application/problem+json"}
 	return req, nil
 }
 
@@ -1029,6 +1433,80 @@ func (client *AzureAppConfigurationClient) putLockHandleResponse(resp *http.Resp
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
 		return AzureAppConfigurationClientPutLockResponse{}, err
+	}
+	return result, nil
+}
+
+// UpdateSnapshot - Updates the state of a key-value snapshot.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01
+//   - name - The name of the key-value snapshot to update.
+//   - entity - The parameters used to update the snapshot.
+//   - options - AzureAppConfigurationClientUpdateSnapshotOptions contains the optional parameters for the AzureAppConfigurationClient.UpdateSnapshot
+//     method.
+func (client *AzureAppConfigurationClient) UpdateSnapshot(ctx context.Context, name string, entity SnapshotUpdateParameters, options *AzureAppConfigurationClientUpdateSnapshotOptions) (AzureAppConfigurationClientUpdateSnapshotResponse, error) {
+	var err error
+	req, err := client.updateSnapshotCreateRequest(ctx, name, entity, options)
+	if err != nil {
+		return AzureAppConfigurationClientUpdateSnapshotResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AzureAppConfigurationClientUpdateSnapshotResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AzureAppConfigurationClientUpdateSnapshotResponse{}, err
+	}
+	resp, err := client.updateSnapshotHandleResponse(httpResp)
+	return resp, err
+}
+
+// updateSnapshotCreateRequest creates the UpdateSnapshot request.
+func (client *AzureAppConfigurationClient) updateSnapshotCreateRequest(ctx context.Context, name string, entity SnapshotUpdateParameters, options *AzureAppConfigurationClientUpdateSnapshotOptions) (*policy.Request, error) {
+	urlPath := "/snapshots/{name}"
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	if client.syncToken != nil {
+		req.Raw().Header["Sync-Token"] = []string{*client.syncToken}
+	}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshot+json, application/problem+json"}
+	if err := runtime.MarshalAsJSON(req, entity); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// updateSnapshotHandleResponse handles the UpdateSnapshot response.
+func (client *AzureAppConfigurationClient) updateSnapshotHandleResponse(resp *http.Response) (AzureAppConfigurationClientUpdateSnapshotResponse, error) {
+	result := AzureAppConfigurationClientUpdateSnapshotResponse{}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
+	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
+	}
+	if val := resp.Header.Get("Link"); val != "" {
+		result.Link = &val
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Snapshot); err != nil {
+		return AzureAppConfigurationClientUpdateSnapshotResponse{}, err
 	}
 	return result, nil
 }

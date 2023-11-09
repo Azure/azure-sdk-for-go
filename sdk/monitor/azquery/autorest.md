@@ -1,18 +1,12 @@
 ## Go
 
 ``` yaml
-title: MonitorQueryClient
-description: Azure Monitor Query Go Client
-generated-metadata: false
-
+title: Logs Query Client
 clear-output-folder: false
 export-clients: true
 go: true
 input-file: 
     - https://github.com/Azure/azure-rest-api-specs/blob/72427ef3ff5875bd8409ef112ef5e6f3cf2b8795/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
-    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metricDefinitions_API.json
-    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metrics_API.json
-    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
 openapi-type: "data-plane"
@@ -73,26 +67,6 @@ directive:
   - rename-operation:
       from: MetricNamespaces_List
       to: Metrics_ListNamespaces
-
-  # rename some metrics fields
-  - from: swagger-document
-    where: $.definitions.Metric.properties.timeseries
-    transform: $["x-ms-client-name"] = "TimeSeries"
-  - from: swagger-document
-    where: $.definitions.TimeSeriesElement.properties.metadatavalues
-    transform: $["x-ms-client-name"] = "MetadataValues"
-  - from: swagger-document
-    where: $.definitions.Response.properties.resourceregion
-    transform: $["x-ms-client-name"] = "ResourceRegion"
-  - from: swagger-document
-    where: $.parameters.MetricNamespaceParameter
-    transform: $["x-ms-client-name"] = "MetricNamespace"
-  - from: swagger-document
-    where: $.parameters.MetricNamesParameter
-    transform: $["x-ms-client-name"] = "MetricNames"
-  - from: swagger-document
-    where: $.parameters.OrderByParameter
-    transform: $["x-ms-client-name"] = "OrderBy"
 
   # rename Body.Workspaces to Body.AdditionalWorkspaces
   - from: swagger-document
@@ -193,6 +167,45 @@ directive:
   - from: metrics_client.go
     where: $
     transform: return $.replace(/reqQP\.Set\(\"timespan\", \*options\.Timespan\)/g, "reqQP.Set(\"timespan\", string(*options.Timespan))");
+```
+
+``` yaml
+title: Metrics Query Client
+clear-output-folder: false
+export-clients: true
+go: true
+input-file: 
+    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metricDefinitions_API.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metrics_API.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
+license-header: MICROSOFT_MIT_NO_VERSION
+module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
+openapi-type: "data-plane"
+output-folder: ../azquery
+security: "AADToken"
+use: "@autorest/go@4.0.0-preview.46"
+version: "^3.0.0"
+
+directive:
+  # rename some metrics fields
+  - from: swagger-document
+    where: $.definitions.Metric.properties.timeseries
+    transform: $["x-ms-client-name"] = "TimeSeries"
+  - from: swagger-document
+    where: $.definitions.TimeSeriesElement.properties.metadatavalues
+    transform: $["x-ms-client-name"] = "MetadataValues"
+  - from: swagger-document
+    where: $.definitions.Response.properties.resourceregion
+    transform: $["x-ms-client-name"] = "ResourceRegion"
+  - from: swagger-document
+    where: $.parameters.MetricNamespaceParameter
+    transform: $["x-ms-client-name"] = "MetricNamespace"
+  - from: swagger-document
+    where: $.parameters.MetricNamesParameter
+    transform: $["x-ms-client-name"] = "MetricNames"
+  - from: swagger-document
+    where: $.parameters.OrderByParameter
+    transform: $["x-ms-client-name"] = "OrderBy"
 
   # change type of MetricsClientQueryResourceOptions.Aggregation from *string to []*AggregationType
   - from: models.go
@@ -204,3 +217,4 @@ directive:
   - from: swagger-document
     where: $.parameters.AggregationsParameter
     transform: $["description"] = "The list of aggregation types to retrieve"
+```

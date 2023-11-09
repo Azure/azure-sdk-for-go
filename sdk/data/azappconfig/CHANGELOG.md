@@ -1,9 +1,9 @@
 # Release History
 
-## 1.0.1 (Unreleased)
+## 1.1.0 (Unreleased)
 
 ### Features Added
-
+* Added support for `Snapshots`.
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -275,3 +275,200 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 		Tracer: c.appConfigClient.Tracer(),
 	})
 }
+
+func (c *Client) NewListSnapshotsPager(options *ListSnapshotsPagerOptions) *runtime.Pager[ListSnapshotsPagerResponse] {
+
+	opts := (*generated.AzureAppConfigurationClientGetSnapshotsOptions)(options)
+	ssRespPager := c.appConfigClient.NewGetSnapshotsPager(opts)
+
+	return runtime.NewPager(runtime.PagingHandler[ListSnapshotsPagerResponse]{
+		More: func(ListSnapshotsPagerResponse) bool {
+			return ssRespPager.More()
+		},
+		Fetcher: func(ctx context.Context, cur *ListSnapshotsPagerResponse) (ListSnapshotsPagerResponse, error) {
+			page, err := ssRespPager.NextPage(ctx)
+			if err != nil {
+				return ListSnapshotsPagerResponse{}, err
+			}
+
+			var ss []generated.Snapshot
+			for _, s := range page.Items {
+				ss = append(ss, s)
+			}
+
+			return ListSnapshotsPagerResponse{
+				Snapshots: ss,
+				SyncToken: SyncToken(*page.SyncToken),
+			}, nil
+		},
+		Tracer: c.appConfigClient.Tracer(),
+	})
+}
+
+func (c *Client) ListConfigurationSettingsForSnapshot(ssName string, options *ListConfigurationSettingsForSnapshotOptions) *runtime.Pager[ListConfigurationSettingsForSnapshotResponse] {
+
+	opts := generated.AzureAppConfigurationClientGetKeyValuesOptions{
+		AcceptDatetime: options.AcceptDatetime,
+		After:          options.After,
+		IfMatch:        options.IfMatch,
+		IfNoneMatch:    options.IfNoneMatch,
+		Select:         options.Select,
+		Snapshot:       &ssName,
+		Key:            nil,
+		Label:          nil,
+	}
+	ssRespPager := c.appConfigClient.NewGetKeyValuesPager(&opts)
+
+	return runtime.NewPager(runtime.PagingHandler[ListConfigurationSettingsForSnapshotResponse]{
+		More: func(ListConfigurationSettingsForSnapshotResponse) bool {
+			return ssRespPager.More()
+		},
+		Fetcher: func(ctx context.Context, cur *ListConfigurationSettingsForSnapshotResponse) (ListConfigurationSettingsForSnapshotResponse, error) {
+			page, err := ssRespPager.NextPage(ctx)
+			if err != nil {
+				return ListConfigurationSettingsForSnapshotResponse{}, err
+			}
+
+			var ss []Setting
+			for _, s := range page.Items {
+				ss = append(ss, settingFromGenerated(s))
+			}
+
+			return ListConfigurationSettingsForSnapshotResponse{
+				Settings:  ss,
+				SyncToken: SyncToken(*page.SyncToken),
+			}, nil
+		},
+		Tracer: c.appConfigClient.Tracer(),
+	})
+}
+
+func (c *Client) BeginCreateSnapshot(ctx context.Context, ssName string, klf []SettingFilter, options *BeginCreateSnapshotOptions) *runtime.Poller[BeginCreateSnapshotResponse] {
+
+	var filter []generated.KeyValueFilter
+
+	if options == nil {
+		options = &BeginCreateSnapshotOptions{}
+	}
+
+	for _, f := range klf {
+		keyFilter := &f.KeyFilter
+		filter = append(filter, generated.KeyValueFilter{
+			Key:   keyFilter,
+			Label: f.LabelFilter,
+		})
+	}
+
+	entity := generated.Snapshot{
+		Filters:         filter,
+		CompositionType: options.CompositionType,
+		RetentionPeriod: options.RetentionPeriod,
+		Tags:            options.Tags,
+		Created:         options.Created,
+		Etag:            options.Etag,
+		Expires:         options.Expires,
+		ItemsCount:      options.ItemsCount,
+		Name:            &ssName,
+		Size:            options.Size,
+		Status:          options.Status,
+	}
+
+	opts := generated.AzureAppConfigurationClientBeginCreateSnapshotOptions{
+		ResumeToken: options.ResumeToken,
+	}
+
+	pollerSS, err := generated.NewCreateSnapshotPoller[BeginCreateSnapshotResponse](ctx, c.appConfigClient, ssName, entity, &opts)
+
+	if err != nil {
+		return nil
+	}
+
+	return pollerSS
+}
+
+func (c *Client) ArchiveSnapshot(ctx context.Context, ssName string, options *ArchiveSnapshotOptions) (ArchiveSnapshotResponse, error) {
+
+	status := generated.SnapshotStatusArchived
+
+	if options == nil {
+		options = &ArchiveSnapshotOptions{}
+	}
+
+	opts := updateSnapshotStatusOptions{
+		IfMatch:     options.IfMatch,
+		IfNoneMatch: options.IfNoneMatch,
+	}
+	resp, err := c.updateSnapshotStatus(ctx, ssName, status, &opts)
+
+	if err != nil {
+		return ArchiveSnapshotResponse{}, err
+	}
+
+	return (ArchiveSnapshotResponse)(resp), nil
+}
+
+func (c *Client) ListSnapshot(ctx context.Context, ssName string, options *ListSnapshotOptions) (ListSnapshotResponse, error) {
+
+	if options == nil {
+		options = &ListSnapshotOptions{}
+	}
+
+	opts := (*generated.AzureAppConfigurationClientGetSnapshotOptions)(options)
+
+	getResp, err := c.appConfigClient.GetSnapshot(ctx, ssName, opts)
+
+	if err != nil {
+		return ListSnapshotResponse{}, err
+	}
+
+	resp := ListSnapshotResponse{
+		Snapshot:  getResp.Snapshot,
+		SyncToken: getResp.SyncToken,
+		Link:      getResp.Link,
+	}
+
+	return resp, nil
+}
+
+func (c *Client) RecoverSnapshot(ctx context.Context, ssName string, options *RecoverSnapshotOptions) (RecoverSnapshotResponse, error) {
+	status := generated.SnapshotStatusReady
+
+	if options == nil {
+		options = &RecoverSnapshotOptions{}
+	}
+
+	opts := updateSnapshotStatusOptions{
+		IfMatch:     options.IfMatch,
+		IfNoneMatch: options.IfNoneMatch,
+	}
+	resp, err := c.updateSnapshotStatus(ctx, ssName, status, &opts)
+
+	if err != nil {
+		return RecoverSnapshotResponse{}, err
+	}
+
+	return (RecoverSnapshotResponse)(resp), nil
+}
+
+func (c *Client) updateSnapshotStatus(ctx context.Context, ssName string, status generated.SnapshotStatus, options *updateSnapshotStatusOptions) (updateSnapshotStatusResponse, error) {
+
+	entity := generated.SnapshotUpdateParameters{
+		Status: &status,
+	}
+
+	opts := (*generated.AzureAppConfigurationClientUpdateSnapshotOptions)(options)
+
+	updateResp, err := c.appConfigClient.UpdateSnapshot(ctx, ssName, entity, opts)
+
+	if err != nil {
+		return updateSnapshotStatusResponse{}, err
+	}
+
+	resp := updateSnapshotStatusResponse{
+		Snapshot:  updateResp.Snapshot,
+		Link:      updateResp.Link,
+		SyncToken: updateResp.SyncToken,
+	}
+
+	return resp, nil
+}

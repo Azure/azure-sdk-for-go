@@ -76,3 +76,105 @@ type SetSettingOptions struct {
 	// if the passed-in ETag is the same version as the one in the configuration store.
 	OnlyIfUnchanged *azcore.ETag
 }
+
+type BeginCreateSnapshotOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+
+	// The composition type describes how the key-values within the snapshot are composed. The 'key' composition type ensures
+	// there are no two key-values containing the same key. The 'key_label' composition
+	// type ensures there are no two key-values containing the same key and label.
+	CompositionType *CompositionType
+
+	// The amount of time, in seconds, that a snapshot will remain in the archived state before expiring. This property is only
+	// writable during the creation of a snapshot. If not specified, the default
+	// lifetime of key-value revisions will be used.
+	RetentionPeriod *int64
+
+	// The tags of the snapshot.
+	Tags map[string]*string
+
+	// READ-ONLY; The time that the snapshot was created.
+	Created *time.Time
+
+	// READ-ONLY; A value representing the current state of the snapshot.
+	Etag *string
+
+	// READ-ONLY; The time that the snapshot will expire.
+	Expires *time.Time
+
+	// READ-ONLY; The amount of key-values in the snapshot.
+	ItemsCount *int64
+
+	// READ-ONLY; The size in bytes of the snapshot.
+	Size *int64
+
+	// READ-ONLY; The current status of the snapshot.
+	Status *SnapshotStatus
+}
+
+type ArchiveSnapshotOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+}
+
+type ListSnapshotsPagerOptions struct {
+	// Instructs the server to return elements that appear after the element referred to by the specified token.
+	After *string
+
+	// A filter for the name of the returned snapshots.
+	Name *string
+
+	// Used to select what fields are present in the returned resource(s).
+	Select []SnapshotFields
+
+	// Used to filter returned snapshots by their status property.
+	Status []SnapshotStatus
+}
+
+type ListConfigurationSettingsForSnapshotOptions struct {
+	// Requests the server to respond with the state of the resource at the specified time.
+	AcceptDatetime *string
+
+	// Instructs the server to return elements that appear after the element referred to by the specified token.
+	After *string
+
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+
+	// Used to select what fields are present in the returned resource(s).
+	Select []SettingFields
+}
+
+type ListSnapshotOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+
+	// Used to select what fields are present in the returned resource(s).
+	Select []SnapshotFields
+}
+
+type RecoverSnapshotOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+}
+
+type updateSnapshotStatusOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+}

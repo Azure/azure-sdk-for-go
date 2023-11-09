@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
 )
 
 // SyncToken contains data used in the Sync-Token header.
@@ -77,4 +78,62 @@ type SetSettingResponse struct {
 
 	// SyncToken contains the value returned in the Sync-Token header.
 	SyncToken SyncToken
+}
+type ArchiveSnapshotResponse struct {
+	generated.Snapshot
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken *string
+}
+
+type ListSnapshotsPagerResponse struct {
+	// Contains the configuration settings returned that match the setting selector provided.
+	Snapshots []generated.Snapshot
+
+	// SyncToken contains the value returned in the Sync-Token header.
+	SyncToken SyncToken
+}
+type BeginCreateSnapshotResponse struct {
+}
+
+type ListConfigurationSettingsForSnapshotResponse struct {
+	// Contains the configuration settings returned that match the setting selector provided.
+	Settings []Setting
+
+	// SyncToken contains the value returned in the Sync-Token header.
+	SyncToken SyncToken
+}
+
+type ListSnapshotResponse struct {
+	//TODO: Snapshot to constants?
+	generated.Snapshot
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken *string
+}
+
+type RecoverSnapshotResponse struct {
+	generated.Snapshot
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken *string
+}
+
+type updateSnapshotStatusResponse struct {
+	generated.Snapshot
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken *string
 }

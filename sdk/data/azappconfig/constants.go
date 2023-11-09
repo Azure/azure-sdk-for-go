@@ -6,7 +6,9 @@
 
 package azappconfig
 
-import "github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
+)
 
 // SettingFields are fields to retrieve from a configuration setting.
 type SettingFields = generated.SettingFields
@@ -35,4 +37,38 @@ const (
 
 	// A list of tags that can help identify what a configuration setting may be applicable for.
 	SettingFieldsTags SettingFields = generated.SettingFieldsTags
+)
+
+type SnapshotFields = generated.SnapshotFields
+
+// TODO: comments
+const (
+	SnapshotFieldsCompositionType SnapshotFields = generated.SnapshotFieldsCompositionType
+	SnapshotFieldsCreated         SnapshotFields = generated.SnapshotFieldsCreated
+	SnapshotFieldsEtag            SnapshotFields = generated.SnapshotFieldsEtag
+	SnapshotFieldsExpires         SnapshotFields = generated.SnapshotFieldsExpires
+	SnapshotFieldsFilters         SnapshotFields = generated.SnapshotFieldsFilters
+	SnapshotFieldsItemsCount      SnapshotFields = generated.SnapshotFieldsItemsCount
+	SnapshotFieldsName            SnapshotFields = generated.SnapshotFieldsName
+	SnapshotFieldsRetentionPeriod SnapshotFields = generated.SnapshotFieldsRetentionPeriod
+	SnapshotFieldsSize            SnapshotFields = generated.SnapshotFieldsSize
+	SnapshotFieldsStatus          SnapshotFields = generated.SnapshotFieldsStatus
+	SnapshotFieldsTags            SnapshotFields = generated.SnapshotFieldsTags
+)
+
+type SnapshotStatus = generated.SnapshotStatus
+
+// TODO: comments
+const (
+	SnapshotStatusArchived     SnapshotStatus = generated.SnapshotStatusArchived
+	SnapshotStatusFailed       SnapshotStatus = generated.SnapshotStatusFailed
+	SnapshotStatusProvisioning SnapshotStatus = generated.SnapshotStatusProvisioning
+	SnapshotStatusReady        SnapshotStatus = generated.SnapshotStatusReady
+)
+
+type CompositionType = generated.CompositionType
+
+const (
+	CompositionTypeKey      CompositionType = generated.CompositionTypeKey
+	CompositionTypeKeyLabel CompositionType = generated.CompositionTypeKeyLabel
 )

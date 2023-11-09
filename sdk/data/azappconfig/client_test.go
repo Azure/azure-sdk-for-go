@@ -8,6 +8,7 @@ package azappconfig_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -326,4 +327,142 @@ func TestSettingWithEscaping(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
 	require.EqualValues(t, key, *resp.Key)
+}
+
+// func TestSnapshotListConfigurationSettings(t *testing.T) {
+
+// 	// Get list of key values on a test snapshot hardcoded
+// 	Settings := [
+// 		azappconfig.Setting{
+// 			Key: 	   "Key1",
+// 			Value: 		"Val1",
+// 		},
+// 		azappconfig.Setting{
+// 			Key: 	   "key2",
+// 			Value: 		"Val2",
+// 		},
+// 		azappconfig.Setting{
+// 			Key: 	   "KeyNoLabel",
+// 			Value: 		"Val1",
+// 		},
+// 		azappconfig.Setting{
+// 			Key: 	   "KeyNoVal",
+// 			Value: 		"",
+// 		},
+// 		azappconfig.Setting{
+// 			Key: 	   "NoValNoLabelKey",
+// 			Value: 		"",
+// 		},
+// 		azappconfig.Setting{
+// 			Key: 	   "TEST",
+// 			Value: 		"",
+// 		},
+// 	],
+// 	const (
+// 		snapshotName = "snapshotname"
+// 	)
+
+// 	client := NewClientFromConnectionString(t)
+
+// 	_, err := client.ListSnapshot(context.Background(), snapshotName, nil)
+
+// 	require.NoError(t, err)
+
+// 	// Run TestListConfigurationSettingsForSnapshot
+// 	resp := client.ListConfigurationSettingsForSnapshot(snapshotName, nil)
+
+// 	// Compare the results. Fail for inconsistencies
+// 	//TODO: lambda sort for resp and compare to lambda sort for Settings above.
+// 	//foreach compare equality
+// }
+
+func TestSnapshotList(t *testing.T) { //GOOD TO GO
+	// hardcode expected snapshot
+	const (
+		snapshotName = "snapshotname"
+	)
+
+	client := NewClientFromConnectionString(t)
+
+	// Run TestListSnapshot
+	ss, err := client.ListSnapshot(context.Background(), snapshotName, nil)
+
+	require.NoError(t, err)
+
+	require.Equal(t, snapshotName, *ss.Snapshot.Name)
+}
+
+func TestSnapshotArchive(t *testing.T) { //GOOD TO GO
+
+	const (
+		snapshotName = "snapshotname"
+	)
+
+	client := NewClientFromConnectionString(t)
+
+	// Check status of Snapshot. If "archived" fail the test
+	ss, err := client.ListSnapshot(context.Background(), snapshotName, nil)
+
+	require.NoError(t, err)
+	require.NotEqual(t, *ss.Snapshot.Status, azappconfig.SnapshotStatusArchived)
+
+	// Archive the snapshot
+	update, err := client.ArchiveSnapshot(context.Background(), snapshotName, nil)
+	require.NoError(t, err)
+
+	// Check status of Snapshot, If not "archived" fail the test
+	require.Equal(t, azappconfig.SnapshotStatusArchived, *update.Snapshot.Status)
+}
+
+func TestSnapshotRecover(t *testing.T) { //GOOD TO GO
+	const (
+		snapshotName = "snapshotname"
+	)
+
+	client := NewClientFromConnectionString(t)
+
+	// Check status of Snapshot. If not "archived" fail the test
+	ss, err := client.ListSnapshot(context.Background(), snapshotName, nil)
+
+	require.NoError(t, err)
+	require.Equal(t, *ss.Snapshot.Status, azappconfig.SnapshotStatusArchived)
+
+	// Recover the snapshot
+	update, err := client.RecoverSnapshot(context.Background(), snapshotName, nil)
+	require.NoError(t, err)
+
+	// Check status of Snapshot, If not "ready" fail the test
+	require.Equal(t, azappconfig.SnapshotStatusReady, *update.Snapshot.Status)
+}
+
+func TestSnapshotCreate(t *testing.T) { //Failing with 400 bad req
+
+	const (
+		snapshotName = "newSnapshot"
+	)
+
+	client := NewClientFromConnectionString(t)
+
+	//Check if snapshot exists. If it does fail the test
+	_, err := client.ListSnapshot(context.Background(), snapshotName, nil)
+
+	require.Error(t, err)
+
+	//Create a snapshot
+	resp := client.BeginCreateSnapshot(context.Background(), snapshotName, nil, nil)
+
+	fmt.Print(resp)
+
+	_, err = resp.PollUntilDone(context.Background(), nil)
+
+	require.NoError(t, err)
+
+	ss, err := client.ListSnapshot(context.Background(), snapshotName, nil)
+
+	require.NoError(t, err)
+
+	require.Equal(t, snapshotName, *ss.Snapshot.Name)
+
+	//Check if snapshot exists. If not fail the test
+	//TODO: populate Poller test case/response type
 }

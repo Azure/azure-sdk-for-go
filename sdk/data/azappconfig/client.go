@@ -238,9 +238,7 @@ func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRe
 			}
 			var css []Setting
 			for _, cs := range page.Items {
-				if cs != nil {
-					css = append(css, settingFromGenerated(*cs))
-				}
+				css = append(css, settingFromGenerated(cs))
 			}
 
 			return ListRevisionsPageResponse{
@@ -266,9 +264,7 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 			}
 			var css []Setting
 			for _, cs := range page.Items {
-				if cs != nil {
-					css = append(css, settingFromGenerated(*cs))
-				}
+				css = append(css, settingFromGenerated(cs))
 			}
 
 			return ListSettingsPageResponse{

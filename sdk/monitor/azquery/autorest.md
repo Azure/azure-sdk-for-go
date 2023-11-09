@@ -13,7 +13,7 @@ openapi-type: "data-plane"
 output-folder: ../azquery
 override-client-name: LogsClient
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.46"
+use: "@autorest/go@4.0.0-preview.59"
 version: "^3.0.0"
 
 directive:
@@ -98,7 +98,7 @@ directive:
   - from: swagger-document
     where: $.parameters.PreferHeaderParameter
     transform: $["x-ms-client-name"] = "Options"
-  - from: models.go
+  - from: options.go
     where: $
     transform: return $.replace(/Options \*string/g, "Options *LogsQueryOptions");
   - from: logs_client.go
@@ -155,13 +155,15 @@ directive:
     where: $
     transform: return $.replace(/const host = "(.*?)"/, "");
 
-  # change Table.Rows from type [][]interface{} to type []Row
+  # change Table.Rows from type [][]byte to type []Row
   - from: models.go
     where: $
-    transform: return $.replace(/Rows \[\]\[\]byte/, "Rows []Row");
+    transform: return $.replace(/Rows \[\]\[\]\[\]byte/g, "Rows []Row");
 
   # change type of timespan from *string to *TimeInterval
-  - from: models.go
+  - from: 
+        - models.go
+        - options.go
     where: $
     transform: return $.replace(/Timespan \*string/g, "Timespan *TimeInterval");
   - from: metrics_client.go
@@ -171,20 +173,10 @@ directive:
 
 ``` yaml
 title: Metrics Query Client
-clear-output-folder: false
-export-clients: true
-go: true
 input-file: 
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metricDefinitions_API.json
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metrics_API.json
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
-license-header: MICROSOFT_MIT_NO_VERSION
-module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
-openapi-type: "data-plane"
-output-folder: ../azquery
-security: "AADToken"
-use: "@autorest/go@4.0.0-preview.46"
-version: "^3.0.0"
 
 directive:
   # rename some metrics fields
@@ -208,7 +200,7 @@ directive:
     transform: $["x-ms-client-name"] = "OrderBy"
 
   # change type of MetricsClientQueryResourceOptions.Aggregation from *string to []*AggregationType
-  - from: models.go
+  - from: options.go
     where: $
     transform: return $.replace(/Aggregation \*string/g, "Aggregation []*AggregationType");
   - from: metrics_client.go

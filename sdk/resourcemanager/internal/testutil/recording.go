@@ -10,10 +10,8 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
-	"strconv"
-	"strings"
+	"os"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -44,6 +42,10 @@ type recordingPolicy struct {
 
 // Host of the test proxy.
 func (r *recordingPolicy) Host() string {
+	if r.options.ProxyPort != 0 {
+		return fmt.Sprintf("localhost:%d", r.options.ProxyPort)
+	}
+
 	if r.options.UseHTTPS {
 		return "localhost:5001"
 	}
@@ -58,11 +60,18 @@ func (r *recordingPolicy) Scheme() string {
 	return "http"
 }
 
+func defaultOptions() *recording.RecordingOptions {
+	return &recording.RecordingOptions{
+		UseHTTPS:  true,
+		ProxyPort: os.Getpid()%10000 + 20000,
+	}
+}
+
 // NewRecordingPolicy will create a recording policy which can be used in pipeline.
 // The policy will change the destination of the request to the proxy server and add required header for the recording test.
 func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
 	if o == nil {
-		o = &recording.RecordingOptions{UseHTTPS: true}
+		o = defaultOptions()
 	}
 	p := &recordingPolicy{options: *o, t: t}
 	return p
@@ -119,61 +128,9 @@ func StartRecording(t *testing.T, pathToPackage string) func() {
 
 // StopRecording stops the recording.
 func StopRecording(t *testing.T) {
-	err := recording.Stop(t, &recording.RecordingOptions{Variables: map[string]interface{}{recordingRandomSeedVariableName: strconv.FormatInt(recordingSeed, 10)}})
+	err := recording.Stop(t, nil)
 	if err != nil {
 		t.Fatalf("Failed to stop recording: %v", err)
 	}
 }
 
-func initRandomSource(t *testing.T) {
-	if recordingRandomSource != nil {
-		return
-	}
-
-	var seed int64
-	var err error
-
-	variables := recording.GetVariables(t)
-	seedString, ok := variables[recordingRandomSeedVariableName]
-	if ok {
-		seed, err = strconv.ParseInt(seedString.(string), 10, 64)
-	}
-
-	// We did not have a random seed already stored; create a new one
-	if !ok || err != nil || recording.GetRecordMode() == "live" {
-		seed = time.Now().Unix()
-		val := strconv.FormatInt(seed, 10)
-		variables[recordingRandomSeedVariableName] = &val
-	}
-
-	// create a Source with the seed
-	recordingRandomSource = rand.NewSource(seed)
-	recordingSeed = seed
-}
-
-// GenerateAlphaNumericID will generate a random alpha numeric ID.
-// When handling live request, the random seed is generated.
-// Otherwise, the random seed is stable and will be stored in recording file.
-// The length parameter is the random part length, not include the prefix part.
-// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/internal/recording.GenerateAlphaNumericID instead.
-func GenerateAlphaNumericID(t *testing.T, prefix string, length int) string {
-	initRandomSource(t)
-	sb := strings.Builder{}
-	sb.Grow(length)
-	sb.WriteString(prefix)
-	i := length - 1
-	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!
-	for cache, remain := recordingRandomSource.Int63(), letterIdxMax; i >= 0; {
-		if remain == 0 {
-			cache, remain = recordingRandomSource.Int63(), letterIdxMax
-		}
-		if idx := int(cache & letterIdxMask); idx < len(alphanumericBytes) {
-			sb.WriteByte(alphanumericBytes[idx])
-			i--
-		}
-		cache >>= letterIdxBits
-		remain--
-	}
-	str := sb.String()
-	return str
-}

@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,17 +25,13 @@ type clientWrapper struct {
 }
 
 var fakeTestVars = testVars{
-	Key:          "key",
-	Endpoint:     "https://fake.eastus-1.webpubsub.azure.net",
-	Subscription: "subscription",
+	ConnectionString: "Endpoint=https://fake.eastus-1.webpubsub.azure.com;AccessKey=ABCDE;",
+	Hub:              "chat",
 }
 
 type testVars struct {
-	Key              string
-	Endpoint         string
-	Subscription     string
 	ConnectionString string
-
+	Hub              string
 	// KeyLogPath is the value of environment "SSLKEYLOGFILE_TEST", which
 	// points to a file on disk where we'll write the TLS pre-master-secret.
 	// This is useful if you want to trace parts of this test using Wireshark.
@@ -53,12 +50,11 @@ func loadEnv() (testVars, error) {
 	}
 
 	tv := testVars{
-		Key:              get("WEBPUBSUB_KEY"),
-		Endpoint:         get("WEBPUBSUB_ENDPOINT"),
 		ConnectionString: get("WEBPUBSUB_CONNECTIONSTRING"),
+		Hub:              get("WEBPUBSUB_HUB"),
 	}
 
-	if len(missing) == 3 {
+	if len(missing) > 0 {
 		return testVars{}, fmt.Errorf("Missing env variables: %s", strings.Join(missing, ","))
 	}
 
@@ -97,7 +93,7 @@ func newClientWrapper(t *testing.T) clientWrapper {
 
 			httpClient := &http.Client{Transport: tp}
 
-			tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, &azwebpubsub.ClientOptions{
+			tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, tv.Hub, &azwebpubsub.ClientOptions{
 				ClientOptions: azcore.ClientOptions{
 					Transport: httpClient,
 				},
@@ -105,13 +101,13 @@ func newClientWrapper(t *testing.T) clientWrapper {
 			require.NoError(t, err)
 			client = tmpClient
 		} else {
-			tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, nil)
+			tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, tv.Hub, nil)
 			require.NoError(t, err)
 			client = tmpClient
 		}
 
 	} else {
-		tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, &azwebpubsub.ClientOptions{
+		tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, tv.Hub, &azwebpubsub.ClientOptions{
 			ClientOptions: azcore.ClientOptions{
 				Transport: newRecordingTransporter(t, tv),
 			},
@@ -135,14 +131,11 @@ func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter
 
 	// err = recording.ResetProxy(nil)
 	// require.NoError(t, err)
-
-	err = recording.AddURISanitizer(fakeTestVars.Endpoint, testVars.Endpoint, nil)
+	props, _ := internal.ParseConnectionString(testVars.ConnectionString)
+	err = recording.AddURISanitizer("https://fake_endpoint.com", props.Endpoint, nil)
 	require.NoError(t, err)
 
-	err = recording.AddURISanitizer(fakeTestVars.Subscription, testVars.Subscription, nil)
-	require.NoError(t, err)
-
-	err = recording.AddGeneralRegexSanitizer(`"time": "2023-10-31T00:33:32Z"`, `"time":".+?"`, nil)
+	err = recording.AddGeneralRegexSanitizer(`"time": "2023-11-31T00:33:32Z"`, `"time":".+?"`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(

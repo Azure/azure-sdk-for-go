@@ -12,4 +12,21 @@ module: github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub
 openapi-type: "data-plane"
 output-folder: ../azwebpubsub
 use: "@autorest/go@4.0.0-preview.57"
+directive:
+    # Make GenerateClientToken internal.
+    - from: client.go
+      where: $
+      transform: return $.replace(/\bGenerateClientToken\b/g, "generateClientToken");
+    # Make *Exists internal until SDK supports it.
+    - from: client.go
+      where: $
+      transform: return $.replace(/\b(Group|Connection|User)Exists\b/g, function(match, group) { return group.toLowerCase() + "Exists";});
+    # Add more properties to lient
+    - from: client.go
+      where: $
+      transform: >-
+        return $.replace(
+            /(type Client struct[^}]+})/s, 
+            "type Client struct {\n	internal *azcore.Client\n	endpoint string\n	hub string\n	key *string\n}")
+
 ```

@@ -26,6 +26,8 @@ import (
 type Client struct {
 	internal *azcore.Client
 	endpoint string
+	hub string
+	key *string;
 }
 
 // AddConnectionToGroup - Add a connection to the target group.
@@ -434,14 +436,14 @@ func (client *Client) closeUserConnectionsCreateRequest(ctx context.Context, hub
 	return req, nil
 }
 
-// ConnectionExists - Check if the connection with the given connectionId exists.
+// connectionExists - Check if the connection with the given connectionId exists.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - connectionID - The connection Id.
-//   - options - ClientConnectionExistsOptions contains the optional parameters for the Client.ConnectionExists method.
-func (client *Client) ConnectionExists(ctx context.Context, hub string, connectionID string, options *ClientConnectionExistsOptions) (ClientConnectionExistsResponse, error) {
+//   - options - ClientConnectionExistsOptions contains the optional parameters for the Client.connectionExists method.
+func (client *Client) connectionExists(ctx context.Context, hub string, connectionID string, options *ClientConnectionExistsOptions) (ClientConnectionExistsResponse, error) {
 	var err error
 	req, err := client.connectionExistsCreateRequest(ctx, hub, connectionID, options)
 	if err != nil {
@@ -458,7 +460,7 @@ func (client *Client) ConnectionExists(ctx context.Context, hub string, connecti
 	return ClientConnectionExistsResponse{}, nil
 }
 
-// connectionExistsCreateRequest creates the ConnectionExists request.
+// connectionExistsCreateRequest creates the connectionExists request.
 func (client *Client) connectionExistsCreateRequest(ctx context.Context, hub string, connectionID string, options *ClientConnectionExistsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/connections/{connectionId}"
 	if hub == "" {
@@ -479,13 +481,13 @@ func (client *Client) connectionExistsCreateRequest(ctx context.Context, hub str
 	return req, nil
 }
 
-// GenerateClientToken - Generate token for the client to connect Azure Web PubSub service.
+// generateClientToken - Generate token for the client to connect Azure Web PubSub service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
-//   - options - ClientGenerateClientTokenOptions contains the optional parameters for the Client.GenerateClientToken method.
-func (client *Client) GenerateClientToken(ctx context.Context, hub string, options *ClientGenerateClientTokenOptions) (ClientGenerateClientTokenResponse, error) {
+//   - options - ClientGenerateClientTokenOptions contains the optional parameters for the Client.generateClientToken method.
+func (client *Client) generateClientToken(ctx context.Context, hub string, options *ClientGenerateClientTokenOptions) (ClientGenerateClientTokenResponse, error) {
 	var err error
 	req, err := client.generateClientTokenCreateRequest(ctx, hub, options)
 	if err != nil {
@@ -503,7 +505,7 @@ func (client *Client) GenerateClientToken(ctx context.Context, hub string, optio
 	return resp, err
 }
 
-// generateClientTokenCreateRequest creates the GenerateClientToken request.
+// generateClientTokenCreateRequest creates the generateClientToken request.
 func (client *Client) generateClientTokenCreateRequest(ctx context.Context, hub string, options *ClientGenerateClientTokenOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/:generateToken"
 	if hub == "" {
@@ -537,7 +539,7 @@ func (client *Client) generateClientTokenCreateRequest(ctx context.Context, hub 
 	return req, nil
 }
 
-// generateClientTokenHandleResponse handles the GenerateClientToken response.
+// generateClientTokenHandleResponse handles the generateClientToken response.
 func (client *Client) generateClientTokenHandleResponse(resp *http.Response) (ClientGenerateClientTokenResponse, error) {
 	result := ClientGenerateClientTokenResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClientTokenResponse); err != nil {
@@ -600,14 +602,14 @@ func (client *Client) grantPermissionCreateRequest(ctx context.Context, hub stri
 	return req, nil
 }
 
-// GroupExists - Check if there are any client connections inside the given group
+// groupExists - Check if there are any client connections inside the given group
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - group - Target group name, which length should be greater than 0 and less than 1025.
-//   - options - ClientGroupExistsOptions contains the optional parameters for the Client.GroupExists method.
-func (client *Client) GroupExists(ctx context.Context, hub string, group string, options *ClientGroupExistsOptions) (ClientGroupExistsResponse, error) {
+//   - options - ClientGroupExistsOptions contains the optional parameters for the Client.groupExists method.
+func (client *Client) groupExists(ctx context.Context, hub string, group string, options *ClientGroupExistsOptions) (ClientGroupExistsResponse, error) {
 	var err error
 	req, err := client.groupExistsCreateRequest(ctx, hub, group, options)
 	if err != nil {
@@ -624,7 +626,7 @@ func (client *Client) GroupExists(ctx context.Context, hub string, group string,
 	return ClientGroupExistsResponse{}, nil
 }
 
-// groupExistsCreateRequest creates the GroupExists request.
+// groupExistsCreateRequest creates the groupExists request.
 func (client *Client) groupExistsCreateRequest(ctx context.Context, hub string, group string, options *ClientGroupExistsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/groups/{group}"
 	if hub == "" {
@@ -1176,14 +1178,14 @@ func (client *Client) sendToUserCreateRequest(ctx context.Context, hub string, u
 	return req, nil
 }
 
-// UserExists - Check if there are any client connections connected for the given user.
+// userExists - Check if there are any client connections connected for the given user.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - userID - Target user Id.
-//   - options - ClientUserExistsOptions contains the optional parameters for the Client.UserExists method.
-func (client *Client) UserExists(ctx context.Context, hub string, userID string, options *ClientUserExistsOptions) (ClientUserExistsResponse, error) {
+//   - options - ClientUserExistsOptions contains the optional parameters for the Client.userExists method.
+func (client *Client) userExists(ctx context.Context, hub string, userID string, options *ClientUserExistsOptions) (ClientUserExistsResponse, error) {
 	var err error
 	req, err := client.userExistsCreateRequest(ctx, hub, userID, options)
 	if err != nil {
@@ -1200,7 +1202,7 @@ func (client *Client) UserExists(ctx context.Context, hub string, userID string,
 	return ClientUserExistsResponse{}, nil
 }
 
-// userExistsCreateRequest creates the UserExists request.
+// userExistsCreateRequest creates the userExists request.
 func (client *Client) userExistsCreateRequest(ctx context.Context, hub string, userID string, options *ClientUserExistsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/users/{userId}"
 	if hub == "" {

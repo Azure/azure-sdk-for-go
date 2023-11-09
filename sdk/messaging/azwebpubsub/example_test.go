@@ -23,7 +23,12 @@ func ExampleNewClientWithDefaultAzureCredential() {
 	if endpoint == "" {
 		return
 	}
-	client, err := azwebpubsub.NewClient(endpoint, cred, nil)
+
+	hub := os.Getenv("WEBPUBSUB_HUB")
+	if hub == "" {
+		return
+	}
+	client, err := azwebpubsub.NewClient(endpoint, hub, cred, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -37,12 +42,13 @@ func ExampleNewClientWithDefaultAzureCredential() {
 
 func ExampleNewClientWithConnectionString() *azwebpubsub.Client {
 	connectionString := os.Getenv("WEBPUBSUB_CONNECTIONSTRING")
+	hub := os.Getenv("WEBPUBSUB_HUB")
 
 	if connectionString == "" {
 		return nil
 	}
 
-	client, err := azwebpubsub.NewClientFromConnectionString(connectionString, nil)
+	client, err := azwebpubsub.NewClientFromConnectionString(connectionString, hub, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic

@@ -37,7 +37,7 @@ type ErrorDetail struct {
 	Message *string
 
 	// An array of details about specific errors that led to this reported error.
-	Details []*ErrorDetail
+	Details []ErrorDetail
 
 	// An object containing more specific information than the current object about the error.
 	Innererror *InnerError
@@ -60,7 +60,7 @@ type Key struct {
 // KeyListResult - The result of a list request.
 type KeyListResult struct {
 	// The collection value.
-	Items []*Key
+	Items []Key
 
 	// The URI that can be used to request the next set of paged results.
 	NextLink *string
@@ -107,7 +107,7 @@ type KeyValueListResult struct {
 	Etag *string
 
 	// The collection value.
-	Items []*KeyValue
+	Items []KeyValue
 
 	// The URI that can be used to request the next set of paged results.
 	NextLink *string
@@ -121,7 +121,7 @@ type Label struct {
 // LabelListResult - The result of a list request.
 type LabelListResult struct {
 	// The collection value.
-	Items []*Label
+	Items []Label
 
 	// The URI that can be used to request the next set of paged results.
 	NextLink *string
@@ -141,7 +141,7 @@ type OperationDetails struct {
 
 type Snapshot struct {
 	// REQUIRED; A list of filters used to filter the key-values included in the snapshot.
-	Filters []*KeyValueFilter
+	Filters []KeyValueFilter
 
 	// The composition type describes how the key-values within the snapshot are composed. The 'key' composition type ensures
 	// there are no two key-values containing the same key. The 'key_label' composition
@@ -181,7 +181,7 @@ type Snapshot struct {
 // SnapshotListResult - The result of a snapshot list request.
 type SnapshotListResult struct {
 	// The collection value.
-	Items []*Snapshot
+	Items []Snapshot
 
 	// The URI that can be used to request the next set of paged results.
 	NextLink *string

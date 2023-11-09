@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -16,7 +17,9 @@ import (
 func TestBatchAdd(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, deleteAndStop := initClientTest(t, service, true)
+			client, deleteAndStop := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+				Name: "Client.SubmitTransaction",
+			}))
 			defer deleteAndStop()
 			err := recording.SetBodilessMatcher(t, nil)
 			require.NoError(t, err)
@@ -52,7 +55,7 @@ func TestBatchAdd(t *testing.T) {
 func TestBatchInsert(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, deleteAndStop := initClientTest(t, service, true)
+			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
 			defer deleteAndStop()
 			err := recording.SetBodilessMatcher(t, nil)
 			require.NoError(t, err)
@@ -93,7 +96,7 @@ func TestBatchInsert(t *testing.T) {
 func TestBatchMixed(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, deleteAndStop := initClientTest(t, service, true)
+			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
 			defer deleteAndStop()
 			err := recording.SetBodilessMatcher(t, nil)
 			require.NoError(t, err)
@@ -193,7 +196,7 @@ func TestBatchMixed(t *testing.T) {
 func TestBatchError(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, deleteAndStop := initClientTest(t, service, true)
+			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
 			defer deleteAndStop()
 			err := recording.SetBodilessMatcher(t, nil)
 			require.NoError(t, err)
@@ -234,7 +237,7 @@ func TestBatchError(t *testing.T) {
 func TestBatchErrorHandleResponse(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, deleteAndStop := initClientTest(t, service, true)
+			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
 			defer deleteAndStop()
 			err := recording.SetBodilessMatcher(t, nil)
 			require.NoError(t, err)
@@ -275,7 +278,7 @@ func TestBatchErrorHandleResponse(t *testing.T) {
 func TestBatchComplex(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, deleteAndStop := initClientTest(t, service, true)
+			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
 			defer deleteAndStop()
 			err := recording.SetBodilessMatcher(t, nil)
 			require.NoError(t, err)

@@ -8,13 +8,14 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/stretchr/testify/require"
 )
 
 func TestAddBasicEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			basicEntity := basicTestEntity{
@@ -64,7 +65,7 @@ func TestAddBasicEntity(t *testing.T) {
 func TestEdmMarshalling(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			edmEntity := createEdmEntity(1, "partition")
@@ -107,7 +108,7 @@ func TestEdmMarshalling(t *testing.T) {
 func TestEntityQuotes(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			pk, err := createRandomName(t, "partition")
@@ -164,7 +165,7 @@ func TestEntityQuotes(t *testing.T) {
 func TestEntityUnicode(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			pk, err := createRandomName(t, "partition")

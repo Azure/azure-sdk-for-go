@@ -85,7 +85,7 @@ func TestClient_GenerateClientAccessUrl(t *testing.T) {
 
 	user1 := "user1"
 	token, err = client.GenerateClientAccessUrl(context.Background(), &azwebpubsub.GenerateClientAccessUrlOptions{
-		UserID: &user1,
+		UserID: user1,
 		Roles:  []string{"admin"},
 		Groups: []string{"group1"},
 	})
@@ -96,7 +96,7 @@ func TestClient_GenerateClientAccessUrl(t *testing.T) {
 	accessToken := queryValues.Get("access_token")
 	require.NotEmpty(t, accessToken)
 	extract = extractToken(t, token, client)
-	require.Equal(t, user1, *extract.UserID)
+	require.Equal(t, user1, extract.UserID)
 	require.Equal(t, "admin", extract.Roles[0])
 	require.Equal(t, "group1", extract.Groups[0])
 }
@@ -120,11 +120,11 @@ func extractToken(t *testing.T, token *azwebpubsub.GenerateClientAccessUrlRespon
 	require.True(t, ok, "audience is not valid")
 	require.Equal(t, expectedAudience, audience)
 	subject, ok := claims["sub"].(string)
-	var userId *string
+	var userId string
 	if ok {
-		userId = &subject
+		userId = subject
 	} else {
-		userId = nil
+		userId = ""
 	}
 	rawRoles, ok := claims["role"].([]interface{})
 	var roles []string

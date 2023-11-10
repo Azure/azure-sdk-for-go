@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -32,17 +33,8 @@ func (k *WebPubSubKeyCredentialPolicy) Do(req *policy.Request) (*http.Response, 
 	secretKey := []byte(val) // Replace with your secret key
 	tokenString, err := token.SignedString(secretKey)
 	if err != nil {
-		return nil, NonRetriableError(errors.New("error signing the token"))
+		return nil, errorinfo.NonRetriableError(errors.New("error signing the token"))
 	}
 	req.Raw().Header.Add("Authorization", "Bearer "+tokenString)
 	return req.Next()
-}
-
-// NonRetriableError marks the specified error as non-retriable.
-func NonRetriableError(err error) error {
-	return &nonRetriableError{err}
-}
-
-type nonRetriableError struct {
-	error
 }

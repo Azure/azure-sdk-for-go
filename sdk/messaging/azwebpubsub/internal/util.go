@@ -19,23 +19,6 @@ const (
 	TokenScope = "https://webpubsub.azure.com/.default"
 )
 
-const (
-	HeaderAuthorization     = "Authorization"
-	HeaderXmsDate           = "x-ms-date"
-	HeaderContentLength     = "Content-Length"
-	HeaderContentEncoding   = "Content-Encoding"
-	HeaderContentLanguage   = "Content-Language"
-	HeaderContentType       = "Content-Type"
-	HeaderContentMD5        = "Content-MD5"
-	HeaderIfModifiedSince   = "If-Modified-Since"
-	HeaderIfMatch           = "If-Match"
-	HeaderIfNoneMatch       = "If-None-Match"
-	HeaderIfUnmodifiedSince = "If-Unmodified-Since"
-	HeaderRange             = "Range"
-	HeaderXmsVersion        = "x-ms-version"
-	HeaderXmsRequestID      = "x-ms-request-id"
-)
-
 func NewPipeline(plOpts runtime.PipelineOptions, options *policy.ClientOptions) runtime.Pipeline {
 	return runtime.NewPipeline(ModuleName+".Client", ModuleVersion, plOpts, options)
 }

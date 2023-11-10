@@ -8,9 +8,9 @@ package azwebpubsub
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/url"
-	"regexp"
 	"strings"
 	"time"
 
@@ -26,7 +26,7 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-// NewLogsClient creates a client that accesses Azure Monitor logs data.
+// NewClient creates a client that manages Web PubSub service
 func NewClient(endpoint string, hub string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
@@ -45,9 +45,7 @@ func NewClient(endpoint string, hub string, credential azcore.TokenCredential, o
 	}, nil
 }
 
-// NewClientFromConnectionString creates a Client from a connection string.
-//
-//	Endpoint=https://<your-namespace>.webpubsub.azure.com/;AccessKey=<key>;
+// NewClientFromConnectionString creates a Client from a connection string
 func NewClientFromConnectionString(connectionString string, hub string, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
@@ -75,10 +73,10 @@ func NewClientFromConnectionString(connectionString string, hub string, options 
 	}, nil
 }
 
-// GenerateClientAccessUrlOptions represents the options for generating a client token.
+// GenerateClientAccessUrlOptions represents the options for generating a client access url
 type GenerateClientAccessUrlOptions struct {
 	// UserID is the user ID for the client.
-	UserID *string
+	UserID string
 
 	// Roles are the roles that the connection with the generated token will have.
 	// Roles give the client initial permissions to leave, join, or publish to groups when using PubSub subprotocol.
@@ -97,6 +95,7 @@ type GenerateClientAccessUrlOptions struct {
 	Groups []string
 }
 
+// GenerateClientAccessUrlResponse represents the response type for the generated client access url
 type GenerateClientAccessUrlResponse struct {
 	// The client token
 	Token string
@@ -106,25 +105,36 @@ type GenerateClientAccessUrlResponse struct {
 	URL string
 }
 
+// GenerateClientAccessUrl - generate URL for the WebSocket clients
+//   - options - GenerateClientAccessUrlOptions contains the optional parameters for the Client.GenerateClientAccessUrl method.
 func (c *Client) GenerateClientAccessUrl(ctx context.Context, options *GenerateClientAccessUrlOptions) (*GenerateClientAccessUrlResponse, error) {
 	endpoint := c.endpoint
 	hubName := c.hub
-	if !strings.HasSuffix(endpoint, "/") {
-		endpoint += "/"
+	parsedURL, err := url.Parse(endpoint)
+	if err != nil {
+		return nil, errors.New("endpoint is not a valid URL")
 	}
-	clientEndpoint := regexp.MustCompile(`$(http)(s?://)`).ReplaceAllString(endpoint, "ws$2")
-	baseURL := fmt.Sprintf("%sclient/hubs/%s", clientEndpoint, hubName)
+
+	parsedURL.Scheme = strings.Replace(strings.ToLower(parsedURL.Scheme), "http", "ws", 1)
+
+	clientEndpoint := parsedURL.String()
+	baseURL := fmt.Sprintf("%s/client/hubs/%s", clientEndpoint, hubName)
 
 	var token string
-	var err error
 	if c.key != nil {
 		token, err = c.signJwtToken(baseURL, options)
 		if err != nil {
 			return nil, err
 		}
 	} else {
+		var userId *string
+		if options.UserID == "" {
+			userId = nil
+		} else {
+			userId = &options.UserID
+		}
 		// Replace with your logic to generate the token using a webPubSub method
-		resp, err := c.generateClientToken(ctx, hubName, &ClientGenerateClientTokenOptions{UserID: options.UserID, Role: options.Roles, Group: options.Groups, MinutesToExpire: options.ExpirationTimeInMinutes})
+		resp, err := c.generateClientToken(ctx, hubName, &ClientGenerateClientTokenOptions{UserID: userId, Role: options.Roles, Group: options.Groups, MinutesToExpire: options.ExpirationTimeInMinutes})
 		if err != nil {
 			return nil, err
 		}
@@ -139,11 +149,16 @@ func (c *Client) GenerateClientAccessUrl(ctx context.Context, options *GenerateC
 	}, nil
 }
 
+const DefaultExpirationTime = time.Hour
+
 func (c *Client) signJwtToken(baseURL string, options *GenerateClientAccessUrlOptions) (string, error) {
+	if c.key == nil {
+		return "", errors.New("key is nil")
+	}
 	key := []byte(*c.key)
 	var exp int64
 	if options == nil || options.ExpirationTimeInMinutes == nil {
-		exp = time.Now().Add(time.Hour).Unix()
+		exp = time.Now().Add(DefaultExpirationTime).Unix()
 	} else {
 		exp = time.Now().Add(time.Minute * time.Duration(*options.ExpirationTimeInMinutes)).Unix()
 	}
@@ -152,8 +167,8 @@ func (c *Client) signJwtToken(baseURL string, options *GenerateClientAccessUrlOp
 		"exp": exp,
 	}
 
-	if options != nil && options.UserID != nil {
-		claims["sub"] = *options.UserID
+	if options != nil && options.UserID != "" {
+		claims["sub"] = options.UserID
 	}
 
 	if options != nil && options.Groups != nil && len(options.Groups) > 0 {

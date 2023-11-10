@@ -32,7 +32,7 @@ type ServicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServicesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ServicesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Creates or updates a service. Must be created in the same location as its parent mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mobileNetworkName - The name of the mobile network.
 //   - serviceName - The name of the service. You must not use any of the following reserved strings - default, requested or service
@@ -61,19 +61,26 @@ func (client *ServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServicesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServicesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServicesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Creates or updates a service. Must be created in the same location as its parent mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, serviceName string, parameters Service, options *ServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ServicesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, mobileNetworkName, serviceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -104,13 +111,16 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -122,7 +132,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Deletes the specified service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mobileNetworkName - The name of the mobile network.
 //   - serviceName - The name of the service. You must not use any of the following reserved strings - default, requested or service
@@ -135,19 +145,26 @@ func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServicesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServicesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServicesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes the specified service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, mobileNetworkName string, serviceName string, options *ServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ServicesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, mobileNetworkName, serviceName, options)
 	if err != nil {
 		return nil, err
@@ -178,13 +195,16 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -193,13 +213,17 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Gets information about the specified service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mobileNetworkName - The name of the mobile network.
 //   - serviceName - The name of the service. You must not use any of the following reserved strings - default, requested or service
 //   - options - ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
 func (client *ServicesClient) Get(ctx context.Context, resourceGroupName string, mobileNetworkName string, serviceName string, options *ServicesClientGetOptions) (ServicesClientGetResponse, error) {
 	var err error
+	const operationName = "ServicesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, mobileNetworkName, serviceName, options)
 	if err != nil {
 		return ServicesClientGetResponse{}, err
@@ -231,13 +255,16 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -254,7 +281,7 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 
 // NewListByMobileNetworkPager - Gets all the services in a mobile network.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mobileNetworkName - The name of the mobile network.
 //   - options - ServicesClientListByMobileNetworkOptions contains the optional parameters for the ServicesClient.NewListByMobileNetworkPager
@@ -265,25 +292,20 @@ func (client *ServicesClient) NewListByMobileNetworkPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ServicesClientListByMobileNetworkResponse) (ServicesClientListByMobileNetworkResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByMobileNetworkCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServicesClient.NewListByMobileNetworkPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByMobileNetworkCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
+			}, nil)
 			if err != nil {
 				return ServicesClientListByMobileNetworkResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ServicesClientListByMobileNetworkResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServicesClientListByMobileNetworkResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByMobileNetworkHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -298,13 +320,16 @@ func (client *ServicesClient) listByMobileNetworkCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter mobileNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mobileNetworkName}", url.PathEscape(mobileNetworkName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +347,7 @@ func (client *ServicesClient) listByMobileNetworkHandleResponse(resp *http.Respo
 // UpdateTags - Updates service tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mobileNetworkName - The name of the mobile network.
 //   - serviceName - The name of the service. You must not use any of the following reserved strings - default, requested or service
@@ -330,6 +355,10 @@ func (client *ServicesClient) listByMobileNetworkHandleResponse(resp *http.Respo
 //   - options - ServicesClientUpdateTagsOptions contains the optional parameters for the ServicesClient.UpdateTags method.
 func (client *ServicesClient) UpdateTags(ctx context.Context, resourceGroupName string, mobileNetworkName string, serviceName string, parameters TagsObject, options *ServicesClientUpdateTagsOptions) (ServicesClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "ServicesClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, mobileNetworkName, serviceName, parameters, options)
 	if err != nil {
 		return ServicesClientUpdateTagsResponse{}, err
@@ -349,6 +378,9 @@ func (client *ServicesClient) UpdateTags(ctx context.Context, resourceGroupName 
 // updateTagsCreateRequest creates the UpdateTags request.
 func (client *ServicesClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, mobileNetworkName string, serviceName string, parameters TagsObject, options *ServicesClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/services/{serviceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -367,7 +399,7 @@ func (client *ServicesClient) updateTagsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -32,7 +32,7 @@ type PacketCoreDataPlanesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPacketCoreDataPlanesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PacketCoreDataPlanesClient, error) {
-	cl, err := arm.NewClient(moduleName+".PacketCoreDataPlanesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewPacketCoreDataPlanesClient(subscriptionID string, credential azcore.Toke
 // core control plane.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - packetCoreControlPlaneName - The name of the packet core control plane.
 //   - packetCoreDataPlaneName - The name of the packet core data plane.
@@ -62,10 +62,13 @@ func (client *PacketCoreDataPlanesClient) BeginCreateOrUpdate(ctx context.Contex
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PacketCoreDataPlanesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PacketCoreDataPlanesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PacketCoreDataPlanesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,9 +76,13 @@ func (client *PacketCoreDataPlanesClient) BeginCreateOrUpdate(ctx context.Contex
 // core control plane.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 func (client *PacketCoreDataPlanesClient) createOrUpdate(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, parameters PacketCoreDataPlane, options *PacketCoreDataPlanesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PacketCoreDataPlanesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -106,13 +113,16 @@ func (client *PacketCoreDataPlanesClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter packetCoreDataPlaneName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packetCoreDataPlaneName}", url.PathEscape(packetCoreDataPlaneName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -124,7 +134,7 @@ func (client *PacketCoreDataPlanesClient) createOrUpdateCreateRequest(ctx contex
 // BeginDelete - Deletes the specified packet core data plane.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - packetCoreControlPlaneName - The name of the packet core control plane.
 //   - packetCoreDataPlaneName - The name of the packet core data plane.
@@ -138,19 +148,26 @@ func (client *PacketCoreDataPlanesClient) BeginDelete(ctx context.Context, resou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PacketCoreDataPlanesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PacketCoreDataPlanesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PacketCoreDataPlanesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes the specified packet core data plane.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 func (client *PacketCoreDataPlanesClient) deleteOperation(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, options *PacketCoreDataPlanesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PacketCoreDataPlanesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, options)
 	if err != nil {
 		return nil, err
@@ -181,13 +198,16 @@ func (client *PacketCoreDataPlanesClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter packetCoreDataPlaneName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packetCoreDataPlaneName}", url.PathEscape(packetCoreDataPlaneName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -196,7 +216,7 @@ func (client *PacketCoreDataPlanesClient) deleteCreateRequest(ctx context.Contex
 // Get - Gets information about the specified packet core data plane.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - packetCoreControlPlaneName - The name of the packet core control plane.
 //   - packetCoreDataPlaneName - The name of the packet core data plane.
@@ -204,6 +224,10 @@ func (client *PacketCoreDataPlanesClient) deleteCreateRequest(ctx context.Contex
 //     method.
 func (client *PacketCoreDataPlanesClient) Get(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, options *PacketCoreDataPlanesClientGetOptions) (PacketCoreDataPlanesClientGetResponse, error) {
 	var err error
+	const operationName = "PacketCoreDataPlanesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, options)
 	if err != nil {
 		return PacketCoreDataPlanesClientGetResponse{}, err
@@ -235,13 +259,16 @@ func (client *PacketCoreDataPlanesClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter packetCoreDataPlaneName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packetCoreDataPlaneName}", url.PathEscape(packetCoreDataPlaneName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -258,7 +285,7 @@ func (client *PacketCoreDataPlanesClient) getHandleResponse(resp *http.Response)
 
 // NewListByPacketCoreControlPlanePager - Lists all the packet core data planes associated with a packet core control plane.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - packetCoreControlPlaneName - The name of the packet core control plane.
 //   - options - PacketCoreDataPlanesClientListByPacketCoreControlPlaneOptions contains the optional parameters for the PacketCoreDataPlanesClient.NewListByPacketCoreControlPlanePager
@@ -269,25 +296,20 @@ func (client *PacketCoreDataPlanesClient) NewListByPacketCoreControlPlanePager(r
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse) (PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByPacketCoreControlPlaneCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PacketCoreDataPlanesClient.NewListByPacketCoreControlPlanePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByPacketCoreControlPlaneCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, options)
+			}, nil)
 			if err != nil {
 				return PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByPacketCoreControlPlaneHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -302,13 +324,16 @@ func (client *PacketCoreDataPlanesClient) listByPacketCoreControlPlaneCreateRequ
 		return nil, errors.New("parameter packetCoreControlPlaneName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packetCoreControlPlaneName}", url.PathEscape(packetCoreControlPlaneName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,7 +351,7 @@ func (client *PacketCoreDataPlanesClient) listByPacketCoreControlPlaneHandleResp
 // UpdateTags - Updates packet core data planes tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - packetCoreControlPlaneName - The name of the packet core control plane.
 //   - packetCoreDataPlaneName - The name of the packet core data plane.
@@ -335,6 +360,10 @@ func (client *PacketCoreDataPlanesClient) listByPacketCoreControlPlaneHandleResp
 //     method.
 func (client *PacketCoreDataPlanesClient) UpdateTags(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, parameters TagsObject, options *PacketCoreDataPlanesClientUpdateTagsOptions) (PacketCoreDataPlanesClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "PacketCoreDataPlanesClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, parameters, options)
 	if err != nil {
 		return PacketCoreDataPlanesClientUpdateTagsResponse{}, err
@@ -366,13 +395,16 @@ func (client *PacketCoreDataPlanesClient) updateTagsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter packetCoreDataPlaneName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packetCoreDataPlaneName}", url.PathEscape(packetCoreDataPlaneName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

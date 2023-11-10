@@ -32,7 +32,7 @@ type SimGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSimGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SimGroupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".SimGroupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewSimGroupsClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreateOrUpdate - Creates or updates a SIM group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - simGroupName - The name of the SIM Group.
 //   - parameters - Parameters supplied to the create or update SIM group operation.
@@ -60,19 +60,26 @@ func (client *SimGroupsClient) BeginCreateOrUpdate(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SimGroupsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SimGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SimGroupsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Creates or updates a SIM group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 func (client *SimGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, simGroupName string, parameters SimGroup, options *SimGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SimGroupsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, simGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -91,6 +98,9 @@ func (client *SimGroupsClient) createOrUpdate(ctx context.Context, resourceGroup
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SimGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, simGroupName string, parameters SimGroup, options *SimGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups/{simGroupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -105,7 +115,7 @@ func (client *SimGroupsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -117,7 +127,7 @@ func (client *SimGroupsClient) createOrUpdateCreateRequest(ctx context.Context, 
 // BeginDelete - Deletes the specified SIM group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - simGroupName - The name of the SIM Group.
 //   - options - SimGroupsClientBeginDeleteOptions contains the optional parameters for the SimGroupsClient.BeginDelete method.
@@ -129,19 +139,26 @@ func (client *SimGroupsClient) BeginDelete(ctx context.Context, resourceGroupNam
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SimGroupsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SimGroupsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SimGroupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes the specified SIM group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 func (client *SimGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, simGroupName string, options *SimGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SimGroupsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, simGroupName, options)
 	if err != nil {
 		return nil, err
@@ -160,6 +177,9 @@ func (client *SimGroupsClient) deleteOperation(ctx context.Context, resourceGrou
 // deleteCreateRequest creates the Delete request.
 func (client *SimGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, simGroupName string, options *SimGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups/{simGroupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -174,7 +194,7 @@ func (client *SimGroupsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,12 +203,16 @@ func (client *SimGroupsClient) deleteCreateRequest(ctx context.Context, resource
 // Get - Gets information about the specified SIM group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - simGroupName - The name of the SIM Group.
 //   - options - SimGroupsClientGetOptions contains the optional parameters for the SimGroupsClient.Get method.
 func (client *SimGroupsClient) Get(ctx context.Context, resourceGroupName string, simGroupName string, options *SimGroupsClientGetOptions) (SimGroupsClientGetResponse, error) {
 	var err error
+	const operationName = "SimGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, simGroupName, options)
 	if err != nil {
 		return SimGroupsClientGetResponse{}, err
@@ -208,6 +232,9 @@ func (client *SimGroupsClient) Get(ctx context.Context, resourceGroupName string
 // getCreateRequest creates the Get request.
 func (client *SimGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, simGroupName string, options *SimGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups/{simGroupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -222,7 +249,7 @@ func (client *SimGroupsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -239,7 +266,7 @@ func (client *SimGroupsClient) getHandleResponse(resp *http.Response) (SimGroups
 
 // NewListByResourceGroupPager - Gets all the SIM groups in a resource group.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SimGroupsClientListByResourceGroupOptions contains the optional parameters for the SimGroupsClient.NewListByResourceGroupPager
 //     method.
@@ -249,25 +276,20 @@ func (client *SimGroupsClient) NewListByResourceGroupPager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SimGroupsClientListByResourceGroupResponse) (SimGroupsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SimGroupsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return SimGroupsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SimGroupsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SimGroupsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -278,13 +300,16 @@ func (client *SimGroupsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,7 +326,7 @@ func (client *SimGroupsClient) listByResourceGroupHandleResponse(resp *http.Resp
 
 // NewListBySubscriptionPager - Gets all the SIM groups in a subscription.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - options - SimGroupsClientListBySubscriptionOptions contains the optional parameters for the SimGroupsClient.NewListBySubscriptionPager
 //     method.
 func (client *SimGroupsClient) NewListBySubscriptionPager(options *SimGroupsClientListBySubscriptionOptions) *runtime.Pager[SimGroupsClientListBySubscriptionResponse] {
@@ -310,38 +335,36 @@ func (client *SimGroupsClient) NewListBySubscriptionPager(options *SimGroupsClie
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SimGroupsClientListBySubscriptionResponse) (SimGroupsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SimGroupsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return SimGroupsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SimGroupsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SimGroupsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *SimGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, options *SimGroupsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MobileNetwork/simGroups"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -359,13 +382,17 @@ func (client *SimGroupsClient) listBySubscriptionHandleResponse(resp *http.Respo
 // UpdateTags - Patch SIM group resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - simGroupName - The name of the SIM Group.
 //   - parameters - Parameters supplied to patch SIM group resource.
 //   - options - SimGroupsClientUpdateTagsOptions contains the optional parameters for the SimGroupsClient.UpdateTags method.
 func (client *SimGroupsClient) UpdateTags(ctx context.Context, resourceGroupName string, simGroupName string, parameters IdentityAndTagsObject, options *SimGroupsClientUpdateTagsOptions) (SimGroupsClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "SimGroupsClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, simGroupName, parameters, options)
 	if err != nil {
 		return SimGroupsClientUpdateTagsResponse{}, err
@@ -385,6 +412,9 @@ func (client *SimGroupsClient) UpdateTags(ctx context.Context, resourceGroupName
 // updateTagsCreateRequest creates the UpdateTags request.
 func (client *SimGroupsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, simGroupName string, parameters IdentityAndTagsObject, options *SimGroupsClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups/{simGroupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -399,7 +429,7 @@ func (client *SimGroupsClient) updateTagsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

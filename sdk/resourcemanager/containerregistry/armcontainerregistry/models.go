@@ -1836,6 +1836,9 @@ type RegistryProperties struct {
 	// The encryption settings of container registry.
 	Encryption *EncryptionProperty
 
+	// Determines whether registry artifacts are indexed for metadata search.
+	MetadataSearch *MetadataSearch
+
 	// Whether to allow trusted Azure services to access a network restricted registry.
 	NetworkRuleBypassOptions *NetworkRuleBypassOptions
 
@@ -1883,6 +1886,9 @@ type RegistryPropertiesUpdateParameters struct {
 
 	// The encryption settings of container registry.
 	Encryption *EncryptionProperty
+
+	// Determines whether registry artifacts are indexed for metadata search.
+	MetadataSearch *MetadataSearch
 
 	// Whether to allow trusted Azure services to access a network restricted registry.
 	NetworkRuleBypassOptions *NetworkRuleBypassOptions

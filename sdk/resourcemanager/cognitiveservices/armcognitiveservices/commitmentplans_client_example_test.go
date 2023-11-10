@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/ListCommitmentPlans.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/ListCommitmentPlans.json
 func ExampleCommitmentPlansClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleCommitmentPlansClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/GetCommitmentPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/GetCommitmentPlan.json
 func ExampleCommitmentPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleCommitmentPlansClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/PutCommitmentPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/PutCommitmentPlan.json
 func ExampleCommitmentPlansClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleCommitmentPlansClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/DeleteCommitmentPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/DeleteCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleCommitmentPlansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/CreateSharedCommitmentPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/CreateSharedCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginCreateOrUpdatePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleCommitmentPlansClient_BeginCreateOrUpdatePlan() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/UpdateSharedCommitmentPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/UpdateSharedCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginUpdatePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleCommitmentPlansClient_BeginUpdatePlan() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/DeleteSharedCommitmentPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/DeleteSharedCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginDeletePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleCommitmentPlansClient_BeginDeletePlan() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/GetSharedCommitmentPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/GetSharedCommitmentPlan.json
 func ExampleCommitmentPlansClient_GetPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,7 +322,7 @@ func ExampleCommitmentPlansClient_GetPlan() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/ListSharedCommitmentPlansByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/ListSharedCommitmentPlansByResourceGroup.json
 func ExampleCommitmentPlansClient_NewListPlansByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,7 +369,7 @@ func ExampleCommitmentPlansClient_NewListPlansByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/ListSharedCommitmentPlansBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/ListSharedCommitmentPlansBySubscription.json
 func ExampleCommitmentPlansClient_NewListPlansBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -416,7 +416,7 @@ func ExampleCommitmentPlansClient_NewListPlansBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/ListSharedCommitmentPlanAssociations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/ListSharedCommitmentPlanAssociations.json
 func ExampleCommitmentPlansClient_NewListAssociationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -452,7 +452,7 @@ func ExampleCommitmentPlansClient_NewListAssociationsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/GetSharedCommitmentPlanAssociation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/GetSharedCommitmentPlanAssociation.json
 func ExampleCommitmentPlansClient_GetAssociation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -480,7 +480,7 @@ func ExampleCommitmentPlansClient_GetAssociation() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/CreateSharedCommitmentPlanAssociation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/CreateSharedCommitmentPlanAssociation.json
 func ExampleCommitmentPlansClient_BeginCreateOrUpdateAssociation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -516,7 +516,7 @@ func ExampleCommitmentPlansClient_BeginCreateOrUpdateAssociation() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/DeleteSharedCommitmentPlanAssociation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/DeleteSharedCommitmentPlanAssociation.json
 func ExampleCommitmentPlansClient_BeginDeleteAssociation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

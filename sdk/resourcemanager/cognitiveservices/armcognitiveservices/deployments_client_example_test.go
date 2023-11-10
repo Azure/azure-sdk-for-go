@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/ListDeployments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/ListDeployments.json
 func ExampleDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,17 +53,17 @@ func ExampleDeploymentsClient_NewListPager() {
 		// 					Version: to.Ptr("1"),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armcognitiveservices.DeploymentProvisioningStateSucceeded),
-		// 				ScaleSettings: &armcognitiveservices.DeploymentScaleSettings{
-		// 					Capacity: to.Ptr[int32](1),
-		// 					ScaleType: to.Ptr(armcognitiveservices.DeploymentScaleTypeManual),
-		// 				},
+		// 			},
+		// 			SKU: &armcognitiveservices.SKU{
+		// 				Name: to.Ptr("Standard"),
+		// 				Capacity: to.Ptr[int32](1),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/GetDeployment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/GetDeployment.json
 func ExampleDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,15 +92,15 @@ func ExampleDeploymentsClient_Get() {
 	// 			Version: to.Ptr("1"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armcognitiveservices.DeploymentProvisioningStateSucceeded),
-	// 		ScaleSettings: &armcognitiveservices.DeploymentScaleSettings{
-	// 			Capacity: to.Ptr[int32](1),
-	// 			ScaleType: to.Ptr(armcognitiveservices.DeploymentScaleTypeManual),
-	// 		},
+	// 	},
+	// 	SKU: &armcognitiveservices.SKU{
+	// 		Name: to.Ptr("Standard"),
+	// 		Capacity: to.Ptr[int32](1),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/PutDeployment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/PutDeployment.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,53 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/DeleteDeployment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/UpdateDeployment.json
+func ExampleDeploymentsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDeploymentsClient().BeginUpdate(ctx, "resourceGroupName", "accountName", "deploymentName", armcognitiveservices.PatchResourceTagsAndSKU{
+		SKU: &armcognitiveservices.SKU{
+			Name:     to.Ptr("Standard"),
+			Capacity: to.Ptr[int32](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Deployment = armcognitiveservices.Deployment{
+	// 	Name: to.Ptr("deploymentName"),
+	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/deployments"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/deployments/deploymentName"),
+	// 	Properties: &armcognitiveservices.DeploymentProperties{
+	// 		Model: &armcognitiveservices.DeploymentModel{
+	// 			Name: to.Ptr("ada"),
+	// 			Format: to.Ptr("OpenAI"),
+	// 			Version: to.Ptr("1"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armcognitiveservices.DeploymentProvisioningStateSucceeded),
+	// 	},
+	// 	SKU: &armcognitiveservices.SKU{
+	// 		Name: to.Ptr("Standard"),
+	// 		Capacity: to.Ptr[int32](1),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/DeleteDeployment.json
 func ExampleDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,5 +217,49 @@ func ExampleDeploymentsClient_BeginDelete() {
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2023-10-01-preview/examples/ListDeploymentSkus.json
+func ExampleDeploymentsClient_NewListSKUsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDeploymentsClient().NewListSKUsPager("resourceGroupName", "accountName", "deploymentName", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.DeploymentSKUListResult = armcognitiveservices.DeploymentSKUListResult{
+		// 	Value: []*armcognitiveservices.SKUResource{
+		// 		{
+		// 			Capacity: &armcognitiveservices.CapacityConfig{
+		// 				Default: to.Ptr[int32](100),
+		// 				AllowedValues: []*int32{
+		// 					to.Ptr[int32](100),
+		// 					to.Ptr[int32](200)},
+		// 					Maximum: to.Ptr[int32](1000),
+		// 					Minimum: to.Ptr[int32](100),
+		// 					Step: to.Ptr[int32](100),
+		// 				},
+		// 				ResourceType: to.Ptr("Microsoft.CognitiveServices/accounts/deployments"),
+		// 				SKU: &armcognitiveservices.SKU{
+		// 					Name: to.Ptr("Standard"),
+		// 					Capacity: to.Ptr[int32](1),
+		// 				},
+		// 		}},
+		// 	}
 	}
 }

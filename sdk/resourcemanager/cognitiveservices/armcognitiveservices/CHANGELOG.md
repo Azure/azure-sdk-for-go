@@ -1,5 +1,82 @@
 # Release History
 
+## 2.0.0-beta.1 (2023-11-24)
+### Breaking Changes
+
+- Function `timeRFC3339.MarshalText` has been removed
+- Function `*timeRFC3339.Parse` has been removed
+- Function `*timeRFC3339.UnmarshalText` has been removed
+
+### Features Added
+
+- New enum type `AllowedContentLevel` with values `AllowedContentLevelHigh`, `AllowedContentLevelLow`, `AllowedContentLevelMedium`
+- New enum type `ByPassSelection` with values `ByPassSelectionAzureServices`, `ByPassSelectionNone`
+- New enum type `EncryptionScopeProvisioningState` with values `EncryptionScopeProvisioningStateAccepted`, `EncryptionScopeProvisioningStateCanceled`, `EncryptionScopeProvisioningStateCreating`, `EncryptionScopeProvisioningStateDeleting`, `EncryptionScopeProvisioningStateFailed`, `EncryptionScopeProvisioningStateMoving`, `EncryptionScopeProvisioningStateSucceeded`
+- New enum type `EncryptionScopeState` with values `EncryptionScopeStateDisabled`, `EncryptionScopeStateEnabled`
+- New enum type `RaiContentFilterType` with values `RaiContentFilterTypeMultiLevel`, `RaiContentFilterTypeSwitch`
+- New enum type `RaiPolicyContentSource` with values `RaiPolicyContentSourceCompletion`, `RaiPolicyContentSourcePrompt`
+- New enum type `RaiPolicyMode` with values `RaiPolicyModeBlocking`, `RaiPolicyModeDefault`, `RaiPolicyModeDeferred`
+- New enum type `RaiPolicyType` with values `RaiPolicyTypeSystemManaged`, `RaiPolicyTypeUserManaged`
+- New function `*ClientFactory.NewEncryptionScopesClient() *EncryptionScopesClient`
+- New function `*ClientFactory.NewRaiBlocklistItemsClient() *RaiBlocklistItemsClient`
+- New function `*ClientFactory.NewRaiBlocklistsClient() *RaiBlocklistsClient`
+- New function `*ClientFactory.NewRaiContentFiltersClient() *RaiContentFiltersClient`
+- New function `*ClientFactory.NewRaiPoliciesClient() *RaiPoliciesClient`
+- New function `*DeploymentsClient.NewListSKUsPager(string, string, string, *DeploymentsClientListSKUsOptions) *runtime.Pager[DeploymentsClientListSKUsResponse]`
+- New function `*DeploymentsClient.BeginUpdate(context.Context, string, string, string, PatchResourceTagsAndSKU, *DeploymentsClientBeginUpdateOptions) (*runtime.Poller[DeploymentsClientUpdateResponse], error)`
+- New function `NewEncryptionScopesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*EncryptionScopesClient, error)`
+- New function `*EncryptionScopesClient.CreateOrUpdate(context.Context, string, string, string, EncryptionScope, *EncryptionScopesClientCreateOrUpdateOptions) (EncryptionScopesClientCreateOrUpdateResponse, error)`
+- New function `*EncryptionScopesClient.BeginDelete(context.Context, string, string, string, *EncryptionScopesClientBeginDeleteOptions) (*runtime.Poller[EncryptionScopesClientDeleteResponse], error)`
+- New function `*EncryptionScopesClient.Get(context.Context, string, string, string, *EncryptionScopesClientGetOptions) (EncryptionScopesClientGetResponse, error)`
+- New function `*EncryptionScopesClient.NewListPager(string, string, *EncryptionScopesClientListOptions) *runtime.Pager[EncryptionScopesClientListResponse]`
+- New function `NewRaiBlocklistItemsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RaiBlocklistItemsClient, error)`
+- New function `*RaiBlocklistItemsClient.CreateOrUpdate(context.Context, string, string, string, string, RaiBlocklistItem, *RaiBlocklistItemsClientCreateOrUpdateOptions) (RaiBlocklistItemsClientCreateOrUpdateResponse, error)`
+- New function `*RaiBlocklistItemsClient.BeginDelete(context.Context, string, string, string, string, *RaiBlocklistItemsClientBeginDeleteOptions) (*runtime.Poller[RaiBlocklistItemsClientDeleteResponse], error)`
+- New function `*RaiBlocklistItemsClient.Get(context.Context, string, string, string, string, *RaiBlocklistItemsClientGetOptions) (RaiBlocklistItemsClientGetResponse, error)`
+- New function `*RaiBlocklistItemsClient.NewListPager(string, string, string, *RaiBlocklistItemsClientListOptions) *runtime.Pager[RaiBlocklistItemsClientListResponse]`
+- New function `NewRaiBlocklistsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RaiBlocklistsClient, error)`
+- New function `*RaiBlocklistsClient.CreateOrUpdate(context.Context, string, string, string, RaiBlocklist, *RaiBlocklistsClientCreateOrUpdateOptions) (RaiBlocklistsClientCreateOrUpdateResponse, error)`
+- New function `*RaiBlocklistsClient.BeginDelete(context.Context, string, string, string, *RaiBlocklistsClientBeginDeleteOptions) (*runtime.Poller[RaiBlocklistsClientDeleteResponse], error)`
+- New function `*RaiBlocklistsClient.Get(context.Context, string, string, string, *RaiBlocklistsClientGetOptions) (RaiBlocklistsClientGetResponse, error)`
+- New function `*RaiBlocklistsClient.NewListPager(string, string, *RaiBlocklistsClientListOptions) *runtime.Pager[RaiBlocklistsClientListResponse]`
+- New function `NewRaiContentFiltersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RaiContentFiltersClient, error)`
+- New function `*RaiContentFiltersClient.List(context.Context, string, *RaiContentFiltersClientListOptions) (RaiContentFiltersClientListResponse, error)`
+- New function `NewRaiPoliciesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RaiPoliciesClient, error)`
+- New function `*RaiPoliciesClient.CreateOrUpdate(context.Context, string, string, string, RaiPolicy, *RaiPoliciesClientCreateOrUpdateOptions) (RaiPoliciesClientCreateOrUpdateResponse, error)`
+- New function `*RaiPoliciesClient.BeginDelete(context.Context, string, string, string, *RaiPoliciesClientBeginDeleteOptions) (*runtime.Poller[RaiPoliciesClientDeleteResponse], error)`
+- New function `*RaiPoliciesClient.Get(context.Context, string, string, string, *RaiPoliciesClientGetOptions) (RaiPoliciesClientGetResponse, error)`
+- New function `*RaiPoliciesClient.NewListPager(string, string, *RaiPoliciesClientListOptions) *runtime.Pager[RaiPoliciesClientListResponse]`
+- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
+- New function `*dateTimeRFC3339.Parse(string) error`
+- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
+- New struct `DeploymentCapacitySettings`
+- New struct `DeploymentSKUListResult`
+- New struct `EncryptionScope`
+- New struct `EncryptionScopeListResult`
+- New struct `EncryptionScopeProperties`
+- New struct `RaiBlockListItemsResult`
+- New struct `RaiBlockListResult`
+- New struct `RaiBlocklist`
+- New struct `RaiBlocklistConfig`
+- New struct `RaiBlocklistItem`
+- New struct `RaiBlocklistItemProperties`
+- New struct `RaiBlocklistProperties`
+- New struct `RaiContentFilter`
+- New struct `RaiContentFilterListResult`
+- New struct `RaiPolicy`
+- New struct `RaiPolicyContentFilter`
+- New struct `RaiPolicyListResult`
+- New struct `RaiPolicyProperties`
+- New struct `SKUResource`
+- New struct `UserOwnedAmlWorkspace`
+- New field `AmlWorkspace` in struct `AccountProperties`
+- New field `AllowedValues` in struct `CapacityConfig`
+- New field `Tags` in struct `CommitmentPlanAccountAssociation`
+- New field `Tags` in struct `Deployment`
+- New field `CapacitySettings`, `CurrentCapacity`, `DynamicThrottlingEnabled` in struct `DeploymentProperties`
+- New field `Bypass` in struct `NetworkRuleSet`
+
+
 ## 1.5.0 (2023-07-28)
 ### Features Added
 

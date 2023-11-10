@@ -1,5 +1,26 @@
 # Release History
 
+## 3.0.0 (2023-11-24)
+### Breaking Changes
+
+- Function `timeRFC3339.MarshalText` has been removed
+- Function `*timeRFC3339.Parse` has been removed
+- Function `*timeRFC3339.UnmarshalText` has been removed
+- Field `Tags` of struct `Certificate` has been removed
+- Field `Tags` of struct `Configuration` has been removed
+
+### Features Added
+
+- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
+- New function `*dateTimeRFC3339.Parse(string) error`
+- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
+- New struct `DeploymentScalingProperties`
+- New struct `DeploymentUserProfile`
+- New field `ProtectedFiles` in struct `ConfigurationPackage`
+- New field `ScalingProperties`, `UserProfile` in struct `DeploymentProperties`
+- New field `ScalingProperties`, `UserProfile` in struct `DeploymentUpdateProperties`
+
+
 ## 2.1.0 (2023-03-31)
 ### Features Added
 

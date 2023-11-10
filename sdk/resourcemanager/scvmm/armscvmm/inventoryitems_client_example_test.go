@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/CreateInventoryItem.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/CreateInventoryItem.json
 func ExampleInventoryItemsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,13 +49,13 @@ func ExampleInventoryItemsClient_Create() {
 	// 		InventoryItemName: to.Ptr("contoso-cloud"),
 	// 		InventoryType: to.Ptr(armscvmm.InventoryTypeCloud),
 	// 		ManagedResourceID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/contoso-cloud"),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		UUID: to.Ptr("12345678-1234-1234-1234-123456789abc"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/GetInventoryItem.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GetInventoryItem.json
 func ExampleInventoryItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,13 +81,13 @@ func ExampleInventoryItemsClient_Get() {
 	// 		InventoryItemName: to.Ptr("contoso-cloud"),
 	// 		InventoryType: to.Ptr(armscvmm.InventoryTypeCloud),
 	// 		ManagedResourceID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/contoso-cloud"),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		UUID: to.Ptr("12345678-1234-1234-1234-123456789abc"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/DeleteInventoryItem.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/DeleteInventoryItem.json
 func ExampleInventoryItemsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleInventoryItemsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListInventoryItemsByVMMServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/ListInventoryItemsByVMMServer.json
 func ExampleInventoryItemsClient_NewListByVMMServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleInventoryItemsClient_NewListByVMMServerPager() {
 		// 				InventoryItemName: to.Ptr("contoso-cloud"),
 		// 				InventoryType: to.Ptr(armscvmm.InventoryTypeCloud),
 		// 				ManagedResourceID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/contoso-cloud"),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 				UUID: to.Ptr("12345678-1234-1234-1234-123456789abc"),
 		// 			},
 		// 	}},

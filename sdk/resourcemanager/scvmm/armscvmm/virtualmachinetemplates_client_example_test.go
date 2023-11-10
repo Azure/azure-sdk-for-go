@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/GetVirtualMachineTemplate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GetVirtualMachineTemplate.json
 func ExampleVirtualMachineTemplatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,21 +39,27 @@ func ExampleVirtualMachineTemplatesClient_Get() {
 	// res.VirtualMachineTemplate = armscvmm.VirtualMachineTemplate{
 	// 	Name: to.Ptr("HRVirtualMachineTemplate"),
 	// 	Type: to.Ptr("Microsoft.SCVMM/VirtualMachineTemplates"),
+	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualMachineTemplates/HRVirtualMachineTemplate"),
+	// 	Location: to.Ptr("East US"),
 	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 	// 		Type: to.Ptr("customLocation"),
 	// 	},
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualMachineTemplates/HRVirtualMachineTemplate"),
-	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armscvmm.VirtualMachineTemplateProperties{
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+	// 		ComputerName: to.Ptr("DemoVM"),
+	// 		CPUCount: to.Ptr[int32](1),
+	// 		InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+	// 		MemoryMB: to.Ptr[int32](1024),
+	// 		OSName: to.Ptr("Windows OS"),
+	// 		OSType: to.Ptr(armscvmm.OsTypeWindows),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/CreateVirtualMachineTemplate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/CreateVirtualMachineTemplate.json
 func ExampleVirtualMachineTemplatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,13 +71,13 @@ func ExampleVirtualMachineTemplatesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewVirtualMachineTemplatesClient().BeginCreateOrUpdate(ctx, "testrg", "HRVirtualMachineTemplate", armscvmm.VirtualMachineTemplate{
+		Location: to.Ptr("East US"),
 		ExtendedLocation: &armscvmm.ExtendedLocation{
 			Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 			Type: to.Ptr("customLocation"),
 		},
-		Location: to.Ptr("East US"),
 		Properties: &armscvmm.VirtualMachineTemplateProperties{
-			UUID:        to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+			UUID:        to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 			VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 		},
 	}, nil)
@@ -88,21 +94,27 @@ func ExampleVirtualMachineTemplatesClient_BeginCreateOrUpdate() {
 	// res.VirtualMachineTemplate = armscvmm.VirtualMachineTemplate{
 	// 	Name: to.Ptr("HRVirtualMachineTemplate"),
 	// 	Type: to.Ptr("Microsoft.SCVMM/VirtualMachineTemplates"),
+	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualMachineTemplates/HRVirtualMachineTemplate"),
+	// 	Location: to.Ptr("East US"),
 	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 	// 		Type: to.Ptr("customLocation"),
 	// 	},
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualMachineTemplates/HRVirtualMachineTemplate"),
-	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armscvmm.VirtualMachineTemplateProperties{
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+	// 		ComputerName: to.Ptr("DemoVM"),
+	// 		CPUCount: to.Ptr[int32](1),
+	// 		InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+	// 		MemoryMB: to.Ptr[int32](1024),
+	// 		OSName: to.Ptr("Windows OS"),
+	// 		OSType: to.Ptr(armscvmm.OsTypeWindows),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/DeleteVirtualMachineTemplate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/DeleteVirtualMachineTemplate.json
 func ExampleVirtualMachineTemplatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +135,7 @@ func ExampleVirtualMachineTemplatesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/UpdateVirtualMachineTemplate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/UpdateVirtualMachineTemplate.json
 func ExampleVirtualMachineTemplatesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,25 +165,31 @@ func ExampleVirtualMachineTemplatesClient_BeginUpdate() {
 	// res.VirtualMachineTemplate = armscvmm.VirtualMachineTemplate{
 	// 	Name: to.Ptr("HRVirtualMachineTemplate"),
 	// 	Type: to.Ptr("Microsoft.SCVMM/VirtualMachineTemplates"),
-	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
-	// 		Type: to.Ptr("customLocation"),
-	// 	},
 	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualMachineTemplates/HRVirtualMachineTemplate"),
 	// 	Location: to.Ptr("East US"),
-	// 	Properties: &armscvmm.VirtualMachineTemplateProperties{
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
-	// 	},
 	// 	Tags: map[string]*string{
 	// 		"tag1": to.Ptr("value1"),
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
+	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
+	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
+	// 		Type: to.Ptr("customLocation"),
+	// 	},
+	// 	Properties: &armscvmm.VirtualMachineTemplateProperties{
+	// 		ComputerName: to.Ptr("DemoVM"),
+	// 		CPUCount: to.Ptr[int32](1),
+	// 		InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+	// 		MemoryMB: to.Ptr[int32](1024),
+	// 		OSName: to.Ptr("Windows OS"),
+	// 		OSType: to.Ptr(armscvmm.OsTypeWindows),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListVirtualMachineTemplatesByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/ListVirtualMachineTemplatesByResourceGroup.json
 func ExampleVirtualMachineTemplatesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,15 +216,21 @@ func ExampleVirtualMachineTemplatesClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("HRVirtualMachineTemplate"),
 		// 			Type: to.Ptr("Microsoft.SCVMM/VirtualMachineTemplates"),
+		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualMachineTemplates/HRVirtualMachineTemplate"),
+		// 			Location: to.Ptr("East US"),
 		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
 		// 				Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 		// 				Type: to.Ptr("customLocation"),
 		// 			},
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualMachineTemplates/HRVirtualMachineTemplate"),
-		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armscvmm.VirtualMachineTemplateProperties{
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+		// 				ComputerName: to.Ptr("DemoVM"),
+		// 				CPUCount: to.Ptr[int32](1),
+		// 				InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+		// 				MemoryMB: to.Ptr[int32](1024),
+		// 				OSName: to.Ptr("Windows OS"),
+		// 				OSType: to.Ptr(armscvmm.OsTypeWindows),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+		// 				UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 				VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 		// 			},
 		// 	}},
@@ -214,7 +238,7 @@ func ExampleVirtualMachineTemplatesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListVirtualMachineTemplatesBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/ListVirtualMachineTemplatesBySubscription.json
 func ExampleVirtualMachineTemplatesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,15 +265,21 @@ func ExampleVirtualMachineTemplatesClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("HRVirtualMachineTemplate"),
 		// 			Type: to.Ptr("Microsoft.SCVMM/VirtualMachineTemplates"),
+		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualMachineTemplates/HRVirtualMachineTemplate"),
+		// 			Location: to.Ptr("East US"),
 		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
 		// 				Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 		// 				Type: to.Ptr("customLocation"),
 		// 			},
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualMachineTemplates/HRVirtualMachineTemplate"),
-		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armscvmm.VirtualMachineTemplateProperties{
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+		// 				ComputerName: to.Ptr("DemoVM"),
+		// 				CPUCount: to.Ptr[int32](1),
+		// 				InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+		// 				MemoryMB: to.Ptr[int32](1024),
+		// 				OSName: to.Ptr("Windows OS"),
+		// 				OSType: to.Ptr(armscvmm.OsTypeWindows),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+		// 				UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 				VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 		// 			},
 		// 	}},

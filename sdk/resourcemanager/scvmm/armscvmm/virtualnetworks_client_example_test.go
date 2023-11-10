@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/GetVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GetVirtualNetwork.json
 func ExampleVirtualNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,21 +39,23 @@ func ExampleVirtualNetworksClient_Get() {
 	// res.VirtualNetwork = armscvmm.VirtualNetwork{
 	// 	Name: to.Ptr("HRVirtualNetwork"),
 	// 	Type: to.Ptr("Microsoft.SCVMM/VirtualNetworks"),
+	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualNetworks/HRVirtualNetwork"),
+	// 	Location: to.Ptr("East US"),
 	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 	// 		Type: to.Ptr("customLocation"),
 	// 	},
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualNetworks/HRVirtualNetwork"),
-	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armscvmm.VirtualNetworkProperties{
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+	// 		InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+	// 		NetworkName: to.Ptr("HRVirtualNetwork"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/CreateVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/CreateVirtualNetwork.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,13 +67,13 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "testrg", "HRVirtualNetwork", armscvmm.VirtualNetwork{
+		Location: to.Ptr("East US"),
 		ExtendedLocation: &armscvmm.ExtendedLocation{
 			Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 			Type: to.Ptr("customLocation"),
 		},
-		Location: to.Ptr("East US"),
 		Properties: &armscvmm.VirtualNetworkProperties{
-			UUID:        to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+			UUID:        to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 			VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 		},
 	}, nil)
@@ -88,21 +90,23 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 	// res.VirtualNetwork = armscvmm.VirtualNetwork{
 	// 	Name: to.Ptr("HRVirtualNetwork"),
 	// 	Type: to.Ptr("Microsoft.SCVMM/VirtualNetworks"),
+	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualNetworks/HRVirtualNetwork"),
+	// 	Location: to.Ptr("East US"),
 	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 	// 		Type: to.Ptr("customLocation"),
 	// 	},
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualNetworks/HRVirtualNetwork"),
-	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armscvmm.VirtualNetworkProperties{
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+	// 		InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+	// 		NetworkName: to.Ptr("HRVirtualNetwork"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/DeleteVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/DeleteVirtualNetwork.json
 func ExampleVirtualNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +127,7 @@ func ExampleVirtualNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/UpdateVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/UpdateVirtualNetwork.json
 func ExampleVirtualNetworksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,25 +157,27 @@ func ExampleVirtualNetworksClient_BeginUpdate() {
 	// res.VirtualNetwork = armscvmm.VirtualNetwork{
 	// 	Name: to.Ptr("HRVirtualNetwork"),
 	// 	Type: to.Ptr("Microsoft.SCVMM/VirtualNetworks"),
-	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
-	// 		Type: to.Ptr("customLocation"),
-	// 	},
 	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualNetworks/HRVirtualNetwork"),
 	// 	Location: to.Ptr("East US"),
-	// 	Properties: &armscvmm.VirtualNetworkProperties{
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
-	// 	},
 	// 	Tags: map[string]*string{
 	// 		"tag1": to.Ptr("value1"),
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
+	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
+	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
+	// 		Type: to.Ptr("customLocation"),
+	// 	},
+	// 	Properties: &armscvmm.VirtualNetworkProperties{
+	// 		InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+	// 		NetworkName: to.Ptr("HRVirtualNetwork"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListVirtualNetworksByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/ListVirtualNetworksByResourceGroup.json
 func ExampleVirtualNetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,15 +204,17 @@ func ExampleVirtualNetworksClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("HRVirtualNetwork"),
 		// 			Type: to.Ptr("Microsoft.SCVMM/VirtualNetworks"),
+		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualNetworks/HRVirtualNetwork"),
+		// 			Location: to.Ptr("East US"),
 		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
 		// 				Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 		// 				Type: to.Ptr("customLocation"),
 		// 			},
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualNetworks/HRVirtualNetwork"),
-		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armscvmm.VirtualNetworkProperties{
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+		// 				InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+		// 				NetworkName: to.Ptr("HRVirtualNetwork"),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+		// 				UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 				VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 		// 			},
 		// 	}},
@@ -214,7 +222,7 @@ func ExampleVirtualNetworksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListVirtualNetworksBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/ListVirtualNetworksBySubscription.json
 func ExampleVirtualNetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,15 +249,17 @@ func ExampleVirtualNetworksClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("HRVirtualNetwork"),
 		// 			Type: to.Ptr("Microsoft.SCVMM/VirtualNetworks"),
+		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualNetworks/HRVirtualNetwork"),
+		// 			Location: to.Ptr("East US"),
 		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
 		// 				Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 		// 				Type: to.Ptr("customLocation"),
 		// 			},
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualNetworks/HRVirtualNetwork"),
-		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armscvmm.VirtualNetworkProperties{
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+		// 				InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+		// 				NetworkName: to.Ptr("HRVirtualNetwork"),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+		// 				UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 				VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 		// 			},
 		// 	}},

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/GetAvailabilitySet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GetAvailabilitySet.json
 func ExampleAvailabilitySetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,21 +39,21 @@ func ExampleAvailabilitySetsClient_Get() {
 	// res.AvailabilitySet = armscvmm.AvailabilitySet{
 	// 	Name: to.Ptr("HRAvailabilitySet"),
 	// 	Type: to.Ptr("Microsoft.ScVmm/AvailabilitySets"),
+	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/AvailabilitySets/HRAvailabilitySet"),
+	// 	Location: to.Ptr("East US"),
 	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 	// 		Type: to.Ptr("customLocation"),
 	// 	},
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/AvailabilitySets/HRAvailabilitySet"),
-	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armscvmm.AvailabilitySetProperties{
 	// 		AvailabilitySetName: to.Ptr("hr-avset"),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/VMMServers/ContosoVMMServer"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/CreateAvailabilitySet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/CreateAvailabilitySet.json
 func ExampleAvailabilitySetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,11 +65,11 @@ func ExampleAvailabilitySetsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewAvailabilitySetsClient().BeginCreateOrUpdate(ctx, "testrg", "HRAvailabilitySet", armscvmm.AvailabilitySet{
+		Location: to.Ptr("East US"),
 		ExtendedLocation: &armscvmm.ExtendedLocation{
 			Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 			Type: to.Ptr("customLocation"),
 		},
-		Location: to.Ptr("East US"),
 		Properties: &armscvmm.AvailabilitySetProperties{
 			AvailabilitySetName: to.Ptr("hr-avset"),
 			VmmServerID:         to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/VMMServers/ContosoVMMServer"),
@@ -88,21 +88,21 @@ func ExampleAvailabilitySetsClient_BeginCreateOrUpdate() {
 	// res.AvailabilitySet = armscvmm.AvailabilitySet{
 	// 	Name: to.Ptr("HRAvailabilitySet"),
 	// 	Type: to.Ptr("Microsoft.ScVmm/AvailabilitySets"),
+	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/AvailabilitySets/HRAvailabilitySet"),
+	// 	Location: to.Ptr("East US"),
 	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 	// 		Type: to.Ptr("customLocation"),
 	// 	},
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/AvailabilitySets/HRAvailabilitySet"),
-	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armscvmm.AvailabilitySetProperties{
 	// 		AvailabilitySetName: to.Ptr("hr-avset"),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/VMMServers/ContosoVMMServer"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/DeleteAvailabilitySet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/DeleteAvailabilitySet.json
 func ExampleAvailabilitySetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleAvailabilitySetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/UpdateAvailabilitySet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/UpdateAvailabilitySet.json
 func ExampleAvailabilitySetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,25 +153,25 @@ func ExampleAvailabilitySetsClient_BeginUpdate() {
 	// res.AvailabilitySet = armscvmm.AvailabilitySet{
 	// 	Name: to.Ptr("HRAvailabilitySet"),
 	// 	Type: to.Ptr("Microsoft.ScVmm/AvailabilitySets"),
-	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
-	// 		Type: to.Ptr("customLocation"),
-	// 	},
 	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/AvailabilitySets/HRAvailabilitySet"),
 	// 	Location: to.Ptr("East US"),
-	// 	Properties: &armscvmm.AvailabilitySetProperties{
-	// 		AvailabilitySetName: to.Ptr("hr-avset"),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/VMMServers/ContosoVMMServer"),
-	// 	},
 	// 	Tags: map[string]*string{
 	// 		"tag1": to.Ptr("value1"),
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
+	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
+	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
+	// 		Type: to.Ptr("customLocation"),
+	// 	},
+	// 	Properties: &armscvmm.AvailabilitySetProperties{
+	// 		AvailabilitySetName: to.Ptr("hr-avset"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/VMMServers/ContosoVMMServer"),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListAvailabilitySetsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/ListAvailabilitySetsByResourceGroup.json
 func ExampleAvailabilitySetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,15 +198,15 @@ func ExampleAvailabilitySetsClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("HRAvailabilitySet"),
 		// 			Type: to.Ptr("Microsoft.ScVmm/AvailabilitySets"),
+		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/AvailabilitySets/HRAvailabilitySet"),
+		// 			Location: to.Ptr("East US"),
 		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
 		// 				Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 		// 				Type: to.Ptr("customLocation"),
 		// 			},
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/AvailabilitySets/HRAvailabilitySet"),
-		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armscvmm.AvailabilitySetProperties{
 		// 				AvailabilitySetName: to.Ptr("hr-avset"),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 				VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/VMMServers/ContosoVMMServer"),
 		// 			},
 		// 	}},
@@ -214,7 +214,7 @@ func ExampleAvailabilitySetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListAvailabilitySetsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/ListAvailabilitySetsBySubscription.json
 func ExampleAvailabilitySetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,15 +241,15 @@ func ExampleAvailabilitySetsClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("HRAvailabilitySet"),
 		// 			Type: to.Ptr("Microsoft.ScVmm/AvailabilitySets"),
+		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/AvailabilitySets/HRAvailabilitySet"),
+		// 			Location: to.Ptr("East US"),
 		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
 		// 				Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 		// 				Type: to.Ptr("customLocation"),
 		// 			},
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/AvailabilitySets/HRAvailabilitySet"),
-		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armscvmm.AvailabilitySetProperties{
 		// 				AvailabilitySetName: to.Ptr("hr-avset"),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
 		// 				VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/VMMServers/ContosoVMMServer"),
 		// 			},
 		// 	}},

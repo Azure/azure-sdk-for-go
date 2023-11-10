@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/GetCloud.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/GetCloud.json
 func ExampleCloudsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,21 +39,28 @@ func ExampleCloudsClient_Get() {
 	// res.Cloud = armscvmm.Cloud{
 	// 	Name: to.Ptr("HRCloud"),
 	// 	Type: to.Ptr("Microsoft.SCVMM/Clouds"),
+	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/HRCloud"),
+	// 	Location: to.Ptr("East US"),
 	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 	// 		Type: to.Ptr("customLocation"),
 	// 	},
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/HRCloud"),
-	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armscvmm.CloudProperties{
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+	// 		CloudCapacity: &armscvmm.CloudCapacity{
+	// 			CPUCount: to.Ptr[int64](10),
+	// 			MemoryMB: to.Ptr[int64](10240),
+	// 			VMCount: to.Ptr[int64](10),
+	// 		},
+	// 		CloudName: to.Ptr("HRCloud"),
+	// 		InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/CreateCloud.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/CreateCloud.json
 func ExampleCloudsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,13 +72,13 @@ func ExampleCloudsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewCloudsClient().BeginCreateOrUpdate(ctx, "testrg", "HRCloud", armscvmm.Cloud{
+		Location: to.Ptr("East US"),
 		ExtendedLocation: &armscvmm.ExtendedLocation{
 			Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 			Type: to.Ptr("customLocation"),
 		},
-		Location: to.Ptr("East US"),
 		Properties: &armscvmm.CloudProperties{
-			UUID:        to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+			UUID:        to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 			VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 		},
 	}, nil)
@@ -88,21 +95,28 @@ func ExampleCloudsClient_BeginCreateOrUpdate() {
 	// res.Cloud = armscvmm.Cloud{
 	// 	Name: to.Ptr("HRCloud"),
 	// 	Type: to.Ptr("Microsoft.SCVMM/Clouds"),
+	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/HRCloud"),
+	// 	Location: to.Ptr("East US"),
 	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 	// 		Type: to.Ptr("customLocation"),
 	// 	},
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/HRCloud"),
-	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armscvmm.CloudProperties{
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+	// 		CloudCapacity: &armscvmm.CloudCapacity{
+	// 			CPUCount: to.Ptr[int64](10),
+	// 			MemoryMB: to.Ptr[int64](10240),
+	// 			VMCount: to.Ptr[int64](10),
+	// 		},
+	// 		CloudName: to.Ptr("HRCloud"),
+	// 		InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/DeleteCloud.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/DeleteCloud.json
 func ExampleCloudsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +137,7 @@ func ExampleCloudsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/UpdateCloud.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/UpdateCloud.json
 func ExampleCloudsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,25 +167,32 @@ func ExampleCloudsClient_BeginUpdate() {
 	// res.Cloud = armscvmm.Cloud{
 	// 	Name: to.Ptr("HRCloud"),
 	// 	Type: to.Ptr("Microsoft.SCVMM/Clouds"),
-	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
-	// 		Type: to.Ptr("customLocation"),
-	// 	},
 	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/HRCloud"),
 	// 	Location: to.Ptr("East US"),
-	// 	Properties: &armscvmm.CloudProperties{
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
-	// 	},
 	// 	Tags: map[string]*string{
 	// 		"tag1": to.Ptr("value1"),
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
+	// 	ExtendedLocation: &armscvmm.ExtendedLocation{
+	// 		Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
+	// 		Type: to.Ptr("customLocation"),
+	// 	},
+	// 	Properties: &armscvmm.CloudProperties{
+	// 		CloudCapacity: &armscvmm.CloudCapacity{
+	// 			CPUCount: to.Ptr[int64](10),
+	// 			MemoryMB: to.Ptr[int64](10240),
+	// 			VMCount: to.Ptr[int64](10),
+	// 		},
+	// 		CloudName: to.Ptr("HRCloud"),
+	// 		InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+	// 		VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListCloudsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/ListCloudsByResourceGroup.json
 func ExampleCloudsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,15 +219,22 @@ func ExampleCloudsClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("HRCloud"),
 		// 			Type: to.Ptr("Microsoft.SCVMM/Clouds"),
+		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/HRCloud"),
+		// 			Location: to.Ptr("East US"),
 		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
 		// 				Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 		// 				Type: to.Ptr("customLocation"),
 		// 			},
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/HRCloud"),
-		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armscvmm.CloudProperties{
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+		// 				CloudCapacity: &armscvmm.CloudCapacity{
+		// 					CPUCount: to.Ptr[int64](10),
+		// 					MemoryMB: to.Ptr[int64](10240),
+		// 					VMCount: to.Ptr[int64](10),
+		// 				},
+		// 				CloudName: to.Ptr("HRCloud"),
+		// 				InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+		// 				UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 				VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 		// 			},
 		// 	}},
@@ -214,7 +242,7 @@ func ExampleCloudsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListCloudsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/ListCloudsBySubscription.json
 func ExampleCloudsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,15 +269,22 @@ func ExampleCloudsClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("HRCloud"),
 		// 			Type: to.Ptr("Microsoft.SCVMM/Clouds"),
+		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/HRCloud"),
+		// 			Location: to.Ptr("East US"),
 		// 			ExtendedLocation: &armscvmm.ExtendedLocation{
 		// 				Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
 		// 				Type: to.Ptr("customLocation"),
 		// 			},
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/HRCloud"),
-		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armscvmm.CloudProperties{
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				UUID: to.Ptr("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+		// 				CloudCapacity: &armscvmm.CloudCapacity{
+		// 					CPUCount: to.Ptr[int64](10),
+		// 					MemoryMB: to.Ptr[int64](10240),
+		// 					VMCount: to.Ptr[int64](10),
+		// 				},
+		// 				CloudName: to.Ptr("HRCloud"),
+		// 				InventoryItemID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+		// 				UUID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 				VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 		// 			},
 		// 	}},

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/ListOperations.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,11 +39,11 @@ func ExampleOperationsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ResourceProviderOperationList = armscvmm.ResourceProviderOperationList{
-		// 	Value: []*armscvmm.ResourceProviderOperation{
+		// page.OperationListResult = armscvmm.OperationListResult{
+		// 	Value: []*armscvmm.Operation{
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/VmmServers/Read"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Gets/List the VmmServer resource data."),
 		// 				Operation: to.Ptr("Gets/List VmmServer resources."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -52,7 +52,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/VmmServers/Write"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Read VmmServer."),
 		// 				Operation: to.Ptr("Create or Update VmmServer resource."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -61,7 +61,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/VmmServers/Delete"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Deletes the VmmServer resource."),
 		// 				Operation: to.Ptr("Deletes the VmmServer resource."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -70,7 +70,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/Clouds/Read"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Gets/List the Cloud resource data."),
 		// 				Operation: to.Ptr("Gets/List Cloud resources."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -79,7 +79,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/Clouds/Write"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Create or Update Cloud resource data."),
 		// 				Operation: to.Ptr("Create or Update Cloud resource."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -88,7 +88,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/Clouds/Delete"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Deletes the Cloud resource."),
 		// 				Operation: to.Ptr("Deletes the Cloud resource."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -97,7 +97,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/VirtualNetworks/Read"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Gets/List the VirtualNetwork resource data."),
 		// 				Operation: to.Ptr("Gets/List VirtualNetwork resources."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -106,7 +106,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/VirtualNetworks/Write"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Create or Update VirtualNetwork resource data."),
 		// 				Operation: to.Ptr("Create or Update VirtualNetwork resource."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -115,7 +115,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/VirtualNetworks/Delete"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Deletes the VirtualNetwork resource."),
 		// 				Operation: to.Ptr("Deletes the VirtualNetwork resource."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -124,7 +124,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/VirtualMachineTemplates/Read"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Gets/List the VirtualMachineTemplate resource data."),
 		// 				Operation: to.Ptr("Gets/List VirtualMachineTemplate resources."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -133,7 +133,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/VirtualMachineTemplates/Write"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Create or Update VirtualMachineTemplate resource data."),
 		// 				Operation: to.Ptr("Create or Update VirtualMachineTemplate resource."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -142,7 +142,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/VirtualMachineTemplates/Delete"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Deletes the VirtualMachineTemplate resource."),
 		// 				Operation: to.Ptr("Deletes the VirtualMachineTemplate resource."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -151,7 +151,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/VirtualMachines/Read"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Gets/List the VirtualMachine resource data."),
 		// 				Operation: to.Ptr("Gets/List VirtualMachine resources."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -160,7 +160,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/VirtualMachines/Write"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Create or Update VirtualMachine resource data."),
 		// 				Operation: to.Ptr("Create or Update VirtualMachine resource."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),
@@ -169,7 +169,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.ScVmm/VirtualMachines/Delete"),
-		// 			Display: &armscvmm.ResourceProviderOperationDisplay{
+		// 			Display: &armscvmm.OperationDisplay{
 		// 				Description: to.Ptr("Deletes the VirtualMachine resource."),
 		// 				Operation: to.Ptr("Deletes the VirtualMachine resource."),
 		// 				Provider: to.Ptr("Microsoft.ScVmm resource provider"),

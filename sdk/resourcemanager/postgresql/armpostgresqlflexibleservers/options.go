@@ -201,6 +201,48 @@ type PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PrivateEndpointConnectionClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginDelete
+// method.
+type PrivateEndpointConnectionClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginUpdate
+// method.
+type PrivateEndpointConnectionClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListByServerOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByServerPager
+// method.
+type PrivateEndpointConnectionsClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesClientListByServerOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByServerPager
+// method.
+type PrivateLinkResourcesClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QuotaUsagesClientListOptions contains the optional parameters for the QuotaUsagesClient.NewListPager method.
+type QuotaUsagesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ReplicasClientListByServerOptions contains the optional parameters for the ReplicasClient.NewListByServerPager method.
 type ReplicasClientListByServerOptions struct {
 	// placeholder for future optional parameters
@@ -208,6 +250,25 @@ type ReplicasClientListByServerOptions struct {
 
 // ServerCapabilitiesClientListOptions contains the optional parameters for the ServerCapabilitiesClient.NewListPager method.
 type ServerCapabilitiesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerThreatProtectionSettingsClient.BeginCreateOrUpdate
+// method.
+type ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServerThreatProtectionSettingsClientGetOptions contains the optional parameters for the ServerThreatProtectionSettingsClient.Get
+// method.
+type ServerThreatProtectionSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerThreatProtectionSettingsClientListByServerOptions contains the optional parameters for the ServerThreatProtectionSettingsClient.NewListByServerPager
+// method.
+type ServerThreatProtectionSettingsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -263,6 +324,35 @@ type ServersClientListByResourceGroupOptions struct {
 
 // ServersClientListOptions contains the optional parameters for the ServersClient.NewListPager method.
 type ServersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualEndpointsClientBeginCreateOptions contains the optional parameters for the VirtualEndpointsClient.BeginCreate method.
+type VirtualEndpointsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualEndpointsClientBeginDeleteOptions contains the optional parameters for the VirtualEndpointsClient.BeginDelete method.
+type VirtualEndpointsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualEndpointsClientBeginUpdateOptions contains the optional parameters for the VirtualEndpointsClient.BeginUpdate method.
+type VirtualEndpointsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualEndpointsClientGetOptions contains the optional parameters for the VirtualEndpointsClient.Get method.
+type VirtualEndpointsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualEndpointsClientListByServerOptions contains the optional parameters for the VirtualEndpointsClient.NewListByServerPager
+// method.
+type VirtualEndpointsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 

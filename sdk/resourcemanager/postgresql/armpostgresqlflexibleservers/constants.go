@@ -9,8 +9,8 @@
 package armpostgresqlflexibleservers
 
 const (
-	moduleName    = "armpostgresqlflexibleservers"
-	moduleVersion = "v4.0.0-beta.2"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
+	moduleVersion = "v4.0.0-beta.3"
 )
 
 // ActiveDirectoryAuthEnum - If Enabled, Azure Active Directory authentication is enabled.
@@ -391,6 +391,30 @@ func PossibleLogicalReplicationOnSourceDbEnumValues() []LogicalReplicationOnSour
 	}
 }
 
+// MigrationDbState - Migration db state of an individual database
+type MigrationDbState string
+
+const (
+	MigrationDbStateCanceled                 MigrationDbState = "Canceled"
+	MigrationDbStateCanceling                MigrationDbState = "Canceling"
+	MigrationDbStateFailed                   MigrationDbState = "Failed"
+	MigrationDbStateInProgress               MigrationDbState = "InProgress"
+	MigrationDbStateSucceeded                MigrationDbState = "Succeeded"
+	MigrationDbStateWaitingForCutoverTrigger MigrationDbState = "WaitingForCutoverTrigger"
+)
+
+// PossibleMigrationDbStateValues returns the possible values for the MigrationDbState const type.
+func PossibleMigrationDbStateValues() []MigrationDbState {
+	return []MigrationDbState{
+		MigrationDbStateCanceled,
+		MigrationDbStateCanceling,
+		MigrationDbStateFailed,
+		MigrationDbStateInProgress,
+		MigrationDbStateSucceeded,
+		MigrationDbStateWaitingForCutoverTrigger,
+	}
+}
+
 type MigrationListFilter string
 
 const (
@@ -438,14 +462,34 @@ func PossibleMigrationNameAvailabilityReasonValues() []MigrationNameAvailability
 	}
 }
 
+// MigrationOption - Supported types of migration request include Validate, Migrate and ValidateAndMigrate
+type MigrationOption string
+
+const (
+	MigrationOptionMigrate            MigrationOption = "Migrate"
+	MigrationOptionValidate           MigrationOption = "Validate"
+	MigrationOptionValidateAndMigrate MigrationOption = "ValidateAndMigrate"
+)
+
+// PossibleMigrationOptionValues returns the possible values for the MigrationOption const type.
+func PossibleMigrationOptionValues() []MigrationOption {
+	return []MigrationOption{
+		MigrationOptionMigrate,
+		MigrationOptionValidate,
+		MigrationOptionValidateAndMigrate,
+	}
+}
+
 // MigrationState - Migration state.
 type MigrationState string
 
 const (
 	MigrationStateCanceled             MigrationState = "Canceled"
+	MigrationStateCleaningUp           MigrationState = "CleaningUp"
 	MigrationStateFailed               MigrationState = "Failed"
 	MigrationStateInProgress           MigrationState = "InProgress"
 	MigrationStateSucceeded            MigrationState = "Succeeded"
+	MigrationStateValidationFailed     MigrationState = "ValidationFailed"
 	MigrationStateWaitingForUserAction MigrationState = "WaitingForUserAction"
 )
 
@@ -453,9 +497,11 @@ const (
 func PossibleMigrationStateValues() []MigrationState {
 	return []MigrationState{
 		MigrationStateCanceled,
+		MigrationStateCleaningUp,
 		MigrationStateFailed,
 		MigrationStateInProgress,
 		MigrationStateSucceeded,
+		MigrationStateValidationFailed,
 		MigrationStateWaitingForUserAction,
 	}
 }
@@ -464,10 +510,12 @@ func PossibleMigrationStateValues() []MigrationState {
 type MigrationSubState string
 
 const (
+	MigrationSubStateCancelingRequestedDBMigrations                     MigrationSubState = "CancelingRequestedDBMigrations"
 	MigrationSubStateCompleted                                          MigrationSubState = "Completed"
 	MigrationSubStateCompletingMigration                                MigrationSubState = "CompletingMigration"
 	MigrationSubStateMigratingData                                      MigrationSubState = "MigratingData"
 	MigrationSubStatePerformingPreRequisiteSteps                        MigrationSubState = "PerformingPreRequisiteSteps"
+	MigrationSubStateValidationInProgress                               MigrationSubState = "ValidationInProgress"
 	MigrationSubStateWaitingForCutoverTrigger                           MigrationSubState = "WaitingForCutoverTrigger"
 	MigrationSubStateWaitingForDBsToMigrateSpecification                MigrationSubState = "WaitingForDBsToMigrateSpecification"
 	MigrationSubStateWaitingForDataMigrationScheduling                  MigrationSubState = "WaitingForDataMigrationScheduling"
@@ -479,10 +527,12 @@ const (
 // PossibleMigrationSubStateValues returns the possible values for the MigrationSubState const type.
 func PossibleMigrationSubStateValues() []MigrationSubState {
 	return []MigrationSubState{
+		MigrationSubStateCancelingRequestedDBMigrations,
 		MigrationSubStateCompleted,
 		MigrationSubStateCompletingMigration,
 		MigrationSubStateMigratingData,
 		MigrationSubStatePerformingPreRequisiteSteps,
+		MigrationSubStateValidationInProgress,
 		MigrationSubStateWaitingForCutoverTrigger,
 		MigrationSubStateWaitingForDBsToMigrateSpecification,
 		MigrationSubStateWaitingForDataMigrationScheduling,
@@ -596,6 +646,76 @@ func PossiblePrincipalTypeValues() []PrincipalType {
 	}
 }
 
+// PrivateEndpointConnectionProvisioningState - The current provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCreating,
+		PrivateEndpointConnectionProvisioningStateDeleting,
+		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
+	}
+}
+
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
+// ReadReplicaPromoteMode - Sets the promote mode for a replica server. This is a write only property.
+type ReadReplicaPromoteMode string
+
+const (
+	ReadReplicaPromoteModeStandalone ReadReplicaPromoteMode = "standalone"
+	ReadReplicaPromoteModeSwitchover ReadReplicaPromoteMode = "switchover"
+)
+
+// PossibleReadReplicaPromoteModeValues returns the possible values for the ReadReplicaPromoteMode const type.
+func PossibleReadReplicaPromoteModeValues() []ReadReplicaPromoteMode {
+	return []ReadReplicaPromoteMode{
+		ReadReplicaPromoteModeStandalone,
+		ReadReplicaPromoteModeSwitchover,
+	}
+}
+
+// ReplicationPromoteOption - Sets the promote options for a replica server. This is a write only property.
+type ReplicationPromoteOption string
+
+const (
+	ReplicationPromoteOptionForced  ReplicationPromoteOption = "forced"
+	ReplicationPromoteOptionPlanned ReplicationPromoteOption = "planned"
+)
+
+// PossibleReplicationPromoteOptionValues returns the possible values for the ReplicationPromoteOption const type.
+func PossibleReplicationPromoteOptionValues() []ReplicationPromoteOption {
+	return []ReplicationPromoteOption{
+		ReplicationPromoteOptionForced,
+		ReplicationPromoteOptionPlanned,
+	}
+}
+
 // ReplicationRole - Used to indicate role of the server in replication set.
 type ReplicationRole string
 
@@ -613,6 +733,31 @@ func PossibleReplicationRoleValues() []ReplicationRole {
 		ReplicationRoleGeoAsyncReplica,
 		ReplicationRoleNone,
 		ReplicationRolePrimary,
+	}
+}
+
+// ReplicationState - Gets the replication state of a replica server. This property is returned only for replicas api call.
+// Supported values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring
+type ReplicationState string
+
+const (
+	ReplicationStateActive        ReplicationState = "Active"
+	ReplicationStateBroken        ReplicationState = "Broken"
+	ReplicationStateCatchup       ReplicationState = "Catchup"
+	ReplicationStateProvisioning  ReplicationState = "Provisioning"
+	ReplicationStateReconfiguring ReplicationState = "Reconfiguring"
+	ReplicationStateUpdating      ReplicationState = "Updating"
+)
+
+// PossibleReplicationStateValues returns the possible values for the ReplicationState const type.
+func PossibleReplicationStateValues() []ReplicationState {
+	return []ReplicationState{
+		ReplicationStateActive,
+		ReplicationStateBroken,
+		ReplicationStateCatchup,
+		ReplicationStateProvisioning,
+		ReplicationStateReconfiguring,
+		ReplicationStateUpdating,
 	}
 }
 
@@ -648,6 +793,27 @@ func PossibleSKUTierValues() []SKUTier {
 		SKUTierBurstable,
 		SKUTierGeneralPurpose,
 		SKUTierMemoryOptimized,
+	}
+}
+
+// SSLMode - Supported SSL modes for migration. VerifyFull is the recommended SSL mode for Single server migration. Prefer,
+// Require are recommended SSL modes for other source types
+type SSLMode string
+
+const (
+	SSLModePrefer     SSLMode = "Prefer"
+	SSLModeRequire    SSLMode = "Require"
+	SSLModeVerifyCA   SSLMode = "VerifyCA"
+	SSLModeVerifyFull SSLMode = "VerifyFull"
+)
+
+// PossibleSSLModeValues returns the possible values for the SSLMode const type.
+func PossibleSSLModeValues() []SSLMode {
+	return []SSLMode{
+		SSLModePrefer,
+		SSLModeRequire,
+		SSLModeVerifyCA,
+		SSLModeVerifyFull,
 	}
 }
 
@@ -724,6 +890,7 @@ const (
 	ServerVersionEleven   ServerVersion = "11"
 	ServerVersionFifteen  ServerVersion = "15"
 	ServerVersionFourteen ServerVersion = "14"
+	ServerVersionSixteen  ServerVersion = "16"
 	ServerVersionThirteen ServerVersion = "13"
 	ServerVersionTwelve   ServerVersion = "12"
 )
@@ -734,8 +901,31 @@ func PossibleServerVersionValues() []ServerVersion {
 		ServerVersionEleven,
 		ServerVersionFifteen,
 		ServerVersionFourteen,
+		ServerVersionSixteen,
 		ServerVersionThirteen,
 		ServerVersionTwelve,
+	}
+}
+
+// SourceType - Migration source server type : OnPremises, AWS, GCP, AzureVM or PostgreSQLSingleServer
+type SourceType string
+
+const (
+	SourceTypeAWS                    SourceType = "AWS"
+	SourceTypeAzureVM                SourceType = "AzureVM"
+	SourceTypeGCP                    SourceType = "GCP"
+	SourceTypeOnPremises             SourceType = "OnPremises"
+	SourceTypePostgreSQLSingleServer SourceType = "PostgreSQLSingleServer"
+)
+
+// PossibleSourceTypeValues returns the possible values for the SourceType const type.
+func PossibleSourceTypeValues() []SourceType {
+	return []SourceType{
+		SourceTypeAWS,
+		SourceTypeAzureVM,
+		SourceTypeGCP,
+		SourceTypeOnPremises,
+		SourceTypePostgreSQLSingleServer,
 	}
 }
 
@@ -788,6 +978,53 @@ func PossibleStorageAutoGrowthSupportedEnumValues() []StorageAutoGrowthSupported
 	}
 }
 
+// StorageType - Storage type for the server. Allowed values are PremiumLRS and PremiumV2LRS, and default is Premium_LRS if
+// not specified
+type StorageType string
+
+const (
+	StorageTypePremiumLRS   StorageType = "Premium_LRS"
+	StorageTypePremiumV2LRS StorageType = "PremiumV2_LRS"
+)
+
+// PossibleStorageTypeValues returns the possible values for the StorageType const type.
+func PossibleStorageTypeValues() []StorageType {
+	return []StorageType{
+		StorageTypePremiumLRS,
+		StorageTypePremiumV2LRS,
+	}
+}
+
+type ThreatProtectionName string
+
+const (
+	ThreatProtectionNameDefault ThreatProtectionName = "Default"
+)
+
+// PossibleThreatProtectionNameValues returns the possible values for the ThreatProtectionName const type.
+func PossibleThreatProtectionNameValues() []ThreatProtectionName {
+	return []ThreatProtectionName{
+		ThreatProtectionNameDefault,
+	}
+}
+
+// ThreatProtectionState - Specifies the state of the Threat Protection, whether it is enabled or disabled or a state has
+// not been applied yet on the specific server.
+type ThreatProtectionState string
+
+const (
+	ThreatProtectionStateDisabled ThreatProtectionState = "Disabled"
+	ThreatProtectionStateEnabled  ThreatProtectionState = "Enabled"
+)
+
+// PossibleThreatProtectionStateValues returns the possible values for the ThreatProtectionState const type.
+func PossibleThreatProtectionStateValues() []ThreatProtectionState {
+	return []ThreatProtectionState{
+		ThreatProtectionStateDisabled,
+		ThreatProtectionStateEnabled,
+	}
+}
+
 // TriggerCutoverEnum - To trigger cutover for entire migration we need to send this flag as True
 type TriggerCutoverEnum string
 
@@ -801,6 +1038,38 @@ func PossibleTriggerCutoverEnumValues() []TriggerCutoverEnum {
 	return []TriggerCutoverEnum{
 		TriggerCutoverEnumFalse,
 		TriggerCutoverEnumTrue,
+	}
+}
+
+// ValidationState - Validation status for migration
+type ValidationState string
+
+const (
+	ValidationStateFailed    ValidationState = "Failed"
+	ValidationStateSucceeded ValidationState = "Succeeded"
+	ValidationStateWarning   ValidationState = "Warning"
+)
+
+// PossibleValidationStateValues returns the possible values for the ValidationState const type.
+func PossibleValidationStateValues() []ValidationState {
+	return []ValidationState{
+		ValidationStateFailed,
+		ValidationStateSucceeded,
+		ValidationStateWarning,
+	}
+}
+
+// VirtualEndpointType - The endpoint type for the virtual endpoint.
+type VirtualEndpointType string
+
+const (
+	VirtualEndpointTypeReadWrite VirtualEndpointType = "ReadWrite"
+)
+
+// PossibleVirtualEndpointTypeValues returns the possible values for the VirtualEndpointType const type.
+func PossibleVirtualEndpointTypeValues() []VirtualEndpointType {
+	return []VirtualEndpointType{
+		VirtualEndpointTypeReadWrite,
 	}
 }
 

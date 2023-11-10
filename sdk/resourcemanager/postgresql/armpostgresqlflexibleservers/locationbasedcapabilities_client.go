@@ -28,11 +28,11 @@ type LocationBasedCapabilitiesClient struct {
 }
 
 // NewLocationBasedCapabilitiesClient creates a new instance of LocationBasedCapabilitiesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLocationBasedCapabilitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationBasedCapabilitiesClient, error) {
-	cl, err := arm.NewClient(moduleName+".LocationBasedCapabilitiesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func NewLocationBasedCapabilitiesClient(subscriptionID string, credential azcore
 
 // NewExecutePager - Get capabilities at specified location in a given subscription.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - locationName - The name of the location.
 //   - options - LocationBasedCapabilitiesClientExecuteOptions contains the optional parameters for the LocationBasedCapabilitiesClient.NewExecutePager
 //     method.
@@ -55,25 +55,20 @@ func (client *LocationBasedCapabilitiesClient) NewExecutePager(locationName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LocationBasedCapabilitiesClientExecuteResponse) (LocationBasedCapabilitiesClientExecuteResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.executeCreateRequest(ctx, locationName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LocationBasedCapabilitiesClient.NewExecutePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.executeCreateRequest(ctx, locationName, options)
+			}, nil)
 			if err != nil {
 				return LocationBasedCapabilitiesClientExecuteResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LocationBasedCapabilitiesClientExecuteResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LocationBasedCapabilitiesClientExecuteResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.executeHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -93,7 +88,7 @@ func (client *LocationBasedCapabilitiesClient) executeCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

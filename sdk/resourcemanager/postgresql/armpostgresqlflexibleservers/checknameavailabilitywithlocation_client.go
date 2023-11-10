@@ -28,11 +28,11 @@ type CheckNameAvailabilityWithLocationClient struct {
 }
 
 // NewCheckNameAvailabilityWithLocationClient creates a new instance of CheckNameAvailabilityWithLocationClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCheckNameAvailabilityWithLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckNameAvailabilityWithLocationClient, error) {
-	cl, err := arm.NewClient(moduleName+".CheckNameAvailabilityWithLocationClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,13 +46,17 @@ func NewCheckNameAvailabilityWithLocationClient(subscriptionID string, credentia
 // Execute - Check the availability of name for resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - locationName - The name of the location.
 //   - nameAvailabilityRequest - The required parameters for checking if resource name is available.
 //   - options - CheckNameAvailabilityWithLocationClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityWithLocationClient.Execute
 //     method.
 func (client *CheckNameAvailabilityWithLocationClient) Execute(ctx context.Context, locationName string, nameAvailabilityRequest CheckNameAvailabilityRequest, options *CheckNameAvailabilityWithLocationClientExecuteOptions) (CheckNameAvailabilityWithLocationClientExecuteResponse, error) {
 	var err error
+	const operationName = "CheckNameAvailabilityWithLocationClient.Execute"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.executeCreateRequest(ctx, locationName, nameAvailabilityRequest, options)
 	if err != nil {
 		return CheckNameAvailabilityWithLocationClientExecuteResponse{}, err
@@ -85,7 +89,7 @@ func (client *CheckNameAvailabilityWithLocationClient) executeCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, nameAvailabilityRequest); err != nil {

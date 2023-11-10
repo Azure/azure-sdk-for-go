@@ -28,11 +28,11 @@ type VirtualNetworkSubnetUsageClient struct {
 }
 
 // NewVirtualNetworkSubnetUsageClient creates a new instance of VirtualNetworkSubnetUsageClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVirtualNetworkSubnetUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworkSubnetUsageClient, error) {
-	cl, err := arm.NewClient(moduleName+".VirtualNetworkSubnetUsageClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,13 +46,17 @@ func NewVirtualNetworkSubnetUsageClient(subscriptionID string, credential azcore
 // Execute - Get virtual network subnet usage for a given vNet resource id.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - locationName - The name of the location.
 //   - parameters - The required parameters for creating or updating a server.
 //   - options - VirtualNetworkSubnetUsageClientExecuteOptions contains the optional parameters for the VirtualNetworkSubnetUsageClient.Execute
 //     method.
 func (client *VirtualNetworkSubnetUsageClient) Execute(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *VirtualNetworkSubnetUsageClientExecuteOptions) (VirtualNetworkSubnetUsageClientExecuteResponse, error) {
 	var err error
+	const operationName = "VirtualNetworkSubnetUsageClient.Execute"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.executeCreateRequest(ctx, locationName, parameters, options)
 	if err != nil {
 		return VirtualNetworkSubnetUsageClientExecuteResponse{}, err
@@ -85,7 +89,7 @@ func (client *VirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -27,7 +27,7 @@ type GetPrivateDNSZoneSuffixClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGetPrivateDNSZoneSuffixClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GetPrivateDNSZoneSuffixClient, error) {
-	cl, err := arm.NewClient(moduleName+".GetPrivateDNSZoneSuffixClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -40,11 +40,15 @@ func NewGetPrivateDNSZoneSuffixClient(credential azcore.TokenCredential, options
 // Execute - Get private DNS zone suffix in the cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - options - GetPrivateDNSZoneSuffixClientExecuteOptions contains the optional parameters for the GetPrivateDNSZoneSuffixClient.Execute
 //     method.
 func (client *GetPrivateDNSZoneSuffixClient) Execute(ctx context.Context, options *GetPrivateDNSZoneSuffixClientExecuteOptions) (GetPrivateDNSZoneSuffixClientExecuteResponse, error) {
 	var err error
+	const operationName = "GetPrivateDNSZoneSuffixClient.Execute"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.executeCreateRequest(ctx, options)
 	if err != nil {
 		return GetPrivateDNSZoneSuffixClientExecuteResponse{}, err
@@ -69,7 +73,7 @@ func (client *GetPrivateDNSZoneSuffixClient) executeCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

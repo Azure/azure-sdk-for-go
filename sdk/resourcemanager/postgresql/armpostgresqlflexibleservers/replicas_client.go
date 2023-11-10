@@ -28,11 +28,11 @@ type ReplicasClient struct {
 }
 
 // NewReplicasClient creates a new instance of ReplicasClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicasClient, error) {
-	cl, err := arm.NewClient(moduleName+".ReplicasClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential,
 
 // NewListByServerPager - List all the replicas for a given server.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ReplicasClientListByServerOptions contains the optional parameters for the ReplicasClient.NewListByServerPager
@@ -56,6 +56,7 @@ func (client *ReplicasClient) NewListByServerPager(resourceGroupName string, ser
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ReplicasClientListByServerResponse) (ReplicasClientListByServerResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicasClient.NewListByServerPager")
 			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 			if err != nil {
 				return ReplicasClientListByServerResponse{}, err
@@ -69,6 +70,7 @@ func (client *ReplicasClient) NewListByServerPager(resourceGroupName string, ser
 			}
 			return client.listByServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -92,7 +94,7 @@ func (client *ReplicasClient) listByServerCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

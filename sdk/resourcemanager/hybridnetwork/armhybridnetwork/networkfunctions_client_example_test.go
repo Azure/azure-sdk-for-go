@@ -15,11 +15,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionDelete.json
-func ExampleNetworkFunctionsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/NetworkFunctionDelete.json
+func ExampleNetworkFunctionsClient_BeginDelete_deleteNetworkFunctionResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -39,8 +39,50 @@ func ExampleNetworkFunctionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionGet.json
-func ExampleNetworkFunctionsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/AzureCore/VirtualNetworkFunctionDelete.json
+func ExampleNetworkFunctionsClient_BeginDelete_deleteVirtualNetworkFunctionResourceOnAzureCore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFunctionsClient().BeginDelete(ctx, "rg", "testNf", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/AzureOperatorNexus/VirtualNetworkFunctionDelete.json
+func ExampleNetworkFunctionsClient_BeginDelete_deleteVirtualNetworkFunctionResourceOnAzureOperatorNexus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFunctionsClient().BeginDelete(ctx, "rg", "testNf", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/NetworkFunctionGet.json
+func ExampleNetworkFunctionsClient_Get_getNetworkFunctionResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -62,60 +104,109 @@ func ExampleNetworkFunctionsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.HybridNetwork/networkFunctions"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/networkFunctions/testNf"),
 	// 	Location: to.Ptr("eastus"),
-	// 	Properties: &armhybridnetwork.NetworkFunctionPropertiesFormat{
-	// 		Device: &armhybridnetwork.SubResource{
-	// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/devices/testDevice"),
+	// 	Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+	// 		AllowSoftwareUpdate: to.Ptr(false),
+	// 		ConfigurationType: to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+	// 		NetworkFunctionDefinitionGroupName: to.Ptr("testnetworkFunctionDefinitionGroupName"),
+	// 		NetworkFunctionDefinitionOfferingLocation: to.Ptr("eastus"),
+	// 		NetworkFunctionDefinitionVersion: to.Ptr("1.0.1"),
+	// 		NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.OpenDeploymentResourceReference{
+	// 			IDType: to.Ptr(armhybridnetwork.IDTypeOpen),
+	// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
 	// 		},
-	// 		ManagedApplication: &armhybridnetwork.SubResource{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/testServiceKey"),
-	// 		},
-	// 		ManagedApplicationParameters: map[string]any{
-	// 		},
-	// 		NetworkFunctionUserConfigurations: []*armhybridnetwork.NetworkFunctionUserConfiguration{
-	// 			{
-	// 				NetworkInterfaces: []*armhybridnetwork.NetworkInterface{
-	// 					{
-	// 						IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
-	// 							{
-	// 								Gateway: to.Ptr(""),
-	// 								IPAddress: to.Ptr(""),
-	// 								IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
-	// 								IPVersion: to.Ptr(armhybridnetwork.IPVersionIPv4),
-	// 								Subnet: to.Ptr(""),
-	// 						}},
-	// 						MacAddress: to.Ptr(""),
-	// 						NetworkInterfaceName: to.Ptr("nic1"),
-	// 						VMSwitchType: to.Ptr(armhybridnetwork.VMSwitchTypeManagement),
-	// 					},
-	// 					{
-	// 						IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
-	// 							{
-	// 								Gateway: to.Ptr(""),
-	// 								IPAddress: to.Ptr(""),
-	// 								IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
-	// 								IPVersion: to.Ptr(armhybridnetwork.IPVersionIPv4),
-	// 								Subnet: to.Ptr(""),
-	// 						}},
-	// 						MacAddress: to.Ptr("DC-97-F8-79-16-7D"),
-	// 						NetworkInterfaceName: to.Ptr("nic2"),
-	// 						VMSwitchType: to.Ptr(armhybridnetwork.VMSwitchTypeWan),
-	// 				}},
-	// 				RoleName: to.Ptr("testRole"),
-	// 				UserDataParameters: map[string]any{
-	// 				},
-	// 		}},
+	// 		NfviID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+	// 		NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureArcKubernetes),
 	// 		ProvisioningState: to.Ptr(armhybridnetwork.ProvisioningStateSucceeded),
-	// 		ServiceKey: to.Ptr("testServiceKey"),
-	// 		SKUName: to.Ptr("testSku"),
-	// 		SKUType: to.Ptr(armhybridnetwork.SKUTypeSDWAN),
-	// 		VendorName: to.Ptr("testVendor"),
-	// 		VendorProvisioningState: to.Ptr(armhybridnetwork.VendorProvisioningStateNotProvisioned),
+	// 		PublisherName: to.Ptr("testVendor"),
+	// 		PublisherScope: to.Ptr(armhybridnetwork.PublisherScope("Public")),
+	// 		RoleOverrideValues: []*string{
+	// 			to.Ptr("{\"name\":\"testRoleOne\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"helmPackageVersion\":\"2.1.3\",\"values\":\"{\\\"roleOneParam\\\":\\\"roleOneOverrideValue\\\"}\"}}}"),
+	// 			to.Ptr("{\"name\":\"testRoleTwo\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"releaseName\":\"overrideReleaseName\",\"releaseNamespace\":\"overrideNamespace\",\"values\":\"{\\\"roleTwoParam\\\":\\\"roleTwoOverrideValue\\\"}\"}}}")},
+	// 			DeploymentValues: to.Ptr("{\"releaseName\":\"testReleaseName\",\"namespace\":\"testNamespace\"}"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/AzureCore/VirtualNetworkFunctionGet.json
+func ExampleNetworkFunctionsClient_Get_getVirtualNetworkFunctionResourceOnAzureCore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNetworkFunctionsClient().Get(ctx, "rg", "testNf", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NetworkFunction = armhybridnetwork.NetworkFunction{
+	// 	Name: to.Ptr("testNf"),
+	// 	Type: to.Ptr("Microsoft.HybridNetwork/networkFunctions"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/networkFunctions/testNf"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+	// 		AllowSoftwareUpdate: to.Ptr(false),
+	// 		ConfigurationType: to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+	// 		NetworkFunctionDefinitionGroupName: to.Ptr("TestNetworkFunctionDefinitionGroupName"),
+	// 		NetworkFunctionDefinitionOfferingLocation: to.Ptr("eastus"),
+	// 		NetworkFunctionDefinitionVersion: to.Ptr("1.0.0"),
+	// 		NfviID: to.Ptr("/subscriptions/subid/resourceGroups/testResourceGroup"),
+	// 		NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureCore),
+	// 		ProvisioningState: to.Ptr(armhybridnetwork.ProvisioningStateSucceeded),
+	// 		PublisherName: to.Ptr("TestPublisher"),
+	// 		PublisherScope: to.Ptr(armhybridnetwork.PublisherScopePrivate),
+	// 		DeploymentValues: to.Ptr("{\"virtualMachineName\":\"test-VM\",\"cpuCores\":4,\"memorySizeGB\":8,\"cloudServicesNetworkAttachment\":{\"attachedNetworkId\":\"test-csnet\",\"ipAllocationMethod\":\"Dynamic\",\"networkAttachmentName\":\"test-cs-vlan\"},\"networkAttachments\":[{\"attachedNetworkId\":\"test-l3vlan\",\"defaultGateway\":\"True\",\"ipAllocationMethod\":\"Dynamic\",\"networkAttachmentName\":\"test-vlan\"}],\"sshPublicKeys\":[{\"keyData\":\"ssh-rsa CMIIIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA0TqlveKKlc2MFvEmuXJiLGBsY1t4ML4uiRADGSZlnc+7Ugv3h+MCjkkwOKiOdsNo8k4KSBIG5GcQfKYOOd17AJvqCL6cGQbaLuqv0a64jeDm8oO8/xN/IM0oKw7rMr/2oAJOgIsfeXPkRxWWic9AVIS++H5Qi2r7bUFX+cqFsyUCAwEBBQ==\"}],\"storageProfile\":{\"osDisk\":{\"createOption\":\"Ephemeral\",\"deleteOption\":\"Delete\",\"diskSizeGB\":10}},\"userData\":\"testUserData\",\"adminUsername\":\"testUser\",\"virtioInterface\":\"Transitional\",\"isolateEmulatorThread\":\"False\",\"bootMethod\":\"BIOS\",\"placementHints\":[]}"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionCreate.json
-func ExampleNetworkFunctionsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/AzureOperatorNexus/VirtualNetworkFunctionGet.json
+func ExampleNetworkFunctionsClient_Get_getVirtualNetworkFunctionResourceOnAzureOperatorNexus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNetworkFunctionsClient().Get(ctx, "rg", "testNf", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NetworkFunction = armhybridnetwork.NetworkFunction{
+	// 	Name: to.Ptr("testNf"),
+	// 	Type: to.Ptr("Microsoft.HybridNetwork/networkFunctions"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/networkFunctions/testNf"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+	// 		AllowSoftwareUpdate: to.Ptr(false),
+	// 		ConfigurationType: to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+	// 		NetworkFunctionDefinitionGroupName: to.Ptr("TestNetworkFunctionDefinitionGroupName"),
+	// 		NetworkFunctionDefinitionOfferingLocation: to.Ptr("eastus"),
+	// 		NetworkFunctionDefinitionVersion: to.Ptr("1.0.0"),
+	// 		NfviID: to.Ptr("/subscriptions/subid/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+	// 		NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureOperatorNexus),
+	// 		ProvisioningState: to.Ptr(armhybridnetwork.ProvisioningStateSucceeded),
+	// 		PublisherName: to.Ptr("TestPublisher"),
+	// 		PublisherScope: to.Ptr(armhybridnetwork.PublisherScopePrivate),
+	// 		DeploymentValues: to.Ptr("{\"virtualMachineName\":\"test-VM\",\"extendedLocationName\":\"test-cluster\",\"cpuCores\":4,\"memorySizeGB\":8,\"cloudServicesNetworkAttachment\":{\"attachedNetworkId\":\"test-csnet\",\"ipAllocationMethod\":\"Dynamic\",\"networkAttachmentName\":\"test-cs-vlan\"},\"networkAttachments\":[{\"attachedNetworkId\":\"test-l3vlan\",\"defaultGateway\":\"True\",\"ipAllocationMethod\":\"Dynamic\",\"networkAttachmentName\":\"test-vlan\"}],\"sshPublicKeys\":[{\"keyData\":\"ssh-rsa CMIIIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA0TqlveKKlc2MFvEmuXJiLGBsY1t4ML4uiRADGSZlnc+7Ugv3h+MCjkkwOKiOdsNo8k4KSBIG5GcQfKYOOd17AJvqCL6cGQbaLuqv0a64jeDm8oO8/xN/IM0oKw7rMr/2oAJOgIsfeXPkRxWWic9AVIS++H5Qi2r7bUFX+cqFsyUCAwEBBQ==\"}],\"storageProfile\":{\"osDisk\":{\"createOption\":\"Ephemeral\",\"deleteOption\":\"Delete\",\"diskSizeGB\":10}},\"userData\":\"testUserData\",\"adminUsername\":\"testUser\",\"virtioInterface\":\"Transitional\",\"isolateEmulatorThread\":\"False\",\"bootMethod\":\"BIOS\",\"placementHints\":[]}"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/NetworkFunctionFirstPartyCreate.json
+func ExampleNetworkFunctionsClient_BeginCreateOrUpdate_createFirstPartyNetworkFunctionResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -127,46 +218,19 @@ func ExampleNetworkFunctionsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewNetworkFunctionsClient().BeginCreateOrUpdate(ctx, "rg", "testNf", armhybridnetwork.NetworkFunction{
 		Location: to.Ptr("eastus"),
-		Properties: &armhybridnetwork.NetworkFunctionPropertiesFormat{
-			Device: &armhybridnetwork.SubResource{
-				ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/devices/testDevice"),
+		Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+			AllowSoftwareUpdate: to.Ptr(false),
+			ConfigurationType:   to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+			NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.SecretDeploymentResourceReference{
+				IDType: to.Ptr(armhybridnetwork.IDTypeSecret),
+				ID:     to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
 			},
-			ManagedApplicationParameters: map[string]any{},
-			NetworkFunctionUserConfigurations: []*armhybridnetwork.NetworkFunctionUserConfiguration{
-				{
-					NetworkInterfaces: []*armhybridnetwork.NetworkInterface{
-						{
-							IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
-								{
-									Gateway:            to.Ptr(""),
-									IPAddress:          to.Ptr(""),
-									IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
-									IPVersion:          to.Ptr(armhybridnetwork.IPVersionIPv4),
-									Subnet:             to.Ptr(""),
-								}},
-							MacAddress:           to.Ptr(""),
-							NetworkInterfaceName: to.Ptr("nic1"),
-							VMSwitchType:         to.Ptr(armhybridnetwork.VMSwitchTypeManagement),
-						},
-						{
-							IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
-								{
-									Gateway:            to.Ptr(""),
-									IPAddress:          to.Ptr(""),
-									IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
-									IPVersion:          to.Ptr(armhybridnetwork.IPVersionIPv4),
-									Subnet:             to.Ptr(""),
-								}},
-							MacAddress:           to.Ptr("DC-97-F8-79-16-7D"),
-							NetworkInterfaceName: to.Ptr("nic2"),
-							VMSwitchType:         to.Ptr(armhybridnetwork.VMSwitchTypeWan),
-						}},
-					RoleName:           to.Ptr("testRole"),
-					UserDataParameters: map[string]any{},
-				}},
-			SKUName:    to.Ptr("testSku"),
-			SKUType:    to.Ptr(armhybridnetwork.SKUTypeSDWAN),
-			VendorName: to.Ptr("testVendor"),
+			NfviID:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+			NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureArcKubernetes),
+			RoleOverrideValues: []*string{
+				to.Ptr("{\"name\":\"testRoleOne\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"helmPackageVersion\":\"2.1.3\",\"values\":\"{\\\"roleOneParam\\\":\\\"roleOneOverrideValue\\\"}\"}}}"),
+				to.Ptr("{\"name\":\"testRoleTwo\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"releaseName\":\"overrideReleaseName\",\"releaseNamespace\":\"overrideNamespace\",\"values\":\"{\\\"roleTwoParam\\\":\\\"roleTwoOverrideValue\\\"}\"}}}")},
+			DeploymentValues: to.Ptr("{\"releaseName\":\"testReleaseName\",\"namespace\":\"testNamespace\"}"),
 		},
 	}, nil)
 	if err != nil {
@@ -184,59 +248,280 @@ func ExampleNetworkFunctionsClient_BeginCreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.HybridNetwork/networkFunctions"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/networkFunctions/testNf"),
 	// 	Location: to.Ptr("eastus"),
-	// 	Properties: &armhybridnetwork.NetworkFunctionPropertiesFormat{
-	// 		Device: &armhybridnetwork.SubResource{
-	// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/devices/testDevice"),
+	// 	Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+	// 		AllowSoftwareUpdate: to.Ptr(false),
+	// 		ConfigurationType: to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+	// 		NetworkFunctionDefinitionGroupName: to.Ptr("testnetworkFunctionDefinitionGroupName"),
+	// 		NetworkFunctionDefinitionOfferingLocation: to.Ptr("eastus"),
+	// 		NetworkFunctionDefinitionVersion: to.Ptr("1.0.1"),
+	// 		NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.SecretDeploymentResourceReference{
+	// 			IDType: to.Ptr(armhybridnetwork.IDTypeSecret),
 	// 		},
-	// 		ManagedApplication: &armhybridnetwork.SubResource{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/testServiceKey"),
-	// 		},
-	// 		ManagedApplicationParameters: map[string]any{
-	// 		},
-	// 		NetworkFunctionUserConfigurations: []*armhybridnetwork.NetworkFunctionUserConfiguration{
-	// 			{
-	// 				NetworkInterfaces: []*armhybridnetwork.NetworkInterface{
-	// 					{
-	// 						IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
-	// 							{
-	// 								Gateway: to.Ptr(""),
-	// 								IPAddress: to.Ptr(""),
-	// 								IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
-	// 								IPVersion: to.Ptr(armhybridnetwork.IPVersionIPv4),
-	// 								Subnet: to.Ptr(""),
-	// 						}},
-	// 						MacAddress: to.Ptr(""),
-	// 						NetworkInterfaceName: to.Ptr("nic1"),
-	// 						VMSwitchType: to.Ptr(armhybridnetwork.VMSwitchTypeManagement),
-	// 					},
-	// 					{
-	// 						IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
-	// 							{
-	// 								Gateway: to.Ptr(""),
-	// 								IPAddress: to.Ptr(""),
-	// 								IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
-	// 								IPVersion: to.Ptr(armhybridnetwork.IPVersionIPv4),
-	// 								Subnet: to.Ptr(""),
-	// 						}},
-	// 						MacAddress: to.Ptr("DC-97-F8-79-16-7D"),
-	// 						NetworkInterfaceName: to.Ptr("nic2"),
-	// 						VMSwitchType: to.Ptr(armhybridnetwork.VMSwitchTypeWan),
-	// 				}},
-	// 				RoleName: to.Ptr("testRole"),
-	// 				UserDataParameters: map[string]any{
-	// 				},
-	// 		}},
+	// 		NfviID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+	// 		NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureArcKubernetes),
 	// 		ProvisioningState: to.Ptr(armhybridnetwork.ProvisioningStateSucceeded),
-	// 		ServiceKey: to.Ptr("testServiceKey"),
-	// 		SKUName: to.Ptr("testSku"),
-	// 		SKUType: to.Ptr(armhybridnetwork.SKUTypeSDWAN),
-	// 		VendorName: to.Ptr("testVendor"),
-	// 		VendorProvisioningState: to.Ptr(armhybridnetwork.VendorProvisioningStateNotProvisioned),
+	// 		PublisherName: to.Ptr("testVendor"),
+	// 		PublisherScope: to.Ptr(armhybridnetwork.PublisherScope("Public")),
+	// 		RoleOverrideValues: []*string{
+	// 			to.Ptr("{\"name\":\"testRoleOne\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"helmPackageVersion\":\"2.1.3\",\"values\":\"{\\\"roleOneParam\\\":\\\"roleOneOverrideValue\\\"}\"}}}"),
+	// 			to.Ptr("{\"name\":\"testRoleTwo\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"releaseName\":\"overrideReleaseName\",\"releaseNamespace\":\"overrideNamespace\",\"values\":\"{\\\"roleTwoParam\\\":\\\"roleTwoOverrideValue\\\"}\"}}}")},
+	// 			DeploymentValues: to.Ptr("{\"releaseName\":\"testReleaseName\",\"namespace\":\"testNamespace\"}"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/NetworkFunctionCreate.json
+func ExampleNetworkFunctionsClient_BeginCreateOrUpdate_createNetworkFunctionResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFunctionsClient().BeginCreateOrUpdate(ctx, "rg", "testNf", armhybridnetwork.NetworkFunction{
+		Location: to.Ptr("eastus"),
+		Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+			AllowSoftwareUpdate: to.Ptr(false),
+			ConfigurationType:   to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+			NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.OpenDeploymentResourceReference{
+				IDType: to.Ptr(armhybridnetwork.IDTypeOpen),
+				ID:     to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
+			},
+			NfviID:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+			NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureArcKubernetes),
+			RoleOverrideValues: []*string{
+				to.Ptr("{\"name\":\"testRoleOne\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"helmPackageVersion\":\"2.1.3\",\"values\":\"{\\\"roleOneParam\\\":\\\"roleOneOverrideValue\\\"}\"}}}"),
+				to.Ptr("{\"name\":\"testRoleTwo\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"releaseName\":\"overrideReleaseName\",\"releaseNamespace\":\"overrideNamespace\",\"values\":\"{\\\"roleTwoParam\\\":\\\"roleTwoOverrideValue\\\"}\"}}}")},
+			DeploymentValues: to.Ptr("{\"releaseName\":\"testReleaseName\",\"namespace\":\"testNamespace\"}"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NetworkFunction = armhybridnetwork.NetworkFunction{
+	// 	Name: to.Ptr("testNf"),
+	// 	Type: to.Ptr("Microsoft.HybridNetwork/networkFunctions"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/networkFunctions/testNf"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+	// 		AllowSoftwareUpdate: to.Ptr(false),
+	// 		ConfigurationType: to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+	// 		NetworkFunctionDefinitionGroupName: to.Ptr("testnetworkFunctionDefinitionGroupName"),
+	// 		NetworkFunctionDefinitionOfferingLocation: to.Ptr("eastus"),
+	// 		NetworkFunctionDefinitionVersion: to.Ptr("1.0.1"),
+	// 		NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.OpenDeploymentResourceReference{
+	// 			IDType: to.Ptr(armhybridnetwork.IDTypeOpen),
+	// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
+	// 		},
+	// 		NfviID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+	// 		NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureArcKubernetes),
+	// 		ProvisioningState: to.Ptr(armhybridnetwork.ProvisioningStateSucceeded),
+	// 		PublisherName: to.Ptr("testVendor"),
+	// 		PublisherScope: to.Ptr(armhybridnetwork.PublisherScope("Public")),
+	// 		RoleOverrideValues: []*string{
+	// 			to.Ptr("{\"name\":\"testRoleOne\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"helmPackageVersion\":\"2.1.3\",\"values\":\"{\\\"roleOneParam\\\":\\\"roleOneOverrideValue\\\"}\"}}}"),
+	// 			to.Ptr("{\"name\":\"testRoleTwo\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"releaseName\":\"overrideReleaseName\",\"releaseNamespace\":\"overrideNamespace\",\"values\":\"{\\\"roleTwoParam\\\":\\\"roleTwoOverrideValue\\\"}\"}}}")},
+	// 			DeploymentValues: to.Ptr("{\"releaseName\":\"testReleaseName\",\"namespace\":\"testNamespace\"}"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/NetworkFunctionCreateSecret.json
+func ExampleNetworkFunctionsClient_BeginCreateOrUpdate_createNetworkFunctionResourceWithSecrets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFunctionsClient().BeginCreateOrUpdate(ctx, "rg", "testNf", armhybridnetwork.NetworkFunction{
+		Location: to.Ptr("eastus"),
+		Properties: &armhybridnetwork.NetworkFunctionValueWithSecrets{
+			AllowSoftwareUpdate: to.Ptr(false),
+			ConfigurationType:   to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeSecret),
+			NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.OpenDeploymentResourceReference{
+				IDType: to.Ptr(armhybridnetwork.IDTypeOpen),
+				ID:     to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
+			},
+			NfviID:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+			NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureArcKubernetes),
+			RoleOverrideValues: []*string{
+				to.Ptr("{\"name\":\"testRoleOne\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"helmPackageVersion\":\"2.1.3\",\"values\":\"{\\\"roleOneParam\\\":\\\"roleOneOverrideValue\\\"}\"}}}"),
+				to.Ptr("{\"name\":\"testRoleTwo\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"releaseName\":\"overrideReleaseName\",\"releaseNamespace\":\"overrideNamespace\",\"values\":\"{\\\"roleTwoParam\\\":\\\"roleTwoOverrideValue\\\"}\"}}}")},
+			SecretDeploymentValues: to.Ptr("{\"adminPassword\":\"password1\",\"userPassword\":\"password2\"}"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NetworkFunction = armhybridnetwork.NetworkFunction{
+	// 	Name: to.Ptr("testNf"),
+	// 	Type: to.Ptr("Microsoft.HybridNetwork/networkFunctions"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/networkFunctions/testNf"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armhybridnetwork.NetworkFunctionValueWithSecrets{
+	// 		AllowSoftwareUpdate: to.Ptr(false),
+	// 		ConfigurationType: to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeSecret),
+	// 		NetworkFunctionDefinitionGroupName: to.Ptr("testnetworkFunctionDefinitionGroupName"),
+	// 		NetworkFunctionDefinitionOfferingLocation: to.Ptr("eastus"),
+	// 		NetworkFunctionDefinitionVersion: to.Ptr("1.0.1"),
+	// 		NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.OpenDeploymentResourceReference{
+	// 			IDType: to.Ptr(armhybridnetwork.IDTypeOpen),
+	// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
+	// 		},
+	// 		NfviID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+	// 		NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureArcKubernetes),
+	// 		ProvisioningState: to.Ptr(armhybridnetwork.ProvisioningStateSucceeded),
+	// 		PublisherName: to.Ptr("testVendor"),
+	// 		PublisherScope: to.Ptr(armhybridnetwork.PublisherScope("Public")),
+	// 		RoleOverrideValues: []*string{
+	// 			to.Ptr("{\"name\":\"testRoleOne\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"helmPackageVersion\":\"2.1.3\",\"values\":\"{\\\"roleOneParam\\\":\\\"roleOneOverrideValue\\\"}\"}}}"),
+	// 			to.Ptr("{\"name\":\"testRoleTwo\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"releaseName\":\"overrideReleaseName\",\"releaseNamespace\":\"overrideNamespace\",\"values\":\"{\\\"roleTwoParam\\\":\\\"roleTwoOverrideValue\\\"}\"}}}")},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/AzureCore/VirtualNetworkFunctionCreate.json
+func ExampleNetworkFunctionsClient_BeginCreateOrUpdate_createVirtualNetworkFunctionResourceOnAzureCore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFunctionsClient().BeginCreateOrUpdate(ctx, "rg", "testNf", armhybridnetwork.NetworkFunction{
+		Location: to.Ptr("eastus"),
+		Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+			AllowSoftwareUpdate: to.Ptr(false),
+			ConfigurationType:   to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+			NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.OpenDeploymentResourceReference{
+				IDType: to.Ptr(armhybridnetwork.IDTypeOpen),
+				ID:     to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
+			},
+			NfviID:           to.Ptr("/subscriptions/subid/resourceGroups/testResourceGroup"),
+			NfviType:         to.Ptr(armhybridnetwork.NFVITypeAzureCore),
+			DeploymentValues: to.Ptr("{\"virtualMachineName\":\"test-VM\",\"cpuCores\":4,\"memorySizeGB\":8,\"cloudServicesNetworkAttachment\":{\"attachedNetworkId\":\"test-csnet\",\"ipAllocationMethod\":\"Dynamic\",\"networkAttachmentName\":\"test-cs-vlan\"},\"networkAttachments\":[{\"attachedNetworkId\":\"test-l3vlan\",\"defaultGateway\":\"True\",\"ipAllocationMethod\":\"Dynamic\",\"networkAttachmentName\":\"test-vlan\"}],\"sshPublicKeys\":[{\"keyData\":\"ssh-rsa CMIIIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA0TqlveKKlc2MFvEmuXJiLGBsY1t4ML4uiRADGSZlnc+7Ugv3h+MCjkkwOKiOdsNo8k4KSBIG5GcQfKYOOd17AJvqCL6cGQbaLuqv0a64jeDm8oO8/xN/IM0oKw7rMr/2oAJOgIsfeXPkRxWWic9AVIS++H5Qi2r7bUFX+cqFsyUCAwEBBQ==\"}],\"storageProfile\":{\"osDisk\":{\"createOption\":\"Ephemeral\",\"deleteOption\":\"Delete\",\"diskSizeGB\":10}},\"userData\":\"testUserData\",\"adminUsername\":\"testUser\",\"virtioInterface\":\"Transitional\",\"isolateEmulatorThread\":\"False\",\"bootMethod\":\"BIOS\",\"placementHints\":[]}"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NetworkFunction = armhybridnetwork.NetworkFunction{
+	// 	Name: to.Ptr("testNf"),
+	// 	Type: to.Ptr("Microsoft.HybridNetwork/networkFunctions"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/networkFunctions/testNf"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+	// 		AllowSoftwareUpdate: to.Ptr(false),
+	// 		ConfigurationType: to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+	// 		NetworkFunctionDefinitionGroupName: to.Ptr("TestNetworkFunctionDefinitionGroupName"),
+	// 		NetworkFunctionDefinitionOfferingLocation: to.Ptr("eastus"),
+	// 		NetworkFunctionDefinitionVersion: to.Ptr("1.0.0"),
+	// 		NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.OpenDeploymentResourceReference{
+	// 			IDType: to.Ptr(armhybridnetwork.IDTypeOpen),
+	// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
+	// 		},
+	// 		NfviID: to.Ptr("/subscriptions/subid/resourceGroups/testResourceGroup"),
+	// 		NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureCore),
+	// 		ProvisioningState: to.Ptr(armhybridnetwork.ProvisioningStateSucceeded),
+	// 		PublisherName: to.Ptr("TestPublisher"),
+	// 		PublisherScope: to.Ptr(armhybridnetwork.PublisherScopePrivate),
+	// 		DeploymentValues: to.Ptr("{\"virtualMachineName\":\"test-VM\",\"cpuCores\":4,\"memorySizeGB\":8,\"cloudServicesNetworkAttachment\":{\"attachedNetworkId\":\"test-csnet\",\"ipAllocationMethod\":\"Dynamic\",\"networkAttachmentName\":\"test-cs-vlan\"},\"networkAttachments\":[{\"attachedNetworkId\":\"test-l3vlan\",\"defaultGateway\":\"True\",\"ipAllocationMethod\":\"Dynamic\",\"networkAttachmentName\":\"test-vlan\"}],\"sshPublicKeys\":[{\"keyData\":\"ssh-rsa CMIIIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA0TqlveKKlc2MFvEmuXJiLGBsY1t4ML4uiRADGSZlnc+7Ugv3h+MCjkkwOKiOdsNo8k4KSBIG5GcQfKYOOd17AJvqCL6cGQbaLuqv0a64jeDm8oO8/xN/IM0oKw7rMr/2oAJOgIsfeXPkRxWWic9AVIS++H5Qi2r7bUFX+cqFsyUCAwEBBQ==\"}],\"storageProfile\":{\"osDisk\":{\"createOption\":\"Ephemeral\",\"deleteOption\":\"Delete\",\"diskSizeGB\":10}},\"userData\":\"testUserData\",\"adminUsername\":\"testUser\",\"virtioInterface\":\"Transitional\",\"isolateEmulatorThread\":\"False\",\"bootMethod\":\"BIOS\",\"placementHints\":[]}"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/AzureOperatorNexus/VirtualNetworkFunctionCreate.json
+func ExampleNetworkFunctionsClient_BeginCreateOrUpdate_createVirtualNetworkFunctionResourceOnAzureOperatorNexus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFunctionsClient().BeginCreateOrUpdate(ctx, "rg", "testNf", armhybridnetwork.NetworkFunction{
+		Location: to.Ptr("eastus"),
+		Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+			AllowSoftwareUpdate: to.Ptr(false),
+			ConfigurationType:   to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+			NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.OpenDeploymentResourceReference{
+				IDType: to.Ptr(armhybridnetwork.IDTypeOpen),
+				ID:     to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
+			},
+			NfviID:           to.Ptr("/subscriptions/subid/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+			NfviType:         to.Ptr(armhybridnetwork.NFVITypeAzureOperatorNexus),
+			DeploymentValues: to.Ptr("{\"virtualMachineName\":\"test-VM\",\"extendedLocationName\":\"test-cluster\",\"cpuCores\":4,\"memorySizeGB\":8,\"cloudServicesNetworkAttachment\":{\"attachedNetworkId\":\"test-csnet\",\"ipAllocationMethod\":\"Dynamic\",\"networkAttachmentName\":\"test-cs-vlan\"},\"networkAttachments\":[{\"attachedNetworkId\":\"test-l3vlan\",\"defaultGateway\":\"True\",\"ipAllocationMethod\":\"Dynamic\",\"networkAttachmentName\":\"test-vlan\"}],\"sshPublicKeys\":[{\"keyData\":\"ssh-rsa CMIIIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA0TqlveKKlc2MFvEmuXJiLGBsY1t4ML4uiRADGSZlnc+7Ugv3h+MCjkkwOKiOdsNo8k4KSBIG5GcQfKYOOd17AJvqCL6cGQbaLuqv0a64jeDm8oO8/xN/IM0oKw7rMr/2oAJOgIsfeXPkRxWWic9AVIS++H5Qi2r7bUFX+cqFsyUCAwEBBQ==\"}],\"storageProfile\":{\"osDisk\":{\"createOption\":\"Ephemeral\",\"deleteOption\":\"Delete\",\"diskSizeGB\":10}},\"userData\":\"testUserData\",\"adminUsername\":\"testUser\",\"virtioInterface\":\"Transitional\",\"isolateEmulatorThread\":\"False\",\"bootMethod\":\"BIOS\",\"placementHints\":[]}"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NetworkFunction = armhybridnetwork.NetworkFunction{
+	// 	Name: to.Ptr("testNf"),
+	// 	Type: to.Ptr("Microsoft.HybridNetwork/networkFunctions"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/networkFunctions/testNf"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+	// 		AllowSoftwareUpdate: to.Ptr(false),
+	// 		ConfigurationType: to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+	// 		NetworkFunctionDefinitionGroupName: to.Ptr("TestNetworkFunctionDefinitionGroupName"),
+	// 		NetworkFunctionDefinitionOfferingLocation: to.Ptr("eastus"),
+	// 		NetworkFunctionDefinitionVersion: to.Ptr("1.0.0"),
+	// 		NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.OpenDeploymentResourceReference{
+	// 			IDType: to.Ptr(armhybridnetwork.IDTypeOpen),
+	// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
+	// 		},
+	// 		NfviID: to.Ptr("/subscriptions/subid/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+	// 		NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureOperatorNexus),
+	// 		ProvisioningState: to.Ptr(armhybridnetwork.ProvisioningStateSucceeded),
+	// 		PublisherName: to.Ptr("TestPublisher"),
+	// 		PublisherScope: to.Ptr(armhybridnetwork.PublisherScopePrivate),
+	// 		DeploymentValues: to.Ptr("{\"virtualMachineName\":\"test-VM\",\"extendedLocationName\":\"test-cluster\",\"cpuCores\":4,\"memorySizeGB\":8,\"cloudServicesNetworkAttachment\":{\"attachedNetworkId\":\"test-csnet\",\"ipAllocationMethod\":\"Dynamic\",\"networkAttachmentName\":\"test-cs-vlan\"},\"networkAttachments\":[{\"attachedNetworkId\":\"test-l3vlan\",\"defaultGateway\":\"True\",\"ipAllocationMethod\":\"Dynamic\",\"networkAttachmentName\":\"test-vlan\"}],\"sshPublicKeys\":[{\"keyData\":\"ssh-rsa CMIIIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA0TqlveKKlc2MFvEmuXJiLGBsY1t4ML4uiRADGSZlnc+7Ugv3h+MCjkkwOKiOdsNo8k4KSBIG5GcQfKYOOd17AJvqCL6cGQbaLuqv0a64jeDm8oO8/xN/IM0oKw7rMr/2oAJOgIsfeXPkRxWWic9AVIS++H5Qi2r7bUFX+cqFsyUCAwEBBQ==\"}],\"storageProfile\":{\"osDisk\":{\"createOption\":\"Ephemeral\",\"deleteOption\":\"Delete\",\"diskSizeGB\":10}},\"userData\":\"testUserData\",\"adminUsername\":\"testUser\",\"virtioInterface\":\"Transitional\",\"isolateEmulatorThread\":\"False\",\"bootMethod\":\"BIOS\",\"placementHints\":[]}"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/NetworkFunctionUpdateTags.json
 func ExampleNetworkFunctionsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,59 +553,30 @@ func ExampleNetworkFunctionsClient_UpdateTags() {
 	// 		"tag1": to.Ptr("value1"),
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
-	// 	Properties: &armhybridnetwork.NetworkFunctionPropertiesFormat{
-	// 		Device: &armhybridnetwork.SubResource{
-	// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/devices/testDevice"),
+	// 	Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+	// 		AllowSoftwareUpdate: to.Ptr(false),
+	// 		ConfigurationType: to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+	// 		NetworkFunctionDefinitionGroupName: to.Ptr("testnetworkFunctionDefinitionGroupName"),
+	// 		NetworkFunctionDefinitionOfferingLocation: to.Ptr("eastus"),
+	// 		NetworkFunctionDefinitionVersion: to.Ptr("1.0.1"),
+	// 		NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.OpenDeploymentResourceReference{
+	// 			IDType: to.Ptr(armhybridnetwork.IDTypeOpen),
+	// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
 	// 		},
-	// 		ManagedApplication: &armhybridnetwork.SubResource{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/testServiceKey"),
-	// 		},
-	// 		ManagedApplicationParameters: map[string]any{
-	// 		},
-	// 		NetworkFunctionUserConfigurations: []*armhybridnetwork.NetworkFunctionUserConfiguration{
-	// 			{
-	// 				NetworkInterfaces: []*armhybridnetwork.NetworkInterface{
-	// 					{
-	// 						IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
-	// 							{
-	// 								Gateway: to.Ptr(""),
-	// 								IPAddress: to.Ptr(""),
-	// 								IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
-	// 								IPVersion: to.Ptr(armhybridnetwork.IPVersionIPv4),
-	// 								Subnet: to.Ptr(""),
-	// 						}},
-	// 						MacAddress: to.Ptr(""),
-	// 						NetworkInterfaceName: to.Ptr("nic1"),
-	// 						VMSwitchType: to.Ptr(armhybridnetwork.VMSwitchTypeManagement),
-	// 					},
-	// 					{
-	// 						IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
-	// 							{
-	// 								Gateway: to.Ptr(""),
-	// 								IPAddress: to.Ptr(""),
-	// 								IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
-	// 								IPVersion: to.Ptr(armhybridnetwork.IPVersionIPv4),
-	// 								Subnet: to.Ptr(""),
-	// 						}},
-	// 						MacAddress: to.Ptr("DC-97-F8-79-16-7D"),
-	// 						NetworkInterfaceName: to.Ptr("nic2"),
-	// 						VMSwitchType: to.Ptr(armhybridnetwork.VMSwitchTypeWan),
-	// 				}},
-	// 				RoleName: to.Ptr("testRole"),
-	// 				UserDataParameters: map[string]any{
-	// 				},
-	// 		}},
+	// 		NfviID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+	// 		NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureArcKubernetes),
 	// 		ProvisioningState: to.Ptr(armhybridnetwork.ProvisioningStateSucceeded),
-	// 		ServiceKey: to.Ptr("testServiceKey"),
-	// 		SKUName: to.Ptr("testSku"),
-	// 		SKUType: to.Ptr(armhybridnetwork.SKUTypeSDWAN),
-	// 		VendorName: to.Ptr("testVendor"),
-	// 		VendorProvisioningState: to.Ptr(armhybridnetwork.VendorProvisioningStateNotProvisioned),
-	// 	},
-	// }
+	// 		PublisherName: to.Ptr("testVendor"),
+	// 		PublisherScope: to.Ptr(armhybridnetwork.PublisherScope("Public")),
+	// 		RoleOverrideValues: []*string{
+	// 			to.Ptr("{\"name\":\"testRoleOne\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"helmPackageVersion\":\"2.1.3\",\"values\":\"{\\\"roleOneParam\\\":\\\"roleOneOverrideValue\\\"}\"}}}"),
+	// 			to.Ptr("{\"name\":\"testRoleTwo\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"releaseName\":\"overrideReleaseName\",\"releaseNamespace\":\"overrideNamespace\",\"values\":\"{\\\"roleTwoParam\\\":\\\"roleTwoOverrideValue\\\"}\"}}}")},
+	// 			DeploymentValues: to.Ptr("{\"releaseName\":\"testReleaseName\",\"namespace\":\"testNamespace\"}"),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/NetworkFunctionListBySubscription.json
 func ExampleNetworkFunctionsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,61 +605,32 @@ func ExampleNetworkFunctionsClient_NewListBySubscriptionPager() {
 		// 			Type: to.Ptr("Microsoft.HybridNetwork/networkFunctions"),
 		// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/networkFunctions/testNf"),
 		// 			Location: to.Ptr("eastus"),
-		// 			Properties: &armhybridnetwork.NetworkFunctionPropertiesFormat{
-		// 				Device: &armhybridnetwork.SubResource{
-		// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/devices/testDevice"),
+		// 			Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+		// 				AllowSoftwareUpdate: to.Ptr(false),
+		// 				ConfigurationType: to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+		// 				NetworkFunctionDefinitionGroupName: to.Ptr("testnetworkFunctionDefinitionGroupName"),
+		// 				NetworkFunctionDefinitionOfferingLocation: to.Ptr("eastus"),
+		// 				NetworkFunctionDefinitionVersion: to.Ptr("1.0.1"),
+		// 				NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.OpenDeploymentResourceReference{
+		// 					IDType: to.Ptr(armhybridnetwork.IDTypeOpen),
+		// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
 		// 				},
-		// 				ManagedApplication: &armhybridnetwork.SubResource{
-		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/testServiceKey"),
-		// 				},
-		// 				ManagedApplicationParameters: map[string]any{
-		// 				},
-		// 				NetworkFunctionUserConfigurations: []*armhybridnetwork.NetworkFunctionUserConfiguration{
-		// 					{
-		// 						NetworkInterfaces: []*armhybridnetwork.NetworkInterface{
-		// 							{
-		// 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
-		// 									{
-		// 										Gateway: to.Ptr(""),
-		// 										IPAddress: to.Ptr(""),
-		// 										IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
-		// 										IPVersion: to.Ptr(armhybridnetwork.IPVersionIPv4),
-		// 										Subnet: to.Ptr(""),
-		// 								}},
-		// 								MacAddress: to.Ptr(""),
-		// 								NetworkInterfaceName: to.Ptr("nic1"),
-		// 								VMSwitchType: to.Ptr(armhybridnetwork.VMSwitchTypeManagement),
-		// 							},
-		// 							{
-		// 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
-		// 									{
-		// 										Gateway: to.Ptr(""),
-		// 										IPAddress: to.Ptr(""),
-		// 										IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
-		// 										IPVersion: to.Ptr(armhybridnetwork.IPVersionIPv4),
-		// 										Subnet: to.Ptr(""),
-		// 								}},
-		// 								MacAddress: to.Ptr("DC-97-F8-79-16-7D"),
-		// 								NetworkInterfaceName: to.Ptr("nic2"),
-		// 								VMSwitchType: to.Ptr(armhybridnetwork.VMSwitchTypeWan),
-		// 						}},
-		// 						RoleName: to.Ptr("testRole"),
-		// 						UserDataParameters: map[string]any{
-		// 						},
-		// 				}},
+		// 				NfviID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+		// 				NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureArcKubernetes),
 		// 				ProvisioningState: to.Ptr(armhybridnetwork.ProvisioningStateSucceeded),
-		// 				ServiceKey: to.Ptr("testServiceKey"),
-		// 				SKUName: to.Ptr("testSku"),
-		// 				SKUType: to.Ptr(armhybridnetwork.SKUTypeSDWAN),
-		// 				VendorName: to.Ptr("testVendor"),
-		// 				VendorProvisioningState: to.Ptr(armhybridnetwork.VendorProvisioningStateNotProvisioned),
-		// 			},
-		// 	}},
-		// }
+		// 				PublisherName: to.Ptr("testVendor"),
+		// 				PublisherScope: to.Ptr(armhybridnetwork.PublisherScope("Public")),
+		// 				RoleOverrideValues: []*string{
+		// 					to.Ptr("{\"name\":\"testRoleOne\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"helmPackageVersion\":\"2.1.3\",\"values\":\"{\\\"roleOneParam\\\":\\\"roleOneOverrideValue\\\"}\"}}}"),
+		// 					to.Ptr("{\"name\":\"testRoleTwo\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"releaseName\":\"overrideReleaseName\",\"releaseNamespace\":\"overrideNamespace\",\"values\":\"{\\\"roleTwoParam\\\":\\\"roleTwoOverrideValue\\\"}\"}}}")},
+		// 					DeploymentValues: to.Ptr("{\"releaseName\":\"testReleaseName\",\"namespace\":\"testNamespace\"}"),
+		// 				},
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/NetworkFunctionListByResourceGroup.json
 func ExampleNetworkFunctionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -432,56 +659,56 @@ func ExampleNetworkFunctionsClient_NewListByResourceGroupPager() {
 		// 			Type: to.Ptr("Microsoft.HybridNetwork/networkFunctions"),
 		// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/networkFunctions/testNf"),
 		// 			Location: to.Ptr("eastus"),
-		// 			Properties: &armhybridnetwork.NetworkFunctionPropertiesFormat{
-		// 				Device: &armhybridnetwork.SubResource{
-		// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/devices/testDevice"),
+		// 			Properties: &armhybridnetwork.NetworkFunctionValueWithoutSecrets{
+		// 				AllowSoftwareUpdate: to.Ptr(false),
+		// 				ConfigurationType: to.Ptr(armhybridnetwork.NetworkFunctionConfigurationTypeOpen),
+		// 				NetworkFunctionDefinitionGroupName: to.Ptr("testnetworkFunctionDefinitionGroupName"),
+		// 				NetworkFunctionDefinitionOfferingLocation: to.Ptr("eastus"),
+		// 				NetworkFunctionDefinitionVersion: to.Ptr("1.0.1"),
+		// 				NetworkFunctionDefinitionVersionResourceReference: &armhybridnetwork.OpenDeploymentResourceReference{
+		// 					IDType: to.Ptr(armhybridnetwork.IDTypeOpen),
+		// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/rg/providers/Microsoft.HybridNetwork/publishers/testVendor/networkFunctionDefinitionGroups/testnetworkFunctionDefinitionGroupName/networkFunctionDefinitionVersions/1.0.1"),
 		// 				},
-		// 				ManagedApplication: &armhybridnetwork.SubResource{
-		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/testServiceKey"),
-		// 				},
-		// 				ManagedApplicationParameters: map[string]any{
-		// 				},
-		// 				NetworkFunctionUserConfigurations: []*armhybridnetwork.NetworkFunctionUserConfiguration{
-		// 					{
-		// 						NetworkInterfaces: []*armhybridnetwork.NetworkInterface{
-		// 							{
-		// 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
-		// 									{
-		// 										Gateway: to.Ptr(""),
-		// 										IPAddress: to.Ptr(""),
-		// 										IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
-		// 										IPVersion: to.Ptr(armhybridnetwork.IPVersionIPv4),
-		// 										Subnet: to.Ptr(""),
-		// 								}},
-		// 								MacAddress: to.Ptr(""),
-		// 								NetworkInterfaceName: to.Ptr("nic1"),
-		// 								VMSwitchType: to.Ptr(armhybridnetwork.VMSwitchTypeManagement),
-		// 							},
-		// 							{
-		// 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
-		// 									{
-		// 										Gateway: to.Ptr(""),
-		// 										IPAddress: to.Ptr(""),
-		// 										IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
-		// 										IPVersion: to.Ptr(armhybridnetwork.IPVersionIPv4),
-		// 										Subnet: to.Ptr(""),
-		// 								}},
-		// 								MacAddress: to.Ptr("DC-97-F8-79-16-7D"),
-		// 								NetworkInterfaceName: to.Ptr("nic2"),
-		// 								VMSwitchType: to.Ptr(armhybridnetwork.VMSwitchTypeWan),
-		// 						}},
-		// 						RoleName: to.Ptr("testRole"),
-		// 						UserDataParameters: map[string]any{
-		// 						},
-		// 				}},
+		// 				NfviID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testResourceGroup/providers/Microsoft.ExtendedLocation/customLocations/testCustomLocation"),
+		// 				NfviType: to.Ptr(armhybridnetwork.NFVITypeAzureArcKubernetes),
 		// 				ProvisioningState: to.Ptr(armhybridnetwork.ProvisioningStateSucceeded),
-		// 				ServiceKey: to.Ptr("testServiceKey"),
-		// 				SKUName: to.Ptr("testSku"),
-		// 				SKUType: to.Ptr(armhybridnetwork.SKUTypeSDWAN),
-		// 				VendorName: to.Ptr("testVendor"),
-		// 				VendorProvisioningState: to.Ptr(armhybridnetwork.VendorProvisioningStateNotProvisioned),
-		// 			},
-		// 	}},
-		// }
+		// 				PublisherName: to.Ptr("testVendor"),
+		// 				PublisherScope: to.Ptr(armhybridnetwork.PublisherScope("Public")),
+		// 				RoleOverrideValues: []*string{
+		// 					to.Ptr("{\"name\":\"testRoleOne\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"helmPackageVersion\":\"2.1.3\",\"values\":\"{\\\"roleOneParam\\\":\\\"roleOneOverrideValue\\\"}\"}}}"),
+		// 					to.Ptr("{\"name\":\"testRoleTwo\",\"deployParametersMappingRuleProfile\":{\"helmMappingRuleProfile\":{\"releaseName\":\"overrideReleaseName\",\"releaseNamespace\":\"overrideNamespace\",\"values\":\"{\\\"roleTwoParam\\\":\\\"roleTwoOverrideValue\\\"}\"}}}")},
+		// 					DeploymentValues: to.Ptr("{\"releaseName\":\"testReleaseName\",\"namespace\":\"testNamespace\"}"),
+		// 				},
+		// 		}},
+		// 	}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/NetworkFunctionsExecuteRequest.json
+func ExampleNetworkFunctionsClient_BeginExecuteRequest() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkFunctionsClient().BeginExecuteRequest(ctx, "rg", "testNetworkfunction", armhybridnetwork.ExecuteRequestParameters{
+		RequestMetadata: &armhybridnetwork.RequestMetadata{
+			APIVersion:     to.Ptr("apiVersionQueryString"),
+			HTTPMethod:     to.Ptr(armhybridnetwork.HTTPMethodPost),
+			RelativePath:   to.Ptr("/simProfiles/testSimProfile"),
+			SerializedBody: to.Ptr("{\"subscriptionProfile\":\"ChantestSubscription15\",\"permanentKey\":\"00112233445566778899AABBCCDDEEFF\",\"opcOperatorCode\":\"63bfa50ee6523365ff14c1f45f88737d\",\"staticIpAddresses\":{\"internet\":{\"ipv4Addr\":\"198.51.100.1\",\"ipv6Prefix\":\"2001:db8:abcd:12::0/64\"},\"another_network\":{\"ipv6Prefix\":\"2001:111:cdef:22::0/64\"}}}"),
+		},
+		ServiceEndpoint: to.Ptr("serviceEndpoint"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

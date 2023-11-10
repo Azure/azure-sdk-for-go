@@ -21,6 +21,8 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
+const defaultExpirationTime = time.Hour
+
 // ClientOptions contains optional settings for [Client]
 type ClientOptions struct {
 	azcore.ClientOptions
@@ -28,6 +30,10 @@ type ClientOptions struct {
 
 // NewClient creates a client that manages Web PubSub service
 func NewClient(endpoint string, hub string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	if hub == "" {
+		return nil, errors.New("empty hub name is not allowed")
+	}
+
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -47,6 +53,10 @@ func NewClient(endpoint string, hub string, credential azcore.TokenCredential, o
 
 // NewClientFromConnectionString creates a Client from a connection string
 func NewClientFromConnectionString(connectionString string, hub string, options *ClientOptions) (*Client, error) {
+	if hub == "" {
+		return nil, errors.New("empty hub name is not allowed")
+	}
+
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -105,24 +115,25 @@ type GenerateClientAccessUrlResponse struct {
 	URL string
 }
 
-// GenerateClientAccessUrl - generate URL for the WebSocket clients
-//   - options - GenerateClientAccessUrlOptions contains the optional parameters for the Client.GenerateClientAccessUrl method.
-func (c *Client) GenerateClientAccessUrl(ctx context.Context, options *GenerateClientAccessUrlOptions) (*GenerateClientAccessUrlResponse, error) {
+// GenerateClientAccessURL - generate URL for the WebSocket clients
+//   - options - GenerateClientAccessUrlOptions contains the optional parameters for the Client.GenerateClientAccessURL method.
+func (c *Client) GenerateClientAccessURL(ctx context.Context, options *GenerateClientAccessUrlOptions) (*GenerateClientAccessUrlResponse, error) {
 	endpoint := c.endpoint
 	hubName := c.hub
+	hubPath := url.PathEscape(hubName)
 	parsedURL, err := url.Parse(endpoint)
 	if err != nil {
 		return nil, errors.New("endpoint is not a valid URL")
 	}
 
-	parsedURL.Scheme = strings.Replace(strings.ToLower(parsedURL.Scheme), "http", "ws", 1)
+	audience := fmt.Sprintf("%sclient/hubs/%s", parsedURL.String(), hubPath)
 
-	clientEndpoint := parsedURL.String()
-	baseURL := fmt.Sprintf("%s/client/hubs/%s", clientEndpoint, hubName)
+	parsedURL.Scheme = strings.Replace(strings.ToLower(parsedURL.Scheme), "http", "ws", 1)
+	baseURL := fmt.Sprintf("%sclient/hubs/%s", parsedURL.String(), hubPath)
 
 	var token string
 	if c.key != nil {
-		token, err = c.signJwtToken(baseURL, options)
+		token, err = c.signJwtToken(audience, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,21 +160,19 @@ func (c *Client) GenerateClientAccessUrl(ctx context.Context, options *GenerateC
 	}, nil
 }
 
-const DefaultExpirationTime = time.Hour
-
-func (c *Client) signJwtToken(baseURL string, options *GenerateClientAccessUrlOptions) (string, error) {
+func (c *Client) signJwtToken(audience string, options *GenerateClientAccessUrlOptions) (string, error) {
 	if c.key == nil {
 		return "", errors.New("key is nil")
 	}
 	key := []byte(*c.key)
 	var exp int64
 	if options == nil || options.ExpirationTimeInMinutes == nil {
-		exp = time.Now().Add(DefaultExpirationTime).Unix()
+		exp = time.Now().Add(defaultExpirationTime).Unix()
 	} else {
 		exp = time.Now().Add(time.Minute * time.Duration(*options.ExpirationTimeInMinutes)).Unix()
 	}
 	claims := jwt.MapClaims{
-		"aud": baseURL,
+		"aud": audience,
 		"exp": exp,
 	}
 
@@ -171,7 +180,7 @@ func (c *Client) signJwtToken(baseURL string, options *GenerateClientAccessUrlOp
 		claims["sub"] = options.UserID
 	}
 
-	if options != nil && options.Groups != nil && len(options.Groups) > 0 {
+	if options != nil && len(options.Groups) > 0 {
 		claims["webpubsub.group"] = options.Groups
 	}
 

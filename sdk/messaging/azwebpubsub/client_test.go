@@ -11,13 +11,12 @@ import (
 	"context"
 	"io"
 	"net/url"
-	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub/internal"
 	"github.com/golang-jwt/jwt"
 	"github.com/stretchr/testify/require"
 )
@@ -70,21 +69,27 @@ func TestClient_CloseConnections(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestClient_GenerateClientAccessUrl(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode || testing.Short() {
-		t.Skip()
-	}
+func TestClient_GenerateClientAccessURLFromConnectionString(t *testing.T) {
+	_, err1 := azwebpubsub.NewClientFromConnectionString("Endpoint=http://test/subpath;;;;", "abc", nil)
+	require.ErrorContains(t, err1, "connection string is either blank or malformed.")
 
-	client := newClientWrapper(t)
-	token, err := client.GenerateClientAccessUrl(context.Background(), nil)
+	_, err1 = azwebpubsub.NewClientFromConnectionString("Endpoint=http://test/subpath;AccessKey=ABC;;;", "", nil)
+	require.ErrorContains(t, err1, "empty hub name is not allowed")
+
+	hub := "chat/go"
+	client, err := azwebpubsub.NewClientFromConnectionString("Endpoint=http://test/subpath;AccessKey=ABC;;;", hub, nil)
 	require.NoError(t, err)
-	extract := extractToken(t, token, client)
+
+	token, err := client.GenerateClientAccessURL(context.Background(), nil)
+
+	require.NoError(t, err)
+	extract := extractToken(t, token, "http://test/subpath", "ABC", hub)
 	require.Nil(t, extract.Roles)
 	require.Nil(t, extract.Groups)
-	require.Nil(t, extract.UserID)
+	require.Empty(t, extract.UserID)
 
 	user1 := "user1"
-	token, err = client.GenerateClientAccessUrl(context.Background(), &azwebpubsub.GenerateClientAccessUrlOptions{
+	token, err = client.GenerateClientAccessURL(context.Background(), &azwebpubsub.GenerateClientAccessUrlOptions{
 		UserID: user1,
 		Roles:  []string{"admin"},
 		Groups: []string{"group1"},
@@ -95,22 +100,20 @@ func TestClient_GenerateClientAccessUrl(t *testing.T) {
 	queryValues := parsedURL.Query()
 	accessToken := queryValues.Get("access_token")
 	require.NotEmpty(t, accessToken)
-	extract = extractToken(t, token, client)
+	extract = extractToken(t, token, "http://test/subpath", "ABC", hub)
 	require.Equal(t, user1, extract.UserID)
 	require.Equal(t, "admin", extract.Roles[0])
 	require.Equal(t, "group1", extract.Groups[0])
 }
 
-func extractToken(t *testing.T, token *azwebpubsub.GenerateClientAccessUrlResponse, client clientWrapper) azwebpubsub.GenerateClientAccessUrlOptions {
-	key, err := internal.ParseConnectionString(client.TestVars.ConnectionString)
-	require.NoError(t, err)
-	expectedAudience := key.Endpoint + "client/hubs/" + client.TestVars.Hub
-	expectedBaseUrl := regexp.MustCompile(`$(http)(s?://)`).ReplaceAllString(expectedAudience, "ws$2")
+func extractToken(t *testing.T, token *azwebpubsub.GenerateClientAccessUrlResponse, endpoint string, key string, hub string) azwebpubsub.GenerateClientAccessUrlOptions {
+	expectedAudience := endpoint + "/client/hubs/" + url.PathEscape(hub)
+	expectedBaseUrl := strings.Replace(expectedAudience, "http", "ws", 1)
 
 	require.Equal(t, expectedBaseUrl, token.BaseURL)
 	parsed, err := jwt.Parse(token.Token, func(token *jwt.Token) (interface{}, error) {
 		// Provide the secret key for validation
-		return []byte(key.AccessKey), nil
+		return []byte(key), nil
 	})
 	require.NoError(t, err)
 	require.True(t, parsed.Valid, "token is not valid")

@@ -13,6 +13,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub/internal"
@@ -27,11 +28,14 @@ type clientWrapper struct {
 var fakeTestVars = testVars{
 	ConnectionString: "Endpoint=https://fake.eastus-1.webpubsub.azure.com;AccessKey=ABCDE;",
 	Hub:              "chat",
+	Endpoint:         "https://fake.eastus-1.webpubsub.azure.com",
 }
 
 type testVars struct {
+	// NewClientFromConnectionString when ConnectionString is set
 	ConnectionString string
 	Hub              string
+	Endpoint         string
 	// KeyLogPath is the value of environment "SSLKEYLOGFILE_TEST", which
 	// points to a file on disk where we'll write the TLS pre-master-secret.
 	// This is useful if you want to trace parts of this test using Wireshark.
@@ -52,9 +56,10 @@ func loadEnv() (testVars, error) {
 	tv := testVars{
 		ConnectionString: get("WEBPUBSUB_CONNECTIONSTRING"),
 		Hub:              get("WEBPUBSUB_HUB"),
+		Endpoint:         get("WEBPUBSUB_ENDPOINT"),
 	}
 
-	if len(missing) > 0 {
+	if len(missing) > 1 {
 		return testVars{}, fmt.Errorf("Missing env variables: %s", strings.Join(missing, ","))
 	}
 
@@ -70,7 +75,7 @@ func loadEnv() (testVars, error) {
 func newClientWrapper(t *testing.T) clientWrapper {
 	var client *azwebpubsub.Client
 	var tv testVars
-
+	var options *azwebpubsub.ClientOptions
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		tmpTestVars, err := loadEnv()
 		require.NoError(t, err)
@@ -92,26 +97,31 @@ func newClientWrapper(t *testing.T) clientWrapper {
 			}
 
 			httpClient := &http.Client{Transport: tp}
-
-			tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, tv.Hub, &azwebpubsub.ClientOptions{
+			options = &azwebpubsub.ClientOptions{
 				ClientOptions: azcore.ClientOptions{
 					Transport: httpClient,
 				},
-			})
-			require.NoError(t, err)
-			client = tmpClient
+			}
 		} else {
-			tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, tv.Hub, nil)
-			require.NoError(t, err)
-			client = tmpClient
+			options = nil
 		}
-
 	} else {
-		tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, tv.Hub, &azwebpubsub.ClientOptions{
+		options = &azwebpubsub.ClientOptions{
 			ClientOptions: azcore.ClientOptions{
 				Transport: newRecordingTransporter(t, tv),
 			},
-		})
+		}
+	}
+
+	if tv.ConnectionString != "" {
+		tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, tv.Hub, options)
+		require.NoError(t, err)
+		client = tmpClient
+	} else {
+		cred, err := azidentity.NewDefaultAzureCredential(nil)
+		require.NoError(t, err)
+
+		tmpClient, err := azwebpubsub.NewClient(tv.Endpoint, tv.Hub, cred, options)
 		require.NoError(t, err)
 		client = tmpClient
 	}

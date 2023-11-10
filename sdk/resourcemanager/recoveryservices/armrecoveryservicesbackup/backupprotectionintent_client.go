@@ -32,7 +32,7 @@ type BackupProtectionIntentClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupProtectionIntentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupProtectionIntentClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupProtectionIntentClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func NewBackupProtectionIntentClient(subscriptionID string, credential azcore.To
 
 // NewListPager - Provides a pageable list of all intents that are present within a vault.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupProtectionIntentClientListOptions contains the optional parameters for the BackupProtectionIntentClient.NewListPager
@@ -56,25 +56,20 @@ func (client *BackupProtectionIntentClient) NewListPager(vaultName string, resou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *BackupProtectionIntentClientListResponse) (BackupProtectionIntentClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BackupProtectionIntentClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return BackupProtectionIntentClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return BackupProtectionIntentClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return BackupProtectionIntentClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -98,7 +93,7 @@ func (client *BackupProtectionIntentClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

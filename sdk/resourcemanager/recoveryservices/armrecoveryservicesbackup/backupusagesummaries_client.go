@@ -32,7 +32,7 @@ type BackupUsageSummariesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupUsageSummariesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupUsageSummariesClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupUsageSummariesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func NewBackupUsageSummariesClient(subscriptionID string, credential azcore.Toke
 
 // NewListPager - Fetches the backup management usage summaries of the vault.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupUsageSummariesClientListOptions contains the optional parameters for the BackupUsageSummariesClient.NewListPager
@@ -56,6 +56,7 @@ func (client *BackupUsageSummariesClient) NewListPager(vaultName string, resourc
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *BackupUsageSummariesClientListResponse) (BackupUsageSummariesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BackupUsageSummariesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
 			if err != nil {
 				return BackupUsageSummariesClientListResponse{}, err
@@ -69,6 +70,7 @@ func (client *BackupUsageSummariesClient) NewListPager(vaultName string, resourc
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -92,7 +94,7 @@ func (client *BackupUsageSummariesClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

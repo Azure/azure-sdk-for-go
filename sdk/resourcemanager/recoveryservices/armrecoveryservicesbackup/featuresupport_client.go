@@ -32,7 +32,7 @@ type FeatureSupportClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFeatureSupportClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FeatureSupportClient, error) {
-	cl, err := arm.NewClient(moduleName+".FeatureSupportClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,12 +46,16 @@ func NewFeatureSupportClient(subscriptionID string, credential azcore.TokenCrede
 // Validate - It will validate if given feature with resource properties is supported in service
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - azureRegion - Azure region to hit Api
 //   - parameters - Feature support request object
 //   - options - FeatureSupportClientValidateOptions contains the optional parameters for the FeatureSupportClient.Validate method.
 func (client *FeatureSupportClient) Validate(ctx context.Context, azureRegion string, parameters FeatureSupportRequestClassification, options *FeatureSupportClientValidateOptions) (FeatureSupportClientValidateResponse, error) {
 	var err error
+	const operationName = "FeatureSupportClient.Validate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.validateCreateRequest(ctx, azureRegion, parameters, options)
 	if err != nil {
 		return FeatureSupportClientValidateResponse{}, err
@@ -84,7 +88,7 @@ func (client *FeatureSupportClient) validateCreateRequest(ctx context.Context, a
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

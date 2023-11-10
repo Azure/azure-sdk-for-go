@@ -32,7 +32,7 @@ type RecoveryPointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryPointsClient, error) {
-	cl, err := arm.NewClient(moduleName+".RecoveryPointsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCrede
 // To know the status of the operation, call the GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated with backed up item.
@@ -57,6 +57,10 @@ func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCrede
 //   - options - RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
 func (client *RecoveryPointsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *RecoveryPointsClientGetOptions) (RecoveryPointsClientGetResponse, error) {
 	var err error
+	const operationName = "RecoveryPointsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, options)
 	if err != nil {
 		return RecoveryPointsClientGetResponse{}, err
@@ -109,7 +113,7 @@ func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, vaultN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -126,7 +130,7 @@ func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (Reco
 
 // NewListPager - Lists the backup copies for the backed up item.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated with the backed up item.
@@ -139,25 +143,20 @@ func (client *RecoveryPointsClient) NewListPager(vaultName string, resourceGroup
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RecoveryPointsClientListResponse) (RecoveryPointsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecoveryPointsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, options)
+			}, nil)
 			if err != nil {
 				return RecoveryPointsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return RecoveryPointsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return RecoveryPointsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -193,7 +192,7 @@ func (client *RecoveryPointsClient) listCreateRequest(ctx context.Context, vault
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

@@ -32,7 +32,7 @@ type JobDetailsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobDetailsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobDetailsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobDetailsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,13 +46,17 @@ func NewJobDetailsClient(subscriptionID string, credential azcore.TokenCredentia
 // Get - Gets extended information associated with the job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - jobName - Name of the job whose details are to be fetched.
 //   - options - JobDetailsClientGetOptions contains the optional parameters for the JobDetailsClient.Get method.
 func (client *JobDetailsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, jobName string, options *JobDetailsClientGetOptions) (JobDetailsClientGetResponse, error) {
 	var err error
+	const operationName = "JobDetailsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, jobName, options)
 	if err != nil {
 		return JobDetailsClientGetResponse{}, err
@@ -93,7 +97,7 @@ func (client *JobDetailsClient) getCreateRequest(ctx context.Context, vaultName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

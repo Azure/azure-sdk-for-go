@@ -32,7 +32,7 @@ type BackupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, 
 // call GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated with the backup item.
@@ -57,6 +57,10 @@ func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - options - BackupsClientTriggerOptions contains the optional parameters for the BackupsClient.Trigger method.
 func (client *BackupsClient) Trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters BackupRequestResource, options *BackupsClientTriggerOptions) (BackupsClientTriggerResponse, error) {
 	var err error
+	const operationName = "BackupsClient.Trigger"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.triggerCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, options)
 	if err != nil {
 		return BackupsClientTriggerResponse{}, err
@@ -104,7 +108,7 @@ func (client *BackupsClient) triggerCreateRequest(ctx context.Context, vaultName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

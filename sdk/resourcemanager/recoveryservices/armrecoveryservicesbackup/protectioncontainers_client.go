@@ -32,7 +32,7 @@ type ProtectionContainersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectionContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionContainersClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProtectionContainersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewProtectionContainersClient(subscriptionID string, credential azcore.Toke
 // Get - Gets details of the specific container registered to your Recovery Services Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Name of the fabric where the container belongs.
@@ -55,6 +55,10 @@ func NewProtectionContainersClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *ProtectionContainersClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersClientGetOptions) (ProtectionContainersClientGetResponse, error) {
 	var err error
+	const operationName = "ProtectionContainersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, options)
 	if err != nil {
 		return ProtectionContainersClientGetResponse{}, err
@@ -99,7 +103,7 @@ func (client *ProtectionContainersClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,7 +121,7 @@ func (client *ProtectionContainersClient) getHandleResponse(resp *http.Response)
 // Inquire - This is an async operation and the results should be tracked using location header or Azure-async-url.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric Name associated with the container.
@@ -126,6 +130,10 @@ func (client *ProtectionContainersClient) getHandleResponse(resp *http.Response)
 //     method.
 func (client *ProtectionContainersClient) Inquire(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersClientInquireOptions) (ProtectionContainersClientInquireResponse, error) {
 	var err error
+	const operationName = "ProtectionContainersClient.Inquire"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.inquireCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, options)
 	if err != nil {
 		return ProtectionContainersClientInquireResponse{}, err
@@ -169,7 +177,7 @@ func (client *ProtectionContainersClient) inquireCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -183,7 +191,7 @@ func (client *ProtectionContainersClient) inquireCreateRequest(ctx context.Conte
 // GetRefreshOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated the container.
@@ -191,6 +199,10 @@ func (client *ProtectionContainersClient) inquireCreateRequest(ctx context.Conte
 //     method.
 func (client *ProtectionContainersClient) Refresh(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, options *ProtectionContainersClientRefreshOptions) (ProtectionContainersClientRefreshResponse, error) {
 	var err error
+	const operationName = "ProtectionContainersClient.Refresh"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.refreshCreateRequest(ctx, vaultName, resourceGroupName, fabricName, options)
 	if err != nil {
 		return ProtectionContainersClientRefreshResponse{}, err
@@ -230,7 +242,7 @@ func (client *ProtectionContainersClient) refreshCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -239,38 +251,63 @@ func (client *ProtectionContainersClient) refreshCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// Register - Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
+// BeginRegister - Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
 // status, use location header to call get latest status of the operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated with the container.
 //   - containerName - Name of the container to be registered.
 //   - parameters - Request body for operation
-//   - options - ProtectionContainersClientRegisterOptions contains the optional parameters for the ProtectionContainersClient.Register
+//   - options - ProtectionContainersClientBeginRegisterOptions contains the optional parameters for the ProtectionContainersClient.BeginRegister
 //     method.
-func (client *ProtectionContainersClient) Register(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters ProtectionContainerResource, options *ProtectionContainersClientRegisterOptions) (ProtectionContainersClientRegisterResponse, error) {
+func (client *ProtectionContainersClient) BeginRegister(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters ProtectionContainerResource, options *ProtectionContainersClientBeginRegisterOptions) (*runtime.Poller[ProtectionContainersClientRegisterResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.register(ctx, vaultName, resourceGroupName, fabricName, containerName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProtectionContainersClientRegisterResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProtectionContainersClientRegisterResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Register - Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
+// status, use location header to call get latest status of the operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-01
+func (client *ProtectionContainersClient) register(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters ProtectionContainerResource, options *ProtectionContainersClientBeginRegisterOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ProtectionContainersClient.BeginRegister"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.registerCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, parameters, options)
 	if err != nil {
-		return ProtectionContainersClientRegisterResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ProtectionContainersClientRegisterResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return ProtectionContainersClientRegisterResponse{}, err
+		return nil, err
 	}
-	resp, err := client.registerHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // registerCreateRequest creates the Register request.
-func (client *ProtectionContainersClient) registerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters ProtectionContainerResource, options *ProtectionContainersClientRegisterOptions) (*policy.Request, error) {
+func (client *ProtectionContainersClient) registerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters ProtectionContainerResource, options *ProtectionContainersClientBeginRegisterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -297,7 +334,7 @@ func (client *ProtectionContainersClient) registerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -306,21 +343,12 @@ func (client *ProtectionContainersClient) registerCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// registerHandleResponse handles the Register response.
-func (client *ProtectionContainersClient) registerHandleResponse(resp *http.Response) (ProtectionContainersClientRegisterResponse, error) {
-	result := ProtectionContainersClientRegisterResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainerResource); err != nil {
-		return ProtectionContainersClientRegisterResponse{}, err
-	}
-	return result, nil
-}
-
 // Unregister - Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To determine
 // whether the backend service has finished processing the request, call Get Container
 // Operation Result API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Name of the fabric where the container belongs.
@@ -329,6 +357,10 @@ func (client *ProtectionContainersClient) registerHandleResponse(resp *http.Resp
 //     method.
 func (client *ProtectionContainersClient) Unregister(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersClientUnregisterOptions) (ProtectionContainersClientUnregisterResponse, error) {
 	var err error
+	const operationName = "ProtectionContainersClient.Unregister"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.unregisterCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, options)
 	if err != nil {
 		return ProtectionContainersClientUnregisterResponse{}, err
@@ -372,7 +404,7 @@ func (client *ProtectionContainersClient) unregisterCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

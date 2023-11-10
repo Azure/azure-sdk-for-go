@@ -32,7 +32,7 @@ type ItemLevelRecoveryConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewItemLevelRecoveryConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ItemLevelRecoveryConnectionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ItemLevelRecoveryConnectionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func NewItemLevelRecoveryConnectionsClient(subscriptionID string, credential azc
 // operation. To know the status of provisioning, call GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated with the backed up items.
@@ -61,6 +61,10 @@ func NewItemLevelRecoveryConnectionsClient(subscriptionID string, credential azc
 //     method.
 func (client *ItemLevelRecoveryConnectionsClient) Provision(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters ILRRequestResource, options *ItemLevelRecoveryConnectionsClientProvisionOptions) (ItemLevelRecoveryConnectionsClientProvisionResponse, error) {
 	var err error
+	const operationName = "ItemLevelRecoveryConnectionsClient.Provision"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.provisionCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, parameters, options)
 	if err != nil {
 		return ItemLevelRecoveryConnectionsClientProvisionResponse{}, err
@@ -112,7 +116,7 @@ func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -125,7 +129,7 @@ func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx con
 // displaying all recoverable files and folders. This is an asynchronous operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated with the backed up items.
@@ -137,6 +141,10 @@ func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx con
 //     method.
 func (client *ItemLevelRecoveryConnectionsClient) Revoke(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *ItemLevelRecoveryConnectionsClientRevokeOptions) (ItemLevelRecoveryConnectionsClientRevokeResponse, error) {
 	var err error
+	const operationName = "ItemLevelRecoveryConnectionsClient.Revoke"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.revokeCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, options)
 	if err != nil {
 		return ItemLevelRecoveryConnectionsClientRevokeResponse{}, err
@@ -188,7 +196,7 @@ func (client *ItemLevelRecoveryConnectionsClient) revokeCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

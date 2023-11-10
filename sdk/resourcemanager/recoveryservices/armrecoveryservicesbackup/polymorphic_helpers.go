@@ -285,14 +285,14 @@ func unmarshalProtectionIntentClassification(rawMsg json.RawMessage) (Protection
 	}
 	var b ProtectionIntentClassification
 	switch m["protectionIntentItemType"] {
-	case string(ProtectionIntentItemTypeAzureResourceItem):
-		b = &AzureResourceProtectionIntent{}
 	case "ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent":
 		b = &AzureWorkloadAutoProtectionIntent{}
-	case string(ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent):
-		b = &AzureWorkloadContainerAutoProtectionIntent{}
 	case "ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent":
 		b = &AzureWorkloadSQLAutoProtectionIntent{}
+	case string(ProtectionIntentItemTypeAzureResourceItem):
+		b = &AzureResourceProtectionIntent{}
+	case string(ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent):
+		b = &AzureWorkloadContainerAutoProtectionIntent{}
 	case string(ProtectionIntentItemTypeRecoveryServiceVaultItem):
 		b = &AzureRecoveryServiceVaultProtectionIntent{}
 	default:
@@ -460,6 +460,52 @@ func unmarshalSchedulePolicyClassification(rawMsg json.RawMessage) (SchedulePoli
 		b = &SimpleSchedulePolicyV2{}
 	default:
 		b = &SchedulePolicy{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalTieringCostInfoClassification(rawMsg json.RawMessage) (TieringCostInfoClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b TieringCostInfoClassification
+	switch m["objectType"] {
+	case "TieringCostRehydrationInfo":
+		b = &TieringCostRehydrationInfo{}
+	case "TieringCostSavingInfo":
+		b = &TieringCostSavingInfo{}
+	default:
+		b = &TieringCostInfo{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalValidateOperationRequestClassification(rawMsg json.RawMessage) (ValidateOperationRequestClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ValidateOperationRequestClassification
+	switch m["objectType"] {
+	case "ValidateIaasVMRestoreOperationRequest":
+		b = &ValidateIaasVMRestoreOperationRequest{}
+	case "ValidateRestoreOperationRequest":
+		b = &ValidateRestoreOperationRequest{}
+	default:
+		b = &ValidateOperationRequest{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

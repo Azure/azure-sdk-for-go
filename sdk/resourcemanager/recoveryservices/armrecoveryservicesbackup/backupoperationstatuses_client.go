@@ -32,7 +32,7 @@ type BackupOperationStatusesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupOperationStatusesClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupOperationStatusesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func NewBackupOperationStatusesClient(subscriptionID string, credential azcore.T
 // operation. Some operations create jobs. This method returns the list of jobs when the operation is complete.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - operationID - OperationID which represents the operation.
@@ -56,6 +56,10 @@ func NewBackupOperationStatusesClient(subscriptionID string, credential azcore.T
 //     method.
 func (client *BackupOperationStatusesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *BackupOperationStatusesClientGetOptions) (BackupOperationStatusesClientGetResponse, error) {
 	var err error
+	const operationName = "BackupOperationStatusesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, operationID, options)
 	if err != nil {
 		return BackupOperationStatusesClientGetResponse{}, err
@@ -96,7 +100,7 @@ func (client *BackupOperationStatusesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

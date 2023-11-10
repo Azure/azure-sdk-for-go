@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a4ddec441435d1ef766c4f160eda658a69cc5dc2/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/Common/ListJobs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/Common/ListJobs.json
 func ExampleBackupJobsClient_NewListPager_listAllJobs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleBackupJobsClient_NewListPager_listAllJobs() {
 		// 				EntityFriendlyName: to.Ptr("testvm"),
 		// 				JobType: to.Ptr("AzureIaaSVMJob"),
 		// 				Operation: to.Ptr("Backup"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014604Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014Z"); return t}()),
 		// 				Status: to.Ptr("InProgress"),
 		// 				Duration: to.Ptr("PT12.4272909S"),
 		// 				VirtualMachineVersion: to.Ptr("Compute"),
@@ -67,11 +67,11 @@ func ExampleBackupJobsClient_NewListPager_listAllJobs() {
 		// 			Properties: &armrecoveryservicesbackup.AzureIaaSVMJob{
 		// 				ActivityID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				BackupManagementType: to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureIaasVM),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:03.7553376Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:03.755Z"); return t}()),
 		// 				EntityFriendlyName: to.Ptr("testvm"),
 		// 				JobType: to.Ptr("AzureIaaSVMJob"),
 		// 				Operation: to.Ptr("ConfigureBackup"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:30:32.4487085Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:30:32.448Z"); return t}()),
 		// 				Status: to.Ptr("Completed"),
 		// 				Duration: to.Ptr("PT31.3066291S"),
 		// 				VirtualMachineVersion: to.Ptr("Compute"),
@@ -81,7 +81,7 @@ func ExampleBackupJobsClient_NewListPager_listAllJobs() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a4ddec441435d1ef766c4f160eda658a69cc5dc2/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/Common/ListJobsWithAllSupportedFilters.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/Common/ListJobsWithAllSupportedFilters.json
 func ExampleBackupJobsClient_NewListPager_listJobsWithFilters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleBackupJobsClient_NewListPager_listJobsWithFilters() {
 		// 				EntityFriendlyName: to.Ptr("testvm"),
 		// 				JobType: to.Ptr("AzureIaaSVMJob"),
 		// 				Operation: to.Ptr("Backup"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014604Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014Z"); return t}()),
 		// 				Status: to.Ptr("InProgress"),
 		// 				Duration: to.Ptr("PT12.4272909S"),
 		// 				VirtualMachineVersion: to.Ptr("Compute"),
@@ -127,7 +127,7 @@ func ExampleBackupJobsClient_NewListPager_listJobsWithFilters() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a4ddec441435d1ef766c4f160eda658a69cc5dc2/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/Common/ListJobsWithStartTimeAndEndTimeFilters.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/Common/ListJobsWithStartTimeAndEndTimeFilters.json
 func ExampleBackupJobsClient_NewListPager_listJobsWithTimeFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleBackupJobsClient_NewListPager_listJobsWithTimeFilter() {
 		// 				EntityFriendlyName: to.Ptr("testvm"),
 		// 				JobType: to.Ptr("AzureIaaSVMJob"),
 		// 				Operation: to.Ptr("Backup"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014604Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014Z"); return t}()),
 		// 				Status: to.Ptr("InProgress"),
 		// 				Duration: to.Ptr("PT12.4272909S"),
 		// 				VirtualMachineVersion: to.Ptr("Compute"),
@@ -176,11 +176,11 @@ func ExampleBackupJobsClient_NewListPager_listJobsWithTimeFilter() {
 		// 			Properties: &armrecoveryservicesbackup.AzureIaaSVMJob{
 		// 				ActivityID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				BackupManagementType: to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureIaasVM),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:03.7553376Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:03.755Z"); return t}()),
 		// 				EntityFriendlyName: to.Ptr("testvm"),
 		// 				JobType: to.Ptr("AzureIaaSVMJob"),
 		// 				Operation: to.Ptr("ConfigureBackup"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:30:32.4487085Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:30:32.448Z"); return t}()),
 		// 				Status: to.Ptr("Completed"),
 		// 				Duration: to.Ptr("PT31.3066291S"),
 		// 				VirtualMachineVersion: to.Ptr("Compute"),

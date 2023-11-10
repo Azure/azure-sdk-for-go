@@ -32,7 +32,7 @@ type ProtectionPolicyOperationResultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectionPolicyOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionPolicyOperationResultsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProtectionPolicyOperationResultsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewProtectionPolicyOperationResultsClient(subscriptionID string, credential
 // Get - Provides the result of an operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - policyName - Backup policy name whose operation's result needs to be fetched.
@@ -55,6 +55,10 @@ func NewProtectionPolicyOperationResultsClient(subscriptionID string, credential
 //     method.
 func (client *ProtectionPolicyOperationResultsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string, operationID string, options *ProtectionPolicyOperationResultsClientGetOptions) (ProtectionPolicyOperationResultsClientGetResponse, error) {
 	var err error
+	const operationName = "ProtectionPolicyOperationResultsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, policyName, operationID, options)
 	if err != nil {
 		return ProtectionPolicyOperationResultsClientGetResponse{}, err
@@ -99,7 +103,7 @@ func (client *ProtectionPolicyOperationResultsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

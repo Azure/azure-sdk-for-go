@@ -32,7 +32,7 @@ type ProtectedItemOperationResultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectedItemOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectedItemOperationResultsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProtectedItemOperationResultsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewProtectedItemOperationResultsClient(subscriptionID string, credential az
 // Get - Fetches the result of any operation on the backup item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated with the backup item.
@@ -57,6 +57,10 @@ func NewProtectedItemOperationResultsClient(subscriptionID string, credential az
 //     method.
 func (client *ProtectedItemOperationResultsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, operationID string, options *ProtectedItemOperationResultsClientGetOptions) (ProtectedItemOperationResultsClientGetResponse, error) {
 	var err error
+	const operationName = "ProtectedItemOperationResultsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationID, options)
 	if err != nil {
 		return ProtectedItemOperationResultsClientGetResponse{}, err
@@ -109,7 +113,7 @@ func (client *ProtectedItemOperationResultsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

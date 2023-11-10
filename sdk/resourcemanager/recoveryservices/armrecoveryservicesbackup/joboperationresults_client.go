@@ -32,7 +32,7 @@ type JobOperationResultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobOperationResultsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobOperationResultsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewJobOperationResultsClient(subscriptionID string, credential azcore.Token
 // Get - Fetches the result of any operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - jobName - Job name whose operation result has to be fetched.
@@ -54,6 +54,10 @@ func NewJobOperationResultsClient(subscriptionID string, credential azcore.Token
 //   - options - JobOperationResultsClientGetOptions contains the optional parameters for the JobOperationResultsClient.Get method.
 func (client *JobOperationResultsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, jobName string, operationID string, options *JobOperationResultsClientGetOptions) (JobOperationResultsClientGetResponse, error) {
 	var err error
+	const operationName = "JobOperationResultsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, jobName, operationID, options)
 	if err != nil {
 		return JobOperationResultsClientGetResponse{}, err
@@ -97,7 +101,7 @@ func (client *JobOperationResultsClient) getCreateRequest(ctx context.Context, v
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

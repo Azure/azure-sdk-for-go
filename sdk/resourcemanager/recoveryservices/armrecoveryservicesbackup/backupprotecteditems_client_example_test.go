@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a4ddec441435d1ef766c4f160eda658a69cc5dc2/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/AzureIaasVm/BackupProtectedItems_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/AzureIaasVm/BackupProtectedItems_List.json
 func ExampleBackupProtectedItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleBackupProtectedItemsClient_NewListPager() {
 		// 			Properties: &armrecoveryservicesbackup.AzureIaaSClassicComputeVMProtectedItem{
 		// 				BackupManagementType: to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureIaasVM),
 		// 				ContainerName: to.Ptr("iaasvmcontainer;iaasvm-rg;iaasvm-1"),
-		// 				LastRecoveryPoint: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-22T12:25:32.048723Z"); return t}()),
+		// 				LastRecoveryPoint: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-22T12:25:32.048Z"); return t}()),
 		// 				PolicyID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/NetSDKTestRsVault/backupPolicies/testPolicy1"),
 		// 				ProtectedItemType: to.Ptr("Microsoft.ClassicCompute/virtualMachines"),
 		// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.ClassicCompute/virtualMachines/iaasvm-1"),
@@ -59,7 +59,7 @@ func ExampleBackupProtectedItemsClient_NewListPager() {
 		// 				FriendlyName: to.Ptr("iaasvm-1"),
 		// 				HealthStatus: to.Ptr(armrecoveryservicesbackup.HealthStatusPassed),
 		// 				LastBackupStatus: to.Ptr("Completed"),
-		// 				LastBackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-22T12:25:32.048723Z"); return t}()),
+		// 				LastBackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-22T12:25:32.048Z"); return t}()),
 		// 				ProtectedItemDataID: to.Ptr("636482643132986882"),
 		// 				ProtectionState: to.Ptr(armrecoveryservicesbackup.ProtectionStateProtected),
 		// 				ProtectionStatus: to.Ptr("Healthy"),

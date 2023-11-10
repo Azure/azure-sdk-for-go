@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a4ddec441435d1ef766c4f160eda658a69cc5dc2/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/AzureIaasVm/ProtectionPolicyOperationResults_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/AzureIaasVm/ProtectionPolicyOperationResults_Get.json
 func ExampleProtectionPolicyOperationResultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,14 +50,14 @@ func ExampleProtectionPolicyOperationResultsClient_Get() {
 	// 					DurationType: to.Ptr(armrecoveryservicesbackup.RetentionDurationTypeDays),
 	// 				},
 	// 				RetentionTimes: []*time.Time{
-	// 					to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-24T02:00:00Z"); return t}())},
+	// 					to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-24T02:00:00.000Z"); return t}())},
 	// 				},
 	// 			},
 	// 			SchedulePolicy: &armrecoveryservicesbackup.SimpleSchedulePolicy{
 	// 				SchedulePolicyType: to.Ptr("SimpleSchedulePolicy"),
 	// 				ScheduleRunFrequency: to.Ptr(armrecoveryservicesbackup.ScheduleRunTypeDaily),
 	// 				ScheduleRunTimes: []*time.Time{
-	// 					to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-24T02:00:00Z"); return t}())},
+	// 					to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-24T02:00:00.000Z"); return t}())},
 	// 					ScheduleWeeklyFrequency: to.Ptr[int32](0),
 	// 				},
 	// 				TimeZone: to.Ptr("Pacific Standard Time"),

@@ -32,7 +32,7 @@ type ResourceGuardProxiesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceGuardProxiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceGuardProxiesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ResourceGuardProxiesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func NewResourceGuardProxiesClient(subscriptionID string, credential azcore.Toke
 
 // NewGetPager - List the ResourceGuardProxies under vault
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - ResourceGuardProxiesClientGetOptions contains the optional parameters for the ResourceGuardProxiesClient.NewGetPager
@@ -56,25 +56,20 @@ func (client *ResourceGuardProxiesClient) NewGetPager(vaultName string, resource
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceGuardProxiesClientGetResponse) (ResourceGuardProxiesClientGetResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getCreateRequest(ctx, vaultName, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceGuardProxiesClient.NewGetPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getCreateRequest(ctx, vaultName, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ResourceGuardProxiesClientGetResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceGuardProxiesClientGetResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceGuardProxiesClientGetResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -98,7 +93,7 @@ func (client *ResourceGuardProxiesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

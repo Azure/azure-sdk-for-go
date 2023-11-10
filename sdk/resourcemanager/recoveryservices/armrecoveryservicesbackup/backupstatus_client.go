@@ -32,7 +32,7 @@ type BackupStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupStatusClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupStatusClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,12 +46,16 @@ func NewBackupStatusClient(subscriptionID string, credential azcore.TokenCredent
 // Get - Get the container backup status
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - azureRegion - Azure region to hit Api
 //   - parameters - Container Backup Status Request
 //   - options - BackupStatusClientGetOptions contains the optional parameters for the BackupStatusClient.Get method.
 func (client *BackupStatusClient) Get(ctx context.Context, azureRegion string, parameters BackupStatusRequest, options *BackupStatusClientGetOptions) (BackupStatusClientGetResponse, error) {
 	var err error
+	const operationName = "BackupStatusClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, azureRegion, parameters, options)
 	if err != nil {
 		return BackupStatusClientGetResponse{}, err
@@ -84,7 +88,7 @@ func (client *BackupStatusClient) getCreateRequest(ctx context.Context, azureReg
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

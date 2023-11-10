@@ -32,7 +32,7 @@ type BackupEnginesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupEnginesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupEnginesClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupEnginesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,13 +46,17 @@ func NewBackupEnginesClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Returns backup management server registered to Recovery Services Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - backupEngineName - Name of the backup management server.
 //   - options - BackupEnginesClientGetOptions contains the optional parameters for the BackupEnginesClient.Get method.
 func (client *BackupEnginesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, backupEngineName string, options *BackupEnginesClientGetOptions) (BackupEnginesClientGetResponse, error) {
 	var err error
+	const operationName = "BackupEnginesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, backupEngineName, options)
 	if err != nil {
 		return BackupEnginesClientGetResponse{}, err
@@ -93,7 +97,7 @@ func (client *BackupEnginesClient) getCreateRequest(ctx context.Context, vaultNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -116,7 +120,7 @@ func (client *BackupEnginesClient) getHandleResponse(resp *http.Response) (Backu
 
 // NewListPager - Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupEnginesClientListOptions contains the optional parameters for the BackupEnginesClient.NewListPager method.
@@ -126,25 +130,20 @@ func (client *BackupEnginesClient) NewListPager(vaultName string, resourceGroupN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *BackupEnginesClientListResponse) (BackupEnginesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BackupEnginesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return BackupEnginesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return BackupEnginesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return BackupEnginesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -168,7 +167,7 @@ func (client *BackupEnginesClient) listCreateRequest(ctx context.Context, vaultN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a4ddec441435d1ef766c4f160eda658a69cc5dc2/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/Common/GetJobDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/Common/GetJobDetails.json
 func ExampleJobDetailsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleJobDetailsClient_Get() {
 	// 		EntityFriendlyName: to.Ptr("testvm"),
 	// 		JobType: to.Ptr("AzureIaaSVMJob"),
 	// 		Operation: to.Ptr("Backup"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014604Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014Z"); return t}()),
 	// 		Status: to.Ptr("InProgress"),
 	// 		Duration: to.Ptr("PT9.8782791S"),
 	// 		ExtendedInfo: &armrecoveryservicesbackup.AzureIaaSVMJobExtendedInfo{

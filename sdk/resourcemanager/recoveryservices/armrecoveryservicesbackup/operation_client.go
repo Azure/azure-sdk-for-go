@@ -32,7 +32,7 @@ type OperationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOperationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationClient, error) {
-	cl, err := arm.NewClient(moduleName+".OperationClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,13 +46,17 @@ func NewOperationClient(subscriptionID string, credential azcore.TokenCredential
 // Validate - Validate operation for specified backed up item. This is a synchronous operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - parameters - resource validate operation request
 //   - options - OperationClientValidateOptions contains the optional parameters for the OperationClient.Validate method.
-func (client *OperationClient) Validate(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestClassification, options *OperationClientValidateOptions) (OperationClientValidateResponse, error) {
+func (client *OperationClient) Validate(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestResource, options *OperationClientValidateOptions) (OperationClientValidateResponse, error) {
 	var err error
+	const operationName = "OperationClient.Validate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.validateCreateRequest(ctx, vaultName, resourceGroupName, parameters, options)
 	if err != nil {
 		return OperationClientValidateResponse{}, err
@@ -70,7 +74,7 @@ func (client *OperationClient) Validate(ctx context.Context, vaultName string, r
 }
 
 // validateCreateRequest creates the Validate request.
-func (client *OperationClient) validateCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestClassification, options *OperationClientValidateOptions) (*policy.Request, error) {
+func (client *OperationClient) validateCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestResource, options *OperationClientValidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupValidateOperation"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -89,7 +93,7 @@ func (client *OperationClient) validateCreateRequest(ctx context.Context, vaultN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

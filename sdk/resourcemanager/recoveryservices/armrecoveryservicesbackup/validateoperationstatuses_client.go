@@ -32,7 +32,7 @@ type ValidateOperationStatusesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewValidateOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ValidateOperationStatusesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ValidateOperationStatusesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func NewValidateOperationStatusesClient(subscriptionID string, credential azcore
 // operation has completed, this method returns the list of errors obtained while validating the operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - operationID - OperationID represents the operation whose status needs to be fetched.
@@ -56,6 +56,10 @@ func NewValidateOperationStatusesClient(subscriptionID string, credential azcore
 //     method.
 func (client *ValidateOperationStatusesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *ValidateOperationStatusesClientGetOptions) (ValidateOperationStatusesClientGetResponse, error) {
 	var err error
+	const operationName = "ValidateOperationStatusesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, operationID, options)
 	if err != nil {
 		return ValidateOperationStatusesClientGetResponse{}, err
@@ -96,7 +100,7 @@ func (client *ValidateOperationStatusesClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

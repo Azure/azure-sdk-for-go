@@ -1,5 +1,59 @@
 # Release History
 
+## 2.2.0-beta.2 (2023-11-24)
+### Breaking Changes
+
+- Function `timeRFC3339.MarshalText` has been removed
+- Function `*timeRFC3339.Parse` has been removed
+- Function `*timeRFC3339.UnmarshalText` has been removed
+- Struct `ClientAuthentication` has been removed
+- Struct `ClientCertificateSubjectDistinguishedName` has been removed
+- Struct `ClientCertificateThumbprint` has been removed
+- Field `Authentication` of struct `ClientProperties` has been removed
+
+### Features Added
+
+- New value `DeliveryModePush` added to enum type `DeliveryMode`
+- New value `EndpointTypeMonitorAlert`, `EndpointTypeNamespaceTopic` added to enum type `EndpointType`
+- New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
+- New enum type `MonitorAlertSeverity` with values `MonitorAlertSeveritySev0`, `MonitorAlertSeveritySev1`, `MonitorAlertSeveritySev2`, `MonitorAlertSeveritySev3`, `MonitorAlertSeveritySev4`
+- New enum type `NetworkSecurityPerimeterAssociationAccessMode` with values `NetworkSecurityPerimeterAssociationAccessModeAudit`, `NetworkSecurityPerimeterAssociationAccessModeEnforced`, `NetworkSecurityPerimeterAssociationAccessModeLearning`
+- New enum type `NetworkSecurityPerimeterConfigProvisioningState` with values `NetworkSecurityPerimeterConfigProvisioningStateAccepted`, `NetworkSecurityPerimeterConfigProvisioningStateCanceled`, `NetworkSecurityPerimeterConfigProvisioningStateCreating`, `NetworkSecurityPerimeterConfigProvisioningStateDeleted`, `NetworkSecurityPerimeterConfigProvisioningStateDeleting`, `NetworkSecurityPerimeterConfigProvisioningStateFailed`, `NetworkSecurityPerimeterConfigProvisioningStateSucceeded`, `NetworkSecurityPerimeterConfigProvisioningStateUpdating`
+- New enum type `NetworkSecurityPerimeterConfigurationIssueSeverity` with values `NetworkSecurityPerimeterConfigurationIssueSeverityError`, `NetworkSecurityPerimeterConfigurationIssueSeverityWarning`
+- New enum type `NetworkSecurityPerimeterConfigurationIssueType` with values `NetworkSecurityPerimeterConfigurationIssueTypeConfigurationPropagationFailure`, `NetworkSecurityPerimeterConfigurationIssueTypeMissingIdentityConfiguration`, `NetworkSecurityPerimeterConfigurationIssueTypeMissingPerimeterConfiguration`, `NetworkSecurityPerimeterConfigurationIssueTypeOther`
+- New enum type `NetworkSecurityPerimeterProfileAccessRuleDirection` with values `NetworkSecurityPerimeterProfileAccessRuleDirectionInbound`, `NetworkSecurityPerimeterProfileAccessRuleDirectionOutbound`
+- New enum type `NetworkSecurityPerimeterResourceType` with values `NetworkSecurityPerimeterResourceTypeDomains`, `NetworkSecurityPerimeterResourceTypeTopics`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient`
+- New function `*MonitorAlertEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `*NamespaceTopicEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `*NamespaceTopicEventSubscriptionsClient.GetDeliveryAttributes(context.Context, string, string, string, string, *NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesOptions) (NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse, error)`
+- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
+- New function `*dateTimeRFC3339.Parse(string) error`
+- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
+- New function `NewNetworkSecurityPerimeterConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.Get(context.Context, string, NetworkSecurityPerimeterResourceType, string, string, string, *NetworkSecurityPerimeterConfigurationsClientGetOptions) (NetworkSecurityPerimeterConfigurationsClientGetResponse, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.NewListPager(string, NetworkSecurityPerimeterResourceType, string, *NetworkSecurityPerimeterConfigurationsClientListOptions) *runtime.Pager[NetworkSecurityPerimeterConfigurationsClientListResponse]`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.BeginReconcile(context.Context, string, NetworkSecurityPerimeterResourceType, string, string, string, *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*runtime.Poller[NetworkSecurityPerimeterConfigurationsClientReconcileResponse], error)`
+- New struct `MonitorAlertEventSubscriptionDestination`
+- New struct `MonitorAlertEventSubscriptionDestinationProperties`
+- New struct `NamespaceTopicEventSubscriptionDestination`
+- New struct `NamespaceTopicEventSubscriptionDestinationProperties`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationIssues`
+- New struct `NetworkSecurityPerimeterConfigurationIssuesProperties`
+- New struct `NetworkSecurityPerimeterConfigurationList`
+- New struct `NetworkSecurityPerimeterConfigurationProfile`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `NetworkSecurityPerimeterInfo`
+- New struct `NetworkSecurityPerimeterProfileAccessRule`
+- New struct `NetworkSecurityPerimeterProfileAccessRuleProperties`
+- New struct `PushInfo`
+- New struct `ResourceAssociation`
+- New struct `TopicTypeAdditionalEnforcedPermission`
+- New field `Push` in struct `DeliveryConfiguration`
+- New field `AdditionalEnforcedPermissions` in struct `TopicTypeProperties`
+
+
 ## 2.2.0-beta.1 (2023-05-26)
 ### Features Added
 

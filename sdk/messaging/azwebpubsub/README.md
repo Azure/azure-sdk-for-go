@@ -44,7 +44,46 @@ You can also create a client using a connection string.
 
 #### Using a service principal
 
+Constructing the client requires your Web PubSub's endpoint URL, which you can get from the Azure Portal (`Host name` value on overview page with `https` scheme).
+
+```go
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub"
+	"log"
+)
+
+func main() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+
+	client, err := azwebpubsub.NewClient("<your Web PubSub's endpoint URL>", "<your hub name>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+}
+```
+
 #### Using a connection string
+
+ConnectionString can be found in the **Keys** tab from your Web PubSub resource portal.
+
+```go
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub"
+	"log"
+)
+
+func main() {
+	client, err := azwebpubsub.NewClientFromConnectionString("<your Web PubSub's connection string>", "<your hub name>", nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+}
+```
 
 # Key concepts
 

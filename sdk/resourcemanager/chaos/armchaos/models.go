@@ -10,18 +10,6 @@ package armchaos
 
 import "time"
 
-// Action - Model that represents the base action model.
-type Action struct {
-	// REQUIRED; String that represents a Capability URN.
-	Name *string
-
-	// REQUIRED; Enum that discriminates between action models.
-	Type *string
-}
-
-// GetAction implements the ActionClassification interface for type Action.
-func (a *Action) GetAction() *Action { return a }
-
 // ActionStatus - Model that represents the an action and its status.
 type ActionStatus struct {
 	// READ-ONLY; The id of the action status.
@@ -41,15 +29,6 @@ type ActionStatus struct {
 
 	// READ-ONLY; The array of targets.
 	Targets []*ExperimentExecutionActionTargetDetailsProperties
-}
-
-// Branch - Model that represents a branch in the step.
-type Branch struct {
-	// REQUIRED; List of actions.
-	Actions []ActionClassification
-
-	// REQUIRED; String of the branch name.
-	Name *string
 }
 
 // BranchStatus - Model that represents the a list of actions and action statuses.
@@ -199,9 +178,9 @@ type ContinuousAction struct {
 	Type *string
 }
 
-// GetAction implements the ActionClassification interface for type ContinuousAction.
-func (c *ContinuousAction) GetAction() *Action {
-	return &Action{
+// GetExperimentAction implements the ExperimentActionClassification interface for type ContinuousAction.
+func (c *ContinuousAction) GetExperimentAction() *ExperimentAction {
+	return &ExperimentAction{
 		Name: c.Name,
 		Type: c.Type,
 	}
@@ -219,9 +198,9 @@ type DelayAction struct {
 	Type *string
 }
 
-// GetAction implements the ActionClassification interface for type DelayAction.
-func (d *DelayAction) GetAction() *Action {
-	return &Action{
+// GetExperimentAction implements the ExperimentActionClassification interface for type DelayAction.
+func (d *DelayAction) GetExperimentAction() *ExperimentAction {
+	return &ExperimentAction{
 		Name: d.Name,
 		Type: d.Type,
 	}
@@ -242,9 +221,9 @@ type DiscreteAction struct {
 	Type *string
 }
 
-// GetAction implements the ActionClassification interface for type DiscreteAction.
-func (d *DiscreteAction) GetAction() *Action {
-	return &Action{
+// GetExperimentAction implements the ExperimentActionClassification interface for type DiscreteAction.
+func (d *DiscreteAction) GetExperimentAction() *ExperimentAction {
+	return &ExperimentAction{
 		Name: d.Name,
 		Type: d.Type,
 	}
@@ -311,13 +290,40 @@ type Experiment struct {
 	Type *string
 }
 
-// ExperimentCancelOperationResult - Model that represents the result of a cancel Experiment operation.
-type ExperimentCancelOperationResult struct {
-	// READ-ONLY; String of the Experiment name.
+// ExperimentAction - Model that represents the base action model. 9 total per experiment.
+type ExperimentAction struct {
+	// REQUIRED; String that represents a Capability URN.
 	Name *string
 
-	// READ-ONLY; URL to retrieve the Experiment status.
-	StatusURL *string
+	// REQUIRED; Enum that discriminates between action models.
+	Type *string
+}
+
+// GetExperimentAction implements the ExperimentActionClassification interface for type ExperimentAction.
+func (e *ExperimentAction) GetExperimentAction() *ExperimentAction { return e }
+
+// ExperimentBranch - Model that represents a branch in the step. 9 total per experiment.
+type ExperimentBranch struct {
+	// REQUIRED; List of actions.
+	Actions []ExperimentActionClassification
+
+	// REQUIRED; String of the branch name.
+	Name *string
+}
+
+// ExperimentExecution - Model that represents the execution of a Experiment.
+type ExperimentExecution struct {
+	// The properties of experiment execution status.
+	Properties *ExperimentExecutionProperties
+
+	// READ-ONLY; String of the fully qualified resource ID.
+	ID *string
+
+	// READ-ONLY; String of the resource name.
+	Name *string
+
+	// READ-ONLY; String of the resource type.
+	Type *string
 }
 
 // ExperimentExecutionActionTargetDetailsError - Model that represents the Experiment action target details error model.
@@ -348,7 +354,7 @@ type ExperimentExecutionActionTargetDetailsProperties struct {
 	TargetFailedTime *time.Time
 }
 
-// ExperimentExecutionDetails - Model that represents the execution details of a Experiment.
+// ExperimentExecutionDetails - Model that represents the execution details of an Experiment.
 type ExperimentExecutionDetails struct {
 	// READ-ONLY; String of the fully qualified resource ID.
 	ID *string
@@ -363,46 +369,52 @@ type ExperimentExecutionDetails struct {
 	Type *string
 }
 
-// ExperimentExecutionDetailsListResult - Model that represents a list of Experiment execution details and a link for pagination.
-type ExperimentExecutionDetailsListResult struct {
-	// READ-ONLY; URL to retrieve the next page of Experiment execution details.
-	NextLink *string
-
-	// READ-ONLY; List of Experiment execution details.
-	Value []*ExperimentExecutionDetails
-}
-
-// ExperimentExecutionDetailsProperties - Model that represents the Experiment execution details properties model.
+// ExperimentExecutionDetailsProperties - Model that represents the extended properties of an experiment execution.
 type ExperimentExecutionDetailsProperties struct {
-	// READ-ONLY; String that represents the created date time.
-	CreatedDateTime *time.Time
-
-	// READ-ONLY; The id of the experiment.
-	ExperimentID *string
-
 	// READ-ONLY; The reason why the execution failed.
 	FailureReason *string
 
 	// READ-ONLY; String that represents the last action date time.
-	LastActionDateTime *time.Time
+	LastActionAt *time.Time
 
 	// READ-ONLY; The information of the experiment run.
 	RunInformation *ExperimentExecutionDetailsPropertiesRunInformation
 
 	// READ-ONLY; String that represents the start date time.
-	StartDateTime *time.Time
+	StartedAt *time.Time
 
-	// READ-ONLY; The value of the status of the experiment execution.
+	// READ-ONLY; The status of the execution.
 	Status *string
 
 	// READ-ONLY; String that represents the stop date time.
-	StopDateTime *time.Time
+	StoppedAt *time.Time
 }
 
 // ExperimentExecutionDetailsPropertiesRunInformation - The information of the experiment run.
 type ExperimentExecutionDetailsPropertiesRunInformation struct {
 	// READ-ONLY; The steps of the experiment run.
 	Steps []*StepStatus
+}
+
+// ExperimentExecutionListResult - Model that represents a list of Experiment executions and a link for pagination.
+type ExperimentExecutionListResult struct {
+	// READ-ONLY; URL to retrieve the next page of Experiment executions.
+	NextLink *string
+
+	// READ-ONLY; List of Experiment executions.
+	Value []*ExperimentExecution
+}
+
+// ExperimentExecutionProperties - Model that represents the execution properties of an Experiment.
+type ExperimentExecutionProperties struct {
+	// READ-ONLY; String that represents the start date time.
+	StartedAt *time.Time
+
+	// READ-ONLY; The status of the execution.
+	Status *string
+
+	// READ-ONLY; String that represents the stop date time.
+	StoppedAt *time.Time
 }
 
 // ExperimentListResult - Model that represents a list of Experiment resources and a link for pagination.
@@ -417,58 +429,22 @@ type ExperimentListResult struct {
 // ExperimentProperties - Model that represents the Experiment properties model.
 type ExperimentProperties struct {
 	// REQUIRED; List of selectors.
-	Selectors []SelectorClassification
+	Selectors []TargetSelectorClassification
 
 	// REQUIRED; List of steps.
-	Steps []*Step
+	Steps []*ExperimentStep
 
-	// A boolean value that indicates if experiment should be started on creation or not.
-	StartOnCreation *bool
+	// READ-ONLY; Most recent provisioning state for the given experiment resource.
+	ProvisioningState *ProvisioningState
 }
 
-// ExperimentStartOperationResult - Model that represents the result of a start Experiment operation.
-type ExperimentStartOperationResult struct {
-	// READ-ONLY; String of the Experiment name.
+// ExperimentStep - Model that represents a step in the Experiment resource.
+type ExperimentStep struct {
+	// REQUIRED; List of branches.
+	Branches []*ExperimentBranch
+
+	// REQUIRED; String of the step name.
 	Name *string
-
-	// READ-ONLY; URL to retrieve the Experiment status.
-	StatusURL *string
-}
-
-// ExperimentStatus - Model that represents the status of a Experiment.
-type ExperimentStatus struct {
-	// The properties of experiment execution status.
-	Properties *ExperimentStatusProperties
-
-	// READ-ONLY; String of the fully qualified resource ID.
-	ID *string
-
-	// READ-ONLY; String of the resource name.
-	Name *string
-
-	// READ-ONLY; String of the resource type.
-	Type *string
-}
-
-// ExperimentStatusListResult - Model that represents a list of Experiment statuses and a link for pagination.
-type ExperimentStatusListResult struct {
-	// READ-ONLY; URL to retrieve the next page of Experiment statuses.
-	NextLink *string
-
-	// READ-ONLY; List of Experiment statuses.
-	Value []*ExperimentStatus
-}
-
-// ExperimentStatusProperties - Model that represents the Experiment status properties model.
-type ExperimentStatusProperties struct {
-	// READ-ONLY; String that represents the created date time of a Experiment.
-	CreatedDateUTC *time.Time
-
-	// READ-ONLY; String that represents the end date time of a Experiment.
-	EndDateUTC *time.Time
-
-	// READ-ONLY; String that represents the status of a Experiment.
-	Status *string
 }
 
 // ExperimentUpdate - Describes an experiment update.
@@ -477,15 +453,6 @@ type ExperimentUpdate struct {
 	Identity *ResourceIdentity
 }
 
-// Filter - Model that represents available filter types that can be applied to a targets list.
-type Filter struct {
-	// REQUIRED; Enum that discriminates between filter types. Currently only Simple type is supported.
-	Type *FilterType
-}
-
-// GetFilter implements the FilterClassification interface for type Filter.
-func (f *Filter) GetFilter() *Filter { return f }
-
 // KeyValuePair - A map to describe the settings of an action.
 type KeyValuePair struct {
 	// REQUIRED; The name of the setting for the action.
@@ -493,34 +460,6 @@ type KeyValuePair struct {
 
 	// REQUIRED; The value of the setting for the action.
 	Value *string
-}
-
-// ListSelector - Model that represents a list selector.
-type ListSelector struct {
-	// REQUIRED; String of the selector ID.
-	ID *string
-
-	// REQUIRED; List of Target references.
-	Targets []*TargetReference
-
-	// REQUIRED; Enum of the selector type.
-	Type *SelectorType
-
-	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]any
-
-	// Model that represents available filter types that can be applied to a targets list.
-	Filter FilterClassification
-}
-
-// GetSelector implements the SelectorClassification interface for type ListSelector.
-func (l *ListSelector) GetSelector() *Selector {
-	return &Selector{
-		AdditionalProperties: l.AdditionalProperties,
-		Filter:               l.Filter,
-		ID:                   l.ID,
-		Type:                 l.Type,
-	}
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -572,35 +511,25 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
-// QuerySelector - Model that represents a query selector.
-type QuerySelector struct {
-	// REQUIRED; String of the selector ID.
+// OperationStatus - The status of operation.
+type OperationStatus struct {
+	// The end time of the operation.
+	EndTime *string
+
+	// The error object.
+	Error *ErrorDetail
+
+	// The operation Id.
 	ID *string
 
-	// REQUIRED; Azure Resource Graph (ARG) Query Language query for target resources.
-	QueryString *string
+	// The operation name.
+	Name *string
 
-	// REQUIRED; Subscription id list to scope resource query.
-	SubscriptionIDs []*string
+	// The start time of the operation.
+	StartTime *string
 
-	// REQUIRED; Enum of the selector type.
-	Type *SelectorType
-
-	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]any
-
-	// Model that represents available filter types that can be applied to a targets list.
-	Filter FilterClassification
-}
-
-// GetSelector implements the SelectorClassification interface for type QuerySelector.
-func (q *QuerySelector) GetSelector() *Selector {
-	return &Selector{
-		AdditionalProperties: q.AdditionalProperties,
-		Filter:               q.Filter,
-		ID:                   q.ID,
-		Type:                 q.Type,
-	}
+	// The status of the operation.
+	Status *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -630,55 +559,6 @@ type ResourceIdentity struct {
 
 	// READ-ONLY; GUID that represents the tenant ID of this resource identity.
 	TenantID *string
-}
-
-// Selector - Model that represents a selector in the Experiment resource.
-type Selector struct {
-	// REQUIRED; String of the selector ID.
-	ID *string
-
-	// REQUIRED; Enum of the selector type.
-	Type *SelectorType
-
-	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]any
-
-	// Model that represents available filter types that can be applied to a targets list.
-	Filter FilterClassification
-}
-
-// GetSelector implements the SelectorClassification interface for type Selector.
-func (s *Selector) GetSelector() *Selector { return s }
-
-// SimpleFilter - Model that represents a simple target filter.
-type SimpleFilter struct {
-	// REQUIRED; Enum that discriminates between filter types. Currently only Simple type is supported.
-	Type *FilterType
-
-	// Model that represents the Simple filter parameters.
-	Parameters *SimpleFilterParameters
-}
-
-// GetFilter implements the FilterClassification interface for type SimpleFilter.
-func (s *SimpleFilter) GetFilter() *Filter {
-	return &Filter{
-		Type: s.Type,
-	}
-}
-
-// SimpleFilterParameters - Model that represents the Simple filter parameters.
-type SimpleFilterParameters struct {
-	// List of Azure availability zones to filter targets by.
-	Zones []*string
-}
-
-// Step - Model that represents a step in the Experiment resource.
-type Step struct {
-	// REQUIRED; List of branches.
-	Branches []*Branch
-
-	// REQUIRED; String of the step name.
-	Name *string
 }
 
 // StepStatus - Model that represents the a list of branches and branch statuses.
@@ -738,6 +618,15 @@ type Target struct {
 	Type *string
 }
 
+// TargetFilter - Model that represents available filter types that can be applied to a targets list.
+type TargetFilter struct {
+	// REQUIRED; Enum that discriminates between filter types. Currently only Simple type is supported.
+	Type *FilterType
+}
+
+// GetTargetFilter implements the TargetFilterClassification interface for type TargetFilter.
+func (t *TargetFilter) GetTargetFilter() *TargetFilter { return t }
+
 // TargetListResult - Model that represents a list of Target resources and a link for pagination.
 type TargetListResult struct {
 	// READ-ONLY; URL to retrieve the next page of Target resources.
@@ -747,6 +636,65 @@ type TargetListResult struct {
 	Value []*Target
 }
 
+// TargetListSelector - Model that represents a list selector.
+type TargetListSelector struct {
+	// REQUIRED; String of the selector ID.
+	ID *string
+
+	// REQUIRED; List of Target references.
+	Targets []*TargetReference
+
+	// REQUIRED; Enum of the selector type.
+	Type *SelectorType
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// Model that represents available filter types that can be applied to a targets list.
+	Filter TargetFilterClassification
+}
+
+// GetTargetSelector implements the TargetSelectorClassification interface for type TargetListSelector.
+func (t *TargetListSelector) GetTargetSelector() *TargetSelector {
+	return &TargetSelector{
+		AdditionalProperties: t.AdditionalProperties,
+		Filter:               t.Filter,
+		ID:                   t.ID,
+		Type:                 t.Type,
+	}
+}
+
+// TargetQuerySelector - Model that represents a query selector.
+type TargetQuerySelector struct {
+	// REQUIRED; String of the selector ID.
+	ID *string
+
+	// REQUIRED; Azure Resource Graph (ARG) Query Language query for target resources.
+	QueryString *string
+
+	// REQUIRED; Subscription id list to scope resource query.
+	SubscriptionIDs []*string
+
+	// REQUIRED; Enum of the selector type.
+	Type *SelectorType
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// Model that represents available filter types that can be applied to a targets list.
+	Filter TargetFilterClassification
+}
+
+// GetTargetSelector implements the TargetSelectorClassification interface for type TargetQuerySelector.
+func (t *TargetQuerySelector) GetTargetSelector() *TargetSelector {
+	return &TargetSelector{
+		AdditionalProperties: t.AdditionalProperties,
+		Filter:               t.Filter,
+		ID:                   t.ID,
+		Type:                 t.Type,
+	}
+}
+
 // TargetReference - Model that represents a reference to a Target in the selector.
 type TargetReference struct {
 	// REQUIRED; String of the resource ID of a Target resource.
@@ -754,6 +702,46 @@ type TargetReference struct {
 
 	// REQUIRED; Enum of the Target reference type.
 	Type *TargetReferenceType
+}
+
+// TargetSelector - Model that represents a selector in the Experiment resource.
+type TargetSelector struct {
+	// REQUIRED; String of the selector ID.
+	ID *string
+
+	// REQUIRED; Enum of the selector type.
+	Type *SelectorType
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// Model that represents available filter types that can be applied to a targets list.
+	Filter TargetFilterClassification
+}
+
+// GetTargetSelector implements the TargetSelectorClassification interface for type TargetSelector.
+func (t *TargetSelector) GetTargetSelector() *TargetSelector { return t }
+
+// TargetSimpleFilter - Model that represents a simple target filter.
+type TargetSimpleFilter struct {
+	// REQUIRED; Enum that discriminates between filter types. Currently only Simple type is supported.
+	Type *FilterType
+
+	// Model that represents the Simple filter parameters.
+	Parameters *TargetSimpleFilterParameters
+}
+
+// GetTargetFilter implements the TargetFilterClassification interface for type TargetSimpleFilter.
+func (t *TargetSimpleFilter) GetTargetFilter() *TargetFilter {
+	return &TargetFilter{
+		Type: t.Type,
+	}
+}
+
+// TargetSimpleFilterParameters - Model that represents the Simple filter parameters.
+type TargetSimpleFilterParameters struct {
+	// List of Azure availability zones to filter targets by.
+	Zones []*string
 }
 
 // TargetType - Model that represents a Target Type resource.

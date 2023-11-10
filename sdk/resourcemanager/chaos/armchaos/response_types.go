@@ -43,27 +43,32 @@ type CapabilityTypesClientListResponse struct {
 	CapabilityTypeListResult
 }
 
-// ExperimentsClientCancelResponse contains the response from method ExperimentsClient.Cancel.
+// ExperimentsClientCancelResponse contains the response from method ExperimentsClient.BeginCancel.
 type ExperimentsClientCancelResponse struct {
-	// Model that represents the result of a cancel Experiment operation.
-	ExperimentCancelOperationResult
+	// placeholder for future response values
 }
 
-// ExperimentsClientCreateOrUpdateResponse contains the response from method ExperimentsClient.CreateOrUpdate.
+// ExperimentsClientCreateOrUpdateResponse contains the response from method ExperimentsClient.BeginCreateOrUpdate.
 type ExperimentsClientCreateOrUpdateResponse struct {
 	// Model that represents a Experiment resource.
 	Experiment
 }
 
-// ExperimentsClientDeleteResponse contains the response from method ExperimentsClient.Delete.
+// ExperimentsClientDeleteResponse contains the response from method ExperimentsClient.BeginDelete.
 type ExperimentsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ExperimentsClientGetExecutionDetailsResponse contains the response from method ExperimentsClient.GetExecutionDetails.
-type ExperimentsClientGetExecutionDetailsResponse struct {
-	// Model that represents the execution details of a Experiment.
+// ExperimentsClientExecutionDetailsResponse contains the response from method ExperimentsClient.ExecutionDetails.
+type ExperimentsClientExecutionDetailsResponse struct {
+	// Model that represents the execution details of an Experiment.
 	ExperimentExecutionDetails
+}
+
+// ExperimentsClientGetExecutionResponse contains the response from method ExperimentsClient.GetExecution.
+type ExperimentsClientGetExecutionResponse struct {
+	// Model that represents the execution of a Experiment.
+	ExperimentExecution
 }
 
 // ExperimentsClientGetResponse contains the response from method ExperimentsClient.Get.
@@ -72,10 +77,10 @@ type ExperimentsClientGetResponse struct {
 	Experiment
 }
 
-// ExperimentsClientGetStatusResponse contains the response from method ExperimentsClient.GetStatus.
-type ExperimentsClientGetStatusResponse struct {
-	// Model that represents the status of a Experiment.
-	ExperimentStatus
+// ExperimentsClientListAllExecutionsResponse contains the response from method ExperimentsClient.NewListAllExecutionsPager.
+type ExperimentsClientListAllExecutionsResponse struct {
+	// Model that represents a list of Experiment executions and a link for pagination.
+	ExperimentExecutionListResult
 }
 
 // ExperimentsClientListAllResponse contains the response from method ExperimentsClient.NewListAllPager.
@@ -84,34 +89,27 @@ type ExperimentsClientListAllResponse struct {
 	ExperimentListResult
 }
 
-// ExperimentsClientListAllStatusesResponse contains the response from method ExperimentsClient.NewListAllStatusesPager.
-type ExperimentsClientListAllStatusesResponse struct {
-	// Model that represents a list of Experiment statuses and a link for pagination.
-	ExperimentStatusListResult
-}
-
-// ExperimentsClientListExecutionDetailsResponse contains the response from method ExperimentsClient.NewListExecutionDetailsPager.
-type ExperimentsClientListExecutionDetailsResponse struct {
-	// Model that represents a list of Experiment execution details and a link for pagination.
-	ExperimentExecutionDetailsListResult
-}
-
 // ExperimentsClientListResponse contains the response from method ExperimentsClient.NewListPager.
 type ExperimentsClientListResponse struct {
 	// Model that represents a list of Experiment resources and a link for pagination.
 	ExperimentListResult
 }
 
-// ExperimentsClientStartResponse contains the response from method ExperimentsClient.Start.
+// ExperimentsClientStartResponse contains the response from method ExperimentsClient.BeginStart.
 type ExperimentsClientStartResponse struct {
-	// Model that represents the result of a start Experiment operation.
-	ExperimentStartOperationResult
+	// placeholder for future response values
 }
 
-// ExperimentsClientUpdateResponse contains the response from method ExperimentsClient.Update.
+// ExperimentsClientUpdateResponse contains the response from method ExperimentsClient.BeginUpdate.
 type ExperimentsClientUpdateResponse struct {
 	// Model that represents a Experiment resource.
 	Experiment
+}
+
+// OperationStatusesClientGetResponse contains the response from method OperationStatusesClient.Get.
+type OperationStatusesClientGetResponse struct {
+	// The status of operation.
+	OperationStatus
 }
 
 // OperationsClientListAllResponse contains the response from method OperationsClient.NewListAllPager.

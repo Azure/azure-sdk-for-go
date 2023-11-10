@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/ListExperimentsInASubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/ListExperimentsInASubscription.json
 func ExampleExperimentsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,8 +55,8 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// 				TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
 		// 			},
 		// 			Properties: &armchaos.ExperimentProperties{
-		// 				Selectors: []armchaos.SelectorClassification{
-		// 					&armchaos.ListSelector{
+		// 				Selectors: []armchaos.TargetSelectorClassification{
+		// 					&armchaos.TargetListSelector{
 		// 						Type: to.Ptr(armchaos.SelectorTypeList),
 		// 						ID: to.Ptr("selector1"),
 		// 						Targets: []*armchaos.TargetReference{
@@ -65,13 +65,13 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// 								ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
 		// 						}},
 		// 				}},
-		// 				Steps: []*armchaos.Step{
+		// 				Steps: []*armchaos.ExperimentStep{
 		// 					{
 		// 						Name: to.Ptr("step1"),
-		// 						Branches: []*armchaos.Branch{
+		// 						Branches: []*armchaos.ExperimentBranch{
 		// 							{
 		// 								Name: to.Ptr("branch1"),
-		// 								Actions: []armchaos.ActionClassification{
+		// 								Actions: []armchaos.ExperimentActionClassification{
 		// 									&armchaos.ContinuousAction{
 		// 										Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
 		// 										Type: to.Ptr("continuous"),
@@ -87,10 +87,10 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// 				}},
 		// 			},
 		// 			SystemData: &armchaos.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("User"),
 		// 				CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("User"),
 		// 				LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
 		// 			},
@@ -99,7 +99,7 @@ func ExampleExperimentsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/ListExperimentsInAResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/ListExperimentsInAResourceGroup.json
 func ExampleExperimentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,8 +136,8 @@ func ExampleExperimentsClient_NewListPager() {
 		// 				TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
 		// 			},
 		// 			Properties: &armchaos.ExperimentProperties{
-		// 				Selectors: []armchaos.SelectorClassification{
-		// 					&armchaos.ListSelector{
+		// 				Selectors: []armchaos.TargetSelectorClassification{
+		// 					&armchaos.TargetListSelector{
 		// 						Type: to.Ptr(armchaos.SelectorTypeList),
 		// 						ID: to.Ptr("selector1"),
 		// 						Targets: []*armchaos.TargetReference{
@@ -146,13 +146,13 @@ func ExampleExperimentsClient_NewListPager() {
 		// 								ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
 		// 						}},
 		// 				}},
-		// 				Steps: []*armchaos.Step{
+		// 				Steps: []*armchaos.ExperimentStep{
 		// 					{
 		// 						Name: to.Ptr("step1"),
-		// 						Branches: []*armchaos.Branch{
+		// 						Branches: []*armchaos.ExperimentBranch{
 		// 							{
 		// 								Name: to.Ptr("branch1"),
-		// 								Actions: []armchaos.ActionClassification{
+		// 								Actions: []armchaos.ExperimentActionClassification{
 		// 									&armchaos.ContinuousAction{
 		// 										Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
 		// 										Type: to.Ptr("continuous"),
@@ -168,10 +168,10 @@ func ExampleExperimentsClient_NewListPager() {
 		// 				}},
 		// 			},
 		// 			SystemData: &armchaos.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("User"),
 		// 				CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("User"),
 		// 				LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
 		// 			},
@@ -180,8 +180,8 @@ func ExampleExperimentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/DeleteAExperiment.json
-func ExampleExperimentsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/DeleteExperiment.json
+func ExampleExperimentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -191,13 +191,17 @@ func ExampleExperimentsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewExperimentsClient().Delete(ctx, "exampleRG", "exampleExperiment", nil)
+	poller, err := clientFactory.NewExperimentsClient().BeginDelete(ctx, "exampleRG", "exampleExperiment", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/GetAExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/GetExperiment.json
 func ExampleExperimentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,8 +230,8 @@ func ExampleExperimentsClient_Get() {
 	// 		TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
 	// 	},
 	// 	Properties: &armchaos.ExperimentProperties{
-	// 		Selectors: []armchaos.SelectorClassification{
-	// 			&armchaos.ListSelector{
+	// 		Selectors: []armchaos.TargetSelectorClassification{
+	// 			&armchaos.TargetListSelector{
 	// 				Type: to.Ptr(armchaos.SelectorTypeList),
 	// 				ID: to.Ptr("selector1"),
 	// 				Targets: []*armchaos.TargetReference{
@@ -236,13 +240,13 @@ func ExampleExperimentsClient_Get() {
 	// 						ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
 	// 				}},
 	// 		}},
-	// 		Steps: []*armchaos.Step{
+	// 		Steps: []*armchaos.ExperimentStep{
 	// 			{
 	// 				Name: to.Ptr("step1"),
-	// 				Branches: []*armchaos.Branch{
+	// 				Branches: []*armchaos.ExperimentBranch{
 	// 					{
 	// 						Name: to.Ptr("branch1"),
-	// 						Actions: []armchaos.ActionClassification{
+	// 						Actions: []armchaos.ExperimentActionClassification{
 	// 							&armchaos.ContinuousAction{
 	// 								Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
 	// 								Type: to.Ptr("continuous"),
@@ -258,18 +262,18 @@ func ExampleExperimentsClient_Get() {
 	// 		}},
 	// 	},
 	// 	SystemData: &armchaos.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("User"),
 	// 		CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("User"),
 	// 		LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/CreateOrUpdateAExperiment.json
-func ExampleExperimentsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/CreateUpdateExperiment.json
+func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -279,14 +283,14 @@ func ExampleExperimentsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExperimentsClient().CreateOrUpdate(ctx, "exampleRG", "exampleExperiment", armchaos.Experiment{
+	poller, err := clientFactory.NewExperimentsClient().BeginCreateOrUpdate(ctx, "exampleRG", "exampleExperiment", armchaos.Experiment{
 		Location: to.Ptr("eastus2euap"),
 		Identity: &armchaos.ResourceIdentity{
 			Type: to.Ptr(armchaos.ResourceIdentityTypeSystemAssigned),
 		},
 		Properties: &armchaos.ExperimentProperties{
-			Selectors: []armchaos.SelectorClassification{
-				&armchaos.ListSelector{
+			Selectors: []armchaos.TargetSelectorClassification{
+				&armchaos.TargetListSelector{
 					Type: to.Ptr(armchaos.SelectorTypeList),
 					ID:   to.Ptr("selector1"),
 					Targets: []*armchaos.TargetReference{
@@ -295,13 +299,13 @@ func ExampleExperimentsClient_CreateOrUpdate() {
 							ID:   to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
 						}},
 				}},
-			Steps: []*armchaos.Step{
+			Steps: []*armchaos.ExperimentStep{
 				{
 					Name: to.Ptr("step1"),
-					Branches: []*armchaos.Branch{
+					Branches: []*armchaos.ExperimentBranch{
 						{
 							Name: to.Ptr("branch1"),
-							Actions: []armchaos.ActionClassification{
+							Actions: []armchaos.ExperimentActionClassification{
 								&armchaos.ContinuousAction{
 									Name:     to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 									Type:     to.Ptr("continuous"),
@@ -320,6 +324,10 @@ func ExampleExperimentsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
@@ -334,8 +342,9 @@ func ExampleExperimentsClient_CreateOrUpdate() {
 	// 		TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
 	// 	},
 	// 	Properties: &armchaos.ExperimentProperties{
-	// 		Selectors: []armchaos.SelectorClassification{
-	// 			&armchaos.ListSelector{
+	// 		ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 		Selectors: []armchaos.TargetSelectorClassification{
+	// 			&armchaos.TargetListSelector{
 	// 				Type: to.Ptr(armchaos.SelectorTypeList),
 	// 				ID: to.Ptr("selector1"),
 	// 				Targets: []*armchaos.TargetReference{
@@ -344,13 +353,13 @@ func ExampleExperimentsClient_CreateOrUpdate() {
 	// 						ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
 	// 				}},
 	// 		}},
-	// 		Steps: []*armchaos.Step{
+	// 		Steps: []*armchaos.ExperimentStep{
 	// 			{
 	// 				Name: to.Ptr("step1"),
-	// 				Branches: []*armchaos.Branch{
+	// 				Branches: []*armchaos.ExperimentBranch{
 	// 					{
 	// 						Name: to.Ptr("branch1"),
-	// 						Actions: []armchaos.ActionClassification{
+	// 						Actions: []armchaos.ExperimentActionClassification{
 	// 							&armchaos.ContinuousAction{
 	// 								Name: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 	// 								Type: to.Ptr("continuous"),
@@ -366,18 +375,18 @@ func ExampleExperimentsClient_CreateOrUpdate() {
 	// 		}},
 	// 	},
 	// 	SystemData: &armchaos.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("User"),
 	// 		CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("User"),
 	// 		LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/PatchExperiment.json
-func ExampleExperimentsClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/UpdateExperiment.json
+func ExampleExperimentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -387,7 +396,7 @@ func ExampleExperimentsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExperimentsClient().Update(ctx, "exampleRG", "exampleExperiment", armchaos.ExperimentUpdate{
+	poller, err := clientFactory.NewExperimentsClient().BeginUpdate(ctx, "exampleRG", "exampleExperiment", armchaos.ExperimentUpdate{
 		Identity: &armchaos.ResourceIdentity{
 			Type: to.Ptr(armchaos.ResourceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
@@ -398,68 +407,14 @@ func ExampleExperimentsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Experiment = armchaos.Experiment{
-	// 	Name: to.Ptr("exampleExperiment"),
-	// 	Type: to.Ptr("Microsoft.Chaos/experiments"),
-	// 	ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
-	// 	Location: to.Ptr("centraluseuap"),
-	// 	Identity: &armchaos.ResourceIdentity{
-	// 		Type: to.Ptr(armchaos.ResourceIdentityTypeUserAssigned),
-	// 		PrincipalID: to.Ptr("d04ab567-2c07-43ef-a7f4-4527626b7f56"),
-	// 		TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
-	// 		UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
-	// 			"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ManagedIdentity/userAssignedIdentity/exampleUMI": &armchaos.UserAssignedIdentity{
-	// 			},
-	// 		},
-	// 	},
-	// 	Properties: &armchaos.ExperimentProperties{
-	// 		Selectors: []armchaos.SelectorClassification{
-	// 			&armchaos.ListSelector{
-	// 				Type: to.Ptr(armchaos.SelectorTypeList),
-	// 				ID: to.Ptr("selector1"),
-	// 				Targets: []*armchaos.TargetReference{
-	// 					{
-	// 						Type: to.Ptr(armchaos.TargetReferenceTypeChaosTarget),
-	// 						ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
-	// 				}},
-	// 		}},
-	// 		Steps: []*armchaos.Step{
-	// 			{
-	// 				Name: to.Ptr("step1"),
-	// 				Branches: []*armchaos.Branch{
-	// 					{
-	// 						Name: to.Ptr("branch1"),
-	// 						Actions: []armchaos.ActionClassification{
-	// 							&armchaos.ContinuousAction{
-	// 								Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
-	// 								Type: to.Ptr("continuous"),
-	// 								Duration: to.Ptr("PT10M"),
-	// 								Parameters: []*armchaos.KeyValuePair{
-	// 									{
-	// 										Key: to.Ptr("abruptShutdown"),
-	// 										Value: to.Ptr("false"),
-	// 								}},
-	// 								SelectorID: to.Ptr("selector1"),
-	// 						}},
-	// 				}},
-	// 		}},
-	// 	},
-	// 	SystemData: &armchaos.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 		CreatedBy: to.Ptr("User"),
-	// 		CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("User"),
-	// 		LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 	},
-	// }
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/CancelAExperiment.json
-func ExampleExperimentsClient_Cancel() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/CancelExperiment.json
+func ExampleExperimentsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -469,14 +424,18 @@ func ExampleExperimentsClient_Cancel() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewExperimentsClient().Cancel(ctx, "exampleRG", "exampleExperiment", nil)
+	poller, err := clientFactory.NewExperimentsClient().BeginCancel(ctx, "exampleRG", "exampleExperiment", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/StartAExperiment.json
-func ExampleExperimentsClient_Start() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/StartExperiment.json
+func ExampleExperimentsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -486,14 +445,18 @@ func ExampleExperimentsClient_Start() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewExperimentsClient().Start(ctx, "exampleRG", "exampleExperiment", nil)
+	poller, err := clientFactory.NewExperimentsClient().BeginStart(ctx, "exampleRG", "exampleExperiment", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/ListExperimentStatuses.json
-func ExampleExperimentsClient_NewListAllStatusesPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/ListExperimentExecutions.json
+func ExampleExperimentsClient_NewListAllExecutionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -503,7 +466,7 @@ func ExampleExperimentsClient_NewListAllStatusesPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewExperimentsClient().NewListAllStatusesPager("exampleRG", "exampleExperiment", nil)
+	pager := clientFactory.NewExperimentsClient().NewListAllExecutionsPager("exampleRG", "exampleExperiment", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -514,168 +477,34 @@ func ExampleExperimentsClient_NewListAllStatusesPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ExperimentStatusListResult = armchaos.ExperimentStatusListResult{
-		// 	Value: []*armchaos.ExperimentStatus{
-		// 		{
-		// 			Name: to.Ptr("50734542-2e64-4e08-814c-cc0e7475f7e4"),
-		// 			Type: to.Ptr("Microsoft.Chaos/experiments/statuses"),
-		// 			ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/statuses/50734542-2e64-4e08-814c-cc0e7475f7e4"),
-		// 			Properties: &armchaos.ExperimentStatusProperties{
-		// 				CreatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-		// 				EndDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T01:00:00.0Z"); return t}()),
-		// 				Status: to.Ptr("Successful"),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/GetAExperimentStatus.json
-func ExampleExperimentsClient_GetStatus() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewExperimentsClient().GetStatus(ctx, "exampleRG", "exampleExperiment", "50734542-2e64-4e08-814c-cc0e7475f7e4", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ExperimentStatus = armchaos.ExperimentStatus{
-	// 	Name: to.Ptr("50734542-2e64-4e08-814c-cc0e7475f7e4"),
-	// 	Type: to.Ptr("Microsoft.Chaos/experiments/statuses"),
-	// 	ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/statuses/50734542-2e64-4e08-814c-cc0e7475f7e4"),
-	// 	Properties: &armchaos.ExperimentStatusProperties{
-	// 		CreatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 		EndDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T01:00:00.0Z"); return t}()),
-	// 		Status: to.Ptr("Successful"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/ListExperimentExecutionsDetails.json
-func ExampleExperimentsClient_NewListExecutionDetailsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewExperimentsClient().NewListExecutionDetailsPager("exampleRG", "exampleExperiment", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ExperimentExecutionDetailsListResult = armchaos.ExperimentExecutionDetailsListResult{
-		// 	Value: []*armchaos.ExperimentExecutionDetails{
+		// page.ExperimentExecutionListResult = armchaos.ExperimentExecutionListResult{
+		// 	Value: []*armchaos.ExperimentExecution{
 		// 		{
 		// 			Name: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
-		// 			Type: to.Ptr("Microsoft.Chaos/experiments/executionDetails"),
-		// 			ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executionDetails/f24500ad-744e-4a26-864b-b76199eac333"),
-		// 			Properties: &armchaos.ExperimentExecutionDetailsProperties{
-		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:42.917983Z"); return t}()),
-		// 				ExperimentID: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
-		// 				FailureReason: to.Ptr("Dependency failure"),
-		// 				LastActionDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.2552574Z"); return t}()),
-		// 				RunInformation: &armchaos.ExperimentExecutionDetailsPropertiesRunInformation{
-		// 					Steps: []*armchaos.StepStatus{
-		// 						{
-		// 							Branches: []*armchaos.BranchStatus{
-		// 								{
-		// 									Actions: []*armchaos.ActionStatus{
-		// 										{
-		// 											ActionID: to.Ptr("59499d33-6751-4b6e-a1f6-58f4d56a040a"),
-		// 											ActionName: to.Ptr("urn:provider:agent-v2:Microsoft.Azure.Chaos.Fault.CPUPressureAllProcessors"),
-		// 											EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T13:56:13.6270153-08:00"); return t}()),
-		// 											StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T13:56:13.6270153-08:00"); return t}()),
-		// 											Status: to.Ptr("failed"),
-		// 											Targets: []*armchaos.ExperimentExecutionActionTargetDetailsProperties{
-		// 												{
-		// 													Status: to.Ptr("succeeded"),
-		// 													Target: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/VM1"),
-		// 													TargetCompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T17:30:55+00:00"); return t}()),
-		// 													TargetFailedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T16:30:55+00:00"); return t}()),
-		// 											}},
-		// 									}},
-		// 									BranchID: to.Ptr("FirstBranch"),
-		// 									BranchName: to.Ptr("FirstBranch"),
-		// 									Status: to.Ptr("failed"),
-		// 							}},
-		// 							Status: to.Ptr("failed"),
-		// 							StepID: to.Ptr("FirstStep"),
-		// 							StepName: to.Ptr("FirstStep"),
-		// 					}},
-		// 				},
-		// 				StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.2552574Z"); return t}()),
+		// 			Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
+		// 			ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/"),
+		// 			Properties: &armchaos.ExperimentExecutionProperties{
+		// 				StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.255Z"); return t}()),
 		// 				Status: to.Ptr("failed"),
-		// 				StopDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.9281956Z"); return t}()),
+		// 				StoppedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.928Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("14d98367-52ef-4596-be4f-53fc81bbfc33"),
-		// 			Type: to.Ptr("Microsoft.Chaos/experiments/executionDetails"),
+		// 			Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
 		// 			ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executionDetails/14d98367-52ef-4596-be4f-53fc81bbfc33"),
-		// 			Properties: &armchaos.ExperimentExecutionDetailsProperties{
-		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:42.917983Z"); return t}()),
-		// 				ExperimentID: to.Ptr("14d98367-52ef-4596-be4f-53fc81bbfc33"),
-		// 				FailureReason: to.Ptr(""),
-		// 				LastActionDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.2552574Z"); return t}()),
-		// 				RunInformation: &armchaos.ExperimentExecutionDetailsPropertiesRunInformation{
-		// 					Steps: []*armchaos.StepStatus{
-		// 						{
-		// 							Branches: []*armchaos.BranchStatus{
-		// 								{
-		// 									Actions: []*armchaos.ActionStatus{
-		// 										{
-		// 											ActionID: to.Ptr("59499d33-6751-4b6e-a1f6-58f4d56a040a"),
-		// 											ActionName: to.Ptr("urn:provider:agent-v2:Microsoft.Azure.Chaos.Fault.CPUPressureAllProcessors"),
-		// 											EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T13:56:13.6270153-08:00"); return t}()),
-		// 											StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T13:56:13.6270153-08:00"); return t}()),
-		// 											Status: to.Ptr("success"),
-		// 											Targets: []*armchaos.ExperimentExecutionActionTargetDetailsProperties{
-		// 												{
-		// 													Status: to.Ptr("succeeded"),
-		// 													Target: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/VM1"),
-		// 													TargetCompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T17:30:55+00:00"); return t}()),
-		// 													TargetFailedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T16:30:55+00:00"); return t}()),
-		// 											}},
-		// 									}},
-		// 									BranchID: to.Ptr("FirstBranch"),
-		// 									BranchName: to.Ptr("FirstBranch"),
-		// 									Status: to.Ptr("success"),
-		// 							}},
-		// 							Status: to.Ptr("success"),
-		// 							StepID: to.Ptr("FirstStep"),
-		// 							StepName: to.Ptr("FirstStep"),
-		// 					}},
-		// 				},
-		// 				StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.2552574Z"); return t}()),
+		// 			Properties: &armchaos.ExperimentExecutionProperties{
+		// 				StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.255Z"); return t}()),
 		// 				Status: to.Ptr("success"),
-		// 				StopDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.9281956Z"); return t}()),
+		// 				StoppedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.928Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/chaos/resource-manager/Microsoft.Chaos/preview/2023-04-15-preview/examples/GetAExperimentExecutionDetails.json
-func ExampleExperimentsClient_GetExecutionDetails() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/GetExperimentExecution.json
+func ExampleExperimentsClient_GetExecution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -685,7 +514,37 @@ func ExampleExperimentsClient_GetExecutionDetails() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExperimentsClient().GetExecutionDetails(ctx, "exampleRG", "exampleExperiment", "f24500ad-744e-4a26-864b-b76199eac333", nil)
+	res, err := clientFactory.NewExperimentsClient().GetExecution(ctx, "exampleRG", "exampleExperiment", "f24500ad-744e-4a26-864b-b76199eac333", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ExperimentExecution = armchaos.ExperimentExecution{
+	// 	Name: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
+	// 	Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
+	// 	ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333"),
+	// 	Properties: &armchaos.ExperimentExecutionProperties{
+	// 		StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.255Z"); return t}()),
+	// 		Status: to.Ptr("failed"),
+	// 		StoppedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.928Z"); return t}()),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/DetailsExperiment.json
+func ExampleExperimentsClient_ExecutionDetails() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExperimentsClient().ExecutionDetails(ctx, "exampleRG", "exampleExperiment", "f24500ad-744e-4a26-864b-b76199eac333", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -694,13 +553,14 @@ func ExampleExperimentsClient_GetExecutionDetails() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ExperimentExecutionDetails = armchaos.ExperimentExecutionDetails{
 	// 	Name: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
-	// 	Type: to.Ptr("Microsoft.Chaos/experiments/executionDetails"),
-	// 	ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executionDetails/f24500ad-744e-4a26-864b-b76199eac333"),
+	// 	Type: to.Ptr("Microsoft.Chaos/experiments/executions/getExecutionDetails"),
+	// 	ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333/getExecutionDetails"),
 	// 	Properties: &armchaos.ExperimentExecutionDetailsProperties{
-	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:42.917983Z"); return t}()),
-	// 		ExperimentID: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
+	// 		StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.255Z"); return t}()),
+	// 		Status: to.Ptr("failed"),
+	// 		StoppedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.928Z"); return t}()),
 	// 		FailureReason: to.Ptr("Dependency failure"),
-	// 		LastActionDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.2552574Z"); return t}()),
+	// 		LastActionAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.255Z"); return t}()),
 	// 		RunInformation: &armchaos.ExperimentExecutionDetailsPropertiesRunInformation{
 	// 			Steps: []*armchaos.StepStatus{
 	// 				{
@@ -710,21 +570,21 @@ func ExampleExperimentsClient_GetExecutionDetails() {
 	// 								{
 	// 									ActionID: to.Ptr("59499d33-6751-4b6e-a1f6-58f4d56a040a"),
 	// 									ActionName: to.Ptr("urn:provider:agent-v2:Microsoft.Azure.Chaos.Fault.CPUPressureAllProcessors"),
-	// 									EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T13:56:13.6270153-08:00"); return t}()),
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T13:56:13.6270153-08:00"); return t}()),
+	// 									EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:13.627Z"); return t}()),
+	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:13.627Z"); return t}()),
 	// 									Status: to.Ptr("failed"),
 	// 									Targets: []*armchaos.ExperimentExecutionActionTargetDetailsProperties{
 	// 										{
 	// 											Status: to.Ptr("succeeded"),
 	// 											Target: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/VM1"),
-	// 											TargetCompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T17:30:55+00:00"); return t}()),
-	// 											TargetFailedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T16:30:55+00:00"); return t}()),
+	// 											TargetCompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T17:30:55.000Z"); return t}()),
+	// 											TargetFailedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T16:30:55.000Z"); return t}()),
 	// 										},
 	// 										{
 	// 											Status: to.Ptr("failed"),
 	// 											Target: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/VM1"),
-	// 											TargetCompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T17:30:55+00:00"); return t}()),
-	// 											TargetFailedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T16:30:55+00:00"); return t}()),
+	// 											TargetCompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T17:30:55.000Z"); return t}()),
+	// 											TargetFailedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T16:30:55.000Z"); return t}()),
 	// 									}},
 	// 							}},
 	// 							BranchID: to.Ptr("FirstBranch"),
@@ -736,9 +596,6 @@ func ExampleExperimentsClient_GetExecutionDetails() {
 	// 					StepName: to.Ptr("FirstStep"),
 	// 			}},
 	// 		},
-	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.2552574Z"); return t}()),
-	// 		Status: to.Ptr("failed"),
-	// 		StopDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.9281956Z"); return t}()),
 	// 	},
 	// }
 }

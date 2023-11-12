@@ -69,6 +69,7 @@ const (
 	CopyIDMismatch                                    Code = "CopyIdMismatch"
 	EmptyMetadataKey                                  Code = "EmptyMetadataKey"
 	FeatureVersionMismatch                            Code = "FeatureVersionMismatch"
+	ImmutabilityPolicyDeleteOnLockedPolicy            Code = "ImmutabilityPolicyDeleteOnLockedPolicy"
 	IncrementalCopyBlobMismatch                       Code = "IncrementalCopyBlobMismatch"
 	IncrementalCopyOfEralierVersionSnapshotNotAllowed Code = "IncrementalCopyOfEralierVersionSnapshotNotAllowed"
 	IncrementalCopySourceMustBeSnapshot               Code = "IncrementalCopySourceMustBeSnapshot"

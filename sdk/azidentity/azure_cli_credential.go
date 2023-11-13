@@ -69,7 +69,7 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 		cp = *options
 	}
 	for _, r := range cp.Subscription {
-		if !(alphanumeric(r) || r == '-' || r == ' ') {
+		if !(alphanumeric(r) || r == '-' || r == '_' || r == ' ' || r == '.') {
 			return nil, fmt.Errorf("%s: invalid Subscription %q", credNameAzureCLI, cp.Subscription)
 		}
 	}

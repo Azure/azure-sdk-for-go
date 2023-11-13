@@ -28,12 +28,8 @@ directive:
         delete $["/{resourceId}/query?disambiguation_dummy"];
 
   # delete extra operations
-  - remove-operation: Metadata_Post
-  - remove-operation: Metadata_Get
   - remove-operation: Query_Get
   - remove-operation: Query_ResourceGet
-  - remove-operation: Query_ResourceExecuteXms
-  - remove-operation: Query_ResourceGetXms
 
   # delete metadata models
   - remove-model: metadataResults
@@ -48,7 +44,7 @@ directive:
   - remove-model: metadataResource
   - remove-model: metadataPermissions
 
- # rename operations to generate into metrics and logs clients
+ # rename log operations to generate into a separate logs client
   - rename-operation:
       from: Query_Execute
       to: Logs_QueryWorkspace
@@ -58,15 +54,6 @@ directive:
   - rename-operation:
       from: Query_ResourceExecute
       to: Logs_QueryResource
-  - rename-operation:
-      from: Metrics_List
-      to: Metrics_QueryResource
-  - rename-operation:
-      from: MetricDefinitions_List
-      to: Metrics_ListDefinitions
-  - rename-operation:
-      from: MetricNamespaces_List
-      to: Metrics_ListNamespaces
 
   # rename Body.Workspaces to Body.AdditionalWorkspaces
   - from: swagger-document
@@ -179,6 +166,17 @@ input-file:
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
 
 directive:
+  # rename metric operations to generate as a separate metrics client
+  - rename-operation:
+      from: Metrics_List
+      to: Metrics_QueryResource
+  - rename-operation:
+      from: MetricDefinitions_List
+      to: Metrics_ListDefinitions
+  - rename-operation:
+      from: MetricNamespaces_List
+      to: Metrics_ListNamespaces
+
   # rename some metrics fields
   - from: swagger-document
     where: $.definitions.Metric.properties.timeseries

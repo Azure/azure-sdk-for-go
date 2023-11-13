@@ -23,6 +23,7 @@ import (
 
 type HelpTestSuite struct {
 	suite.Suite
+	proxy *recording.TestProxyInstance
 
 	ctx                     context.Context
 	cred                    azcore.TokenCredential
@@ -34,14 +35,18 @@ type HelpTestSuite struct {
 }
 
 func (testsuite *HelpTestSuite) SetupSuite() {
+	var err error
+	testsuite.proxy, err = recording.StartTestProxy("sdk/resourcemanager/redis/armredis/testdata", nil)
+	testsuite.Require().NoError(err)
+
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/selfhelp/armselfhelp/testdata")
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.diagnosticsResourceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "diagnosticna", 18, false)
-	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -51,6 +56,8 @@ func (testsuite *HelpTestSuite) TearDownSuite() {
 	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
+
+	testsuite.Require().NoError(recording.StopTestProxy(testsuite.proxy))
 }
 
 func TestHelpTestSuite(t *testing.T) {

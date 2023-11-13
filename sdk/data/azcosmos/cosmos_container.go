@@ -457,6 +457,67 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 	})
 }
 
+// NewCrossPartitionQueryItemsPager executes a cross partition query in a Cosmos container.
+// This method uses the Azure Cosmos DB REST API, and is subject to the API limitations:
+// Any query that requires state across continuations cannot be served by the gateway. This includes:
+// TOP, ORDER BY, OFFSET LIMIT, Aggregates (Min, Max, Count, etc.), DISTINCT, GROUP BY.
+// Queries that can be served by the gateway include: Simple projections, Filters
+// More information can be found in the next link:
+// https://learn.microsoft.com/en-us/rest/api/cosmos-db/querying-cosmosdb-resources-using-the-rest-api#queries-that-cannot-be-served-by-gateway
+// query - The SQL query to execute.
+// o - Options for the operation.
+func (c *ContainerClient) NewCrossPartitionQueryItemsPager(query string, o *QueryOptions) *runtime.Pager[QueryItemsResponse] {
+	enableCrossPartitionQuery := true
+	correlatedActivityId, _ := uuid.New()
+	h := headerOptionsOverride{
+		enableCrossPartitionQuery: &enableCrossPartitionQuery,
+		correlatedActivityId:      &correlatedActivityId,
+	}
+
+	queryOptions := &QueryOptions{}
+	if o != nil {
+		originalOptions := *o
+		queryOptions = &originalOptions
+	}
+
+	operationContext := pipelineRequestOptions{
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       c.link,
+		headerOptionsOverride: &h,
+	}
+
+	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+
+	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{
+		More: func(page QueryItemsResponse) bool {
+			return page.ContinuationToken != ""
+		},
+		Fetcher: func(ctx context.Context, page *QueryItemsResponse) (QueryItemsResponse, error) {
+			if page != nil {
+				if page.ContinuationToken != "" {
+					// Use the previous page continuation if available
+					queryOptions.ContinuationToken = page.ContinuationToken
+				}
+			}
+
+			azResponse, err := c.database.client.sendQueryRequest(
+				path,
+				ctx,
+				query,
+				queryOptions.QueryParameters,
+				operationContext,
+				queryOptions,
+				nil)
+
+			if err != nil {
+				return QueryItemsResponse{}, err
+			}
+
+			return newQueryResponse(azResponse)
+		},
+	})
+}
+
 // PatchItem patches an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.

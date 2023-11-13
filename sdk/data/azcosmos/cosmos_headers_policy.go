@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -16,6 +17,7 @@ type headerPolicies struct {
 
 type headerOptionsOverride struct {
 	enableContentResponseOnWrite *bool
+	enableCrossPartitionQuery    *bool
 	partitionKey                 *PartitionKey
 	correlatedActivityId         *uuid.UUID
 }
@@ -40,6 +42,10 @@ func (p *headerPolicies) Do(req *policy.Request) (*http.Response, error) {
 
 			if o.headerOptionsOverride.correlatedActivityId != nil {
 				req.Raw().Header.Add(cosmosHeaderCorrelatedActivityId, (*o.headerOptionsOverride.correlatedActivityId).String())
+			}
+
+			if o.headerOptionsOverride.enableCrossPartitionQuery != nil {
+				req.Raw().Header.Add(cosmosHeaderCrossPartitionQuery, strconv.FormatBool(*o.headerOptionsOverride.enableCrossPartitionQuery))
 			}
 		}
 

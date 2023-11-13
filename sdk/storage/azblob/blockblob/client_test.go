@@ -18,6 +18,7 @@ import (
 	"io"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
@@ -2570,6 +2571,47 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURLWithEncryptionSc
 	_require.NoError(err)
 	_require.Equal(*resp.CopyStatus, "success")
 	_require.Equal(*resp.EncryptionScope, encryptionScope)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestGetSASURLBlockBlobClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	// Creating service client with credentials
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	_require.NoError(err)
+
+	// Creating container client
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, serviceClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Creating block blob client with credentials
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.BlobPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(5 * time.Minute)
+
+	sasUrl, err := bbClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+
+	// Get new blob client with sasUrl and attempt GetProperties
+	newClient, err := blob.NewClientWithNoCredential(sasUrl, nil)
+
+	_, err = newClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {

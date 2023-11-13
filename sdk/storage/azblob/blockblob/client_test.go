@@ -2609,6 +2609,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestGetSASURLBlockBlobClient() {
 
 	// Get new blob client with sasUrl and attempt GetProperties
 	newClient, err := blob.NewClientWithNoCredential(sasUrl, nil)
+	_require.NoError(err)
 
 	_, err = newClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)

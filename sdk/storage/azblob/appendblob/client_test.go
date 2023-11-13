@@ -976,9 +976,10 @@ func (s *AppendBlobUnrecordedTestsSuite) TestGetSASURLAppendBlobClient() {
 	_require.NoError(err)
 
 	// Get new blob client with sasUrl and attempt GetProperties
-	client, err := blob.NewClientWithNoCredential(sasUrl, nil)
+	newClient, err := blob.NewClientWithNoCredential(sasUrl, nil)
+	_require.NoError(err)
 
-	_, err = client.GetProperties(context.Background(), nil)
+	_, err = newClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 }
 

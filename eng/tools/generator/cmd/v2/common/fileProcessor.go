@@ -508,15 +508,6 @@ func GetTag(path string) (string, error) {
 	return "", nil
 }
 
-func isGenerateFake(path string) bool {
-	b, _ := os.ReadFile(filepath.Join(path, "autorest.md"))
-	if strings.Contains(string(b), "generate-fakes: true") {
-		return true
-	}
-
-	return false
-}
-
 func replaceModuleImport(path, rpName, namespaceName, previousVersion, currentVersion, subPath string, suffixes ...string) error {
 	previous, err := semver.NewVersion(previousVersion)
 	if err != nil {
@@ -566,7 +557,7 @@ func replaceModuleImport(path, rpName, namespaceName, previousVersion, currentVe
 				return err
 			}
 
-			newFile := strings.ReplaceAll(string(b), oldModule, newModule)
+			newFile := strings.ReplaceAll(string(b), fmt.Sprintf("\"%s\"", oldModule), fmt.Sprintf("\"%s\"", newModule))
 			if newFile != string(b) {
 				if err = os.WriteFile(path, []byte(newFile), 0666); err != nil {
 					return err

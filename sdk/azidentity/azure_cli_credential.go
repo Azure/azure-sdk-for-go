@@ -68,6 +68,14 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 	if options != nil {
 		cp = *options
 	}
+	for _, r := range cp.Subscription {
+		if !(alphanumeric(r) || r == '-' || r == ' ') {
+			return nil, fmt.Errorf("%s: invalid Subscription %q", credNameAzureCLI, cp.Subscription)
+		}
+	}
+	if cp.TenantID != "" && !validTenantID(cp.TenantID) {
+		return nil, errInvalidTenantID
+	}
 	cp.init()
 	cp.AdditionallyAllowedTenants = resolveAdditionalTenants(cp.AdditionallyAllowedTenants)
 	return &AzureCLICredential{mu: &sync.Mutex{}, opts: cp}, nil
@@ -80,14 +88,12 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 	if len(opts.Scopes) != 1 {
 		return at, errors.New(credNameAzureCLI + ": GetToken() requires exactly one scope")
 	}
+	if !validScope(opts.Scopes[0]) {
+		return at, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzureCLI, opts.Scopes[0])
+	}
 	tenant, err := resolveTenant(c.opts.TenantID, opts.TenantID, credNameAzureCLI, c.opts.AdditionallyAllowedTenants)
 	if err != nil {
 		return at, err
-	}
-	for _, r := range c.opts.Subscription {
-		if !(alphanumeric(r) || r == '-' || r == ' ') {
-			return at, fmt.Errorf("%s.GetToken(): invalid subscription %q", credNameAzureCLI, c.opts.Subscription)
-		}
 	}
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -104,10 +110,9 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 	return at, nil
 }
 
+// defaultAzTokenProvider invokes the Azure CLI to acquire a token. It assumes
+// callers have verified that all string arguments are safe to pass to the CLI.
 var defaultAzTokenProvider azTokenProvider = func(ctx context.Context, scopes []string, tenantID, subscription string) ([]byte, error) {
-	if !validScope(scopes[0]) {
-		return nil, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzureCLI, scopes[0])
-	}
 	// pass the CLI a Microsoft Entra ID v1 resource because we don't know which CLI version is installed and older ones don't support v2 scopes
 	resource := strings.TrimSuffix(scopes[0], defaultSuffix)
 	// set a default timeout for this authentication iff the application hasn't done so already

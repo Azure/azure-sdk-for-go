@@ -75,6 +75,11 @@ func (c *AzureDeveloperCLICredential) GetToken(ctx context.Context, opts policy.
 	if len(opts.Scopes) == 0 {
 		return at, errors.New(credNameAzureDeveloperCLI + ": GetToken() requires at least one scope")
 	}
+	for _, scope := range opts.Scopes {
+		if !validScope(scope) {
+			return at, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzureDeveloperCLI, scope)
+		}
+	}
 	tenant, err := resolveTenant(c.opts.TenantID, opts.TenantID, credNameAzureDeveloperCLI, c.opts.AdditionallyAllowedTenants)
 	if err != nil {
 		return at, err
@@ -94,6 +99,8 @@ func (c *AzureDeveloperCLICredential) GetToken(ctx context.Context, opts policy.
 	return at, nil
 }
 
+// defaultAzTokenProvider invokes the Azure Developer CLI to acquire a token. It assumes
+// callers have verified that all string arguments are safe to pass to the CLI.
 var defaultAzdTokenProvider azdTokenProvider = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
 	// set a default timeout for this authentication iff the application hasn't done so already
 	var cancel context.CancelFunc
@@ -106,9 +113,6 @@ var defaultAzdTokenProvider azdTokenProvider = func(ctx context.Context, scopes 
 		commandLine += " --tenant-id " + tenant
 	}
 	for _, scope := range scopes {
-		if !validScope(scope) {
-			return nil, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzureDeveloperCLI, scope)
-		}
 		commandLine += " --scope " + scope
 	}
 	var cliCmd *exec.Cmd

@@ -4,13 +4,14 @@
 
 ### Features Added
 
+* Exposed GetSASURL from specialized clients
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 * Fixed case in Blob Batch API when blob path has / in it. Fixes [#21649](https://github.com/Azure/azure-sdk-for-go/issues/21649).
-* Exposed GetSASURL from specialized clients
-* Fixed SharedKeyMissingError when using client.BlobClient() method
+* Fixed SharedKeyMissingError when using client.BlobClient().GetSASURL() method
 
 ### Other Changes
 

@@ -1,10 +1,9 @@
 # Release History
 
-## 1.0.3 (Unreleased)
+## 1.1.0 (2023-11-14)
 
 ### Features Added
-
-### Breaking Changes
+* Enabled spans for distributed tracing.
 
 ### Bugs Fixed
 * Internal calls in `Client.SubmitTransaction` now honor the caller's context.
@@ -12,7 +11,6 @@
 ### Other Changes
 * Updated to latest version of `azcore`.
 * Clients now share the underlying `*azcore.Client`.
-* Enabled spans for distributed tracing.
 
 ## 1.0.2 (2023-07-20)
 

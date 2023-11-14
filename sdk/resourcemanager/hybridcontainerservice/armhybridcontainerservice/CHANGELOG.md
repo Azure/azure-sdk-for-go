@@ -49,9 +49,6 @@
 - Function `*StorageSpacesClient.NewListBySubscriptionPager` has been removed
 - Function `*StorageSpacesClient.Retrieve` has been removed
 - Function `*StorageSpacesClient.BeginUpdate` has been removed
-- Function `timeRFC3339.MarshalText` has been removed
-- Function `*timeRFC3339.Parse` has been removed
-- Function `*timeRFC3339.UnmarshalText` has been removed
 - Operation `*AgentPoolClient.Delete` has been changed to LRO, use `*AgentPoolClient.BeginDelete` instead.
 - Operation `*AgentPoolClient.Update` has been changed to LRO, use `*AgentPoolClient.BeginUpdate` instead.
 - Operation `*HybridIdentityMetadataClient.Delete` has been changed to LRO, use `*HybridIdentityMetadataClient.BeginDelete` instead.
@@ -158,9 +155,6 @@
 - New function `*ProvisionedClusterInstancesClient.BeginListUserKubeconfig(context.Context, string, *ProvisionedClusterInstancesClientBeginListUserKubeconfigOptions) (*runtime.Poller[ProvisionedClusterInstancesClientListUserKubeconfigResponse], error)`
 - New function `NewVMSKUsClient(azcore.TokenCredential, *arm.ClientOptions) (*VMSKUsClient, error)`
 - New function `*VMSKUsClient.NewListPager(string, *VMSKUsClientListOptions) *runtime.Pager[VMSKUsClientListResponse]`
-- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
-- New function `*dateTimeRFC3339.Parse(string) error`
-- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
 - New struct `AddonStatusProfile`
 - New struct `AgentPoolPatch`
 - New struct `AgentPoolProvisioningStatusOperationStatus`

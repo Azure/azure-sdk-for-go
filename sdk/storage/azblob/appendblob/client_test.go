@@ -12,10 +12,12 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"hash/crc64"
 	"io"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
@@ -937,6 +939,48 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuthNegat
 	_, err = destABClient.AppendBlockFromURL(context.Background(), srcABClient.URL(), &options)
 	_require.Error(err)
 	_require.True(bloberror.HasCode(err, bloberror.CannotVerifyCopySource))
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestGetSASURLAppendBlobClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	// Creating service client with credentials
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	_require.NoError(err)
+
+	// Creating container client
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, serviceClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Creating append blob client with credentials
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	apClient := testcommon.CreateNewAppendBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.BlobPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(5 * time.Minute)
+
+	sasUrl, err := apClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+
+	// Get new blob client with sasUrl and attempt GetProperties
+	newClient, err := blob.NewClientWithNoCredential(sasUrl, nil)
+	_require.NoError(err)
+
+	_, err = newClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendMetadataNonEmpty() {

@@ -1,12 +1,6 @@
 # Release History
 
-## 2.0.0 (2023-11-24)
-### Breaking Changes
-
-- Function `timeRFC3339.MarshalText` has been removed
-- Function `*timeRFC3339.Parse` has been removed
-- Function `*timeRFC3339.UnmarshalText` has been removed
-
+## 1.2.0 (2023-11-24)
 ### Features Added
 
 - New enum type `AvailablePromotion` with values `AvailablePromotionFreeTrial`, `AvailablePromotionNone`
@@ -23,9 +17,6 @@
 - New function `*ManagedPrivateEndpointsClient.NewListPager(string, string, *ManagedPrivateEndpointsClientListOptions) *runtime.Pager[ManagedPrivateEndpointsClientListResponse]`
 - New function `*ManagedPrivateEndpointsClient.BeginRefresh(context.Context, string, string, *ManagedPrivateEndpointsClientBeginRefreshOptions) (*runtime.Poller[ManagedPrivateEndpointsClientRefreshResponse], error)`
 - New function `*ManagedPrivateEndpointsClient.BeginUpdate(context.Context, string, string, string, ManagedPrivateEndpointUpdateParameters, *ManagedPrivateEndpointsClientBeginUpdateOptions) (*runtime.Poller[ManagedPrivateEndpointsClientUpdateResponse], error)`
-- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
-- New function `*dateTimeRFC3339.Parse(string) error`
-- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
 - New struct `EnterpriseConfigurations`
 - New struct `EnterpriseDetails`
 - New struct `GrafanaAvailablePlugin`

@@ -92,9 +92,6 @@ func TestClient_GenerateClientAccessURLFromConnectionString(t *testing.T) {
 	_, err1 := azwebpubsub.NewClientFromConnectionString("Endpoint=http://test/subpath;;;;", nil)
 	require.ErrorContains(t, err1, "connection string is either blank or malformed.")
 
-	_, err1 = azwebpubsub.NewClientFromConnectionString("Endpoint=http://test/subpath;AccessKey=ABC;;;", nil)
-	require.ErrorContains(t, err1, "empty hub name is not allowed")
-
 	hub := "chat/go"
 	client, err := azwebpubsub.NewClientFromConnectionString("Endpoint=http://test/subpath;AccessKey=ABC;;;", nil)
 	require.NoError(t, err)

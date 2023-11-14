@@ -4,13 +4,19 @@
 
 ### Features Added
 
+* Exposed GetSASURL from specialized clients
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 * Fixed case in Blob Batch API when blob path has / in it. Fixes [#21649](https://github.com/Azure/azure-sdk-for-go/issues/21649).
+* Fixed SharedKeyMissingError when using client.BlobClient().GetSASURL() method
+* Fixed an issue that would cause metadata keys with empty values to be omitted when enumerating blobs.
 
 ### Other Changes
+
+* Updated to the latest version of `azcore`.
 
 ## 1.2.0 (2023-10-11)
 

@@ -14,7 +14,7 @@
 
 ### Other Changes
 
-* Updated azcore version to `1.9.0` and azcore version to `1.4.0`.
+* Updated azcore version to `1.9.0` and azidentity version to `1.4.0`.
 
 ## 1.1.0 (2023-10-11)
 

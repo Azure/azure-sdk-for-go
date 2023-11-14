@@ -11,7 +11,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub"
 )
 
-func Example_NewClientWithDefaultAzureCredential() {
+// ExampleNewClient demonstrates how to create a new client with default Azure credentials.
+func ExampleNewClient() {
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +41,8 @@ func Example_NewClientWithDefaultAzureCredential() {
 	// Output:
 }
 
-func Example_NewClientWithConnectionString() {
+// ExampleNewClientFromConnectionString demonstrates how to create a new client with connection string.
+func ExampleNewClientFromConnectionString() {
 	connectionString := os.Getenv("WEBPUBSUB_CONNECTIONSTRING")
 	if connectionString == "" {
 		return

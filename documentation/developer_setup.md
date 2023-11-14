@@ -275,19 +275,19 @@ func TestMain(m *testing.M) {
 func run(m *testing.M) int {
 	// Initialize
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-        proxy, err := recording.StartTestProxy(recordingDirectory, nil)
-        if err != nil {
-            panic(err)
-        }
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
+		if err != nil {
+			panic(err)
+		}
 
-        // NOTE: defer should not be used directly within TestMain as it will not be executed due to os.Exit()
+		// NOTE: defer should not be used directly within TestMain as it will not be executed due to os.Exit()
 		defer func() {
 			err := recording.StopTestProxy(proxy)
 			if err != nil {
 				panic(err)
 			}
 		}()
-    }
+	}
 
     // Set sanitizers in record mode
 	if recording.GetRecordMode() == "record" {

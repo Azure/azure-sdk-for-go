@@ -445,8 +445,8 @@ directive:
   where: $
   transform: >-
     return $.
-      replace(/if\s+!runtime\.HasStatusCode\(resp,\s+http\.StatusOK\)\s+\{\s*\n\t\treturn\s+ServiceClientSubmitBatchResponse\{\}\,\s+runtime\.NewResponseError\(resp\)\s*\n\t\}/g, 
-      `if !runtime.HasStatusCode(resp, http.StatusAccepted) {\n\t\treturn ServiceClientSubmitBatchResponse{}, runtime.NewResponseError(resp)\n\t}`);
+      replace(/if\s+!runtime\.HasStatusCode\(httpResp,\s+http\.StatusOK\)\s+\{\s+err\s+=\s+runtime\.NewResponseError\(httpResp\)\s+return ServiceClientSubmitBatchResponse\{\}\,\s+err\s+}/g, 
+      `if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {\n\t\terr = runtime.NewResponseError(httpResp)\n\t\treturn ServiceClientSubmitBatchResponse{}, err\n\t}`);
 ```
 
 ### Convert time to GMT for If-Modified-Since and If-Unmodified-Since request headers

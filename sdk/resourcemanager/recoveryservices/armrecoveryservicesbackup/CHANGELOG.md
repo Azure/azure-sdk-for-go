@@ -5,9 +5,6 @@
 
 - Function `*OperationClient.Validate` parameter(s) have been changed from `(context.Context, string, string, ValidateOperationRequestClassification, *OperationClientValidateOptions)` to `(context.Context, string, string, ValidateOperationRequestResource, *OperationClientValidateOptions)`
 - Function `*ValidateOperationClient.BeginTrigger` parameter(s) have been changed from `(context.Context, string, string, ValidateOperationRequestClassification, *ValidateOperationClientBeginTriggerOptions)` to `(context.Context, string, string, ValidateOperationRequestResource, *ValidateOperationClientBeginTriggerOptions)`
-- Function `timeRFC3339.MarshalText` has been removed
-- Function `*timeRFC3339.Parse` has been removed
-- Function `*timeRFC3339.UnmarshalText` has been removed
 - Operation `*ProtectionContainersClient.Register` has been changed to LRO, use `*ProtectionContainersClient.BeginRegister` instead.
 
 ### Features Added
@@ -30,9 +27,6 @@
 - New function `*TieringCostOperationStatusClient.Get(context.Context, string, string, string, *TieringCostOperationStatusClientGetOptions) (TieringCostOperationStatusClientGetResponse, error)`
 - New function `*TieringCostRehydrationInfo.GetTieringCostInfo() *TieringCostInfo`
 - New function `*TieringCostSavingInfo.GetTieringCostInfo() *TieringCostInfo`
-- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
-- New function `*dateTimeRFC3339.Parse(string) error`
-- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
 - New struct `FetchTieringCostInfoForRehydrationRequest`
 - New struct `FetchTieringCostSavingsInfoForPolicyRequest`
 - New struct `FetchTieringCostSavingsInfoForProtectedItemRequest`

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.1 (Unreleased)
+## 1.1.1
 
 ### Features Added
 
@@ -13,6 +13,8 @@
   These changes impact: `file.UploadRangeFromURL()`
 
 ### Other Changes
+
+* Updated azcore version to `1.9.0` and azcore version to `1.4.0`.
 
 ## 1.1.0 (2023-10-11)
 

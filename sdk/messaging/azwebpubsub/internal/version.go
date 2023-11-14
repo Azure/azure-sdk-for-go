@@ -11,8 +11,8 @@ package internal
 // Constants to identify the module
 const (
 	// ModuleName is the module name that shows in telemetry.
-	ModuleName = "azwebpubsub"
+	ModuleName = "github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub"
 
 	// ModuleVersion is the semantic version (see http://semver.org) of this module.
-	ModuleVersion = "v0.1.1"
+	ModuleVersion = "v0.1.0"
 )

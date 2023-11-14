@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub"
 )
 
-func ExampleNewClientWithDefaultAzureCredential() {
+func Example_NewClientWithDefaultAzureCredential() {
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleNewClientWithDefaultAzureCredential() {
 	if hub == "" {
 		return
 	}
-	client, err := azwebpubsub.NewClient(endpoint, hub, cred, nil)
+	client, err := azwebpubsub.NewClient(endpoint, cred, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -40,20 +40,20 @@ func ExampleNewClientWithDefaultAzureCredential() {
 	// Output:
 }
 
-func ExampleNewClientWithConnectionString() *azwebpubsub.Client {
+func Example_NewClientWithConnectionString() {
 	connectionString := os.Getenv("WEBPUBSUB_CONNECTIONSTRING")
-	hub := os.Getenv("WEBPUBSUB_HUB")
-
 	if connectionString == "" {
-		return nil
+		return
 	}
 
-	client, err := azwebpubsub.NewClientFromConnectionString(connectionString, hub, nil)
+	client, err := azwebpubsub.NewClientFromConnectionString(connectionString, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	return client
+	_ = client // ignore
+
+	// Output:
 }

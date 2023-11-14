@@ -27,14 +27,12 @@ type clientWrapper struct {
 
 var fakeTestVars = testVars{
 	ConnectionString: "Endpoint=https://fake.eastus-1.webpubsub.azure.com;AccessKey=ABCDE;",
-	Hub:              "chat",
 	Endpoint:         "https://fake.eastus-1.webpubsub.azure.com",
 }
 
 type testVars struct {
 	// NewClientFromConnectionString when ConnectionString is set
 	ConnectionString string
-	Hub              string
 	Endpoint         string
 	// KeyLogPath is the value of environment "SSLKEYLOGFILE_TEST", which
 	// points to a file on disk where we'll write the TLS pre-master-secret.
@@ -55,7 +53,6 @@ func loadEnv() (testVars, error) {
 
 	tv := testVars{
 		ConnectionString: get("WEBPUBSUB_CONNECTIONSTRING"),
-		Hub:              get("WEBPUBSUB_HUB"),
 		Endpoint:         get("WEBPUBSUB_ENDPOINT"),
 	}
 
@@ -114,14 +111,14 @@ func newClientWrapper(t *testing.T) clientWrapper {
 	}
 
 	if tv.ConnectionString != "" {
-		tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, tv.Hub, options)
+		tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, options)
 		require.NoError(t, err)
 		client = tmpClient
 	} else {
 		cred, err := azidentity.NewDefaultAzureCredential(nil)
 		require.NoError(t, err)
 
-		tmpClient, err := azwebpubsub.NewClient(tv.Endpoint, tv.Hub, cred, options)
+		tmpClient, err := azwebpubsub.NewClient(tv.Endpoint, cred, options)
 		require.NoError(t, err)
 		client = tmpClient
 	}

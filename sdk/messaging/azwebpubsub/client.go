@@ -26,8 +26,7 @@ import (
 type Client struct {
 	internal *azcore.Client
 	endpoint string
-	hub string
-	key *string;
+	key *string
 }
 
 // AddConnectionToGroup - Add a connection to the target group.
@@ -177,15 +176,15 @@ func (client *Client) addUserToGroupCreateRequest(ctx context.Context, hub strin
 	return req, nil
 }
 
-// CheckPermission - Check if a connection has permission to the specified action.
+// checkPermission - Check if a connection has permission to the specified action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - permission - The permission: current supported actions are joinLeaveGroup and sendToGroup.
 //   - connectionID - Target connection Id.
-//   - options - ClientCheckPermissionOptions contains the optional parameters for the Client.CheckPermission method.
-func (client *Client) CheckPermission(ctx context.Context, hub string, permission WebPubSubPermission, connectionID string, options *ClientCheckPermissionOptions) (ClientCheckPermissionResponse, error) {
+//   - options - ClientCheckPermissionOptions contains the optional parameters for the Client.checkPermission method.
+func (client *Client) checkPermission(ctx context.Context, hub string, permission Permission, connectionID string, options *ClientCheckPermissionOptions) (ClientCheckPermissionResponse, error) {
 	var err error
 	req, err := client.checkPermissionCreateRequest(ctx, hub, permission, connectionID, options)
 	if err != nil {
@@ -202,8 +201,8 @@ func (client *Client) CheckPermission(ctx context.Context, hub string, permissio
 	return ClientCheckPermissionResponse{}, nil
 }
 
-// checkPermissionCreateRequest creates the CheckPermission request.
-func (client *Client) checkPermissionCreateRequest(ctx context.Context, hub string, permission WebPubSubPermission, connectionID string, options *ClientCheckPermissionOptions) (*policy.Request, error) {
+// checkPermissionCreateRequest creates the checkPermission request.
+func (client *Client) checkPermissionCreateRequest(ctx context.Context, hub string, permission Permission, connectionID string, options *ClientCheckPermissionOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -556,7 +555,7 @@ func (client *Client) generateClientTokenHandleResponse(resp *http.Response) (Cl
 //   - permission - The permission: current supported actions are joinLeaveGroup and sendToGroup.
 //   - connectionID - Target connection Id.
 //   - options - ClientGrantPermissionOptions contains the optional parameters for the Client.GrantPermission method.
-func (client *Client) GrantPermission(ctx context.Context, hub string, permission WebPubSubPermission, connectionID string, options *ClientGrantPermissionOptions) (ClientGrantPermissionResponse, error) {
+func (client *Client) GrantPermission(ctx context.Context, hub string, permission Permission, connectionID string, options *ClientGrantPermissionOptions) (ClientGrantPermissionResponse, error) {
 	var err error
 	req, err := client.grantPermissionCreateRequest(ctx, hub, permission, connectionID, options)
 	if err != nil {
@@ -574,7 +573,7 @@ func (client *Client) GrantPermission(ctx context.Context, hub string, permissio
 }
 
 // grantPermissionCreateRequest creates the GrantPermission request.
-func (client *Client) grantPermissionCreateRequest(ctx context.Context, hub string, permission WebPubSubPermission, connectionID string, options *ClientGrantPermissionOptions) (*policy.Request, error) {
+func (client *Client) grantPermissionCreateRequest(ctx context.Context, hub string, permission Permission, connectionID string, options *ClientGrantPermissionOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -898,7 +897,7 @@ func (client *Client) removeUserFromGroupCreateRequest(ctx context.Context, hub 
 //   - permission - The permission: current supported actions are joinLeaveGroup and sendToGroup.
 //   - connectionID - Target connection Id.
 //   - options - ClientRevokePermissionOptions contains the optional parameters for the Client.RevokePermission method.
-func (client *Client) RevokePermission(ctx context.Context, hub string, permission WebPubSubPermission, connectionID string, options *ClientRevokePermissionOptions) (ClientRevokePermissionResponse, error) {
+func (client *Client) RevokePermission(ctx context.Context, hub string, permission Permission, connectionID string, options *ClientRevokePermissionOptions) (ClientRevokePermissionResponse, error) {
 	var err error
 	req, err := client.revokePermissionCreateRequest(ctx, hub, permission, connectionID, options)
 	if err != nil {
@@ -916,7 +915,7 @@ func (client *Client) RevokePermission(ctx context.Context, hub string, permissi
 }
 
 // revokePermissionCreateRequest creates the RevokePermission request.
-func (client *Client) revokePermissionCreateRequest(ctx context.Context, hub string, permission WebPubSubPermission, connectionID string, options *ClientRevokePermissionOptions) (*policy.Request, error) {
+func (client *Client) revokePermissionCreateRequest(ctx context.Context, hub string, permission Permission, connectionID string, options *ClientRevokePermissionOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")

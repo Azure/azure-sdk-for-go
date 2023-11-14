@@ -13,18 +13,18 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-type WebPubSubKeyCredentialPolicy struct {
+type KeyCredentialPolicy struct {
 	key string
 }
 
-func NewWebPubSubKeyCredentialPolicy(key string) *WebPubSubKeyCredentialPolicy {
-	return &WebPubSubKeyCredentialPolicy{
+func NewWebPubSubKeyCredentialPolicy(key string) *KeyCredentialPolicy {
+	return &KeyCredentialPolicy{
 		key: key,
 	}
 }
 
 // Do implementes the Do method on the [policy.Polilcy] interface.
-func (k *WebPubSubKeyCredentialPolicy) Do(req *policy.Request) (*http.Response, error) {
+func (k *KeyCredentialPolicy) Do(req *policy.Request) (*http.Response, error) {
 	val := k.key
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"aud": req.Raw().URL.String(),

@@ -10,18 +10,11 @@ import (
 	"errors"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 const (
 	TokenScope = "https://webpubsub.azure.com/.default"
 )
-
-func NewPipeline(plOpts runtime.PipelineOptions, options *policy.ClientOptions) runtime.Pipeline {
-	return runtime.NewPipeline(ModuleName+".Client", ModuleVersion, plOpts, options)
-}
 
 var errConnectionString = errors.New("connection string is either blank or malformed. The expected connection string " +
 	"should contain key value pairs separated by semicolons. For example 'Endpoint=<endpoint>;AccessKey=<key>;'")

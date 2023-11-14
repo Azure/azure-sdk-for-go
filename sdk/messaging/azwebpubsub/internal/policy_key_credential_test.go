@@ -35,7 +35,7 @@ func TestKeyCredentialPolicy(t *testing.T) {
 		return &http.Response{}, nil
 	})
 
-	pl := NewPipeline(runtime.PipelineOptions{PerCall: []policy.Policy{keyPolicy, verifier}},
+	pl := newPipeline(runtime.PipelineOptions{PerCall: []policy.Policy{keyPolicy, verifier}},
 		&policy.ClientOptions{})
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, target)
 	require.NoError(t, err)
@@ -48,4 +48,8 @@ type PolicyFunc func(req *policy.Request) (*http.Response, error)
 
 func (f PolicyFunc) Do(req *policy.Request) (*http.Response, error) {
 	return f(req)
+}
+
+func newPipeline(plOpts runtime.PipelineOptions, options *policy.ClientOptions) runtime.Pipeline {
+	return runtime.NewPipeline(ModuleName+".Client", ModuleVersion, plOpts, options)
 }

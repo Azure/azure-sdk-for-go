@@ -59,7 +59,7 @@ func main() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 
-	client, err := azwebpubsub.NewClient("<your Web PubSub's endpoint URL>", "<your hub name>", cred, nil)
+	client, err := azwebpubsub.NewClient("<your Web PubSub's endpoint URL>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -78,7 +78,7 @@ import (
 )
 
 func main() {
-	client, err := azwebpubsub.NewClientFromConnectionString("<your Web PubSub's connection string>", "<your hub name>", nil)
+	client, err := azwebpubsub.NewClientFromConnectionString("<your Web PubSub's connection string>", nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

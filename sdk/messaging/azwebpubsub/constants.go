@@ -29,18 +29,18 @@ func PossibleContentTypeValues() []ContentType {
 	}
 }
 
-type WebPubSubPermission string
+type Permission string
 
 const (
-	WebPubSubPermissionJoinLeaveGroup WebPubSubPermission = "joinLeaveGroup"
-	WebPubSubPermissionSendToGroup WebPubSubPermission = "sendToGroup"
+	PermissionJoinLeaveGroup Permission = "joinLeaveGroup"
+	PermissionSendToGroup Permission = "sendToGroup"
 )
 
-// PossibleWebPubSubPermissionValues returns the possible values for the WebPubSubPermission const type.
-func PossibleWebPubSubPermissionValues() []WebPubSubPermission {
-	return []WebPubSubPermission{	
-		WebPubSubPermissionJoinLeaveGroup,
-		WebPubSubPermissionSendToGroup,
+// PossiblePermissionValues returns the possible values for the Permission const type.
+func PossiblePermissionValues() []Permission {
+	return []Permission{	
+		PermissionJoinLeaveGroup,
+		PermissionSendToGroup,
 	}
 }
 

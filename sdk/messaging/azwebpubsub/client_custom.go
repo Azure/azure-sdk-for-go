@@ -29,17 +29,13 @@ type ClientOptions struct {
 }
 
 // NewClient creates a client that manages Web PubSub service
-func NewClient(endpoint string, hub string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	if hub == "" {
-		return nil, errors.New("empty hub name is not allowed")
-	}
-
+func NewClient(endpoint string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{internal.TokenScope}, nil)
-	azcoreClient, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion,
+	azcoreClient, err := azcore.NewClient(internal.ModuleName, internal.ModuleVersion,
 		runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
@@ -47,16 +43,11 @@ func NewClient(endpoint string, hub string, credential azcore.TokenCredential, o
 	return &Client{
 		internal: azcoreClient,
 		endpoint: endpoint,
-		hub:      hub,
 	}, nil
 }
 
 // NewClientFromConnectionString creates a Client from a connection string
-func NewClientFromConnectionString(connectionString string, hub string, options *ClientOptions) (*Client, error) {
-	if hub == "" {
-		return nil, errors.New("empty hub name is not allowed")
-	}
-
+func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -67,7 +58,7 @@ func NewClientFromConnectionString(connectionString string, hub string, options 
 		return nil, err
 	}
 
-	azcoreClient, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
+	azcoreClient, err := azcore.NewClient(internal.ModuleName, internal.ModuleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{internal.NewWebPubSubKeyCredentialPolicy(props.AccessKey)},
 	}, &options.ClientOptions)
 
@@ -78,13 +69,12 @@ func NewClientFromConnectionString(connectionString string, hub string, options 
 	return &Client{
 		internal: azcoreClient,
 		endpoint: props.Endpoint,
-		hub:      hub,
 		key:      &props.AccessKey,
 	}, nil
 }
 
-// GenerateClientAccessUrlOptions represents the options for generating a client access url
-type GenerateClientAccessUrlOptions struct {
+// GenerateClientAccessURLOptions represents the options for generating a client access url
+type GenerateClientAccessURLOptions struct {
 	// UserID is the user ID for the client.
 	UserID string
 
@@ -105,8 +95,8 @@ type GenerateClientAccessUrlOptions struct {
 	Groups []string
 }
 
-// GenerateClientAccessUrlResponse represents the response type for the generated client access url
-type GenerateClientAccessUrlResponse struct {
+// GenerateClientAccessURLResponse represents the response type for the generated client access url
+type GenerateClientAccessURLResponse struct {
 	// The client token
 	Token string
 	// The base URL for the client to connect to
@@ -116,11 +106,14 @@ type GenerateClientAccessUrlResponse struct {
 }
 
 // GenerateClientAccessURL - generate URL for the WebSocket clients
+//   - hub - The hub name.
 //   - options - GenerateClientAccessUrlOptions contains the optional parameters for the Client.GenerateClientAccessURL method.
-func (c *Client) GenerateClientAccessURL(ctx context.Context, options *GenerateClientAccessUrlOptions) (*GenerateClientAccessUrlResponse, error) {
+func (c *Client) GenerateClientAccessURL(ctx context.Context, hub string, options *GenerateClientAccessURLOptions) (*GenerateClientAccessURLResponse, error) {
 	endpoint := c.endpoint
-	hubName := c.hub
-	hubPath := url.PathEscape(hubName)
+	if hub == "" {
+		return nil, errors.New("empty hub name is not allowed")
+	}
+	hubPath := url.PathEscape(hub)
 	parsedURL, err := url.Parse(endpoint)
 	if err != nil {
 		return nil, errors.New("endpoint is not a valid URL")
@@ -145,7 +138,7 @@ func (c *Client) GenerateClientAccessURL(ctx context.Context, options *GenerateC
 			userId = &options.UserID
 		}
 		// Replace with your logic to generate the token using a webPubSub method
-		resp, err := c.generateClientToken(ctx, hubName, &ClientGenerateClientTokenOptions{UserID: userId, Role: options.Roles, Group: options.Groups, MinutesToExpire: options.ExpirationTimeInMinutes})
+		resp, err := c.generateClientToken(ctx, hub, &ClientGenerateClientTokenOptions{UserID: userId, Role: options.Roles, Group: options.Groups, MinutesToExpire: options.ExpirationTimeInMinutes})
 		if err != nil {
 			return nil, err
 		}
@@ -153,14 +146,14 @@ func (c *Client) GenerateClientAccessURL(ctx context.Context, options *GenerateC
 		token = *resp.Token
 	}
 
-	return &GenerateClientAccessUrlResponse{
+	return &GenerateClientAccessURLResponse{
 		Token:   token,
 		BaseURL: baseURL,
 		URL:     fmt.Sprintf("%s?access_token=%s", baseURL, url.QueryEscape(token)),
 	}, nil
 }
 
-func (c *Client) signJwtToken(audience string, options *GenerateClientAccessUrlOptions) (string, error) {
+func (c *Client) signJwtToken(audience string, options *GenerateClientAccessURLOptions) (string, error) {
 	if c.key == nil {
 		return "", errors.New("key is nil")
 	}

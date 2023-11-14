@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.8.0
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.9.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.4.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.5.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible

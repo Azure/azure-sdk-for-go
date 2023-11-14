@@ -5,5 +5,6 @@
 
 //go:generate autorest ./autorest.md
 //go:generate goimports -w .
+//go:generate gofmt -w .
 
 package azwebpubsub

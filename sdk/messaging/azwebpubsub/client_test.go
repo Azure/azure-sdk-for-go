@@ -27,20 +27,39 @@ func TestClient_SendToAll(t *testing.T) {
 	}
 
 	client := newClientWrapper(t)
-
-	_, err := client.SendToAll(context.Background(),
-		client.TestVars.Hub, azwebpubsub.ContentTypeTextPlain, newStream("Hello world!"),
+	hub := "hub1"
+	_, err := client.SendToAll(context.Background(), hub,
+		azwebpubsub.ContentTypeTextPlain, newStream("Hello world!"),
 		&azwebpubsub.ClientSendToAllOptions{})
 	require.NoError(t, err)
 
-	_, err = client.SendToAll(context.Background(),
-		client.TestVars.Hub, azwebpubsub.ContentTypeApplicationJSON, newStream("true"),
+	_, err = client.SendToAll(context.Background(), hub,
+		azwebpubsub.ContentTypeApplicationJSON, newStream("true"),
 		&azwebpubsub.ClientSendToAllOptions{})
 	require.NoError(t, err)
 
-	_, err = client.SendToAll(context.Background(),
-		client.TestVars.Hub, azwebpubsub.ContentTypeApplicationOctetStream, newStream("true"),
+	_, err = client.SendToAll(context.Background(), hub,
+		azwebpubsub.ContentTypeApplicationOctetStream, newStream("true"),
 		&azwebpubsub.ClientSendToAllOptions{})
+	require.NoError(t, err)
+}
+
+func TestClient_ManagePermissions(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode || testing.Short() {
+		t.Skip()
+	}
+
+	client := newClientWrapper(t)
+	const hub = "chat"
+	const conn1 = "conn1"
+	group := "group1"
+	_, err := client.GrantPermission(context.Background(), hub, azwebpubsub.PermissionJoinLeaveGroup, conn1, &azwebpubsub.ClientGrantPermissionOptions{
+		TargetName: &group,
+	})
+	require.ErrorContains(t, err, "404 Not Found")
+	_, err = client.RevokePermission(context.Background(), hub, azwebpubsub.PermissionJoinLeaveGroup, conn1, &azwebpubsub.ClientRevokePermissionOptions{
+		TargetName: &group,
+	})
 	require.NoError(t, err)
 }
 
@@ -70,17 +89,17 @@ func TestClient_CloseConnections(t *testing.T) {
 }
 
 func TestClient_GenerateClientAccessURLFromConnectionString(t *testing.T) {
-	_, err1 := azwebpubsub.NewClientFromConnectionString("Endpoint=http://test/subpath;;;;", "abc", nil)
+	_, err1 := azwebpubsub.NewClientFromConnectionString("Endpoint=http://test/subpath;;;;", nil)
 	require.ErrorContains(t, err1, "connection string is either blank or malformed.")
 
-	_, err1 = azwebpubsub.NewClientFromConnectionString("Endpoint=http://test/subpath;AccessKey=ABC;;;", "", nil)
+	_, err1 = azwebpubsub.NewClientFromConnectionString("Endpoint=http://test/subpath;AccessKey=ABC;;;", nil)
 	require.ErrorContains(t, err1, "empty hub name is not allowed")
 
 	hub := "chat/go"
-	client, err := azwebpubsub.NewClientFromConnectionString("Endpoint=http://test/subpath;AccessKey=ABC;;;", hub, nil)
+	client, err := azwebpubsub.NewClientFromConnectionString("Endpoint=http://test/subpath;AccessKey=ABC;;;", nil)
 	require.NoError(t, err)
 
-	token, err := client.GenerateClientAccessURL(context.Background(), nil)
+	token, err := client.GenerateClientAccessURL(context.Background(), hub, nil)
 
 	require.NoError(t, err)
 	extract := extractToken(t, token, "http://test/subpath", "ABC", hub)
@@ -89,7 +108,7 @@ func TestClient_GenerateClientAccessURLFromConnectionString(t *testing.T) {
 	require.Empty(t, extract.UserID)
 
 	user1 := "user1"
-	token, err = client.GenerateClientAccessURL(context.Background(), &azwebpubsub.GenerateClientAccessUrlOptions{
+	token, err = client.GenerateClientAccessURL(context.Background(), hub, &azwebpubsub.GenerateClientAccessURLOptions{
 		UserID: user1,
 		Roles:  []string{"admin"},
 		Groups: []string{"group1"},
@@ -106,7 +125,7 @@ func TestClient_GenerateClientAccessURLFromConnectionString(t *testing.T) {
 	require.Equal(t, "group1", extract.Groups[0])
 }
 
-func extractToken(t *testing.T, token *azwebpubsub.GenerateClientAccessUrlResponse, endpoint string, key string, hub string) azwebpubsub.GenerateClientAccessUrlOptions {
+func extractToken(t *testing.T, token *azwebpubsub.GenerateClientAccessURLResponse, endpoint string, key string, hub string) azwebpubsub.GenerateClientAccessURLOptions {
 	expectedAudience := endpoint + "/client/hubs/" + url.PathEscape(hub)
 	expectedBaseUrl := strings.Replace(expectedAudience, "http", "ws", 1)
 
@@ -155,7 +174,7 @@ func extractToken(t *testing.T, token *azwebpubsub.GenerateClientAccessUrlRespon
 		groups = nil
 	}
 
-	return azwebpubsub.GenerateClientAccessUrlOptions{
+	return azwebpubsub.GenerateClientAccessURLOptions{
 		UserID: userId,
 		Roles:  roles,
 		Groups: groups,

@@ -74,15 +74,15 @@ func PossibleRangeWriteTypeValues() []RangeWriteType {
 
 // SourceContentValidationType abstracts mechanisms used to validate source content
 type SourceContentValidationType interface {
-	Apply(generated.SourceContentSetter) error
+	apply(generated.SourceContentSetter) error
 	notPubliclyImplementable()
 }
 
 // SourceContentValidationTypeCRC64 is a SourceContentValidationType used to provide a precomputed CRC64.
 type SourceContentValidationTypeCRC64 uint64
 
-// Apply implements the SourceContentValidationType interface for type SourceContentValidationTypeCRC64.
-func (s SourceContentValidationTypeCRC64) Apply(cfg generated.SourceContentSetter) error {
+// apply implements the SourceContentValidationType interface for type SourceContentValidationTypeCRC64.
+func (s SourceContentValidationTypeCRC64) apply(cfg generated.SourceContentSetter) error {
 	buf := make([]byte, 8)
 	binary.LittleEndian.PutUint64(buf, uint64(s))
 	cfg.SetSourceContentCRC64(buf)

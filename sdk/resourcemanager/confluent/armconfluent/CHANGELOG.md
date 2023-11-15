@@ -1,12 +1,6 @@
 # Release History
 
-## 2.0.0 (2023-11-24)
-### Breaking Changes
-
-- Function `timeRFC3339.MarshalText` has been removed
-- Function `*timeRFC3339.Parse` has been removed
-- Function `*timeRFC3339.UnmarshalText` has been removed
-
+## 1.2.0 (2023-11-24)
 ### Features Added
 
 - New function `NewAccessClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AccessClient, error)`
@@ -19,9 +13,6 @@
 - New function `*AccessClient.ListUsers(context.Context, string, string, ListAccessRequestModel, *AccessClientListUsersOptions) (AccessClientListUsersResponse, error)`
 - New function `*ClientFactory.NewAccessClient() *AccessClient`
 - New function `*ValidationsClient.ValidateOrganizationV2(context.Context, string, string, OrganizationResource, *ValidationsClientValidateOrganizationV2Options) (ValidationsClientValidateOrganizationV2Response, error)`
-- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
-- New function `*dateTimeRFC3339.Parse(string) error`
-- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
 - New struct `AccessInviteUserAccountModel`
 - New struct `AccessInvitedUserDetails`
 - New struct `AccessListClusterSuccessResponse`

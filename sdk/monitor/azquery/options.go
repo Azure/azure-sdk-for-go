@@ -54,7 +54,9 @@ type MetricsClientQueryResourceOptions struct {
 	// (test) val' " use $filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "
 	Filter *string
 
-	// The interval (i.e. timegrain) of the query.
+	// The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special case for 'FULL' value
+	// that returns single datapoint for entire time span requested.Examples: PT15M,
+	// PT1H, P1D, FULL
 	Interval *string
 
 	// The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in it then use

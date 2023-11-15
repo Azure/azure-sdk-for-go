@@ -1,5 +1,6 @@
 # Release History
 
+
 ## 1.1.2 (Unreleased)
 
 ### Features Added
@@ -9,6 +10,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+
 
 ## 1.1.1 (2023-11-15)
 

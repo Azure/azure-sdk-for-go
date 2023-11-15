@@ -1,18 +1,9 @@
 # Release History
 
-## 4.0.0 (2023-11-24)
-### Breaking Changes
-
-- Function `timeRFC3339.MarshalText` has been removed
-- Function `*timeRFC3339.Parse` has been removed
-- Function `*timeRFC3339.UnmarshalText` has been removed
-
+## 3.1.0 ("2023-11-24")
 ### Features Added
 
 - New value `InstallationReasonControlPlaneAccessInterfaceHasChanged`, `InstallationReasonControlPlaneAccessVirtualIPv4AddressesHasChanged`, `InstallationReasonPublicLandMobileNetworkIdentifierHasChanged`, `InstallationReasonUserPlaneAccessInterfaceHasChanged`, `InstallationReasonUserPlaneAccessVirtualIPv4AddressesHasChanged`, `InstallationReasonUserPlaneDataInterfaceHasChanged` added to enum type `InstallationReason`
-- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
-- New function `*dateTimeRFC3339.Parse(string) error`
-- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
 - New struct `EventHubConfiguration`
 - New struct `NASRerouteConfiguration`
 - New struct `SignalingConfiguration`

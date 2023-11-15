@@ -6,6 +6,7 @@ package common
 import (
 	"encoding/json"
 	"fmt"
+	"go/ast"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -414,6 +415,54 @@ func InterfaceToAnyFilter(changelog *model.Changelog) {
 			if len(s.Fields) == 0 {
 				delete(changelog.Modified.BreakingChanges.Structs, structName)
 			}
+		}
+	}
+}
+
+func ExportedFilter(changelog *model.Changelog) {
+	if !changelog.Modified.IsEmpty() {
+		if changelog.Modified.HasAdditiveChanges() {
+			exportOperation(changelog.Modified.AdditiveChanges)
+		}
+
+		if changelog.Modified.HasBreakingChanges() {
+			breakingChanges := changelog.Modified.BreakingChanges
+			for fName, _ := range breakingChanges.Funcs {
+				before, after, _ := strings.Cut(fName, ".")
+				if !ast.IsExported(strings.TrimLeft(before, "*")) || !ast.IsExported(after) {
+					delete(changelog.Modified.BreakingChanges.Funcs, fName)
+				}
+			}
+
+			for sName, _ := range breakingChanges.Structs {
+				if !ast.IsExported(sName) {
+					delete(changelog.Modified.BreakingChanges.Structs, sName)
+				}
+			}
+
+			if !breakingChanges.Removed.IsEmpty() {
+				exportOperation(breakingChanges.Removed)
+			}
+
+		}
+	}
+}
+
+func exportOperation(content *delta.Content) {
+	if content.IsEmpty() {
+		return
+	}
+
+	for fName, _ := range content.Funcs {
+		before, after, _ := strings.Cut(fName, ".")
+		if !ast.IsExported(strings.TrimLeft(before, "*")) || !ast.IsExported(after) {
+			delete(content.Funcs, fName)
+		}
+	}
+
+	for sName, _ := range content.Structs {
+		if !ast.IsExported(sName) {
+			delete(content.Structs, sName)
 		}
 	}
 }

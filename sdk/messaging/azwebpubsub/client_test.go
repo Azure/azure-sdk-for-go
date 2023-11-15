@@ -48,7 +48,6 @@ func TestClient_ManagePermissions(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode || testing.Short() {
 		t.Skip()
 	}
-
 	client := newClientWrapper(t)
 	const hub = "chat"
 	const conn1 = "conn1"

@@ -27,7 +27,6 @@ type clientWrapper struct {
 
 var fakeTestVars = testVars{
 	ConnectionString: "Endpoint=https://fake.eastus-1.webpubsub.azure.com;AccessKey=ABCDE;",
-	Endpoint:         "https://fake.eastus-1.webpubsub.azure.com",
 }
 
 type testVars struct {
@@ -69,10 +68,9 @@ func loadEnv() (testVars, error) {
 	return tv, nil
 }
 
-func newClientWrapper(t *testing.T) clientWrapper {
-	var client *azwebpubsub.Client
+func loadClientOptions(t *testing.T) (testVars, *azcore.ClientOptions) {
 	var tv testVars
-	var options *azwebpubsub.ClientOptions
+	var options *azcore.ClientOptions
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		tmpTestVars, err := loadEnv()
 		require.NoError(t, err)
@@ -80,6 +78,15 @@ func newClientWrapper(t *testing.T) clientWrapper {
 	} else {
 		tv = fakeTestVars
 	}
+
+	if tv.ConnectionString != "" {
+		props, err := internal.ParseConnectionString(tv.ConnectionString)
+		require.NoError(t, err)
+		// always use ConnectionString's Endpoint if it is set
+		tv.Endpoint = props.Endpoint
+	}
+
+	require.NotEmpty(t, tv.Endpoint)
 
 	if recording.GetRecordMode() == recording.LiveMode {
 		if tv.KeyLogPath != "" {
@@ -94,22 +101,27 @@ func newClientWrapper(t *testing.T) clientWrapper {
 			}
 
 			httpClient := &http.Client{Transport: tp}
-			options = &azwebpubsub.ClientOptions{
-				ClientOptions: azcore.ClientOptions{
-					Transport: httpClient,
-				},
+			options = &azcore.ClientOptions{
+				Transport: httpClient,
 			}
 		} else {
 			options = nil
 		}
 	} else {
-		options = &azwebpubsub.ClientOptions{
-			ClientOptions: azcore.ClientOptions{
-				Transport: newRecordingTransporter(t, tv),
-			},
+		options = &azcore.ClientOptions{
+			Transport: newRecordingTransporter(t, tv),
 		}
 	}
 
+	return tv, options
+}
+
+func newClientWrapper(t *testing.T) clientWrapper {
+	var client *azwebpubsub.Client
+	tv, coreOptions := loadClientOptions(t)
+	options := &azwebpubsub.ClientOptions{
+		ClientOptions: *coreOptions,
+	}
 	if tv.ConnectionString != "" {
 		tmpClient, err := azwebpubsub.NewClientFromConnectionString(tv.ConnectionString, options)
 		require.NoError(t, err)
@@ -135,14 +147,10 @@ func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter
 
 	err = recording.Start(t, "sdk/messaging/azwebpubsub/testdata", nil)
 	require.NoError(t, err)
-
-	// err = recording.ResetProxy(nil)
-	// require.NoError(t, err)
-	props, _ := internal.ParseConnectionString(testVars.ConnectionString)
-	err = recording.AddURISanitizer("https://fake_endpoint.com", props.Endpoint, nil)
+	err = recording.AddURISanitizer("https://fake_endpoint.com/", testVars.Endpoint, nil)
 	require.NoError(t, err)
 
-	err = recording.AddGeneralRegexSanitizer(`"time": "2023-11-31T00:33:32Z"`, `"time":".+?"`, nil)
+	err = recording.AddGeneralRegexSanitizer(`"Date": "Wed, 15 Nov 2023 08:00:00 GMT"`, `"Date":".+?"`, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(

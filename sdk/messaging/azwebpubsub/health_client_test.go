@@ -8,15 +8,10 @@ package azwebpubsub_test
 
 import (
 	"context"
-	"crypto/tls"
-	"net/http"
-	"os"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -25,68 +20,18 @@ func TestHealthClient_GetServiceStatus(t *testing.T) {
 		t.Skip()
 	}
 
-	client := getHealthClient(t)
+	client := newHealthClient(t)
 	_, err := client.GetServiceStatus(context.Background(), &azwebpubsub.HealthClientGetServiceStatusOptions{})
 	require.NoError(t, err)
 }
 
-func loadEndpointFromEnv() (string, error) {
-	if v := os.Getenv("WEBPUBSUB_ENDPOINT"); v != "" {
-		return v, nil
+func newHealthClient(t *testing.T) *azwebpubsub.HealthClient {
+	tv, coreOptions := loadClientOptions(t)
+	options := &azwebpubsub.HealthClientOptions{
+		ClientOptions: *coreOptions,
 	}
-	if v := os.Getenv("WEBPUBSUB_CONNECTIONSTRING"); v != "" {
-		props, err := internal.ParseConnectionString(v)
-		if err != nil {
-			return "", err
-		}
-		return props.Endpoint, nil
-	}
-	return "", nil
-}
-
-func getHealthClient(t *testing.T) *azwebpubsub.HealthClient {
-	var options *azwebpubsub.HealthClientOptions
-	var endpoint string
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		tmpEndpoint, err := loadEndpointFromEnv()
-		require.NoError(t, err)
-		require.NotEmpty(t, tmpEndpoint)
-		endpoint = tmpEndpoint
-	} else {
-		endpoint = "https://fake.eastus-1.webpubsub.azure.com"
-	}
-
-	if recording.GetRecordMode() == recording.LiveMode {
-		keyLogPath := os.Getenv("SSLKEYLOGFILE")
-		if keyLogPath != "" {
-			keyLogWriter, err := os.OpenFile(keyLogPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
-			require.NoError(t, err)
-
-			t.Cleanup(func() { keyLogWriter.Close() })
-
-			tp := http.DefaultTransport.(*http.Transport).Clone()
-			tp.TLSClientConfig = &tls.Config{
-				KeyLogWriter: keyLogWriter,
-			}
-
-			httpClient := &http.Client{Transport: tp}
-			options = &azwebpubsub.HealthClientOptions{
-				ClientOptions: azcore.ClientOptions{
-					Transport: httpClient,
-				},
-			}
-		} else {
-			options = nil
-		}
-	} else {
-		options = &azwebpubsub.HealthClientOptions{
-			ClientOptions: azcore.ClientOptions{
-				Transport: newRecordingTransporter(t, testVars{Endpoint: endpoint}),
-			},
-		}
-	}
-
-	client, err := azwebpubsub.NewHealthClientWithNoCredentials("https://lianwei-test-1.webpubsub.azure.com", options)
+	println(tv.Endpoint)
+	client, err := azwebpubsub.NewHealthClientWithNoCredentials(tv.Endpoint, options)
 	require.NoError(t, err)
 	return client
 }

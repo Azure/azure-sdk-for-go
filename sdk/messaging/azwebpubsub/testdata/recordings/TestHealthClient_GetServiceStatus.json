@@ -1,0 +1,20 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fake_endpoint.com/api/health?api-version=2023-07-01",
+      "RequestMethod": "HEAD",
+      "RequestHeaders": {
+        "User-Agent": "azsdk-go-azwebpubsub/v0.1.0 (go1.21.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Date": "Wed, 15 Nov 2023 08:03:59 GMT",
+        "Server": "nginx"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

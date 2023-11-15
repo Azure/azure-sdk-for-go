@@ -1,0 +1,71 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fake_endpoint.com/api/hubs/hub1/:send?api-version=2023-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "12",
+        "Content-Type": "text/plain",
+        "User-Agent": "azsdk-go-azwebpubsub/v0.1.0 (go1.21.0; Windows_NT)"
+      },
+      "RequestBody": "Hello world!",
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-10-01, 2022-11-01, 2023-07-01",
+        "Connection": "keep-alive",
+        "Content-Length": "0",
+        "Date": "Wed, 15 Nov 2023 08:03:54 GMT",
+        "Server": "nginx"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fake_endpoint.com/api/hubs/hub1/:send?api-version=2023-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "4",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azwebpubsub/v0.1.0 (go1.21.0; Windows_NT)"
+      },
+      "RequestBody": true,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-10-01, 2022-11-01, 2023-07-01",
+        "Connection": "keep-alive",
+        "Content-Length": "0",
+        "Date": "Wed, 15 Nov 2023 08:03:55 GMT",
+        "Server": "nginx"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fake_endpoint.com/api/hubs/hub1/:send?api-version=2023-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "4",
+        "Content-Type": "application/octet-stream",
+        "User-Agent": "azsdk-go-azwebpubsub/v0.1.0 (go1.21.0; Windows_NT)"
+      },
+      "RequestBody": "dHJ1ZQ==",
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-10-01, 2022-11-01, 2023-07-01",
+        "Connection": "keep-alive",
+        "Content-Length": "0",
+        "Date": "Wed, 15 Nov 2023 08:03:55 GMT",
+        "Server": "nginx"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

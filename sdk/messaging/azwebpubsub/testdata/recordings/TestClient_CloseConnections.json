@@ -1,0 +1,84 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fake_endpoint.com/api/hubs/chat/:closeConnections?api-version=2023-07-01\u0026excluded=conn1\u0026reason=TestClient_CloseConnections",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azwebpubsub/v0.1.0 (go1.21.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-10-01, 2022-11-01, 2023-07-01",
+        "Connection": "keep-alive",
+        "Date": "Wed, 15 Nov 2023 08:03:57 GMT",
+        "Server": "nginx"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fake_endpoint.com/api/hubs/chat/connections/conn1?api-version=2023-07-01\u0026reason=TestClient_CloseConnections",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azwebpubsub/v0.1.0 (go1.21.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-10-01, 2022-11-01, 2023-07-01",
+        "Connection": "keep-alive",
+        "Date": "Wed, 15 Nov 2023 08:03:58 GMT",
+        "Server": "nginx"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fake_endpoint.com/api/hubs/chat/groups/group1/:closeConnections?api-version=2023-07-01\u0026excluded=conn1\u0026reason=TestClient_CloseConnections",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azwebpubsub/v0.1.0 (go1.21.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-10-01, 2022-11-01, 2023-07-01",
+        "Connection": "keep-alive",
+        "Date": "Wed, 15 Nov 2023 08:03:58 GMT",
+        "Server": "nginx"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fake_endpoint.com/api/hubs/chat/users/user1/:closeConnections?api-version=2023-07-01\u0026excluded=conn1\u0026reason=TestClient_CloseConnections",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azwebpubsub/v0.1.0 (go1.21.0; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-10-01, 2022-11-01, 2023-07-01",
+        "Connection": "keep-alive",
+        "Date": "Wed, 15 Nov 2023 08:03:58 GMT",
+        "Server": "nginx"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

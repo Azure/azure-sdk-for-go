@@ -192,6 +192,9 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 			if test.path == "" {
 				t.Skip("no certificate file specified")
 			}
+			if recording.GetRecordMode() == recording.LiveMode && test.name == "SNI" {
+				t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/21988")
+			}
 			certData, err := os.ReadFile(test.path)
 			if err != nil {
 				t.Fatalf(`failed to read cert: %v`, err)
@@ -285,6 +288,9 @@ func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {
 }
 
 func TestClientCertificateCredential_Regional(t *testing.T) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/21988")
+	}
 	t.Setenv(azureRegionalAuthorityName, "westus2")
 	opts, stop := initRecording(t)
 	defer stop()

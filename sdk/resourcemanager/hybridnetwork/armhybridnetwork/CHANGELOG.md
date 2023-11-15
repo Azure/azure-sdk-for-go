@@ -60,9 +60,6 @@
 - Function `*VendorsClient.BeginDelete` has been removed
 - Function `*VendorsClient.Get` has been removed
 - Function `*VendorsClient.NewListBySubscriptionPager` has been removed
-- Function `timeRFC3339.MarshalText` has been removed
-- Function `*timeRFC3339.Parse` has been removed
-- Function `*timeRFC3339.UnmarshalText` has been removed
 - Function `NewNetworkFunctionVendorSKUsClient` has been removed
 - Function `*NetworkFunctionVendorSKUsClient.NewListBySKUPager` has been removed
 - Function `*NetworkFunctionVendorSKUsClient.NewListByVendorPager` has been removed
@@ -248,9 +245,6 @@
 - New function `*SitesClient.UpdateTags(context.Context, string, string, TagsObject, *SitesClientUpdateTagsOptions) (SitesClientUpdateTagsResponse, error)`
 - New function `*VirtualNetworkFunctionDefinitionVersion.GetNetworkFunctionDefinitionVersionPropertiesFormat() *NetworkFunctionDefinitionVersionPropertiesFormat`
 - New function `*VirtualNetworkFunctionTemplate.GetVirtualNetworkFunctionTemplate() *VirtualNetworkFunctionTemplate`
-- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
-- New function `*dateTimeRFC3339.Parse(string) error`
-- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
 - New function `NewNetworkFunctionDefinitionGroupsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkFunctionDefinitionGroupsClient, error)`
 - New function `*NetworkFunctionDefinitionGroupsClient.BeginCreateOrUpdate(context.Context, string, string, string, NetworkFunctionDefinitionGroup, *NetworkFunctionDefinitionGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[NetworkFunctionDefinitionGroupsClientCreateOrUpdateResponse], error)`
 - New function `*NetworkFunctionDefinitionGroupsClient.BeginDelete(context.Context, string, string, string, *NetworkFunctionDefinitionGroupsClientBeginDeleteOptions) (*runtime.Poller[NetworkFunctionDefinitionGroupsClientDeleteResponse], error)`

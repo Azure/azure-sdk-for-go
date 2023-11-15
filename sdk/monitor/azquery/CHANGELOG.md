@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Enabled spans for distributed tracing.
 
 ## 1.1.0 (2023-05-09)
 

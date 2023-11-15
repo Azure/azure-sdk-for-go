@@ -35,6 +35,8 @@ type LogsClient struct {
 //   - options - LogsClientQueryBatchOptions contains the optional parameters for the LogsClient.QueryBatch method.
 func (client *LogsClient) QueryBatch(ctx context.Context, body BatchRequest, options *LogsClientQueryBatchOptions) (LogsClientQueryBatchResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "LogsClient.QueryBatch", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.queryBatchCreateRequest(ctx, body, options)
 	if err != nil {
 		return LogsClientQueryBatchResponse{}, err
@@ -85,6 +87,8 @@ func (client *LogsClient) queryBatchHandleResponse(resp *http.Response) (LogsCli
 //   - options - LogsClientQueryResourceOptions contains the optional parameters for the LogsClient.QueryResource method.
 func (client *LogsClient) QueryResource(ctx context.Context, resourceID string, body Body, options *LogsClientQueryResourceOptions) (LogsClientQueryResourceResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "LogsClient.QueryResource", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.queryResourceCreateRequest(ctx, resourceID, body, options)
 	if err != nil {
 		return LogsClientQueryResourceResponse{}, err
@@ -138,6 +142,8 @@ func (client *LogsClient) queryResourceHandleResponse(resp *http.Response) (Logs
 //   - options - LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.
 func (client *LogsClient) QueryWorkspace(ctx context.Context, workspaceID string, body Body, options *LogsClientQueryWorkspaceOptions) (LogsClientQueryWorkspaceResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "LogsClient.QueryWorkspace", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.queryWorkspaceCreateRequest(ctx, workspaceID, body, options)
 	if err != nil {
 		return LogsClientQueryWorkspaceResponse{}, err

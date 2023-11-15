@@ -90,27 +90,15 @@ func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
 	}
 }
 
-func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *testing.T) {
-	for _, test := range allCertTests {
-		t.Run(test.name, func(t *testing.T) {
-			options := ClientCertificateCredentialOptions{SendCertificateChain: true}
-			cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, &options)
-			if err != nil {
-				t.Fatalf("Expected an empty error but received: %s", err.Error())
-			}
-			cred.client.noCAE = fakeConfidentialClient{}
-			_, err = cred.GetToken(context.Background(), testTRO)
-			if err != nil {
-				t.Fatalf("Expected an empty error but received: %s", err.Error())
-			}
-		})
-	}
-}
-
 func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
 	for _, test := range allCertTests {
 		t.Run(test.name, func(t *testing.T) {
-			options := ClientCertificateCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: &mockSTS{}}, SendCertificateChain: true}
+			options := ClientCertificateCredentialOptions{
+				ClientOptions: azcore.ClientOptions{
+					Transport: &mockSTS{tokenRequestCallback: validateX5C(t, test.certs)},
+				},
+				SendCertificateChain: true,
+			}
 			cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, &options)
 			if err != nil {
 				t.Fatal(err)

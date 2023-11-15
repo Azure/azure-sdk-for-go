@@ -419,10 +419,10 @@ func InterfaceToAnyFilter(changelog *model.Changelog) {
 	}
 }
 
-func ExportedFilter(changelog *model.Changelog) {
+func NonExportedFilter(changelog *model.Changelog) {
 	if !changelog.Modified.IsEmpty() {
 		if changelog.Modified.HasAdditiveChanges() {
-			exportOperation(changelog.Modified.AdditiveChanges)
+			nonExportOperation(changelog.Modified.AdditiveChanges)
 		}
 
 		if changelog.Modified.HasBreakingChanges() {
@@ -441,14 +441,14 @@ func ExportedFilter(changelog *model.Changelog) {
 			}
 
 			if !breakingChanges.Removed.IsEmpty() {
-				exportOperation(breakingChanges.Removed)
+				nonExportOperation(breakingChanges.Removed)
 			}
 
 		}
 	}
 }
 
-func exportOperation(content *delta.Content) {
+func nonExportOperation(content *delta.Content) {
 	if content.IsEmpty() {
 		return
 	}

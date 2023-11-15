@@ -46,7 +46,7 @@ func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions
 	}
 
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{c.Audience + "/.default"}, nil)
-	azcoreClient, err := azcore.NewClient("azquery.LogsClient", version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	azcoreClient, err := azcore.NewClient(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientO
 	}
 
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{c.Audience + "/.default"}, nil)
-	azcoreClient, err := azcore.NewClient("azquery.MetricsClient", version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	azcoreClient, err := azcore.NewClient(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

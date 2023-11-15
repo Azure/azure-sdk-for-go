@@ -521,6 +521,117 @@ func TestContainerQueryItems(t *testing.T) {
 	}
 }
 
+func TestCrossPartitionContainerQueryItems(t *testing.T) {
+	jsonStringpage1 := []byte(`{"Documents":[{"id":"doc1","pk":"foo"},{"id":"doc2","pk":"foo"}]}`)
+	jsonStringpage2 := []byte(`{"Documents":[{"id":"doc3","pk":"bar"},{"id":"doc4","pk":"bar"},{"id":"doc5","pk":"bar"}]}`)
+
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(
+		mock.WithBody(jsonStringpage1),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderQueryMetrics, "someQueryMetrics"),
+		mock.WithHeader(cosmosHeaderIndexUtilization, "someIndexUtilization"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithHeader(cosmosHeaderContinuationToken, "someContinuationToken"),
+		mock.WithStatusCode(200))
+	srv.AppendResponse(
+		mock.WithBody(jsonStringpage2),
+		mock.WithHeader(cosmosHeaderQueryMetrics, "someQueryMetrics"),
+		mock.WithHeader(cosmosHeaderIndexUtilization, "someIndexUtilization"),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	receivedIds := []string{}
+	queryPager := container.NewCrossPartitionQueryItemsPager("select * from c", nil)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("Failed to query items: %v", err)
+		}
+
+		for _, item := range queryResponse.Items {
+			var itemResponseBody map[string]interface{}
+			err = json.Unmarshal(item, &itemResponseBody)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal: %v", err)
+			}
+			receivedIds = append(receivedIds, itemResponseBody["id"].(string))
+		}
+
+		if queryPager.More() && queryResponse.ContinuationToken != "someContinuationToken" {
+			t.Errorf("Expected ContinuationToken to be %s, but got %s", "someContinuationToken", queryResponse.ContinuationToken)
+		}
+
+		if queryResponse.QueryMetrics == nil || *queryResponse.QueryMetrics != "someQueryMetrics" {
+			t.Errorf("Expected QueryMetrics to be %s, but got %s", "someQueryMetrics", *queryResponse.QueryMetrics)
+		}
+
+		if queryResponse.IndexMetrics == nil || *queryResponse.IndexMetrics != "someIndexUtilization" {
+			t.Errorf("Expected IndexMetrics to be %s, but got %s", "someIndexUtilization", *queryResponse.IndexMetrics)
+		}
+
+		if queryResponse.ActivityID == "" {
+			t.Fatal("Activity id was not returned")
+		}
+
+		if queryResponse.RequestCharge == 0 {
+			t.Fatal("Request charge was not returned")
+		}
+	}
+
+	for i := 0; i < 5; i++ {
+		if receivedIds[i] != "doc"+strconv.Itoa(i+1) {
+			t.Fatalf("Expected id %d, got %s", i, receivedIds[i])
+		}
+	}
+
+	if len(verifier.requests) != 2 {
+		t.Fatalf("Expected 2 requests, got %d", len(verifier.requests))
+	}
+
+	for index, request := range verifier.requests {
+		if request.method != http.MethodPost {
+			t.Errorf("Expected method to be %s, but got %s", http.MethodPost, request.method)
+		}
+
+		if request.url.RequestURI() != "/dbs/databaseId/colls/containerId/docs" {
+			t.Errorf("Expected url to be %s, but got %s", "/dbs/databaseId/colls/containerId/docs", request.url.RequestURI())
+		}
+
+		if !request.isQuery {
+			t.Errorf("Expected request to be a query, but it was not")
+		}
+
+		if request.body != "{\"query\":\"select * from c\"}" {
+			t.Errorf("Expected %v, but got %v", "{\"query\":\"select * from c\"}", request.body)
+		}
+
+		if request.contentType != cosmosHeaderValuesQuery {
+			t.Errorf("Expected %v, but got %v", cosmosHeaderValuesQuery, request.contentType)
+		}
+
+		if index == 0 && request.headers.Get(cosmosHeaderContinuationToken) != "" {
+			t.Errorf("Expected ContinuationToken to be %s, but got %s", "", request.headers.Get(cosmosHeaderContinuationToken))
+		}
+
+		if index == 1 && request.headers.Get(cosmosHeaderContinuationToken) != "someContinuationToken" {
+			t.Errorf("Expected ContinuationToken to be %s, but got %s", "someContinuationToken", request.headers.Get(cosmosHeaderContinuationToken))
+		}
+	}
+}
+
 func TestContainerExecuteBatch(t *testing.T) {
 	batchResponseRaw := []map[string]interface{}{
 		{"statusCode": 200, "requestCharge": 10.0, "eTag": "someETag", "resourceBody": "someBody"},

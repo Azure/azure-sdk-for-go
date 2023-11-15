@@ -18,9 +18,6 @@
 - Function `*QuerySelector.GetSelector` has been removed
 - Function `*Selector.GetSelector` has been removed
 - Function `*SimpleFilter.GetFilter` has been removed
-- Function `timeRFC3339.MarshalText` has been removed
-- Function `*timeRFC3339.Parse` has been removed
-- Function `*timeRFC3339.UnmarshalText` has been removed
 - Operation `*ExperimentsClient.Cancel` has been changed to LRO, use `*ExperimentsClient.BeginCancel` instead.
 - Operation `*ExperimentsClient.CreateOrUpdate` has been changed to LRO, use `*ExperimentsClient.BeginCreateOrUpdate` instead.
 - Operation `*ExperimentsClient.Delete` has been changed to LRO, use `*ExperimentsClient.BeginDelete` instead.
@@ -59,9 +56,6 @@
 - New function `*TargetQuerySelector.GetTargetSelector() *TargetSelector`
 - New function `*TargetSelector.GetTargetSelector() *TargetSelector`
 - New function `*TargetSimpleFilter.GetTargetFilter() *TargetFilter`
-- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
-- New function `*dateTimeRFC3339.Parse(string) error`
-- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
 - New struct `ExperimentBranch`
 - New struct `ExperimentExecution`
 - New struct `ExperimentExecutionListResult`

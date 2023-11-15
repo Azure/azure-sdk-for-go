@@ -88,8 +88,8 @@ type GenerateClientAccessURLOptions struct {
 	// More info: https://azure.github.io/azure-webpubsub/references/pubsub-websocket-subprotocol#permissions
 	Roles []string
 
-	// ExpirationTimeInMinutes is the number of minutes until the token expires.
-	ExpirationTimeInMinutes *int32
+	// ExpirationTimeInMinutes is the number of minutes until the token expires. Default value(60 minutes) is used if the value is 0.
+	ExpirationTimeInMinutes int32
 
 	// Groups are the groups to join when the client connects.
 	Groups []string
@@ -138,7 +138,7 @@ func (c *Client) GenerateClientAccessURL(ctx context.Context, hub string, option
 			userId = &options.UserID
 		}
 		// Replace with your logic to generate the token using a webPubSub method
-		resp, err := c.generateClientToken(ctx, hub, &ClientGenerateClientTokenOptions{UserID: userId, Role: options.Roles, Group: options.Groups, MinutesToExpire: options.ExpirationTimeInMinutes})
+		resp, err := c.generateClientToken(ctx, hub, &ClientGenerateClientTokenOptions{UserID: userId, Role: options.Roles, Group: options.Groups, MinutesToExpire: &options.ExpirationTimeInMinutes})
 		if err != nil {
 			return nil, err
 		}
@@ -159,10 +159,14 @@ func (c *Client) signJwtToken(audience string, options *GenerateClientAccessURLO
 	}
 	key := []byte(*c.key)
 	var exp int64
-	if options == nil || options.ExpirationTimeInMinutes == nil {
+
+	if options == nil || options.ExpirationTimeInMinutes == 0 {
 		exp = time.Now().Add(defaultExpirationTime).Unix()
 	} else {
-		exp = time.Now().Add(time.Minute * time.Duration(*options.ExpirationTimeInMinutes)).Unix()
+		if options.ExpirationTimeInMinutes < 0 {
+			return "", errors.New("the value of ExpirationTimeInMinutes is out of range")
+		}
+		exp = time.Now().Add(time.Minute * time.Duration(options.ExpirationTimeInMinutes)).Unix()
 	}
 	claims := jwt.MapClaims{
 		"aud": audience,

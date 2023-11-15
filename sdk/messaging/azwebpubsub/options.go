@@ -184,8 +184,8 @@ type ClientUserExistsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HealthAPIClientGetServiceStatusOptions contains the optional parameters for the HealthAPIClient.GetServiceStatus method.
-type HealthAPIClientGetServiceStatusOptions struct {
+// HealthClientGetServiceStatusOptions contains the optional parameters for the HealthClient.GetServiceStatus method.
+type HealthClientGetServiceStatusOptions struct {
 	// placeholder for future optional parameters
 }
 

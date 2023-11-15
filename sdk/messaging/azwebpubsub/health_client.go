@@ -16,9 +16,9 @@ import (
 	"net/http"
 )
 
-// HealthAPIClient contains the methods for the HealthAPI group.
+// HealthClient contains the methods for the Health group.
 // Don't use this type directly, use a constructor function instead.
-type HealthAPIClient struct {
+type HealthClient struct {
 	internal *azcore.Client
 	endpoint string
 }
@@ -27,27 +27,26 @@ type HealthAPIClient struct {
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01
-//   - options - HealthAPIClientGetServiceStatusOptions contains the optional parameters for the HealthAPIClient.GetServiceStatus
-//     method.
-func (client *HealthAPIClient) GetServiceStatus(ctx context.Context, options *HealthAPIClientGetServiceStatusOptions) (HealthAPIClientGetServiceStatusResponse, error) {
+//   - options - HealthClientGetServiceStatusOptions contains the optional parameters for the HealthClient.GetServiceStatus method.
+func (client *HealthClient) GetServiceStatus(ctx context.Context, options *HealthClientGetServiceStatusOptions) (HealthClientGetServiceStatusResponse, error) {
 	var err error
 	req, err := client.getServiceStatusCreateRequest(ctx, options)
 	if err != nil {
-		return HealthAPIClientGetServiceStatusResponse{}, err
+		return HealthClientGetServiceStatusResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return HealthAPIClientGetServiceStatusResponse{}, err
+		return HealthClientGetServiceStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return HealthAPIClientGetServiceStatusResponse{}, err
+		return HealthClientGetServiceStatusResponse{}, err
 	}
-	return HealthAPIClientGetServiceStatusResponse{}, nil
+	return HealthClientGetServiceStatusResponse{}, nil
 }
 
 // getServiceStatusCreateRequest creates the GetServiceStatus request.
-func (client *HealthAPIClient) getServiceStatusCreateRequest(ctx context.Context, options *HealthAPIClientGetServiceStatusOptions) (*policy.Request, error) {
+func (client *HealthClient) getServiceStatusCreateRequest(ctx context.Context, options *HealthClientGetServiceStatusOptions) (*policy.Request, error) {
 	urlPath := "/api/health"
 	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {

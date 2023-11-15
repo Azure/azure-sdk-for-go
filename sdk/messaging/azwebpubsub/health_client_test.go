@@ -20,13 +20,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestHealthAPIClient_GetServiceStatus(t *testing.T) {
+func TestHealthClient_GetServiceStatus(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode || testing.Short() {
 		t.Skip()
 	}
 
-	client := getHealthAPIClient(t)
-	_, err := client.GetServiceStatus(context.Background(), &azwebpubsub.HealthAPIClientGetServiceStatusOptions{})
+	client := getHealthClient(t)
+	_, err := client.GetServiceStatus(context.Background(), &azwebpubsub.HealthClientGetServiceStatusOptions{})
 	require.NoError(t, err)
 }
 
@@ -44,8 +44,8 @@ func loadEndpointFromEnv() (string, error) {
 	return "", nil
 }
 
-func getHealthAPIClient(t *testing.T) *azwebpubsub.HealthAPIClient {
-	var options *azwebpubsub.HealthAPIClientOptions
+func getHealthClient(t *testing.T) *azwebpubsub.HealthClient {
+	var options *azwebpubsub.HealthClientOptions
 	var endpoint string
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		tmpEndpoint, err := loadEndpointFromEnv()
@@ -70,7 +70,7 @@ func getHealthAPIClient(t *testing.T) *azwebpubsub.HealthAPIClient {
 			}
 
 			httpClient := &http.Client{Transport: tp}
-			options = &azwebpubsub.HealthAPIClientOptions{
+			options = &azwebpubsub.HealthClientOptions{
 				ClientOptions: azcore.ClientOptions{
 					Transport: httpClient,
 				},
@@ -79,14 +79,14 @@ func getHealthAPIClient(t *testing.T) *azwebpubsub.HealthAPIClient {
 			options = nil
 		}
 	} else {
-		options = &azwebpubsub.HealthAPIClientOptions{
+		options = &azwebpubsub.HealthClientOptions{
 			ClientOptions: azcore.ClientOptions{
 				Transport: newRecordingTransporter(t, testVars{Endpoint: endpoint}),
 			},
 		}
 	}
 
-	client, err := azwebpubsub.NewHealthAPIClient("https://lianwei-test-1.webpubsub.azure.com", options)
+	client, err := azwebpubsub.NewHealthClientWithNoCredentials("https://lianwei-test-1.webpubsub.azure.com", options)
 	require.NoError(t, err)
 	return client
 }

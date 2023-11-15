@@ -12,15 +12,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub/internal"
 )
 
-// HealthAPIClientOptions contains optional settings for [HealthAPIClient]
-type HealthAPIClientOptions struct {
+// HealthClientOptions contains optional settings for [HealthClient]
+type HealthClientOptions struct {
 	azcore.ClientOptions
 }
 
-// NewHealthAPIClient creates a client that checks the healthy status of Web PubSub service
-func NewHealthAPIClient(endpoint string, options *HealthAPIClientOptions) (*HealthAPIClient, error) {
+// NewHealthClientWithNoCredentials creates a client that checks the healthy status of Web PubSub service
+func NewHealthClientWithNoCredentials(endpoint string, options *HealthClientOptions) (*HealthClient, error) {
 	if options == nil {
-		options = &HealthAPIClientOptions{}
+		options = &HealthClientOptions{}
 	}
 
 	azcoreClient, err := azcore.NewClient(internal.ModuleName, internal.ModuleVersion, runtime.PipelineOptions{}, &options.ClientOptions)
@@ -28,7 +28,7 @@ func NewHealthAPIClient(endpoint string, options *HealthAPIClientOptions) (*Heal
 		return nil, err
 	}
 
-	return &HealthAPIClient{
+	return &HealthClient{
 		internal: azcoreClient,
 		endpoint: endpoint,
 	}, nil

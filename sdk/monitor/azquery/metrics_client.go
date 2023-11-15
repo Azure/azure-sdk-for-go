@@ -50,6 +50,7 @@ func (client *MetricsClient) NewListDefinitionsPager(resourceURI string, options
 			}
 			return client.listDefinitionsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -105,6 +106,7 @@ func (client *MetricsClient) NewListNamespacesPager(resourceURI string, options 
 			}
 			return client.listNamespacesHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -143,6 +145,8 @@ func (client *MetricsClient) listNamespacesHandleResponse(resp *http.Response) (
 //   - options - MetricsClientQueryResourceOptions contains the optional parameters for the MetricsClient.QueryResource method.
 func (client *MetricsClient) QueryResource(ctx context.Context, resourceURI string, options *MetricsClientQueryResourceOptions) (MetricsClientQueryResourceResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "MetricsClient.QueryResource", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.queryResourceCreateRequest(ctx, resourceURI, options)
 	if err != nil {
 		return MetricsClientQueryResourceResponse{}, err

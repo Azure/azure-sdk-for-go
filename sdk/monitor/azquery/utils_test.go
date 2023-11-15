@@ -82,7 +82,7 @@ func run(m *testing.M) int {
 	}
 	workspaceID = getEnvVar("WORKSPACE_ID", fakeWorkspaceID)
 	workspaceID2 = getEnvVar("WORKSPACE_ID2", fakeWorkspaceID2)
-	resourceURI = getEnvVar("WORKSPACE_ID", fakeResourceURI)
+	resourceURI = getEnvVar("RESOURCE_URI", fakeResourceURI)
 
 	return m.Run()
 }
@@ -133,25 +133,25 @@ func startMetricsTest(t *testing.T) *azquery.MetricsClient {
 	return client
 }
 
-func getEnvVar(lookupValue string, fakeValue string) string {
+func getEnvVar(envVar string, fakeValue string) string {
 	// get value
-	envVar := fakeValue
+	value := fakeValue
 	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
-		envVar = os.Getenv(lookupValue)
-		if envVar == "" {
-			panic("no value for " + lookupValue)
+		value = os.Getenv(envVar)
+		if value == "" {
+			panic("no value for " + envVar)
 		}
 	}
 
 	// sanitize value
 	if fakeValue != "" && recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddGeneralRegexSanitizer(fakeValue, envVar, nil)
+		err := recording.AddGeneralRegexSanitizer(fakeValue, value, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
 
-	return envVar
+	return value
 }
 
 type FakeCredential struct{}

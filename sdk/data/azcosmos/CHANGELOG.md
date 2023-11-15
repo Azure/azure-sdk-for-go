@@ -1,14 +1,9 @@
 # Release History
 
-## 0.3.7 (Unreleased)
+## 0.3.7 (2023-11-15)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for cross partition queries
 
 ## 0.3.6 (2023-08-18)
 

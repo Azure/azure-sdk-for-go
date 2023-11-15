@@ -10,7 +10,6 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 	"regexp"
@@ -58,33 +57,13 @@ func run(m *testing.M) int {
 			}
 		}()
 	}
-	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
-		workspaceID, workspaceID2, resourceURI = os.Getenv("WORKSPACE_ID"), os.Getenv("WORKSPACE_ID2"), os.Getenv("RESOURCE_URI")
-	}
-	if workspaceID == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			panic("no value for WORKSPACE_ID")
-		}
-		workspaceID = fakeWorkspaceID
-	}
-	if workspaceID2 == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			panic("no value for WORKSPACE_ID2")
-		}
-		workspaceID2 = fakeWorkspaceID2
-	}
-	if resourceURI == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			panic("no value for RESOURCE_URI")
-		}
-		resourceURI = fakeResourceURI
-	}
+
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		tenantID := lookupEnvVar("AZQUERY_TENANT_ID")
-		clientID := lookupEnvVar("AZQUERY_CLIENT_ID")
-		secret := lookupEnvVar("AZQUERY_CLIENT_SECRET")
+		tenantID := getEnvVar("AZQUERY_TENANT_ID", "")
+		clientID := getEnvVar("AZQUERY_CLIENT_ID", "")
+		secret := getEnvVar("AZQUERY_CLIENT_SECRET", "")
 		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
@@ -101,20 +80,10 @@ func run(m *testing.M) int {
 		}
 
 	}
-	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddGeneralRegexSanitizer(fakeWorkspaceID, workspaceID, nil)
-		if err != nil {
-			panic(err)
-		}
-		err = recording.AddGeneralRegexSanitizer(fakeWorkspaceID2, workspaceID2, nil)
-		if err != nil {
-			panic(err)
-		}
-		err = recording.AddGeneralRegexSanitizer(fakeResourceURI, resourceURI, nil)
-		if err != nil {
-			panic(err)
-		}
-	}
+	workspaceID = getEnvVar("WORKSPACE_ID", fakeWorkspaceID)
+	workspaceID2 = getEnvVar("WORKSPACE_ID2", fakeWorkspaceID2)
+	resourceURI = getEnvVar("RESOURCE_URI", fakeResourceURI)
+
 	return m.Run()
 }
 
@@ -164,12 +133,25 @@ func startMetricsTest(t *testing.T) *azquery.MetricsClient {
 	return client
 }
 
-func lookupEnvVar(s string) string {
-	ret, ok := os.LookupEnv(s)
-	if !ok {
-		panic(fmt.Sprintf("Could not find env var: '%s'", s))
+func getEnvVar(envVar string, fakeValue string) string {
+	// get value
+	value := fakeValue
+	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
+		value = os.Getenv(envVar)
+		if value == "" {
+			panic("no value for " + envVar)
+		}
 	}
-	return ret
+
+	// sanitize value
+	if fakeValue != "" && recording.GetRecordMode() == recording.RecordingMode {
+		err := recording.AddGeneralRegexSanitizer(fakeValue, value, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	return value
 }
 
 type FakeCredential struct{}

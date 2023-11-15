@@ -455,7 +455,7 @@ func nonExportOperation(content *delta.Content) {
 
 	for fName := range content.Funcs {
 		before, after, _ := strings.Cut(fName, ".")
-		if !ast.IsExported(strings.TrimLeft(before, "*")) || !ast.IsExported(after) {
+		if !ast.IsExported(strings.TrimLeft(before, "*")) || (after != "" && !ast.IsExported(after)) {
 			delete(content.Funcs, fName)
 		}
 	}

@@ -1,6 +1,6 @@
 # Release History
 
-## 3.1.0 ("2023-11-24")
+## 3.1.0 (2023-11-24)
 ### Features Added
 
 - New value `InstallationReasonControlPlaneAccessInterfaceHasChanged`, `InstallationReasonControlPlaneAccessVirtualIPv4AddressesHasChanged`, `InstallationReasonPublicLandMobileNetworkIdentifierHasChanged`, `InstallationReasonUserPlaneAccessInterfaceHasChanged`, `InstallationReasonUserPlaneAccessVirtualIPv4AddressesHasChanged`, `InstallationReasonUserPlaneDataInterfaceHasChanged` added to enum type `InstallationReason`

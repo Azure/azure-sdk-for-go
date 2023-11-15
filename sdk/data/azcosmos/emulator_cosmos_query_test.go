@@ -305,6 +305,293 @@ func TestSinglePartitionQueryWithProjection(t *testing.T) {
 	}
 }
 
+func TestCrossPartitionQueryWithIndexMetrics(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t)
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "queryTests")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	properties := ContainerProperties{
+		ID: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	}
+
+	_, err := database.CreateContainer(context.TODO(), properties, nil)
+	if err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	container, _ := database.NewContainer("aContainer")
+	documentsPerPk := 1
+	createSampleItems(t, container, documentsPerPk)
+
+	receivedIds := []string{}
+	queryPager := container.NewCrossPartitionQueryItemsPager("select * from docs c where c.someProp = '2'", &QueryOptions{PopulateIndexMetrics: true})
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("Failed to query items: %v", err)
+		}
+
+		for _, item := range queryResponse.Items {
+			var itemResponseBody map[string]interface{}
+			err = json.Unmarshal(item, &itemResponseBody)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal: %v", err)
+			}
+			receivedIds = append(receivedIds, itemResponseBody["id"].(string))
+		}
+
+		if queryPager.More() && queryResponse.ContinuationToken == "" {
+			t.Fatal("Query has more pages but no continuation was provided")
+		}
+
+		if queryResponse.QueryMetrics == nil {
+			t.Fatal("Query metrics were not returned")
+		}
+
+		if queryResponse.IndexMetrics == nil {
+			t.Fatal("Index metrics were not returned")
+		}
+
+		if queryResponse.ActivityID == "" {
+			t.Fatal("Activity id was not returned")
+		}
+
+		if queryResponse.RequestCharge == 0 {
+			t.Fatal("Request charge was not returned")
+		}
+
+		if len(queryResponse.Items) != 2 && len(queryResponse.Items) != 0 {
+			t.Fatalf("Expected 2 items, got %d", len(queryResponse.Items))
+		}
+	}
+
+	if len(receivedIds) != 2 {
+		t.Fatalf("Expected 2 documents, got %d", len(receivedIds))
+	}
+
+	if receivedIds[0] != "0" || receivedIds[1] != "0" {
+		t.Fatalf("Expected id 0, 0, got %s, %s", receivedIds[0], receivedIds[1])
+	}
+}
+
+func TestCrossPartitionQuery(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t)
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "queryTests")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	properties := ContainerProperties{
+		ID: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	}
+
+	_, err := database.CreateContainer(context.TODO(), properties, nil)
+	if err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	container, _ := database.NewContainer("aContainer")
+	documentsPerPk := 10
+	createSampleItems(t, container, documentsPerPk)
+
+	numberOfPages := 0
+	receivedIds := []string{}
+	opt := QueryOptions{PageSizeHint: 5}
+	queryPager := container.NewCrossPartitionQueryItemsPager("select * from c", &opt)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("Failed to query items: %v", err)
+		}
+
+		numberOfPages++
+		for _, item := range queryResponse.Items {
+			var itemResponseBody map[string]interface{}
+			err = json.Unmarshal(item, &itemResponseBody)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal: %v", err)
+			}
+			receivedIds = append(receivedIds, itemResponseBody["id"].(string))
+		}
+
+		if queryPager.More() && queryResponse.ContinuationToken == "" {
+			t.Fatal("Query has more pages but no continuation was provided")
+		}
+
+		if queryResponse.QueryMetrics == nil {
+			t.Fatal("Query metrics were not returned")
+		}
+
+		if queryResponse.IndexMetrics != nil {
+			t.Fatal("Index metrics were returned")
+		}
+
+		if queryResponse.ActivityID == "" {
+			t.Fatal("Activity id was not returned")
+		}
+
+		if queryResponse.RequestCharge == 0 {
+			t.Fatal("Request charge was not returned")
+		}
+
+		if len(queryResponse.Items) != 5 && len(queryResponse.Items) != 0 {
+			t.Fatalf("Expected 5 items, got %d", len(queryResponse.Items))
+		}
+
+		if numberOfPages == 4 && opt.ContinuationToken != "" {
+			t.Fatalf("Original options should not be modified, initial continuation was empty, now it has %v", opt.ContinuationToken)
+		}
+	}
+
+	if len(receivedIds) != documentsPerPk*2 {
+		t.Fatalf("Expected %d documents, got %d", documentsPerPk*2, len(receivedIds))
+	}
+
+	for i := 0; i < documentsPerPk*2; i++ {
+		if receivedIds[i] != strconv.Itoa(i/2) {
+			t.Fatalf("Expected id %d, got %s", i, receivedIds[i])
+		}
+	}
+}
+
+func TestCrossPartitionQueryWithParameters(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t)
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "queryTests")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	properties := ContainerProperties{
+		ID: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	}
+
+	_, err := database.CreateContainer(context.TODO(), properties, nil)
+	if err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	container, _ := database.NewContainer("aContainer")
+	documentsPerPk := 1
+	createSampleItems(t, container, documentsPerPk)
+
+	receivedIds := []string{}
+	opt := QueryOptions{
+		QueryParameters: []QueryParameter{
+			{"@prop", "2"},
+		},
+	}
+	queryPager := container.NewCrossPartitionQueryItemsPager("select * from c where c.someProp = @prop", &opt)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("Failed to query items: %v", err)
+		}
+
+		for _, item := range queryResponse.Items {
+			var itemResponseBody map[string]interface{}
+			err = json.Unmarshal(item, &itemResponseBody)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal: %v", err)
+			}
+			receivedIds = append(receivedIds, itemResponseBody["id"].(string))
+		}
+	}
+
+	if len(receivedIds) != 2 {
+		t.Fatalf("Expected 2 document, got %d", len(receivedIds))
+	}
+}
+
+func TestCrossPartitionQueryWithProjection(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t)
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "queryTests")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	properties := ContainerProperties{
+		ID: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	}
+
+	_, err := database.CreateContainer(context.TODO(), properties, nil)
+	if err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	container, _ := database.NewContainer("aContainer")
+	documentsPerPk := 10
+	createSampleItems(t, container, documentsPerPk)
+
+	numberOfPages := 0
+	receivedIds := []string{}
+	opt := QueryOptions{PageSizeHint: 5}
+	queryPager := container.NewCrossPartitionQueryItemsPager("select value c.id from c", &opt)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("Failed to query items: %v", err)
+		}
+
+		numberOfPages++
+		for _, item := range queryResponse.Items {
+			var itemResponseBody string
+			err = json.Unmarshal(item, &itemResponseBody)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal: %v", err)
+			}
+			receivedIds = append(receivedIds, itemResponseBody)
+		}
+
+		if queryPager.More() && queryResponse.ContinuationToken == "" {
+			t.Fatal("Query has more pages but no continuation was provided")
+		}
+
+		if queryResponse.QueryMetrics == nil {
+			t.Fatal("Query metrics were not returned")
+		}
+
+		if queryResponse.IndexMetrics != nil {
+			t.Fatal("Index metrics were returned")
+		}
+
+		if queryResponse.ActivityID == "" {
+			t.Fatal("Activity id was not returned")
+		}
+
+		if queryResponse.RequestCharge == 0 {
+			t.Fatal("Request charge was not returned")
+		}
+
+		if len(queryResponse.Items) != 5 && len(queryResponse.Items) != 0 {
+			t.Fatalf("Expected 5 items, got %d", len(queryResponse.Items))
+		}
+
+		if numberOfPages == 4 && opt.ContinuationToken != "" {
+			t.Fatalf("Original options should not be modified, initial continuation was empty, now it has %v", opt.ContinuationToken)
+		}
+	}
+
+	if len(receivedIds) != documentsPerPk*2 {
+		t.Fatalf("Expected %d documents, got %d", documentsPerPk*2, len(receivedIds))
+	}
+
+	for i := 0; i < documentsPerPk; i++ {
+		if receivedIds[i] != strconv.Itoa(i/2) {
+			t.Fatalf("Expected id %d, got %s", i, receivedIds[i])
+		}
+	}
+}
+
 func createSampleItems(t *testing.T, container *ContainerClient, documentsPerPk int) {
 	for i := 0; i < documentsPerPk; i++ {
 		item := map[string]string{

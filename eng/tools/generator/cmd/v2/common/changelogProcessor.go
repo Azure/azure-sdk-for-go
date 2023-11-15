@@ -427,14 +427,14 @@ func NonExportedFilter(changelog *model.Changelog) {
 
 		if changelog.Modified.HasBreakingChanges() {
 			breakingChanges := changelog.Modified.BreakingChanges
-			for fName, _ := range breakingChanges.Funcs {
+			for fName := range breakingChanges.Funcs {
 				before, after, _ := strings.Cut(fName, ".")
 				if !ast.IsExported(strings.TrimLeft(before, "*")) || !ast.IsExported(after) {
 					delete(changelog.Modified.BreakingChanges.Funcs, fName)
 				}
 			}
 
-			for sName, _ := range breakingChanges.Structs {
+			for sName := range breakingChanges.Structs {
 				if !ast.IsExported(sName) {
 					delete(changelog.Modified.BreakingChanges.Structs, sName)
 				}
@@ -453,14 +453,14 @@ func nonExportOperation(content *delta.Content) {
 		return
 	}
 
-	for fName, _ := range content.Funcs {
+	for fName := range content.Funcs {
 		before, after, _ := strings.Cut(fName, ".")
 		if !ast.IsExported(strings.TrimLeft(before, "*")) || !ast.IsExported(after) {
 			delete(content.Funcs, fName)
 		}
 	}
 
-	for sName, _ := range content.Structs {
+	for sName := range content.Structs {
 		if !ast.IsExported(sName) {
 			delete(content.Structs, sName)
 		}

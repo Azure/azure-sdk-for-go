@@ -3,7 +3,6 @@
 ``` yaml
 title: Logs Query Client
 clear-output-folder: false
-export-clients: true
 go: true
 input-file: 
     - https://github.com/Azure/azure-rest-api-specs/blob/72427ef3ff5875bd8409ef112ef5e6f3cf2b8795/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json

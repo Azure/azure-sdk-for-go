@@ -742,7 +742,7 @@ func (m *MetricValue) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ResourceIDList.
 func (r ResourceIDList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "resourceids", r.Resourceids)
+	populate(objectMap, "resourceids", r.ResourceIDs)
 	return json.Marshal(objectMap)
 }
 
@@ -756,7 +756,7 @@ func (r *ResourceIDList) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "resourceids":
-			err = unpopulate(val, "Resourceids", &r.Resourceids)
+			err = unpopulate(val, "ResourceIDs", &r.ResourceIDs)
 			delete(rawMsg, key)
 		}
 		if err != nil {

@@ -228,6 +228,9 @@ directive:
     where: $.parameters.EndTimeParameter
     transform: $["x-ms-client-name"] = "EndTime"
   - from: swagger-document
+    where: $.definitions.ResourceIdList.properties.resourceids
+    transform: $["x-ms-client-name"] = "ResourceIDs"
+  - from: swagger-document
     where: $.definitions.MetricResultsResponse.properties.values.items.properties.starttime
     transform: $["x-ms-client-name"] = "StartTime"
   - from: swagger-document

@@ -80,6 +80,11 @@ func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientO
 }
 
 // NewMetricsBatchClient creates a client that accesses Azure Monitor metrics data.
+// MetricsBatchClient should be used for performing metrics queries on multiple monitored resources in the same region.
+// A credential with authorization at the subscription level is required when using this client.
+//
+// endpoint - The regional endpoint to use, for example https://eastus.metrics.monitor.azure.com.
+// The region should match the region of the requested resources. For global resources, the region should be 'global'.
 func NewMetricsBatchClient(endpoint string, credential azcore.TokenCredential, options *MetricsBatchClientOptions) (*MetricsBatchClient, error) {
 	if options == nil {
 		options = &MetricsBatchClientOptions{}

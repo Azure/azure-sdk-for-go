@@ -280,7 +280,7 @@ type MetricValue struct {
 // ResourceIDList - The comma separated list of resource IDs to query metrics for.
 type ResourceIDList struct {
 	// The list of resource IDs to query metrics for.
-	Resourceids []*string
+	ResourceIDs []*string
 }
 
 // Response - The response to a metrics query.

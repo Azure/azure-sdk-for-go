@@ -1,8 +1,9 @@
 # Release History
 
-## 1.1.1 (Unreleased)
+## 1.2.0-beta.1 (2023-11-16)
 
 ### Features Added
+* Added `MetricsBatchClient` to support batch querying metrics from Azure resources
 
 ### Breaking Changes
 

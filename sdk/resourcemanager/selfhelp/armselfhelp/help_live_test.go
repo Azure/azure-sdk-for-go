@@ -23,7 +23,6 @@ import (
 
 type HelpTestSuite struct {
 	suite.Suite
-	proxy *recording.TestProxyInstance
 
 	ctx                     context.Context
 	cred                    azcore.TokenCredential
@@ -35,10 +34,6 @@ type HelpTestSuite struct {
 }
 
 func (testsuite *HelpTestSuite) SetupSuite() {
-	var err error
-	testsuite.proxy, err = recording.StartTestProxy("sdk/resourcemanager/redis/armredis/testdata", nil)
-	testsuite.Require().NoError(err)
-
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/selfhelp/armselfhelp/testdata")
 
 	testsuite.ctx = context.Background()
@@ -56,8 +51,6 @@ func (testsuite *HelpTestSuite) TearDownSuite() {
 	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
-
-	testsuite.Require().NoError(recording.StopTestProxy(testsuite.proxy))
 }
 
 func TestHelpTestSuite(t *testing.T) {

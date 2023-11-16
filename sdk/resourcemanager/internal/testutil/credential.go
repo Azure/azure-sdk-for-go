@@ -33,7 +33,7 @@ func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestO
 // In the record mode, the credential will be a DefaultAzureCredential which combines several common credentials.
 // In the playback mode, the credential will be a fake credential which will bypass truly authorization.
 func GetCredAndClientOptions(t *testing.T) (azcore.TokenCredential, *arm.ClientOptions) {
-	p := NewRecordingPolicy(t, nil)
+	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient(t)
 	if err != nil {
 		t.Fatalf("Failed to create recording client: %v", err)

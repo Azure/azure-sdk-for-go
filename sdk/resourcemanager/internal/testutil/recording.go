@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
-	"os"
+	"strconv"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -42,10 +42,6 @@ type recordingPolicy struct {
 
 // Host of the test proxy.
 func (r *recordingPolicy) Host() string {
-	if r.options.ProxyPort != 0 {
-		return fmt.Sprintf("localhost:%d", r.options.ProxyPort)
-	}
-
 	if r.options.UseHTTPS {
 		return "localhost:5001"
 	}
@@ -60,18 +56,11 @@ func (r *recordingPolicy) Scheme() string {
 	return "http"
 }
 
-func defaultOptions() *recording.RecordingOptions {
-	return &recording.RecordingOptions{
-		UseHTTPS:  true,
-		ProxyPort: os.Getpid()%10000 + 20000,
-	}
-}
-
 // NewRecordingPolicy will create a recording policy which can be used in pipeline.
 // The policy will change the destination of the request to the proxy server and add required header for the recording test.
 func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
 	if o == nil {
-		o = defaultOptions()
+		o = &recording.RecordingOptions{UseHTTPS: true}
 	}
 	p := &recordingPolicy{options: *o, t: t}
 	return p
@@ -109,17 +98,18 @@ func (r *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 // StartRecording starts the recording with the path to store recording file.
 // It will return a delegate function to stop recording.
 func StartRecording(t *testing.T, pathToPackage string) func() {
+	option := &recording.RecordingOptions{UseHTTPS: true}
 	// sanitizer for any uuid string, e.g., subscriptionID
-	err := recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", `[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}`, nil)
+	err := recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", `[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}`, option)
 	if err != nil {
 		t.Fatalf("Failed to add uuid sanitizer: %v", err)
 	}
 	// consolidate resource group name for recording and playback
-	err = recording.AddGeneralRegexSanitizer("go-sdk-test-rg", `go-sdk-test-\d+`, nil)
+	err = recording.AddGeneralRegexSanitizer("go-sdk-test-rg", `go-sdk-test-\d+`, option)
 	if err != nil {
 		t.Fatalf("Failed to add resource group name sanitizer: %v", err)
 	}
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, option)
 	if err != nil {
 		t.Fatalf("Failed to start recording: %v", err)
 	}
@@ -128,9 +118,8 @@ func StartRecording(t *testing.T, pathToPackage string) func() {
 
 // StopRecording stops the recording.
 func StopRecording(t *testing.T) {
-	err := recording.Stop(t, nil)
+	err := recording.Stop(t, &recording.RecordingOptions{Variables: map[string]interface{}{recordingRandomSeedVariableName: strconv.FormatInt(recordingSeed, 10)}})
 	if err != nil {
 		t.Fatalf("Failed to stop recording: %v", err)
 	}
 }
-

@@ -1,5 +1,9 @@
 # Release History
 
+## 0.1.1 (2023-11-16)
+### Other Changes
+
+
 ## 0.1.0 (2023-08-25)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apicenter/armapicenter` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html).

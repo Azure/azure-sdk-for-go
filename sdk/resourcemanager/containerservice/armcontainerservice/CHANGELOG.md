@@ -1,5 +1,26 @@
 # Release History
 
+## 4.5.0 (2023-11-24)
+### Features Added
+
+- New enum type `TrustedAccessRoleBindingProvisioningState` with values `TrustedAccessRoleBindingProvisioningStateCanceled`, `TrustedAccessRoleBindingProvisioningStateDeleting`, `TrustedAccessRoleBindingProvisioningStateFailed`, `TrustedAccessRoleBindingProvisioningStateSucceeded`, `TrustedAccessRoleBindingProvisioningStateUpdating`
+- New function `*ClientFactory.NewTrustedAccessRoleBindingsClient() *TrustedAccessRoleBindingsClient`
+- New function `*ClientFactory.NewTrustedAccessRolesClient() *TrustedAccessRolesClient`
+- New function `NewTrustedAccessRoleBindingsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TrustedAccessRoleBindingsClient, error)`
+- New function `*TrustedAccessRoleBindingsClient.BeginCreateOrUpdate(context.Context, string, string, string, TrustedAccessRoleBinding, *TrustedAccessRoleBindingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[TrustedAccessRoleBindingsClientCreateOrUpdateResponse], error)`
+- New function `*TrustedAccessRoleBindingsClient.BeginDelete(context.Context, string, string, string, *TrustedAccessRoleBindingsClientBeginDeleteOptions) (*runtime.Poller[TrustedAccessRoleBindingsClientDeleteResponse], error)`
+- New function `*TrustedAccessRoleBindingsClient.Get(context.Context, string, string, string, *TrustedAccessRoleBindingsClientGetOptions) (TrustedAccessRoleBindingsClientGetResponse, error)`
+- New function `*TrustedAccessRoleBindingsClient.NewListPager(string, string, *TrustedAccessRoleBindingsClientListOptions) *runtime.Pager[TrustedAccessRoleBindingsClientListResponse]`
+- New function `NewTrustedAccessRolesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TrustedAccessRolesClient, error)`
+- New function `*TrustedAccessRolesClient.NewListPager(string, *TrustedAccessRolesClientListOptions) *runtime.Pager[TrustedAccessRolesClientListResponse]`
+- New struct `TrustedAccessRole`
+- New struct `TrustedAccessRoleBinding`
+- New struct `TrustedAccessRoleBindingListResult`
+- New struct `TrustedAccessRoleBindingProperties`
+- New struct `TrustedAccessRoleListResult`
+- New struct `TrustedAccessRoleRule`
+
+
 ## 4.5.0-beta.1 (2023-10-27)
 ### Features Added
 

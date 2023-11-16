@@ -32,7 +32,7 @@ type IdentityProviderClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewIdentityProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IdentityProviderClient, error) {
-	cl, err := arm.NewClient(moduleName+".IdentityProviderClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewIdentityProviderClient(subscriptionID string, credential azcore.TokenCre
 //     method.
 func (client *IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderCreateContract, options *IdentityProviderClientCreateOrUpdateOptions) (IdentityProviderClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "IdentityProviderClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, identityProviderName, parameters, options)
 	if err != nil {
 		return IdentityProviderClientCreateOrUpdateResponse{}, err
@@ -131,6 +135,10 @@ func (client *IdentityProviderClient) createOrUpdateHandleResponse(resp *http.Re
 //   - options - IdentityProviderClientDeleteOptions contains the optional parameters for the IdentityProviderClient.Delete method.
 func (client *IdentityProviderClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, ifMatch string, options *IdentityProviderClientDeleteOptions) (IdentityProviderClientDeleteResponse, error) {
 	var err error
+	const operationName = "IdentityProviderClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, identityProviderName, ifMatch, options)
 	if err != nil {
 		return IdentityProviderClientDeleteResponse{}, err
@@ -187,6 +195,10 @@ func (client *IdentityProviderClient) deleteCreateRequest(ctx context.Context, r
 //   - options - IdentityProviderClientGetOptions contains the optional parameters for the IdentityProviderClient.Get method.
 func (client *IdentityProviderClient) Get(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderClientGetOptions) (IdentityProviderClientGetResponse, error) {
 	var err error
+	const operationName = "IdentityProviderClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, identityProviderName, options)
 	if err != nil {
 		return IdentityProviderClientGetResponse{}, err
@@ -255,6 +267,10 @@ func (client *IdentityProviderClient) getHandleResponse(resp *http.Response) (Id
 //     method.
 func (client *IdentityProviderClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderClientGetEntityTagOptions) (IdentityProviderClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "IdentityProviderClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, identityProviderName, options)
 	if err != nil {
 		return IdentityProviderClientGetEntityTagResponse{}, err
@@ -303,11 +319,10 @@ func (client *IdentityProviderClient) getEntityTagCreateRequest(ctx context.Cont
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *IdentityProviderClient) getEntityTagHandleResponse(resp *http.Response) (IdentityProviderClientGetEntityTagResponse, error) {
-	result := IdentityProviderClientGetEntityTagResponse{}
+	result := IdentityProviderClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -324,25 +339,20 @@ func (client *IdentityProviderClient) NewListByServicePager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *IdentityProviderClientListByServiceResponse) (IdentityProviderClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IdentityProviderClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return IdentityProviderClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return IdentityProviderClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return IdentityProviderClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -392,6 +402,10 @@ func (client *IdentityProviderClient) listByServiceHandleResponse(resp *http.Res
 //     method.
 func (client *IdentityProviderClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderClientListSecretsOptions) (IdentityProviderClientListSecretsResponse, error) {
 	var err error
+	const operationName = "IdentityProviderClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, serviceName, identityProviderName, options)
 	if err != nil {
 		return IdentityProviderClientListSecretsResponse{}, err
@@ -463,6 +477,10 @@ func (client *IdentityProviderClient) listSecretsHandleResponse(resp *http.Respo
 //   - options - IdentityProviderClientUpdateOptions contains the optional parameters for the IdentityProviderClient.Update method.
 func (client *IdentityProviderClient) Update(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, ifMatch string, parameters IdentityProviderUpdateParameters, options *IdentityProviderClientUpdateOptions) (IdentityProviderClientUpdateResponse, error) {
 	var err error
+	const operationName = "IdentityProviderClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, identityProviderName, ifMatch, parameters, options)
 	if err != nil {
 		return IdentityProviderClientUpdateResponse{}, err

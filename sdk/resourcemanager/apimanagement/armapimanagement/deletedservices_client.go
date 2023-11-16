@@ -32,7 +32,7 @@ type DeletedServicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDeletedServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedServicesClient, error) {
-	cl, err := arm.NewClient(moduleName+".DeletedServicesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewDeletedServicesClient(subscriptionID string, credential azcore.TokenCred
 //     method.
 func (client *DeletedServicesClient) GetByName(ctx context.Context, serviceName string, location string, options *DeletedServicesClientGetByNameOptions) (DeletedServicesClientGetByNameResponse, error) {
 	var err error
+	const operationName = "DeletedServicesClient.GetByName"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByNameCreateRequest(ctx, serviceName, location, options)
 	if err != nil {
 		return DeletedServicesClientGetByNameResponse{}, err
@@ -115,25 +119,20 @@ func (client *DeletedServicesClient) NewListBySubscriptionPager(options *Deleted
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DeletedServicesClientListBySubscriptionResponse) (DeletedServicesClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeletedServicesClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return DeletedServicesClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeletedServicesClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DeletedServicesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -180,10 +179,13 @@ func (client *DeletedServicesClient) BeginPurge(ctx context.Context, serviceName
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeletedServicesClientPurgeResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeletedServicesClientPurgeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeletedServicesClientPurgeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -193,6 +195,10 @@ func (client *DeletedServicesClient) BeginPurge(ctx context.Context, serviceName
 // Generated from API version 2022-08-01
 func (client *DeletedServicesClient) purge(ctx context.Context, serviceName string, location string, options *DeletedServicesClientBeginPurgeOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DeletedServicesClient.BeginPurge"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.purgeCreateRequest(ctx, serviceName, location, options)
 	if err != nil {
 		return nil, err

@@ -32,7 +32,7 @@ type NetworkStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNetworkStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkStatusClient, error) {
-	cl, err := arm.NewClient(moduleName+".NetworkStatusClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewNetworkStatusClient(subscriptionID string, credential azcore.TokenCreden
 //     method.
 func (client *NetworkStatusClient) ListByLocation(ctx context.Context, resourceGroupName string, serviceName string, locationName string, options *NetworkStatusClientListByLocationOptions) (NetworkStatusClientListByLocationResponse, error) {
 	var err error
+	const operationName = "NetworkStatusClient.ListByLocation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByLocationCreateRequest(ctx, resourceGroupName, serviceName, locationName, options)
 	if err != nil {
 		return NetworkStatusClientListByLocationResponse{}, err
@@ -122,6 +126,10 @@ func (client *NetworkStatusClient) listByLocationHandleResponse(resp *http.Respo
 //     method.
 func (client *NetworkStatusClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, options *NetworkStatusClientListByServiceOptions) (NetworkStatusClientListByServiceResponse, error) {
 	var err error
+	const operationName = "NetworkStatusClient.ListByService"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return NetworkStatusClientListByServiceResponse{}, err

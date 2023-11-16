@@ -33,7 +33,7 @@ type EmailTemplateClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewEmailTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EmailTemplateClient, error) {
-	cl, err := arm.NewClient(moduleName+".EmailTemplateClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewEmailTemplateClient(subscriptionID string, credential azcore.TokenCreden
 //     method.
 func (client *EmailTemplateClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, templateName TemplateName, parameters EmailTemplateUpdateParameters, options *EmailTemplateClientCreateOrUpdateOptions) (EmailTemplateClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "EmailTemplateClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, templateName, parameters, options)
 	if err != nil {
 		return EmailTemplateClientCreateOrUpdateResponse{}, err
@@ -129,6 +133,10 @@ func (client *EmailTemplateClient) createOrUpdateHandleResponse(resp *http.Respo
 //   - options - EmailTemplateClientDeleteOptions contains the optional parameters for the EmailTemplateClient.Delete method.
 func (client *EmailTemplateClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, templateName TemplateName, ifMatch string, options *EmailTemplateClientDeleteOptions) (EmailTemplateClientDeleteResponse, error) {
 	var err error
+	const operationName = "EmailTemplateClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, templateName, ifMatch, options)
 	if err != nil {
 		return EmailTemplateClientDeleteResponse{}, err
@@ -185,6 +193,10 @@ func (client *EmailTemplateClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - EmailTemplateClientGetOptions contains the optional parameters for the EmailTemplateClient.Get method.
 func (client *EmailTemplateClient) Get(ctx context.Context, resourceGroupName string, serviceName string, templateName TemplateName, options *EmailTemplateClientGetOptions) (EmailTemplateClientGetResponse, error) {
 	var err error
+	const operationName = "EmailTemplateClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, templateName, options)
 	if err != nil {
 		return EmailTemplateClientGetResponse{}, err
@@ -253,6 +265,10 @@ func (client *EmailTemplateClient) getHandleResponse(resp *http.Response) (Email
 //     method.
 func (client *EmailTemplateClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, templateName TemplateName, options *EmailTemplateClientGetEntityTagOptions) (EmailTemplateClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "EmailTemplateClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, templateName, options)
 	if err != nil {
 		return EmailTemplateClientGetEntityTagResponse{}, err
@@ -301,11 +317,10 @@ func (client *EmailTemplateClient) getEntityTagCreateRequest(ctx context.Context
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *EmailTemplateClient) getEntityTagHandleResponse(resp *http.Response) (EmailTemplateClientGetEntityTagResponse, error) {
-	result := EmailTemplateClientGetEntityTagResponse{}
+	result := EmailTemplateClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -322,25 +337,20 @@ func (client *EmailTemplateClient) NewListByServicePager(resourceGroupName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EmailTemplateClientListByServiceResponse) (EmailTemplateClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EmailTemplateClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return EmailTemplateClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EmailTemplateClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return EmailTemplateClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -401,6 +411,10 @@ func (client *EmailTemplateClient) listByServiceHandleResponse(resp *http.Respon
 //   - options - EmailTemplateClientUpdateOptions contains the optional parameters for the EmailTemplateClient.Update method.
 func (client *EmailTemplateClient) Update(ctx context.Context, resourceGroupName string, serviceName string, templateName TemplateName, ifMatch string, parameters EmailTemplateUpdateParameters, options *EmailTemplateClientUpdateOptions) (EmailTemplateClientUpdateResponse, error) {
 	var err error
+	const operationName = "EmailTemplateClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, templateName, ifMatch, parameters, options)
 	if err != nil {
 		return EmailTemplateClientUpdateResponse{}, err

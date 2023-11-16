@@ -33,7 +33,7 @@ type APIIssueAttachmentClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPIIssueAttachmentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIIssueAttachmentClient, error) {
-	cl, err := arm.NewClient(moduleName+".APIIssueAttachmentClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,10 @@ func NewAPIIssueAttachmentClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *APIIssueAttachmentClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, attachmentID string, parameters IssueAttachmentContract, options *APIIssueAttachmentClientCreateOrUpdateOptions) (APIIssueAttachmentClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "APIIssueAttachmentClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, attachmentID, parameters, options)
 	if err != nil {
 		return APIIssueAttachmentClientCreateOrUpdateResponse{}, err
@@ -145,6 +149,10 @@ func (client *APIIssueAttachmentClient) createOrUpdateHandleResponse(resp *http.
 //     method.
 func (client *APIIssueAttachmentClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, attachmentID string, ifMatch string, options *APIIssueAttachmentClientDeleteOptions) (APIIssueAttachmentClientDeleteResponse, error) {
 	var err error
+	const operationName = "APIIssueAttachmentClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, attachmentID, ifMatch, options)
 	if err != nil {
 		return APIIssueAttachmentClientDeleteResponse{}, err
@@ -211,6 +219,10 @@ func (client *APIIssueAttachmentClient) deleteCreateRequest(ctx context.Context,
 //   - options - APIIssueAttachmentClientGetOptions contains the optional parameters for the APIIssueAttachmentClient.Get method.
 func (client *APIIssueAttachmentClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, attachmentID string, options *APIIssueAttachmentClientGetOptions) (APIIssueAttachmentClientGetResponse, error) {
 	var err error
+	const operationName = "APIIssueAttachmentClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, attachmentID, options)
 	if err != nil {
 		return APIIssueAttachmentClientGetResponse{}, err
@@ -289,6 +301,10 @@ func (client *APIIssueAttachmentClient) getHandleResponse(resp *http.Response) (
 //     method.
 func (client *APIIssueAttachmentClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, attachmentID string, options *APIIssueAttachmentClientGetEntityTagOptions) (APIIssueAttachmentClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "APIIssueAttachmentClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, attachmentID, options)
 	if err != nil {
 		return APIIssueAttachmentClientGetEntityTagResponse{}, err
@@ -345,11 +361,10 @@ func (client *APIIssueAttachmentClient) getEntityTagCreateRequest(ctx context.Co
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *APIIssueAttachmentClient) getEntityTagHandleResponse(resp *http.Response) (APIIssueAttachmentClientGetEntityTagResponse, error) {
-	result := APIIssueAttachmentClientGetEntityTagResponse{}
+	result := APIIssueAttachmentClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -368,25 +383,20 @@ func (client *APIIssueAttachmentClient) NewListByServicePager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *APIIssueAttachmentClientListByServiceResponse) (APIIssueAttachmentClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "APIIssueAttachmentClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, options)
+			}, nil)
 			if err != nil {
 				return APIIssueAttachmentClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return APIIssueAttachmentClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return APIIssueAttachmentClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

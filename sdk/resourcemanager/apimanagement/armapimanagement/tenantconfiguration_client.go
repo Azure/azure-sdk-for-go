@@ -32,7 +32,7 @@ type TenantConfigurationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTenantConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantConfigurationClient, error) {
-	cl, err := arm.NewClient(moduleName+".TenantConfigurationClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *TenantConfigurationClient) BeginDeploy(ctx context.Context, resour
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TenantConfigurationClientDeployResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[TenantConfigurationClientDeployResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TenantConfigurationClientDeployResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -76,6 +79,10 @@ func (client *TenantConfigurationClient) BeginDeploy(ctx context.Context, resour
 // Generated from API version 2022-08-01
 func (client *TenantConfigurationClient) deploy(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters DeployConfigurationParameters, options *TenantConfigurationClientBeginDeployOptions) (*http.Response, error) {
 	var err error
+	const operationName = "TenantConfigurationClient.BeginDeploy"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deployCreateRequest(ctx, resourceGroupName, serviceName, configurationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -135,6 +142,10 @@ func (client *TenantConfigurationClient) deployCreateRequest(ctx context.Context
 //     method.
 func (client *TenantConfigurationClient) GetSyncState(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, options *TenantConfigurationClientGetSyncStateOptions) (TenantConfigurationClientGetSyncStateResponse, error) {
 	var err error
+	const operationName = "TenantConfigurationClient.GetSyncState"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getSyncStateCreateRequest(ctx, resourceGroupName, serviceName, configurationName, options)
 	if err != nil {
 		return TenantConfigurationClientGetSyncStateResponse{}, err
@@ -209,10 +220,13 @@ func (client *TenantConfigurationClient) BeginSave(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TenantConfigurationClientSaveResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[TenantConfigurationClientSaveResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TenantConfigurationClientSaveResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -223,6 +237,10 @@ func (client *TenantConfigurationClient) BeginSave(ctx context.Context, resource
 // Generated from API version 2022-08-01
 func (client *TenantConfigurationClient) save(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters SaveConfigurationParameter, options *TenantConfigurationClientBeginSaveOptions) (*http.Response, error) {
 	var err error
+	const operationName = "TenantConfigurationClient.BeginSave"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.saveCreateRequest(ctx, resourceGroupName, serviceName, configurationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -290,10 +308,13 @@ func (client *TenantConfigurationClient) BeginValidate(ctx context.Context, reso
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TenantConfigurationClientValidateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[TenantConfigurationClientValidateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TenantConfigurationClientValidateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -304,6 +325,10 @@ func (client *TenantConfigurationClient) BeginValidate(ctx context.Context, reso
 // Generated from API version 2022-08-01
 func (client *TenantConfigurationClient) validate(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters DeployConfigurationParameters, options *TenantConfigurationClientBeginValidateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "TenantConfigurationClient.BeginValidate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.validateCreateRequest(ctx, resourceGroupName, serviceName, configurationName, parameters, options)
 	if err != nil {
 		return nil, err

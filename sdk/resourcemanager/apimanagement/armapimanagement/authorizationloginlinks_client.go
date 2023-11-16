@@ -32,7 +32,7 @@ type AuthorizationLoginLinksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAuthorizationLoginLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthorizationLoginLinksClient, error) {
-	cl, err := arm.NewClient(moduleName+".AuthorizationLoginLinksClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewAuthorizationLoginLinksClient(subscriptionID string, credential azcore.T
 //     method.
 func (client *AuthorizationLoginLinksClient) Post(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, authorizationID string, parameters AuthorizationLoginRequestContract, options *AuthorizationLoginLinksClientPostOptions) (AuthorizationLoginLinksClientPostResponse, error) {
 	var err error
+	const operationName = "AuthorizationLoginLinksClient.Post"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.postCreateRequest(ctx, resourceGroupName, serviceName, authorizationProviderID, authorizationID, parameters, options)
 	if err != nil {
 		return AuthorizationLoginLinksClientPostResponse{}, err

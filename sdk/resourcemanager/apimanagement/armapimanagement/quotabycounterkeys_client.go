@@ -32,7 +32,7 @@ type QuotaByCounterKeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewQuotaByCounterKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotaByCounterKeysClient, error) {
-	cl, err := arm.NewClient(moduleName+".QuotaByCounterKeysClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewQuotaByCounterKeysClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *QuotaByCounterKeysClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, options *QuotaByCounterKeysClientListByServiceOptions) (QuotaByCounterKeysClientListByServiceResponse, error) {
 	var err error
+	const operationName = "QuotaByCounterKeysClient.ListByService"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, quotaCounterKey, options)
 	if err != nil {
 		return QuotaByCounterKeysClientListByServiceResponse{}, err
@@ -127,6 +131,10 @@ func (client *QuotaByCounterKeysClient) listByServiceHandleResponse(resp *http.R
 //     method.
 func (client *QuotaByCounterKeysClient) Update(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, parameters QuotaCounterValueUpdateContract, options *QuotaByCounterKeysClientUpdateOptions) (QuotaByCounterKeysClientUpdateResponse, error) {
 	var err error
+	const operationName = "QuotaByCounterKeysClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, quotaCounterKey, parameters, options)
 	if err != nil {
 		return QuotaByCounterKeysClientUpdateResponse{}, err

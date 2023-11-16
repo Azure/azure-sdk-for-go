@@ -33,7 +33,7 @@ type APIRevisionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPIRevisionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIRevisionClient, error) {
-	cl, err := arm.NewClient(moduleName+".APIRevisionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,25 +58,20 @@ func (client *APIRevisionClient) NewListByServicePager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *APIRevisionClientListByServiceResponse) (APIRevisionClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "APIRevisionClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			}, nil)
 			if err != nil {
 				return APIRevisionClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return APIRevisionClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return APIRevisionClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

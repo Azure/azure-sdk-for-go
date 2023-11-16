@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,27 +37,44 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewDomainsClient creates a new instance of DomainsClient.
 func (c *ClientFactory) NewDomainsClient() *DomainsClient {
 	subClient, _ := NewDomainsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewEmailServicesClient creates a new instance of EmailServicesClient.
 func (c *ClientFactory) NewEmailServicesClient() *EmailServicesClient {
 	subClient, _ := NewEmailServicesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewSenderUsernamesClient creates a new instance of SenderUsernamesClient.
 func (c *ClientFactory) NewSenderUsernamesClient() *SenderUsernamesClient {
 	subClient, _ := NewSenderUsernamesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewServicesClient creates a new instance of ServicesClient.
 func (c *ClientFactory) NewServicesClient() *ServicesClient {
 	subClient, _ := NewServicesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewSuppressionListAddressesClient creates a new instance of SuppressionListAddressesClient.
+func (c *ClientFactory) NewSuppressionListAddressesClient() *SuppressionListAddressesClient {
+	subClient, _ := NewSuppressionListAddressesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewSuppressionListsClient creates a new instance of SuppressionListsClient.
+func (c *ClientFactory) NewSuppressionListsClient() *SuppressionListsClient {
+	subClient, _ := NewSuppressionListsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

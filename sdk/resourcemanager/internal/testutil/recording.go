@@ -19,7 +19,7 @@ import (
 const recordingRandomSeedVariableName = "recordingRandomSeed"
 
 var (
-	recordingSeed         int64
+	recordingSeed int64
 )
 
 type recordingPolicy struct {

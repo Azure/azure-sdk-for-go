@@ -3,8 +3,8 @@
 ## 2.0.0 (2023-11-16)
 
 ### Breaking Changes
-* Removed `testutil.GetEnv`
-* Removed `testutil.GenerateAlphaNumericID`
+* Removed `testutil.GetEnv`, use `github.com/Azure/azure-sdk-for-go/sdk/internal/recording.GetEnvVariable` instead.
+* Remove `testutil.GenerateAlphaNumericID`, use `github.com/Azure/azure-sdk-for-go/sdk/internal/recording.GenerateAlphaNumericID` instead.
 
 ### Other Changes
 * Update dependencies: `github.com/Azure/azure-sdk-for-go/sdk/internal@v1.5.0`

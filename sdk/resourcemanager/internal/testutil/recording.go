@@ -8,7 +8,6 @@ package testutil
 
 import (
 	"fmt"
-	"math/rand"
 	"net/http"
 	"strconv"
 	"testing"
@@ -21,18 +20,6 @@ const recordingRandomSeedVariableName = "recordingRandomSeed"
 
 var (
 	recordingSeed         int64
-	recordingRandomSource rand.Source
-)
-
-const (
-	alphanumericBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-)
-
-// Inspired by https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
-const (
-	letterIdxBits = 6                    // 6 bits to represent a letter index
-	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
-	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
 
 type recordingPolicy struct {

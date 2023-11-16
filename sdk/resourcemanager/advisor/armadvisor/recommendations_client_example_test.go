@@ -100,7 +100,7 @@ func ExampleRecommendationsClient_NewListPager() {
 		// 				ImpactedField: to.Ptr("Microsoft.Compute/availabilitySets"),
 		// 				ImpactedValue: to.Ptr("armavset"),
 		// 				Label: to.Ptr("Enable Soft Delete"),
-		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T22:24:43.3216408Z"); return t}()),
+		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T22:24:43.321Z"); return t}()),
 		// 				LearnMoreLink: to.Ptr("https://link2"),
 		// 				PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
 		// 				Remediation: map[string]any{
@@ -150,7 +150,7 @@ func ExampleRecommendationsClient_NewListPager() {
 		// 				ImpactedField: to.Ptr("Microsoft.Compute/virtualMachines"),
 		// 				ImpactedValue: to.Ptr("armavset"),
 		// 				Label: to.Ptr("Enable monitoring agent"),
-		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T22:24:43.3216408Z"); return t}()),
+		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T22:24:43.321Z"); return t}()),
 		// 				LearnMoreLink: to.Ptr("https://link2"),
 		// 				PotentialBenefits: to.Ptr("Protect and monitor machine"),
 		// 				ResourceMetadata: &armadvisor.ResourceMetadata{
@@ -218,7 +218,7 @@ func ExampleRecommendationsClient_Get() {
 	// 		ImpactedField: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		ImpactedValue: to.Ptr("armavset"),
 	// 		Label: to.Ptr("Enable Soft Delete"),
-	// 		LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T22:24:43.3216408Z"); return t}()),
+	// 		LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T22:24:43.321Z"); return t}()),
 	// 		LearnMoreLink: to.Ptr("https://link2"),
 	// 		PotentialBenefits: to.Ptr("Save and recover your data when blobs or blob snapshots are accidentally overwritten or deleted"),
 	// 		Remediation: map[string]any{

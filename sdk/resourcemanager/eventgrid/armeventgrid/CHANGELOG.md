@@ -3,9 +3,6 @@
 ## 2.2.0-beta.2 (2023-11-24)
 ### Breaking Changes
 
-- Function `timeRFC3339.MarshalText` has been removed
-- Function `*timeRFC3339.Parse` has been removed
-- Function `*timeRFC3339.UnmarshalText` has been removed
 - Struct `ClientAuthentication` has been removed
 - Struct `ClientCertificateSubjectDistinguishedName` has been removed
 - Struct `ClientCertificateThumbprint` has been removed
@@ -27,9 +24,6 @@
 - New function `*MonitorAlertEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
 - New function `*NamespaceTopicEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
 - New function `*NamespaceTopicEventSubscriptionsClient.GetDeliveryAttributes(context.Context, string, string, string, string, *NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesOptions) (NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse, error)`
-- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
-- New function `*dateTimeRFC3339.Parse(string) error`
-- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
 - New function `NewNetworkSecurityPerimeterConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error)`
 - New function `*NetworkSecurityPerimeterConfigurationsClient.Get(context.Context, string, NetworkSecurityPerimeterResourceType, string, string, string, *NetworkSecurityPerimeterConfigurationsClientGetOptions) (NetworkSecurityPerimeterConfigurationsClientGetResponse, error)`
 - New function `*NetworkSecurityPerimeterConfigurationsClient.NewListPager(string, NetworkSecurityPerimeterResourceType, string, *NetworkSecurityPerimeterConfigurationsClientListOptions) *runtime.Pager[NetworkSecurityPerimeterConfigurationsClientListResponse]`

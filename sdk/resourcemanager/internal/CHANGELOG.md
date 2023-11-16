@@ -1,10 +1,12 @@
 # Release History
 
-## 1.1.3 (2023-11-16)
+## 2.0.0 (2023-11-16)
 
-### Other Changes
+### Breaking Changes
 * Removed `testutil.GetEnv`
 * Removed `testutil.GenerateAlphaNumericID`
+
+### Other Changes
 * Update dependencies: `github.com/Azure/azure-sdk-for-go/sdk/internal@v1.5.0`
 
 ## 1.1.2 (2023-03-03)

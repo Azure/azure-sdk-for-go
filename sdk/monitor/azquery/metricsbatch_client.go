@@ -103,7 +103,7 @@ func (client *MetricsBatchClient) queryBatchCreateRequest(ctx context.Context, s
 // queryBatchHandleResponse handles the QueryBatch response.
 func (client *MetricsBatchClient) queryBatchHandleResponse(resp *http.Response) (MetricsBatchClientQueryBatchResponse, error) {
 	result := MetricsBatchClientQueryBatchResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MetricResultsResponse); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.MetricResults); err != nil {
 		return MetricsBatchClientQueryBatchResponse{}, err
 	}
 	return result, nil

@@ -29,7 +29,7 @@ type LogsClientQueryWorkspaceResponse struct {
 // MetricsBatchClientQueryBatchResponse contains the response from method MetricsBatchClient.QueryBatch.
 type MetricsBatchClientQueryBatchResponse struct {
 	// The metrics result for a resource.
-	MetricResultsResponse
+	MetricResults
 }
 
 // MetricsClientListDefinitionsResponse contains the response from method MetricsClient.NewListDefinitionsPager.

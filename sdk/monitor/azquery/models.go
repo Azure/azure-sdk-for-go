@@ -224,13 +224,14 @@ type MetricNamespaceName struct {
 	MetricNamespaceName *string
 }
 
-// MetricResultsResponse - The metrics result for a resource.
-type MetricResultsResponse struct {
+// MetricResults - The metrics result for a resource.
+type MetricResults struct {
 	// The collection of metric data responses per resource, per metric.
-	Values []*MetricResultsResponseValuesItem
+	Values []*MetricValues
 }
 
-type MetricResultsResponseValuesItem struct {
+// MetricValues - Metric data values.
+type MetricValues struct {
 	// REQUIRED; The end time, in datetime format, for which the data was retrieved.
 	EndTime *string
 

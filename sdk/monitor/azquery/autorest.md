@@ -220,6 +220,19 @@ directive:
         from: MetricsBatch_Batch
         to: MetricsBatch_QueryBatch
 
+  # Rename MetricResultsResponse
+  - rename-model:
+      from: MetricResultsResponse
+      to: MetricResults
+  - from: 
+        - models.go
+        - models_serde.go
+    where: $
+    transform: return $.replace(/MetricResultsValuesItem/g, "MetricValues");
+  - from: swagger-document
+    where: $.definitions.MetricResults.properties.values.items
+    transform: $["description"] = "Metric data values."
+
   # fix casing, rename batch metric fields
   - from: swagger-document
     where: $.parameters.StartTimeParameter
@@ -231,19 +244,19 @@ directive:
     where: $.definitions.ResourceIdList.properties.resourceids
     transform: $["x-ms-client-name"] = "ResourceIDs"
   - from: swagger-document
-    where: $.definitions.MetricResultsResponse.properties.values.items.properties.starttime
+    where: $.definitions.MetricResults.properties.values.items.properties.starttime
     transform: $["x-ms-client-name"] = "StartTime"
   - from: swagger-document
-    where: $.definitions.MetricResultsResponse.properties.values.items.properties.endtime
+    where: $.definitions.MetricResults.properties.values.items.properties.endtime
     transform: $["x-ms-client-name"] = "EndTime"
   - from: swagger-document
-    where: $.definitions.MetricResultsResponse.properties.values.items.properties.resourceid
+    where: $.definitions.MetricResults.properties.values.items.properties.resourceid
     transform: $["x-ms-client-name"] = "ResourceID"
   - from: swagger-document
-    where: $.definitions.MetricResultsResponse.properties.values.items.properties.resourceregion
+    where: $.definitions.MetricResults.properties.values.items.properties.resourceregion
     transform: $["x-ms-client-name"] = "ResourceRegion"
   - from: swagger-document
-    where: $.definitions.MetricResultsResponse.properties.values.items.properties.value
+    where: $.definitions.MetricResults.properties.values.items.properties.value
     transform: $["x-ms-client-name"] = "Values"
 
   # delete unused error models

@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/messaging/azwebpubsub",
+  "Tag": "go/messaging/azwebpubsub_94be93d99b"
+}

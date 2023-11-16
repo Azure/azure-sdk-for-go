@@ -11,7 +11,7 @@ module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
 openapi-type: "data-plane"
 output-folder: ../azquery
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.60"
+use: "@autorest/go@4.0.0-preview.61"
 inject-spans: true
 version: "^3.0.0"
 

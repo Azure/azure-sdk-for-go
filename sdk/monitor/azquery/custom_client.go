@@ -86,7 +86,7 @@ func NewMetricsBatchClient(endpoint string, credential azcore.TokenCredential, o
 	}
 
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://metrics.monitor.azure.com" + "/.default"}, nil)
-	azcoreClient, err := azcore.NewClient("azquery.MetricsBatchClient", version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	azcoreClient, err := azcore.NewClient(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

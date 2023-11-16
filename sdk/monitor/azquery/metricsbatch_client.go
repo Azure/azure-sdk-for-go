@@ -38,6 +38,8 @@ type MetricsBatchClient struct {
 //   - options - MetricsBatchClientQueryBatchOptions contains the optional parameters for the MetricsBatchClient.QueryBatch method.
 func (client *MetricsBatchClient) QueryBatch(ctx context.Context, subscriptionID string, metricNamespace string, metricNames []string, resourceIDs ResourceIDList, options *MetricsBatchClientQueryBatchOptions) (MetricsBatchClientQueryBatchResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "MetricsBatchClient.QueryBatch", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.queryBatchCreateRequest(ctx, subscriptionID, metricNamespace, metricNames, resourceIDs, options)
 	if err != nil {
 		return MetricsBatchClientQueryBatchResponse{}, err

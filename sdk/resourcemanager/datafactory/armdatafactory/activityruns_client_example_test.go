@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ActivityRuns_QueryByPipelineRun.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ActivityRuns_QueryByPipelineRun.json
 func ExampleActivityRunsClient_QueryByPipelineRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,8 +32,8 @@ func ExampleActivityRunsClient_QueryByPipelineRun() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewActivityRunsClient().QueryByPipelineRun(ctx, "exampleResourceGroup", "exampleFactoryName", "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", armdatafactory.RunFilterParameters{
-		LastUpdatedAfter:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.3345758Z"); return t }()),
-		LastUpdatedBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.3686473Z"); return t }()),
+		LastUpdatedAfter:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.334Z"); return t }()),
+		LastUpdatedBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.368Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,9 +50,9 @@ func ExampleActivityRunsClient_QueryByPipelineRun() {
 	// 				},
 	// 			},
 	// 			ActivityName: to.Ptr("ExampleForeachActivity"),
-	// 			ActivityRunEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:11.5445431Z"); return t}()),
+	// 			ActivityRunEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:11.544Z"); return t}()),
 	// 			ActivityRunID: to.Ptr("f30c5514-fb85-43ed-9fa4-768d42e58680"),
-	// 			ActivityRunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:37:49.4804925Z"); return t}()),
+	// 			ActivityRunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:37:49.480Z"); return t}()),
 	// 			ActivityType: to.Ptr("ForEach"),
 	// 			DurationInMs: to.Ptr[int32](22064),
 	// 			Error: map[string]any{
@@ -77,9 +77,9 @@ func ExampleActivityRunsClient_QueryByPipelineRun() {
 	// 				},
 	// 			},
 	// 			ActivityName: to.Ptr("ExampleCopyActivity"),
-	// 			ActivityRunEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:07.4188923Z"); return t}()),
+	// 			ActivityRunEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:07.418Z"); return t}()),
 	// 			ActivityRunID: to.Ptr("a96678c8-7167-4f00-b629-afccfbad4e51"),
-	// 			ActivityRunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:37:50.2460952Z"); return t}()),
+	// 			ActivityRunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:37:50.246Z"); return t}()),
 	// 			ActivityType: to.Ptr("Copy"),
 	// 			DurationInMs: to.Ptr[int32](17172),
 	// 			Error: map[string]any{

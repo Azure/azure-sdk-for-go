@@ -3,6 +3,7 @@
 ## 1.1.3 (2023-11-16)
 
 ### Other Changes
+* Removed `testutil.GetEnv`
 * Removed `testutil.GenerateAlphaNumericID`
 * Update dependencies: `github.com/Azure/azure-sdk-for-go/sdk/internal@v1.5.0`
 

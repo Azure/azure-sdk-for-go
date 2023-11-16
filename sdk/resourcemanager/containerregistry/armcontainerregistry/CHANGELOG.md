@@ -1,18 +1,9 @@
 # Release History
 
 ## 1.2.0-beta.3 (2023-11-24)
-### Breaking Changes
-
-- Function `timeRFC3339.MarshalText` has been removed
-- Function `*timeRFC3339.Parse` has been removed
-- Function `*timeRFC3339.UnmarshalText` has been removed
-
 ### Features Added
 
 - New enum type `MetadataSearch` with values `MetadataSearchDisabled`, `MetadataSearchEnabled`
-- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
-- New function `*dateTimeRFC3339.Parse(string) error`
-- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
 - New field `MetadataSearch` in struct `RegistryProperties`
 - New field `MetadataSearch` in struct `RegistryPropertiesUpdateParameters`
 

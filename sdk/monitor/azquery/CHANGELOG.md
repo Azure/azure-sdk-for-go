@@ -5,10 +5,6 @@
 ### Features Added
 * Added `MetricsBatchClient` to support batch querying metrics from Azure resources
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 * Enabled spans for distributed tracing.
 

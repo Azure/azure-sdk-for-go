@@ -5,13 +5,13 @@ title: Logs Query Client
 clear-output-folder: false
 go: true
 input-file: 
-    - https://github.com/Azure/azure-rest-api-specs/blob/72427ef3ff5875bd8409ef112ef5e6f3cf2b8795/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
 openapi-type: "data-plane"
 output-folder: ../azquery
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.60"
+use: "@autorest/go@4.0.0-preview.61"
 inject-spans: true
 version: "^3.0.0"
 
@@ -160,9 +160,9 @@ directive:
 ``` yaml
 title: Metrics Query Client
 input-file: 
-    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metricDefinitions_API.json
-    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metrics_API.json
-    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metricDefinitions_API.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metrics_API.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
 
 directive:
   # rename metric operations to generate as a separate metrics client
@@ -200,10 +200,71 @@ directive:
   - from: options.go
     where: $
     transform: return $.replace(/Aggregation \*string/g, "Aggregation []*AggregationType");
-  - from: metrics_client.go
+  - from: 
+        - metrics_client.go
+        - metricsbatch_client.go
     where: $
     transform: return $.replace(/\*options.Aggregation/g, "aggregationTypeToString(options.Aggregation)");
   - from: swagger-document
     where: $.parameters.AggregationsParameter
     transform: $["description"] = "The list of aggregation types to retrieve"
+```
+
+``` yaml
+title: Metrics Batch Query Client
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/monitor/data-plane/Microsoft.Insights/preview/2023-05-01-preview/metricBatch.json
+
+directive:
+  # rename Batch to QueryBatch
+  - rename-operation:
+        from: MetricsBatch_Batch
+        to: MetricsBatch_QueryBatch
+
+  # Rename MetricResultsResponse
+  - rename-model:
+      from: MetricResultsResponse
+      to: MetricResults
+  - from: 
+        - models.go
+        - models_serde.go
+    where: $
+    transform: return $.replace(/MetricResultsValuesItem/g, "MetricValues");
+  - from: swagger-document
+    where: $.definitions.MetricResults.properties.values.items
+    transform: $["description"] = "Metric data values."
+
+  # fix casing, rename batch metric fields
+  - from: swagger-document
+    where: $.parameters.StartTimeParameter
+    transform: $["x-ms-client-name"] = "StartTime"
+  - from: swagger-document
+    where: $.parameters.EndTimeParameter
+    transform: $["x-ms-client-name"] = "EndTime"
+  - from: swagger-document
+    where: $.definitions.ResourceIdList.properties.resourceids
+    transform: $["x-ms-client-name"] = "ResourceIDs"
+  - from: swagger-document
+    where: $.definitions.MetricResults.properties.values.items.properties.starttime
+    transform: $["x-ms-client-name"] = "StartTime"
+  - from: swagger-document
+    where: $.definitions.MetricResults.properties.values.items.properties.endtime
+    transform: $["x-ms-client-name"] = "EndTime"
+  - from: swagger-document
+    where: $.definitions.MetricResults.properties.values.items.properties.resourceid
+    transform: $["x-ms-client-name"] = "ResourceID"
+  - from: swagger-document
+    where: $.definitions.MetricResults.properties.values.items.properties.resourceregion
+    transform: $["x-ms-client-name"] = "ResourceRegion"
+  - from: swagger-document
+    where: $.definitions.MetricResults.properties.values.items.properties.value
+    transform: $["x-ms-client-name"] = "Values"
+
+  # delete unused error models
+  - from: models.go
+    where: $
+    transform: return $.replace(/((?:\/\/.*\s)+|)type AdditionalInfoErrorResponse.+\{(?:\s.+\s)+\}\s/g, "");
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?AdditionalInfoErrorResponse.*\{\s(?:.+\s)+\}\s/g, "");
+
 ```

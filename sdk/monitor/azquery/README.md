@@ -43,6 +43,10 @@ Example [logs client][example_logs_client]
 
 Example [metrics client][example_metrics_client]
 
+#### Create a metrics batch client
+
+Example metrics batch client
+
 ## Key concepts
 
 ### Timespan
@@ -61,6 +65,12 @@ Each set of metric values is a time series with the following characteristics:
 - A metric name
 - The value itself
 - Some metrics may have multiple dimensions as described in [multi-dimensional metrics][multi-metrics]. Custom metrics can have up to 10 dimensions.
+
+### Metrics batch query
+
+A user can also query metrics from multiple resources at once using the query_batch method of MetricsBatchClient. This uses a different API than the MetricsClient and requires that a user pass in a regional endpoint when instantiating the client (for example, "https://westus3.metrics.monitor.azure.com").
+
+Note, each resource must be in the same region as the endpoint passed in when instantiating the client, and each resource must be in the same Azure subscription. Furthermore, the metric namespace that contains the metrics to be queried must also be passed. A list of metric namespaces can be found [here][metric_namespaces].
 
 ### Logs query rate limits and throttling
 
@@ -142,6 +152,7 @@ comments.
 [log_analytics_workspace_create]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [logs_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs
 [metrics_overview]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics
+[metric_namespaces]: https://learn.microsoft.com/azure/azure-monitor/reference/supported-metrics/metrics-index#metrics-by-resource-provider
 [monitor_docs]: https://learn.microsoft.com/azure/azure-monitor/
 [monitor_rest_docs]: https://learn.microsoft.com/rest/api/monitor/
 [multi-metrics]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics#multi-dimensional-metrics

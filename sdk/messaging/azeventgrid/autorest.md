@@ -136,7 +136,7 @@ directive:
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 ```
 
-Fix incorrect string formatting for the "releas with delay
+Fix incorrect string formatting for the "release with delay"
 
 ```yaml
 directive:
@@ -155,4 +155,43 @@ directive:
   - from: constants.go
     where: $
     transform: return $.replace(/type ReleaseDelay int32/, "// ReleaseDelay indicates how long the service should delay before releasing an event.\ntype ReleaseDelay int32")
+```
+
+We want to flatten out the settlement arg functions so we'll internalize
+them and do the flattening in custom code.
+
+```yaml
+directive:
+  # Rename the functions so they're internal
+
+  - from: client.go
+    where: $
+    transform: return $.replace(/func \(client \*Client\) RejectCloudEvents\(/, "func \(client \*Client\) internalRejectCloudEvents(")
+  - from: client.go
+    where: $
+    transform: return $.replace(/func \(client \*Client\) AcknowledgeCloudEvents\(/, "func \(client \*Client\) internalAcknowledgeCloudEvents(")
+  - from: client.go
+    where: $
+    transform: return $.replace(/func \(client \*Client\) ReleaseCloudEvents\(/, "func \(client \*Client\) internalReleaseCloudEvents(")
+
+  # Rename the old param bags to be internal as well
+
+  - from: 
+    - client.go
+    - models.go
+    - models_serde.go
+    where: $
+    transform: return $.replace(/\bReleaseOptions\b/g, "releaseOptions")
+  - from: 
+    - client.go
+    - models.go
+    - models_serde.go
+    where: $
+    transform: return $.replace(/\bRejectOptions\b/g, "rejectOptions")
+  - from: 
+    - client.go
+    - models.go
+    - models_serde.go
+    where: $
+    transform: return $.replace(/\bAcknowledgeOptions\b/g, "acknowledgeOptions")
 ```

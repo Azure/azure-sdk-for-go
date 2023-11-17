@@ -10,8 +10,8 @@ package azeventgrid
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 
-// AcknowledgeOptions - Array of lock tokens for the corresponding received Cloud Events to be acknowledged.
-type AcknowledgeOptions struct {
+// acknowledgeOptions - Array of lock tokens for the corresponding received Cloud Events to be acknowledged.
+type acknowledgeOptions struct {
 	// REQUIRED; Array of lock tokens.
 	LockTokens []string
 }
@@ -88,8 +88,8 @@ type ReceiveResult struct {
 	Value []ReceiveDetails
 }
 
-// RejectOptions - Array of lock tokens for the corresponding received Cloud Events to be rejected.
-type RejectOptions struct {
+// rejectOptions - Array of lock tokens for the corresponding received Cloud Events to be rejected.
+type rejectOptions struct {
 	// REQUIRED; Array of lock tokens.
 	LockTokens []string
 }
@@ -104,8 +104,8 @@ type RejectResult struct {
 	SucceededLockTokens []string
 }
 
-// ReleaseOptions - Array of lock tokens for the corresponding received Cloud Events to be released.
-type ReleaseOptions struct {
+// releaseOptions - Array of lock tokens for the corresponding received Cloud Events to be released.
+type releaseOptions struct {
 	// REQUIRED; Array of lock tokens.
 	LockTokens []string
 }

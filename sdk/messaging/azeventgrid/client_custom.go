@@ -7,6 +7,8 @@
 package azeventgrid
 
 import (
+	"context"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -40,4 +42,47 @@ func NewClientWithSharedKeyCredential(endpoint string, keyCred *azcore.KeyCreden
 		internal: azc,
 		endpoint: endpoint,
 	}, nil
+}
+
+// RejectCloudEvents - Reject batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
+// accepted. The response body will include the set of successfully rejected lockTokens,
+// along with other failed lockTokens with their corresponding error information.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01-preview
+//   - topicName - Topic Name.
+//   - eventSubscriptionName - Event Subscription Name.
+//   - lockTokens - Array of lock tokens.
+//   - options - RejectCloudEventsOptions contains the optional parameters for the Client.RejectCloudEvents method.
+func (client *Client) RejectCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *RejectCloudEventsOptions) (RejectCloudEventsResponse, error) {
+	return client.internalRejectCloudEvents(ctx, topicName, eventSubscriptionName, rejectOptions{LockTokens: lockTokens}, options)
+}
+
+// AcknowledgeCloudEvents - Acknowledge batch of Cloud Events. The server responds with an HTTP 200 status code if the request
+// is successfully accepted. The response body will include the set of successfully acknowledged
+// lockTokens, along with other failed lockTokens with their corresponding error information. Successfully acknowledged events
+// will no longer be available to any consumer.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01-preview
+//   - topicName - Topic Name.
+//   - eventSubscriptionName - Event Subscription Name.
+//   - lockTokens - Array of lock tokens.
+//   - options - AcknowledgeCloudEventsOptions contains the optional parameters for the Client.AcknowledgeCloudEvents method.
+func (client *Client) AcknowledgeCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *AcknowledgeCloudEventsOptions) (AcknowledgeCloudEventsResponse, error) {
+	return client.internalAcknowledgeCloudEvents(ctx, topicName, eventSubscriptionName, acknowledgeOptions{LockTokens: lockTokens}, options)
+}
+
+// ReleaseCloudEvents - Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
+// successfully accepted. The response body will include the set of successfully released lockTokens,
+// along with other failed lockTokens with their corresponding error information.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01-preview
+//   - topicName - Topic Name.
+//   - eventSubscriptionName - Event Subscription Name.
+//   - lockTokens - Array of lock tokens.
+//   - options - ReleaseCloudEventsOptions contains the optional parameters for the Client.ReleaseCloudEvents method.
+func (client *Client) ReleaseCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *ReleaseCloudEventsOptions) (ReleaseCloudEventsResponse, error) {
+	return client.internalReleaseCloudEvents(ctx, topicName, eventSubscriptionName, releaseOptions{LockTokens: lockTokens}, options)
 }

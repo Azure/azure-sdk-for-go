@@ -134,10 +134,8 @@ func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscr
 	// - client.RejectCloudEvents, which rejects the event.
 	//     If dead-lettering is configured, the event will be moved into the dead letter queue.
 	//     Otherwise the event is deleted.
-	ackResp, err := client.AcknowledgeCloudEvents(context.TODO(), topicName, subscriptionName, azeventgrid.AcknowledgeOptions{
-		LockTokens: []string{
-			*events.Value[0].BrokerProperties.LockToken,
-		},
+	ackResp, err := client.AcknowledgeCloudEvents(context.TODO(), topicName, subscriptionName, []string{
+		*events.Value[0].BrokerProperties.LockToken,
 	}, nil)
 
 	if err != nil {

@@ -16,15 +16,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// MarshalJSON implements the json.Marshaller interface for type AcknowledgeOptions.
-func (a AcknowledgeOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type acknowledgeOptions.
+func (a acknowledgeOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "lockTokens", a.LockTokens)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcknowledgeOptions.
-func (a *AcknowledgeOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type acknowledgeOptions.
+func (a *acknowledgeOptions) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -268,15 +268,15 @@ func (r *ReceiveResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RejectOptions.
-func (r RejectOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type rejectOptions.
+func (r rejectOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "lockTokens", r.LockTokens)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type RejectOptions.
-func (r *RejectOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type rejectOptions.
+func (r *rejectOptions) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -326,15 +326,15 @@ func (r *RejectResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReleaseOptions.
-func (r ReleaseOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type releaseOptions.
+func (r releaseOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "lockTokens", r.LockTokens)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReleaseOptions.
-func (r *ReleaseOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type releaseOptions.
+func (r *releaseOptions) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", r, err)

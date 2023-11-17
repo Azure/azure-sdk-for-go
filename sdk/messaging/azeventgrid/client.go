@@ -39,9 +39,9 @@ type Client struct {
 // Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - acknowledgeOptions - AcknowledgeOptions.
+//   - acknowledgeOptions - acknowledgeOptions.
 //   - options - AcknowledgeCloudEventsOptions contains the optional parameters for the Client.AcknowledgeCloudEvents method.
-func (client *Client) AcknowledgeCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, acknowledgeOptions AcknowledgeOptions, options *AcknowledgeCloudEventsOptions) (AcknowledgeCloudEventsResponse, error) {
+func (client *Client) internalAcknowledgeCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, acknowledgeOptions acknowledgeOptions, options *AcknowledgeCloudEventsOptions) (AcknowledgeCloudEventsResponse, error) {
 	var err error
 	req, err := client.acknowledgeCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, acknowledgeOptions, options)
 	if err != nil {
@@ -60,7 +60,7 @@ func (client *Client) AcknowledgeCloudEvents(ctx context.Context, topicName stri
 }
 
 // acknowledgeCloudEventsCreateRequest creates the AcknowledgeCloudEvents request.
-func (client *Client) acknowledgeCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, acknowledgeOptions AcknowledgeOptions, options *AcknowledgeCloudEventsOptions) (*policy.Request, error) {
+func (client *Client) acknowledgeCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, acknowledgeOptions acknowledgeOptions, options *AcknowledgeCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:acknowledge"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -265,9 +265,9 @@ func (client *Client) receiveCloudEventsHandleResponse(resp *http.Response) (Rec
 // Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - rejectOptions - RejectOptions
+//   - rejectOptions - rejectOptions
 //   - options - RejectCloudEventsOptions contains the optional parameters for the Client.RejectCloudEvents method.
-func (client *Client) RejectCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, rejectOptions RejectOptions, options *RejectCloudEventsOptions) (RejectCloudEventsResponse, error) {
+func (client *Client) internalRejectCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, rejectOptions rejectOptions, options *RejectCloudEventsOptions) (RejectCloudEventsResponse, error) {
 	var err error
 	req, err := client.rejectCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, rejectOptions, options)
 	if err != nil {
@@ -286,7 +286,7 @@ func (client *Client) RejectCloudEvents(ctx context.Context, topicName string, e
 }
 
 // rejectCloudEventsCreateRequest creates the RejectCloudEvents request.
-func (client *Client) rejectCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, rejectOptions RejectOptions, options *RejectCloudEventsOptions) (*policy.Request, error) {
+func (client *Client) rejectCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, rejectOptions rejectOptions, options *RejectCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:reject"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -327,9 +327,9 @@ func (client *Client) rejectCloudEventsHandleResponse(resp *http.Response) (Reje
 // Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - releaseOptions - ReleaseOptions
+//   - releaseOptions - releaseOptions
 //   - options - ReleaseCloudEventsOptions contains the optional parameters for the Client.ReleaseCloudEvents method.
-func (client *Client) ReleaseCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, releaseOptions ReleaseOptions, options *ReleaseCloudEventsOptions) (ReleaseCloudEventsResponse, error) {
+func (client *Client) internalReleaseCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, releaseOptions releaseOptions, options *ReleaseCloudEventsOptions) (ReleaseCloudEventsResponse, error) {
 	var err error
 	req, err := client.releaseCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, releaseOptions, options)
 	if err != nil {
@@ -348,7 +348,7 @@ func (client *Client) ReleaseCloudEvents(ctx context.Context, topicName string, 
 }
 
 // releaseCloudEventsCreateRequest creates the ReleaseCloudEvents request.
-func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, releaseOptions ReleaseOptions, options *ReleaseCloudEventsOptions) (*policy.Request, error) {
+func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, releaseOptions releaseOptions, options *ReleaseCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")

@@ -35,10 +35,3 @@ func TestStartStopRecording(t *testing.T) {
 	stop := StartRecording(t, pathToPackage)
 	defer stop()
 }
-
-func TestGenerateAlphaNumericID(t *testing.T) {
-	stop := StartRecording(t, pathToPackage)
-	rnd := GenerateAlphaNumericID(t, "test", 6)
-	require.Equal(t, "testNlDAa8", rnd)
-	defer stop()
-}

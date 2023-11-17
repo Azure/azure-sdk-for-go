@@ -356,6 +356,16 @@ The `FakeCredential` show here implements the `azcore.TokenCredential` interface
 If you have live tests that require Azure resources, you'll need to create a test resources config file for deployment during CI.
 Please see the [test resource][test_resources] documentation for more info.
 
+### Committing/Updating Recordings
+
+The `assets.json` file located in your module directory is used by the Test Framework to figure out how to retrieve session records from the assets repo. In order to push new session records, you need to invoke:
+
+```PowerShell
+test-proxy push -a <path-to-assets.json>
+```
+
+On completion of the push, a newly created tag will be stamped into the `assets.json` file. This new tag must be committed and pushed to your package directory along with any other changes.
+
 ## Create Pipelines
 
 When you create the first PR for your library you will want to create this PR against a `track2-<package>` library. Submitting PRs to the `main` branch should only be done once your package is close to being released. Treating `track2-<package>` as your main development branch will allow nightly CI and live pipeline runs to pick up issues as soon as they are introduced. After creating this PR add a comment with the following:
@@ -372,7 +382,7 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [go_download]: https://golang.org/dl/
 [require_package]: https://pkg.go.dev/github.com/stretchr/testify/require
 [test_proxy_docs]: https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy
-[test_proxy_install]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#via-standalone-executable
+[test_proxy_install]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation
 [workspace_setup]: https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-windows-10
 [directory_structure]: https://azure.github.io/azure-sdk/golang_introduction.html
 [module_design]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design

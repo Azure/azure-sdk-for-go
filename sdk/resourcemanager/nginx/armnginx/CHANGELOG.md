@@ -8,6 +8,7 @@
 
 ### Features Added
 
+- Support for test fakes and OpenTelemetry trace spans.
 - New struct `DeploymentScalingProperties`
 - New struct `DeploymentUserProfile`
 - New field `ProtectedFiles` in struct `ConfigurationPackage`

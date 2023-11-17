@@ -128,6 +128,16 @@ func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscr
 		return azeventgrid.ReceiveDetails{}, errors.New("no events received")
 	}
 
+	// We can (optionally) renew the lock (multiple times) if we want to continue to
+	// extend the lock time on the event.
+	_, err = client.RenewCloudEventLocks(context.TODO(), topicName, subscriptionName, []string{
+		*events.Value[0].BrokerProperties.LockToken,
+	}, nil)
+
+	if err != nil {
+		return azeventgrid.ReceiveDetails{}, err
+	}
+
 	// This acknowledges the event and causes it to be deleted from the subscription.
 	// Other options are:
 	// - client.ReleaseCloudEvents, which invalidates our event lock and allows another subscriber to receive the event.

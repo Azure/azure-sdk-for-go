@@ -3,6 +3,7 @@
 ## 3.1.0 (2023-11-24)
 ### Features Added
 
+- Support for test fakes and OpenTelemetry trace spans.
 - New value `InstallationReasonControlPlaneAccessInterfaceHasChanged`, `InstallationReasonControlPlaneAccessVirtualIPv4AddressesHasChanged`, `InstallationReasonPublicLandMobileNetworkIdentifierHasChanged`, `InstallationReasonUserPlaneAccessInterfaceHasChanged`, `InstallationReasonUserPlaneAccessVirtualIPv4AddressesHasChanged`, `InstallationReasonUserPlaneDataInterfaceHasChanged` added to enum type `InstallationReason`
 - New struct `EventHubConfiguration`
 - New struct `NASRerouteConfiguration`

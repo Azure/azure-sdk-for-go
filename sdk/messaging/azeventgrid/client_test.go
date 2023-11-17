@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid"
 	"github.com/stretchr/testify/require"
 )
@@ -438,8 +439,11 @@ func TestReleaseWithDelay(t *testing.T) {
 	require.NotEmpty(t, recvResp.Value)
 	require.Equal(t, int32(2), *recvResp.Value[0].BrokerProperties.DeliveryCount)
 
-	elapsed := time.Since(now)
-	require.GreaterOrEqual(t, int(elapsed/time.Second), 8) // give a little wiggle room for potential delays between requests, etc...
+	if recording.GetRecordMode() == recording.LiveMode {
+		// doesn't work when recording but it's somewhat unimportant there.
+		elapsed := time.Since(now)
+		require.GreaterOrEqual(t, int(elapsed/time.Second), 8) // give a little wiggle room for potential delays between requests, etc...
+	}
 
 	ackResp, err := c.Client.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.AcknowledgeOptions{
 		LockTokens: []string{*recvResp.Value[0].BrokerProperties.LockToken},

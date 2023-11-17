@@ -10,16 +10,11 @@ import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub"
 	"github.com/stretchr/testify/require"
 )
 
 func TestHealthClient_GetServiceStatus(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode || testing.Short() {
-		t.Skip()
-	}
-
 	client := newHealthClient(t)
 	_, err := client.GetServiceStatus(context.Background(), &azwebpubsub.HealthClientGetServiceStatusOptions{})
 	require.NoError(t, err)

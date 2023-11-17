@@ -15,17 +15,12 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub"
 	"github.com/golang-jwt/jwt"
 	"github.com/stretchr/testify/require"
 )
 
 func TestClient_SendToAll(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode || testing.Short() {
-		t.Skip()
-	}
-
 	client := newClientWrapper(t)
 	hub := "hub1"
 	_, err := client.SendToAll(context.Background(), hub,
@@ -45,9 +40,6 @@ func TestClient_SendToAll(t *testing.T) {
 }
 
 func TestClient_ManagePermissions(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode || testing.Short() {
-		t.Skip()
-	}
 	client := newClientWrapper(t)
 	const hub = "chat"
 	const conn1 = "conn1"
@@ -63,10 +55,6 @@ func TestClient_ManagePermissions(t *testing.T) {
 }
 
 func TestClient_CloseConnections(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode || testing.Short() {
-		t.Skip()
-	}
-
 	client := newClientWrapper(t)
 	const hub = "chat"
 	const conn1 = "conn1"

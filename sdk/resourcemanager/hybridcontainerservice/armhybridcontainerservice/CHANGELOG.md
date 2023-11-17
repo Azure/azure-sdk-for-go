@@ -3,6 +3,7 @@
 ## 0.3.0 (2023-11-24)
 ### Breaking Changes
 
+- Support for test fakes and OpenTelemetry trace spans.
 - Function `NewAgentPoolClient` parameter(s) have been changed from `(string, azcore.TokenCredential, *arm.ClientOptions)` to `(azcore.TokenCredential, *arm.ClientOptions)`
 - Function `*AgentPoolClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, AgentPool, *AgentPoolClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, AgentPool, *AgentPoolClientBeginCreateOrUpdateOptions)`
 - Function `*AgentPoolClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *AgentPoolClientGetOptions)` to `(context.Context, string, string, *AgentPoolClientGetOptions)`

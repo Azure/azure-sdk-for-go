@@ -82,7 +82,7 @@ Trim out the 'Interface any' for types that are empty.
 ```yaml
 directive:
   - from: response_types.go
-    where: $.definitions.CloudEvent.properties.specversion
+    where: $
     transform: $.replace(/\s+\/\/ Anything\s+Interface any/sg, "$1");
 ```
 

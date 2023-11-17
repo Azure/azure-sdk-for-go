@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,96 +37,79 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAdministratorsClient creates a new instance of AdministratorsClient.
 func (c *ClientFactory) NewAdministratorsClient() *AdministratorsClient {
 	subClient, _ := NewAdministratorsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewBackupsClient creates a new instance of BackupsClient.
 func (c *ClientFactory) NewBackupsClient() *BackupsClient {
 	subClient, _ := NewBackupsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient.
 func (c *ClientFactory) NewCheckNameAvailabilityClient() *CheckNameAvailabilityClient {
 	subClient, _ := NewCheckNameAvailabilityClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewCheckNameAvailabilityWithLocationClient creates a new instance of CheckNameAvailabilityWithLocationClient.
 func (c *ClientFactory) NewCheckNameAvailabilityWithLocationClient() *CheckNameAvailabilityWithLocationClient {
 	subClient, _ := NewCheckNameAvailabilityWithLocationClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewConfigurationsClient creates a new instance of ConfigurationsClient.
 func (c *ClientFactory) NewConfigurationsClient() *ConfigurationsClient {
 	subClient, _ := NewConfigurationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewDatabasesClient creates a new instance of DatabasesClient.
 func (c *ClientFactory) NewDatabasesClient() *DatabasesClient {
 	subClient, _ := NewDatabasesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewFirewallRulesClient creates a new instance of FirewallRulesClient.
 func (c *ClientFactory) NewFirewallRulesClient() *FirewallRulesClient {
 	subClient, _ := NewFirewallRulesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewFlexibleServerClient() *FlexibleServerClient {
-	subClient, _ := NewFlexibleServerClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
+// NewGetPrivateDNSZoneSuffixClient creates a new instance of GetPrivateDNSZoneSuffixClient.
 func (c *ClientFactory) NewGetPrivateDNSZoneSuffixClient() *GetPrivateDNSZoneSuffixClient {
 	subClient, _ := NewGetPrivateDNSZoneSuffixClient(c.credential, c.options)
 	return subClient
 }
 
+// NewLocationBasedCapabilitiesClient creates a new instance of LocationBasedCapabilitiesClient.
 func (c *ClientFactory) NewLocationBasedCapabilitiesClient() *LocationBasedCapabilitiesClient {
 	subClient, _ := NewLocationBasedCapabilitiesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewLogFilesClient() *LogFilesClient {
-	subClient, _ := NewLogFilesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewLtrBackupOperationsClient() *LtrBackupOperationsClient {
-	subClient, _ := NewLtrBackupOperationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewMigrationsClient() *MigrationsClient {
-	subClient, _ := NewMigrationsClient(c.credential, c.options)
-	return subClient
-}
-
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewPostgreSQLManagementClient() *PostgreSQLManagementClient {
-	subClient, _ := NewPostgreSQLManagementClient(c.credential, c.options)
-	return subClient
-}
-
+// NewReplicasClient creates a new instance of ReplicasClient.
 func (c *ClientFactory) NewReplicasClient() *ReplicasClient {
 	subClient, _ := NewReplicasClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewServerCapabilitiesClient() *ServerCapabilitiesClient {
-	subClient, _ := NewServerCapabilitiesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
+// NewServersClient creates a new instance of ServersClient.
 func (c *ClientFactory) NewServersClient() *ServersClient {
 	subClient, _ := NewServersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewVirtualNetworkSubnetUsageClient creates a new instance of VirtualNetworkSubnetUsageClient.
 func (c *ClientFactory) NewVirtualNetworkSubnetUsageClient() *VirtualNetworkSubnetUsageClient {
 	subClient, _ := NewVirtualNetworkSubnetUsageClient(c.subscriptionID, c.credential, c.options)
 	return subClient

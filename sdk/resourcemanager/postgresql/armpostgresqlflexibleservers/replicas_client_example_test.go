@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ReplicasListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/75ece9197dbac70ac0ba651c53a79c1841944be2/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ReplicasListByServer.json
 func ExampleReplicasClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				AvailabilityZone: to.Ptr("2"),
 		// 				Backup: &armpostgresqlflexibleservers.Backup{
 		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.7279547+00:00"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.727Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 		// 				},
 		// 				DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -83,10 +83,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				ReplicationRole: to.Ptr(armpostgresqlflexibleservers.ReplicationRoleAsyncReplica),
 		// 				State: to.Ptr(armpostgresqlflexibleservers.ServerStateReady),
 		// 				Storage: &armpostgresqlflexibleservers.Storage{
-		// 					AutoGrow: to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowDisabled),
-		// 					Iops: to.Ptr[int32](2300),
 		// 					StorageSizeGB: to.Ptr[int32](512),
-		// 					Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTiersP20),
 		// 				},
 		// 				Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionTwelve),
 		// 			},

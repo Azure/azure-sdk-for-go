@@ -173,6 +173,9 @@ directive:
   - from: client.go
     where: $
     transform: return $.replace(/func \(client \*Client\) ReleaseCloudEvents\(/, "func \(client \*Client\) internalReleaseCloudEvents(")
+  - from: client.go
+    where: $
+    transform: return $.replace(/func \(client \*Client\) RenewCloudEventLocks\(/, "func \(client \*Client\) internalRenewCloudEventLocks(")
 
   # Rename the old param bags to be internal as well
 
@@ -194,4 +197,10 @@ directive:
     - models_serde.go
     where: $
     transform: return $.replace(/\bAcknowledgeOptions\b/g, "acknowledgeOptions")
+  - from: 
+    - client.go
+    - models.go
+    - models_serde.go
+    where: $
+    transform: return $.replace(/\RenewLockOptions\b/g, "renewLockOptions")
 ```

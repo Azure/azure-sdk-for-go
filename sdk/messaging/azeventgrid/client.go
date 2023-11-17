@@ -392,9 +392,9 @@ func (client *Client) releaseCloudEventsHandleResponse(resp *http.Response) (Rel
 // Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - renewLockOptions - RenewLockOptions
+//   - renewLockOptions - renewLockOptions
 //   - options - RenewCloudEventLocksOptions contains the optional parameters for the Client.RenewCloudEventLocks method.
-func (client *Client) RenewCloudEventLocks(ctx context.Context, topicName string, eventSubscriptionName string, renewLockOptions RenewLockOptions, options *RenewCloudEventLocksOptions) (RenewCloudEventLocksResponse, error) {
+func (client *Client) internalRenewCloudEventLocks(ctx context.Context, topicName string, eventSubscriptionName string, renewLockOptions renewLockOptions, options *RenewCloudEventLocksOptions) (RenewCloudEventLocksResponse, error) {
 	var err error
 	req, err := client.renewCloudEventLocksCreateRequest(ctx, topicName, eventSubscriptionName, renewLockOptions, options)
 	if err != nil {
@@ -413,7 +413,7 @@ func (client *Client) RenewCloudEventLocks(ctx context.Context, topicName string
 }
 
 // renewCloudEventLocksCreateRequest creates the RenewCloudEventLocks request.
-func (client *Client) renewCloudEventLocksCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, renewLockOptions RenewLockOptions, options *RenewCloudEventLocksOptions) (*policy.Request, error) {
+func (client *Client) renewCloudEventLocksCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, renewLockOptions renewLockOptions, options *RenewCloudEventLocksOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:renewLock"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")

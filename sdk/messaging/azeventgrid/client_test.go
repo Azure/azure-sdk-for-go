@@ -381,9 +381,7 @@ func TestRenewCloudEventLocks(t *testing.T) {
 	recvResp, err := c.Client.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
 	require.NoError(t, err)
 
-	_, err = c.Client.RenewCloudEventLocks(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.RenewLockOptions{
-		LockTokens: []string{*recvResp.Value[0].BrokerProperties.LockToken},
-	}, nil)
+	_, err = c.Client.RenewCloudEventLocks(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, nil)
 	require.NoError(t, err)
 
 	ackResp, err := c.Client.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, nil)

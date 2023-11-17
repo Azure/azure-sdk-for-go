@@ -415,15 +415,15 @@ func (r *RenewCloudEventLocksResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RenewLockOptions.
-func (r RenewLockOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type renewLockOptions.
+func (r renewLockOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "lockTokens", r.LockTokens)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type RenewLockOptions.
-func (r *RenewLockOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type renewLockOptions.
+func (r *renewLockOptions) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", r, err)

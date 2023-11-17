@@ -130,8 +130,8 @@ type RenewCloudEventLocksResult struct {
 	SucceededLockTokens []string
 }
 
-// RenewLockOptions - Array of lock tokens for the corresponding received Cloud Events to be renewed.
-type RenewLockOptions struct {
+// renewLockOptions - Array of lock tokens for the corresponding received Cloud Events to be renewed.
+type renewLockOptions struct {
 	// REQUIRED; Array of lock tokens.
 	LockTokens []string
 }

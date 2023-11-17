@@ -52,7 +52,7 @@ func NewClientWithSharedKeyCredential(endpoint string, keyCred *azcore.KeyCreden
 // Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - lockTokens - Array of lock tokens.
+//   - lockTokens - slice of lock tokens.
 //   - options - RejectCloudEventsOptions contains the optional parameters for the Client.RejectCloudEvents method.
 func (client *Client) RejectCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *RejectCloudEventsOptions) (RejectCloudEventsResponse, error) {
 	return client.internalRejectCloudEvents(ctx, topicName, eventSubscriptionName, rejectOptions{LockTokens: lockTokens}, options)
@@ -67,7 +67,7 @@ func (client *Client) RejectCloudEvents(ctx context.Context, topicName string, e
 // Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - lockTokens - Array of lock tokens.
+//   - lockTokens - slice of lock tokens.
 //   - options - AcknowledgeCloudEventsOptions contains the optional parameters for the Client.AcknowledgeCloudEvents method.
 func (client *Client) AcknowledgeCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *AcknowledgeCloudEventsOptions) (AcknowledgeCloudEventsResponse, error) {
 	return client.internalAcknowledgeCloudEvents(ctx, topicName, eventSubscriptionName, acknowledgeOptions{LockTokens: lockTokens}, options)
@@ -81,8 +81,22 @@ func (client *Client) AcknowledgeCloudEvents(ctx context.Context, topicName stri
 // Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - lockTokens - Array of lock tokens.
+//   - lockTokens - slice of lock tokens.
 //   - options - ReleaseCloudEventsOptions contains the optional parameters for the Client.ReleaseCloudEvents method.
 func (client *Client) ReleaseCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *ReleaseCloudEventsOptions) (ReleaseCloudEventsResponse, error) {
 	return client.internalReleaseCloudEvents(ctx, topicName, eventSubscriptionName, releaseOptions{LockTokens: lockTokens}, options)
+}
+
+// RenewCloudEventLocks - Renew lock for batch of Cloud Events. The server responds with an HTTP 200 status code if the request
+// is successfully accepted. The response body will include the set of successfully renewed
+// lockTokens, along with other failed lockTokens with their corresponding error information.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01-preview
+//   - topicName - Topic Name.
+//   - eventSubscriptionName - Event Subscription Name.
+//   - lockTokens - slice of lock tokens.
+//   - options - RenewCloudEventLocksOptions contains the optional parameters for the Client.RenewCloudEventLocks method.
+func (client *Client) RenewCloudEventLocks(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *RenewCloudEventLocksOptions) (RenewCloudEventLocksResponse, error) {
+	return client.internalRenewCloudEventLocks(ctx, topicName, eventSubscriptionName, renewLockOptions{LockTokens: lockTokens}, options)
 }

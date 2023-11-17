@@ -3,6 +3,7 @@
 ## 1.0.0 (2023-11-24)
 ### Breaking Changes
 
+- Support for test fakes and OpenTelemetry trace spans.
 - Type of `AvailabilitySetProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `AvailabilitySetsClientBeginDeleteOptions.Force` has been changed from `*bool` to `*Force`
 - Type of `CloudInventoryItem.ProvisioningState` has been changed from `*string` to `*ProvisioningState`

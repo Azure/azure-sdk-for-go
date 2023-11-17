@@ -8,7 +8,7 @@ clear-output-folder: false
 go: true
 input-file: 
     # This was the commit that everyone used to generate their first official betas.
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c07d9898ed901330e5ac4996b1bc641adac2e6fd/specification/eventgrid/data-plane/Microsoft.EventGrid/preview/2023-06-01-preview/EventGrid.json
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2264262e0c7575a794cc395609d2342c7e598149/specification/eventgrid/data-plane/Microsoft.EventGrid/preview/2023-10-01-preview/EventGrid.json
     # - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/947c9ce9b20900c6cbc8e95bc083e723d09a9c2c/specification/eventgrid/data-plane/Microsoft.EventGrid/preview/2023-06-01-preview/EventGrid.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
@@ -20,33 +20,109 @@ use: "@autorest/go@4.0.0-preview.52"
 version: "^3.0.0"
 slice-elements-byval: true
 remove-non-reference-schema: true
+```
+
+Make sure the content type is setup properly for publishing single and multiple events.
+
+```yaml
 directive:
-  # we have to write a little wrapper code for this so we'll hide the public function
-  # for now.
-  - from: client.go
+  - from: 
+    - client.go
     where: $
-    transform: return $.replace(/PublishCloudEvents\(/g, "internalPublishCloudEvents(");
-  - from: swagger-document
+    transform: | 
+      return $.replace(
+        /(func \(client \*Client\) publishCloudEventsCreateRequest.+?)return req, nil/s, 
+        '$1\nreq.Raw().Header.Set("Content-type", "application/cloudevents-batch+json; charset=utf-8")\nreturn req, nil');
+  - from: 
+    - client.go
+    where: $
+    transform: | 
+      return $.replace(
+        /(func \(client \*Client\) publishCloudEventCreateRequest.+?)return req, nil/s, 
+        '$1\nreq.Raw().Header.Set("Content-type", "application/cloudevents+json; charset=utf-8")\nreturn req, nil');        
+```
+
+Fix the error type so it's a bit more presentable, and looks like an error for this package.
+
+```yaml
+directive:
+  - from: 
+    - models_serde.go
+    - models.go
+    where: $
+    transform: | 
+      return $
+        // remove some types that were generated to support the recursive error.
+        .replace(/\/\/ AzureCoreFoundationsInnerErrorInnererror.+?\n}/s, "")
+        // also, remove its marshalling functions
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsInnerErrorInnererror.+?\n}/sg, "")
+        .replace(/\/\/ AzureCoreFoundationsErrorInnererror.+?\n}/s, "")
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsErrorInnererror.+?\n}/sg, "")
+        .replace(/\/\/ AzureCoreFoundationsErrorResponseError.+?\n}/s, "")
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsErrorResponseError.+?\n}/sg, "")
+        .replace(/\/\/ AzureCoreFoundationsErrorResponse.+?\n}/s, "")
+        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsErrorResponse.+?\n}/sg, "")
+
+        // Remove any references to the type and replace them with InnerError.
+        //.replace(/Innererror \*(AzureCoreFoundationsInnerErrorInnererror|AzureCoreFoundationsErrorInnererror)/g, "InnerError *InnerError")
+
+        // Fix the marshallers/unmarshallers to use the right case.
+        .replace(/(a|c).Innererror/g, '$1.InnerError')
+        .replace(/Innererror \*AzureCoreFoundationsInnerError/g, "InnerError *InnerError")
+
+        // We have two "inner error" types that are identical (ErrorInnerError and InnerError). Let's eliminate the one that's not actually directly referenced.
+        .replace(/\/\/azureCoreFoundationsInnerError.+?\n}/s, "")
+        
+        //
+        // Fix the AzureCoreFoundation naming to match our style.
+        //
+        .replace(/AzureCoreFoundations/g, "")
+```
+
+Trim out the 'Interface any' for types that are empty.
+
+```yaml
+directive:
+  - from: response_types.go
     where: $.definitions.CloudEvent.properties.specversion
-    transform: $["x-ms-client-name"] = "SpecVersion"
-  - from: swagger-document
-    where: $.definitions.CloudEvent.properties.datacontenttype
-    transform: $["x-ms-client-name"] = "DataContentType"
-  - from: swagger-document
-    where: $.definitions.CloudEvent.properties.dataschema
-    transform: $["x-ms-client-name"] = "DataSchema"
-  # mark models as external so they're just omitted
+    transform: $.replace(/\s+\/\/ Anything\s+Interface any/sg, "$1");
+```
+
+For functions that have empty responses (ie, PublishCloudEvent 
+and PublishCloudEvents) we can remove the schema attribute, which cleans 
+up the PublishCloudEventResponse/PublishCloudEventsResponse
+so they don't have a vestigial `Interface any` field.
+
+```yaml
+directive:
+  # remove the 'Interface any' that's generated for an empty response object.
+  - from:
+      - swagger-document
+    where: $["x-ms-paths"]["/topics/{topicName}:publish?_overload=publishCloudEvents"].post.responses["200"]
+    transform: delete $["schema"];
+  - from:
+      - swagger-document
+    where: $["paths"]["/topics/{topicName}:publish"].post.responses["200"]
+    transform: delete $["schema"];
+```
+
+Use azcore's CloudEvent type instead of a locally generated version.
+
+```yaml
+directive:
+  # replace references to the "generated" CloudEvent to the actual version in azcore/messaging
+  - from:
+      - client.go
+      - models.go
+      - response_types.go
+      - options.go
+    where: $
+    transform: |
+      return $.replace(/\[\]CloudEvent/g, "[]messaging.CloudEvent")
+              .replace(/\*CloudEvent/g, "messaging.CloudEvent")
+              .replace(/event CloudEvent/g, "event messaging.CloudEvent")
   - from: swagger-document
     where: $.definitions.CloudEvent
-    transform: $["x-ms-external"] = true
-  - from: swagger-document
-    where: $.definitions.["Azure.Core.Foundations.Error"]
-    transform: $["x-ms-external"] = true
-  - from: swagger-document
-    where: $.definitions.["Azure.Core.Foundations.ErrorResponse"]
-    transform: $["x-ms-external"] = true
-  - from: swagger-document
-    where: $.definitions.["Azure.Core.Foundations.InnerError"]
     transform: $["x-ms-external"] = true
   # make the endpoint a parameter of the client constructor
   - from: swagger-document
@@ -60,20 +136,16 @@ directive:
       - options.go
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
-  # replace references to the "generated" CloudEvent to the actual version in azcore/messaging
-  - from:
-      - client.go
-      - models.go
-      - response_types.go
-      - options.go
-    where: $
-    transform: |
-      return $.replace(/\[\]CloudEvent/g, "[]messaging.CloudEvent")
-              .replace(/\*CloudEvent/g, "messaging.CloudEvent");
+```
 
-  # remove the 'Interface any' that's generated for an empty response object.
-  - from:
-      - swagger-document
-    where: $["x-ms-paths"]["/topics/{topicName}:publish?api-version={apiVersion}"].post.responses["200"]
-    transform: delete $["schema"];
+Fix incorrect string formatting for the "releas with delay
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.paths["/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release"].post.parameters[3]
+    transform: $.type = "integer";
+  - from: client.go
+    where: $
+    transform: return $.replace(/string\(\*options.ReleaseDelayInSeconds\)/g, "fmt.Sprintf(\"%d\", *options.ReleaseDelayInSeconds)")
 ```

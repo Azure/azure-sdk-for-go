@@ -10,20 +10,49 @@ package azeventgrid
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 
-// AcknowledgeOptions - Array of lock token strings for the corresponding received Cloud Events to be acknowledged.
+// AcknowledgeOptions - Array of lock tokens for the corresponding received Cloud Events to be acknowledged.
 type AcknowledgeOptions struct {
-	// REQUIRED; String array of lock tokens.
+	// REQUIRED; Array of lock tokens.
 	LockTokens []string
 }
 
 // AcknowledgeResult - The result of the Acknowledge operation.
 type AcknowledgeResult struct {
-	// REQUIRED; Array of LockToken values for failed cloud events. Each LockToken includes the lock token value along with the
+	// REQUIRED; Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
 	// related error information (namely, the error code and description).
 	FailedLockTokens []FailedLockToken
 
-	// REQUIRED; Array of lock tokens values for the successfully acknowledged cloud events.
+	// REQUIRED; Array of lock tokens for the successfully acknowledged cloud events.
 	SucceededLockTokens []string
+}
+
+// Error - The error object.
+type Error struct {
+	// REQUIRED; One of a server-defined set of error codes.
+	Code *string
+
+	// REQUIRED; A human-readable representation of the error.
+	Message *string
+
+	// An array of details about specific errors that led to this reported error.
+	Details []Error
+
+	// An object containing more specific information than the current object about the error.
+	InnerError *InnerError
+
+	// The target of the error.
+	Target *string
+}
+
+// InnerError - An object containing more specific information about the error. As per Microsoft One API
+// guidelines -
+// https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
+type InnerError struct {
+	// One of a server-defined set of error codes.
+	Code *string
+
+	// Inner error.
+	InnerError *InnerError
 }
 
 // BrokerProperties - Properties of the Event Broker operation.
@@ -31,21 +60,16 @@ type BrokerProperties struct {
 	// REQUIRED; The attempt count for delivering the event.
 	DeliveryCount *int32
 
-	// REQUIRED; The token used to lock the event.
+	// REQUIRED; The token of the lock on the event.
 	LockToken *string
 }
 
 // FailedLockToken - Failed LockToken information.
 type FailedLockToken struct {
-	// REQUIRED; Error code related to the token. Example of such error codes are BadToken: which indicates the Token is not formatted
-	// correctly, TokenLost: which indicates that token is not found, and
-	// InternalServerError: For any internal server errors.
-	ErrorCode *string
+	// REQUIRED; Error information of the failed operation result for the lock token in the request.
+	Error *Error
 
-	// REQUIRED; Description of the token error.
-	ErrorDescription *string
-
-	// REQUIRED; LockToken value
+	// REQUIRED; The lock token of an entry in the request.
 	LockToken *string
 }
 
@@ -64,34 +88,50 @@ type ReceiveResult struct {
 	Value []ReceiveDetails
 }
 
-// RejectOptions - Array of lock token strings for the corresponding received Cloud Events to be rejected.
+// RejectOptions - Array of lock tokens for the corresponding received Cloud Events to be rejected.
 type RejectOptions struct {
-	// REQUIRED; String array of lock tokens.
+	// REQUIRED; Array of lock tokens.
 	LockTokens []string
 }
 
 // RejectResult - The result of the Reject operation.
 type RejectResult struct {
-	// REQUIRED; Array of LockToken values for failed cloud events. Each LockToken includes the lock token value along with the
+	// REQUIRED; Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
 	// related error information (namely, the error code and description).
 	FailedLockTokens []FailedLockToken
 
-	// REQUIRED; Array of lock tokens values for the successfully rejected cloud events.
+	// REQUIRED; Array of lock tokens for the successfully rejected cloud events.
 	SucceededLockTokens []string
 }
 
-// ReleaseOptions - Array of lock token strings for the corresponding received Cloud Events to be released.
+// ReleaseOptions - Array of lock tokens for the corresponding received Cloud Events to be released.
 type ReleaseOptions struct {
-	// REQUIRED; String array of lock tokens.
+	// REQUIRED; Array of lock tokens.
 	LockTokens []string
 }
 
 // ReleaseResult - The result of the Release operation.
 type ReleaseResult struct {
-	// REQUIRED; Array of LockToken values for failed cloud events. Each LockToken includes the lock token value along with the
+	// REQUIRED; Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
 	// related error information (namely, the error code and description).
 	FailedLockTokens []FailedLockToken
 
-	// REQUIRED; Array of lock tokens values for the successfully released cloud events.
+	// REQUIRED; Array of lock tokens for the successfully released cloud events.
 	SucceededLockTokens []string
+}
+
+// RenewCloudEventLocksResult - The result of the RenewLock operation.
+type RenewCloudEventLocksResult struct {
+	// REQUIRED; Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
+	// related error information (namely, the error code and description).
+	FailedLockTokens []FailedLockToken
+
+	// REQUIRED; Array of lock tokens for the successfully renewed locks.
+	SucceededLockTokens []string
+}
+
+// RenewLockOptions - Array of lock tokens for the corresponding received Cloud Events to be renewed.
+type RenewLockOptions struct {
+	// REQUIRED; Array of lock tokens.
+	LockTokens []string
 }

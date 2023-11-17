@@ -36,7 +36,7 @@ func Example_publishAndReceiveCloudEvents() {
 	// Publish an event with a string payload
 	//
 	fmt.Fprintf(os.Stderr, "Published event with a string payload 'hello world'\n")
-	eventWithString, err := publishAndReceiveEvent(client, topicName, subscriptionName, "hello world")
+	eventWithString, err := publishAndReceiveEvent(client, topicName, subscriptionName, "application/json", "hello world")
 
 	if err != nil {
 		panic(err)
@@ -57,7 +57,7 @@ func Example_publishAndReceiveCloudEvents() {
 	//
 	// Publish an event with a []byte payload
 	//
-	eventWithBytes, err := publishAndReceiveEvent(client, topicName, subscriptionName, []byte{0, 1, 2})
+	eventWithBytes, err := publishAndReceiveEvent(client, topicName, subscriptionName, "application/octet-stream", []byte{0, 1, 2})
 
 	if err != nil {
 		panic(err)
@@ -74,7 +74,7 @@ func Example_publishAndReceiveCloudEvents() {
 		Name string `json:"name"`
 	}
 
-	eventWithStruct, err := publishAndReceiveEvent(client, topicName, subscriptionName, SampleData{Name: "hello"})
+	eventWithStruct, err := publishAndReceiveEvent(client, topicName, subscriptionName, "application/json", SampleData{Name: "hello"})
 
 	if err != nil {
 		panic(err)
@@ -92,8 +92,10 @@ func Example_publishAndReceiveCloudEvents() {
 	// Output:
 }
 
-func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscriptionName string, payload any) (azeventgrid.ReceiveDetails, error) {
-	event, err := messaging.NewCloudEvent("source", "eventType", payload, nil)
+func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscriptionName string, dataContentType string, payload any) (azeventgrid.ReceiveDetails, error) {
+	event, err := messaging.NewCloudEvent("source", "eventType", payload, &messaging.CloudEventOptions{
+		DataContentType: &dataContentType,
+	})
 
 	if err != nil {
 		return azeventgrid.ReceiveDetails{}, err
@@ -145,7 +147,7 @@ func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscr
 	if len(ackResp.FailedLockTokens) > 0 {
 		// some events failed when we tried to acknowledge them.
 		for _, failed := range ackResp.FailedLockTokens {
-			fmt.Printf("Failed to acknowledge event with lock token %s: %s\n", *failed.LockToken, *failed.ErrorDescription)
+			fmt.Printf("Failed to acknowledge event with lock token %s: %s\n", *failed.LockToken, *failed.Error.Message)
 		}
 
 		return azeventgrid.ReceiveDetails{}, errors.New("failed to acknowledge event")

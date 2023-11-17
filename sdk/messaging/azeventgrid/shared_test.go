@@ -96,6 +96,8 @@ func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
 		tv = fakeTestVars
 	}
 
+	var options *azeventgrid.ClientOptions
+
 	if recording.GetRecordMode() == recording.LiveMode {
 		if tv.KeyLogPath != "" {
 			keyLogWriter, err := os.OpenFile(tv.KeyLogPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
@@ -108,30 +110,31 @@ func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
 				KeyLogWriter: keyLogWriter,
 			}
 
-			httpClient := &http.Client{Transport: tp}
-
-			tmpClient, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), &azeventgrid.ClientOptions{
+			options = &azeventgrid.ClientOptions{
 				ClientOptions: azcore.ClientOptions{
-					Transport: httpClient,
+					Transport: &http.Client{Transport: tp},
 				},
-			})
-			require.NoError(t, err)
-			client = tmpClient
-		} else {
-			tmpClient, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), nil)
-			require.NoError(t, err)
-			client = tmpClient
+			}
 		}
-
-		purgePreviousEvents(t, client, tv)
 	} else {
-		tmpClient, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), &azeventgrid.ClientOptions{
+		options = &azeventgrid.ClientOptions{
 			ClientOptions: azcore.ClientOptions{
 				Transport: newRecordingTransporter(t, tv),
 			},
-		})
-		require.NoError(t, err)
-		client = tmpClient
+		}
+	}
+
+	if options != nil {
+		options.Logging = policy.LogOptions{
+			IncludeBody: true,
+		}
+	}
+
+	client, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), options)
+	require.NoError(t, err)
+
+	if recording.GetRecordMode() == recording.LiveMode {
+		purgePreviousEvents(t, client, tv)
 	}
 
 	return clientWrapper{

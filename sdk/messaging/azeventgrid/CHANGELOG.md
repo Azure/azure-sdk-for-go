@@ -15,10 +15,6 @@
 - FailedLockToken, included in the response for settlement functions, has an `Error` field, which contains the data previously
   in `ErrorDescription` and `ErrorCode`.
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 0.3.0 (2023-10-17)
 
 ### Breaking Changes

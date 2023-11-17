@@ -3,6 +3,7 @@
 ## 1.2.0 (2023-11-24)
 ### Features Added
 
+- Support for test fakes and OpenTelemetry trace spans.
 - New enum type `AvailablePromotion` with values `AvailablePromotionFreeTrial`, `AvailablePromotionNone`
 - New enum type `ManagedPrivateEndpointConnectionStatus` with values `ManagedPrivateEndpointConnectionStatusApproved`, `ManagedPrivateEndpointConnectionStatusDisconnected`, `ManagedPrivateEndpointConnectionStatusPending`, `ManagedPrivateEndpointConnectionStatusRejected`
 - New enum type `MarketplaceAutoRenew` with values `MarketplaceAutoRenewDisabled`, `MarketplaceAutoRenewEnabled`

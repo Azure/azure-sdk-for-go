@@ -26,7 +26,7 @@ func newHealthClient(t *testing.T) *azwebpubsub.HealthClient {
 		ClientOptions: *coreOptions,
 	}
 	println(tv.Endpoint)
-	client, err := azwebpubsub.NewHealthClientWithNoCredentials(tv.Endpoint, options)
+	client, err := azwebpubsub.NewHealthClientWithNoCredential(tv.Endpoint, options)
 	require.NoError(t, err)
 	return client
 }

@@ -17,8 +17,8 @@ type HealthClientOptions struct {
 	azcore.ClientOptions
 }
 
-// NewHealthClientWithNoCredentials creates a client that checks the healthy status of Web PubSub service
-func NewHealthClientWithNoCredentials(endpoint string, options *HealthClientOptions) (*HealthClient, error) {
+// NewHealthClientWithNoCredential creates a client that checks the healthy status of Web PubSub service
+func NewHealthClientWithNoCredential(endpoint string, options *HealthClientOptions) (*HealthClient, error) {
 	if options == nil {
 		options = &HealthClientOptions{}
 	}

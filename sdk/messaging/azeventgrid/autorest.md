@@ -7,9 +7,7 @@ generated-metadata: false
 clear-output-folder: false
 go: true
 input-file: 
-    # This was the commit that everyone used to generate their first official betas.
     - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2264262e0c7575a794cc395609d2342c7e598149/specification/eventgrid/data-plane/Microsoft.EventGrid/preview/2023-10-01-preview/EventGrid.json
-    # - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/947c9ce9b20900c6cbc8e95bc083e723d09a9c2c/specification/eventgrid/data-plane/Microsoft.EventGrid/preview/2023-06-01-preview/EventGrid.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
 openapi-type: "data-plane"

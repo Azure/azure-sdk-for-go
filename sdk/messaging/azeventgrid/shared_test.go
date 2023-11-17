@@ -7,19 +7,16 @@
 package azeventgrid_test
 
 import (
-	"context"
 	"crypto/tls"
 	"fmt"
 	"net/http"
 	"os"
 	"strings"
-	"sync"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid"
 	"github.com/stretchr/testify/require"
@@ -133,10 +130,6 @@ func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
 	client, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), options)
 	require.NoError(t, err)
 
-	if recording.GetRecordMode() == recording.LiveMode {
-		purgePreviousEvents(t, client, tv)
-	}
-
 	return clientWrapper{
 		Client:   client,
 		TestVars: tv,
@@ -226,37 +219,4 @@ func requireEqualCloudEvent(t *testing.T, expected messaging.CloudEvent, actual 
 	expected.Time = actual.Time
 
 	require.Equal(t, actual, expected)
-}
-
-var purge sync.Once
-
-func purgePreviousEvents(t *testing.T, c *azeventgrid.Client, testVars testVars) {
-	purge.Do(func() {
-		if recording.GetRecordMode() != recording.LiveMode {
-			return
-		}
-
-		// we'll purge all the events in the queue just to ensure tests
-		// run clean.
-		events, err := c.ReceiveCloudEvents(context.Background(), testVars.Topic, testVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
-			MaxEvents:   to.Ptr[int32](100),
-			MaxWaitTime: to.Ptr[int32](10),
-		})
-		require.NoError(t, err)
-
-		var lockTokens []string
-
-		for _, e := range events.Value {
-			lockTokens = append(lockTokens, *e.BrokerProperties.LockToken)
-		}
-
-		if len(lockTokens) > 0 {
-			resp, err := c.AcknowledgeCloudEvents(context.Background(), testVars.Topic, testVars.Subscription, azeventgrid.AcknowledgeOptions{
-				LockTokens: lockTokens,
-			}, nil)
-			require.NoError(t, err)
-			require.Empty(t, resp.FailedLockTokens)
-		}
-	})
-
 }

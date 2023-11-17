@@ -49,6 +49,24 @@ func run(m *testing.M) int {
 		log.Printf("Failed to load .env file, no integration tests will run: %s", err)
 	}
 
+	cleanup := createTopicAndUpdateEnv()
+	defer cleanup()
+
+	return m.Run()
+}
+
+func PollUntilDone[T any](ctx context.Context, fn func() (*runtime.Poller[T], error)) error {
+	poller, err := fn()
+
+	if err != nil {
+		return err
+	}
+
+	_, err = poller.PollUntilDone(ctx, nil)
+	return err
+}
+
+func createTopicAndUpdateEnv() func() {
 	azSubID := os.Getenv("AZEVENTGRID_SUBSCRIPTION_ID")
 	resGroup := os.Getenv("AZEVENTGRID_RESOURCE_GROUP")
 
@@ -60,7 +78,6 @@ func run(m *testing.M) int {
 
 	nsHost := strings.Split(nsURL.Host, ".")[0]
 
-	//cred, err := azidentity.NewAzureCLICredential(nil)
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil {
@@ -93,12 +110,6 @@ func run(m *testing.M) int {
 		panic(err)
 	}
 
-	defer func() {
-		if _, err = topicClient.BeginDelete(context.Background(), resGroup, nsHost, topicName, nil); err != nil {
-			fmt.Printf("Failed to start the delete for our test topic %s: %s", topicName, err)
-		}
-	}()
-
 	err = PollUntilDone(context.Background(), func() (*runtime.Poller[armeventgrid.NamespaceTopicEventSubscriptionsClientCreateOrUpdateResponse], error) {
 		return subClient.BeginCreateOrUpdate(context.Background(),
 			resGroup,
@@ -121,16 +132,9 @@ func run(m *testing.M) int {
 
 	fmt.Printf("Created topic %s\n", topicName)
 
-	return m.Run()
-}
-
-func PollUntilDone[T any](ctx context.Context, fn func() (*runtime.Poller[T], error)) error {
-	poller, err := fn()
-
-	if err != nil {
-		return err
+	return func() {
+		if _, err = topicClient.BeginDelete(context.Background(), resGroup, nsHost, topicName, nil); err != nil {
+			fmt.Printf("Failed to start the delete for our test topic %s: %s", topicName, err)
+		}
 	}
-
-	_, err = poller.PollUntilDone(ctx, nil)
-	return err
 }

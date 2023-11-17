@@ -3,6 +3,7 @@
 ## 1.2.0 (2023-11-24)
 ### Features Added
 
+- Support for test fakes and OpenTelemetry trace spans.
 - New function `NewAccessClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AccessClient, error)`
 - New function `*AccessClient.InviteUser(context.Context, string, string, AccessInviteUserAccountModel, *AccessClientInviteUserOptions) (AccessClientInviteUserResponse, error)`
 - New function `*AccessClient.ListClusters(context.Context, string, string, ListAccessRequestModel, *AccessClientListClustersOptions) (AccessClientListClustersResponse, error)`

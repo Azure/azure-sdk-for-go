@@ -3,6 +3,7 @@
 ## 2.0.0 (2023-11-24)
 ### Breaking Changes
 
+- Support for test fakes and OpenTelemetry trace spans.
 - Type of `NetworkFunction.Properties` has been changed from `*NetworkFunctionPropertiesFormat` to `NetworkFunctionPropertiesFormatClassification`
 - `StatusDeleted`, `StatusNotRegistered`, `StatusRegistered` from enum `Status` has been removed
 - Enum `DeviceType` has been removed

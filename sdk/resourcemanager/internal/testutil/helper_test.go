@@ -8,7 +8,6 @@ package testutil
 
 import (
 	"context"
-	"os"
 	"strings"
 	"testing"
 
@@ -22,13 +21,6 @@ import (
 const (
 	pathToPackage = "sdk/resourcemanager/internal/testdata"
 )
-
-func TestGetEnv(t *testing.T) {
-	err := os.Setenv("test", "test")
-	require.NoError(t, err)
-	require.Equal(t, "test", GetEnv("test", ""))
-	require.Equal(t, "fail", GetEnv("testfail", "fail"))
-}
 
 func TestCreateDeleteResourceGroup(t *testing.T) {
 	ctx := context.Background()

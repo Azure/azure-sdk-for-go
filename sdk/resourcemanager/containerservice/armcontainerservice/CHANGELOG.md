@@ -3,6 +3,7 @@
 ## 4.5.0 (2023-11-24)
 ### Features Added
 
+- Support for test fakes and OpenTelemetry trace spans.
 - New enum type `TrustedAccessRoleBindingProvisioningState` with values `TrustedAccessRoleBindingProvisioningStateCanceled`, `TrustedAccessRoleBindingProvisioningStateDeleting`, `TrustedAccessRoleBindingProvisioningStateFailed`, `TrustedAccessRoleBindingProvisioningStateSucceeded`, `TrustedAccessRoleBindingProvisioningStateUpdating`
 - New function `*ClientFactory.NewTrustedAccessRoleBindingsClient() *TrustedAccessRoleBindingsClient`
 - New function `*ClientFactory.NewTrustedAccessRolesClient() *TrustedAccessRolesClient`

@@ -70,6 +70,11 @@ func createTopicAndUpdateEnv() func() {
 	azSubID := os.Getenv("AZEVENTGRID_SUBSCRIPTION_ID")
 	resGroup := os.Getenv("AZEVENTGRID_RESOURCE_GROUP")
 
+	if azSubID == "" || resGroup == "" || recording.GetRecordMode() != recording.LiveMode {
+		// ie, these are unit tests.
+		return func() {}
+	}
+
 	nsURL, err := url.Parse(os.Getenv("EVENTGRID_ENDPOINT"))
 
 	if err != nil {

@@ -147,3 +147,12 @@ directive:
     where: $
     transform: return $.replace(/string\(\*options.ReleaseDelayInSeconds\)/g, "fmt.Sprintf(\"%d\", *options.ReleaseDelayInSeconds)")
 ```
+
+Add doc for ReleaseDelay enum
+
+```yaml
+directive:
+  - from: constants.go
+    where: $
+    transform: return $.replace(/type ReleaseDelay int32/, "// ReleaseDelay indicates how long the service should delay before releasing an event.\ntype ReleaseDelay int32")
+```

@@ -8,6 +8,7 @@
 
 package azeventgrid
 
+// ReleaseDelay indicates how long the service should delay before releasing an event.
 type ReleaseDelay int32
 
 const (

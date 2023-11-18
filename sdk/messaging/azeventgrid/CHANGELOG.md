@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.0 (2023-11-17)
+## 0.4.0 (TBD)
 
 ### Features Added
 
@@ -14,6 +14,7 @@
 
 - FailedLockToken, included in the response for settlement functions, has an `Error` field, which contains the data previously
   in `ErrorDescription` and `ErrorCode`.
+- Settlement functions (AcknowledgeCloudEvents, ReleaseCloudEvents, RejectCloudEvents) take lock tokens as a parameter.
 
 ## 0.3.0 (2023-10-17)
 

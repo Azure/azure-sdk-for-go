@@ -361,7 +361,7 @@ func ExampleClient_UpsertEntity() {
 			PartitionKey: "pk001",
 			RowKey:       "rk002",
 		},
-		Properties: map[string]interface{}{
+		Properties: map[string]any{
 			"Bool":     false,
 			"Int32":    int32(1234),
 			"Int64":    aztables.EDMInt64(123456789012),

@@ -127,7 +127,7 @@ func TestBatchMixed(t *testing.T) {
 				require.NoError(t, err)
 			}
 			preMerge := qResp.Entities[0]
-			var unMarshalledPreMerge map[string]interface{}
+			var unMarshalledPreMerge map[string]any
 			err = json.Unmarshal(preMerge, &unMarshalledPreMerge)
 			require.NoError(t, err)
 
@@ -137,7 +137,7 @@ func TestBatchMixed(t *testing.T) {
 			// create a merge action for the first added entity
 			mergeProp := "MergeProperty"
 			val := "foo"
-			var mergeEntity = map[string]interface{}{
+			var mergeEntity = map[string]any{
 				partitionKey: (entitiesToCreate)[0].PartitionKey,
 				rowKey:       (entitiesToCreate)[0].RowKey,
 				mergeProp:    val,
@@ -156,7 +156,7 @@ func TestBatchMixed(t *testing.T) {
 
 			// create an insert action to replace the third added entity with a new value
 			replaceProp := "ReplaceProperty"
-			var replaceProperties = map[string]interface{}{
+			var replaceProperties = map[string]any{
 				partitionKey: (entitiesToCreate)[2].PartitionKey,
 				rowKey:       (entitiesToCreate)[2].RowKey,
 				replaceProp:  val,
@@ -182,7 +182,7 @@ func TestBatchMixed(t *testing.T) {
 				require.NoError(t, err)
 			}
 			postMerge := qResp.Entities[0]
-			var unMarshaledPostMerge map[string]interface{}
+			var unMarshaledPostMerge map[string]any
 			err = json.Unmarshal(postMerge, &unMarshaledPostMerge)
 			require.NoError(t, err)
 

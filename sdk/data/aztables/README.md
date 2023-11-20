@@ -229,7 +229,7 @@ aztables.EDMEntity{
         PartitionKey: "pencils",
         RowKey: "Wooden Pencils",
     },
-    Properties: map[string]interface{}{
+    Properties: map[string]any{
         "Product": "Ticonderoga Pencils",
         "Price": 5.00,
         "Count": aztables.EDMInt64(12345678901234),
@@ -324,7 +324,7 @@ func main() {
             PartitionKey: "001234",
             RowKey: "RedMarker",
         },
-        Properties: map[string]interface{}{
+        Properties: map[string]any{
             "Stock": 15,
             "Price": 9.99,
             "Comments": "great product",

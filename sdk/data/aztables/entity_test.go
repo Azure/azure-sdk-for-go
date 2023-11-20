@@ -98,7 +98,7 @@ func TestEdmMarshalling(t *testing.T) {
 			require.Nil(t, err)
 
 			// Unmarshal to plain map
-			var received3 map[string]interface{}
+			var received3 map[string]any
 			err = json.Unmarshal(resp.Value, &received3)
 			require.Nil(t, err)
 
@@ -119,7 +119,7 @@ func TestEntityQuotes(t *testing.T) {
 					PartitionKey: pk,
 					RowKey:       fmt.Sprint(1),
 				},
-				Properties: map[string]interface{}{
+				Properties: map[string]any{
 					"SingleQuote":           "''",
 					"DoubleQuote":           "\"\"",
 					"JustSpaces":            "    ",
@@ -155,7 +155,7 @@ func TestEntityQuotes(t *testing.T) {
 			require.Nil(t, err)
 
 			// Unmarshal to plain map
-			var received3 map[string]interface{}
+			var received3 map[string]any
 			err = json.Unmarshal(resp.Value, &received3)
 			require.Nil(t, err)
 		})
@@ -176,7 +176,7 @@ func TestEntityUnicode(t *testing.T) {
 					PartitionKey: pk,
 					RowKey:       fmt.Sprint(1),
 				},
-				Properties: map[string]interface{}{
+				Properties: map[string]any{
 					"Unicode": "ꀕ",
 					"ꀕ":       "Unicode",
 				},
@@ -204,7 +204,7 @@ func TestEntityUnicode(t *testing.T) {
 			require.Nil(t, err)
 
 			// Unmarshal to plain map
-			var received3 map[string]interface{}
+			var received3 map[string]any
 			err = json.Unmarshal(resp.Value, &received3)
 			require.Nil(t, err)
 		})

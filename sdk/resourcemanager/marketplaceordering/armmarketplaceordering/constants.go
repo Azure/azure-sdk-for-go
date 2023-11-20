@@ -9,8 +9,8 @@
 package armmarketplaceordering
 
 const (
-	moduleName    = "armmarketplaceordering"
-	moduleVersion = "v1.2.0-beta.3"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplaceordering/armmarketplaceordering"
+	moduleVersion = "v1.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

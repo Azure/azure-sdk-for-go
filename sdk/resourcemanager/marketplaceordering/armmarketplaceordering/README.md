@@ -61,29 +61,11 @@ client := clientFactory.NewMarketplaceAgreementsClient()
 ```
 
 ## Fakes
-The `fake` package provides implementations for fake servers that can be used for testing.
-To create a fake server, declare an instance of the required fake server type(s).
-```go
-myFakeMarketplaceAgreementsServer := fake.MarketplaceAgreementsServer{}
-```
-Next, provide func implementations for the methods you wish to fake.
-The named return variables can be used to simplify return value construction.
-```go
-myFakeMarketplaceAgreementsServer.Get = func(ctx context.Context, offerType armmarketplaceordering.OfferType, publisherID string, offerID string, planID string, options *armmarketplaceordering.MarketplaceAgreementsClientGetOptions) (resp azfake.Responder[armmarketplaceordering.MarketplaceAgreementsClientGetResponse], errResp azfake.ErrorResponder) {
-	// TODO: resp.SetResponse(/* your fake MarketplaceAgreementsClientGetResponse response */)
-	return
-}
-```
-You connect the fake server to a client instance during construction through the optional transport.
-Use `NewTokenCredential()` from `azcore/fake` to obtain a fake credential.
-```go
-import azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
-client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
-	ClientOptions: azcore.ClientOptions{
-		Transport: fake.NewMarketplaceAgreementsServerTransport(&myFakeMarketplaceAgreementsServer),
-	},
-})
-```
+
+The fake package contains types used for constructing in-memory fake servers used in unit tests.
+This allows writing tests to cover various success/error conditions without the need for connecting to a live service.
+
+Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes for details and examples on how to use fakes.
 
 ## Provide Feedback
 

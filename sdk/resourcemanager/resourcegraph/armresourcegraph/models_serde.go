@@ -49,8 +49,8 @@ func (c *Column) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DateTimeInterval.
 func (d DateTimeInterval) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "end", d.End)
-	populateTimeRFC3339(objectMap, "start", d.Start)
+	populateDateTimeRFC3339(objectMap, "end", d.End)
+	populateDateTimeRFC3339(objectMap, "start", d.Start)
 	return json.Marshal(objectMap)
 }
 
@@ -64,10 +64,10 @@ func (d *DateTimeInterval) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "end":
-			err = unpopulateTimeRFC3339(val, "End", &d.End)
+			err = unpopulateDateTimeRFC3339(val, "End", &d.End)
 			delete(rawMsg, key)
 		case "start":
-			err = unpopulateTimeRFC3339(val, "Start", &d.Start)
+			err = unpopulateDateTimeRFC3339(val, "Start", &d.Start)
 			delete(rawMsg, key)
 		}
 		if err != nil {

@@ -15,7 +15,7 @@ import (
 var SASVersion = "2019-02-02"
 
 // AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
+// For more information, see https://learn.microsoft.com/rest/api/storageservices/constructing-an-account-sas
 type AccountSASSignatureValues struct {
 	Version       string      `param:"sv"`  // If not specified, this defaults to SASVersion
 	Protocol      SASProtocol `param:"spr"` // See the SASProtocol* constants
@@ -29,7 +29,7 @@ type AccountSASSignatureValues struct {
 
 // Sign uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
 func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
-	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
+	// https://learn.microsoft.com/rest/api/storageservices/Constructing-an-Account-SAS
 	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
 		return SASQueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
 	}

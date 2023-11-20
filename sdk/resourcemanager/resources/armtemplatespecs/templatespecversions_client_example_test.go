@@ -52,10 +52,10 @@ func ExampleTemplateSpecVersionsClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.Resources/templateSpecs/versions"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/templateSpecRG/providers/Microsoft.Resources/templateSpecs/simpleTemplateSpec/versions/v1.0"),
 	// 	SystemData: &armtemplatespecs.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armtemplatespecs.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.197Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armtemplatespecs.CreatedByTypeApplication),
 	// 	},
@@ -102,10 +102,10 @@ func ExampleTemplateSpecVersionsClient_Update() {
 	// 	Type: to.Ptr("Microsoft.Resources/templateSpecs/versions"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/templateSpecRG/providers/Microsoft.Resources/templateSpecs/simpleTemplateSpec/versions/v1.0"),
 	// 	SystemData: &armtemplatespecs.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armtemplatespecs.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.197Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armtemplatespecs.CreatedByTypeApplication),
 	// 	},
@@ -150,10 +150,10 @@ func ExampleTemplateSpecVersionsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Resources/templateSpecs/versions"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/templateSpecRG/providers/Microsoft.Resources/templateSpecs/simpleTemplateSpec/versions/v1.0"),
 	// 	SystemData: &armtemplatespecs.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armtemplatespecs.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.197Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armtemplatespecs.CreatedByTypeApplication),
 	// 	},
@@ -218,10 +218,10 @@ func ExampleTemplateSpecVersionsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Resources/templateSpecs/versions"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/templateSpecRG/providers/Microsoft.Resources/templateSpecs/simpleTemplateSpec/versions/v1.0"),
 		// 			SystemData: &armtemplatespecs.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
 		// 				CreatedByType: to.Ptr(armtemplatespecs.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.197Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
 		// 				LastModifiedByType: to.Ptr(armtemplatespecs.CreatedByTypeApplication),
 		// 			},
@@ -235,10 +235,10 @@ func ExampleTemplateSpecVersionsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Resources/templateSpecs/versions"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/templateSpecRG/providers/Microsoft.Resources/templateSpecs/simpleTemplateSpec/versions/v2.0"),
 		// 			SystemData: &armtemplatespecs.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
 		// 				CreatedByType: to.Ptr(armtemplatespecs.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.1974346Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
 		// 				LastModifiedByType: to.Ptr(armtemplatespecs.CreatedByTypeApplication),
 		// 			},
@@ -280,8 +280,8 @@ func ExampleTemplateSpecVersionsClient_NewListBuiltInsPager() {
 		// 			Type: to.Ptr("Microsoft.Resources/builtInTemplateSpecs/versions"),
 		// 			ID: to.Ptr("/providers/Microsoft.Resources/builtInTemplateSpecs/nameOfTheBuiltIn/versions/v1.0"),
 		// 			SystemData: &armtemplatespecs.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-01T01:01:01.1075056Z"); return t}()),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-01T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-01T01:01:01.107Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-01T01:01:01.107Z"); return t}()),
 		// 			},
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armtemplatespecs.TemplateSpecVersionProperties{
@@ -293,8 +293,8 @@ func ExampleTemplateSpecVersionsClient_NewListBuiltInsPager() {
 		// 			Type: to.Ptr("Microsoft.Resources/builtInTemplateSpecs/versions"),
 		// 			ID: to.Ptr("/providers/Microsoft.Resources/builtInTemplateSpecs/nameOfTheBuiltIn/versions/v2.0"),
 		// 			SystemData: &armtemplatespecs.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-02T02:03:01.1974346Z"); return t}()),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-02T02:03:01.1974346Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-02T02:03:01.197Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-02T02:03:01.197Z"); return t}()),
 		// 			},
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armtemplatespecs.TemplateSpecVersionProperties{
@@ -328,8 +328,8 @@ func ExampleTemplateSpecVersionsClient_GetBuiltIn() {
 	// 	Type: to.Ptr("Microsoft.Resources/builtInTemplateSpecs/versions"),
 	// 	ID: to.Ptr("/providers/Microsoft.Resources/builtInTemplateSpecs/nameOfTheBuiltIn/versions/v1.0"),
 	// 	SystemData: &armtemplatespecs.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-01T01:01:01.1075056Z"); return t}()),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-01T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-01T01:01:01.107Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-01T01:01:01.107Z"); return t}()),
 	// 	},
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armtemplatespecs.TemplateSpecVersionProperties{

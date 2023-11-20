@@ -32,7 +32,7 @@ type Client struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
-	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *Client) BeginCreateOrUpdateAtManagementGroup(ctx context.Context, 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientCreateOrUpdateAtManagementGroupResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientCreateOrUpdateAtManagementGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientCreateOrUpdateAtManagementGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *Client) BeginCreateOrUpdateAtManagementGroup(ctx context.Context, 
 // Generated from API version 2022-08-01-preview
 func (client *Client) createOrUpdateAtManagementGroup(ctx context.Context, managementGroupID string, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginCreateOrUpdateAtManagementGroupOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginCreateOrUpdateAtManagementGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateAtManagementGroupCreateRequest(ctx, managementGroupID, deploymentStackName, deploymentStack, options)
 	if err != nil {
 		return nil, err
@@ -130,10 +137,13 @@ func (client *Client) BeginCreateOrUpdateAtResourceGroup(ctx context.Context, re
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientCreateOrUpdateAtResourceGroupResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientCreateOrUpdateAtResourceGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientCreateOrUpdateAtResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -143,6 +153,10 @@ func (client *Client) BeginCreateOrUpdateAtResourceGroup(ctx context.Context, re
 // Generated from API version 2022-08-01-preview
 func (client *Client) createOrUpdateAtResourceGroup(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginCreateOrUpdateAtResourceGroupOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginCreateOrUpdateAtResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateAtResourceGroupCreateRequest(ctx, resourceGroupName, deploymentStackName, deploymentStack, options)
 	if err != nil {
 		return nil, err
@@ -203,10 +217,13 @@ func (client *Client) BeginCreateOrUpdateAtSubscription(ctx context.Context, dep
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientCreateOrUpdateAtSubscriptionResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientCreateOrUpdateAtSubscriptionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientCreateOrUpdateAtSubscriptionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -216,6 +233,10 @@ func (client *Client) BeginCreateOrUpdateAtSubscription(ctx context.Context, dep
 // Generated from API version 2022-08-01-preview
 func (client *Client) createOrUpdateAtSubscription(ctx context.Context, deploymentStackName string, deploymentStack DeploymentStack, options *ClientBeginCreateOrUpdateAtSubscriptionOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginCreateOrUpdateAtSubscription"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateAtSubscriptionCreateRequest(ctx, deploymentStackName, deploymentStack, options)
 	if err != nil {
 		return nil, err
@@ -273,10 +294,13 @@ func (client *Client) BeginDeleteAtManagementGroup(ctx context.Context, manageme
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteAtManagementGroupResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientDeleteAtManagementGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientDeleteAtManagementGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -287,6 +311,10 @@ func (client *Client) BeginDeleteAtManagementGroup(ctx context.Context, manageme
 // Generated from API version 2022-08-01-preview
 func (client *Client) deleteAtManagementGroup(ctx context.Context, managementGroupID string, deploymentStackName string, options *ClientBeginDeleteAtManagementGroupOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginDeleteAtManagementGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteAtManagementGroupCreateRequest(ctx, managementGroupID, deploymentStackName, options)
 	if err != nil {
 		return nil, err
@@ -350,10 +378,13 @@ func (client *Client) BeginDeleteAtResourceGroup(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteAtResourceGroupResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientDeleteAtResourceGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientDeleteAtResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -364,6 +395,10 @@ func (client *Client) BeginDeleteAtResourceGroup(ctx context.Context, resourceGr
 // Generated from API version 2022-08-01-preview
 func (client *Client) deleteAtResourceGroup(ctx context.Context, resourceGroupName string, deploymentStackName string, options *ClientBeginDeleteAtResourceGroupOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginDeleteAtResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteAtResourceGroupCreateRequest(ctx, resourceGroupName, deploymentStackName, options)
 	if err != nil {
 		return nil, err
@@ -427,10 +462,13 @@ func (client *Client) BeginDeleteAtSubscription(ctx context.Context, deploymentS
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteAtSubscriptionResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientDeleteAtSubscriptionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientDeleteAtSubscriptionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -440,6 +478,10 @@ func (client *Client) BeginDeleteAtSubscription(ctx context.Context, deploymentS
 // Generated from API version 2022-08-01-preview
 func (client *Client) deleteAtSubscription(ctx context.Context, deploymentStackName string, options *ClientBeginDeleteAtSubscriptionOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginDeleteAtSubscription"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteAtSubscriptionCreateRequest(ctx, deploymentStackName, options)
 	if err != nil {
 		return nil, err
@@ -493,6 +535,10 @@ func (client *Client) deleteAtSubscriptionCreateRequest(ctx context.Context, dep
 //     method.
 func (client *Client) ExportTemplateAtManagementGroup(ctx context.Context, managementGroupID string, deploymentStackName string, options *ClientExportTemplateAtManagementGroupOptions) (ClientExportTemplateAtManagementGroupResponse, error) {
 	var err error
+	const operationName = "Client.ExportTemplateAtManagementGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exportTemplateAtManagementGroupCreateRequest(ctx, managementGroupID, deploymentStackName, options)
 	if err != nil {
 		return ClientExportTemplateAtManagementGroupResponse{}, err
@@ -550,6 +596,10 @@ func (client *Client) exportTemplateAtManagementGroupHandleResponse(resp *http.R
 //     method.
 func (client *Client) ExportTemplateAtResourceGroup(ctx context.Context, resourceGroupName string, deploymentStackName string, options *ClientExportTemplateAtResourceGroupOptions) (ClientExportTemplateAtResourceGroupResponse, error) {
 	var err error
+	const operationName = "Client.ExportTemplateAtResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exportTemplateAtResourceGroupCreateRequest(ctx, resourceGroupName, deploymentStackName, options)
 	if err != nil {
 		return ClientExportTemplateAtResourceGroupResponse{}, err
@@ -610,6 +660,10 @@ func (client *Client) exportTemplateAtResourceGroupHandleResponse(resp *http.Res
 //     method.
 func (client *Client) ExportTemplateAtSubscription(ctx context.Context, deploymentStackName string, options *ClientExportTemplateAtSubscriptionOptions) (ClientExportTemplateAtSubscriptionResponse, error) {
 	var err error
+	const operationName = "Client.ExportTemplateAtSubscription"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exportTemplateAtSubscriptionCreateRequest(ctx, deploymentStackName, options)
 	if err != nil {
 		return ClientExportTemplateAtSubscriptionResponse{}, err
@@ -666,6 +720,10 @@ func (client *Client) exportTemplateAtSubscriptionHandleResponse(resp *http.Resp
 //   - options - ClientGetAtManagementGroupOptions contains the optional parameters for the Client.GetAtManagementGroup method.
 func (client *Client) GetAtManagementGroup(ctx context.Context, managementGroupID string, deploymentStackName string, options *ClientGetAtManagementGroupOptions) (ClientGetAtManagementGroupResponse, error) {
 	var err error
+	const operationName = "Client.GetAtManagementGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getAtManagementGroupCreateRequest(ctx, managementGroupID, deploymentStackName, options)
 	if err != nil {
 		return ClientGetAtManagementGroupResponse{}, err
@@ -722,6 +780,10 @@ func (client *Client) getAtManagementGroupHandleResponse(resp *http.Response) (C
 //   - options - ClientGetAtResourceGroupOptions contains the optional parameters for the Client.GetAtResourceGroup method.
 func (client *Client) GetAtResourceGroup(ctx context.Context, resourceGroupName string, deploymentStackName string, options *ClientGetAtResourceGroupOptions) (ClientGetAtResourceGroupResponse, error) {
 	var err error
+	const operationName = "Client.GetAtResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getAtResourceGroupCreateRequest(ctx, resourceGroupName, deploymentStackName, options)
 	if err != nil {
 		return ClientGetAtResourceGroupResponse{}, err
@@ -781,6 +843,10 @@ func (client *Client) getAtResourceGroupHandleResponse(resp *http.Response) (Cli
 //   - options - ClientGetAtSubscriptionOptions contains the optional parameters for the Client.GetAtSubscription method.
 func (client *Client) GetAtSubscription(ctx context.Context, deploymentStackName string, options *ClientGetAtSubscriptionOptions) (ClientGetAtSubscriptionResponse, error) {
 	var err error
+	const operationName = "Client.GetAtSubscription"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getAtSubscriptionCreateRequest(ctx, deploymentStackName, options)
 	if err != nil {
 		return ClientGetAtSubscriptionResponse{}, err
@@ -840,25 +906,20 @@ func (client *Client) NewListAtManagementGroupPager(managementGroupID string, op
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClientListAtManagementGroupResponse) (ClientListAtManagementGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAtManagementGroupCreateRequest(ctx, managementGroupID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListAtManagementGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAtManagementGroupCreateRequest(ctx, managementGroupID, options)
+			}, nil)
 			if err != nil {
 				return ClientListAtManagementGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClientListAtManagementGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClientListAtManagementGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAtManagementGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -901,25 +962,20 @@ func (client *Client) NewListAtResourceGroupPager(resourceGroupName string, opti
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClientListAtResourceGroupResponse) (ClientListAtResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAtResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListAtResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAtResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ClientListAtResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClientListAtResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClientListAtResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAtResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -964,25 +1020,20 @@ func (client *Client) NewListAtSubscriptionPager(options *ClientListAtSubscripti
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClientListAtSubscriptionResponse) (ClientListAtSubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAtSubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListAtSubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAtSubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ClientListAtSubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClientListAtSubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClientListAtSubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAtSubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

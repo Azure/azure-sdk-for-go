@@ -187,7 +187,7 @@ func (i *InterfacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 	}
 	beginCreateOrUpdate := i.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -197,15 +197,15 @@ func (i *InterfacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		networkInterfaceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+		networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := i.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, networkInterfaceNameUnescaped, body, nil)
+		respr, errRespr := i.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, networkInterfaceNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -235,21 +235,21 @@ func (i *InterfacesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	}
 	beginDelete := i.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		networkInterfaceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+		networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := i.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, networkInterfaceNameUnescaped, nil)
+		respr, errRespr := i.srv.BeginDelete(req.Context(), resourceGroupNameParam, networkInterfaceNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -277,18 +277,18 @@ func (i *InterfacesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	networkInterfaceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+	networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
 	if err != nil {
 		return nil, err
 	}
@@ -303,7 +303,7 @@ func (i *InterfacesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := i.srv.Get(req.Context(), resourceGroupNameUnescaped, networkInterfaceNameUnescaped, options)
+	respr, errRespr := i.srv.Get(req.Context(), resourceGroupNameParam, networkInterfaceNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -322,26 +322,26 @@ func (i *InterfacesServerTransport) dispatchGetCloudServiceNetworkInterface(req 
 	if i.srv.GetCloudServiceNetworkInterface == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetCloudServiceNetworkInterface not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	cloudServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
 	if err != nil {
 		return nil, err
 	}
-	roleInstanceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("roleInstanceName")])
+	roleInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleInstanceName")])
 	if err != nil {
 		return nil, err
 	}
-	networkInterfaceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+	networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
 	if err != nil {
 		return nil, err
 	}
@@ -356,7 +356,7 @@ func (i *InterfacesServerTransport) dispatchGetCloudServiceNetworkInterface(req 
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := i.srv.GetCloudServiceNetworkInterface(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, roleInstanceNameUnescaped, networkInterfaceNameUnescaped, options)
+	respr, errRespr := i.srv.GetCloudServiceNetworkInterface(req.Context(), resourceGroupNameParam, cloudServiceNameParam, roleInstanceNameParam, networkInterfaceNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -377,21 +377,21 @@ func (i *InterfacesServerTransport) dispatchBeginGetEffectiveRouteTable(req *htt
 	}
 	beginGetEffectiveRouteTable := i.beginGetEffectiveRouteTable.get(req)
 	if beginGetEffectiveRouteTable == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/effectiveRouteTable`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/effectiveRouteTable`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		networkInterfaceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+		networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := i.srv.BeginGetEffectiveRouteTable(req.Context(), resourceGroupNameUnescaped, networkInterfaceNameUnescaped, nil)
+		respr, errRespr := i.srv.BeginGetEffectiveRouteTable(req.Context(), resourceGroupNameParam, networkInterfaceNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -419,30 +419,30 @@ func (i *InterfacesServerTransport) dispatchGetVirtualMachineScaleSetIPConfigura
 	if i.srv.GetVirtualMachineScaleSetIPConfiguration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetVirtualMachineScaleSetIPConfiguration not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<virtualmachineIndex>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipConfigurations/(?P<ipConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<virtualmachineIndex>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipConfigurations/(?P<ipConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	virtualMachineScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
+	virtualMachineScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
 	if err != nil {
 		return nil, err
 	}
-	virtualmachineIndexUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualmachineIndex")])
+	virtualmachineIndexParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualmachineIndex")])
 	if err != nil {
 		return nil, err
 	}
-	networkInterfaceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+	networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
 	if err != nil {
 		return nil, err
 	}
-	ipConfigurationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ipConfigurationName")])
+	ipConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ipConfigurationName")])
 	if err != nil {
 		return nil, err
 	}
@@ -457,7 +457,7 @@ func (i *InterfacesServerTransport) dispatchGetVirtualMachineScaleSetIPConfigura
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := i.srv.GetVirtualMachineScaleSetIPConfiguration(req.Context(), resourceGroupNameUnescaped, virtualMachineScaleSetNameUnescaped, virtualmachineIndexUnescaped, networkInterfaceNameUnescaped, ipConfigurationNameUnescaped, options)
+	respr, errRespr := i.srv.GetVirtualMachineScaleSetIPConfiguration(req.Context(), resourceGroupNameParam, virtualMachineScaleSetNameParam, virtualmachineIndexParam, networkInterfaceNameParam, ipConfigurationNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -476,26 +476,26 @@ func (i *InterfacesServerTransport) dispatchGetVirtualMachineScaleSetNetworkInte
 	if i.srv.GetVirtualMachineScaleSetNetworkInterface == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetVirtualMachineScaleSetNetworkInterface not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<virtualmachineIndex>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<virtualmachineIndex>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	virtualMachineScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
+	virtualMachineScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
 	if err != nil {
 		return nil, err
 	}
-	virtualmachineIndexUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualmachineIndex")])
+	virtualmachineIndexParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualmachineIndex")])
 	if err != nil {
 		return nil, err
 	}
-	networkInterfaceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+	networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
 	if err != nil {
 		return nil, err
 	}
@@ -510,7 +510,7 @@ func (i *InterfacesServerTransport) dispatchGetVirtualMachineScaleSetNetworkInte
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := i.srv.GetVirtualMachineScaleSetNetworkInterface(req.Context(), resourceGroupNameUnescaped, virtualMachineScaleSetNameUnescaped, virtualmachineIndexUnescaped, networkInterfaceNameUnescaped, options)
+	respr, errRespr := i.srv.GetVirtualMachineScaleSetNetworkInterface(req.Context(), resourceGroupNameParam, virtualMachineScaleSetNameParam, virtualmachineIndexParam, networkInterfaceNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -531,17 +531,17 @@ func (i *InterfacesServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	}
 	newListPager := i.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListPager(resourceGroupNameUnescaped, nil)
+		resp := i.srv.NewListPager(resourceGroupNameParam, nil)
 		newListPager = &resp
 		i.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.InterfacesClientListResponse, createLink func() string) {
@@ -568,7 +568,7 @@ func (i *InterfacesServerTransport) dispatchNewListAllPager(req *http.Request) (
 	}
 	newListAllPager := i.newListAllPager.get(req)
 	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
@@ -601,21 +601,21 @@ func (i *InterfacesServerTransport) dispatchNewListCloudServiceNetworkInterfaces
 	}
 	newListCloudServiceNetworkInterfacesPager := i.newListCloudServiceNetworkInterfacesPager.get(req)
 	if newListCloudServiceNetworkInterfacesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+		cloudServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListCloudServiceNetworkInterfacesPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
+		resp := i.srv.NewListCloudServiceNetworkInterfacesPager(resourceGroupNameParam, cloudServiceNameParam, nil)
 		newListCloudServiceNetworkInterfacesPager = &resp
 		i.newListCloudServiceNetworkInterfacesPager.add(req, newListCloudServiceNetworkInterfacesPager)
 		server.PagerResponderInjectNextLinks(newListCloudServiceNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListCloudServiceNetworkInterfacesResponse, createLink func() string) {
@@ -642,25 +642,25 @@ func (i *InterfacesServerTransport) dispatchNewListCloudServiceRoleInstanceNetwo
 	}
 	newListCloudServiceRoleInstanceNetworkInterfacesPager := i.newListCloudServiceRoleInstanceNetworkInterfacesPager.get(req)
 	if newListCloudServiceRoleInstanceNetworkInterfacesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+		cloudServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
 		if err != nil {
 			return nil, err
 		}
-		roleInstanceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("roleInstanceName")])
+		roleInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleInstanceName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListCloudServiceRoleInstanceNetworkInterfacesPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, roleInstanceNameUnescaped, nil)
+		resp := i.srv.NewListCloudServiceRoleInstanceNetworkInterfacesPager(resourceGroupNameParam, cloudServiceNameParam, roleInstanceNameParam, nil)
 		newListCloudServiceRoleInstanceNetworkInterfacesPager = &resp
 		i.newListCloudServiceRoleInstanceNetworkInterfacesPager.add(req, newListCloudServiceRoleInstanceNetworkInterfacesPager)
 		server.PagerResponderInjectNextLinks(newListCloudServiceRoleInstanceNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse, createLink func() string) {
@@ -687,21 +687,21 @@ func (i *InterfacesServerTransport) dispatchBeginListEffectiveNetworkSecurityGro
 	}
 	beginListEffectiveNetworkSecurityGroups := i.beginListEffectiveNetworkSecurityGroups.get(req)
 	if beginListEffectiveNetworkSecurityGroups == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/effectiveNetworkSecurityGroups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/effectiveNetworkSecurityGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		networkInterfaceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+		networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := i.srv.BeginListEffectiveNetworkSecurityGroups(req.Context(), resourceGroupNameUnescaped, networkInterfaceNameUnescaped, nil)
+		respr, errRespr := i.srv.BeginListEffectiveNetworkSecurityGroups(req.Context(), resourceGroupNameParam, networkInterfaceNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -731,26 +731,26 @@ func (i *InterfacesServerTransport) dispatchNewListVirtualMachineScaleSetIPConfi
 	}
 	newListVirtualMachineScaleSetIPConfigurationsPager := i.newListVirtualMachineScaleSetIPConfigurationsPager.get(req)
 	if newListVirtualMachineScaleSetIPConfigurationsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<virtualmachineIndex>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipConfigurations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<virtualmachineIndex>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		virtualMachineScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
+		virtualMachineScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
 		if err != nil {
 			return nil, err
 		}
-		virtualmachineIndexUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualmachineIndex")])
+		virtualmachineIndexParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualmachineIndex")])
 		if err != nil {
 			return nil, err
 		}
-		networkInterfaceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+		networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
 		if err != nil {
 			return nil, err
 		}
@@ -765,7 +765,7 @@ func (i *InterfacesServerTransport) dispatchNewListVirtualMachineScaleSetIPConfi
 				Expand: expandParam,
 			}
 		}
-		resp := i.srv.NewListVirtualMachineScaleSetIPConfigurationsPager(resourceGroupNameUnescaped, virtualMachineScaleSetNameUnescaped, virtualmachineIndexUnescaped, networkInterfaceNameUnescaped, options)
+		resp := i.srv.NewListVirtualMachineScaleSetIPConfigurationsPager(resourceGroupNameParam, virtualMachineScaleSetNameParam, virtualmachineIndexParam, networkInterfaceNameParam, options)
 		newListVirtualMachineScaleSetIPConfigurationsPager = &resp
 		i.newListVirtualMachineScaleSetIPConfigurationsPager.add(req, newListVirtualMachineScaleSetIPConfigurationsPager)
 		server.PagerResponderInjectNextLinks(newListVirtualMachineScaleSetIPConfigurationsPager, req, func(page *armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse, createLink func() string) {
@@ -792,21 +792,21 @@ func (i *InterfacesServerTransport) dispatchNewListVirtualMachineScaleSetNetwork
 	}
 	newListVirtualMachineScaleSetNetworkInterfacesPager := i.newListVirtualMachineScaleSetNetworkInterfacesPager.get(req)
 	if newListVirtualMachineScaleSetNetworkInterfacesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		virtualMachineScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
+		virtualMachineScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListVirtualMachineScaleSetNetworkInterfacesPager(resourceGroupNameUnescaped, virtualMachineScaleSetNameUnescaped, nil)
+		resp := i.srv.NewListVirtualMachineScaleSetNetworkInterfacesPager(resourceGroupNameParam, virtualMachineScaleSetNameParam, nil)
 		newListVirtualMachineScaleSetNetworkInterfacesPager = &resp
 		i.newListVirtualMachineScaleSetNetworkInterfacesPager.add(req, newListVirtualMachineScaleSetNetworkInterfacesPager)
 		server.PagerResponderInjectNextLinks(newListVirtualMachineScaleSetNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse, createLink func() string) {
@@ -833,25 +833,25 @@ func (i *InterfacesServerTransport) dispatchNewListVirtualMachineScaleSetVMNetwo
 	}
 	newListVirtualMachineScaleSetVMNetworkInterfacesPager := i.newListVirtualMachineScaleSetVMNetworkInterfacesPager.get(req)
 	if newListVirtualMachineScaleSetVMNetworkInterfacesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<virtualmachineIndex>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<virtualmachineIndex>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		virtualMachineScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
+		virtualMachineScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualMachineScaleSetName")])
 		if err != nil {
 			return nil, err
 		}
-		virtualmachineIndexUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualmachineIndex")])
+		virtualmachineIndexParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualmachineIndex")])
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListVirtualMachineScaleSetVMNetworkInterfacesPager(resourceGroupNameUnescaped, virtualMachineScaleSetNameUnescaped, virtualmachineIndexUnescaped, nil)
+		resp := i.srv.NewListVirtualMachineScaleSetVMNetworkInterfacesPager(resourceGroupNameParam, virtualMachineScaleSetNameParam, virtualmachineIndexParam, nil)
 		newListVirtualMachineScaleSetVMNetworkInterfacesPager = &resp
 		i.newListVirtualMachineScaleSetVMNetworkInterfacesPager.add(req, newListVirtualMachineScaleSetVMNetworkInterfacesPager)
 		server.PagerResponderInjectNextLinks(newListVirtualMachineScaleSetVMNetworkInterfacesPager, req, func(page *armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse, createLink func() string) {
@@ -876,7 +876,7 @@ func (i *InterfacesServerTransport) dispatchUpdateTags(req *http.Request) (*http
 	if i.srv.UpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
@@ -886,15 +886,15 @@ func (i *InterfacesServerTransport) dispatchUpdateTags(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	networkInterfaceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+	networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := i.srv.UpdateTags(req.Context(), resourceGroupNameUnescaped, networkInterfaceNameUnescaped, body, nil)
+	respr, errRespr := i.srv.UpdateTags(req.Context(), resourceGroupNameParam, networkInterfaceNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

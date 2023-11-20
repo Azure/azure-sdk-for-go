@@ -34,7 +34,7 @@ type ManagementClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagementClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -124,10 +124,13 @@ func (client *ManagementClient) BeginDeleteBastionShareableLink(ctx context.Cont
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagementClientDeleteBastionShareableLinkResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagementClientDeleteBastionShareableLinkResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagementClientDeleteBastionShareableLinkResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -200,22 +203,15 @@ func (client *ManagementClient) NewDisconnectActiveSessionsPager(resourceGroupNa
 		},
 		Fetcher: func(ctx context.Context, page *ManagementClientDisconnectActiveSessionsResponse) (ManagementClientDisconnectActiveSessionsResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagementClient.NewDisconnectActiveSessionsPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.disconnectActiveSessionsCreateRequest(ctx, resourceGroupName, bastionHostName, sessionIDs, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.disconnectActiveSessionsCreateRequest(ctx, resourceGroupName, bastionHostName, sessionIDs, options)
+			}, nil)
 			if err != nil {
 				return ManagementClientDisconnectActiveSessionsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagementClientDisconnectActiveSessionsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagementClientDisconnectActiveSessionsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.disconnectActiveSessionsHandleResponse(resp)
 		},
@@ -339,10 +335,13 @@ func (client *ManagementClient) BeginGeneratevirtualwanvpnserverconfigurationvpn
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -415,16 +414,11 @@ func (client *ManagementClient) BeginGetActiveSessions(ctx context.Context, reso
 		},
 		Fetcher: func(ctx context.Context, page *ManagementClientGetActiveSessionsResponse) (ManagementClientGetActiveSessionsResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagementClient.BeginGetActiveSessions")
-			req, err := runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), *page.NextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getActiveSessionsCreateRequest(ctx, resourceGroupName, bastionHostName, options)
+			}, nil)
 			if err != nil {
 				return ManagementClientGetActiveSessionsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagementClientGetActiveSessionsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagementClientGetActiveSessionsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getActiveSessionsHandleResponse(resp)
 		},
@@ -438,11 +432,13 @@ func (client *ManagementClient) BeginGetActiveSessions(ctx context.Context, reso
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[ManagementClientGetActiveSessionsResponse]]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Response:      &pager,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
 		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[ManagementClientGetActiveSessionsResponse]]{
 			Response: &pager,
+			Tracer:   client.internal.Tracer(),
 		})
 	}
 }
@@ -521,22 +517,15 @@ func (client *ManagementClient) NewGetBastionShareableLinkPager(resourceGroupNam
 		},
 		Fetcher: func(ctx context.Context, page *ManagementClientGetBastionShareableLinkResponse) (ManagementClientGetBastionShareableLinkResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagementClient.NewGetBastionShareableLinkPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, options)
+			}, nil)
 			if err != nil {
 				return ManagementClientGetBastionShareableLinkResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagementClientGetBastionShareableLinkResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagementClientGetBastionShareableLinkResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getBastionShareableLinkHandleResponse(resp)
 		},
@@ -886,16 +875,11 @@ func (client *ManagementClient) BeginPutBastionShareableLink(ctx context.Context
 		},
 		Fetcher: func(ctx context.Context, page *ManagementClientPutBastionShareableLinkResponse) (ManagementClientPutBastionShareableLinkResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagementClient.BeginPutBastionShareableLink")
-			req, err := runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), *page.NextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.putBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, options)
+			}, nil)
 			if err != nil {
 				return ManagementClientPutBastionShareableLinkResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagementClientPutBastionShareableLinkResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagementClientPutBastionShareableLinkResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.putBastionShareableLinkHandleResponse(resp)
 		},
@@ -909,11 +893,13 @@ func (client *ManagementClient) BeginPutBastionShareableLink(ctx context.Context
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[ManagementClientPutBastionShareableLinkResponse]]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Response:      &pager,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
 		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[ManagementClientPutBastionShareableLinkResponse]]{
 			Response: &pager,
+			Tracer:   client.internal.Tracer(),
 		})
 	}
 }

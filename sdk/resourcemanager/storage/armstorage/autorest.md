@@ -12,7 +12,4 @@ module-version: 1.5.0-beta.1
 modelerfour:
   seal-single-value-enum-by-default: true
 tag: package-2023-01
-azcore-version: 1.9.0-beta.1
-generate-fakes: true
-inject-spans: true
 ```

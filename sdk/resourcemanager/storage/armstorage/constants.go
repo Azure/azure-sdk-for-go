@@ -9,7 +9,7 @@
 package armstorage
 
 const (
-	moduleName    = "armstorage"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	moduleVersion = "v1.5.0-beta.1"
 )
 

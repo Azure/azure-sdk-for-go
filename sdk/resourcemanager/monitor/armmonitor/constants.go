@@ -9,7 +9,7 @@
 package armmonitor
 
 const (
-	moduleName    = "armmonitor"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 	moduleVersion = "v0.10.2"
 )
 

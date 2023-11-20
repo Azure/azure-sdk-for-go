@@ -98,7 +98,7 @@ func (t *TenantActionGroupsServerTransport) dispatchCreateOrUpdate(req *http.Req
 	if t.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/tenantActionGroups/(?P<tenantActionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/tenantActionGroups/(?P<tenantActionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
@@ -108,15 +108,15 @@ func (t *TenantActionGroupsServerTransport) dispatchCreateOrUpdate(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	managementGroupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+	managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
 	if err != nil {
 		return nil, err
 	}
-	tenantActionGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("tenantActionGroupName")])
+	tenantActionGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tenantActionGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.CreateOrUpdate(req.Context(), managementGroupIDUnescaped, tenantActionGroupNameUnescaped, getHeaderValue(req.Header, "x-ms-client-tenant-id"), body, nil)
+	respr, errRespr := t.srv.CreateOrUpdate(req.Context(), managementGroupIDParam, tenantActionGroupNameParam, getHeaderValue(req.Header, "x-ms-client-tenant-id"), body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -135,21 +135,21 @@ func (t *TenantActionGroupsServerTransport) dispatchDelete(req *http.Request) (*
 	if t.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/tenantActionGroups/(?P<tenantActionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/tenantActionGroups/(?P<tenantActionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	managementGroupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+	managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
 	if err != nil {
 		return nil, err
 	}
-	tenantActionGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("tenantActionGroupName")])
+	tenantActionGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tenantActionGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.Delete(req.Context(), managementGroupIDUnescaped, tenantActionGroupNameUnescaped, getHeaderValue(req.Header, "x-ms-client-tenant-id"), nil)
+	respr, errRespr := t.srv.Delete(req.Context(), managementGroupIDParam, tenantActionGroupNameParam, getHeaderValue(req.Header, "x-ms-client-tenant-id"), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -168,21 +168,21 @@ func (t *TenantActionGroupsServerTransport) dispatchGet(req *http.Request) (*htt
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/tenantActionGroups/(?P<tenantActionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/tenantActionGroups/(?P<tenantActionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	managementGroupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+	managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
 	if err != nil {
 		return nil, err
 	}
-	tenantActionGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("tenantActionGroupName")])
+	tenantActionGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tenantActionGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.Get(req.Context(), managementGroupIDUnescaped, tenantActionGroupNameUnescaped, getHeaderValue(req.Header, "x-ms-client-tenant-id"), nil)
+	respr, errRespr := t.srv.Get(req.Context(), managementGroupIDParam, tenantActionGroupNameParam, getHeaderValue(req.Header, "x-ms-client-tenant-id"), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -203,17 +203,17 @@ func (t *TenantActionGroupsServerTransport) dispatchNewListByManagementGroupIDPa
 	}
 	newListByManagementGroupIDPager := t.newListByManagementGroupIDPager.get(req)
 	if newListByManagementGroupIDPager == nil {
-		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/tenantActionGroups`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/tenantActionGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		managementGroupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+		managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
 		if err != nil {
 			return nil, err
 		}
-		resp := t.srv.NewListByManagementGroupIDPager(managementGroupIDUnescaped, getHeaderValue(req.Header, "x-ms-client-tenant-id"), nil)
+		resp := t.srv.NewListByManagementGroupIDPager(managementGroupIDParam, getHeaderValue(req.Header, "x-ms-client-tenant-id"), nil)
 		newListByManagementGroupIDPager = &resp
 		t.newListByManagementGroupIDPager.add(req, newListByManagementGroupIDPager)
 	}
@@ -235,7 +235,7 @@ func (t *TenantActionGroupsServerTransport) dispatchUpdate(req *http.Request) (*
 	if t.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/tenantActionGroups/(?P<tenantActionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/tenantActionGroups/(?P<tenantActionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
@@ -245,15 +245,15 @@ func (t *TenantActionGroupsServerTransport) dispatchUpdate(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	managementGroupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+	managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
 	if err != nil {
 		return nil, err
 	}
-	tenantActionGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("tenantActionGroupName")])
+	tenantActionGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tenantActionGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.Update(req.Context(), managementGroupIDUnescaped, tenantActionGroupNameUnescaped, getHeaderValue(req.Header, "x-ms-client-tenant-id"), body, nil)
+	respr, errRespr := t.srv.Update(req.Context(), managementGroupIDParam, tenantActionGroupNameParam, getHeaderValue(req.Header, "x-ms-client-tenant-id"), body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

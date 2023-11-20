@@ -75,14 +75,14 @@ func (b *BaselinesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	newListPager := b.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricBaselines`
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricBaselines`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
 		if err != nil {
 			return nil, err
 		}
@@ -139,7 +139,7 @@ func (b *BaselinesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 				ResultType:      resultTypeParam,
 			}
 		}
-		resp := b.srv.NewListPager(resourceURIUnescaped, options)
+		resp := b.srv.NewListPager(resourceURIParam, options)
 		newListPager = &resp
 		b.newListPager.add(req, newListPager)
 	}

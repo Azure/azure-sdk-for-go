@@ -76,21 +76,21 @@ func (m *MetricAlertsStatusServerTransport) dispatchList(req *http.Request) (*ht
 	if m.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricAlerts/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/status`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricAlerts/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/status`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	ruleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.List(req.Context(), resourceGroupNameUnescaped, ruleNameUnescaped, nil)
+	respr, errRespr := m.srv.List(req.Context(), resourceGroupNameParam, ruleNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -109,25 +109,25 @@ func (m *MetricAlertsStatusServerTransport) dispatchListByName(req *http.Request
 	if m.srv.ListByName == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListByName not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricAlerts/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/status/(?P<statusName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricAlerts/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/status/(?P<statusName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	ruleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
 	if err != nil {
 		return nil, err
 	}
-	statusNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("statusName")])
+	statusNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("statusName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.ListByName(req.Context(), resourceGroupNameUnescaped, ruleNameUnescaped, statusNameUnescaped, nil)
+	respr, errRespr := m.srv.ListByName(req.Context(), resourceGroupNameParam, ruleNameParam, statusNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

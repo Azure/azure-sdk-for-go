@@ -33,7 +33,7 @@ type SetDefinitionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSetDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SetDefinitionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".SetDefinitionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewSetDefinitionsClient(subscriptionID string, credential azcore.TokenCrede
 //     method.
 func (client *SetDefinitionsClient) CreateOrUpdate(ctx context.Context, policySetDefinitionName string, parameters SetDefinition, options *SetDefinitionsClientCreateOrUpdateOptions) (SetDefinitionsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "SetDefinitionsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, policySetDefinitionName, parameters, options)
 	if err != nil {
 		return SetDefinitionsClientCreateOrUpdateResponse{}, err
@@ -116,6 +120,10 @@ func (client *SetDefinitionsClient) createOrUpdateHandleResponse(resp *http.Resp
 //     method.
 func (client *SetDefinitionsClient) CreateOrUpdateAtManagementGroup(ctx context.Context, policySetDefinitionName string, managementGroupID string, parameters SetDefinition, options *SetDefinitionsClientCreateOrUpdateAtManagementGroupOptions) (SetDefinitionsClientCreateOrUpdateAtManagementGroupResponse, error) {
 	var err error
+	const operationName = "SetDefinitionsClient.CreateOrUpdateAtManagementGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateAtManagementGroupCreateRequest(ctx, policySetDefinitionName, managementGroupID, parameters, options)
 	if err != nil {
 		return SetDefinitionsClientCreateOrUpdateAtManagementGroupResponse{}, err
@@ -174,6 +182,10 @@ func (client *SetDefinitionsClient) createOrUpdateAtManagementGroupHandleRespons
 //   - options - SetDefinitionsClientDeleteOptions contains the optional parameters for the SetDefinitionsClient.Delete method.
 func (client *SetDefinitionsClient) Delete(ctx context.Context, policySetDefinitionName string, options *SetDefinitionsClientDeleteOptions) (SetDefinitionsClientDeleteResponse, error) {
 	var err error
+	const operationName = "SetDefinitionsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, policySetDefinitionName, options)
 	if err != nil {
 		return SetDefinitionsClientDeleteResponse{}, err
@@ -222,6 +234,10 @@ func (client *SetDefinitionsClient) deleteCreateRequest(ctx context.Context, pol
 //     method.
 func (client *SetDefinitionsClient) DeleteAtManagementGroup(ctx context.Context, policySetDefinitionName string, managementGroupID string, options *SetDefinitionsClientDeleteAtManagementGroupOptions) (SetDefinitionsClientDeleteAtManagementGroupResponse, error) {
 	var err error
+	const operationName = "SetDefinitionsClient.DeleteAtManagementGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteAtManagementGroupCreateRequest(ctx, policySetDefinitionName, managementGroupID, options)
 	if err != nil {
 		return SetDefinitionsClientDeleteAtManagementGroupResponse{}, err
@@ -267,6 +283,10 @@ func (client *SetDefinitionsClient) deleteAtManagementGroupCreateRequest(ctx con
 //   - options - SetDefinitionsClientGetOptions contains the optional parameters for the SetDefinitionsClient.Get method.
 func (client *SetDefinitionsClient) Get(ctx context.Context, policySetDefinitionName string, options *SetDefinitionsClientGetOptions) (SetDefinitionsClientGetResponse, error) {
 	var err error
+	const operationName = "SetDefinitionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, policySetDefinitionName, options)
 	if err != nil {
 		return SetDefinitionsClientGetResponse{}, err
@@ -325,6 +345,10 @@ func (client *SetDefinitionsClient) getHandleResponse(resp *http.Response) (SetD
 //     method.
 func (client *SetDefinitionsClient) GetAtManagementGroup(ctx context.Context, policySetDefinitionName string, managementGroupID string, options *SetDefinitionsClientGetAtManagementGroupOptions) (SetDefinitionsClientGetAtManagementGroupResponse, error) {
 	var err error
+	const operationName = "SetDefinitionsClient.GetAtManagementGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getAtManagementGroupCreateRequest(ctx, policySetDefinitionName, managementGroupID, options)
 	if err != nil {
 		return SetDefinitionsClientGetAtManagementGroupResponse{}, err
@@ -381,6 +405,10 @@ func (client *SetDefinitionsClient) getAtManagementGroupHandleResponse(resp *htt
 //     method.
 func (client *SetDefinitionsClient) GetBuiltIn(ctx context.Context, policySetDefinitionName string, options *SetDefinitionsClientGetBuiltInOptions) (SetDefinitionsClientGetBuiltInResponse, error) {
 	var err error
+	const operationName = "SetDefinitionsClient.GetBuiltIn"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getBuiltInCreateRequest(ctx, policySetDefinitionName, options)
 	if err != nil {
 		return SetDefinitionsClientGetBuiltInResponse{}, err
@@ -443,25 +471,20 @@ func (client *SetDefinitionsClient) NewListPager(options *SetDefinitionsClientLi
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SetDefinitionsClientListResponse) (SetDefinitionsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SetDefinitionsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return SetDefinitionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SetDefinitionsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SetDefinitionsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -513,25 +536,20 @@ func (client *SetDefinitionsClient) NewListBuiltInPager(options *SetDefinitionsC
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SetDefinitionsClientListBuiltInResponse) (SetDefinitionsClientListBuiltInResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBuiltInCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SetDefinitionsClient.NewListBuiltInPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBuiltInCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return SetDefinitionsClientListBuiltInResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SetDefinitionsClientListBuiltInResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SetDefinitionsClientListBuiltInResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBuiltInHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -587,25 +605,20 @@ func (client *SetDefinitionsClient) NewListByManagementGroupPager(managementGrou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SetDefinitionsClientListByManagementGroupResponse) (SetDefinitionsClientListByManagementGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByManagementGroupCreateRequest(ctx, managementGroupID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SetDefinitionsClient.NewListByManagementGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByManagementGroupCreateRequest(ctx, managementGroupID, options)
+			}, nil)
 			if err != nil {
 				return SetDefinitionsClientListByManagementGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SetDefinitionsClientListByManagementGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SetDefinitionsClientListByManagementGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByManagementGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

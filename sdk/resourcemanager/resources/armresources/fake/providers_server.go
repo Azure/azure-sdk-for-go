@@ -132,7 +132,7 @@ func (p *ProvidersServerTransport) dispatchGet(req *http.Request) (*http.Respons
 		return nil, err
 	}
 	expandParam := getOptional(expandUnescaped)
-	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +142,7 @@ func (p *ProvidersServerTransport) dispatchGet(req *http.Request) (*http.Respons
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceProviderNamespaceUnescaped, options)
+	respr, errRespr := p.srv.Get(req.Context(), resourceProviderNamespaceParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -173,7 +173,7 @@ func (p *ProvidersServerTransport) dispatchGetAtTenantScope(req *http.Request) (
 		return nil, err
 	}
 	expandParam := getOptional(expandUnescaped)
-	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
 	if err != nil {
 		return nil, err
 	}
@@ -183,7 +183,7 @@ func (p *ProvidersServerTransport) dispatchGetAtTenantScope(req *http.Request) (
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := p.srv.GetAtTenantScope(req.Context(), resourceProviderNamespaceUnescaped, options)
+	respr, errRespr := p.srv.GetAtTenantScope(req.Context(), resourceProviderNamespaceParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -292,11 +292,11 @@ func (p *ProvidersServerTransport) dispatchProviderPermissions(req *http.Request
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.ProviderPermissions(req.Context(), resourceProviderNamespaceUnescaped, nil)
+	respr, errRespr := p.srv.ProviderPermissions(req.Context(), resourceProviderNamespaceParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -325,7 +325,7 @@ func (p *ProvidersServerTransport) dispatchRegister(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
 	if err != nil {
 		return nil, err
 	}
@@ -335,7 +335,7 @@ func (p *ProvidersServerTransport) dispatchRegister(req *http.Request) (*http.Re
 			Properties: &body,
 		}
 	}
-	respr, errRespr := p.srv.Register(req.Context(), resourceProviderNamespaceUnescaped, options)
+	respr, errRespr := p.srv.Register(req.Context(), resourceProviderNamespaceParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -354,21 +354,21 @@ func (p *ProvidersServerTransport) dispatchRegisterAtManagementGroupScope(req *h
 	if p.srv.RegisterAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RegisterAtManagementGroupScope not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/register`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/register`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
 	if err != nil {
 		return nil, err
 	}
-	groupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.RegisterAtManagementGroupScope(req.Context(), resourceProviderNamespaceUnescaped, groupIDUnescaped, nil)
+	respr, errRespr := p.srv.RegisterAtManagementGroupScope(req.Context(), resourceProviderNamespaceParam, groupIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -393,11 +393,11 @@ func (p *ProvidersServerTransport) dispatchUnregister(req *http.Request) (*http.
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.Unregister(req.Context(), resourceProviderNamespaceUnescaped, nil)
+	respr, errRespr := p.srv.Unregister(req.Context(), resourceProviderNamespaceParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

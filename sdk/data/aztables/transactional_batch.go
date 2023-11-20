@@ -229,7 +229,7 @@ func (t *Client) generateEntitySubset(ctx context.Context, transactionAction *Tr
 		return err
 	}
 	var req *policy.Request
-	var entity map[string]interface{}
+	var entity map[string]any
 	err = json.Unmarshal(transactionAction.Entity, &entity)
 	if err != nil {
 		return err

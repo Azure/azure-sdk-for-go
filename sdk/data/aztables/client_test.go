@@ -166,11 +166,11 @@ func TestMergeEntity(t *testing.T) {
 			preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, nil)
 			require.NoError(t, err)
 
-			var unMarshalledPreMerge map[string]interface{}
+			var unMarshalledPreMerge map[string]any
 			err = json.Unmarshal(preMerge.Value, &unMarshalledPreMerge)
 			require.NoError(t, err)
 
-			var mapEntity map[string]interface{}
+			var mapEntity map[string]any
 			err = json.Unmarshal(marshalled, &mapEntity)
 			require.NoError(t, err)
 			mapEntity["MergeProperty"] = "foo"
@@ -189,7 +189,7 @@ func TestMergeEntity(t *testing.T) {
 			}
 			require.NotEmpty(t, qResp.Entities)
 			postMerge := qResp.Entities[0]
-			var unmarshalledPostMerge map[string]interface{}
+			var unmarshalledPostMerge map[string]any
 			err = json.Unmarshal(postMerge, &unmarshalledPostMerge)
 			require.NoError(t, err)
 
@@ -248,7 +248,7 @@ func TestInsertEntity(t *testing.T) {
 			preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, nil)
 			require.NoError(t, err)
 
-			var unMarshalledPreMerge map[string]interface{}
+			var unMarshalledPreMerge map[string]any
 			err = json.Unmarshal(preMerge.Value, &unMarshalledPreMerge)
 			require.NoError(t, err)
 
@@ -271,7 +271,7 @@ func TestInsertEntity(t *testing.T) {
 				require.NoError(t, err)
 			}
 			postMerge := qResp.Entities[0]
-			var unmarshalledPostMerge map[string]interface{}
+			var unmarshalledPostMerge map[string]any
 			err = json.Unmarshal(postMerge, &unmarshalledPostMerge)
 			require.NoError(t, err)
 
@@ -334,7 +334,7 @@ func TestQuerySimpleEntity(t *testing.T) {
 			}
 
 			for i, e := range resp.Entities {
-				var mapModel map[string]interface{}
+				var mapModel map[string]any
 				err := json.Unmarshal(e, &mapModel)
 				require.NoError(t, err)
 
@@ -408,7 +408,7 @@ func TestInvalidEntity(t *testing.T) {
 			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
-			badEntity := map[string]interface{}{
+			badEntity := map[string]any{
 				"Value":  10,
 				"String": "stringystring",
 			}
@@ -551,7 +551,7 @@ func TestAzurite(t *testing.T) {
 			PartitionKey: "pencils",
 			RowKey:       "id-003",
 		},
-		Properties: map[string]interface{}{
+		Properties: map[string]any{
 			"Product":      "Ticonderoga Pencils",
 			"Price":        5.00,
 			"Count":        EDMInt64(12345678901234),

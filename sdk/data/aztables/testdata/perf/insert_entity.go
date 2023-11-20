@@ -35,7 +35,7 @@ var fullEdm = aztables.EDMEntity{
 		PartitionKey: "",
 		RowKey:       "",
 	},
-	Properties: map[string]interface{}{
+	Properties: map[string]any{
 		"StringTypeProperty":   "StringTypeProperty",
 		"DatetimeTypeProperty": aztables.EDMDateTime(time.Now()),
 		"GuidTypeProperty":     aztables.EDMGUID("c9da6455-213d-42c9-9a79-3e9149a57833"),

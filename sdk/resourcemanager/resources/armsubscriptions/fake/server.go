@@ -96,7 +96,7 @@ func (s *ServerTransport) dispatchCheckZonePeers(req *http.Request) (*http.Respo
 	if s.srv.CheckZonePeers == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckZonePeers not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/checkZonePeers/`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/checkZonePeers/`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
@@ -106,11 +106,11 @@ func (s *ServerTransport) dispatchCheckZonePeers(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	subscriptionIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
+	subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CheckZonePeers(req.Context(), subscriptionIDUnescaped, body, nil)
+	respr, errRespr := s.srv.CheckZonePeers(req.Context(), subscriptionIDParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -135,11 +135,11 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	subscriptionIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
+	subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.Get(req.Context(), subscriptionIDUnescaped, nil)
+	respr, errRespr := s.srv.Get(req.Context(), subscriptionIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -194,7 +194,7 @@ func (s *ServerTransport) dispatchNewListLocationsPager(req *http.Request) (*htt
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		subscriptionIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
+		subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
 		if err != nil {
 			return nil, err
 		}
@@ -212,7 +212,7 @@ func (s *ServerTransport) dispatchNewListLocationsPager(req *http.Request) (*htt
 				IncludeExtendedLocations: includeExtendedLocationsParam,
 			}
 		}
-		resp := s.srv.NewListLocationsPager(subscriptionIDUnescaped, options)
+		resp := s.srv.NewListLocationsPager(subscriptionIDParam, options)
 		newListLocationsPager = &resp
 		s.newListLocationsPager.add(req, newListLocationsPager)
 	}

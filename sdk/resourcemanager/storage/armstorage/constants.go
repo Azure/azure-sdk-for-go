@@ -10,7 +10,7 @@ package armstorage
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
-	moduleVersion = "v1.5.0-beta.1"
+	moduleVersion = "v1.5.0"
 )
 
 // AccessTier - Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium'

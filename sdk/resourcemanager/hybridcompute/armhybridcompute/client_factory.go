@@ -37,6 +37,36 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAgentVersionClient creates a new instance of AgentVersionClient.
+func (c *ClientFactory) NewAgentVersionClient() *AgentVersionClient {
+	subClient, _ := NewAgentVersionClient(c.credential, c.options)
+	return subClient
+}
+
+// NewExtensionMetadataClient creates a new instance of ExtensionMetadataClient.
+func (c *ClientFactory) NewExtensionMetadataClient() *ExtensionMetadataClient {
+	subClient, _ := NewExtensionMetadataClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewHybridIdentityMetadataClient creates a new instance of HybridIdentityMetadataClient.
+func (c *ClientFactory) NewHybridIdentityMetadataClient() *HybridIdentityMetadataClient {
+	subClient, _ := NewHybridIdentityMetadataClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewLicenseProfilesClient creates a new instance of LicenseProfilesClient.
+func (c *ClientFactory) NewLicenseProfilesClient() *LicenseProfilesClient {
+	subClient, _ := NewLicenseProfilesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewLicensesClient creates a new instance of LicensesClient.
+func (c *ClientFactory) NewLicensesClient() *LicensesClient {
+	subClient, _ := NewLicensesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewMachineExtensionsClient creates a new instance of MachineExtensionsClient.
 func (c *ClientFactory) NewMachineExtensionsClient() *MachineExtensionsClient {
 	subClient, _ := NewMachineExtensionsClient(c.subscriptionID, c.credential, c.options)
@@ -52,6 +82,12 @@ func (c *ClientFactory) NewMachinesClient() *MachinesClient {
 // NewManagementClient creates a new instance of ManagementClient.
 func (c *ClientFactory) NewManagementClient() *ManagementClient {
 	subClient, _ := NewManagementClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewNetworkProfileClient creates a new instance of NetworkProfileClient.
+func (c *ClientFactory) NewNetworkProfileClient() *NetworkProfileClient {
+	subClient, _ := NewNetworkProfileClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

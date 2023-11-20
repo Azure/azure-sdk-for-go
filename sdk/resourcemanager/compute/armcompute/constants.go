@@ -9,8 +9,8 @@
 package armcompute
 
 const (
-	moduleName    = "armcompute"
-	moduleVersion = "v5.3.0-beta.2"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
+	moduleVersion = "v5.3.0"
 )
 
 type AccessLevel string

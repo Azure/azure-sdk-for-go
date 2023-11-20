@@ -33,9 +33,9 @@ func ExampleLogAnalyticsClient_BeginExportRequestRateByInterval() {
 	}
 	poller, err := clientFactory.NewLogAnalyticsClient().BeginExportRequestRateByInterval(ctx, "westus", armcompute.RequestRateByIntervalInput{
 		BlobContainerSasURI: to.Ptr("https://somesasuri"),
-		FromTime:            to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-21T01:54:06.862601Z"); return t }()),
+		FromTime:            to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-21T01:54:06.862Z"); return t }()),
 		GroupByResourceName: to.Ptr(true),
-		ToTime:              to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-23T01:54:06.862601Z"); return t }()),
+		ToTime:              to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-23T01:54:06.862Z"); return t }()),
 		IntervalLength:      to.Ptr(armcompute.IntervalInMinsFiveMins),
 	}, nil)
 	if err != nil {
@@ -68,12 +68,12 @@ func ExampleLogAnalyticsClient_BeginExportThrottledRequests() {
 	}
 	poller, err := clientFactory.NewLogAnalyticsClient().BeginExportThrottledRequests(ctx, "westus", armcompute.ThrottledRequestsInput{
 		BlobContainerSasURI:        to.Ptr("https://somesasuri"),
-		FromTime:                   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-21T01:54:06.862601Z"); return t }()),
+		FromTime:                   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-21T01:54:06.862Z"); return t }()),
 		GroupByClientApplicationID: to.Ptr(false),
 		GroupByOperationName:       to.Ptr(true),
 		GroupByResourceName:        to.Ptr(false),
 		GroupByUserAgent:           to.Ptr(false),
-		ToTime:                     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-23T01:54:06.862601Z"); return t }()),
+		ToTime:                     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-23T01:54:06.862Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

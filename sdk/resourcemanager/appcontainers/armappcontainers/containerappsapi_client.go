@@ -32,7 +32,7 @@ type ContainerAppsAPIClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContainerAppsAPIClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsAPIClient, error) {
-	cl, err := arm.NewClient(moduleName+".ContainerAppsAPIClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewContainerAppsAPIClient(subscriptionID string, credential azcore.TokenCre
 //     method.
 func (client *ContainerAppsAPIClient) JobExecution(ctx context.Context, resourceGroupName string, jobName string, jobExecutionName string, options *ContainerAppsAPIClientJobExecutionOptions) (ContainerAppsAPIClientJobExecutionResponse, error) {
 	var err error
+	const operationName = "ContainerAppsAPIClient.JobExecution"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.jobExecutionCreateRequest(ctx, resourceGroupName, jobName, jobExecutionName, options)
 	if err != nil {
 		return ContainerAppsAPIClientJobExecutionResponse{}, err

@@ -37,8 +37,8 @@ func ExampleContainerAppsAPIClient_JobExecution() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.JobExecution = armappcontainers.JobExecution{
 	// 	Name: to.Ptr("jobExecution1"),
-	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T20:47:30+00:00"); return t}()),
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T20:37:30+00:00"); return t}()),
+	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T20:47:30.000Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T20:37:30.000Z"); return t}()),
 	// 	Status: to.Ptr(armappcontainers.JobExecutionRunningStateRunning),
 	// 	Template: &armappcontainers.JobExecutionTemplate{
 	// 		Containers: []*armappcontainers.JobExecutionContainer{

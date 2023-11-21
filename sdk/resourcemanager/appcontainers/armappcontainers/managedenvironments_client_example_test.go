@@ -53,7 +53,7 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 				CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 					CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 		// 					DNSSuffix: to.Ptr("www.my-name.com"),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
 		// 					SubjectName: to.Ptr("CN=www.my-name.com"),
 		// 					Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 		// 				},
@@ -102,7 +102,7 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 				CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 					CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 		// 					DNSSuffix: to.Ptr("www.my-name2.com"),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
 		// 					SubjectName: to.Ptr("CN=www.my-name2.com"),
 		// 					Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 		// 				},
@@ -156,7 +156,7 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 				CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 					CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 		// 					DNSSuffix: to.Ptr("www.my-name.com"),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
 		// 					SubjectName: to.Ptr("CN=www.my-name.com"),
 		// 					Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 		// 				},
@@ -205,7 +205,7 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 				CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 					CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 		// 					DNSSuffix: to.Ptr("www.my-name2.com"),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
 		// 					SubjectName: to.Ptr("CN=www.my-name2.com"),
 		// 					Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 		// 				},
@@ -253,7 +253,7 @@ func ExampleManagedEnvironmentsClient_Get() {
 	// 		CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 	// 			CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 	// 			DNSSuffix: to.Ptr("www.my-name.com"),
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
 	// 			SubjectName: to.Ptr("CN=www.my-name.com"),
 	// 			Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 	// 		},
@@ -384,7 +384,7 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithC
 	// 		CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 	// 			CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 	// 			DNSSuffix: to.Ptr("www.my-name.com"),
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
 	// 			SubjectName: to.Ptr("CN=www.my-name.com"),
 	// 			Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 	// 		},
@@ -508,7 +508,7 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	// 		CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 	// 			CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 	// 			DNSSuffix: to.Ptr("www.my-name.com"),
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
 	// 			SubjectName: to.Ptr("CN=www.my-name.com"),
 	// 			Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 	// 		},
@@ -613,7 +613,7 @@ func ExampleManagedEnvironmentsClient_BeginUpdate() {
 	// 		CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 	// 			CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 	// 			DNSSuffix: to.Ptr("www.my-name.com"),
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
 	// 			SubjectName: to.Ptr("CN=www.my-name.com"),
 	// 			Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 	// 		},
@@ -674,7 +674,7 @@ func ExampleManagedEnvironmentsClient_GetAuthToken() {
 	// 	ID: to.Ptr("/subscriptions/651f8027-33e8-4ec4-97b4-f6e9f3dc8744/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/testenv"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.EnvironmentAuthTokenProperties{
-	// 		Expires: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-14T19:22:50.3080223Z"); return t}()),
+	// 		Expires: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-14T19:22:50.308Z"); return t}()),
 	// 		Token: to.Ptr("testToken"),
 	// 	},
 	// }

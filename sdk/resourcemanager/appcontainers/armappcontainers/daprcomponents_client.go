@@ -32,7 +32,7 @@ type DaprComponentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDaprComponentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DaprComponentsClient, error) {
-	cl, err := arm.NewClient(moduleName+".DaprComponentsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewDaprComponentsClient(subscriptionID string, credential azcore.TokenCrede
 //     method.
 func (client *DaprComponentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, componentName string, daprComponentEnvelope DaprComponent, options *DaprComponentsClientCreateOrUpdateOptions) (DaprComponentsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "DaprComponentsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, environmentName, componentName, daprComponentEnvelope, options)
 	if err != nil {
 		return DaprComponentsClientCreateOrUpdateResponse{}, err
@@ -123,6 +127,10 @@ func (client *DaprComponentsClient) createOrUpdateHandleResponse(resp *http.Resp
 //   - options - DaprComponentsClientDeleteOptions contains the optional parameters for the DaprComponentsClient.Delete method.
 func (client *DaprComponentsClient) Delete(ctx context.Context, resourceGroupName string, environmentName string, componentName string, options *DaprComponentsClientDeleteOptions) (DaprComponentsClientDeleteResponse, error) {
 	var err error
+	const operationName = "DaprComponentsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, environmentName, componentName, options)
 	if err != nil {
 		return DaprComponentsClientDeleteResponse{}, err
@@ -178,6 +186,10 @@ func (client *DaprComponentsClient) deleteCreateRequest(ctx context.Context, res
 //   - options - DaprComponentsClientGetOptions contains the optional parameters for the DaprComponentsClient.Get method.
 func (client *DaprComponentsClient) Get(ctx context.Context, resourceGroupName string, environmentName string, componentName string, options *DaprComponentsClientGetOptions) (DaprComponentsClientGetResponse, error) {
 	var err error
+	const operationName = "DaprComponentsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, environmentName, componentName, options)
 	if err != nil {
 		return DaprComponentsClientGetResponse{}, err
@@ -245,25 +257,20 @@ func (client *DaprComponentsClient) NewListPager(resourceGroupName string, envir
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DaprComponentsClientListResponse) (DaprComponentsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, environmentName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DaprComponentsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, environmentName, options)
+			}, nil)
 			if err != nil {
 				return DaprComponentsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DaprComponentsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DaprComponentsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -313,6 +320,10 @@ func (client *DaprComponentsClient) listHandleResponse(resp *http.Response) (Dap
 //     method.
 func (client *DaprComponentsClient) ListSecrets(ctx context.Context, resourceGroupName string, environmentName string, componentName string, options *DaprComponentsClientListSecretsOptions) (DaprComponentsClientListSecretsResponse, error) {
 	var err error
+	const operationName = "DaprComponentsClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, environmentName, componentName, options)
 	if err != nil {
 		return DaprComponentsClientListSecretsResponse{}, err

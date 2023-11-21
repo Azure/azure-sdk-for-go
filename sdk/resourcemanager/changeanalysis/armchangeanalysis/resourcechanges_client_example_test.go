@@ -64,7 +64,7 @@ func ExampleResourceChangesClient_NewListPager() {
 		// 							OldValue: to.Ptr("21D0482F-E91E-4C14-8078-65BFDCDBCA64"),
 		// 					}},
 		// 					ResourceID: to.Ptr("/subscriptions/4d962866-1e3f-47f2-bd18-450c08f914c1/resourceGroups/MyResourceGroup/providers/Microsoft.Web/sites/mysite"),
-		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-26T02:17:41.39Z"); return t}()),
+		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-26T02:17:41.390Z"); return t}()),
 		// 				},
 		// 			},
 		// 			{
@@ -88,7 +88,7 @@ func ExampleResourceChangesClient_NewListPager() {
 		// 								OldValue: to.Ptr("<old database connection string>"),
 		// 						}},
 		// 						ResourceID: to.Ptr("/subscriptions/4d962866-1e3f-47f2-bd18-450c08f914c1/resourceGroups/MyResourceGroup/providers/Microsoft.Web/sites/mysite"),
-		// 						TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-26T02:17:41.39Z"); return t}()),
+		// 						TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-26T02:17:41.390Z"); return t}()),
 		// 					},
 		// 			}},
 		// 		}

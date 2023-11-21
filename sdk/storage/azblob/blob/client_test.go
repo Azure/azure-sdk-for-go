@@ -289,7 +289,7 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 		_, err = srcBlob.Upload(context.Background(), body, nil)
 		_require.NoError(err)
 
-		// downlod to a temp file and verify contents
+		// download to a temp file and verify contents
 		tmp, err := os.CreateTemp("", "")
 		_require.NoError(err)
 		defer tmp.Close()
@@ -327,6 +327,8 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 
 	// 199 MB file, more blocks than threads
 	testUploadDownload(199 * MiB)
+
+	testUploadDownload(7)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestEmpty() {

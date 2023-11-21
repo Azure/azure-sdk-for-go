@@ -496,6 +496,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 	 * and written to file here.
 	 */
 	writerError := make(chan error)
+	writeSize := int64(0)
 	go func(ch chan error) {
 		for _, block := range blocks {
 			select {
@@ -503,6 +504,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 				return
 			case block := <-block:
 				_, err := writer.Write(block)
+				writeSize += int64(len(block))
 				buffers.Release(block)
 				if err != nil {
 					ch <- err
@@ -539,7 +541,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 			}
 
 			blockIndex := (chunkStart / o.BlockSize)
-			blocks[blockIndex] <- buff
+			blocks[blockIndex] <- buff[:count]
 			return nil
 		},
 	})
@@ -551,7 +553,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 	if err = <-writerError; err != nil {
 		return 0, err
 	}
-	return count, nil
+	return writeSize, nil
 }
 
 // DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.

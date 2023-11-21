@@ -51,8 +51,8 @@ func ExampleFarmBeatsExtensionsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.AgFoodPlatform/farmBeatsExtensionDefinitions"),
 		// 			ID: to.Ptr("Microsoft.AgFoodPlatform/farmBeatsExtensionDefinitions/DTN.ContentServices"),
 		// 			SystemData: &armagrifood.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-12T15:28:06Z"); return t}()),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-12T15:30:01Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-12T15:28:06.000Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-12T15:30:01.000Z"); return t}()),
 		// 			},
 		// 			Properties: &armagrifood.FarmBeatsExtensionProperties{
 		// 				DetailedInformation: []*armagrifood.DetailedInformation{
@@ -289,8 +289,8 @@ func ExampleFarmBeatsExtensionsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.AgFoodPlatform/farmBeatsExtensionDefinitions"),
 	// 	ID: to.Ptr("Microsoft.AgFoodPlatform/farmBeatsExtensionDefinitions/DTN.ContentServices"),
 	// 	SystemData: &armagrifood.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-12T15:28:06Z"); return t}()),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-12T15:30:01Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-12T15:28:06.000Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-12T15:30:01.000Z"); return t}()),
 	// 	},
 	// 	Properties: &armagrifood.FarmBeatsExtensionProperties{
 	// 		DetailedInformation: []*armagrifood.DetailedInformation{

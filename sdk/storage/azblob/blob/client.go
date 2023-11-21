@@ -304,13 +304,14 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o 
 	st := o.format()
 
 	qps, err := sas.BlobSignatureValues{
-		ContainerName: urlParts.ContainerName,
-		BlobName:      urlParts.BlobName,
-		SnapshotTime:  t,
-		Version:       sas.Version,
-		Permissions:   permissions.String(),
-		StartTime:     st,
-		ExpiryTime:    expiry.UTC(),
+		ContainerName:      urlParts.ContainerName,
+		BlobName:           urlParts.BlobName,
+		SnapshotTime:       t,
+		Version:            sas.Version,
+		Permissions:        permissions.String(),
+		StartTime:          st,
+		ExpiryTime:         expiry.UTC(),
+		ContentDisposition: o.ContentDisposition,
 	}.SignWithSharedKey(b.sharedKey())
 
 	if err != nil {

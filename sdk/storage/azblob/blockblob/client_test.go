@@ -3857,6 +3857,60 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlockBlobWithSpecialCharacters
 	}
 }
 
+func (s *BlockBlobRecordedTestsSuite) TestRemoveBlobTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	blobTagsMap := map[string]string{
+		"sdk": "go",
+	}
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("data"))), nil)
+	_require.NoError(err)
+
+	// set blob tags
+	_, err = bbClient.SetTags(context.Background(), blobTagsMap, nil)
+	_require.NoError(err)
+
+	blobGetTagsResponse1, err := bbClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(blobGetTagsResponse1.BlobTagSet)
+	_require.Len(blobGetTagsResponse1.BlobTagSet, 1)
+	_require.Equal(blobTagsMap[*blobGetTagsResponse1.BlobTagSet[0].Key], *blobGetTagsResponse1.BlobTagSet[0].Value)
+
+	// remove tags by passing nil blob tags map
+	_, err = bbClient.SetTags(context.Background(), nil, nil)
+	_require.NoError(err)
+
+	blobGetTagsResponse2, err := bbClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(blobGetTagsResponse2.BlobTagSet, 0)
+
+	// set blob tags
+	_, err = bbClient.SetTags(context.Background(), blobTagsMap, nil)
+	_require.NoError(err)
+
+	blobGetTagsResponse3, err := bbClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(blobGetTagsResponse3.BlobTagSet)
+	_require.Len(blobGetTagsResponse3.BlobTagSet, 1)
+	_require.Equal(blobTagsMap[*blobGetTagsResponse3.BlobTagSet[0].Key], *blobGetTagsResponse3.BlobTagSet[0].Value)
+
+	// remove tags by passing empty blob tags map
+	_, err = bbClient.SetTags(context.Background(), make(map[string]string), nil)
+	_require.NoError(err)
+
+	blobGetTagsResponse4, err := bbClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(blobGetTagsResponse4.BlobTagSet, 0)
+}
+
 func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

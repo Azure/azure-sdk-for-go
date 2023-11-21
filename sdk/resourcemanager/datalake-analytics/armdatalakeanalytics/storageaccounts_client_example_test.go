@@ -179,7 +179,7 @@ func ExampleStorageAccountsClient_NewListStorageContainersPager() {
 		// 			Type: to.Ptr("test_type"),
 		// 			ID: to.Ptr("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345"),
 		// 			Properties: &armdatalakeanalytics.StorageContainerProperties{
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-14T13:21:56.6819037-07:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-14T20:21:56.681Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
@@ -209,7 +209,7 @@ func ExampleStorageAccountsClient_GetStorageContainer() {
 	// 	Type: to.Ptr("test_type"),
 	// 	ID: to.Ptr("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345"),
 	// 	Properties: &armdatalakeanalytics.StorageContainerProperties{
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-14T13:21:56.6819037-07:00"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-14T20:21:56.681Z"); return t}()),
 	// 	},
 	// }
 }

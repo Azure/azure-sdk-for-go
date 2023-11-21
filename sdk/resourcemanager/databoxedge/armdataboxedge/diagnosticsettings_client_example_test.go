@@ -110,7 +110,7 @@ func ExampleDiagnosticSettingsClient_GetDiagnosticRemoteSupportSettings() {
 	// 		RemoteSupportSettingsList: []*armdataboxedge.RemoteSupportSettings{
 	// 			{
 	// 				AccessLevel: to.Ptr(armdataboxedge.AccessLevelReadWrite),
-	// 				ExpirationTimeStampInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-07T00:00:00+00:00"); return t}()),
+	// 				ExpirationTimeStampInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-07T00:00:00.000Z"); return t}()),
 	// 				RemoteApplicationType: to.Ptr(armdataboxedge.RemoteApplicationTypeLocalUI),
 	// 		}},
 	// 	},
@@ -133,7 +133,7 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticRemoteSupportSettings(
 			RemoteSupportSettingsList: []*armdataboxedge.RemoteSupportSettings{
 				{
 					AccessLevel:              to.Ptr(armdataboxedge.AccessLevelReadWrite),
-					ExpirationTimeStampInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-07T00:00:00+00:00"); return t }()),
+					ExpirationTimeStampInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-07T00:00:00.000Z"); return t }()),
 					RemoteApplicationType:    to.Ptr(armdataboxedge.RemoteApplicationTypePowershell),
 				}},
 		},
@@ -156,7 +156,7 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticRemoteSupportSettings(
 	// 		RemoteSupportSettingsList: []*armdataboxedge.RemoteSupportSettings{
 	// 			{
 	// 				AccessLevel: to.Ptr(armdataboxedge.AccessLevelReadWrite),
-	// 				ExpirationTimeStampInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2500-09-14T00:00:00+00:00"); return t}()),
+	// 				ExpirationTimeStampInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2500-09-14T00:00:00.000Z"); return t}()),
 	// 				RemoteApplicationType: to.Ptr(armdataboxedge.RemoteApplicationTypePowershell),
 	// 		}},
 	// 	},

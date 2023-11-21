@@ -32,7 +32,7 @@ type ServersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServersClient, error) {
-	cl, err := arm.NewClient(moduleName+".ServersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewServersClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - options - ServersClientGetOptions contains the optional parameters for the ServersClient.Get method.
 func (client *ServersClient) Get(ctx context.Context, resourceGroupName string, clusterName string, serverName string, options *ServersClientGetOptions) (ServersClientGetResponse, error) {
 	var err error
+	const operationName = "ServersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, serverName, options)
 	if err != nil {
 		return ServersClientGetResponse{}, err
@@ -72,6 +76,9 @@ func (client *ServersClient) Get(ctx context.Context, resourceGroupName string, 
 // getCreateRequest creates the Get request.
 func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, serverName string, options *ServersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/servers/{serverName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -118,6 +125,7 @@ func (client *ServersClient) NewListByClusterPager(resourceGroupName string, clu
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ServersClientListByClusterResponse) (ServersClientListByClusterResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServersClient.NewListByClusterPager")
 			req, err := client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
 			if err != nil {
 				return ServersClientListByClusterResponse{}, err
@@ -131,12 +139,16 @@ func (client *ServersClient) NewListByClusterPager(resourceGroupName string, clu
 			}
 			return client.listByClusterHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
 func (client *ServersClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ServersClientListByClusterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/servers"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

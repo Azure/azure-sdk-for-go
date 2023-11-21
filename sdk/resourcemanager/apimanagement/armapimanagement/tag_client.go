@@ -33,7 +33,7 @@ type TagClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTagClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TagClient, error) {
-	cl, err := arm.NewClient(moduleName+".TagClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewTagClient(subscriptionID string, credential azcore.TokenCredential, opti
 //   - options - TagClientAssignToAPIOptions contains the optional parameters for the TagClient.AssignToAPI method.
 func (client *TagClient) AssignToAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagClientAssignToAPIOptions) (TagClientAssignToAPIResponse, error) {
 	var err error
+	const operationName = "TagClient.AssignToAPI"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.assignToAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, tagID, options)
 	if err != nil {
 		return TagClientAssignToAPIResponse{}, err
@@ -131,6 +135,10 @@ func (client *TagClient) assignToAPIHandleResponse(resp *http.Response) (TagClie
 //   - options - TagClientAssignToOperationOptions contains the optional parameters for the TagClient.AssignToOperation method.
 func (client *TagClient) AssignToOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagClientAssignToOperationOptions) (TagClientAssignToOperationResponse, error) {
 	var err error
+	const operationName = "TagClient.AssignToOperation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.assignToOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, tagID, options)
 	if err != nil {
 		return TagClientAssignToOperationResponse{}, err
@@ -205,6 +213,10 @@ func (client *TagClient) assignToOperationHandleResponse(resp *http.Response) (T
 //   - options - TagClientAssignToProductOptions contains the optional parameters for the TagClient.AssignToProduct method.
 func (client *TagClient) AssignToProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagClientAssignToProductOptions) (TagClientAssignToProductResponse, error) {
 	var err error
+	const operationName = "TagClient.AssignToProduct"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.assignToProductCreateRequest(ctx, resourceGroupName, serviceName, productID, tagID, options)
 	if err != nil {
 		return TagClientAssignToProductResponse{}, err
@@ -275,6 +287,10 @@ func (client *TagClient) assignToProductHandleResponse(resp *http.Response) (Tag
 //   - options - TagClientCreateOrUpdateOptions contains the optional parameters for the TagClient.CreateOrUpdate method.
 func (client *TagClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, tagID string, parameters TagCreateUpdateParameters, options *TagClientCreateOrUpdateOptions) (TagClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "TagClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, tagID, parameters, options)
 	if err != nil {
 		return TagClientCreateOrUpdateResponse{}, err
@@ -351,6 +367,10 @@ func (client *TagClient) createOrUpdateHandleResponse(resp *http.Response) (TagC
 //   - options - TagClientDeleteOptions contains the optional parameters for the TagClient.Delete method.
 func (client *TagClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, options *TagClientDeleteOptions) (TagClientDeleteResponse, error) {
 	var err error
+	const operationName = "TagClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, tagID, ifMatch, options)
 	if err != nil {
 		return TagClientDeleteResponse{}, err
@@ -409,6 +429,10 @@ func (client *TagClient) deleteCreateRequest(ctx context.Context, resourceGroupN
 //   - options - TagClientDetachFromAPIOptions contains the optional parameters for the TagClient.DetachFromAPI method.
 func (client *TagClient) DetachFromAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagClientDetachFromAPIOptions) (TagClientDetachFromAPIResponse, error) {
 	var err error
+	const operationName = "TagClient.DetachFromAPI"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.detachFromAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, tagID, options)
 	if err != nil {
 		return TagClientDetachFromAPIResponse{}, err
@@ -471,6 +495,10 @@ func (client *TagClient) detachFromAPICreateRequest(ctx context.Context, resourc
 //   - options - TagClientDetachFromOperationOptions contains the optional parameters for the TagClient.DetachFromOperation method.
 func (client *TagClient) DetachFromOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagClientDetachFromOperationOptions) (TagClientDetachFromOperationResponse, error) {
 	var err error
+	const operationName = "TagClient.DetachFromOperation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.detachFromOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, tagID, options)
 	if err != nil {
 		return TagClientDetachFromOperationResponse{}, err
@@ -535,6 +563,10 @@ func (client *TagClient) detachFromOperationCreateRequest(ctx context.Context, r
 //   - options - TagClientDetachFromProductOptions contains the optional parameters for the TagClient.DetachFromProduct method.
 func (client *TagClient) DetachFromProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagClientDetachFromProductOptions) (TagClientDetachFromProductResponse, error) {
 	var err error
+	const operationName = "TagClient.DetachFromProduct"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.detachFromProductCreateRequest(ctx, resourceGroupName, serviceName, productID, tagID, options)
 	if err != nil {
 		return TagClientDetachFromProductResponse{}, err
@@ -594,6 +626,10 @@ func (client *TagClient) detachFromProductCreateRequest(ctx context.Context, res
 //   - options - TagClientGetOptions contains the optional parameters for the TagClient.Get method.
 func (client *TagClient) Get(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagClientGetOptions) (TagClientGetResponse, error) {
 	var err error
+	const operationName = "TagClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, tagID, options)
 	if err != nil {
 		return TagClientGetResponse{}, err
@@ -664,6 +700,10 @@ func (client *TagClient) getHandleResponse(resp *http.Response) (TagClientGetRes
 //   - options - TagClientGetByAPIOptions contains the optional parameters for the TagClient.GetByAPI method.
 func (client *TagClient) GetByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagClientGetByAPIOptions) (TagClientGetByAPIResponse, error) {
 	var err error
+	const operationName = "TagClient.GetByAPI"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, tagID, options)
 	if err != nil {
 		return TagClientGetByAPIResponse{}, err
@@ -739,6 +779,10 @@ func (client *TagClient) getByAPIHandleResponse(resp *http.Response) (TagClientG
 //   - options - TagClientGetByOperationOptions contains the optional parameters for the TagClient.GetByOperation method.
 func (client *TagClient) GetByOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagClientGetByOperationOptions) (TagClientGetByOperationResponse, error) {
 	var err error
+	const operationName = "TagClient.GetByOperation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, tagID, options)
 	if err != nil {
 		return TagClientGetByOperationResponse{}, err
@@ -816,6 +860,10 @@ func (client *TagClient) getByOperationHandleResponse(resp *http.Response) (TagC
 //   - options - TagClientGetByProductOptions contains the optional parameters for the TagClient.GetByProduct method.
 func (client *TagClient) GetByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagClientGetByProductOptions) (TagClientGetByProductResponse, error) {
 	var err error
+	const operationName = "TagClient.GetByProduct"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, tagID, options)
 	if err != nil {
 		return TagClientGetByProductResponse{}, err
@@ -887,6 +935,10 @@ func (client *TagClient) getByProductHandleResponse(resp *http.Response) (TagCli
 //   - options - TagClientGetEntityStateOptions contains the optional parameters for the TagClient.GetEntityState method.
 func (client *TagClient) GetEntityState(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagClientGetEntityStateOptions) (TagClientGetEntityStateResponse, error) {
 	var err error
+	const operationName = "TagClient.GetEntityState"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityStateCreateRequest(ctx, resourceGroupName, serviceName, tagID, options)
 	if err != nil {
 		return TagClientGetEntityStateResponse{}, err
@@ -935,11 +987,10 @@ func (client *TagClient) getEntityStateCreateRequest(ctx context.Context, resour
 
 // getEntityStateHandleResponse handles the GetEntityState response.
 func (client *TagClient) getEntityStateHandleResponse(resp *http.Response) (TagClientGetEntityStateResponse, error) {
-	result := TagClientGetEntityStateResponse{}
+	result := TagClientGetEntityStateResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -954,6 +1005,10 @@ func (client *TagClient) getEntityStateHandleResponse(resp *http.Response) (TagC
 //   - options - TagClientGetEntityStateByAPIOptions contains the optional parameters for the TagClient.GetEntityStateByAPI method.
 func (client *TagClient) GetEntityStateByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagClientGetEntityStateByAPIOptions) (TagClientGetEntityStateByAPIResponse, error) {
 	var err error
+	const operationName = "TagClient.GetEntityStateByAPI"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityStateByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, tagID, options)
 	if err != nil {
 		return TagClientGetEntityStateByAPIResponse{}, err
@@ -1006,11 +1061,10 @@ func (client *TagClient) getEntityStateByAPICreateRequest(ctx context.Context, r
 
 // getEntityStateByAPIHandleResponse handles the GetEntityStateByAPI response.
 func (client *TagClient) getEntityStateByAPIHandleResponse(resp *http.Response) (TagClientGetEntityStateByAPIResponse, error) {
-	result := TagClientGetEntityStateByAPIResponse{}
+	result := TagClientGetEntityStateByAPIResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -1027,6 +1081,10 @@ func (client *TagClient) getEntityStateByAPIHandleResponse(resp *http.Response) 
 //     method.
 func (client *TagClient) GetEntityStateByOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagClientGetEntityStateByOperationOptions) (TagClientGetEntityStateByOperationResponse, error) {
 	var err error
+	const operationName = "TagClient.GetEntityStateByOperation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityStateByOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, tagID, options)
 	if err != nil {
 		return TagClientGetEntityStateByOperationResponse{}, err
@@ -1083,11 +1141,10 @@ func (client *TagClient) getEntityStateByOperationCreateRequest(ctx context.Cont
 
 // getEntityStateByOperationHandleResponse handles the GetEntityStateByOperation response.
 func (client *TagClient) getEntityStateByOperationHandleResponse(resp *http.Response) (TagClientGetEntityStateByOperationResponse, error) {
-	result := TagClientGetEntityStateByOperationResponse{}
+	result := TagClientGetEntityStateByOperationResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -1102,6 +1159,10 @@ func (client *TagClient) getEntityStateByOperationHandleResponse(resp *http.Resp
 //     method.
 func (client *TagClient) GetEntityStateByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagClientGetEntityStateByProductOptions) (TagClientGetEntityStateByProductResponse, error) {
 	var err error
+	const operationName = "TagClient.GetEntityStateByProduct"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityStateByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, tagID, options)
 	if err != nil {
 		return TagClientGetEntityStateByProductResponse{}, err
@@ -1154,11 +1215,10 @@ func (client *TagClient) getEntityStateByProductCreateRequest(ctx context.Contex
 
 // getEntityStateByProductHandleResponse handles the GetEntityStateByProduct response.
 func (client *TagClient) getEntityStateByProductHandleResponse(resp *http.Response) (TagClientGetEntityStateByProductResponse, error) {
-	result := TagClientGetEntityStateByProductResponse{}
+	result := TagClientGetEntityStateByProductResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -1176,25 +1236,20 @@ func (client *TagClient) NewListByAPIPager(resourceGroupName string, serviceName
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TagClientListByAPIResponse) (TagClientListByAPIResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TagClient.NewListByAPIPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			}, nil)
 			if err != nil {
 				return TagClientListByAPIResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TagClientListByAPIResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TagClientListByAPIResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByAPIHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1261,25 +1316,20 @@ func (client *TagClient) NewListByOperationPager(resourceGroupName string, servi
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TagClientListByOperationResponse) (TagClientListByOperationResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TagClient.NewListByOperationPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, options)
+			}, nil)
 			if err != nil {
 				return TagClientListByOperationResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TagClientListByOperationResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TagClientListByOperationResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByOperationHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1348,25 +1398,20 @@ func (client *TagClient) NewListByProductPager(resourceGroupName string, service
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TagClientListByProductResponse) (TagClientListByProductResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TagClient.NewListByProductPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
+			}, nil)
 			if err != nil {
 				return TagClientListByProductResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TagClientListByProductResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TagClientListByProductResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByProductHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1430,25 +1475,20 @@ func (client *TagClient) NewListByServicePager(resourceGroupName string, service
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TagClientListByServiceResponse) (TagClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TagClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return TagClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TagClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TagClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1512,6 +1552,10 @@ func (client *TagClient) listByServiceHandleResponse(resp *http.Response) (TagCl
 //   - options - TagClientUpdateOptions contains the optional parameters for the TagClient.Update method.
 func (client *TagClient) Update(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, parameters TagCreateUpdateParameters, options *TagClientUpdateOptions) (TagClientUpdateResponse, error) {
 	var err error
+	const operationName = "TagClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, tagID, ifMatch, parameters, options)
 	if err != nil {
 		return TagClientUpdateResponse{}, err

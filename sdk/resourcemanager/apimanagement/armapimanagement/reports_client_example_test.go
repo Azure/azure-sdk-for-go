@@ -513,7 +513,7 @@ func ExampleReportsClient_NewListByTimePager() {
 		// 			ServiceTimeAvg: to.Ptr[float64](1255.917425),
 		// 			ServiceTimeMax: to.Ptr[float64](1697.3612),
 		// 			ServiceTimeMin: to.Ptr[float64](882.8264),
-		// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-03T00:15:00Z"); return t}()),
+		// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-03T00:15:00.000Z"); return t}()),
 		// 		},
 		// 		{
 		// 			APITimeAvg: to.Ptr[float64](872.7818777777778),
@@ -531,7 +531,7 @@ func ExampleReportsClient_NewListByTimePager() {
 		// 			ServiceTimeAvg: to.Ptr[float64](824.2847111111112),
 		// 			ServiceTimeMax: to.Ptr[float64](973.2262000000001),
 		// 			ServiceTimeMin: to.Ptr[float64](215.24),
-		// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-03T00:30:00Z"); return t}()),
+		// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-03T00:30:00.000Z"); return t}()),
 		// 	}},
 		// }
 	}
@@ -579,7 +579,7 @@ func ExampleReportsClient_NewListByRequestPager() {
 		// 			ResponseSize: to.Ptr[int32](405),
 		// 			ServiceTime: to.Ptr[float64](0),
 		// 			SubscriptionID: to.Ptr("/subscriptions/5600b59475ff190048070002"),
-		// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-03T00:17:00.1649134Z"); return t}()),
+		// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-03T00:17:00.164Z"); return t}()),
 		// 			URL: to.Ptr("https://apimService1.azure-api.net/echo/resource?param1=sample"),
 		// 			UserID: to.Ptr("/users/1"),
 		// 		},
@@ -598,7 +598,7 @@ func ExampleReportsClient_NewListByRequestPager() {
 		// 			ResponseSize: to.Ptr[int32](403),
 		// 			ServiceTime: to.Ptr[float64](0),
 		// 			SubscriptionID: to.Ptr("/subscriptions/5600b59475ff190048070002"),
-		// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-03T00:17:20.5255131Z"); return t}()),
+		// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-03T00:17:20.525Z"); return t}()),
 		// 			URL: to.Ptr("https://apimService1.azure-api.net/echo/resource"),
 		// 			UserID: to.Ptr("/users/1"),
 		// 	}},

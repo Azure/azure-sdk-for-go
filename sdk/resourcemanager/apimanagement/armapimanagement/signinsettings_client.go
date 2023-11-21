@@ -32,7 +32,7 @@ type SignInSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSignInSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SignInSettingsClient, error) {
-	cl, err := arm.NewClient(moduleName+".SignInSettingsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewSignInSettingsClient(subscriptionID string, credential azcore.TokenCrede
 //     method.
 func (client *SignInSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSigninSettings, options *SignInSettingsClientCreateOrUpdateOptions) (SignInSettingsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "SignInSettingsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
 		return SignInSettingsClientCreateOrUpdateResponse{}, err
@@ -120,6 +124,10 @@ func (client *SignInSettingsClient) createOrUpdateHandleResponse(resp *http.Resp
 //   - options - SignInSettingsClientGetOptions contains the optional parameters for the SignInSettingsClient.Get method.
 func (client *SignInSettingsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, options *SignInSettingsClientGetOptions) (SignInSettingsClientGetResponse, error) {
 	var err error
+	const operationName = "SignInSettingsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return SignInSettingsClientGetResponse{}, err
@@ -183,6 +191,10 @@ func (client *SignInSettingsClient) getHandleResponse(resp *http.Response) (Sign
 //     method.
 func (client *SignInSettingsClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, options *SignInSettingsClientGetEntityTagOptions) (SignInSettingsClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "SignInSettingsClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return SignInSettingsClientGetEntityTagResponse{}, err
@@ -227,11 +239,10 @@ func (client *SignInSettingsClient) getEntityTagCreateRequest(ctx context.Contex
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *SignInSettingsClient) getEntityTagHandleResponse(resp *http.Response) (SignInSettingsClientGetEntityTagResponse, error) {
-	result := SignInSettingsClientGetEntityTagResponse{}
+	result := SignInSettingsClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -247,6 +258,10 @@ func (client *SignInSettingsClient) getEntityTagHandleResponse(resp *http.Respon
 //   - options - SignInSettingsClientUpdateOptions contains the optional parameters for the SignInSettingsClient.Update method.
 func (client *SignInSettingsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalSigninSettings, options *SignInSettingsClientUpdateOptions) (SignInSettingsClientUpdateResponse, error) {
 	var err error
+	const operationName = "SignInSettingsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, ifMatch, parameters, options)
 	if err != nil {
 		return SignInSettingsClientUpdateResponse{}, err

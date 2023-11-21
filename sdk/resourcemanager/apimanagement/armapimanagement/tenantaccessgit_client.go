@@ -32,7 +32,7 @@ type TenantAccessGitClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTenantAccessGitClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantAccessGitClient, error) {
-	cl, err := arm.NewClient(moduleName+".TenantAccessGitClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewTenantAccessGitClient(subscriptionID string, credential azcore.TokenCred
 //     method.
 func (client *TenantAccessGitClient) RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGitClientRegeneratePrimaryKeyOptions) (TenantAccessGitClientRegeneratePrimaryKeyResponse, error) {
 	var err error
+	const operationName = "TenantAccessGitClient.RegeneratePrimaryKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.regeneratePrimaryKeyCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
 		return TenantAccessGitClientRegeneratePrimaryKeyResponse{}, err
@@ -110,6 +114,10 @@ func (client *TenantAccessGitClient) regeneratePrimaryKeyCreateRequest(ctx conte
 //     method.
 func (client *TenantAccessGitClient) RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGitClientRegenerateSecondaryKeyOptions) (TenantAccessGitClientRegenerateSecondaryKeyResponse, error) {
 	var err error
+	const operationName = "TenantAccessGitClient.RegenerateSecondaryKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.regenerateSecondaryKeyCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
 		return TenantAccessGitClientRegenerateSecondaryKeyResponse{}, err

@@ -33,7 +33,7 @@ type ReportsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReportsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ReportsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,25 +57,20 @@ func (client *ReportsClient) NewListByAPIPager(resourceGroupName string, service
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReportsClientListByAPIResponse) (ReportsClientListByAPIResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, filter, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReportsClient.NewListByAPIPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			}, nil)
 			if err != nil {
 				return ReportsClientListByAPIResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReportsClientListByAPIResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReportsClientListByAPIResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByAPIHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -161,25 +156,20 @@ func (client *ReportsClient) NewListByGeoPager(resourceGroupName string, service
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReportsClientListByGeoResponse) (ReportsClientListByGeoResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByGeoCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReportsClient.NewListByGeoPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByGeoCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			}, nil)
 			if err != nil {
 				return ReportsClientListByGeoResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReportsClientListByGeoResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReportsClientListByGeoResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByGeoHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -262,25 +252,20 @@ func (client *ReportsClient) NewListByOperationPager(resourceGroupName string, s
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReportsClientListByOperationResponse) (ReportsClientListByOperationResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByOperationCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReportsClient.NewListByOperationPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByOperationCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			}, nil)
 			if err != nil {
 				return ReportsClientListByOperationResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReportsClientListByOperationResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReportsClientListByOperationResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByOperationHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -364,25 +349,20 @@ func (client *ReportsClient) NewListByProductPager(resourceGroupName string, ser
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReportsClientListByProductResponse) (ReportsClientListByProductResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReportsClient.NewListByProductPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			}, nil)
 			if err != nil {
 				return ReportsClientListByProductResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReportsClientListByProductResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReportsClientListByProductResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByProductHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -453,6 +433,7 @@ func (client *ReportsClient) NewListByRequestPager(resourceGroupName string, ser
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ReportsClientListByRequestResponse) (ReportsClientListByRequestResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReportsClient.NewListByRequestPager")
 			req, err := client.listByRequestCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
 			if err != nil {
 				return ReportsClientListByRequestResponse{}, err
@@ -466,6 +447,7 @@ func (client *ReportsClient) NewListByRequestPager(resourceGroupName string, ser
 			}
 			return client.listByRequestHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -546,25 +528,20 @@ func (client *ReportsClient) NewListBySubscriptionPager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReportsClientListBySubscriptionResponse) (ReportsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReportsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			}, nil)
 			if err != nil {
 				return ReportsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReportsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReportsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -651,25 +628,20 @@ func (client *ReportsClient) NewListByTimePager(resourceGroupName string, servic
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReportsClientListByTimeResponse) (ReportsClientListByTimeResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByTimeCreateRequest(ctx, resourceGroupName, serviceName, filter, interval, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReportsClient.NewListByTimePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByTimeCreateRequest(ctx, resourceGroupName, serviceName, filter, interval, options)
+			}, nil)
 			if err != nil {
 				return ReportsClientListByTimeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReportsClientListByTimeResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReportsClientListByTimeResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByTimeHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -755,25 +727,20 @@ func (client *ReportsClient) NewListByUserPager(resourceGroupName string, servic
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReportsClientListByUserResponse) (ReportsClientListByUserResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByUserCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReportsClient.NewListByUserPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByUserCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
+			}, nil)
 			if err != nil {
 				return ReportsClientListByUserResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReportsClientListByUserResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReportsClientListByUserResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByUserHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

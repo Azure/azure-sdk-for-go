@@ -33,7 +33,7 @@ type SubscriptionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSubscriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionClient, error) {
-	cl, err := arm.NewClient(moduleName+".SubscriptionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewSubscriptionClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *SubscriptionClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, sid string, parameters SubscriptionCreateParameters, options *SubscriptionClientCreateOrUpdateOptions) (SubscriptionClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "SubscriptionClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, sid, parameters, options)
 	if err != nil {
 		return SubscriptionClientCreateOrUpdateResponse{}, err
@@ -138,6 +142,10 @@ func (client *SubscriptionClient) createOrUpdateHandleResponse(resp *http.Respon
 //   - options - SubscriptionClientDeleteOptions contains the optional parameters for the SubscriptionClient.Delete method.
 func (client *SubscriptionClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string, options *SubscriptionClientDeleteOptions) (SubscriptionClientDeleteResponse, error) {
 	var err error
+	const operationName = "SubscriptionClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, sid, ifMatch, options)
 	if err != nil {
 		return SubscriptionClientDeleteResponse{}, err
@@ -194,6 +202,10 @@ func (client *SubscriptionClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - SubscriptionClientGetOptions contains the optional parameters for the SubscriptionClient.Get method.
 func (client *SubscriptionClient) Get(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientGetOptions) (SubscriptionClientGetResponse, error) {
 	var err error
+	const operationName = "SubscriptionClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, sid, options)
 	if err != nil {
 		return SubscriptionClientGetResponse{}, err
@@ -262,6 +274,10 @@ func (client *SubscriptionClient) getHandleResponse(resp *http.Response) (Subscr
 //     method.
 func (client *SubscriptionClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientGetEntityTagOptions) (SubscriptionClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "SubscriptionClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, sid, options)
 	if err != nil {
 		return SubscriptionClientGetEntityTagResponse{}, err
@@ -310,11 +326,10 @@ func (client *SubscriptionClient) getEntityTagCreateRequest(ctx context.Context,
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *SubscriptionClient) getEntityTagHandleResponse(resp *http.Response) (SubscriptionClientGetEntityTagResponse, error) {
-	result := SubscriptionClientGetEntityTagResponse{}
+	result := SubscriptionClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -330,25 +345,20 @@ func (client *SubscriptionClient) NewListPager(resourceGroupName string, service
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SubscriptionClientListResponse) (SubscriptionClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SubscriptionClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return SubscriptionClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SubscriptionClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SubscriptionClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -407,6 +417,10 @@ func (client *SubscriptionClient) listHandleResponse(resp *http.Response) (Subsc
 //     method.
 func (client *SubscriptionClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientListSecretsOptions) (SubscriptionClientListSecretsResponse, error) {
 	var err error
+	const operationName = "SubscriptionClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, serviceName, sid, options)
 	if err != nil {
 		return SubscriptionClientListSecretsResponse{}, err
@@ -476,6 +490,10 @@ func (client *SubscriptionClient) listSecretsHandleResponse(resp *http.Response)
 //     method.
 func (client *SubscriptionClient) RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientRegeneratePrimaryKeyOptions) (SubscriptionClientRegeneratePrimaryKeyResponse, error) {
 	var err error
+	const operationName = "SubscriptionClient.RegeneratePrimaryKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.regeneratePrimaryKeyCreateRequest(ctx, resourceGroupName, serviceName, sid, options)
 	if err != nil {
 		return SubscriptionClientRegeneratePrimaryKeyResponse{}, err
@@ -532,6 +550,10 @@ func (client *SubscriptionClient) regeneratePrimaryKeyCreateRequest(ctx context.
 //     method.
 func (client *SubscriptionClient) RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientRegenerateSecondaryKeyOptions) (SubscriptionClientRegenerateSecondaryKeyResponse, error) {
 	var err error
+	const operationName = "SubscriptionClient.RegenerateSecondaryKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.regenerateSecondaryKeyCreateRequest(ctx, resourceGroupName, serviceName, sid, options)
 	if err != nil {
 		return SubscriptionClientRegenerateSecondaryKeyResponse{}, err
@@ -590,6 +612,10 @@ func (client *SubscriptionClient) regenerateSecondaryKeyCreateRequest(ctx contex
 //   - options - SubscriptionClientUpdateOptions contains the optional parameters for the SubscriptionClient.Update method.
 func (client *SubscriptionClient) Update(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string, parameters SubscriptionUpdateParameters, options *SubscriptionClientUpdateOptions) (SubscriptionClientUpdateResponse, error) {
 	var err error
+	const operationName = "SubscriptionClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, sid, ifMatch, parameters, options)
 	if err != nil {
 		return SubscriptionClientUpdateResponse{}, err

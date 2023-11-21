@@ -33,7 +33,7 @@ type PolicyFragmentClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPolicyFragmentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyFragmentClient, error) {
-	cl, err := arm.NewClient(moduleName+".PolicyFragmentClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *PolicyFragmentClient) BeginCreateOrUpdate(ctx context.Context, res
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PolicyFragmentClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PolicyFragmentClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PolicyFragmentClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *PolicyFragmentClient) BeginCreateOrUpdate(ctx context.Context, res
 // Generated from API version 2022-08-01
 func (client *PolicyFragmentClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, id string, parameters PolicyFragmentContract, options *PolicyFragmentClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PolicyFragmentClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, id, parameters, options)
 	if err != nil {
 		return nil, err
@@ -138,6 +145,10 @@ func (client *PolicyFragmentClient) createOrUpdateCreateRequest(ctx context.Cont
 //   - options - PolicyFragmentClientDeleteOptions contains the optional parameters for the PolicyFragmentClient.Delete method.
 func (client *PolicyFragmentClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, id string, ifMatch string, options *PolicyFragmentClientDeleteOptions) (PolicyFragmentClientDeleteResponse, error) {
 	var err error
+	const operationName = "PolicyFragmentClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, id, ifMatch, options)
 	if err != nil {
 		return PolicyFragmentClientDeleteResponse{}, err
@@ -194,6 +205,10 @@ func (client *PolicyFragmentClient) deleteCreateRequest(ctx context.Context, res
 //   - options - PolicyFragmentClientGetOptions contains the optional parameters for the PolicyFragmentClient.Get method.
 func (client *PolicyFragmentClient) Get(ctx context.Context, resourceGroupName string, serviceName string, id string, options *PolicyFragmentClientGetOptions) (PolicyFragmentClientGetResponse, error) {
 	var err error
+	const operationName = "PolicyFragmentClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, id, options)
 	if err != nil {
 		return PolicyFragmentClientGetResponse{}, err
@@ -265,6 +280,10 @@ func (client *PolicyFragmentClient) getHandleResponse(resp *http.Response) (Poli
 //     method.
 func (client *PolicyFragmentClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, id string, options *PolicyFragmentClientGetEntityTagOptions) (PolicyFragmentClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "PolicyFragmentClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, id, options)
 	if err != nil {
 		return PolicyFragmentClientGetEntityTagResponse{}, err
@@ -313,11 +332,10 @@ func (client *PolicyFragmentClient) getEntityTagCreateRequest(ctx context.Contex
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *PolicyFragmentClient) getEntityTagHandleResponse(resp *http.Response) (PolicyFragmentClientGetEntityTagResponse, error) {
-	result := PolicyFragmentClientGetEntityTagResponse{}
+	result := PolicyFragmentClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -331,6 +349,10 @@ func (client *PolicyFragmentClient) getEntityTagHandleResponse(resp *http.Respon
 //     method.
 func (client *PolicyFragmentClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, options *PolicyFragmentClientListByServiceOptions) (PolicyFragmentClientListByServiceResponse, error) {
 	var err error
+	const operationName = "PolicyFragmentClient.ListByService"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return PolicyFragmentClientListByServiceResponse{}, err
@@ -405,6 +427,10 @@ func (client *PolicyFragmentClient) listByServiceHandleResponse(resp *http.Respo
 //     method.
 func (client *PolicyFragmentClient) ListReferences(ctx context.Context, resourceGroupName string, serviceName string, id string, options *PolicyFragmentClientListReferencesOptions) (PolicyFragmentClientListReferencesResponse, error) {
 	var err error
+	const operationName = "PolicyFragmentClient.ListReferences"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listReferencesCreateRequest(ctx, resourceGroupName, serviceName, id, options)
 	if err != nil {
 		return PolicyFragmentClientListReferencesResponse{}, err

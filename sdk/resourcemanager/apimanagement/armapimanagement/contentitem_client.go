@@ -32,7 +32,7 @@ type ContentItemClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContentItemClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContentItemClient, error) {
-	cl, err := arm.NewClient(moduleName+".ContentItemClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewContentItemClient(subscriptionID string, credential azcore.TokenCredenti
 //     method.
 func (client *ContentItemClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, parameters ContentItemContract, options *ContentItemClientCreateOrUpdateOptions) (ContentItemClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ContentItemClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, contentItemID, parameters, options)
 	if err != nil {
 		return ContentItemClientCreateOrUpdateResponse{}, err
@@ -137,6 +141,10 @@ func (client *ContentItemClient) createOrUpdateHandleResponse(resp *http.Respons
 //   - options - ContentItemClientDeleteOptions contains the optional parameters for the ContentItemClient.Delete method.
 func (client *ContentItemClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, ifMatch string, options *ContentItemClientDeleteOptions) (ContentItemClientDeleteResponse, error) {
 	var err error
+	const operationName = "ContentItemClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, contentItemID, ifMatch, options)
 	if err != nil {
 		return ContentItemClientDeleteResponse{}, err
@@ -198,6 +206,10 @@ func (client *ContentItemClient) deleteCreateRequest(ctx context.Context, resour
 //   - options - ContentItemClientGetOptions contains the optional parameters for the ContentItemClient.Get method.
 func (client *ContentItemClient) Get(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemClientGetOptions) (ContentItemClientGetResponse, error) {
 	var err error
+	const operationName = "ContentItemClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, contentItemID, options)
 	if err != nil {
 		return ContentItemClientGetResponse{}, err
@@ -271,6 +283,10 @@ func (client *ContentItemClient) getHandleResponse(resp *http.Response) (Content
 //     method.
 func (client *ContentItemClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemClientGetEntityTagOptions) (ContentItemClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "ContentItemClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, contentItemID, options)
 	if err != nil {
 		return ContentItemClientGetEntityTagResponse{}, err
@@ -323,11 +339,10 @@ func (client *ContentItemClient) getEntityTagCreateRequest(ctx context.Context, 
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *ContentItemClient) getEntityTagHandleResponse(resp *http.Response) (ContentItemClientGetEntityTagResponse, error) {
-	result := ContentItemClientGetEntityTagResponse{}
+	result := ContentItemClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -345,25 +360,20 @@ func (client *ContentItemClient) NewListByServicePager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ContentItemClientListByServiceResponse) (ContentItemClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ContentItemClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, options)
+			}, nil)
 			if err != nil {
 				return ContentItemClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ContentItemClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ContentItemClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

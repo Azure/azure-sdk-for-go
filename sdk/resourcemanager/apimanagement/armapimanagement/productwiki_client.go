@@ -32,7 +32,7 @@ type ProductWikiClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProductWikiClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductWikiClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProductWikiClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewProductWikiClient(subscriptionID string, credential azcore.TokenCredenti
 //     method.
 func (client *ProductWikiClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters WikiContract, options *ProductWikiClientCreateOrUpdateOptions) (ProductWikiClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ProductWikiClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, productID, parameters, options)
 	if err != nil {
 		return ProductWikiClientCreateOrUpdateResponse{}, err
@@ -131,6 +135,10 @@ func (client *ProductWikiClient) createOrUpdateHandleResponse(resp *http.Respons
 //   - options - ProductWikiClientDeleteOptions contains the optional parameters for the ProductWikiClient.Delete method.
 func (client *ProductWikiClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, options *ProductWikiClientDeleteOptions) (ProductWikiClientDeleteResponse, error) {
 	var err error
+	const operationName = "ProductWikiClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, productID, ifMatch, options)
 	if err != nil {
 		return ProductWikiClientDeleteResponse{}, err
@@ -187,6 +195,10 @@ func (client *ProductWikiClient) deleteCreateRequest(ctx context.Context, resour
 //   - options - ProductWikiClientGetOptions contains the optional parameters for the ProductWikiClient.Get method.
 func (client *ProductWikiClient) Get(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductWikiClientGetOptions) (ProductWikiClientGetResponse, error) {
 	var err error
+	const operationName = "ProductWikiClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
 	if err != nil {
 		return ProductWikiClientGetResponse{}, err
@@ -255,6 +267,10 @@ func (client *ProductWikiClient) getHandleResponse(resp *http.Response) (Product
 //     method.
 func (client *ProductWikiClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductWikiClientGetEntityTagOptions) (ProductWikiClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "ProductWikiClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
 	if err != nil {
 		return ProductWikiClientGetEntityTagResponse{}, err
@@ -303,11 +319,10 @@ func (client *ProductWikiClient) getEntityTagCreateRequest(ctx context.Context, 
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *ProductWikiClient) getEntityTagHandleResponse(resp *http.Response) (ProductWikiClientGetEntityTagResponse, error) {
-	result := ProductWikiClientGetEntityTagResponse{}
+	result := ProductWikiClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -324,6 +339,10 @@ func (client *ProductWikiClient) getEntityTagHandleResponse(resp *http.Response)
 //   - options - ProductWikiClientUpdateOptions contains the optional parameters for the ProductWikiClient.Update method.
 func (client *ProductWikiClient) Update(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, parameters WikiUpdateContract, options *ProductWikiClientUpdateOptions) (ProductWikiClientUpdateResponse, error) {
 	var err error
+	const operationName = "ProductWikiClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, productID, ifMatch, parameters, options)
 	if err != nil {
 		return ProductWikiClientUpdateResponse{}, err

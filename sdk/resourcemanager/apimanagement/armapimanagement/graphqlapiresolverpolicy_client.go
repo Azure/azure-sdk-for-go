@@ -32,7 +32,7 @@ type GraphQLAPIResolverPolicyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGraphQLAPIResolverPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GraphQLAPIResolverPolicyClient, error) {
-	cl, err := arm.NewClient(moduleName+".GraphQLAPIResolverPolicyClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,10 @@ func NewGraphQLAPIResolverPolicyClient(subscriptionID string, credential azcore.
 //     method.
 func (client *GraphQLAPIResolverPolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, policyID PolicyIDName, parameters PolicyContract, options *GraphQLAPIResolverPolicyClientCreateOrUpdateOptions) (GraphQLAPIResolverPolicyClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "GraphQLAPIResolverPolicyClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, policyID, parameters, options)
 	if err != nil {
 		return GraphQLAPIResolverPolicyClientCreateOrUpdateResponse{}, err
@@ -146,6 +150,10 @@ func (client *GraphQLAPIResolverPolicyClient) createOrUpdateHandleResponse(resp 
 //     method.
 func (client *GraphQLAPIResolverPolicyClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, policyID PolicyIDName, ifMatch string, options *GraphQLAPIResolverPolicyClientDeleteOptions) (GraphQLAPIResolverPolicyClientDeleteResponse, error) {
 	var err error
+	const operationName = "GraphQLAPIResolverPolicyClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, policyID, ifMatch, options)
 	if err != nil {
 		return GraphQLAPIResolverPolicyClientDeleteResponse{}, err
@@ -214,6 +222,10 @@ func (client *GraphQLAPIResolverPolicyClient) deleteCreateRequest(ctx context.Co
 //     method.
 func (client *GraphQLAPIResolverPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, policyID PolicyIDName, options *GraphQLAPIResolverPolicyClientGetOptions) (GraphQLAPIResolverPolicyClientGetResponse, error) {
 	var err error
+	const operationName = "GraphQLAPIResolverPolicyClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, policyID, options)
 	if err != nil {
 		return GraphQLAPIResolverPolicyClientGetResponse{}, err
@@ -296,6 +308,10 @@ func (client *GraphQLAPIResolverPolicyClient) getHandleResponse(resp *http.Respo
 //     method.
 func (client *GraphQLAPIResolverPolicyClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, policyID PolicyIDName, options *GraphQLAPIResolverPolicyClientGetEntityTagOptions) (GraphQLAPIResolverPolicyClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "GraphQLAPIResolverPolicyClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, policyID, options)
 	if err != nil {
 		return GraphQLAPIResolverPolicyClientGetEntityTagResponse{}, err
@@ -352,11 +368,10 @@ func (client *GraphQLAPIResolverPolicyClient) getEntityTagCreateRequest(ctx cont
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *GraphQLAPIResolverPolicyClient) getEntityTagHandleResponse(resp *http.Response) (GraphQLAPIResolverPolicyClientGetEntityTagResponse, error) {
-	result := GraphQLAPIResolverPolicyClientGetEntityTagResponse{}
+	result := GraphQLAPIResolverPolicyClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -376,25 +391,20 @@ func (client *GraphQLAPIResolverPolicyClient) NewListByResolverPager(resourceGro
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GraphQLAPIResolverPolicyClientListByResolverResponse) (GraphQLAPIResolverPolicyClientListByResolverResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResolverCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GraphQLAPIResolverPolicyClient.NewListByResolverPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResolverCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, options)
+			}, nil)
 			if err != nil {
 				return GraphQLAPIResolverPolicyClientListByResolverResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GraphQLAPIResolverPolicyClientListByResolverResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GraphQLAPIResolverPolicyClientListByResolverResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResolverHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

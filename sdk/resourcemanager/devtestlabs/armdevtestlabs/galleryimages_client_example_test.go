@@ -56,7 +56,7 @@ func ExampleGalleryImagesClient_NewListPager() {
 		// 			Properties: &armdevtestlabs.GalleryImageProperties{
 		// 				Description: to.Ptr("Ubuntu Server is the world's most popular Linux for cloud environments. Updates and patches for Ubuntu Server 20.04 LTS will be available until April 2025. Ubuntu Server is the perfect virtual machine (VM) platform for all workloads from web applications to NoSQL databases and Hadoop. For more information see <a href='https://ubuntu.com/azure' target='_blank'>Ubuntu on Azure</a> and <a href='http://juju.ubuntu.com' target='_blank'>using Juju to deploy your workloads</a>.<p><h3 class='msportalfx-text-header'>Legal Terms</h3></p><p>By clicking the Create button, I acknowledge that I am getting this software from Canonical and that the <a href='http://www.ubuntu.com/project/about-ubuntu/licensing' target='_blank'>legal terms</a> of Canonical apply to it. Microsoft does not provide rights for third-party software. Also see the <a href='http://www.ubuntu.com/aboutus/privacypolicy' target='_blank'>privacy statement</a> from Canonical.</p>"),
 		// 				Author: to.Ptr("Canonical"),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T23:43:43.7643542+00:00"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T23:43:43.764Z"); return t}()),
 		// 				Enabled: to.Ptr(true),
 		// 				Icon: to.Ptr("https://106c4.wpc.azureedge.net/80106C4/Gallery-Prod/cdn/2015-02-24/prod20161101-microsoft-windowsazure-gallery/canonical.0001-com-ubuntu-server-focal20_04-lts-ARM.1.0.22/Icons/Small.png"),
 		// 				ImageReference: &armdevtestlabs.GalleryImageReference{
@@ -79,7 +79,7 @@ func ExampleGalleryImagesClient_NewListPager() {
 		// 			Properties: &armdevtestlabs.GalleryImageProperties{
 		// 				Description: to.Ptr("<p>This software is provided by Microsoft. Use of this software in Microsoft Azure is not permitted except under a volume licensing agreement with Microsoft. By clicking Create, I acknowledge that I or the company I work for is licensed to use this software under a volume licensing agreement with Microsoft and that the right to use it will be subject to that agreement.</p> <p><h3 class='msportalfx-text-header'>Legal Terms</h3></p><p>By clicking the Create button, I acknowledge that I am getting this software from Microsoft and that the <a href='https://www.microsoft.com/en-us/Useterms/Retail/Windows/10/UseTerms_Retail_Windows_10_English.htm' target='_blank'>legal terms</a> of Microsoft apply to it. Microsoft does not provide rights for third-party software. Also see the <a href='https://go.microsoft.com/fwlink/?LinkId=529552' target='_blank'>privacy statement</a> from Microsoft.</p>"),
 		// 				Author: to.Ptr("Microsoft"),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:33:33.2464999+00:00"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:33:33.246Z"); return t}()),
 		// 				Enabled: to.Ptr(true),
 		// 				Icon: to.Ptr("https://106c4.wpc.azureedge.net/80106C4/Gallery-Prod/cdn/2015-02-24/prod20161101-microsoft-windowsazure-gallery/microsoftwindowsdesktop.windows-1020h2-ent.1.0.238/Icons/Small.png"),
 		// 				ImageReference: &armdevtestlabs.GalleryImageReference{

@@ -64,7 +64,7 @@ func ExampleLabsClient_NewListBySubscriptionPager() {
 		// 					Title: to.Ptr(""),
 		// 				},
 		// 				ArtifactsStorageAccount: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/resourceGroupName/providers/Microsoft.Storage/storageAccounts/{storageAccountName}"),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-30T08:38:13.1973609-07:00"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-30T15:38:13.197Z"); return t}()),
 		// 				DefaultPremiumStorageAccount: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/resourceGroupName/providers/Microsoft.Storage/storageAccounts/{storageAccountName}"),
 		// 				DefaultStorageAccount: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/resourceGroupName/providers/Microsoft.Storage/storageAccounts/{storageAccountName}"),
 		// 				EnvironmentPermission: to.Ptr(armdevtestlabs.EnvironmentPermissionReader),
@@ -100,7 +100,7 @@ func ExampleLabsClient_NewListBySubscriptionPager() {
 		// 					Title: to.Ptr(""),
 		// 				},
 		// 				ArtifactsStorageAccount: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName2}/providers/Microsoft.Storage/storageAccounts/{storageAccountName2}"),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-30T09:37:52.9675083-07:00"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-30T16:37:52.967Z"); return t}()),
 		// 				DefaultPremiumStorageAccount: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName2}/providers/Microsoft.Storage/storageAccounts/{storageAccountName2}"),
 		// 				DefaultStorageAccount: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName2}/providers/Microsoft.Storage/storageAccounts/{storageAccountName2}"),
 		// 				EnvironmentPermission: to.Ptr(armdevtestlabs.EnvironmentPermissionReader),
@@ -167,7 +167,7 @@ func ExampleLabsClient_NewListByResourceGroupPager() {
 		// 					Markdown: to.Ptr(""),
 		// 					Title: to.Ptr(""),
 		// 				},
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-02T10:23:20.9573599-07:00"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-02T17:23:20.957Z"); return t}()),
 		// 				EnvironmentPermission: to.Ptr(armdevtestlabs.EnvironmentPermissionReader),
 		// 				LabStorageType: to.Ptr(armdevtestlabs.StorageTypeStandard),
 		// 				MandatoryArtifactsResourceIDsLinux: []*string{
@@ -222,7 +222,7 @@ func ExampleLabsClient_Get() {
 	// 			Title: to.Ptr(""),
 	// 		},
 	// 		ArtifactsStorageAccount: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/resourceGroupName/providers/Microsoft.Storage/storageAccounts/{storageAccountName}"),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T18:40:48.1739018-07:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-02T01:40:48.173Z"); return t}()),
 	// 		DefaultPremiumStorageAccount: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/resourceGroupName/providers/Microsoft.Storage/storageAccounts/{storageAccountName}"),
 	// 		DefaultStorageAccount: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/resourceGroupName/providers/Microsoft.Storage/storageAccounts/{storageAccountName}"),
 	// 		EnvironmentPermission: to.Ptr(armdevtestlabs.EnvironmentPermissionReader),
@@ -289,7 +289,7 @@ func ExampleLabsClient_BeginCreateOrUpdate() {
 	// 			Markdown: to.Ptr(""),
 	// 			Title: to.Ptr(""),
 	// 		},
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T18:40:48.1739018-07:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-02T01:40:48.173Z"); return t}()),
 	// 		EnvironmentPermission: to.Ptr(armdevtestlabs.EnvironmentPermissionReader),
 	// 		LabStorageType: to.Ptr(armdevtestlabs.StorageTypeStandard),
 	// 		MandatoryArtifactsResourceIDsLinux: []*string{
@@ -361,7 +361,7 @@ func ExampleLabsClient_Update() {
 	// 			Markdown: to.Ptr(""),
 	// 			Title: to.Ptr(""),
 	// 		},
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T18:40:48.1739018-07:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-02T01:40:48.173Z"); return t}()),
 	// 		EnvironmentPermission: to.Ptr(armdevtestlabs.EnvironmentPermissionReader),
 	// 		LabStorageType: to.Ptr(armdevtestlabs.StorageTypeStandard),
 	// 		MandatoryArtifactsResourceIDsLinux: []*string{
@@ -458,7 +458,7 @@ func ExampleLabsClient_BeginExportResourceUsage() {
 	}
 	poller, err := clientFactory.NewLabsClient().BeginExportResourceUsage(ctx, "resourceGroupName", "{labName}", armdevtestlabs.ExportResourceUsageParameters{
 		BlobStorageAbsoluteSasURI: to.Ptr("https://invalid.blob.core.windows.net/export.blob?sv=2015-07-08&sig={sas}&sp=rcw"),
-		UsageStartDate:            to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00Z"); return t }()),
+		UsageStartDate:            to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00.000Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

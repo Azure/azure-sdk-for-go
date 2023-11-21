@@ -1166,7 +1166,7 @@ func ExampleFirmwareClient_NewListGenerateCryptoCertificateListPager_firmwareLis
 		// 					Name: to.Ptr("VeriSign Class 2"),
 		// 					CryptoCertID: to.Ptr("dfc4a7e4-2037-482a-bdf8-81289335337e"),
 		// 					Encoding: to.Ptr("PEM"),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1999-12-31T23:59:59.999"); return t}()),
+		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1999-12-31T15:59:59.999Z"); return t}()),
 		// 					FilePaths: []*string{
 		// 						to.Ptr("this/is/a/path"),
 		// 						to.Ptr("/this/is/another/path")},

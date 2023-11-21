@@ -464,7 +464,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 
 	buffers := shared.NewMMBPool(int(o.Concurrency), o.BlockSize)
 	defer buffers.Free()
-	aquireBuffer := func() ([]byte, error) {
+	acquireBuffer := func() ([]byte, error) {
 		select {
 		case b := <-buffers.Acquire():
 			// got a buffer
@@ -489,10 +489,10 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 	/*
 	 * We have created as many channels as the number of chunks we have.
 	 * Each downloaded block will be sent to the channel matching its
-	 * sequece number, i.e. 0th block is sent to 0th channel, 1st block
+	 * sequence number, i.e. 0th block is sent to 0th channel, 1st block
 	 * to 1st channel and likewise. The blocks are then read and written
-	 * to the file serially by below goroutine. Do note that the blocks
-	 * blocks are still downloaded parallelly from n/w, only serailized
+	 * to the file serially by below goroutine. Do note that the
+	 * blocks are still downloaded parallel from n/w, only serialized
 	 * and written to file here.
 	 */
 	writerError := make(chan error)
@@ -521,7 +521,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 		NumChunks:     numChunks,
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
-			buff, err := aquireBuffer()
+			buff, err := acquireBuffer()
 			if err != nil {
 				return err
 			}
@@ -538,7 +538,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 				return err
 			}
 
-			blockIndex := (chunkStart / o.BlockSize)
+			blockIndex := chunkStart / o.BlockSize
 			blocks[blockIndex] <- buff
 			return nil
 		},
@@ -620,9 +620,22 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 		}
 	}
 
-	if size > 0 {
-		return b.downloadFile(ctx, file, *do)
-	} else { // if the blob's size is 0, there is no need in downloading it
+	if size == 0 { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil
 	}
+
+	n, err := b.downloadFile(ctx, file, *do)
+	if err != nil {
+		return n, err
+	}
+	stat, err = file.Stat()
+	if err != nil {
+		return n, err
+	}
+	if stat.Size() != size {
+		if err = file.Truncate(size); err != nil {
+			return n, err
+		}
+	}
+	return n, err
 }

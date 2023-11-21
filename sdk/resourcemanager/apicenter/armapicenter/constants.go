@@ -9,8 +9,8 @@
 package armapicenter
 
 const (
-	moduleName    = "armapicenter"
-	moduleVersion = "v0.1.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apicenter/armapicenter"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

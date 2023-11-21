@@ -48,7 +48,7 @@ func ExampleProjectsClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService/projects/project1"),
 		// 			Location: to.Ptr("southcentralus"),
 		// 			Properties: &armdatamigration.ProjectProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-14T01:29:56.3049263+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-14T01:29:56.304Z"); return t}()),
 		// 				ProvisioningState: to.Ptr(armdatamigration.ProjectProvisioningStateSucceeded),
 		// 				SourcePlatform: to.Ptr(armdatamigration.ProjectSourcePlatformSQL),
 		// 				TargetPlatform: to.Ptr(armdatamigration.ProjectTargetPlatformSQLDB),
@@ -60,7 +60,7 @@ func ExampleProjectsClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService/projects/project2"),
 		// 			Location: to.Ptr("southcentralus"),
 		// 			Properties: &armdatamigration.ProjectProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-14T01:30:05.6185148+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-14T01:30:05.618Z"); return t}()),
 		// 				ProvisioningState: to.Ptr(armdatamigration.ProjectProvisioningStateSucceeded),
 		// 				SourcePlatform: to.Ptr(armdatamigration.ProjectSourcePlatformSQL),
 		// 				TargetPlatform: to.Ptr(armdatamigration.ProjectTargetPlatformSQLDB),
@@ -100,7 +100,7 @@ func ExampleProjectsClient_CreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService/projects/DmsSdkProject"),
 	// 	Location: to.Ptr("southcentralus"),
 	// 	Properties: &armdatamigration.ProjectProperties{
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-03T02:14:54.2458282-07:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-03T09:14:54.245Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armdatamigration.ProjectProvisioningStateSucceeded),
 	// 		SourcePlatform: to.Ptr(armdatamigration.ProjectSourcePlatformSQL),
 	// 		TargetPlatform: to.Ptr(armdatamigration.ProjectTargetPlatformSQLDB),
@@ -132,7 +132,7 @@ func ExampleProjectsClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService/projects/DmsSdkProject"),
 	// 	Location: to.Ptr("southcentralus"),
 	// 	Properties: &armdatamigration.ProjectProperties{
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-03T02:35:11.6561001-07:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-03T09:35:11.656Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armdatamigration.ProjectProvisioningStateSucceeded),
 	// 		SourcePlatform: to.Ptr(armdatamigration.ProjectSourcePlatformSQL),
 	// 		TargetPlatform: to.Ptr(armdatamigration.ProjectTargetPlatformSQLDB),
@@ -187,7 +187,7 @@ func ExampleProjectsClient_Update() {
 	// 	ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService/projects/DmsSdkProject"),
 	// 	Location: to.Ptr("southcentralus"),
 	// 	Properties: &armdatamigration.ProjectProperties{
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-03T02:14:54.2458282-07:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-03T09:14:54.245Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armdatamigration.ProjectProvisioningStateSucceeded),
 	// 		SourcePlatform: to.Ptr(armdatamigration.ProjectSourcePlatformSQL),
 	// 		TargetPlatform: to.Ptr(armdatamigration.ProjectTargetPlatformSQLDB),

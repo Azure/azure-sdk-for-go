@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated to the latest version of `azcore`.
+* Enabled spans for distributed tracing.
 
 ## 0.1.1 (2023-10-11)
 

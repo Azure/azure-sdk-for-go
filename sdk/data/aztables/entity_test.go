@@ -8,13 +8,14 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/stretchr/testify/require"
 )
 
 func TestAddBasicEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			basicEntity := basicTestEntity{
@@ -64,7 +65,7 @@ func TestAddBasicEntity(t *testing.T) {
 func TestEdmMarshalling(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			edmEntity := createEdmEntity(1, "partition")
@@ -97,7 +98,7 @@ func TestEdmMarshalling(t *testing.T) {
 			require.Nil(t, err)
 
 			// Unmarshal to plain map
-			var received3 map[string]interface{}
+			var received3 map[string]any
 			err = json.Unmarshal(resp.Value, &received3)
 			require.Nil(t, err)
 
@@ -107,7 +108,7 @@ func TestEdmMarshalling(t *testing.T) {
 func TestEntityQuotes(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			pk, err := createRandomName(t, "partition")
@@ -118,7 +119,7 @@ func TestEntityQuotes(t *testing.T) {
 					PartitionKey: pk,
 					RowKey:       fmt.Sprint(1),
 				},
-				Properties: map[string]interface{}{
+				Properties: map[string]any{
 					"SingleQuote":           "''",
 					"DoubleQuote":           "\"\"",
 					"JustSpaces":            "    ",
@@ -154,7 +155,7 @@ func TestEntityQuotes(t *testing.T) {
 			require.Nil(t, err)
 
 			// Unmarshal to plain map
-			var received3 map[string]interface{}
+			var received3 map[string]any
 			err = json.Unmarshal(resp.Value, &received3)
 			require.Nil(t, err)
 		})
@@ -164,7 +165,7 @@ func TestEntityQuotes(t *testing.T) {
 func TestEntityUnicode(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			pk, err := createRandomName(t, "partition")
@@ -175,7 +176,7 @@ func TestEntityUnicode(t *testing.T) {
 					PartitionKey: pk,
 					RowKey:       fmt.Sprint(1),
 				},
-				Properties: map[string]interface{}{
+				Properties: map[string]any{
 					"Unicode": "ꀕ",
 					"ꀕ":       "Unicode",
 				},
@@ -203,7 +204,7 @@ func TestEntityUnicode(t *testing.T) {
 			require.Nil(t, err)
 
 			// Unmarshal to plain map
-			var received3 map[string]interface{}
+			var received3 map[string]any
 			err = json.Unmarshal(resp.Value, &received3)
 			require.Nil(t, err)
 		})

@@ -1,10 +1,19 @@
 # Release History
 
-## 1.0.3 (Unreleased)
+## 1.1.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.0 (2023-11-14)
+
+### Features Added
+* Enabled spans for distributed tracing.
 
 ### Bugs Fixed
 * Internal calls in `Client.SubmitTransaction` now honor the caller's context.

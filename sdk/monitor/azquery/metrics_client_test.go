@@ -157,25 +157,3 @@ func TestNewListNamespacesPager_Failure(t *testing.T) {
 	}
 
 }
-
-func TestMetricConstants(t *testing.T) {
-	aggregationType := []azquery.AggregationType{azquery.AggregationTypeNone, azquery.AggregationTypeAverage, azquery.AggregationTypeCount, azquery.AggregationTypeMinimum, azquery.AggregationTypeMaximum, azquery.AggregationTypeTotal}
-	aggregationTypeRes := azquery.PossibleAggregationTypeValues()
-	require.Equal(t, aggregationType, aggregationTypeRes)
-
-	metricType := []azquery.MetricClass{azquery.MetricClassAvailability, azquery.MetricClassErrors, azquery.MetricClassLatency, azquery.MetricClassSaturation, azquery.MetricClassTransactions}
-	metricTypeRes := azquery.PossibleMetricClassValues()
-	require.Equal(t, metricType, metricTypeRes)
-
-	metricUnit := []azquery.MetricUnit{azquery.MetricUnitBitsPerSecond, azquery.MetricUnitByteSeconds, azquery.MetricUnitBytes, azquery.MetricUnitBytesPerSecond, azquery.MetricUnitCores, azquery.MetricUnitCount, azquery.MetricUnitCountPerSecond, azquery.MetricUnitMilliCores, azquery.MetricUnitMilliSeconds, azquery.MetricUnitNanoCores, azquery.MetricUnitPercent, azquery.MetricUnitSeconds, azquery.MetricUnitUnspecified}
-	metricUnitRes := azquery.PossibleMetricUnitValues()
-	require.Equal(t, metricUnit, metricUnitRes)
-
-	namespaceClassification := []azquery.NamespaceClassification{azquery.NamespaceClassificationCustom, azquery.NamespaceClassificationPlatform, azquery.NamespaceClassificationQos}
-	namespaceClassificationRes := azquery.PossibleNamespaceClassificationValues()
-	require.Equal(t, namespaceClassification, namespaceClassificationRes)
-
-	resultType := []azquery.ResultType{azquery.ResultTypeData, azquery.ResultTypeMetadata}
-	resultTypeRes := azquery.PossibleResultTypeValues()
-	require.Equal(t, resultType, resultTypeRes)
-}

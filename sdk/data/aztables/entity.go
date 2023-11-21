@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-// https://docs.microsoft.com/en-us/rest/api/storageservices/payload-format-for-table-service-operations
+// https://learn.microsoft.com/rest/api/storageservices/payload-format-for-table-service-operations
 
 // Entity is the bare minimum properties for a valid Entity. These should be embedded in a custom struct.
 type Entity struct {
@@ -23,17 +23,17 @@ type Entity struct {
 // EDMEntity is an entity that embeds the azcore.Entity type and has a Properties map for user defined entity properties
 type EDMEntity struct {
 	Entity
-	Metadata   string                 `json:"odata.metadata"`
-	ID         string                 `json:"odata.id"`
-	EditLink   string                 `json:"odata.editLink"`
-	Type       string                 `json:"odata.type"`
-	ETag       string                 `json:"odata.etag"`
-	Properties map[string]interface{} // Type assert the value to one of these: bool, int32, float64, string, EDMDateTime, EDMBinary, EDMGUID, EDMInt64
+	Metadata   string         `json:"odata.metadata"`
+	ID         string         `json:"odata.id"`
+	EditLink   string         `json:"odata.editLink"`
+	Type       string         `json:"odata.type"`
+	ETag       string         `json:"odata.etag"`
+	Properties map[string]any // Type assert the value to one of these: bool, int32, float64, string, EDMDateTime, EDMBinary, EDMGUID, EDMInt64
 }
 
 // MarshalJSON implements the json.Marshal method
 func (e EDMEntity) MarshalJSON() ([]byte, error) {
-	entity := map[string]interface{}{}
+	entity := map[string]any{}
 	entity["PartitionKey"], entity["RowKey"] = prepareKey(e.PartitionKey), prepareKey(e.RowKey)
 
 	for propName, propValue := range e.Properties {
@@ -63,7 +63,7 @@ func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 	if err != nil {
 		return
 	}
-	e.Properties = map[string]interface{}{}
+	e.Properties = map[string]any{}
 	for propName, propRawValue := range entity {
 		if strings.Contains(propName, "@odata.type") {
 			continue // Skip the @odata.type properties; we look them up explicitly later
@@ -95,7 +95,7 @@ func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 				}
 			}
 
-			var propValue interface{} = nil
+			var propValue any = nil
 			switch propertyEdmTypeValue {
 			case "": // "<property>@odata.type" doesn't exist, infer the EDM type from the JSON type
 				// Try to unmarshal this property value as an int32 first

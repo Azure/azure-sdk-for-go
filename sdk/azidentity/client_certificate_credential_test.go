@@ -90,27 +90,15 @@ func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
 	}
 }
 
-func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *testing.T) {
-	for _, test := range allCertTests {
-		t.Run(test.name, func(t *testing.T) {
-			options := ClientCertificateCredentialOptions{SendCertificateChain: true}
-			cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, &options)
-			if err != nil {
-				t.Fatalf("Expected an empty error but received: %s", err.Error())
-			}
-			cred.client.noCAE = fakeConfidentialClient{}
-			_, err = cred.GetToken(context.Background(), testTRO)
-			if err != nil {
-				t.Fatalf("Expected an empty error but received: %s", err.Error())
-			}
-		})
-	}
-}
-
 func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
 	for _, test := range allCertTests {
 		t.Run(test.name, func(t *testing.T) {
-			options := ClientCertificateCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: &mockSTS{}}, SendCertificateChain: true}
+			options := ClientCertificateCredentialOptions{
+				ClientOptions: azcore.ClientOptions{
+					Transport: &mockSTS{tokenRequestCallback: validateX5C(t, test.certs)},
+				},
+				SendCertificateChain: true,
+			}
 			cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, &options)
 			if err != nil {
 				t.Fatal(err)
@@ -191,6 +179,9 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			if test.path == "" {
 				t.Skip("no certificate file specified")
+			}
+			if recording.GetRecordMode() == recording.LiveMode && test.name == "SNI" {
+				t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/21988")
 			}
 			certData, err := os.ReadFile(test.path)
 			if err != nil {
@@ -285,6 +276,9 @@ func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {
 }
 
 func TestClientCertificateCredential_Regional(t *testing.T) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/21988")
+	}
 	t.Setenv(azureRegionalAuthorityName, "westus2")
 	opts, stop := initRecording(t)
 	defer stop()

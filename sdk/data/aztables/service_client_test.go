@@ -10,6 +10,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -17,7 +18,9 @@ import (
 func TestServiceErrorsServiceClient(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			service, delete := initServiceTest(t, service)
+			service, delete := initServiceTest(t, service, NewSpanValidator(t, SpanMatcher{
+				Name: "ServiceClient.DeleteTable",
+			}))
 			defer delete()
 
 			tableName, err := createRandomName(t, tableNamePrefix)
@@ -43,7 +46,9 @@ func TestServiceErrorsServiceClient(t *testing.T) {
 func TestCreateTableFromService(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			service, delete := initServiceTest(t, service)
+			service, delete := initServiceTest(t, service, NewSpanValidator(t, SpanMatcher{
+				Name: "ServiceClient.CreateTable",
+			}))
 			defer delete()
 
 			tableName, err := createRandomName(t, tableNamePrefix)
@@ -67,7 +72,7 @@ func TestCreateTableFromService(t *testing.T) {
 func TestQueryTable(t *testing.T) {
 	for _, svc := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), svc), func(t *testing.T) {
-			service, delete := initServiceTest(t, svc)
+			service, delete := initServiceTest(t, svc, tracing.Provider{})
 			defer delete()
 
 			tableCount := 5
@@ -127,7 +132,9 @@ func TestQueryTable(t *testing.T) {
 func TestListTables(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			service, delete := initServiceTest(t, service)
+			service, delete := initServiceTest(t, service, NewSpanValidator(t, SpanMatcher{
+				Name: "Pager[ListTablesResponse].NextPage",
+			}))
 			defer delete()
 			tableName, err := createRandomName(t, tableNamePrefix)
 			require.NoError(t, err)
@@ -187,7 +194,9 @@ func TestGetStatistics(t *testing.T) {
 	}
 
 	serviceURL := storageURI(accountName + "-secondary")
-	service, err := createServiceClientForRecording(t, serviceURL, *cred)
+	service, err := createServiceClientForRecording(t, serviceURL, *cred, NewSpanValidator(t, SpanMatcher{
+		Name: "ServiceClient.GetStatistics",
+	}))
 	require.NoError(t, err)
 
 	resp, err := service.GetStatistics(ctx, nil)
@@ -199,7 +208,9 @@ func TestGetStatistics(t *testing.T) {
 
 // Functionality is only available on storage accounts
 func TestGetProperties(t *testing.T) {
-	service, delete := initServiceTest(t, "storage")
+	service, delete := initServiceTest(t, "storage", NewSpanValidator(t, SpanMatcher{
+		Name: "ServiceClient.GetProperties",
+	}))
 	defer delete()
 
 	resp, err := service.GetProperties(ctx, nil)
@@ -209,7 +220,9 @@ func TestGetProperties(t *testing.T) {
 
 // Logging is only available on storage accounts
 func TestSetLogging(t *testing.T) {
-	service, delete := initServiceTest(t, "storage")
+	service, delete := initServiceTest(t, "storage", NewSpanValidator(t, SpanMatcher{
+		Name: "ServiceClient.SetProperties",
+	}))
 	defer delete()
 
 	getResp, err := service.GetProperties(ctx, nil)
@@ -243,7 +256,7 @@ func TestSetLogging(t *testing.T) {
 }
 
 func TestSetHoursMetrics(t *testing.T) {
-	service, delete := initServiceTest(t, "storage")
+	service, delete := initServiceTest(t, "storage", tracing.Provider{})
 	defer delete()
 
 	getResp, err := service.GetProperties(ctx, nil)
@@ -275,7 +288,7 @@ func TestSetHoursMetrics(t *testing.T) {
 }
 
 func TestSetMinuteMetrics(t *testing.T) {
-	service, delete := initServiceTest(t, "storage")
+	service, delete := initServiceTest(t, "storage", tracing.Provider{})
 	defer delete()
 
 	getResp, err := service.GetProperties(ctx, nil)
@@ -307,7 +320,7 @@ func TestSetMinuteMetrics(t *testing.T) {
 }
 
 func TestSetCors(t *testing.T) {
-	service, delete := initServiceTest(t, "storage")
+	service, delete := initServiceTest(t, "storage", tracing.Provider{})
 	defer delete()
 
 	getResp, err := service.GetProperties(ctx, nil)
@@ -340,7 +353,7 @@ func TestSetCors(t *testing.T) {
 }
 
 func TestSetTooManyCors(t *testing.T) {
-	service, delete := initServiceTest(t, "storage")
+	service, delete := initServiceTest(t, "storage", tracing.Provider{})
 	defer delete()
 
 	corsRules1 := CorsRule{
@@ -363,7 +376,7 @@ func TestSetTooManyCors(t *testing.T) {
 }
 
 func TestRetentionTooLong(t *testing.T) {
-	service, delete := initServiceTest(t, "storage")
+	service, delete := initServiceTest(t, "storage", tracing.Provider{})
 	defer delete()
 
 	metrics := Metrics{

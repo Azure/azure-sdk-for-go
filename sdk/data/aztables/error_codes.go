@@ -4,7 +4,7 @@
 package aztables
 
 // TableErrorCode is the error code returned by the service on failed operations. For more
-// information about Table service error codes: https://docs.microsoft.com/en-us/rest/api/storageservices/table-service-error-codes
+// information about Table service error codes: https://learn.microsoft.com/rest/api/storageservices/table-service-error-codes
 type TableErrorCode string
 
 const (

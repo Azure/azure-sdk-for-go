@@ -11,7 +11,7 @@ import (
 )
 
 // SASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Table instance.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
+// For more information, see https://learn.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 type SASSignatureValues struct {
 	Version           string      // If not specified, this defaults to SASVersion
 	Protocol          SASProtocol // See the SASProtocol* constants
@@ -80,7 +80,7 @@ func (v SASSignatureValues) Sign(credential *SharedKeyCredential) (string, error
 
 	canonicalName := "/" + "table" + "/" + credential.AccountName() + "/" + lowerCaseTableName
 
-	// String to sign: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
+	// String to sign: https://learn.microsoft.com/rest/api/storageservices/create-service-sas
 	stringToSign := strings.Join([]string{
 		v.Permissions,
 		startTime,

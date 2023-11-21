@@ -9,6 +9,7 @@ package internal
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
 func NewTableClient(endpoint string, client *azcore.Client) *TableClient {
@@ -24,4 +25,8 @@ func (t *TableClient) Endpoint() string {
 
 func (t *TableClient) Pipeline() runtime.Pipeline {
 	return t.internal.Pipeline()
+}
+
+func (t *TableClient) Tracer() tracing.Tracer {
+	return t.internal.Tracer()
 }

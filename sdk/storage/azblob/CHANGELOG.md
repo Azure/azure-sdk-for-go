@@ -13,6 +13,7 @@
 * Fixed case in Blob Batch API when blob path has / in it. Fixes [#21649](https://github.com/Azure/azure-sdk-for-go/issues/21649).
 * Fixed SharedKeyMissingError when using client.BlobClient().GetSASURL() method
 * Fixed an issue that would cause metadata keys with empty values to be omitted when enumerating blobs.
+* Fixed an issue where passing empty map to set blob tags API was causing panic. Fixes [#21869](https://github.com/Azure/azure-sdk-for-go/issues/21869).
 
 ### Other Changes
 

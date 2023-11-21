@@ -17,6 +17,7 @@
 ### Other Changes
 
 * Updated to the latest version of `azcore`.
+* Add `ContentDisposition` and `ContentType` to blob.GetSASURLOptions
 
 ## 1.2.0 (2023-10-11)
 

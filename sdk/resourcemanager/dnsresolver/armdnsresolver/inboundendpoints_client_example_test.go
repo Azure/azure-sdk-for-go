@@ -78,9 +78,9 @@ func ExampleInboundEndpointsClient_BeginCreateOrUpdate() {
 	// 		ResourceGUID: to.Ptr("87b3e20a-5833-4c40-8ad7-c5160bb1c5bd"),
 	// 	},
 	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.1974346Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 	},
 	// }
@@ -134,9 +134,9 @@ func ExampleInboundEndpointsClient_BeginUpdate() {
 	// 		ResourceGUID: to.Ptr("87b3e20a-5833-4c40-8ad7-c5160bb1c5bd"),
 	// 	},
 	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.1974346Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 	},
 	// }
@@ -203,9 +203,9 @@ func ExampleInboundEndpointsClient_Get() {
 	// 		ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
 	// 	},
 	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.1974346Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 	},
 	// }
@@ -257,9 +257,9 @@ func ExampleInboundEndpointsClient_NewListPager() {
 		// 				ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
 		// 			},
 		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.1974346Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 		// 			},
 		// 		},
@@ -285,9 +285,9 @@ func ExampleInboundEndpointsClient_NewListPager() {
 		// 				ResourceGUID: to.Ptr("87b3e20a-5833-4c40-8ad7-c5160bb1c5bd"),
 		// 			},
 		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T01:01:01.107Z"); return t}()),
 		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T02:03:01.1974346Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T02:03:01.197Z"); return t}()),
 		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 		// 			},
 		// 	}},

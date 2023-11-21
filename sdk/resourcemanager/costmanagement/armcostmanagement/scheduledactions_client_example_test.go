@@ -51,10 +51,10 @@ func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsList() {
 		// 			ETag: to.Ptr("\"1d4ff9fe66f1d10\""),
 		// 			Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
 		// 			SystemData: &armcostmanagement.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 				CreatedBy: to.Ptr("testuser"),
 		// 				CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("testuser"),
 		// 				LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 		// 			},
@@ -69,10 +69,10 @@ func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsList() {
 		// 					Schedule: &armcostmanagement.ScheduleProperties{
 		// 						DaysOfWeek: []*armcostmanagement.DaysOfWeek{
 		// 							to.Ptr(armcostmanagement.DaysOfWeekMonday)},
-		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 		// 							Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
 		// 							HourOfDay: to.Ptr[int32](10),
-		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 		// 							WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
 		// 								to.Ptr(armcostmanagement.WeeksOfMonthFirst),
 		// 								to.Ptr(armcostmanagement.WeeksOfMonthThird)},
@@ -89,10 +89,10 @@ func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsList() {
 		// 						ETag: to.Ptr("\"1d4ff9fe66f1d15\""),
 		// 						Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
 		// 						SystemData: &armcostmanagement.SystemData{
-		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 							CreatedBy: to.Ptr("testuser"),
 		// 							CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 							LastModifiedBy: to.Ptr("testuser"),
 		// 							LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 		// 						},
@@ -105,10 +105,10 @@ func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsList() {
 		// 									to.Ptr("team@gmail.com")},
 		// 								},
 		// 								Schedule: &armcostmanagement.ScheduleProperties{
-		// 									EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+		// 									EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 		// 									Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyDaily),
 		// 									HourOfDay: to.Ptr[int32](12),
-		// 									StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+		// 									StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 		// 								},
 		// 								Scope: to.Ptr(""),
 		// 								Status: to.Ptr(armcostmanagement.ScheduledActionStatusDisabled),
@@ -150,10 +150,10 @@ func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsListFilte
 		// 			ETag: to.Ptr("\"1d4ff9fe66f1d10\""),
 		// 			Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
 		// 			SystemData: &armcostmanagement.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 				CreatedBy: to.Ptr("testuser"),
 		// 				CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("testuser"),
 		// 				LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 		// 			},
@@ -168,10 +168,10 @@ func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsListFilte
 		// 					Schedule: &armcostmanagement.ScheduleProperties{
 		// 						DaysOfWeek: []*armcostmanagement.DaysOfWeek{
 		// 							to.Ptr(armcostmanagement.DaysOfWeekMonday)},
-		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 		// 							Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
 		// 							HourOfDay: to.Ptr[int32](10),
-		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 		// 							WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
 		// 								to.Ptr(armcostmanagement.WeeksOfMonthFirst),
 		// 								to.Ptr(armcostmanagement.WeeksOfMonthThird)},
@@ -188,10 +188,10 @@ func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsListFilte
 		// 						ETag: to.Ptr("\"1d4ff9fe66f1d15\""),
 		// 						Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
 		// 						SystemData: &armcostmanagement.SystemData{
-		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 							CreatedBy: to.Ptr("testuser"),
 		// 							CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 							LastModifiedBy: to.Ptr("testuser"),
 		// 							LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 		// 						},
@@ -204,10 +204,10 @@ func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsListFilte
 		// 									to.Ptr("team@gmail.com")},
 		// 								},
 		// 								Schedule: &armcostmanagement.ScheduleProperties{
-		// 									EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+		// 									EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 		// 									Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyDaily),
 		// 									HourOfDay: to.Ptr[int32](12),
-		// 									StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+		// 									StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 		// 								},
 		// 								Scope: to.Ptr(""),
 		// 								Status: to.Ptr(armcostmanagement.ScheduledActionStatusDisabled),
@@ -249,10 +249,10 @@ func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListBySco
 		// 			ETag: to.Ptr("\"1d4ff9fe66f1d10\""),
 		// 			Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
 		// 			SystemData: &armcostmanagement.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 				CreatedBy: to.Ptr("testuser"),
 		// 				CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("testuser"),
 		// 				LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 		// 			},
@@ -267,10 +267,10 @@ func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListBySco
 		// 					Schedule: &armcostmanagement.ScheduleProperties{
 		// 						DaysOfWeek: []*armcostmanagement.DaysOfWeek{
 		// 							to.Ptr(armcostmanagement.DaysOfWeekMonday)},
-		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 		// 							Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
 		// 							HourOfDay: to.Ptr[int32](10),
-		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 		// 							WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
 		// 								to.Ptr(armcostmanagement.WeeksOfMonthFirst),
 		// 								to.Ptr(armcostmanagement.WeeksOfMonthThird)},
@@ -287,10 +287,10 @@ func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListBySco
 		// 						ETag: to.Ptr("\"1d4ff9fe66f1d15\""),
 		// 						Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
 		// 						SystemData: &armcostmanagement.SystemData{
-		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 							CreatedBy: to.Ptr("testuser"),
 		// 							CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 							LastModifiedBy: to.Ptr("testuser"),
 		// 							LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 		// 						},
@@ -303,10 +303,10 @@ func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListBySco
 		// 									to.Ptr("team@gmail.com")},
 		// 								},
 		// 								Schedule: &armcostmanagement.ScheduleProperties{
-		// 									EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+		// 									EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 		// 									Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyDaily),
 		// 									HourOfDay: to.Ptr[int32](12),
-		// 									StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+		// 									StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 		// 								},
 		// 								Scope: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000"),
 		// 								Status: to.Ptr(armcostmanagement.ScheduledActionStatusDisabled),
@@ -348,10 +348,10 @@ func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListBySco
 		// 			ETag: to.Ptr("\"1d4ff9fe66f1d10\""),
 		// 			Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
 		// 			SystemData: &armcostmanagement.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 				CreatedBy: to.Ptr("testuser"),
 		// 				CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("testuser"),
 		// 				LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 		// 			},
@@ -366,10 +366,10 @@ func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListBySco
 		// 					Schedule: &armcostmanagement.ScheduleProperties{
 		// 						DaysOfWeek: []*armcostmanagement.DaysOfWeek{
 		// 							to.Ptr(armcostmanagement.DaysOfWeekMonday)},
-		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 		// 							Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
 		// 							HourOfDay: to.Ptr[int32](10),
-		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 		// 							WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
 		// 								to.Ptr(armcostmanagement.WeeksOfMonthFirst),
 		// 								to.Ptr(armcostmanagement.WeeksOfMonthThird)},
@@ -386,10 +386,10 @@ func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListBySco
 		// 						ETag: to.Ptr("\"1d4ff9fe66f1d15\""),
 		// 						Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
 		// 						SystemData: &armcostmanagement.SystemData{
-		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 							CreatedBy: to.Ptr("testuser"),
 		// 							CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 		// 							LastModifiedBy: to.Ptr("testuser"),
 		// 							LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 		// 						},
@@ -402,10 +402,10 @@ func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListBySco
 		// 									to.Ptr("team@gmail.com")},
 		// 								},
 		// 								Schedule: &armcostmanagement.ScheduleProperties{
-		// 									EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+		// 									EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 		// 									Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyDaily),
 		// 									HourOfDay: to.Ptr[int32](12),
-		// 									StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+		// 									StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 		// 								},
 		// 								Scope: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000"),
 		// 								Status: to.Ptr(armcostmanagement.ScheduledActionStatusDisabled),
@@ -440,10 +440,10 @@ func ExampleScheduledActionsClient_CreateOrUpdate() {
 			Schedule: &armcostmanagement.ScheduleProperties{
 				DaysOfWeek: []*armcostmanagement.DaysOfWeek{
 					to.Ptr(armcostmanagement.DaysOfWeekMonday)},
-				EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t }()),
+				EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t }()),
 				Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
 				HourOfDay: to.Ptr[int32](10),
-				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t }()),
+				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t }()),
 				WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
 					to.Ptr(armcostmanagement.WeeksOfMonthFirst),
 					to.Ptr(armcostmanagement.WeeksOfMonthThird)},
@@ -465,10 +465,10 @@ func ExampleScheduledActionsClient_CreateOrUpdate() {
 	// 	ETag: to.Ptr("\"1d4ff9fe66f1d10\""),
 	// 	Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
 	// 	SystemData: &armcostmanagement.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 	// 		CreatedBy: to.Ptr("testuser"),
 	// 		CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("testuser"),
 	// 		LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 	// 	},
@@ -485,10 +485,10 @@ func ExampleScheduledActionsClient_CreateOrUpdate() {
 	// 			Schedule: &armcostmanagement.ScheduleProperties{
 	// 				DaysOfWeek: []*armcostmanagement.DaysOfWeek{
 	// 					to.Ptr(armcostmanagement.DaysOfWeekMonday)},
-	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 	// 					Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
 	// 					HourOfDay: to.Ptr[int32](10),
-	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 	// 					WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
 	// 						to.Ptr(armcostmanagement.WeeksOfMonthFirst),
 	// 						to.Ptr(armcostmanagement.WeeksOfMonthThird)},
@@ -525,10 +525,10 @@ func ExampleScheduledActionsClient_Get() {
 	// 	ETag: to.Ptr("\"1d4ff9fe66f1d10\""),
 	// 	Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
 	// 	SystemData: &armcostmanagement.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 	// 		CreatedBy: to.Ptr("testuser"),
 	// 		CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("testuser"),
 	// 		LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 	// 	},
@@ -543,10 +543,10 @@ func ExampleScheduledActionsClient_Get() {
 	// 			Schedule: &armcostmanagement.ScheduleProperties{
 	// 				DaysOfWeek: []*armcostmanagement.DaysOfWeek{
 	// 					to.Ptr(armcostmanagement.DaysOfWeekMonday)},
-	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 	// 					Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
 	// 					HourOfDay: to.Ptr[int32](10),
-	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 	// 					WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
 	// 						to.Ptr(armcostmanagement.WeeksOfMonthFirst),
 	// 						to.Ptr(armcostmanagement.WeeksOfMonthThird)},
@@ -597,9 +597,9 @@ func ExampleScheduledActionsClient_CreateOrUpdateByScope_createOrUpdateInsightAl
 					to.Ptr("team@gmail.com")},
 			},
 			Schedule: &armcostmanagement.ScheduleProperties{
-				EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t }()),
+				EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t }()),
 				Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyDaily),
-				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t }()),
+				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t }()),
 			},
 			Status: to.Ptr(armcostmanagement.ScheduledActionStatusEnabled),
 			ViewID: to.Ptr("/providers/Microsoft.CostManagement/views/swaggerExample"),
@@ -618,10 +618,10 @@ func ExampleScheduledActionsClient_CreateOrUpdateByScope_createOrUpdateInsightAl
 	// 	ETag: to.Ptr("\"1d4ff9fe66f1d10\""),
 	// 	Kind: to.Ptr(armcostmanagement.ScheduledActionKindInsightAlert),
 	// 	SystemData: &armcostmanagement.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 	// 		CreatedBy: to.Ptr("testuser"),
 	// 		CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("testuser"),
 	// 		LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 	// 	},
@@ -638,9 +638,9 @@ func ExampleScheduledActionsClient_CreateOrUpdateByScope_createOrUpdateInsightAl
 	// 				to.Ptr("team@gmail.com")},
 	// 			},
 	// 			Schedule: &armcostmanagement.ScheduleProperties{
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 	// 				Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyDaily),
-	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 	// 			},
 	// 			Scope: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000"),
 	// 			Status: to.Ptr(armcostmanagement.ScheduledActionStatusEnabled),
@@ -677,10 +677,10 @@ func ExampleScheduledActionsClient_CreateOrUpdateByScope_createOrUpdateScheduled
 			Schedule: &armcostmanagement.ScheduleProperties{
 				DaysOfWeek: []*armcostmanagement.DaysOfWeek{
 					to.Ptr(armcostmanagement.DaysOfWeekMonday)},
-				EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t }()),
+				EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t }()),
 				Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
 				HourOfDay: to.Ptr[int32](10),
-				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t }()),
+				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t }()),
 				WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
 					to.Ptr(armcostmanagement.WeeksOfMonthFirst),
 					to.Ptr(armcostmanagement.WeeksOfMonthThird)},
@@ -702,10 +702,10 @@ func ExampleScheduledActionsClient_CreateOrUpdateByScope_createOrUpdateScheduled
 	// 	ETag: to.Ptr("\"1d4ff9fe66f1d10\""),
 	// 	Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
 	// 	SystemData: &armcostmanagement.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 	// 		CreatedBy: to.Ptr("testuser"),
 	// 		CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("testuser"),
 	// 		LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 	// 	},
@@ -720,10 +720,10 @@ func ExampleScheduledActionsClient_CreateOrUpdateByScope_createOrUpdateScheduled
 	// 			Schedule: &armcostmanagement.ScheduleProperties{
 	// 				DaysOfWeek: []*armcostmanagement.DaysOfWeek{
 	// 					to.Ptr(armcostmanagement.DaysOfWeekMonday)},
-	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 	// 					Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
 	// 					HourOfDay: to.Ptr[int32](10),
-	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 	// 					WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
 	// 						to.Ptr(armcostmanagement.WeeksOfMonthFirst),
 	// 						to.Ptr(armcostmanagement.WeeksOfMonthThird)},
@@ -760,10 +760,10 @@ func ExampleScheduledActionsClient_GetByScope() {
 	// 	ETag: to.Ptr("\"1d4ff9fe66f1d10\""),
 	// 	Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
 	// 	SystemData: &armcostmanagement.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 	// 		CreatedBy: to.Ptr("testuser"),
 	// 		CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.128Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("testuser"),
 	// 		LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 	// 	},
@@ -778,10 +778,10 @@ func ExampleScheduledActionsClient_GetByScope() {
 	// 			Schedule: &armcostmanagement.ScheduleProperties{
 	// 				DaysOfWeek: []*armcostmanagement.DaysOfWeek{
 	// 					to.Ptr(armcostmanagement.DaysOfWeekMonday)},
-	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.1287144Z"); return t}()),
+	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T22:21:51.128Z"); return t}()),
 	// 					Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
 	// 					HourOfDay: to.Ptr[int32](10),
-	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.1287144Z"); return t}()),
+	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-19T22:21:51.128Z"); return t}()),
 	// 					WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
 	// 						to.Ptr(armcostmanagement.WeeksOfMonthFirst),
 	// 						to.Ptr(armcostmanagement.WeeksOfMonthThird)},

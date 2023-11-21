@@ -489,10 +489,10 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 	/*
 	 * We have created as many channels as the number of chunks we have.
 	 * Each downloaded block will be sent to the channel matching its
-	 * sequece number, i.e. 0th block is sent to 0th channel, 1st block
+	 * sequence number, i.e. 0th block is sent to 0th channel, 1st block
 	 * to 1st channel and likewise. The blocks are then read and written
 	 * to the file serially by below goroutine. Do note that the blocks
-	 * blocks are still downloaded parallelly from n/w, only serailized
+	 * are still downloaded parallelly from n/w, only serailized
 	 * and written to file here.
 	 */
 	writerError := make(chan error)

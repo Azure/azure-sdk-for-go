@@ -42,7 +42,7 @@ func ExampleOperationResultsClient_BeginGet() {
 	// res.OperationResultsDescription = armbotservice.OperationResultsDescription{
 	// 	Name: to.Ptr("servicename"),
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.BotService/locations/westus/operationresults/exampleid"),
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T06:03:30.2716301Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T06:03:30.271Z"); return t}()),
 	// 	Status: to.Ptr(armbotservice.OperationResultStatusRequested),
 	// }
 }

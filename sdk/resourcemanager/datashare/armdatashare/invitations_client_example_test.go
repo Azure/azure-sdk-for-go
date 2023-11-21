@@ -43,9 +43,9 @@ func ExampleInvitationsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.DataShare/accounts/shares/invitations"),
 	// 	ID: to.Ptr("/subscriptions/433a8dfd-e5d5-4e77-ad86-90acdc75eb1a/resourceGroups/SampleResourceGroup/providers/Microsoft.DataShare/accounts/Account1/shares/Share1/invitations/Invitation1"),
 	// 	Properties: &armdatashare.InvitationProperties{
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t}()),
 	// 		InvitationStatus: to.Ptr(armdatashare.InvitationStatusPending),
-	// 		SentAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-26T22:33:24.5785265Z"); return t}()),
+	// 		SentAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-26T22:33:24.578Z"); return t}()),
 	// 		TargetEmail: to.Ptr("receiver@microsoft.com"),
 	// 		UserEmail: to.Ptr("johnsmith@microsoft.com"),
 	// 		UserName: to.Ptr("John Smith"),
@@ -66,7 +66,7 @@ func ExampleInvitationsClient_Create() {
 	}
 	res, err := clientFactory.NewInvitationsClient().Create(ctx, "SampleResourceGroup", "Account1", "Share1", "Invitation1", armdatashare.Invitation{
 		Properties: &armdatashare.InvitationProperties{
-			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t }()),
+			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t }()),
 			TargetEmail:    to.Ptr("receiver@microsoft.com"),
 		},
 	}, nil)
@@ -81,9 +81,9 @@ func ExampleInvitationsClient_Create() {
 	// 	Type: to.Ptr("Microsoft.DataShare/accounts/shares/invitations"),
 	// 	ID: to.Ptr("/subscriptions/433a8dfd-e5d5-4e77-ad86-90acdc75eb1a/resourceGroups/SampleResourceGroup/providers/Microsoft.DataShare/accounts/Account1/shares/Share1/invitations/Invitation1"),
 	// 	Properties: &armdatashare.InvitationProperties{
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t}()),
 	// 		InvitationStatus: to.Ptr(armdatashare.InvitationStatusPending),
-	// 		SentAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-26T22:33:24.5785265Z"); return t}()),
+	// 		SentAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-26T22:33:24.578Z"); return t}()),
 	// 		TargetEmail: to.Ptr("receiver@microsoft.com"),
 	// 		UserEmail: to.Ptr("johnsmith@microsoft.com"),
 	// 		UserName: to.Ptr("John Smith"),
@@ -140,9 +140,9 @@ func ExampleInvitationsClient_NewListBySharePager() {
 		// 			Type: to.Ptr("Microsoft.DataShare/Invitation"),
 		// 			ID: to.Ptr("/subscriptions/433a8dfd-e5d5-4e77-ad86-90acdc75eb1a/resourceGroups/testrg/providers/Microsoft.DataShare/accounts/account1/shares/share1/invitations/ancd"),
 		// 			Properties: &armdatashare.InvitationProperties{
-		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t}()),
+		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t}()),
 		// 				InvitationStatus: to.Ptr(armdatashare.InvitationStatusAccepted),
-		// 				SentAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-26T22:33:24.5785265Z"); return t}()),
+		// 				SentAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-26T22:33:24.578Z"); return t}()),
 		// 				TargetEmail: to.Ptr("johnsmith@microsoft.com"),
 		// 				UserEmail: to.Ptr("johnsmith@microsoft.com"),
 		// 				UserName: to.Ptr("John Smith"),

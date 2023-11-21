@@ -45,7 +45,7 @@ func ExampleShareSubscriptionsClient_BeginCancelSynchronization() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ShareSubscriptionSynchronization = armdatashare.ShareSubscriptionSynchronization{
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-30T02:37:48.4979104Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-30T02:37:48.497Z"); return t}()),
 	// 	Status: to.Ptr("Cancelled"),
 	// 	SynchronizationID: to.Ptr("343c4772-ad68-41aa-91b9-bab1c92f9c27"),
 	// }
@@ -79,7 +79,7 @@ func ExampleShareSubscriptionsClient_NewListSourceShareSynchronizationSettingsPa
 		// 			Kind: to.Ptr(armdatashare.SourceShareSynchronizationSettingKindScheduleBased),
 		// 			Properties: &armdatashare.ScheduledSourceShareSynchronizationSettingProperties{
 		// 				RecurrenceInterval: to.Ptr(armdatashare.RecurrenceIntervalHour),
-		// 				SynchronizationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-15T19:45:58Z"); return t}()),
+		// 				SynchronizationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-15T19:45:58.000Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
@@ -120,8 +120,8 @@ func ExampleShareSubscriptionsClient_NewListSynchronizationDetailsPager() {
 		// 			DataSetID: to.Ptr("7d0536a6-3fa5-43de-b152-3d07c4f6b2bb"),
 		// 			DataSetType: to.Ptr(armdatashare.DataSetTypeBlob),
 		// 			DurationMs: to.Ptr[int32](2000),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t}()),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.961Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.961Z"); return t}()),
 		// 			Status: to.Ptr("Completed"),
 		// 	}},
 		// }
@@ -157,9 +157,9 @@ func ExampleShareSubscriptionsClient_NewListSynchronizationsPager() {
 		// 	Value: []*armdatashare.ShareSubscriptionSynchronization{
 		// 		{
 		// 			DurationMs: to.Ptr[int32](2000),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.961Z"); return t}()),
 		// 			Message: to.Ptr("nda"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.961Z"); return t}()),
 		// 			Status: to.Ptr("Completed"),
 		// 			SynchronizationID: to.Ptr("runId"),
 		// 			SynchronizationMode: to.Ptr(armdatashare.SynchronizationModeIncremental),
@@ -193,7 +193,7 @@ func ExampleShareSubscriptionsClient_BeginSynchronize() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ShareSubscriptionSynchronization = armdatashare.ShareSubscriptionSynchronization{
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-30T02:37:48.4979104Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-30T02:37:48.497Z"); return t}()),
 	// 	Status: to.Ptr("Succeeded"),
 	// 	SynchronizationID: to.Ptr("343c4772-ad68-41aa-91b9-bab1c92f9c27"),
 	// }
@@ -222,8 +222,8 @@ func ExampleShareSubscriptionsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.DataShare/accounts/shareSubscriptions"),
 	// 	ID: to.Ptr("/subscriptions/433a8dfd-e5d5-4e77-ad86-90acdc75eb1a/resourceGroups/SampleResourceGroup/providers/Microsoft.DataShare/accounts/Account1/sharesubscriptions/ShareSubscription1"),
 	// 	Properties: &armdatashare.ShareSubscriptionProperties{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-17T22:32:36.8185016Z"); return t}()),
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-17T22:32:36.818Z"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t}()),
 	// 		InvitationID: to.Ptr("4256e2cf-0f82-4865-961b-12f83333f487"),
 	// 		ProviderEmail: to.Ptr("jack.rose@microsoft.com"),
 	// 		ProviderName: to.Ptr("Jack Rose"),
@@ -254,7 +254,7 @@ func ExampleShareSubscriptionsClient_Create() {
 	}
 	res, err := clientFactory.NewShareSubscriptionsClient().Create(ctx, "SampleResourceGroup", "Account1", "ShareSubscription1", armdatashare.ShareSubscription{
 		Properties: &armdatashare.ShareSubscriptionProperties{
-			ExpirationDate:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t }()),
+			ExpirationDate:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t }()),
 			InvitationID:        to.Ptr("12345678-1234-1234-12345678abd"),
 			SourceShareLocation: to.Ptr("eastus2"),
 		},
@@ -270,8 +270,8 @@ func ExampleShareSubscriptionsClient_Create() {
 	// 	Type: to.Ptr("Microsoft.DataShare/accounts/shareSubscriptions"),
 	// 	ID: to.Ptr("/subscriptions/433a8dfd-e5d5-4e77-ad86-90acdc75eb1a/resourceGroups/SampleResourceGroup/providers/Microsoft.DataShare/accounts/Account1/sharesubscriptions/ShareSubscription1"),
 	// 	Properties: &armdatashare.ShareSubscriptionProperties{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-17T22:32:36.8185016Z"); return t}()),
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-17T22:32:36.818Z"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t}()),
 	// 		InvitationID: to.Ptr("4256e2cf-0f82-4865-961b-12f83333f487"),
 	// 		ProviderEmail: to.Ptr("jack.rose@microsoft.com"),
 	// 		ProviderName: to.Ptr("Jack Rose"),
@@ -347,8 +347,8 @@ func ExampleShareSubscriptionsClient_NewListByAccountPager() {
 		// 			Type: to.Ptr("Microsoft.DataShare/accounts/shareSubscriptions"),
 		// 			ID: to.Ptr("/subscriptions/433a8dfd-e5d5-4e77-ad86-90acdc75eb1a/resourceGroups/SampleResourceGroup/providers/Microsoft.DataShare/accounts/Account1/sharesubscriptions/ShareSubscription1"),
 		// 			Properties: &armdatashare.ShareSubscriptionProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T06:15:15.6818898Z"); return t}()),
-		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T06:15:15.681Z"); return t}()),
+		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t}()),
 		// 				InvitationID: to.Ptr("12345678-1234-1234-12345678abd"),
 		// 				ProviderEmail: to.Ptr("jack.rose@microsoft.com"),
 		// 				ProviderName: to.Ptr("Jack Rose"),
@@ -368,8 +368,8 @@ func ExampleShareSubscriptionsClient_NewListByAccountPager() {
 		// 			Type: to.Ptr("Microsoft.DataShare/accounts/shareSubscriptions"),
 		// 			ID: to.Ptr("/subscriptions/433a8dfd-e5d5-4e77-ad86-90acdc75eb1a/resourceGroups/SampleResourceGroup/providers/Microsoft.DataShare/accounts/Account1/sharesubscriptions/ShareSubscription1"),
 		// 			Properties: &armdatashare.ShareSubscriptionProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T22:32:36.8185016Z"); return t}()),
-		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T22:32:36.818Z"); return t}()),
+		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t}()),
 		// 				InvitationID: to.Ptr("4256e2cf-0f82-4865-961b-12f83333f487"),
 		// 				ProviderEmail: to.Ptr("jack.rose@microsoft.com"),
 		// 				ProviderName: to.Ptr("Jack Rose"),

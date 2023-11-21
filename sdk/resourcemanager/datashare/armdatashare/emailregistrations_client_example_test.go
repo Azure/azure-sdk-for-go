@@ -39,7 +39,7 @@ func ExampleEmailRegistrationsClient_ActivateEmail() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.EmailRegistration = armdatashare.EmailRegistration{
-	// 	ActivationExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-12T16:44:53.688049Z"); return t}()),
+	// 	ActivationExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-12T16:44:53.688Z"); return t}()),
 	// 	Email: to.Ptr("receiver@microsoft.com"),
 	// 	RegistrationStatus: to.Ptr(armdatashare.RegistrationStatusActivated),
 	// 	TenantID: to.Ptr("9f532315-b048-4374-8de1-14734d9b7f77"),
@@ -65,7 +65,7 @@ func ExampleEmailRegistrationsClient_RegisterEmail() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.EmailRegistration = armdatashare.EmailRegistration{
-	// 	ActivationExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-12T16:44:53.688049Z"); return t}()),
+	// 	ActivationExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-12T16:44:53.688Z"); return t}()),
 	// 	Email: to.Ptr("receiver@microsoft.com"),
 	// 	RegistrationStatus: to.Ptr(armdatashare.RegistrationStatusActivationPending),
 	// 	TenantID: to.Ptr("9f532315-b048-4374-8de1-14734d9b7f77"),

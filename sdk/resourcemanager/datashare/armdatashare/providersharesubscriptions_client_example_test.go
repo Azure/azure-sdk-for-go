@@ -33,7 +33,7 @@ func ExampleProviderShareSubscriptionsClient_Adjust() {
 	}
 	res, err := clientFactory.NewProviderShareSubscriptionsClient().Adjust(ctx, "SampleResourceGroup", "Account1", "Share1", "4256e2cf-0f82-4865-961b-12f83333f487", armdatashare.ProviderShareSubscription{
 		Properties: &armdatashare.ProviderShareSubscriptionProperties{
-			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-26T22:33:24.5785265Z"); return t }()),
+			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-26T22:33:24.578Z"); return t }()),
 		},
 	}, nil)
 	if err != nil {
@@ -50,13 +50,13 @@ func ExampleProviderShareSubscriptionsClient_Adjust() {
 	// 		ConsumerEmail: to.Ptr("john.smith@microsoft.com"),
 	// 		ConsumerName: to.Ptr("John Smith"),
 	// 		ConsumerTenantName: to.Ptr("Microsoft"),
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T08:45:40.9005877Z"); return t}()),
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-26T22:33:24.5785265Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T08:45:40.900Z"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-26T22:33:24.578Z"); return t}()),
 	// 		ProviderEmail: to.Ptr("john.smith@microsoft.com"),
 	// 		ProviderName: to.Ptr("John Smith"),
 	// 		ShareSubscriptionObjectID: to.Ptr("1ce51340-19be-4ef2-9450-0ea0b1324cbb"),
 	// 		ShareSubscriptionStatus: to.Ptr(armdatashare.ShareSubscriptionStatusActive),
-	// 		SharedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-19T08:45:40.9005877Z"); return t}()),
+	// 		SharedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-19T08:45:40.900Z"); return t}()),
 	// 	},
 	// }
 }
@@ -74,7 +74,7 @@ func ExampleProviderShareSubscriptionsClient_Reinstate() {
 	}
 	res, err := clientFactory.NewProviderShareSubscriptionsClient().Reinstate(ctx, "SampleResourceGroup", "Account1", "Share1", "4256e2cf-0f82-4865-961b-12f83333f487", armdatashare.ProviderShareSubscription{
 		Properties: &armdatashare.ProviderShareSubscriptionProperties{
-			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-26T22:33:24.5785265Z"); return t }()),
+			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-26T22:33:24.578Z"); return t }()),
 		},
 	}, nil)
 	if err != nil {
@@ -91,13 +91,13 @@ func ExampleProviderShareSubscriptionsClient_Reinstate() {
 	// 		ConsumerEmail: to.Ptr("john.smith@microsoft.com"),
 	// 		ConsumerName: to.Ptr("John Smith"),
 	// 		ConsumerTenantName: to.Ptr("Microsoft"),
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:52:42.6224087Z"); return t}()),
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:52:42.622Z"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t}()),
 	// 		ProviderEmail: to.Ptr("john.smith@microsoft.com"),
 	// 		ProviderName: to.Ptr("John Smith"),
 	// 		ShareSubscriptionObjectID: to.Ptr("1ce51340-19be-4ef2-9450-0ea0b1324cbb"),
 	// 		ShareSubscriptionStatus: to.Ptr(armdatashare.ShareSubscriptionStatusActive),
-	// 		SharedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:45:40.9005877Z"); return t}()),
+	// 		SharedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:45:40.900Z"); return t}()),
 	// 	},
 	// }
 }
@@ -132,12 +132,12 @@ func ExampleProviderShareSubscriptionsClient_BeginRevoke() {
 	// 		ConsumerEmail: to.Ptr("john.smith@microsoft.com"),
 	// 		ConsumerName: to.Ptr("John Smith"),
 	// 		ConsumerTenantName: to.Ptr("Microsoft"),
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:52:42.6224087Z"); return t}()),
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:52:42.622Z"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t}()),
 	// 		ProviderEmail: to.Ptr("john.smith@microsoft.com"),
 	// 		ProviderName: to.Ptr("John Smith"),
 	// 		ShareSubscriptionStatus: to.Ptr(armdatashare.ShareSubscriptionStatusRevoked),
-	// 		SharedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:45:40.9005877Z"); return t}()),
+	// 		SharedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:45:40.900Z"); return t}()),
 	// 	},
 	// }
 }
@@ -168,12 +168,12 @@ func ExampleProviderShareSubscriptionsClient_GetByShare() {
 	// 		ConsumerEmail: to.Ptr("john.smith@microsoft.com"),
 	// 		ConsumerName: to.Ptr("John Smith"),
 	// 		ConsumerTenantName: to.Ptr("Microsoft"),
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:52:42.6224087Z"); return t}()),
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:52:42.622Z"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t}()),
 	// 		ProviderEmail: to.Ptr("john.smith@microsoft.com"),
 	// 		ProviderName: to.Ptr("John Smith"),
 	// 		ShareSubscriptionStatus: to.Ptr(armdatashare.ShareSubscriptionStatusActive),
-	// 		SharedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:45:40.9005877Z"); return t}()),
+	// 		SharedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:45:40.900Z"); return t}()),
 	// 	},
 	// }
 }
@@ -210,12 +210,12 @@ func ExampleProviderShareSubscriptionsClient_NewListBySharePager() {
 		// 				ConsumerEmail: to.Ptr("john.smith@microsoft.com"),
 		// 				ConsumerName: to.Ptr("John Smith"),
 		// 				ConsumerTenantName: to.Ptr("Microsoft"),
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:52:42.6224087Z"); return t}()),
-		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:52:42.622Z"); return t}()),
+		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.578Z"); return t}()),
 		// 				ProviderEmail: to.Ptr("john.smith@microsoft.com"),
 		// 				ProviderName: to.Ptr("John Smith"),
 		// 				ShareSubscriptionStatus: to.Ptr(armdatashare.ShareSubscriptionStatusActive),
-		// 				SharedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:45:40.9005877Z"); return t}()),
+		// 				SharedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-13T08:45:40.900Z"); return t}()),
 		// 			},
 		// 	}},
 		// }

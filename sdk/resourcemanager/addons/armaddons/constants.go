@@ -10,7 +10,7 @@ package armaddons
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/addons/armaddons"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.3.0"
 )
 
 // OneTimeCharge - The one time charge status for the subscription.

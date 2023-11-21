@@ -34,7 +34,7 @@ type LogAnalyticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogAnalyticsClient, error) {
-	cl, err := arm.NewClient(moduleName+".LogAnalyticsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *LogAnalyticsClient) GetLogAnalyticsLocations(ctx context.Context, resourceGroupName string, profileName string, options *LogAnalyticsClientGetLogAnalyticsLocationsOptions) (LogAnalyticsClientGetLogAnalyticsLocationsResponse, error) {
 	var err error
+	const operationName = "LogAnalyticsClient.GetLogAnalyticsLocations"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getLogAnalyticsLocationsCreateRequest(ctx, resourceGroupName, profileName, options)
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsLocationsResponse{}, err
@@ -118,6 +122,10 @@ func (client *LogAnalyticsClient) getLogAnalyticsLocationsHandleResponse(resp *h
 //     method.
 func (client *LogAnalyticsClient) GetLogAnalyticsMetrics(ctx context.Context, resourceGroupName string, profileName string, metrics []LogMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, granularity LogMetricsGranularity, customDomains []string, protocols []string, options *LogAnalyticsClientGetLogAnalyticsMetricsOptions) (LogAnalyticsClientGetLogAnalyticsMetricsResponse, error) {
 	var err error
+	const operationName = "LogAnalyticsClient.GetLogAnalyticsMetrics"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getLogAnalyticsMetricsCreateRequest(ctx, resourceGroupName, profileName, metrics, dateTimeBegin, dateTimeEnd, granularity, customDomains, protocols, options)
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsMetricsResponse{}, err
@@ -207,6 +215,10 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsHandleResponse(resp *htt
 //     method.
 func (client *LogAnalyticsClient) GetLogAnalyticsRankings(ctx context.Context, resourceGroupName string, profileName string, rankings []LogRanking, metrics []LogRankingMetric, maxRanking int32, dateTimeBegin time.Time, dateTimeEnd time.Time, options *LogAnalyticsClientGetLogAnalyticsRankingsOptions) (LogAnalyticsClientGetLogAnalyticsRankingsResponse, error) {
 	var err error
+	const operationName = "LogAnalyticsClient.GetLogAnalyticsRankings"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getLogAnalyticsRankingsCreateRequest(ctx, resourceGroupName, profileName, rankings, metrics, maxRanking, dateTimeBegin, dateTimeEnd, options)
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsRankingsResponse{}, err
@@ -283,6 +295,10 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsHandleResponse(resp *ht
 //     method.
 func (client *LogAnalyticsClient) GetLogAnalyticsResources(ctx context.Context, resourceGroupName string, profileName string, options *LogAnalyticsClientGetLogAnalyticsResourcesOptions) (LogAnalyticsClientGetLogAnalyticsResourcesResponse, error) {
 	var err error
+	const operationName = "LogAnalyticsClient.GetLogAnalyticsResources"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getLogAnalyticsResourcesCreateRequest(ctx, resourceGroupName, profileName, options)
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsResourcesResponse{}, err
@@ -345,6 +361,10 @@ func (client *LogAnalyticsClient) getLogAnalyticsResourcesHandleResponse(resp *h
 //     method.
 func (client *LogAnalyticsClient) GetWafLogAnalyticsMetrics(ctx context.Context, resourceGroupName string, profileName string, metrics []WafMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, granularity WafGranularity, options *LogAnalyticsClientGetWafLogAnalyticsMetricsOptions) (LogAnalyticsClientGetWafLogAnalyticsMetricsResponse, error) {
 	var err error
+	const operationName = "LogAnalyticsClient.GetWafLogAnalyticsMetrics"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getWafLogAnalyticsMetricsCreateRequest(ctx, resourceGroupName, profileName, metrics, dateTimeBegin, dateTimeEnd, granularity, options)
 	if err != nil {
 		return LogAnalyticsClientGetWafLogAnalyticsMetricsResponse{}, err
@@ -428,6 +448,10 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsHandleResponse(resp *
 //     method.
 func (client *LogAnalyticsClient) GetWafLogAnalyticsRankings(ctx context.Context, resourceGroupName string, profileName string, metrics []WafMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, maxRanking int32, rankings []WafRankingType, options *LogAnalyticsClientGetWafLogAnalyticsRankingsOptions) (LogAnalyticsClientGetWafLogAnalyticsRankingsResponse, error) {
 	var err error
+	const operationName = "LogAnalyticsClient.GetWafLogAnalyticsRankings"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getWafLogAnalyticsRankingsCreateRequest(ctx, resourceGroupName, profileName, metrics, dateTimeBegin, dateTimeEnd, maxRanking, rankings, options)
 	if err != nil {
 		return LogAnalyticsClientGetWafLogAnalyticsRankingsResponse{}, err

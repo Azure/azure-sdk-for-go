@@ -32,7 +32,7 @@ type ManagementClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagementClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 //     method.
 func (client *ManagementClient) CheckEndpointNameAvailability(ctx context.Context, resourceGroupName string, checkEndpointNameAvailabilityInput CheckEndpointNameAvailabilityInput, options *ManagementClientCheckEndpointNameAvailabilityOptions) (ManagementClientCheckEndpointNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "ManagementClient.CheckEndpointNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkEndpointNameAvailabilityCreateRequest(ctx, resourceGroupName, checkEndpointNameAvailabilityInput, options)
 	if err != nil {
 		return ManagementClientCheckEndpointNameAvailabilityResponse{}, err
@@ -114,6 +118,10 @@ func (client *ManagementClient) checkEndpointNameAvailabilityHandleResponse(resp
 //     method.
 func (client *ManagementClient) CheckNameAvailability(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, options *ManagementClientCheckNameAvailabilityOptions) (ManagementClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "ManagementClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, checkNameAvailabilityInput, options)
 	if err != nil {
 		return ManagementClientCheckNameAvailabilityResponse{}, err
@@ -166,6 +174,10 @@ func (client *ManagementClient) checkNameAvailabilityHandleResponse(resp *http.R
 //     method.
 func (client *ManagementClient) CheckNameAvailabilityWithSubscription(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, options *ManagementClientCheckNameAvailabilityWithSubscriptionOptions) (ManagementClientCheckNameAvailabilityWithSubscriptionResponse, error) {
 	var err error
+	const operationName = "ManagementClient.CheckNameAvailabilityWithSubscription"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityWithSubscriptionCreateRequest(ctx, checkNameAvailabilityInput, options)
 	if err != nil {
 		return ManagementClientCheckNameAvailabilityWithSubscriptionResponse{}, err
@@ -223,6 +235,10 @@ func (client *ManagementClient) checkNameAvailabilityWithSubscriptionHandleRespo
 //     method.
 func (client *ManagementClient) ValidateProbe(ctx context.Context, validateProbeInput ValidateProbeInput, options *ManagementClientValidateProbeOptions) (ManagementClientValidateProbeResponse, error) {
 	var err error
+	const operationName = "ManagementClient.ValidateProbe"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.validateProbeCreateRequest(ctx, validateProbeInput, options)
 	if err != nil {
 		return ManagementClientValidateProbeResponse{}, err

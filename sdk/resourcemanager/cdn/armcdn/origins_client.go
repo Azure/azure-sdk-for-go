@@ -32,7 +32,7 @@ type OriginsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOriginsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OriginsClient, error) {
-	cl, err := arm.NewClient(moduleName+".OriginsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +59,14 @@ func (client *OriginsClient) BeginCreate(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[OriginsClientCreateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OriginsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[OriginsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OriginsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -72,6 +76,10 @@ func (client *OriginsClient) BeginCreate(ctx context.Context, resourceGroupName 
 // Generated from API version 2023-05-01
 func (client *OriginsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, origin Origin, options *OriginsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "OriginsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, endpointName, originName, origin, options)
 	if err != nil {
 		return nil, err
@@ -139,10 +147,14 @@ func (client *OriginsClient) BeginDelete(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[OriginsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OriginsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[OriginsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OriginsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -152,6 +164,10 @@ func (client *OriginsClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Generated from API version 2023-05-01
 func (client *OriginsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, options *OriginsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "OriginsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointName, originName, options)
 	if err != nil {
 		return nil, err
@@ -212,6 +228,10 @@ func (client *OriginsClient) deleteCreateRequest(ctx context.Context, resourceGr
 //   - options - OriginsClientGetOptions contains the optional parameters for the OriginsClient.Get method.
 func (client *OriginsClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, options *OriginsClientGetOptions) (OriginsClientGetResponse, error) {
 	var err error
+	const operationName = "OriginsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, endpointName, originName, options)
 	if err != nil {
 		return OriginsClientGetResponse{}, err
@@ -285,25 +305,20 @@ func (client *OriginsClient) NewListByEndpointPager(resourceGroupName string, pr
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *OriginsClientListByEndpointResponse) (OriginsClientListByEndpointResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByEndpointCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OriginsClient.NewListByEndpointPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByEndpointCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
+			}, nil)
 			if err != nil {
 				return OriginsClientListByEndpointResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return OriginsClientListByEndpointResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return OriginsClientListByEndpointResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByEndpointHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -362,10 +377,14 @@ func (client *OriginsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[OriginsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OriginsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[OriginsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OriginsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -375,6 +394,10 @@ func (client *OriginsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 // Generated from API version 2023-05-01
 func (client *OriginsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties OriginUpdateParameters, options *OriginsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "OriginsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, originName, originUpdateProperties, options)
 	if err != nil {
 		return nil, err

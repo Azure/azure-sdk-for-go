@@ -48,11 +48,11 @@ func ExampleCertificatesClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/certificates/testc6282"),
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappservice.AppCertificateProperties{
-		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2039-12-31T23:59:59+00:00"); return t}()),
+		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2039-12-31T23:59:59.000Z"); return t}()),
 		// 				FriendlyName: to.Ptr(""),
 		// 				HostNames: []*string{
 		// 					to.Ptr("ServerCert")},
-		// 					IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-11-12T23:40:25+00:00"); return t}()),
+		// 					IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-11-12T23:40:25.000Z"); return t}()),
 		// 					Issuer: to.Ptr("CACert"),
 		// 					SubjectName: to.Ptr("ServerCert"),
 		// 					Thumbprint: to.Ptr("FE703D7411A44163B6D32B3AD9B03E175886EBFE"),
@@ -64,11 +64,11 @@ func ExampleCertificatesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/certificates/testc4912"),
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armappservice.AppCertificateProperties{
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2040-12-31T23:59:59+00:00"); return t}()),
+		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2040-12-31T23:59:59.000Z"); return t}()),
 		// 					FriendlyName: to.Ptr(""),
 		// 					HostNames: []*string{
 		// 						to.Ptr("ServerCert2")},
-		// 						IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-12-12T23:40:25+00:00"); return t}()),
+		// 						IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-12-12T23:40:25.000Z"); return t}()),
 		// 						Issuer: to.Ptr("CACert"),
 		// 						SubjectName: to.Ptr("ServerCert2"),
 		// 						Thumbprint: to.Ptr("FE703D7411A44163B6D32B3AD9B0490D5886EBFE"),
@@ -108,11 +108,11 @@ func ExampleCertificatesClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/certificates/testc6282"),
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappservice.AppCertificateProperties{
-		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2039-12-31T23:59:59+00:00"); return t}()),
+		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2039-12-31T23:59:59.000Z"); return t}()),
 		// 				FriendlyName: to.Ptr(""),
 		// 				HostNames: []*string{
 		// 					to.Ptr("ServerCert")},
-		// 					IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-11-12T23:40:25+00:00"); return t}()),
+		// 					IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-11-12T23:40:25.000Z"); return t}()),
 		// 					Issuer: to.Ptr("CACert"),
 		// 					SubjectName: to.Ptr("ServerCert"),
 		// 					Thumbprint: to.Ptr("FE703D7411A44163B6D32B3AD9B03E175886EBFE"),
@@ -124,11 +124,11 @@ func ExampleCertificatesClient_NewListByResourceGroupPager() {
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/certificates/testc4912"),
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armappservice.AppCertificateProperties{
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2040-12-31T23:59:59+00:00"); return t}()),
+		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2040-12-31T23:59:59.000Z"); return t}()),
 		// 					FriendlyName: to.Ptr(""),
 		// 					HostNames: []*string{
 		// 						to.Ptr("ServerCert2")},
-		// 						IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-12-12T23:40:25+00:00"); return t}()),
+		// 						IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-12-12T23:40:25.000Z"); return t}()),
 		// 						Issuer: to.Ptr("CACert"),
 		// 						SubjectName: to.Ptr("ServerCert2"),
 		// 						Thumbprint: to.Ptr("FE703D7411A44163B6D32B3AD9B0490D5886EBFE"),
@@ -162,11 +162,11 @@ func ExampleCertificatesClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/certificates/testc6282"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappservice.AppCertificateProperties{
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2039-12-31T23:59:59+00:00"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2039-12-31T23:59:59.000Z"); return t}()),
 	// 		FriendlyName: to.Ptr(""),
 	// 		HostNames: []*string{
 	// 			to.Ptr("ServerCert")},
-	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-11-12T23:40:25+00:00"); return t}()),
+	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-11-12T23:40:25.000Z"); return t}()),
 	// 			Issuer: to.Ptr("CACert"),
 	// 			SubjectName: to.Ptr("ServerCert"),
 	// 			Thumbprint: to.Ptr("FE703D7411A44163B6D32B3AD9B03E175886EBFE"),
@@ -205,11 +205,11 @@ func ExampleCertificatesClient_CreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/certificates/testc6282"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappservice.AppCertificateProperties{
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2039-12-31T23:59:59+00:00"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2039-12-31T23:59:59.000Z"); return t}()),
 	// 		FriendlyName: to.Ptr(""),
 	// 		HostNames: []*string{
 	// 			to.Ptr("ServerCert")},
-	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-11-12T23:40:25+00:00"); return t}()),
+	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-11-12T23:40:25.000Z"); return t}()),
 	// 			Issuer: to.Ptr("CACert"),
 	// 			SubjectName: to.Ptr("ServerCert"),
 	// 			Thumbprint: to.Ptr("FE703D7411A44163B6D32B3AD9B03E175886EBFE"),
@@ -262,11 +262,11 @@ func ExampleCertificatesClient_Update() {
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/certificates/testc6282"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappservice.AppCertificateProperties{
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2039-12-31T23:59:59+00:00"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2039-12-31T23:59:59.000Z"); return t}()),
 	// 		FriendlyName: to.Ptr(""),
 	// 		HostNames: []*string{
 	// 			to.Ptr("ServerCert")},
-	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-11-12T23:40:25+00:00"); return t}()),
+	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-11-12T23:40:25.000Z"); return t}()),
 	// 			Issuer: to.Ptr("CACert"),
 	// 			SubjectName: to.Ptr("ServerCert"),
 	// 			Thumbprint: to.Ptr("FE703D7411A44163B6D32B3AD9B03E175886EBFE"),

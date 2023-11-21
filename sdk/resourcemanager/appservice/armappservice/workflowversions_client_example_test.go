@@ -46,8 +46,8 @@ func ExampleWorkflowVersionsClient_NewListPager() {
 		// 			Type: to.Ptr("/workflows/versions"),
 		// 			ID: to.Ptr("/workflows/test-workflow"),
 		// 			Properties: &armappservice.WorkflowVersionProperties{
-		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.3533634Z"); return t}()),
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.4365247Z"); return t}()),
+		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.353Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.436Z"); return t}()),
 		// 				Definition: map[string]any{
 		// 					"$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
 		// 					"actions":map[string]any{
@@ -104,8 +104,8 @@ func ExampleWorkflowVersionsClient_Get() {
 	// 	Type: to.Ptr("/workflows/versions"),
 	// 	ID: to.Ptr("/workflows/test-workflow"),
 	// 	Properties: &armappservice.WorkflowVersionProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.3533634Z"); return t}()),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.4365247Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.353Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.436Z"); return t}()),
 	// 		Definition: map[string]any{
 	// 			"$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
 	// 			"actions":map[string]any{

@@ -48,7 +48,7 @@ func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappservice.RevisionProperties{
 		// 				Active: to.Ptr(true),
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22+00:00"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22.000Z"); return t}()),
 		// 				Fqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerapps.k4apps.io"),
 		// 				Replicas: to.Ptr[int32](1),
 		// 				Template: &armappservice.Template{
@@ -110,7 +110,7 @@ func ExampleContainerAppsRevisionsClient_GetRevision() {
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappservice.RevisionProperties{
 	// 		Active: to.Ptr(true),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22+00:00"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22.000Z"); return t}()),
 	// 		Fqdn: to.Ptr("testcontainerApp0-pjxhsye.demokube-t24clv0g.eastus.containerApps.k4apps.io"),
 	// 		Replicas: to.Ptr[int32](1),
 	// 		Template: &armappservice.Template{

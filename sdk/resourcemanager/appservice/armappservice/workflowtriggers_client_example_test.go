@@ -48,8 +48,8 @@ func ExampleWorkflowTriggersClient_NewListPager() {
 		// 			Name: to.Ptr("manual"),
 		// 			Type: to.Ptr("/workflows/triggers"),
 		// 			Properties: &armappservice.WorkflowTriggerProperties{
-		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T18:47:49.5288666Z"); return t}()),
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T17:32:30.2496336Z"); return t}()),
+		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T18:47:49.528Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T17:32:30.249Z"); return t}()),
 		// 				ProvisioningState: to.Ptr(armappservice.WorkflowTriggerProvisioningStateSucceeded),
 		// 				State: to.Ptr(armappservice.WorkflowStateEnabled),
 		// 				Workflow: &armappservice.ResourceReference{
@@ -86,8 +86,8 @@ func ExampleWorkflowTriggersClient_Get() {
 	// 	Name: to.Ptr("manual"),
 	// 	Type: to.Ptr("/workflows/triggers"),
 	// 	Properties: &armappservice.WorkflowTriggerProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T18:47:49.5288666Z"); return t}()),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T17:32:30.2496336Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T18:47:49.528Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T17:32:30.249Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armappservice.WorkflowTriggerProvisioningStateSucceeded),
 	// 		State: to.Ptr(armappservice.WorkflowStateEnabled),
 	// 		Workflow: &armappservice.ResourceReference{

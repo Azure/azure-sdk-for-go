@@ -52,15 +52,15 @@ func ExampleWorkflowTriggerHistoriesClient_NewListPager() {
 		// 				Correlation: &armappservice.Correlation{
 		// 					ClientTrackingID: to.Ptr("08586676746934337772206998657CU22"),
 		// 				},
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.2987996Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.298Z"); return t}()),
 		// 				Fired: to.Ptr(true),
 		// 				Run: &armappservice.ResourceReference{
 		// 					Name: to.Ptr("08586676746934337772206998657CU22"),
 		// 					Type: to.Ptr("/workflows/runs"),
 		// 					ID: to.Ptr("/workflows/testWorkflowName/runs/08586676746934337772206998657CU22"),
 		// 				},
-		// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.6344174Z"); return t}()),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.0387927Z"); return t}()),
+		// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.634Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.038Z"); return t}()),
 		// 				Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 		// 			},
 		// 	}},
@@ -95,15 +95,15 @@ func ExampleWorkflowTriggerHistoriesClient_Get() {
 	// 		Correlation: &armappservice.Correlation{
 	// 			ClientTrackingID: to.Ptr("08586676746934337772206998657CU22"),
 	// 		},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.2987996Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.298Z"); return t}()),
 	// 		Fired: to.Ptr(true),
 	// 		Run: &armappservice.ResourceReference{
 	// 			Name: to.Ptr("08586676746934337772206998657CU22"),
 	// 			Type: to.Ptr("/workflows/runs"),
 	// 			ID: to.Ptr("/workflows/testWorkflowName/runs/08586676746934337772206998657CU22"),
 	// 		},
-	// 		ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.6344174Z"); return t}()),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.0387927Z"); return t}()),
+	// 		ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.634Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.038Z"); return t}()),
 	// 		Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 	// 	},
 	// }

@@ -500,6 +500,7 @@ func (o *SetLegalHoldOptions) format() *generated.BlobClientSetLegalHoldOptions 
 type GetSASURLOptions struct {
 	StartTime          *time.Time
 	ContentDisposition string
+	ContentType        string
 }
 
 func (o *GetSASURLOptions) format() time.Time {

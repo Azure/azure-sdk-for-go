@@ -312,6 +312,7 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o 
 		StartTime:          st,
 		ExpiryTime:         expiry.UTC(),
 		ContentDisposition: o.ContentDisposition,
+		ContentType:        o.ContentType,
 	}.SignWithSharedKey(b.sharedKey())
 
 	if err != nil {

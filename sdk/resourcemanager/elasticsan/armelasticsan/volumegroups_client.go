@@ -32,7 +32,7 @@ type VolumeGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVolumeGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VolumeGroupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".VolumeGroupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,10 +61,13 @@ func (client *VolumeGroupsClient) BeginCreate(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumeGroupsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumeGroupsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumeGroupsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,6 +77,10 @@ func (client *VolumeGroupsClient) BeginCreate(ctx context.Context, resourceGroup
 // Generated from API version 2023-01-01
 func (client *VolumeGroupsClient) create(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, parameters VolumeGroup, options *VolumeGroupsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumeGroupsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, elasticSanName, volumeGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -139,10 +146,13 @@ func (client *VolumeGroupsClient) BeginDelete(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumeGroupsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumeGroupsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumeGroupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -152,6 +162,10 @@ func (client *VolumeGroupsClient) BeginDelete(ctx context.Context, resourceGroup
 // Generated from API version 2023-01-01
 func (client *VolumeGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, options *VolumeGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumeGroupsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, elasticSanName, volumeGroupName, options)
 	if err != nil {
 		return nil, err
@@ -207,6 +221,10 @@ func (client *VolumeGroupsClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - VolumeGroupsClientGetOptions contains the optional parameters for the VolumeGroupsClient.Get method.
 func (client *VolumeGroupsClient) Get(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, options *VolumeGroupsClientGetOptions) (VolumeGroupsClientGetResponse, error) {
 	var err error
+	const operationName = "VolumeGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, elasticSanName, volumeGroupName, options)
 	if err != nil {
 		return VolumeGroupsClientGetResponse{}, err
@@ -275,25 +293,20 @@ func (client *VolumeGroupsClient) NewListByElasticSanPager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VolumeGroupsClientListByElasticSanResponse) (VolumeGroupsClientListByElasticSanResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByElasticSanCreateRequest(ctx, resourceGroupName, elasticSanName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VolumeGroupsClient.NewListByElasticSanPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByElasticSanCreateRequest(ctx, resourceGroupName, elasticSanName, options)
+			}, nil)
 			if err != nil {
 				return VolumeGroupsClientListByElasticSanResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VolumeGroupsClientListByElasticSanResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VolumeGroupsClientListByElasticSanResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByElasticSanHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -350,10 +363,13 @@ func (client *VolumeGroupsClient) BeginUpdate(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumeGroupsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumeGroupsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumeGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -363,6 +379,10 @@ func (client *VolumeGroupsClient) BeginUpdate(ctx context.Context, resourceGroup
 // Generated from API version 2023-01-01
 func (client *VolumeGroupsClient) update(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, parameters VolumeGroupUpdate, options *VolumeGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumeGroupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, elasticSanName, volumeGroupName, parameters, options)
 	if err != nil {
 		return nil, err

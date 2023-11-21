@@ -48,7 +48,7 @@ func ExampleScriptExecutionsClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptExecutions/addSsoServer"),
 		// 			Properties: &armavs.ScriptExecutionProperties{
 		// 				FailureReason: to.Ptr("vCenter failed to connect to the external server"),
-		// 				FinishedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-21T18:32:28Z"); return t}()),
+		// 				FinishedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-21T18:32:28.000Z"); return t}()),
 		// 				Parameters: []armavs.ScriptExecutionParameterClassification{
 		// 					&armavs.ScriptStringExecutionParameter{
 		// 						Name: to.Ptr("DomainName"),
@@ -63,8 +63,8 @@ func ExampleScriptExecutionsClient_NewListPager() {
 		// 				ProvisioningState: to.Ptr(armavs.ScriptExecutionProvisioningStateSucceeded),
 		// 				Retention: to.Ptr("P0Y0M60DT0H60M60S"),
 		// 				ScriptCmdletID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptPackages/AVS:1.0.0/scriptCmdlets/New-SsoExternalIdentitySource"),
-		// 				StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-21T17:32:28Z"); return t}()),
-		// 				SubmittedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-21T17:31:28Z"); return t}()),
+		// 				StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-21T17:32:28.000Z"); return t}()),
+		// 				SubmittedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-21T17:31:28.000Z"); return t}()),
 		// 				Timeout: to.Ptr("P0Y0M0DT0H60M60S"),
 		// 			},
 		// 	}},
@@ -96,7 +96,7 @@ func ExampleScriptExecutionsClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptExecutions/addSsoServer"),
 	// 	Properties: &armavs.ScriptExecutionProperties{
 	// 		FailureReason: to.Ptr("vCenter failed to connect to the external server"),
-	// 		FinishedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-21T18:32:28Z"); return t}()),
+	// 		FinishedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-21T18:32:28.000Z"); return t}()),
 	// 		Parameters: []armavs.ScriptExecutionParameterClassification{
 	// 			&armavs.ScriptStringExecutionParameter{
 	// 				Name: to.Ptr("DomainName"),
@@ -111,8 +111,8 @@ func ExampleScriptExecutionsClient_Get() {
 	// 		ProvisioningState: to.Ptr(armavs.ScriptExecutionProvisioningStateSucceeded),
 	// 		Retention: to.Ptr("P0Y0M60DT0H60M60S"),
 	// 		ScriptCmdletID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptPackages/AVS.PowerCommands@1.0.0/scriptCmdlets/New-SsoExternalIdentitySource"),
-	// 		StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-21T17:32:28Z"); return t}()),
-	// 		SubmittedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-21T17:31:28Z"); return t}()),
+	// 		StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-21T17:32:28.000Z"); return t}()),
+	// 		SubmittedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-21T17:31:28.000Z"); return t}()),
 	// 		Timeout: to.Ptr("P0Y0M0DT0H60M60S"),
 	// 	},
 	// }

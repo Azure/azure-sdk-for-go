@@ -32,7 +32,7 @@ type LocationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".LocationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 //     method.
 func (client *LocationsClient) CheckQuotaAvailability(ctx context.Context, location string, options *LocationsClientCheckQuotaAvailabilityOptions) (LocationsClientCheckQuotaAvailabilityResponse, error) {
 	var err error
+	const operationName = "LocationsClient.CheckQuotaAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkQuotaAvailabilityCreateRequest(ctx, location, options)
 	if err != nil {
 		return LocationsClientCheckQuotaAvailabilityResponse{}, err
@@ -108,6 +112,10 @@ func (client *LocationsClient) checkQuotaAvailabilityHandleResponse(resp *http.R
 //     method.
 func (client *LocationsClient) CheckTrialAvailability(ctx context.Context, location string, options *LocationsClientCheckTrialAvailabilityOptions) (LocationsClientCheckTrialAvailabilityResponse, error) {
 	var err error
+	const operationName = "LocationsClient.CheckTrialAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkTrialAvailabilityCreateRequest(ctx, location, options)
 	if err != nil {
 		return LocationsClientCheckTrialAvailabilityResponse{}, err

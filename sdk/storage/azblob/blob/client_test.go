@@ -3644,10 +3644,25 @@ func (s *BlobUnrecordedTestsSuite) TestSASURLBlobClient() {
 		Create: true,
 		Delete: true,
 	}
-	expiry := time.Now().Add(5 * time.Minute)
+	start := time.Now()
+	expiry := start.Add(5 * time.Minute)
+	opts := blob.GetSASURLOptions{
+		StartTime:          &start,
+		ContentDisposition: "attachment; filename=\"test\"",
+		ContentType:        "application/octet-stream",
+	}
 
 	// BlobSASURL is created with GetSASURL
+	// Test with nil GetSASURLOptions
 	sasUrl, err := blobClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+
+	// Get new blob client with sasUrl and attempt GetProperties
+	_, err = blob.NewClientWithNoCredential(sasUrl, nil)
+	_require.NoError(err)
+
+	// Test with GetSASURLOptions
+	sasUrl, err = blobClient.GetSASURL(permissions, expiry, &opts)
 	_require.NoError(err)
 
 	// Get new blob client with sasUrl and attempt GetProperties

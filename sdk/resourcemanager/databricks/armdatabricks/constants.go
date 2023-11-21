@@ -9,8 +9,8 @@
 package armdatabricks
 
 const (
-	moduleName    = "armdatabricks"
-	moduleVersion = "v1.0.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks"
+	moduleVersion = "v1.1.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

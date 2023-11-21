@@ -61,7 +61,7 @@ func (c *SharedKeyCredential) computeHMACSHA256(message string) (string, error) 
 }
 
 func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, error) {
-	// https://docs.microsoft.com/en-us/rest/api/storageservices/authentication-for-the-azure-storage-services
+	// https://learn.microsoft.com/rest/api/storageservices/authentication-for-the-azure-storage-services
 	headers := req.Header
 
 	canonicalizedResource, err := c.buildCanonicalizedResource(req.URL)
@@ -77,14 +77,14 @@ func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, erro
 }
 
 func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, error) {
-	// https://docs.microsoft.com/en-us/rest/api/storageservices/authentication-for-the-azure-storage-services
+	// https://learn.microsoft.com/rest/api/storageservices/authentication-for-the-azure-storage-services
 	cr := bytes.NewBufferString("/")
 	cr.WriteString(c.accountName)
 
 	if len(u.Path) > 0 {
 		// Any portion of the CanonicalizedResource string that is derived from
 		// the resource's URI should be encoded exactly as it is in the URI.
-		// -- https://msdn.microsoft.com/en-gb/library/azure/dd179428.aspx
+		// -- https://learn.microsoft.com/rest/api/storageservices/authorize-requests-to-azure-storage
 		cr.WriteString(u.EscapedPath())
 	} else {
 		// a slash is required to indicate the root path

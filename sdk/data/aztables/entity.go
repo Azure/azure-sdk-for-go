@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-// https://docs.microsoft.com/en-us/rest/api/storageservices/payload-format-for-table-service-operations
+// https://learn.microsoft.com/rest/api/storageservices/payload-format-for-table-service-operations
 
 // Entity is the bare minimum properties for a valid Entity. These should be embedded in a custom struct.
 type Entity struct {

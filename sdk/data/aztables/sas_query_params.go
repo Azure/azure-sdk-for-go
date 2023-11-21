@@ -58,7 +58,7 @@ func formatSASTime(t *time.Time, format string) string {
 	return t.Format(sasTimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
 }
 
-// https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
+// https://learn.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 
 // SASQueryParameters represents the components that make up an Azure Storage SAS' query parameters.
 // You parse a map of query parameters into its fields by calling Sign(). You add the components

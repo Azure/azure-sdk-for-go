@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,36 +37,43 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAvailableClusterPoolVersionsClient creates a new instance of AvailableClusterPoolVersionsClient.
 func (c *ClientFactory) NewAvailableClusterPoolVersionsClient() *AvailableClusterPoolVersionsClient {
 	subClient, _ := NewAvailableClusterPoolVersionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewAvailableClusterVersionsClient creates a new instance of AvailableClusterVersionsClient.
 func (c *ClientFactory) NewAvailableClusterVersionsClient() *AvailableClusterVersionsClient {
 	subClient, _ := NewAvailableClusterVersionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewClusterJobsClient creates a new instance of ClusterJobsClient.
 func (c *ClientFactory) NewClusterJobsClient() *ClusterJobsClient {
 	subClient, _ := NewClusterJobsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewClusterPoolsClient creates a new instance of ClusterPoolsClient.
 func (c *ClientFactory) NewClusterPoolsClient() *ClusterPoolsClient {
 	subClient, _ := NewClusterPoolsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewClustersClient creates a new instance of ClustersClient.
 func (c *ClientFactory) NewClustersClient() *ClustersClient {
 	subClient, _ := NewClustersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewLocationsClient creates a new instance of LocationsClient.
 func (c *ClientFactory) NewLocationsClient() *LocationsClient {
 	subClient, _ := NewLocationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient

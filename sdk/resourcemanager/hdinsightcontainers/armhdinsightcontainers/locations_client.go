@@ -32,7 +32,7 @@ type LocationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".LocationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 //     method.
 func (client *LocationsClient) CheckNameAvailability(ctx context.Context, location string, nameAvailabilityParameters NameAvailabilityParameters, options *LocationsClientCheckNameAvailabilityOptions) (LocationsClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "LocationsClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, location, nameAvailabilityParameters, options)
 	if err != nil {
 		return LocationsClientCheckNameAvailabilityResponse{}, err
@@ -72,6 +76,9 @@ func (client *LocationsClient) CheckNameAvailability(ctx context.Context, locati
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
 func (client *LocationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, nameAvailabilityParameters NameAvailabilityParameters, options *LocationsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/checkNameAvailability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")

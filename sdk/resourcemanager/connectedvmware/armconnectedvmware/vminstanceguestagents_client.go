@@ -37,7 +37,7 @@ type VMInstanceGuestAgentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVMInstanceGuestAgentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*VMInstanceGuestAgentsClient, error) {
-	cl, err := arm.NewClient(moduleName+".VMInstanceGuestAgentsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -63,10 +63,13 @@ func (client *VMInstanceGuestAgentsClient) BeginCreate(ctx context.Context, reso
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VMInstanceGuestAgentsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VMInstanceGuestAgentsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VMInstanceGuestAgentsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -76,6 +79,10 @@ func (client *VMInstanceGuestAgentsClient) BeginCreate(ctx context.Context, reso
 // Generated from API version 2023-10-01
 func (client *VMInstanceGuestAgentsClient) create(ctx context.Context, resourceURI string, body GuestAgent, options *VMInstanceGuestAgentsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VMInstanceGuestAgentsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceURI, body, options)
 	if err != nil {
 		return nil, err
@@ -122,10 +129,14 @@ func (client *VMInstanceGuestAgentsClient) BeginDelete(ctx context.Context, reso
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[VMInstanceGuestAgentsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VMInstanceGuestAgentsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VMInstanceGuestAgentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VMInstanceGuestAgentsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -135,6 +146,10 @@ func (client *VMInstanceGuestAgentsClient) BeginDelete(ctx context.Context, reso
 // Generated from API version 2023-10-01
 func (client *VMInstanceGuestAgentsClient) deleteOperation(ctx context.Context, resourceURI string, options *VMInstanceGuestAgentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VMInstanceGuestAgentsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceURI, options)
 	if err != nil {
 		return nil, err
@@ -174,6 +189,10 @@ func (client *VMInstanceGuestAgentsClient) deleteCreateRequest(ctx context.Conte
 //     method.
 func (client *VMInstanceGuestAgentsClient) Get(ctx context.Context, resourceURI string, options *VMInstanceGuestAgentsClientGetOptions) (VMInstanceGuestAgentsClientGetResponse, error) {
 	var err error
+	const operationName = "VMInstanceGuestAgentsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceURI, options)
 	if err != nil {
 		return VMInstanceGuestAgentsClientGetResponse{}, err
@@ -226,25 +245,20 @@ func (client *VMInstanceGuestAgentsClient) NewListPager(resourceURI string, opti
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VMInstanceGuestAgentsClientListResponse) (VMInstanceGuestAgentsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceURI, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VMInstanceGuestAgentsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceURI, options)
+			}, nil)
 			if err != nil {
 				return VMInstanceGuestAgentsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VMInstanceGuestAgentsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VMInstanceGuestAgentsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

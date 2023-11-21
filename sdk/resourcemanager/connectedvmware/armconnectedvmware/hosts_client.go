@@ -42,7 +42,7 @@ type HostsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewHostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HostsClient, error) {
-	cl, err := arm.NewClient(moduleName+".HostsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -69,10 +69,13 @@ func (client *HostsClient) BeginCreate(ctx context.Context, resourceGroupName st
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HostsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[HostsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HostsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -82,6 +85,10 @@ func (client *HostsClient) BeginCreate(ctx context.Context, resourceGroupName st
 // Generated from API version 2023-10-01
 func (client *HostsClient) create(ctx context.Context, resourceGroupName string, hostName string, body Host, options *HostsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "HostsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, hostName, body, options)
 	if err != nil {
 		return nil, err
@@ -139,10 +146,14 @@ func (client *HostsClient) BeginDelete(ctx context.Context, resourceGroupName st
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[HostsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HostsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[HostsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HostsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -152,6 +163,10 @@ func (client *HostsClient) BeginDelete(ctx context.Context, resourceGroupName st
 // Generated from API version 2023-10-01
 func (client *HostsClient) deleteOperation(ctx context.Context, resourceGroupName string, hostName string, options *HostsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "HostsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostName, options)
 	if err != nil {
 		return nil, err
@@ -205,6 +220,10 @@ func (client *HostsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 //   - options - HostsClientGetOptions contains the optional parameters for the HostsClient.Get method.
 func (client *HostsClient) Get(ctx context.Context, resourceGroupName string, hostName string, options *HostsClientGetOptions) (HostsClientGetResponse, error) {
 	var err error
+	const operationName = "HostsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostName, options)
 	if err != nil {
 		return HostsClientGetResponse{}, err
@@ -266,25 +285,20 @@ func (client *HostsClient) NewListPager(options *HostsClientListOptions) *runtim
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *HostsClientListResponse) (HostsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "HostsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return HostsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return HostsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return HostsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -327,25 +341,20 @@ func (client *HostsClient) NewListByResourceGroupPager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *HostsClientListByResourceGroupResponse) (HostsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "HostsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return HostsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return HostsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return HostsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -390,6 +399,10 @@ func (client *HostsClient) listByResourceGroupHandleResponse(resp *http.Response
 //   - options - HostsClientUpdateOptions contains the optional parameters for the HostsClient.Update method.
 func (client *HostsClient) Update(ctx context.Context, resourceGroupName string, hostName string, body ResourcePatch, options *HostsClientUpdateOptions) (HostsClientUpdateResponse, error) {
 	var err error
+	const operationName = "HostsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, hostName, body, options)
 	if err != nil {
 		return HostsClientUpdateResponse{}, err

@@ -52,7 +52,7 @@ func ExampleJobsClient_NewListByJobDefinitionPager() {
 		// 				TotalBytesToProcess: to.Ptr[int64](0),
 		// 				TotalItemsToProcess: to.Ptr[int64](0),
 		// 			},
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:59.2771412Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:59.277Z"); return t}()),
 		// 			Status: to.Ptr(armhybriddatamanager.JobStatusInProgress),
 		// 		},
 		// 		{
@@ -66,7 +66,7 @@ func ExampleJobsClient_NewListByJobDefinitionPager() {
 		// 				TotalBytesToProcess: to.Ptr[int64](0),
 		// 				TotalItemsToProcess: to.Ptr[int64](0),
 		// 			},
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:10.6059757Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:10.605Z"); return t}()),
 		// 			Status: to.Ptr(armhybriddatamanager.JobStatusInProgress),
 		// 	}},
 		// }
@@ -102,7 +102,7 @@ func ExampleJobsClient_Get() {
 	// 		TotalBytesToProcess: to.Ptr[int64](0),
 	// 		TotalItemsToProcess: to.Ptr[int64](0),
 	// 	},
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:59.2771412Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:59.277Z"); return t}()),
 	// 	Status: to.Ptr(armhybriddatamanager.JobStatusInProgress),
 	// }
 }
@@ -184,7 +184,7 @@ func ExampleJobsClient_NewListByDataServicePager() {
 		// 				TotalBytesToProcess: to.Ptr[int64](0),
 		// 				TotalItemsToProcess: to.Ptr[int64](0),
 		// 			},
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:59.2771412Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:59.277Z"); return t}()),
 		// 			Status: to.Ptr(armhybriddatamanager.JobStatusInProgress),
 		// 		},
 		// 		{
@@ -198,7 +198,7 @@ func ExampleJobsClient_NewListByDataServicePager() {
 		// 				TotalBytesToProcess: to.Ptr[int64](0),
 		// 				TotalItemsToProcess: to.Ptr[int64](0),
 		// 			},
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:10.6059757Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:10.605Z"); return t}()),
 		// 			Status: to.Ptr(armhybriddatamanager.JobStatusInProgress),
 		// 	}},
 		// }
@@ -240,7 +240,7 @@ func ExampleJobsClient_NewListByDataManagerPager() {
 		// 				TotalBytesToProcess: to.Ptr[int64](0),
 		// 				TotalItemsToProcess: to.Ptr[int64](0),
 		// 			},
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:59.2771412Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:59.277Z"); return t}()),
 		// 			Status: to.Ptr(armhybriddatamanager.JobStatusInProgress),
 		// 		},
 		// 		{
@@ -254,7 +254,7 @@ func ExampleJobsClient_NewListByDataManagerPager() {
 		// 				TotalBytesToProcess: to.Ptr[int64](0),
 		// 				TotalItemsToProcess: to.Ptr[int64](0),
 		// 			},
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:10.6059757Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T04:42:10.605Z"); return t}()),
 		// 			Status: to.Ptr(armhybriddatamanager.JobStatusInProgress),
 		// 	}},
 		// }

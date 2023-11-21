@@ -9,8 +9,8 @@
 package armdesktopvirtualization
 
 const (
-	moduleName    = "armdesktopvirtualization"
-	moduleVersion = "v2.1.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
+	moduleVersion = "v2.2.0"
 )
 
 // ApplicationGroupType - Resource Type of ApplicationGroup.

@@ -33,7 +33,7 @@ type PrivateEndpointConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".PrivateEndpointConnectionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 //     method.
 func (client *PrivateEndpointConnectionsClient) DeleteByHostPool(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientDeleteByHostPoolOptions) (PrivateEndpointConnectionsClientDeleteByHostPoolResponse, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.DeleteByHostPool"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, privateEndpointConnectionName, options)
 	if err != nil {
 		return PrivateEndpointConnectionsClientDeleteByHostPoolResponse{}, err
@@ -111,6 +115,10 @@ func (client *PrivateEndpointConnectionsClient) deleteByHostPoolCreateRequest(ct
 //     method.
 func (client *PrivateEndpointConnectionsClient) DeleteByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientDeleteByWorkspaceOptions) (PrivateEndpointConnectionsClientDeleteByWorkspaceResponse, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.DeleteByWorkspace"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, options)
 	if err != nil {
 		return PrivateEndpointConnectionsClientDeleteByWorkspaceResponse{}, err
@@ -167,6 +175,10 @@ func (client *PrivateEndpointConnectionsClient) deleteByWorkspaceCreateRequest(c
 //     method.
 func (client *PrivateEndpointConnectionsClient) GetByHostPool(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetByHostPoolOptions) (PrivateEndpointConnectionsClientGetByHostPoolResponse, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.GetByHostPool"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, privateEndpointConnectionName, options)
 	if err != nil {
 		return PrivateEndpointConnectionsClientGetByHostPoolResponse{}, err
@@ -233,6 +245,10 @@ func (client *PrivateEndpointConnectionsClient) getByHostPoolHandleResponse(resp
 //     method.
 func (client *PrivateEndpointConnectionsClient) GetByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetByWorkspaceOptions) (PrivateEndpointConnectionsClientGetByWorkspaceResponse, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.GetByWorkspace"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, options)
 	if err != nil {
 		return PrivateEndpointConnectionsClientGetByWorkspaceResponse{}, err
@@ -301,25 +317,20 @@ func (client *PrivateEndpointConnectionsClient) NewListByHostPoolPager(resourceG
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionsClientListByHostPoolResponse) (PrivateEndpointConnectionsClientListByHostPoolResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateEndpointConnectionsClient.NewListByHostPoolPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
+			}, nil)
 			if err != nil {
 				return PrivateEndpointConnectionsClientListByHostPoolResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateEndpointConnectionsClientListByHostPoolResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PrivateEndpointConnectionsClientListByHostPoolResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByHostPoolHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -380,25 +391,20 @@ func (client *PrivateEndpointConnectionsClient) NewListByWorkspacePager(resource
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionsClientListByWorkspaceResponse) (PrivateEndpointConnectionsClientListByWorkspaceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateEndpointConnectionsClient.NewListByWorkspacePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			}, nil)
 			if err != nil {
 				return PrivateEndpointConnectionsClientListByWorkspaceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateEndpointConnectionsClientListByWorkspaceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PrivateEndpointConnectionsClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByWorkspaceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -449,6 +455,10 @@ func (client *PrivateEndpointConnectionsClient) listByWorkspaceHandleResponse(re
 //     method.
 func (client *PrivateEndpointConnectionsClient) UpdateByHostPool(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, connection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientUpdateByHostPoolOptions) (PrivateEndpointConnectionsClientUpdateByHostPoolResponse, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.UpdateByHostPool"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, privateEndpointConnectionName, connection, options)
 	if err != nil {
 		return PrivateEndpointConnectionsClientUpdateByHostPoolResponse{}, err
@@ -519,6 +529,10 @@ func (client *PrivateEndpointConnectionsClient) updateByHostPoolHandleResponse(r
 //     method.
 func (client *PrivateEndpointConnectionsClient) UpdateByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, connection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientUpdateByWorkspaceOptions) (PrivateEndpointConnectionsClientUpdateByWorkspaceResponse, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.UpdateByWorkspace"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, connection, options)
 	if err != nil {
 		return PrivateEndpointConnectionsClientUpdateByWorkspaceResponse{}, err

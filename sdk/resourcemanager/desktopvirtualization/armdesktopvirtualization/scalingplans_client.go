@@ -33,7 +33,7 @@ type ScalingPlansClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewScalingPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScalingPlansClient, error) {
-	cl, err := arm.NewClient(moduleName+".ScalingPlansClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewScalingPlansClient(subscriptionID string, credential azcore.TokenCredent
 //   - options - ScalingPlansClientCreateOptions contains the optional parameters for the ScalingPlansClient.Create method.
 func (client *ScalingPlansClient) Create(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlan ScalingPlan, options *ScalingPlansClientCreateOptions) (ScalingPlansClientCreateResponse, error) {
 	var err error
+	const operationName = "ScalingPlansClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, scalingPlanName, scalingPlan, options)
 	if err != nil {
 		return ScalingPlansClientCreateResponse{}, err
@@ -117,6 +121,10 @@ func (client *ScalingPlansClient) createHandleResponse(resp *http.Response) (Sca
 //   - options - ScalingPlansClientDeleteOptions contains the optional parameters for the ScalingPlansClient.Delete method.
 func (client *ScalingPlansClient) Delete(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansClientDeleteOptions) (ScalingPlansClientDeleteResponse, error) {
 	var err error
+	const operationName = "ScalingPlansClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, scalingPlanName, options)
 	if err != nil {
 		return ScalingPlansClientDeleteResponse{}, err
@@ -167,6 +175,10 @@ func (client *ScalingPlansClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - ScalingPlansClientGetOptions contains the optional parameters for the ScalingPlansClient.Get method.
 func (client *ScalingPlansClient) Get(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansClientGetOptions) (ScalingPlansClientGetResponse, error) {
 	var err error
+	const operationName = "ScalingPlansClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, scalingPlanName, options)
 	if err != nil {
 		return ScalingPlansClientGetResponse{}, err
@@ -231,25 +243,20 @@ func (client *ScalingPlansClient) NewListByHostPoolPager(resourceGroupName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScalingPlansClientListByHostPoolResponse) (ScalingPlansClientListByHostPoolResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScalingPlansClient.NewListByHostPoolPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
+			}, nil)
 			if err != nil {
 				return ScalingPlansClientListByHostPoolResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ScalingPlansClientListByHostPoolResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ScalingPlansClientListByHostPoolResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByHostPoolHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -309,25 +316,20 @@ func (client *ScalingPlansClient) NewListByResourceGroupPager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScalingPlansClientListByResourceGroupResponse) (ScalingPlansClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScalingPlansClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ScalingPlansClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ScalingPlansClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ScalingPlansClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -382,25 +384,20 @@ func (client *ScalingPlansClient) NewListBySubscriptionPager(options *ScalingPla
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScalingPlansClientListBySubscriptionResponse) (ScalingPlansClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScalingPlansClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ScalingPlansClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ScalingPlansClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ScalingPlansClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -449,6 +446,10 @@ func (client *ScalingPlansClient) listBySubscriptionHandleResponse(resp *http.Re
 //   - options - ScalingPlansClientUpdateOptions contains the optional parameters for the ScalingPlansClient.Update method.
 func (client *ScalingPlansClient) Update(ctx context.Context, resourceGroupName string, scalingPlanName string, options *ScalingPlansClientUpdateOptions) (ScalingPlansClientUpdateResponse, error) {
 	var err error
+	const operationName = "ScalingPlansClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, scalingPlanName, options)
 	if err != nil {
 		return ScalingPlansClientUpdateResponse{}, err

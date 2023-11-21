@@ -53,7 +53,7 @@ func ExampleMsixImagesClient_NewExpandPager() {
 		// 				ImagePath: to.Ptr("imagepath"),
 		// 				IsActive: to.Ptr(false),
 		// 				IsRegularRegistration: to.Ptr(false),
-		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
+		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
 		// 				PackageAlias: to.Ptr("msixpackagealias"),
 		// 				PackageApplications: []*armdesktopvirtualization.MsixPackageApplications{
 		// 					{
@@ -83,7 +83,7 @@ func ExampleMsixImagesClient_NewExpandPager() {
 		// 				ImagePath: to.Ptr("imagepath"),
 		// 				IsActive: to.Ptr(false),
 		// 				IsRegularRegistration: to.Ptr(false),
-		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
+		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
 		// 				PackageAlias: to.Ptr("msixpackagealias2"),
 		// 				PackageApplications: []*armdesktopvirtualization.MsixPackageApplications{
 		// 					{

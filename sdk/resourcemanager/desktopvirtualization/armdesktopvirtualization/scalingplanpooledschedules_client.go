@@ -33,7 +33,7 @@ type ScalingPlanPooledSchedulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewScalingPlanPooledSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScalingPlanPooledSchedulesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ScalingPlanPooledSchedulesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewScalingPlanPooledSchedulesClient(subscriptionID string, credential azcor
 //     method.
 func (client *ScalingPlanPooledSchedulesClient) Create(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, scalingPlanSchedule ScalingPlanPooledSchedule, options *ScalingPlanPooledSchedulesClientCreateOptions) (ScalingPlanPooledSchedulesClientCreateResponse, error) {
 	var err error
+	const operationName = "ScalingPlanPooledSchedulesClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule, options)
 	if err != nil {
 		return ScalingPlanPooledSchedulesClientCreateResponse{}, err
@@ -125,6 +129,10 @@ func (client *ScalingPlanPooledSchedulesClient) createHandleResponse(resp *http.
 //     method.
 func (client *ScalingPlanPooledSchedulesClient) Delete(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPooledSchedulesClientDeleteOptions) (ScalingPlanPooledSchedulesClientDeleteResponse, error) {
 	var err error
+	const operationName = "ScalingPlanPooledSchedulesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, scalingPlanName, scalingPlanScheduleName, options)
 	if err != nil {
 		return ScalingPlanPooledSchedulesClientDeleteResponse{}, err
@@ -181,6 +189,10 @@ func (client *ScalingPlanPooledSchedulesClient) deleteCreateRequest(ctx context.
 //     method.
 func (client *ScalingPlanPooledSchedulesClient) Get(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPooledSchedulesClientGetOptions) (ScalingPlanPooledSchedulesClientGetResponse, error) {
 	var err error
+	const operationName = "ScalingPlanPooledSchedulesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, scalingPlanName, scalingPlanScheduleName, options)
 	if err != nil {
 		return ScalingPlanPooledSchedulesClientGetResponse{}, err
@@ -249,25 +261,20 @@ func (client *ScalingPlanPooledSchedulesClient) NewListPager(resourceGroupName s
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScalingPlanPooledSchedulesClientListResponse) (ScalingPlanPooledSchedulesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, scalingPlanName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScalingPlanPooledSchedulesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, scalingPlanName, options)
+			}, nil)
 			if err != nil {
 				return ScalingPlanPooledSchedulesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ScalingPlanPooledSchedulesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ScalingPlanPooledSchedulesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -326,6 +333,10 @@ func (client *ScalingPlanPooledSchedulesClient) listHandleResponse(resp *http.Re
 //     method.
 func (client *ScalingPlanPooledSchedulesClient) Update(ctx context.Context, resourceGroupName string, scalingPlanName string, scalingPlanScheduleName string, options *ScalingPlanPooledSchedulesClientUpdateOptions) (ScalingPlanPooledSchedulesClientUpdateResponse, error) {
 	var err error
+	const operationName = "ScalingPlanPooledSchedulesClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, scalingPlanName, scalingPlanScheduleName, options)
 	if err != nil {
 		return ScalingPlanPooledSchedulesClientUpdateResponse{}, err

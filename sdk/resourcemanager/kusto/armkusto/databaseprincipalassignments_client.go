@@ -32,7 +32,7 @@ type DatabasePrincipalAssignmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabasePrincipalAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasePrincipalAssignmentsClient, error) {
-	cl, err := arm.NewClient(moduleName+".DatabasePrincipalAssignmentsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewDatabasePrincipalAssignmentsClient(subscriptionID string, credential azc
 //     method.
 func (client *DatabasePrincipalAssignmentsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName DatabasePrincipalAssignmentCheckNameRequest, options *DatabasePrincipalAssignmentsClientCheckNameAvailabilityOptions) (DatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "DatabasePrincipalAssignmentsClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, clusterName, databaseName, principalAssignmentName, options)
 	if err != nil {
 		return DatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
@@ -130,10 +134,14 @@ func (client *DatabasePrincipalAssignmentsClient) BeginCreateOrUpdate(ctx contex
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -143,6 +151,10 @@ func (client *DatabasePrincipalAssignmentsClient) BeginCreateOrUpdate(ctx contex
 // Generated from API version 2023-08-15
 func (client *DatabasePrincipalAssignmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, parameters DatabasePrincipalAssignment, options *DatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasePrincipalAssignmentsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -211,10 +223,14 @@ func (client *DatabasePrincipalAssignmentsClient) BeginDelete(ctx context.Contex
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DatabasePrincipalAssignmentsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasePrincipalAssignmentsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasePrincipalAssignmentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasePrincipalAssignmentsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -224,6 +240,10 @@ func (client *DatabasePrincipalAssignmentsClient) BeginDelete(ctx context.Contex
 // Generated from API version 2023-08-15
 func (client *DatabasePrincipalAssignmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, options *DatabasePrincipalAssignmentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasePrincipalAssignmentsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, databaseName, principalAssignmentName, options)
 	if err != nil {
 		return nil, err
@@ -285,6 +305,10 @@ func (client *DatabasePrincipalAssignmentsClient) deleteCreateRequest(ctx contex
 //     method.
 func (client *DatabasePrincipalAssignmentsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, options *DatabasePrincipalAssignmentsClientGetOptions) (DatabasePrincipalAssignmentsClientGetResponse, error) {
 	var err error
+	const operationName = "DatabasePrincipalAssignmentsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, databaseName, principalAssignmentName, options)
 	if err != nil {
 		return DatabasePrincipalAssignmentsClientGetResponse{}, err
@@ -358,6 +382,7 @@ func (client *DatabasePrincipalAssignmentsClient) NewListPager(resourceGroupName
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *DatabasePrincipalAssignmentsClientListResponse) (DatabasePrincipalAssignmentsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DatabasePrincipalAssignmentsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
 			if err != nil {
 				return DatabasePrincipalAssignmentsClientListResponse{}, err
@@ -371,6 +396,7 @@ func (client *DatabasePrincipalAssignmentsClient) NewListPager(resourceGroupName
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

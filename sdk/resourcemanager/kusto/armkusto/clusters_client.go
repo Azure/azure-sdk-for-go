@@ -32,7 +32,7 @@ type ClustersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error) {
-	cl, err := arm.NewClient(moduleName+".ClustersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,10 +58,14 @@ func (client *ClustersClient) BeginAddLanguageExtensions(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClustersClientAddLanguageExtensionsResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientAddLanguageExtensionsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientAddLanguageExtensionsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientAddLanguageExtensionsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -71,6 +75,10 @@ func (client *ClustersClient) BeginAddLanguageExtensions(ctx context.Context, re
 // Generated from API version 2023-08-15
 func (client *ClustersClient) addLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToAdd LanguageExtensionsList, options *ClustersClientBeginAddLanguageExtensionsOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClustersClient.BeginAddLanguageExtensions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.addLanguageExtensionsCreateRequest(ctx, resourceGroupName, clusterName, languageExtensionsToAdd, options)
 	if err != nil {
 		return nil, err
@@ -125,6 +133,10 @@ func (client *ClustersClient) addLanguageExtensionsCreateRequest(ctx context.Con
 //     method.
 func (client *ClustersClient) CheckNameAvailability(ctx context.Context, location string, clusterName ClusterCheckNameRequest, options *ClustersClientCheckNameAvailabilityOptions) (ClustersClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "ClustersClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, location, clusterName, options)
 	if err != nil {
 		return ClustersClientCheckNameAvailabilityResponse{}, err
@@ -190,10 +202,14 @@ func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClustersClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -203,6 +219,10 @@ func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // Generated from API version 2023-08-15
 func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClustersClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -266,10 +286,14 @@ func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClustersClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -279,6 +303,10 @@ func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-08-15
 func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClustersClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
@@ -335,10 +363,14 @@ func (client *ClustersClient) BeginDetachFollowerDatabases(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClustersClientDetachFollowerDatabasesResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientDetachFollowerDatabasesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientDetachFollowerDatabasesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientDetachFollowerDatabasesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -348,6 +380,10 @@ func (client *ClustersClient) BeginDetachFollowerDatabases(ctx context.Context, 
 // Generated from API version 2023-08-15
 func (client *ClustersClient) detachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseDefinition, options *ClustersClientBeginDetachFollowerDatabasesOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClustersClient.BeginDetachFollowerDatabases"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.detachFollowerDatabasesCreateRequest(ctx, resourceGroupName, clusterName, followerDatabaseToRemove, options)
 	if err != nil {
 		return nil, err
@@ -407,10 +443,14 @@ func (client *ClustersClient) BeginDiagnoseVirtualNetwork(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClustersClientDiagnoseVirtualNetworkResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientDiagnoseVirtualNetworkResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientDiagnoseVirtualNetworkResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientDiagnoseVirtualNetworkResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -421,6 +461,10 @@ func (client *ClustersClient) BeginDiagnoseVirtualNetwork(ctx context.Context, r
 // Generated from API version 2023-08-15
 func (client *ClustersClient) diagnoseVirtualNetwork(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDiagnoseVirtualNetworkOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClustersClient.BeginDiagnoseVirtualNetwork"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.diagnoseVirtualNetworkCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
@@ -471,6 +515,10 @@ func (client *ClustersClient) diagnoseVirtualNetworkCreateRequest(ctx context.Co
 //   - options - ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
 func (client *ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientGetOptions) (ClustersClientGetResponse, error) {
 	var err error
+	const operationName = "ClustersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return ClustersClientGetResponse{}, err
@@ -532,6 +580,7 @@ func (client *ClustersClient) NewListPager(options *ClustersClientListOptions) *
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ClustersClientListResponse) (ClustersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClustersClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
 				return ClustersClientListResponse{}, err
@@ -545,6 +594,7 @@ func (client *ClustersClient) NewListPager(options *ClustersClientListOptions) *
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -587,6 +637,7 @@ func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName stri
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ClustersClientListByResourceGroupResponse) (ClustersClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClustersClient.NewListByResourceGroupPager")
 			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 			if err != nil {
 				return ClustersClientListByResourceGroupResponse{}, err
@@ -600,6 +651,7 @@ func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName stri
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -648,6 +700,7 @@ func (client *ClustersClient) NewListFollowerDatabasesPager(resourceGroupName st
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ClustersClientListFollowerDatabasesResponse) (ClustersClientListFollowerDatabasesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClustersClient.NewListFollowerDatabasesPager")
 			req, err := client.listFollowerDatabasesCreateRequest(ctx, resourceGroupName, clusterName, options)
 			if err != nil {
 				return ClustersClientListFollowerDatabasesResponse{}, err
@@ -661,6 +714,7 @@ func (client *ClustersClient) NewListFollowerDatabasesPager(resourceGroupName st
 			}
 			return client.listFollowerDatabasesHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -712,6 +766,7 @@ func (client *ClustersClient) NewListLanguageExtensionsPager(resourceGroupName s
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ClustersClientListLanguageExtensionsResponse) (ClustersClientListLanguageExtensionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClustersClient.NewListLanguageExtensionsPager")
 			req, err := client.listLanguageExtensionsCreateRequest(ctx, resourceGroupName, clusterName, options)
 			if err != nil {
 				return ClustersClientListLanguageExtensionsResponse{}, err
@@ -725,6 +780,7 @@ func (client *ClustersClient) NewListLanguageExtensionsPager(resourceGroupName s
 			}
 			return client.listLanguageExtensionsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -776,25 +832,20 @@ func (client *ClustersClient) NewListOutboundNetworkDependenciesEndpointsPager(r
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClustersClientListOutboundNetworkDependenciesEndpointsResponse) (ClustersClientListOutboundNetworkDependenciesEndpointsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, clusterName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClustersClient.NewListOutboundNetworkDependenciesEndpointsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, clusterName, options)
+			}, nil)
 			if err != nil {
 				return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listOutboundNetworkDependenciesEndpointsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -843,6 +894,7 @@ func (client *ClustersClient) NewListSKUsPager(options *ClustersClientListSKUsOp
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ClustersClientListSKUsResponse) (ClustersClientListSKUsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClustersClient.NewListSKUsPager")
 			req, err := client.listSKUsCreateRequest(ctx, options)
 			if err != nil {
 				return ClustersClientListSKUsResponse{}, err
@@ -856,6 +908,7 @@ func (client *ClustersClient) NewListSKUsPager(options *ClustersClientListSKUsOp
 			}
 			return client.listSKUsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -899,6 +952,7 @@ func (client *ClustersClient) NewListSKUsByResourcePager(resourceGroupName strin
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ClustersClientListSKUsByResourceResponse) (ClustersClientListSKUsByResourceResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClustersClient.NewListSKUsByResourcePager")
 			req, err := client.listSKUsByResourceCreateRequest(ctx, resourceGroupName, clusterName, options)
 			if err != nil {
 				return ClustersClientListSKUsByResourceResponse{}, err
@@ -912,6 +966,7 @@ func (client *ClustersClient) NewListSKUsByResourcePager(resourceGroupName strin
 			}
 			return client.listSKUsByResourceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -964,10 +1019,14 @@ func (client *ClustersClient) BeginMigrate(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClustersClientMigrateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientMigrateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientMigrateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientMigrateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -977,6 +1036,10 @@ func (client *ClustersClient) BeginMigrate(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-08-15
 func (client *ClustersClient) migrate(ctx context.Context, resourceGroupName string, clusterName string, clusterMigrateRequest ClusterMigrateRequest, options *ClustersClientBeginMigrateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClustersClient.BeginMigrate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.migrateCreateRequest(ctx, resourceGroupName, clusterName, clusterMigrateRequest, options)
 	if err != nil {
 		return nil, err
@@ -1036,10 +1099,14 @@ func (client *ClustersClient) BeginRemoveLanguageExtensions(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClustersClientRemoveLanguageExtensionsResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientRemoveLanguageExtensionsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientRemoveLanguageExtensionsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientRemoveLanguageExtensionsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1049,6 +1116,10 @@ func (client *ClustersClient) BeginRemoveLanguageExtensions(ctx context.Context,
 // Generated from API version 2023-08-15
 func (client *ClustersClient) removeLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToRemove LanguageExtensionsList, options *ClustersClientBeginRemoveLanguageExtensionsOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClustersClient.BeginRemoveLanguageExtensions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.removeLanguageExtensionsCreateRequest(ctx, resourceGroupName, clusterName, languageExtensionsToRemove, options)
 	if err != nil {
 		return nil, err
@@ -1106,10 +1177,14 @@ func (client *ClustersClient) BeginStart(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClustersClientStartResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientStartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1119,6 +1194,10 @@ func (client *ClustersClient) BeginStart(ctx context.Context, resourceGroupName 
 // Generated from API version 2023-08-15
 func (client *ClustersClient) start(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStartOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClustersClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.startCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
@@ -1173,10 +1252,14 @@ func (client *ClustersClient) BeginStop(ctx context.Context, resourceGroupName s
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClustersClientStopResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientStopResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1186,6 +1269,10 @@ func (client *ClustersClient) BeginStop(ctx context.Context, resourceGroupName s
 // Generated from API version 2023-08-15
 func (client *ClustersClient) stop(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStopOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClustersClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
@@ -1241,10 +1328,14 @@ func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClustersClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1254,6 +1345,10 @@ func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Generated from API version 2023-08-15
 func (client *ClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdate, options *ClustersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClustersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
 	if err != nil {
 		return nil, err

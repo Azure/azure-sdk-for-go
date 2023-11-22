@@ -32,7 +32,7 @@ type SKUsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SKUsClient, error) {
-	cl, err := arm.NewClient(moduleName+".SKUsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,7 @@ func (client *SKUsClient) NewListPager(location string, options *SKUsClientListO
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *SKUsClientListResponse) (SKUsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SKUsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, location, options)
 			if err != nil {
 				return SKUsClientListResponse{}, err
@@ -67,6 +68,7 @@ func (client *SKUsClient) NewListPager(location string, options *SKUsClientListO
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

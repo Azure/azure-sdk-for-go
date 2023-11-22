@@ -32,7 +32,7 @@ type ApplicationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ApplicationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *ApplicationsClient) BeginCreateOrUpdate(ctx context.Context, resou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ApplicationsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *ApplicationsClient) BeginCreateOrUpdate(ctx context.Context, resou
 // Generated from API version 2021-07-01
 func (client *ApplicationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, applicationName string, parameters Application, options *ApplicationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, applicationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -135,10 +142,13 @@ func (client *ApplicationsClient) BeginCreateOrUpdateByID(ctx context.Context, a
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientCreateOrUpdateByIDResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ApplicationsClientCreateOrUpdateByIDResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientCreateOrUpdateByIDResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -148,6 +158,10 @@ func (client *ApplicationsClient) BeginCreateOrUpdateByID(ctx context.Context, a
 // Generated from API version 2021-07-01
 func (client *ApplicationsClient) createOrUpdateByID(ctx context.Context, applicationID string, parameters Application, options *ApplicationsClientBeginCreateOrUpdateByIDOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationsClient.BeginCreateOrUpdateByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateByIDCreateRequest(ctx, applicationID, parameters, options)
 	if err != nil {
 		return nil, err
@@ -197,10 +211,13 @@ func (client *ApplicationsClient) BeginDelete(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ApplicationsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -210,6 +227,10 @@ func (client *ApplicationsClient) BeginDelete(ctx context.Context, resourceGroup
 // Generated from API version 2021-07-01
 func (client *ApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
 		return nil, err
@@ -268,10 +289,13 @@ func (client *ApplicationsClient) BeginDeleteByID(ctx context.Context, applicati
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientDeleteByIDResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ApplicationsClientDeleteByIDResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientDeleteByIDResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -281,6 +305,10 @@ func (client *ApplicationsClient) BeginDeleteByID(ctx context.Context, applicati
 // Generated from API version 2021-07-01
 func (client *ApplicationsClient) deleteByID(ctx context.Context, applicationID string, options *ApplicationsClientBeginDeleteByIDOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationsClient.BeginDeleteByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteByIDCreateRequest(ctx, applicationID, options)
 	if err != nil {
 		return nil, err
@@ -320,6 +348,10 @@ func (client *ApplicationsClient) deleteByIDCreateRequest(ctx context.Context, a
 //   - options - ApplicationsClientGetOptions contains the optional parameters for the ApplicationsClient.Get method.
 func (client *ApplicationsClient) Get(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientGetOptions) (ApplicationsClientGetResponse, error) {
 	var err error
+	const operationName = "ApplicationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
 		return ApplicationsClientGetResponse{}, err
@@ -381,6 +413,10 @@ func (client *ApplicationsClient) getHandleResponse(resp *http.Response) (Applic
 //   - options - ApplicationsClientGetByIDOptions contains the optional parameters for the ApplicationsClient.GetByID method.
 func (client *ApplicationsClient) GetByID(ctx context.Context, applicationID string, options *ApplicationsClientGetByIDOptions) (ApplicationsClientGetByIDResponse, error) {
 	var err error
+	const operationName = "ApplicationsClient.GetByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByIDCreateRequest(ctx, applicationID, options)
 	if err != nil {
 		return ApplicationsClientGetByIDResponse{}, err
@@ -431,6 +467,10 @@ func (client *ApplicationsClient) getByIDHandleResponse(resp *http.Response) (Ap
 //     method.
 func (client *ApplicationsClient) ListAllowedUpgradePlans(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientListAllowedUpgradePlansOptions) (ApplicationsClientListAllowedUpgradePlansResponse, error) {
 	var err error
+	const operationName = "ApplicationsClient.ListAllowedUpgradePlans"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listAllowedUpgradePlansCreateRequest(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
 		return ApplicationsClientListAllowedUpgradePlansResponse{}, err
@@ -494,25 +534,20 @@ func (client *ApplicationsClient) NewListByResourceGroupPager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationsClientListByResourceGroupResponse) (ApplicationsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ApplicationsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ApplicationsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -558,25 +593,20 @@ func (client *ApplicationsClient) NewListBySubscriptionPager(options *Applicatio
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationsClientListBySubscriptionResponse) (ApplicationsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ApplicationsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ApplicationsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -617,6 +647,10 @@ func (client *ApplicationsClient) listBySubscriptionHandleResponse(resp *http.Re
 //   - options - ApplicationsClientListTokensOptions contains the optional parameters for the ApplicationsClient.ListTokens method.
 func (client *ApplicationsClient) ListTokens(ctx context.Context, resourceGroupName string, applicationName string, parameters ListTokenRequest, options *ApplicationsClientListTokensOptions) (ApplicationsClientListTokensResponse, error) {
 	var err error
+	const operationName = "ApplicationsClient.ListTokens"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listTokensCreateRequest(ctx, resourceGroupName, applicationName, parameters, options)
 	if err != nil {
 		return ApplicationsClientListTokensResponse{}, err
@@ -687,10 +721,13 @@ func (client *ApplicationsClient) BeginRefreshPermissions(ctx context.Context, r
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientRefreshPermissionsResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ApplicationsClientRefreshPermissionsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientRefreshPermissionsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -700,6 +737,10 @@ func (client *ApplicationsClient) BeginRefreshPermissions(ctx context.Context, r
 // Generated from API version 2021-07-01
 func (client *ApplicationsClient) refreshPermissions(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginRefreshPermissionsOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationsClient.BeginRefreshPermissions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.refreshPermissionsCreateRequest(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
 		return nil, err
@@ -757,10 +798,13 @@ func (client *ApplicationsClient) BeginUpdate(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ApplicationsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -770,6 +814,10 @@ func (client *ApplicationsClient) BeginUpdate(ctx context.Context, resourceGroup
 // Generated from API version 2021-07-01
 func (client *ApplicationsClient) update(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
 		return nil, err
@@ -834,10 +882,13 @@ func (client *ApplicationsClient) BeginUpdateAccess(ctx context.Context, resourc
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientUpdateAccessResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ApplicationsClientUpdateAccessResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientUpdateAccessResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -847,6 +898,10 @@ func (client *ApplicationsClient) BeginUpdateAccess(ctx context.Context, resourc
 // Generated from API version 2021-07-01
 func (client *ApplicationsClient) updateAccess(ctx context.Context, resourceGroupName string, applicationName string, parameters UpdateAccessDefinition, options *ApplicationsClientBeginUpdateAccessOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationsClient.BeginUpdateAccess"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateAccessCreateRequest(ctx, resourceGroupName, applicationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -908,10 +963,13 @@ func (client *ApplicationsClient) BeginUpdateByID(ctx context.Context, applicati
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientUpdateByIDResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ApplicationsClientUpdateByIDResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientUpdateByIDResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -921,6 +979,10 @@ func (client *ApplicationsClient) BeginUpdateByID(ctx context.Context, applicati
 // Generated from API version 2021-07-01
 func (client *ApplicationsClient) updateByID(ctx context.Context, applicationID string, options *ApplicationsClientBeginUpdateByIDOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ApplicationsClient.BeginUpdateByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateByIDCreateRequest(ctx, applicationID, options)
 	if err != nil {
 		return nil, err

@@ -32,7 +32,7 @@ type JitRequestsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJitRequestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JitRequestsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JitRequestsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *JitRequestsClient) BeginCreateOrUpdate(ctx context.Context, resour
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JitRequestsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[JitRequestsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JitRequestsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *JitRequestsClient) BeginCreateOrUpdate(ctx context.Context, resour
 // Generated from API version 2021-07-01
 func (client *JitRequestsClient) createOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition, options *JitRequestsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "JitRequestsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, jitRequestName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -126,6 +133,10 @@ func (client *JitRequestsClient) createOrUpdateCreateRequest(ctx context.Context
 //   - options - JitRequestsClientDeleteOptions contains the optional parameters for the JitRequestsClient.Delete method.
 func (client *JitRequestsClient) Delete(ctx context.Context, resourceGroupName string, jitRequestName string, options *JitRequestsClientDeleteOptions) (JitRequestsClientDeleteResponse, error) {
 	var err error
+	const operationName = "JitRequestsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, jitRequestName, options)
 	if err != nil {
 		return JitRequestsClientDeleteResponse{}, err
@@ -176,6 +187,10 @@ func (client *JitRequestsClient) deleteCreateRequest(ctx context.Context, resour
 //   - options - JitRequestsClientGetOptions contains the optional parameters for the JitRequestsClient.Get method.
 func (client *JitRequestsClient) Get(ctx context.Context, resourceGroupName string, jitRequestName string, options *JitRequestsClientGetOptions) (JitRequestsClientGetResponse, error) {
 	var err error
+	const operationName = "JitRequestsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, jitRequestName, options)
 	if err != nil {
 		return JitRequestsClientGetResponse{}, err
@@ -236,6 +251,10 @@ func (client *JitRequestsClient) getHandleResponse(resp *http.Response) (JitRequ
 //     method.
 func (client *JitRequestsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *JitRequestsClientListByResourceGroupOptions) (JitRequestsClientListByResourceGroupResponse, error) {
 	var err error
+	const operationName = "JitRequestsClient.ListByResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return JitRequestsClientListByResourceGroupResponse{}, err
@@ -291,6 +310,10 @@ func (client *JitRequestsClient) listByResourceGroupHandleResponse(resp *http.Re
 //     method.
 func (client *JitRequestsClient) ListBySubscription(ctx context.Context, options *JitRequestsClientListBySubscriptionOptions) (JitRequestsClientListBySubscriptionResponse, error) {
 	var err error
+	const operationName = "JitRequestsClient.ListBySubscription"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listBySubscriptionCreateRequest(ctx, options)
 	if err != nil {
 		return JitRequestsClientListBySubscriptionResponse{}, err
@@ -344,6 +367,10 @@ func (client *JitRequestsClient) listBySubscriptionHandleResponse(resp *http.Res
 //   - options - JitRequestsClientUpdateOptions contains the optional parameters for the JitRequestsClient.Update method.
 func (client *JitRequestsClient) Update(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestPatchable, options *JitRequestsClientUpdateOptions) (JitRequestsClientUpdateResponse, error) {
 	var err error
+	const operationName = "JitRequestsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, jitRequestName, parameters, options)
 	if err != nil {
 		return JitRequestsClientUpdateResponse{}, err

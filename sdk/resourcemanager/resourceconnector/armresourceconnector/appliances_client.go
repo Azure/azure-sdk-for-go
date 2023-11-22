@@ -32,7 +32,7 @@ type AppliancesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAppliancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AppliancesClient, error) {
-	cl, err := arm.NewClient(moduleName+".AppliancesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *AppliancesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AppliancesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AppliancesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AppliancesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *AppliancesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // Generated from API version 2022-10-27
 func (client *AppliancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters Appliance, options *AppliancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AppliancesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -132,10 +139,13 @@ func (client *AppliancesClient) BeginDelete(ctx context.Context, resourceGroupNa
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AppliancesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AppliancesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AppliancesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -145,6 +155,10 @@ func (client *AppliancesClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Generated from API version 2022-10-27
 func (client *AppliancesClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *AppliancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AppliancesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -195,6 +209,10 @@ func (client *AppliancesClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - AppliancesClientGetOptions contains the optional parameters for the AppliancesClient.Get method.
 func (client *AppliancesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *AppliancesClientGetOptions) (AppliancesClientGetResponse, error) {
 	var err error
+	const operationName = "AppliancesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return AppliancesClientGetResponse{}, err
@@ -254,6 +272,10 @@ func (client *AppliancesClient) getHandleResponse(resp *http.Response) (Applianc
 //     method.
 func (client *AppliancesClient) GetTelemetryConfig(ctx context.Context, options *AppliancesClientGetTelemetryConfigOptions) (AppliancesClientGetTelemetryConfigResponse, error) {
 	var err error
+	const operationName = "AppliancesClient.GetTelemetryConfig"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getTelemetryConfigCreateRequest(ctx, options)
 	if err != nil {
 		return AppliancesClientGetTelemetryConfigResponse{}, err
@@ -309,6 +331,10 @@ func (client *AppliancesClient) getTelemetryConfigHandleResponse(resp *http.Resp
 //     method.
 func (client *AppliancesClient) GetUpgradeGraph(ctx context.Context, resourceGroupName string, resourceName string, upgradeGraph string, options *AppliancesClientGetUpgradeGraphOptions) (AppliancesClientGetUpgradeGraphResponse, error) {
 	var err error
+	const operationName = "AppliancesClient.GetUpgradeGraph"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getUpgradeGraphCreateRequest(ctx, resourceGroupName, resourceName, upgradeGraph, options)
 	if err != nil {
 		return AppliancesClientGetUpgradeGraphResponse{}, err
@@ -377,25 +403,20 @@ func (client *AppliancesClient) NewListByResourceGroupPager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AppliancesClientListByResourceGroupResponse) (AppliancesClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AppliancesClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return AppliancesClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AppliancesClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AppliancesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -442,25 +463,20 @@ func (client *AppliancesClient) NewListBySubscriptionPager(options *AppliancesCl
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AppliancesClientListBySubscriptionResponse) (AppliancesClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AppliancesClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return AppliancesClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AppliancesClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AppliancesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -501,6 +517,10 @@ func (client *AppliancesClient) listBySubscriptionHandleResponse(resp *http.Resp
 //     method.
 func (client *AppliancesClient) ListClusterUserCredential(ctx context.Context, resourceGroupName string, resourceName string, options *AppliancesClientListClusterUserCredentialOptions) (AppliancesClientListClusterUserCredentialResponse, error) {
 	var err error
+	const operationName = "AppliancesClient.ListClusterUserCredential"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listClusterUserCredentialCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return AppliancesClientListClusterUserCredentialResponse{}, err
@@ -561,6 +581,10 @@ func (client *AppliancesClient) listClusterUserCredentialHandleResponse(resp *ht
 //   - options - AppliancesClientListKeysOptions contains the optional parameters for the AppliancesClient.ListKeys method.
 func (client *AppliancesClient) ListKeys(ctx context.Context, resourceGroupName string, resourceName string, options *AppliancesClientListKeysOptions) (AppliancesClientListKeysResponse, error) {
 	var err error
+	const operationName = "AppliancesClient.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return AppliancesClientListKeysResponse{}, err
@@ -626,25 +650,20 @@ func (client *AppliancesClient) NewListOperationsPager(options *AppliancesClient
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AppliancesClientListOperationsResponse) (AppliancesClientListOperationsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listOperationsCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AppliancesClient.NewListOperationsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listOperationsCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return AppliancesClientListOperationsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AppliancesClientListOperationsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AppliancesClientListOperationsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listOperationsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -681,6 +700,10 @@ func (client *AppliancesClient) listOperationsHandleResponse(resp *http.Response
 //   - options - AppliancesClientUpdateOptions contains the optional parameters for the AppliancesClient.Update method.
 func (client *AppliancesClient) Update(ctx context.Context, resourceGroupName string, resourceName string, parameters PatchableAppliance, options *AppliancesClientUpdateOptions) (AppliancesClientUpdateResponse, error) {
 	var err error
+	const operationName = "AppliancesClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return AppliancesClientUpdateResponse{}, err

@@ -402,9 +402,9 @@ func ExampleSpacecraftsClient_BeginListAvailableContacts() {
 		ContactProfile: &armorbital.ContactParametersContactProfile{
 			ID: to.Ptr("/subscriptions/c1be1141-a7c9-4aac-9608-3c2e2f1152c3/resourceGroups/contoso-Rgp/providers/Microsoft.Orbital/contactProfiles/CONTOSO-CP"),
 		},
-		EndTime:           to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-02T11:30:00Z"); return t }()),
+		EndTime:           to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-02T11:30:00.000Z"); return t }()),
 		GroundStationName: to.Ptr("EASTUS2_0"),
-		StartTime:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T11:30:00Z"); return t }()),
+		StartTime:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T11:30:00.000Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -431,12 +431,12 @@ func ExampleSpacecraftsClient_BeginListAvailableContacts() {
 		// 				EndAzimuthDegrees: to.Ptr[float32](330.489627),
 		// 				EndElevationDegrees: to.Ptr[float32](5.040625),
 		// 				MaximumElevationDegrees: to.Ptr[float32](26.617297),
-		// 				RxEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T12:05:25Z"); return t}()),
-		// 				RxStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T11:55:01Z"); return t}()),
+		// 				RxEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T12:05:25.000Z"); return t}()),
+		// 				RxStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T11:55:01.000Z"); return t}()),
 		// 				StartAzimuthDegrees: to.Ptr[float32](201.340472),
 		// 				StartElevationDegrees: to.Ptr[float32](5),
-		// 				TxEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T12:05:25Z"); return t}()),
-		// 				TxStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T11:55:01Z"); return t}()),
+		// 				TxEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T12:05:25.000Z"); return t}()),
+		// 				TxStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T11:55:01.000Z"); return t}()),
 		// 			},
 		// 			Spacecraft: &armorbital.AvailableContactsSpacecraft{
 		// 				ID: to.Ptr("/subscriptions/c1be1141-a7c9-4aac-9608-3c2e2f1152c3/resourceGroups/contoso-Rgp/providers/Microsoft.Orbital/spacecrafts/CONTOSO_SAT"),
@@ -448,12 +448,12 @@ func ExampleSpacecraftsClient_BeginListAvailableContacts() {
 		// 				EndAzimuthDegrees: to.Ptr[float32](345.848482),
 		// 				EndElevationDegrees: to.Ptr[float32](5.048656),
 		// 				MaximumElevationDegrees: to.Ptr[float32](85.9796),
-		// 				RxEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-02T11:10:45Z"); return t}()),
-		// 				RxStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-02T10:58:30Z"); return t}()),
+		// 				RxEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-02T11:10:45.000Z"); return t}()),
+		// 				RxStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-02T10:58:30.000Z"); return t}()),
 		// 				StartAzimuthDegrees: to.Ptr[float32](165.758896),
 		// 				StartElevationDegrees: to.Ptr[float32](5),
-		// 				TxEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-02T11:10:45Z"); return t}()),
-		// 				TxStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-02T10:58:30Z"); return t}()),
+		// 				TxEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-02T11:10:45.000Z"); return t}()),
+		// 				TxStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-02T10:58:30.000Z"); return t}()),
 		// 			},
 		// 			Spacecraft: &armorbital.AvailableContactsSpacecraft{
 		// 				ID: to.Ptr("/subscriptions/c1be1141-a7c9-4aac-9608-3c2e2f1152c3/resourceGroups/contoso-Rgp/providers/Microsoft.Orbital/spacecrafts/CONTOSO_SAT"),

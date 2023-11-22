@@ -9,8 +9,8 @@
 package armnetworkcloud
 
 const (
-	moduleName    = "armnetworkcloud"
-	moduleVersion = "v1.0.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	moduleVersion = "v1.1.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

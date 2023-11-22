@@ -32,7 +32,7 @@ type AccountsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountsClient, error) {
-	cl, err := arm.NewClient(moduleName+".AccountsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - AccountsClientCreateOrUpdateOptions contains the optional parameters for the AccountsClient.CreateOrUpdate method.
 func (client *AccountsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, mapsAccount Account, options *AccountsClientCreateOrUpdateOptions) (AccountsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "AccountsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, mapsAccount, options)
 	if err != nil {
 		return AccountsClientCreateOrUpdateResponse{}, err
@@ -116,6 +120,10 @@ func (client *AccountsClient) createOrUpdateHandleResponse(resp *http.Response) 
 //   - options - AccountsClientDeleteOptions contains the optional parameters for the AccountsClient.Delete method.
 func (client *AccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientDeleteOptions) (AccountsClientDeleteResponse, error) {
 	var err error
+	const operationName = "AccountsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return AccountsClientDeleteResponse{}, err
@@ -166,6 +174,10 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
 func (client *AccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientGetOptions) (AccountsClientGetResponse, error) {
 	var err error
+	const operationName = "AccountsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return AccountsClientGetResponse{}, err
@@ -229,25 +241,20 @@ func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccountsClientListByResourceGroupResponse) (AccountsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return AccountsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AccountsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AccountsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -293,25 +300,20 @@ func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClient
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccountsClientListBySubscriptionResponse) (AccountsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return AccountsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AccountsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AccountsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -352,6 +354,10 @@ func (client *AccountsClient) listBySubscriptionHandleResponse(resp *http.Respon
 //   - options - AccountsClientListKeysOptions contains the optional parameters for the AccountsClient.ListKeys method.
 func (client *AccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientListKeysOptions) (AccountsClientListKeysResponse, error) {
 	var err error
+	const operationName = "AccountsClient.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return AccountsClientListKeysResponse{}, err
@@ -417,6 +423,10 @@ func (client *AccountsClient) listKeysHandleResponse(resp *http.Response) (Accou
 //   - options - AccountsClientListSasOptions contains the optional parameters for the AccountsClient.ListSas method.
 func (client *AccountsClient) ListSas(ctx context.Context, resourceGroupName string, accountName string, mapsAccountSasParameters AccountSasParameters, options *AccountsClientListSasOptions) (AccountsClientListSasResponse, error) {
 	var err error
+	const operationName = "AccountsClient.ListSas"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSasCreateRequest(ctx, resourceGroupName, accountName, mapsAccountSasParameters, options)
 	if err != nil {
 		return AccountsClientListSasResponse{}, err
@@ -482,6 +492,10 @@ func (client *AccountsClient) listSasHandleResponse(resp *http.Response) (Accoun
 //   - options - AccountsClientRegenerateKeysOptions contains the optional parameters for the AccountsClient.RegenerateKeys method.
 func (client *AccountsClient) RegenerateKeys(ctx context.Context, resourceGroupName string, accountName string, keySpecification KeySpecification, options *AccountsClientRegenerateKeysOptions) (AccountsClientRegenerateKeysResponse, error) {
 	var err error
+	const operationName = "AccountsClient.RegenerateKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.regenerateKeysCreateRequest(ctx, resourceGroupName, accountName, keySpecification, options)
 	if err != nil {
 		return AccountsClientRegenerateKeysResponse{}, err
@@ -546,6 +560,10 @@ func (client *AccountsClient) regenerateKeysHandleResponse(resp *http.Response) 
 //   - options - AccountsClientUpdateOptions contains the optional parameters for the AccountsClient.Update method.
 func (client *AccountsClient) Update(ctx context.Context, resourceGroupName string, accountName string, mapsAccountUpdateParameters AccountUpdateParameters, options *AccountsClientUpdateOptions) (AccountsClientUpdateResponse, error) {
 	var err error
+	const operationName = "AccountsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, mapsAccountUpdateParameters, options)
 	if err != nil {
 		return AccountsClientUpdateResponse{}, err

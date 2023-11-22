@@ -144,9 +144,6 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 
 // SerializeBlobTags converts tags to generated.BlobTags
 func SerializeBlobTags(tagsMap map[string]string) *generated.BlobTags {
-	if len(tagsMap) == 0 {
-		return nil
-	}
 	blobTagSet := make([]*generated.BlobTag, 0)
 	for key, val := range tagsMap {
 		newKey, newVal := key, val

@@ -32,7 +32,7 @@ type EndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EndpointsClient, error) {
-	cl, err := arm.NewClient(moduleName+".EndpointsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential
 //     method.
 func (client *EndpointsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, storageMoverName string, endpointName string, endpoint Endpoint, options *EndpointsClientCreateOrUpdateOptions) (EndpointsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "EndpointsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, storageMoverName, endpointName, endpoint, options)
 	if err != nil {
 		return EndpointsClientCreateOrUpdateResponse{}, err
@@ -128,10 +132,13 @@ func (client *EndpointsClient) BeginDelete(ctx context.Context, resourceGroupNam
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[EndpointsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -141,6 +148,10 @@ func (client *EndpointsClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-10-01
 func (client *EndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, storageMoverName string, endpointName string, options *EndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "EndpointsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storageMoverName, endpointName, options)
 	if err != nil {
 		return nil, err
@@ -196,6 +207,10 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 //   - options - EndpointsClientGetOptions contains the optional parameters for the EndpointsClient.Get method.
 func (client *EndpointsClient) Get(ctx context.Context, resourceGroupName string, storageMoverName string, endpointName string, options *EndpointsClientGetOptions) (EndpointsClientGetResponse, error) {
 	var err error
+	const operationName = "EndpointsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, storageMoverName, endpointName, options)
 	if err != nil {
 		return EndpointsClientGetResponse{}, err
@@ -263,25 +278,20 @@ func (client *EndpointsClient) NewListPager(resourceGroupName string, storageMov
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EndpointsClientListResponse) (EndpointsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, storageMoverName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EndpointsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, storageMoverName, options)
+			}, nil)
 			if err != nil {
 				return EndpointsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EndpointsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return EndpointsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -330,6 +340,10 @@ func (client *EndpointsClient) listHandleResponse(resp *http.Response) (Endpoint
 //   - options - EndpointsClientUpdateOptions contains the optional parameters for the EndpointsClient.Update method.
 func (client *EndpointsClient) Update(ctx context.Context, resourceGroupName string, storageMoverName string, endpointName string, endpoint EndpointBaseUpdateParameters, options *EndpointsClientUpdateOptions) (EndpointsClientUpdateResponse, error) {
 	var err error
+	const operationName = "EndpointsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, storageMoverName, endpointName, endpoint, options)
 	if err != nil {
 		return EndpointsClientUpdateResponse{}, err

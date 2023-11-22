@@ -32,7 +32,7 @@ type AgentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAgentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentsClient, error) {
-	cl, err := arm.NewClient(moduleName+".AgentsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewAgentsClient(subscriptionID string, credential azcore.TokenCredential, o
 //   - options - AgentsClientCreateOrUpdateOptions contains the optional parameters for the AgentsClient.CreateOrUpdate method.
 func (client *AgentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, storageMoverName string, agentName string, agent Agent, options *AgentsClientCreateOrUpdateOptions) (AgentsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "AgentsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, storageMoverName, agentName, agent, options)
 	if err != nil {
 		return AgentsClientCreateOrUpdateResponse{}, err
@@ -127,10 +131,13 @@ func (client *AgentsClient) BeginDelete(ctx context.Context, resourceGroupName s
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AgentsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AgentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AgentsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -140,6 +147,10 @@ func (client *AgentsClient) BeginDelete(ctx context.Context, resourceGroupName s
 // Generated from API version 2023-10-01
 func (client *AgentsClient) deleteOperation(ctx context.Context, resourceGroupName string, storageMoverName string, agentName string, options *AgentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AgentsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storageMoverName, agentName, options)
 	if err != nil {
 		return nil, err
@@ -195,6 +206,10 @@ func (client *AgentsClient) deleteCreateRequest(ctx context.Context, resourceGro
 //   - options - AgentsClientGetOptions contains the optional parameters for the AgentsClient.Get method.
 func (client *AgentsClient) Get(ctx context.Context, resourceGroupName string, storageMoverName string, agentName string, options *AgentsClientGetOptions) (AgentsClientGetResponse, error) {
 	var err error
+	const operationName = "AgentsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, storageMoverName, agentName, options)
 	if err != nil {
 		return AgentsClientGetResponse{}, err
@@ -262,25 +277,20 @@ func (client *AgentsClient) NewListPager(resourceGroupName string, storageMoverN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AgentsClientListResponse) (AgentsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, storageMoverName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AgentsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, storageMoverName, options)
+			}, nil)
 			if err != nil {
 				return AgentsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AgentsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AgentsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -329,6 +339,10 @@ func (client *AgentsClient) listHandleResponse(resp *http.Response) (AgentsClien
 //   - options - AgentsClientUpdateOptions contains the optional parameters for the AgentsClient.Update method.
 func (client *AgentsClient) Update(ctx context.Context, resourceGroupName string, storageMoverName string, agentName string, agent AgentUpdateParameters, options *AgentsClientUpdateOptions) (AgentsClientUpdateResponse, error) {
 	var err error
+	const operationName = "AgentsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, storageMoverName, agentName, agent, options)
 	if err != nil {
 		return AgentsClientUpdateResponse{}, err

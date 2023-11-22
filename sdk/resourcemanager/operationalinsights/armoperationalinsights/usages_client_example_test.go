@@ -48,7 +48,7 @@ func ExampleUsagesClient_NewListPager() {
 		// 			},
 		// 			CurrentValue: to.Ptr[float64](0),
 		// 			Limit: to.Ptr[float64](524288000),
-		// 			NextResetTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-03T00:00:00Z"); return t}()),
+		// 			NextResetTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-03T00:00:00.000Z"); return t}()),
 		// 			QuotaPeriod: to.Ptr("P1D"),
 		// 			Unit: to.Ptr("Bytes"),
 		// 	}},

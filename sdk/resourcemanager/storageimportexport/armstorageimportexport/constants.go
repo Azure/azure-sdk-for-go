@@ -9,8 +9,8 @@
 package armstorageimportexport
 
 const (
-	moduleName    = "armstorageimportexport"
-	moduleVersion = "v0.7.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport"
+	moduleVersion = "v1.0.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

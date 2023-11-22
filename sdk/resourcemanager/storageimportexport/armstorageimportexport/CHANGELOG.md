@@ -1,5 +1,21 @@
 # Release History
 
+## 1.0.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+- New field `AcceptLanguage` in struct `BitLockerKeysClientListOptions`
+- New field `AcceptLanguage` in struct `JobsClientCreateOptions`
+- New field `AcceptLanguage` in struct `JobsClientDeleteOptions`
+- New field `AcceptLanguage` in struct `JobsClientGetOptions`
+- New field `AcceptLanguage` in struct `JobsClientListByResourceGroupOptions`
+- New field `AcceptLanguage` in struct `JobsClientListBySubscriptionOptions`
+- New field `AcceptLanguage` in struct `JobsClientUpdateOptions`
+- New field `AcceptLanguage` in struct `LocationsClientGetOptions`
+- New field `AcceptLanguage` in struct `LocationsClientListOptions`
+- New field `AcceptLanguage` in struct `OperationsClientListOptions`
+
+
 ## 0.7.0 (Unreleased)
 
 ### Breaking Changes

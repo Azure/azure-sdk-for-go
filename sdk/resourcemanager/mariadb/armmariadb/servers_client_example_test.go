@@ -68,7 +68,7 @@ func ExampleServersClient_BeginCreate_createADatabaseAsAPointInTimeRestore() {
 	// 	},
 	// 	Properties: &armmariadb.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T18:02:41.577+00:00"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T18:02:41.577Z"); return t}()),
 	// 		FullyQualifiedDomainName: to.Ptr("targetserver.mariadb.database.azure.com"),
 	// 		SSLEnforcement: to.Ptr(armmariadb.SSLEnforcementEnumEnabled),
 	// 		StorageProfile: &armmariadb.StorageProfile{
@@ -143,7 +143,7 @@ func ExampleServersClient_BeginCreate_createANewServer() {
 	// 	},
 	// 	Properties: &armmariadb.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T18:02:41.577+00:00"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T18:02:41.577Z"); return t}()),
 	// 		FullyQualifiedDomainName: to.Ptr("mariadbtestsvc4.mariadb.database.azure.com"),
 	// 		SSLEnforcement: to.Ptr(armmariadb.SSLEnforcementEnumEnabled),
 	// 		StorageProfile: &armmariadb.StorageProfile{
@@ -201,7 +201,7 @@ func ExampleServersClient_BeginCreate_createAReplicaServer() {
 	// 	},
 	// 	Properties: &armmariadb.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T18:02:41.577+00:00"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T18:02:41.577Z"); return t}()),
 	// 		FullyQualifiedDomainName: to.Ptr("targetserver.mariadb.database.azure.com"),
 	// 		MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/MasterResourceGroup/providers/Microsoft.DBforMariaDB/servers/masterserver"),
 	// 		ReplicaCapacity: to.Ptr[int32](0),
@@ -271,7 +271,7 @@ func ExampleServersClient_BeginCreate_createAServerAsAGeoRestore() {
 	// 	},
 	// 	Properties: &armmariadb.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T18:02:41.577+00:00"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T18:02:41.577Z"); return t}()),
 	// 		FullyQualifiedDomainName: to.Ptr("targetserver.mariadb.database.azure.com"),
 	// 		SSLEnforcement: to.Ptr(armmariadb.SSLEnforcementEnumEnabled),
 	// 		StorageProfile: &armmariadb.StorageProfile{
@@ -328,7 +328,7 @@ func ExampleServersClient_BeginUpdate() {
 	// 	},
 	// 	Properties: &armmariadb.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T18:02:41.577+00:00"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T18:02:41.577Z"); return t}()),
 	// 		FullyQualifiedDomainName: to.Ptr("mariadbtestsvc4.mariadb.database.azure.com"),
 	// 		SSLEnforcement: to.Ptr(armmariadb.SSLEnforcementEnumDisabled),
 	// 		StorageProfile: &armmariadb.StorageProfile{
@@ -397,7 +397,7 @@ func ExampleServersClient_Get() {
 	// 	},
 	// 	Properties: &armmariadb.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T18:02:41.577+00:00"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T18:02:41.577Z"); return t}()),
 	// 		FullyQualifiedDomainName: to.Ptr("mariadbtestsvc4.mariadb.database.azure.com"),
 	// 		MasterServerID: to.Ptr(""),
 	// 		MinimalTLSVersion: to.Ptr(armmariadb.MinimalTLSVersionEnumTLS10),
@@ -468,7 +468,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armmariadb.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-07T18:17:35.729321+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-07T18:17:35.729Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("mariadbtestsvc1.mariadb.database.azure.com"),
 		// 				PrivateEndpointConnections: []*armmariadb.ServerPrivateEndpointConnection{
 		// 				},
@@ -496,7 +496,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armmariadb.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-07T18:17:35.729321+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-07T18:17:35.729Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("mariadbtstsvc2.mariadb.database.azure.com"),
 		// 				PrivateEndpointConnections: []*armmariadb.ServerPrivateEndpointConnection{
 		// 					{
@@ -565,7 +565,7 @@ func ExampleServersClient_NewListPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armmariadb.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-28T23:56:02.627+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-28T23:56:02.627Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("mariadbtestsvc1.mariadb.database.azure.com"),
 		// 				MinimalTLSVersion: to.Ptr(armmariadb.MinimalTLSVersionEnumTLS12),
 		// 				PrivateEndpointConnections: []*armmariadb.ServerPrivateEndpointConnection{
@@ -594,7 +594,7 @@ func ExampleServersClient_NewListPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armmariadb.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-28T23:56:54.3+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-28T23:56:54.300Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("mariadbtstsvc2.mariadb.database.azure.com"),
 		// 				MinimalTLSVersion: to.Ptr(armmariadb.MinimalTLSVersionEnumTLS11),
 		// 				PrivateEndpointConnections: []*armmariadb.ServerPrivateEndpointConnection{
@@ -636,7 +636,7 @@ func ExampleServersClient_NewListPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armmariadb.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-28T23:59:44.847+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-28T23:59:44.847Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("mariadbtestsvc3.mariadb.database.azure.com"),
 		// 				MinimalTLSVersion: to.Ptr(armmariadb.MinimalTLSVersionEnumTLS10),
 		// 				PrivateEndpointConnections: []*armmariadb.ServerPrivateEndpointConnection{

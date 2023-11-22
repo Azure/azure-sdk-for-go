@@ -33,7 +33,7 @@ type FluxConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFluxConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FluxConfigurationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".FluxConfigurationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -64,10 +64,13 @@ func (client *FluxConfigurationsClient) BeginCreateOrUpdate(ctx context.Context,
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FluxConfigurationsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[FluxConfigurationsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FluxConfigurationsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -77,6 +80,10 @@ func (client *FluxConfigurationsClient) BeginCreateOrUpdate(ctx context.Context,
 // Generated from API version 2023-05-01
 func (client *FluxConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, fluxConfigurationName string, fluxConfiguration FluxConfiguration, options *FluxConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "FluxConfigurationsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, fluxConfiguration, options)
 	if err != nil {
 		return nil, err
@@ -153,10 +160,13 @@ func (client *FluxConfigurationsClient) BeginDelete(ctx context.Context, resourc
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FluxConfigurationsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[FluxConfigurationsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FluxConfigurationsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -167,6 +177,10 @@ func (client *FluxConfigurationsClient) BeginDelete(ctx context.Context, resourc
 // Generated from API version 2023-05-01
 func (client *FluxConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, fluxConfigurationName string, options *FluxConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "FluxConfigurationsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, options)
 	if err != nil {
 		return nil, err
@@ -235,6 +249,10 @@ func (client *FluxConfigurationsClient) deleteCreateRequest(ctx context.Context,
 //   - options - FluxConfigurationsClientGetOptions contains the optional parameters for the FluxConfigurationsClient.Get method.
 func (client *FluxConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, fluxConfigurationName string, options *FluxConfigurationsClientGetOptions) (FluxConfigurationsClientGetResponse, error) {
 	var err error
+	const operationName = "FluxConfigurationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, options)
 	if err != nil {
 		return FluxConfigurationsClientGetResponse{}, err
@@ -313,25 +331,20 @@ func (client *FluxConfigurationsClient) NewListPager(resourceGroupName string, c
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *FluxConfigurationsClientListResponse) (FluxConfigurationsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FluxConfigurationsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, options)
+			}, nil)
 			if err != nil {
 				return FluxConfigurationsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return FluxConfigurationsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return FluxConfigurationsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -398,10 +411,13 @@ func (client *FluxConfigurationsClient) BeginUpdate(ctx context.Context, resourc
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FluxConfigurationsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[FluxConfigurationsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FluxConfigurationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -411,6 +427,10 @@ func (client *FluxConfigurationsClient) BeginUpdate(ctx context.Context, resourc
 // Generated from API version 2023-05-01
 func (client *FluxConfigurationsClient) update(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, fluxConfigurationName string, fluxConfigurationPatch FluxConfigurationPatch, options *FluxConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "FluxConfigurationsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, fluxConfigurationPatch, options)
 	if err != nil {
 		return nil, err

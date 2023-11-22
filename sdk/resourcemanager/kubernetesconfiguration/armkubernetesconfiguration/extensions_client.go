@@ -33,7 +33,7 @@ type ExtensionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtensionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ExtensionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -63,10 +63,13 @@ func (client *ExtensionsClient) BeginCreate(ctx context.Context, resourceGroupNa
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExtensionsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ExtensionsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExtensionsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -76,6 +79,10 @@ func (client *ExtensionsClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Generated from API version 2023-05-01
 func (client *ExtensionsClient) create(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, extension Extension, options *ExtensionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExtensionsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, extension, options)
 	if err != nil {
 		return nil, err
@@ -150,10 +157,13 @@ func (client *ExtensionsClient) BeginDelete(ctx context.Context, resourceGroupNa
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExtensionsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ExtensionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExtensionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -163,6 +173,10 @@ func (client *ExtensionsClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Generated from API version 2023-05-01
 func (client *ExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, options *ExtensionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExtensionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, options)
 	if err != nil {
 		return nil, err
@@ -231,6 +245,10 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - ExtensionsClientGetOptions contains the optional parameters for the ExtensionsClient.Get method.
 func (client *ExtensionsClient) Get(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, options *ExtensionsClientGetOptions) (ExtensionsClientGetResponse, error) {
 	var err error
+	const operationName = "ExtensionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, options)
 	if err != nil {
 		return ExtensionsClientGetResponse{}, err
@@ -308,25 +326,20 @@ func (client *ExtensionsClient) NewListPager(resourceGroupName string, clusterRp
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExtensionsClientListResponse) (ExtensionsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExtensionsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, options)
+			}, nil)
 			if err != nil {
 				return ExtensionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ExtensionsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ExtensionsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -392,10 +405,13 @@ func (client *ExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExtensionsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ExtensionsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExtensionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -405,6 +421,10 @@ func (client *ExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Generated from API version 2023-05-01
 func (client *ExtensionsClient) update(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, patchExtension PatchExtension, options *ExtensionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExtensionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, patchExtension, options)
 	if err != nil {
 		return nil, err

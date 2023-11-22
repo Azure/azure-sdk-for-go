@@ -32,7 +32,7 @@ type FluxConfigOperationStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFluxConfigOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FluxConfigOperationStatusClient, error) {
-	cl, err := arm.NewClient(moduleName+".FluxConfigOperationStatusClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewFluxConfigOperationStatusClient(subscriptionID string, credential azcore
 //     method.
 func (client *FluxConfigOperationStatusClient) Get(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, fluxConfigurationName string, operationID string, options *FluxConfigOperationStatusClientGetOptions) (FluxConfigOperationStatusClientGetResponse, error) {
 	var err error
+	const operationName = "FluxConfigOperationStatusClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, operationID, options)
 	if err != nil {
 		return FluxConfigOperationStatusClientGetResponse{}, err

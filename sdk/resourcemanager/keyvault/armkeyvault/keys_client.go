@@ -33,7 +33,7 @@ type KeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KeysClient, error) {
-	cl, err := arm.NewClient(moduleName+".KeysClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +59,10 @@ func NewKeysClient(subscriptionID string, credential azcore.TokenCredential, opt
 //   - options - KeysClientCreateIfNotExistOptions contains the optional parameters for the KeysClient.CreateIfNotExist method.
 func (client *KeysClient) CreateIfNotExist(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysClientCreateIfNotExistOptions) (KeysClientCreateIfNotExistResponse, error) {
 	var err error
+	const operationName = "KeysClient.CreateIfNotExist"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createIfNotExistCreateRequest(ctx, resourceGroupName, vaultName, keyName, parameters, options)
 	if err != nil {
 		return KeysClientCreateIfNotExistResponse{}, err
@@ -127,6 +131,10 @@ func (client *KeysClient) createIfNotExistHandleResponse(resp *http.Response) (K
 //   - options - KeysClientGetOptions contains the optional parameters for the KeysClient.Get method.
 func (client *KeysClient) Get(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysClientGetOptions) (KeysClientGetResponse, error) {
 	var err error
+	const operationName = "KeysClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
 	if err != nil {
 		return KeysClientGetResponse{}, err
@@ -193,6 +201,10 @@ func (client *KeysClient) getHandleResponse(resp *http.Response) (KeysClientGetR
 //   - options - KeysClientGetVersionOptions contains the optional parameters for the KeysClient.GetVersion method.
 func (client *KeysClient) GetVersion(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string, options *KeysClientGetVersionOptions) (KeysClientGetVersionResponse, error) {
 	var err error
+	const operationName = "KeysClient.GetVersion"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getVersionCreateRequest(ctx, resourceGroupName, vaultName, keyName, keyVersion, options)
 	if err != nil {
 		return KeysClientGetVersionResponse{}, err
@@ -264,25 +276,20 @@ func (client *KeysClient) NewListPager(resourceGroupName string, vaultName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *KeysClientListResponse) (KeysClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "KeysClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
+			}, nil)
 			if err != nil {
 				return KeysClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return KeysClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return KeysClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -334,25 +341,20 @@ func (client *KeysClient) NewListVersionsPager(resourceGroupName string, vaultNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *KeysClientListVersionsResponse) (KeysClientListVersionsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listVersionsCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "KeysClient.NewListVersionsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listVersionsCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
+			}, nil)
 			if err != nil {
 				return KeysClientListVersionsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return KeysClientListVersionsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return KeysClientListVersionsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listVersionsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

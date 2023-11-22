@@ -332,6 +332,7 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 	// 199 MB file, more blocks than threads
 	testUploadDownload(199 * MiB)
 
+	testUploadDownload(7 * MiB)
 	testUploadDownload(8241066)
 }
 

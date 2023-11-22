@@ -32,7 +32,7 @@ type SyncIdentityProvidersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSyncIdentityProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SyncIdentityProvidersClient, error) {
-	cl, err := arm.NewClient(moduleName+".SyncIdentityProvidersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewSyncIdentityProvidersClient(subscriptionID string, credential azcore.Tok
 //     method.
 func (client *SyncIdentityProvidersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters SyncIdentityProvider, options *SyncIdentityProvidersClientCreateOrUpdateOptions) (SyncIdentityProvidersClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "SyncIdentityProvidersClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, parameters, options)
 	if err != nil {
 		return SyncIdentityProvidersClientCreateOrUpdateResponse{}, err
@@ -124,6 +128,10 @@ func (client *SyncIdentityProvidersClient) createOrUpdateHandleResponse(resp *ht
 //     method.
 func (client *SyncIdentityProvidersClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *SyncIdentityProvidersClientDeleteOptions) (SyncIdentityProvidersClientDeleteResponse, error) {
 	var err error
+	const operationName = "SyncIdentityProvidersClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, options)
 	if err != nil {
 		return SyncIdentityProvidersClientDeleteResponse{}, err
@@ -180,6 +188,10 @@ func (client *SyncIdentityProvidersClient) deleteCreateRequest(ctx context.Conte
 //     method.
 func (client *SyncIdentityProvidersClient) Get(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *SyncIdentityProvidersClientGetOptions) (SyncIdentityProvidersClientGetResponse, error) {
 	var err error
+	const operationName = "SyncIdentityProvidersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, options)
 	if err != nil {
 		return SyncIdentityProvidersClientGetResponse{}, err
@@ -248,25 +260,20 @@ func (client *SyncIdentityProvidersClient) NewListPager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SyncIdentityProvidersClientListResponse) (SyncIdentityProvidersClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SyncIdentityProvidersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return SyncIdentityProvidersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SyncIdentityProvidersClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SyncIdentityProvidersClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -317,6 +324,10 @@ func (client *SyncIdentityProvidersClient) listHandleResponse(resp *http.Respons
 //     method.
 func (client *SyncIdentityProvidersClient) Update(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters SyncIdentityProviderUpdate, options *SyncIdentityProvidersClientUpdateOptions) (SyncIdentityProvidersClientUpdateResponse, error) {
 	var err error
+	const operationName = "SyncIdentityProvidersClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, parameters, options)
 	if err != nil {
 		return SyncIdentityProvidersClientUpdateResponse{}, err

@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,36 +37,43 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewMachinePoolsClient creates a new instance of MachinePoolsClient.
 func (c *ClientFactory) NewMachinePoolsClient() *MachinePoolsClient {
 	subClient, _ := NewMachinePoolsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOpenShiftClustersClient creates a new instance of OpenShiftClustersClient.
 func (c *ClientFactory) NewOpenShiftClustersClient() *OpenShiftClustersClient {
 	subClient, _ := NewOpenShiftClustersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOpenShiftVersionsClient creates a new instance of OpenShiftVersionsClient.
 func (c *ClientFactory) NewOpenShiftVersionsClient() *OpenShiftVersionsClient {
 	subClient, _ := NewOpenShiftVersionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewSecretsClient creates a new instance of SecretsClient.
 func (c *ClientFactory) NewSecretsClient() *SecretsClient {
 	subClient, _ := NewSecretsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewSyncIdentityProvidersClient creates a new instance of SyncIdentityProvidersClient.
 func (c *ClientFactory) NewSyncIdentityProvidersClient() *SyncIdentityProvidersClient {
 	subClient, _ := NewSyncIdentityProvidersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewSyncSetsClient creates a new instance of SyncSetsClient.
 func (c *ClientFactory) NewSyncSetsClient() *SyncSetsClient {
 	subClient, _ := NewSyncSetsClient(c.subscriptionID, c.credential, c.options)
 	return subClient

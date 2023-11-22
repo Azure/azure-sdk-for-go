@@ -33,7 +33,7 @@ type ApplyUpdatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewApplyUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplyUpdatesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ApplyUpdatesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewApplyUpdatesClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *ApplyUpdatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *ApplyUpdatesClientCreateOrUpdateOptions) (ApplyUpdatesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ApplyUpdatesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, options)
 	if err != nil {
 		return ApplyUpdatesClientCreateOrUpdateResponse{}, err
@@ -129,6 +133,10 @@ func (client *ApplyUpdatesClient) createOrUpdateHandleResponse(resp *http.Respon
 //     method.
 func (client *ApplyUpdatesClient) CreateOrUpdateParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ApplyUpdatesClientCreateOrUpdateParentOptions) (ApplyUpdatesClientCreateOrUpdateParentResponse, error) {
 	var err error
+	const operationName = "ApplyUpdatesClient.CreateOrUpdateParent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, options)
 	if err != nil {
 		return ApplyUpdatesClientCreateOrUpdateParentResponse{}, err
@@ -208,6 +216,10 @@ func (client *ApplyUpdatesClient) createOrUpdateParentHandleResponse(resp *http.
 //   - options - ApplyUpdatesClientGetOptions contains the optional parameters for the ApplyUpdatesClient.Get method.
 func (client *ApplyUpdatesClient) Get(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, applyUpdateName string, options *ApplyUpdatesClientGetOptions) (ApplyUpdatesClientGetResponse, error) {
 	var err error
+	const operationName = "ApplyUpdatesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, applyUpdateName, options)
 	if err != nil {
 		return ApplyUpdatesClientGetResponse{}, err
@@ -285,6 +297,10 @@ func (client *ApplyUpdatesClient) getHandleResponse(resp *http.Response) (ApplyU
 //   - options - ApplyUpdatesClientGetParentOptions contains the optional parameters for the ApplyUpdatesClient.GetParent method.
 func (client *ApplyUpdatesClient) GetParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, applyUpdateName string, options *ApplyUpdatesClientGetParentOptions) (ApplyUpdatesClientGetParentResponse, error) {
 	var err error
+	const operationName = "ApplyUpdatesClient.GetParent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, applyUpdateName, options)
 	if err != nil {
 		return ApplyUpdatesClientGetParentResponse{}, err
@@ -366,6 +382,7 @@ func (client *ApplyUpdatesClient) NewListPager(options *ApplyUpdatesClientListOp
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ApplyUpdatesClientListResponse) (ApplyUpdatesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplyUpdatesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
 				return ApplyUpdatesClientListResponse{}, err
@@ -379,6 +396,7 @@ func (client *ApplyUpdatesClient) NewListPager(options *ApplyUpdatesClientListOp
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -33,7 +33,7 @@ type ConfigurationAssignmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConfigurationAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationAssignmentsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ConfigurationAssignmentsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,10 @@ func NewConfigurationAssignmentsClient(subscriptionID string, credential azcore.
 //     method.
 func (client *ConfigurationAssignmentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsClientCreateOrUpdateOptions) (ConfigurationAssignmentsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, configurationAssignment, options)
 	if err != nil {
 		return ConfigurationAssignmentsClientCreateOrUpdateResponse{}, err
@@ -140,6 +144,10 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateHandleResponse(resp 
 //     method.
 func (client *ConfigurationAssignmentsClient) CreateOrUpdateParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsClientCreateOrUpdateParentOptions) (ConfigurationAssignmentsClientCreateOrUpdateParentResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsClient.CreateOrUpdateParent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, configurationAssignmentName, configurationAssignment, options)
 	if err != nil {
 		return ConfigurationAssignmentsClientCreateOrUpdateParentResponse{}, err
@@ -227,6 +235,10 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateParentHandleResponse
 //     method.
 func (client *ConfigurationAssignmentsClient) Delete(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientDeleteOptions) (ConfigurationAssignmentsClientDeleteResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, options)
 	if err != nil {
 		return ConfigurationAssignmentsClientDeleteResponse{}, err
@@ -305,6 +317,10 @@ func (client *ConfigurationAssignmentsClient) deleteHandleResponse(resp *http.Re
 //     method.
 func (client *ConfigurationAssignmentsClient) DeleteParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientDeleteParentOptions) (ConfigurationAssignmentsClientDeleteParentResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsClient.DeleteParent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, configurationAssignmentName, options)
 	if err != nil {
 		return ConfigurationAssignmentsClientDeleteParentResponse{}, err
@@ -389,6 +405,10 @@ func (client *ConfigurationAssignmentsClient) deleteParentHandleResponse(resp *h
 //     method.
 func (client *ConfigurationAssignmentsClient) Get(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientGetOptions) (ConfigurationAssignmentsClientGetResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, options)
 	if err != nil {
 		return ConfigurationAssignmentsClientGetResponse{}, err
@@ -467,6 +487,10 @@ func (client *ConfigurationAssignmentsClient) getHandleResponse(resp *http.Respo
 //     method.
 func (client *ConfigurationAssignmentsClient) GetParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientGetParentOptions) (ConfigurationAssignmentsClientGetParentResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsClient.GetParent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, configurationAssignmentName, options)
 	if err != nil {
 		return ConfigurationAssignmentsClientGetParentResponse{}, err
@@ -553,6 +577,7 @@ func (client *ConfigurationAssignmentsClient) NewListPager(resourceGroupName str
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ConfigurationAssignmentsClientListResponse) (ConfigurationAssignmentsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConfigurationAssignmentsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, options)
 			if err != nil {
 				return ConfigurationAssignmentsClientListResponse{}, err
@@ -566,6 +591,7 @@ func (client *ConfigurationAssignmentsClient) NewListPager(resourceGroupName str
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -629,6 +655,7 @@ func (client *ConfigurationAssignmentsClient) NewListParentPager(resourceGroupNa
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ConfigurationAssignmentsClientListParentResponse) (ConfigurationAssignmentsClientListParentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConfigurationAssignmentsClient.NewListParentPager")
 			req, err := client.listParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, options)
 			if err != nil {
 				return ConfigurationAssignmentsClientListParentResponse{}, err
@@ -642,6 +669,7 @@ func (client *ConfigurationAssignmentsClient) NewListParentPager(resourceGroupNa
 			}
 			return client.listParentHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

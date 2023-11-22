@@ -41,13 +41,13 @@ func ExamplePartnersClient_Get() {
 	// 	Etag: to.Ptr[int32](3),
 	// 	ID: to.Ptr("/providers/microsoft.managementpartner/partners"),
 	// 	Properties: &armmanagementpartner.PartnerProperties{
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-20T01:23:40.5280496Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-20T01:23:40.528Z"); return t}()),
 	// 		ObjectID: to.Ptr("aa67f786-0552-423e-8849-244ed12bf581"),
 	// 		PartnerID: to.Ptr("123456"),
 	// 		PartnerName: to.Ptr("Test_jefl"),
 	// 		State: to.Ptr(armmanagementpartner.ManagementPartnerStateActive),
 	// 		TenantID: to.Ptr("1b1121dd-6900-412a-af73-e8d44f81e1c1"),
-	// 		UpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-20T01:52:57.9126052Z"); return t}()),
+	// 		UpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-20T01:52:57.912Z"); return t}()),
 	// 		Version: to.Ptr[int32](3),
 	// 	},
 	// }

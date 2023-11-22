@@ -33,7 +33,7 @@ type Client struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
-	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 //   - options - ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
 func (client *Client) CheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityParameters, options *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "Client.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, parameters, options)
 	if err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err
@@ -102,10 +106,14 @@ func (client *Client) BeginCreate(ctx context.Context, resourceGroupName string,
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClientCreateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -115,6 +123,10 @@ func (client *Client) BeginCreate(ctx context.Context, resourceGroupName string,
 // Generated from API version 2023-08-01
 func (client *Client) create(ctx context.Context, resourceGroupName string, name string, parameters CreateParameters, options *ClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, name, parameters, options)
 	if err != nil {
 		return nil, err
@@ -172,10 +184,14 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -185,6 +201,10 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 // Generated from API version 2023-08-01
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
@@ -240,10 +260,14 @@ func (client *Client) BeginExportData(ctx context.Context, resourceGroupName str
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClientExportDataResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientExportDataResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientExportDataResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientExportDataResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -253,6 +277,10 @@ func (client *Client) BeginExportData(ctx context.Context, resourceGroupName str
 // Generated from API version 2023-08-01
 func (client *Client) exportData(ctx context.Context, resourceGroupName string, name string, parameters ExportRDBParameters, options *ClientBeginExportDataOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginExportData"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exportDataCreateRequest(ctx, resourceGroupName, name, parameters, options)
 	if err != nil {
 		return nil, err
@@ -312,10 +340,13 @@ func (client *Client) BeginFlushCache(ctx context.Context, resourceGroupName str
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientFlushCacheResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientFlushCacheResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientFlushCacheResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -325,6 +356,10 @@ func (client *Client) BeginFlushCache(ctx context.Context, resourceGroupName str
 // Generated from API version 2023-08-01
 func (client *Client) flushCache(ctx context.Context, resourceGroupName string, cacheName string, options *ClientBeginFlushCacheOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginFlushCache"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.flushCacheCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
@@ -377,6 +412,10 @@ func (client *Client) flushCacheCreateRequest(ctx context.Context, resourceGroup
 //   - options - ClientForceRebootOptions contains the optional parameters for the Client.ForceReboot method.
 func (client *Client) ForceReboot(ctx context.Context, resourceGroupName string, name string, parameters RebootParameters, options *ClientForceRebootOptions) (ClientForceRebootResponse, error) {
 	var err error
+	const operationName = "Client.ForceReboot"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.forceRebootCreateRequest(ctx, resourceGroupName, name, parameters, options)
 	if err != nil {
 		return ClientForceRebootResponse{}, err
@@ -440,6 +479,10 @@ func (client *Client) forceRebootHandleResponse(resp *http.Response) (ClientForc
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
 func (client *Client) Get(ctx context.Context, resourceGroupName string, name string, options *ClientGetOptions) (ClientGetResponse, error) {
 	var err error
+	const operationName = "Client.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return ClientGetResponse{}, err
@@ -505,10 +548,14 @@ func (client *Client) BeginImportData(ctx context.Context, resourceGroupName str
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClientImportDataResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientImportDataResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientImportDataResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientImportDataResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -518,6 +565,10 @@ func (client *Client) BeginImportData(ctx context.Context, resourceGroupName str
 // Generated from API version 2023-08-01
 func (client *Client) importData(ctx context.Context, resourceGroupName string, name string, parameters ImportRDBParameters, options *ClientBeginImportDataOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginImportData"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.importDataCreateRequest(ctx, resourceGroupName, name, parameters, options)
 	if err != nil {
 		return nil, err
@@ -574,25 +625,20 @@ func (client *Client) NewListByResourceGroupPager(resourceGroupName string, opti
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClientListByResourceGroupResponse) (ClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -637,25 +683,20 @@ func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscripti
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClientListBySubscriptionResponse) (ClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -695,6 +736,10 @@ func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (Cli
 //   - options - ClientListKeysOptions contains the optional parameters for the Client.ListKeys method.
 func (client *Client) ListKeys(ctx context.Context, resourceGroupName string, name string, options *ClientListKeysOptions) (ClientListKeysResponse, error) {
 	var err error
+	const operationName = "Client.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return ClientListKeysResponse{}, err
@@ -760,25 +805,20 @@ func (client *Client) NewListUpgradeNotificationsPager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClientListUpgradeNotificationsResponse) (ClientListUpgradeNotificationsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listUpgradeNotificationsCreateRequest(ctx, resourceGroupName, name, history, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListUpgradeNotificationsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listUpgradeNotificationsCreateRequest(ctx, resourceGroupName, name, history, options)
+			}, nil)
 			if err != nil {
 				return ClientListUpgradeNotificationsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClientListUpgradeNotificationsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClientListUpgradeNotificationsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listUpgradeNotificationsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -828,6 +868,10 @@ func (client *Client) listUpgradeNotificationsHandleResponse(resp *http.Response
 //   - options - ClientRegenerateKeyOptions contains the optional parameters for the Client.RegenerateKey method.
 func (client *Client) RegenerateKey(ctx context.Context, resourceGroupName string, name string, parameters RegenerateKeyParameters, options *ClientRegenerateKeyOptions) (ClientRegenerateKeyResponse, error) {
 	var err error
+	const operationName = "Client.RegenerateKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, name, parameters, options)
 	if err != nil {
 		return ClientRegenerateKeyResponse{}, err
@@ -896,10 +940,14 @@ func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string,
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -909,6 +957,10 @@ func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string,
 // Generated from API version 2023-08-01
 func (client *Client) update(ctx context.Context, resourceGroupName string, name string, parameters UpdateParameters, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, parameters, options)
 	if err != nil {
 		return nil, err

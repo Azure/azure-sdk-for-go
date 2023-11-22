@@ -32,7 +32,7 @@ type AsyncOperationStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAsyncOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AsyncOperationStatusClient, error) {
-	cl, err := arm.NewClient(moduleName+".AsyncOperationStatusClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewAsyncOperationStatusClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *AsyncOperationStatusClient) Get(ctx context.Context, location string, operationID string, options *AsyncOperationStatusClientGetOptions) (AsyncOperationStatusClientGetResponse, error) {
 	var err error
+	const operationName = "AsyncOperationStatusClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, operationID, options)
 	if err != nil {
 		return AsyncOperationStatusClientGetResponse{}, err

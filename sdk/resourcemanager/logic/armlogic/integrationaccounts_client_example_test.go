@@ -239,7 +239,7 @@ func ExampleIntegrationAccountsClient_ListCallbackURL() {
 	}
 	res, err := clientFactory.NewIntegrationAccountsClient().ListCallbackURL(ctx, "testResourceGroup", "testIntegrationAccount", armlogic.GetCallbackURLParameters{
 		KeyType:  to.Ptr(armlogic.KeyTypePrimary),
-		NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-05T08:00:00Z"); return t }()),
+		NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-05T08:00:00.000Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -313,7 +313,7 @@ func ExampleIntegrationAccountsClient_LogTrackingEvents() {
 					Message: to.Ptr("Some error occurred"),
 				},
 				EventLevel: to.Ptr(armlogic.EventLevelInformational),
-				EventTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-05T01:54:49.505567Z"); return t }()),
+				EventTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-05T01:54:49.505Z"); return t }()),
 				Record: map[string]any{
 					"agreementProperties": map[string]any{
 						"agreementName":       "testAgreement",

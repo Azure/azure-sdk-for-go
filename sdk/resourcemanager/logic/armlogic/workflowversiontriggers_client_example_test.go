@@ -33,7 +33,7 @@ func ExampleWorkflowVersionTriggersClient_ListCallbackURL() {
 	}
 	res, err := clientFactory.NewWorkflowVersionTriggersClient().ListCallbackURL(ctx, "testResourceGroup", "testWorkflowName", "testWorkflowVersionId", "testTriggerName", &armlogic.WorkflowVersionTriggersClientListCallbackURLOptions{Parameters: &armlogic.GetCallbackURLParameters{
 		KeyType:  to.Ptr(armlogic.KeyTypePrimary),
-		NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-05T08:00:00Z"); return t }()),
+		NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-05T08:00:00.000Z"); return t }()),
 	},
 	})
 	if err != nil {

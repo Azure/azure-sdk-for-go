@@ -57,8 +57,8 @@ func ExampleWorkflowsClient_NewListBySubscriptionPager() {
 		// 				AccessControl: &armlogic.FlowAccessControlConfiguration{
 		// 				},
 		// 				AccessEndpoint: to.Ptr("http://tempuri.org"),
-		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.3533634Z"); return t}()),
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.4365247Z"); return t}()),
+		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.353Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.436Z"); return t}()),
 		// 				Definition: map[string]any{
 		// 					"$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
 		// 					"actions":map[string]any{
@@ -154,8 +154,8 @@ func ExampleWorkflowsClient_NewListByResourceGroupPager() {
 		// 				AccessControl: &armlogic.FlowAccessControlConfiguration{
 		// 				},
 		// 				AccessEndpoint: to.Ptr("http://tempuri.org"),
-		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.3533634Z"); return t}()),
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.4365247Z"); return t}()),
+		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.353Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.436Z"); return t}()),
 		// 				Definition: map[string]any{
 		// 					"$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
 		// 					"actions":map[string]any{
@@ -241,8 +241,8 @@ func ExampleWorkflowsClient_Get() {
 	// 	},
 	// 	Properties: &armlogic.WorkflowProperties{
 	// 		AccessEndpoint: to.Ptr("http://tempuri.org"),
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.3533634Z"); return t}()),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.4365247Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.353Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.436Z"); return t}()),
 	// 		Definition: map[string]any{
 	// 			"$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2018-07-01-preview/workflowdefinition.json#",
 	// 			"actions":map[string]any{
@@ -379,8 +379,8 @@ func ExampleWorkflowsClient_CreateOrUpdate() {
 	// res.Workflow = armlogic.Workflow{
 	// 	Properties: &armlogic.WorkflowProperties{
 	// 		AccessEndpoint: to.Ptr("http://tempuri.org"),
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.3533634Z"); return t}()),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.4365247Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.353Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.436Z"); return t}()),
 	// 		Definition: map[string]any{
 	// 			"$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
 	// 			"actions":map[string]any{
@@ -463,8 +463,8 @@ func ExampleWorkflowsClient_Update() {
 	// res.Workflow = armlogic.Workflow{
 	// 	Properties: &armlogic.WorkflowProperties{
 	// 		AccessEndpoint: to.Ptr("http://tempuri.org"),
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.3533634Z"); return t}()),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.4365247Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T22:54:54.353Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-25T01:39:21.436Z"); return t}()),
 	// 		Definition: map[string]any{
 	// 			"$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
 	// 			"actions":map[string]any{
@@ -624,7 +624,7 @@ func ExampleWorkflowsClient_ListCallbackURL() {
 	}
 	res, err := clientFactory.NewWorkflowsClient().ListCallbackURL(ctx, "testResourceGroup", "testWorkflow", armlogic.GetCallbackURLParameters{
 		KeyType:  to.Ptr(armlogic.KeyTypePrimary),
-		NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-19T16:00:00Z"); return t }()),
+		NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-19T16:00:00.000Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

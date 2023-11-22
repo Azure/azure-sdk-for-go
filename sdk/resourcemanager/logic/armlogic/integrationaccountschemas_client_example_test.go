@@ -51,7 +51,7 @@ func ExampleIntegrationAccountSchemasClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Logic/integrationAccounts/schemas"),
 		// 			ID: to.Ptr("/subscriptions/<subscriptionId>/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/<integrationAccountName>/schemas/IntegrationAccountSchema3944"),
 		// 			Properties: &armlogic.IntegrationAccountSchemaProperties{
-		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T01:34:16.7098626Z"); return t}()),
+		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T01:34:16.709Z"); return t}()),
 		// 				ContentLink: &armlogic.ContentLink{
 		// 					ContentHash: &armlogic.ContentHash{
 		// 						Algorithm: to.Ptr("md5"),
@@ -61,7 +61,7 @@ func ExampleIntegrationAccountSchemasClient_NewListPager() {
 		// 					ContentVersion: to.Ptr("\"0x8D45C553EECEB76\""),
 		// 					URI: to.Ptr("<contentLinkUri>"),
 		// 				},
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T01:34:16.7088958Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T01:34:16.708Z"); return t}()),
 		// 				DocumentName: to.Ptr("OrderFile"),
 		// 				Metadata: map[string]any{
 		// 				},
@@ -96,7 +96,7 @@ func ExampleIntegrationAccountSchemasClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Logic/integrationAccounts/schemas"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/testIntegrationAccount/schemas/testSchema"),
 	// 	Properties: &armlogic.IntegrationAccountSchemaProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T01:46:48.0847046Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T01:46:48.084Z"); return t}()),
 	// 		ContentLink: &armlogic.ContentLink{
 	// 			ContentHash: &armlogic.ContentHash{
 	// 				Algorithm: to.Ptr("md5"),
@@ -106,7 +106,7 @@ func ExampleIntegrationAccountSchemasClient_Get() {
 	// 			ContentVersion: to.Ptr("\"0x8D45C56FEDFCB45\""),
 	// 			URI: to.Ptr("<contentLinkUrl>"),
 	// 		},
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T01:46:48.0837583Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T01:46:48.083Z"); return t}()),
 	// 		DocumentName: to.Ptr("OrderFile"),
 	// 		Metadata: map[string]any{
 	// 		},
@@ -150,7 +150,7 @@ func ExampleIntegrationAccountSchemasClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.Logic/integrationAccounts/schemas"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/testIntegrationAccount/schemas/testSchema"),
 	// 	Properties: &armlogic.IntegrationAccountSchemaProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T01:46:48.0847046Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T01:46:48.084Z"); return t}()),
 	// 		ContentLink: &armlogic.ContentLink{
 	// 			ContentHash: &armlogic.ContentHash{
 	// 				Algorithm: to.Ptr("md5"),
@@ -160,7 +160,7 @@ func ExampleIntegrationAccountSchemasClient_CreateOrUpdate() {
 	// 			ContentVersion: to.Ptr("\"0x8D45C56FEDFCB45\""),
 	// 			URI: to.Ptr("<contentLinkUrl>"),
 	// 		},
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T01:46:48.0837583Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T01:46:48.083Z"); return t}()),
 	// 		DocumentName: to.Ptr("OrderFile"),
 	// 		Metadata: map[string]any{
 	// 		},
@@ -200,7 +200,7 @@ func ExampleIntegrationAccountSchemasClient_ListContentCallbackURL() {
 	}
 	res, err := clientFactory.NewIntegrationAccountSchemasClient().ListContentCallbackURL(ctx, "testResourceGroup", "testIntegrationAccount", "testSchema", armlogic.GetCallbackURLParameters{
 		KeyType:  to.Ptr(armlogic.KeyTypePrimary),
-		NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-19T16:00:00Z"); return t }()),
+		NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-19T16:00:00.000Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

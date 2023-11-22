@@ -147,12 +147,14 @@ func TestSerializeBlobTags(t *testing.T) {
 	// Case 1
 	tags = nil
 	blobTags := SerializeBlobTags(tags)
-	require.Nil(t, blobTags)
+	require.NotNil(t, blobTags)
+	require.Len(t, blobTags.BlobTagSet, 0)
 
 	// Case 2
 	tags = map[string]string{}
 	blobTags = SerializeBlobTags(tags)
-	require.Nil(t, blobTags)
+	require.NotNil(t, blobTags)
+	require.Len(t, blobTags.BlobTagSet, 0)
 
 	// Case 3
 	tags = map[string]string{

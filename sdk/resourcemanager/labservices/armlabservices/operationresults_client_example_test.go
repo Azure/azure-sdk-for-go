@@ -38,7 +38,7 @@ func ExampleOperationResultsClient_Get() {
 	// res.OperationResult = armlabservices.OperationResult{
 	// 	Name: to.Ptr("a64149d8-84cb-4566-ab8e-b4ee1a074174"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/providers/Microsoft.LabServices/operationresults/a64149d8-84cb-4566-ab8e-b4ee1a074174"),
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T10:00:00Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T10:00:00.000Z"); return t}()),
 	// 	Status: to.Ptr(armlabservices.OperationStatusInProgress),
 	// }
 }

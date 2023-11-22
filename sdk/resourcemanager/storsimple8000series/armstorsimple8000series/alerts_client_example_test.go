@@ -49,10 +49,10 @@ func ExampleAlertsClient_NewListByManagerPager() {
 		// 			Kind: to.Ptr("Series8000"),
 		// 			Properties: &armstorsimple8000series.AlertProperties{
 		// 				AlertType: to.Ptr("Security"),
-		// 				AppearedAtSourceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-14T11:35:41.2266096Z"); return t}()),
-		// 				AppearedAtTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-14T11:35:41.2266096Z"); return t}()),
-		// 				ClearedAtSourceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00Z"); return t}()),
-		// 				ClearedAtTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00Z"); return t}()),
+		// 				AppearedAtSourceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-14T11:35:41.226Z"); return t}()),
+		// 				AppearedAtTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-14T11:35:41.226Z"); return t}()),
+		// 				ClearedAtSourceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
+		// 				ClearedAtTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 		// 				DetailedInformation: map[string]*string{
 		// 				},
 		// 				ErrorDetails: &armstorsimple8000series.AlertErrorDetails{
@@ -77,10 +77,10 @@ func ExampleAlertsClient_NewListByManagerPager() {
 		// 			Kind: to.Ptr("Series8000"),
 		// 			Properties: &armstorsimple8000series.AlertProperties{
 		// 				AlertType: to.Ptr("Cloud Connectivity"),
-		// 				AppearedAtSourceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-14T11:30:43.6564921Z"); return t}()),
-		// 				AppearedAtTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-14T11:30:43.6564921Z"); return t}()),
-		// 				ClearedAtSourceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00Z"); return t}()),
-		// 				ClearedAtTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00Z"); return t}()),
+		// 				AppearedAtSourceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-14T11:30:43.656Z"); return t}()),
+		// 				AppearedAtTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-14T11:30:43.656Z"); return t}()),
+		// 				ClearedAtSourceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
+		// 				ClearedAtTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 		// 				DetailedInformation: map[string]*string{
 		// 					"httP code": to.Ptr("400"),
 		// 					"rpC code": to.Ptr("109"),

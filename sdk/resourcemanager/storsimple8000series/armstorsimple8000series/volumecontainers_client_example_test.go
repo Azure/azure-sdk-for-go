@@ -212,10 +212,10 @@ func ExampleVolumeContainersClient_NewListMetricsPager() {
 		// 					Name: to.Ptr("VolumeContainer"),
 		// 					Value: to.Ptr("vcForOdataFilterTest"),
 		// 			}},
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-21T18:30:00Z"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-21T18:30:00.000Z"); return t}()),
 		// 			PrimaryAggregation: to.Ptr(armstorsimple8000series.MetricAggregationTypeAverage),
 		// 			ResourceID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/ManagerForSDKTest1/devices/Device05ForSDKTest/volumeContainers/vcForOdataFilterTest"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-17T18:30:00Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-17T18:30:00.000Z"); return t}()),
 		// 			TimeGrain: to.Ptr("00:01:00"),
 		// 			Unit: to.Ptr(armstorsimple8000series.MetricUnitBytes),
 		// 			Values: []*armstorsimple8000series.MetricData{

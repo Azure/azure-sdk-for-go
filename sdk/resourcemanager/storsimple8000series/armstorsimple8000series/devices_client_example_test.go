@@ -79,7 +79,7 @@ func ExampleDevicesClient_NewListByManagerPager() {
 		// 			ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/ManagerForSDKTest1/devices/sugattdeviceforSDK"),
 		// 			Kind: to.Ptr("Series8000"),
 		// 			Properties: &armstorsimple8000series.DeviceProperties{
-		// 				ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-14T07:01:51.8964712Z"); return t}()),
+		// 				ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-14T07:01:51.896Z"); return t}()),
 		// 				ActiveController: to.Ptr(armstorsimple8000series.ControllerIDController0),
 		// 				AgentGroupVersion: to.Ptr[int32](7),
 		// 				AvailableLocalStorageInBytes: to.Ptr[int64](43980464128),
@@ -109,7 +109,7 @@ func ExampleDevicesClient_NewListByManagerPager() {
 		// 			ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/ManagerForSDKTest1/devices/jemdeviceforsdk"),
 		// 			Kind: to.Ptr("Series8000"),
 		// 			Properties: &armstorsimple8000series.DeviceProperties{
-		// 				ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-13T05:03:25.8680622Z"); return t}()),
+		// 				ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-13T05:03:25.868Z"); return t}()),
 		// 				ActiveController: to.Ptr(armstorsimple8000series.ControllerIDController0),
 		// 				AgentGroupVersion: to.Ptr[int32](7),
 		// 				AvailableLocalStorageInBytes: to.Ptr[int64](43765715760),
@@ -139,7 +139,7 @@ func ExampleDevicesClient_NewListByManagerPager() {
 		// 			ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/ManagerForSDKTest1/devices/Device05ForSDKTest"),
 		// 			Kind: to.Ptr("Series8000"),
 		// 			Properties: &armstorsimple8000series.DeviceProperties{
-		// 				ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T18:28:31.6616632Z"); return t}()),
+		// 				ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T18:28:31.661Z"); return t}()),
 		// 				ActiveController: to.Ptr(armstorsimple8000series.ControllerIDController0),
 		// 				AgentGroupVersion: to.Ptr[int32](7),
 		// 				AvailableLocalStorageInBytes: to.Ptr[int64](42262477184),
@@ -191,7 +191,7 @@ func ExampleDevicesClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/ManagerForSDKTest1/devices/Device001ForSDKTest"),
 	// 	Kind: to.Ptr("Series8000"),
 	// 	Properties: &armstorsimple8000series.DeviceProperties{
-	// 		ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-22T09:36:20.9632051Z"); return t}()),
+	// 		ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-22T09:36:20.963Z"); return t}()),
 	// 		ActiveController: to.Ptr(armstorsimple8000series.ControllerIDController0),
 	// 		AgentGroupVersion: to.Ptr[int32](7),
 	// 		AvailableLocalStorageInBytes: to.Ptr[int64](43980464128),
@@ -270,7 +270,7 @@ func ExampleDevicesClient_Update() {
 	// 	ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/ManagerForSDKTest1/devices/Device001ForSDKTest"),
 	// 	Kind: to.Ptr("Series8000"),
 	// 	Properties: &armstorsimple8000series.DeviceProperties{
-	// 		ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-22T09:36:20.9632051Z"); return t}()),
+	// 		ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-22T09:36:20.963Z"); return t}()),
 	// 		ActiveController: to.Ptr(armstorsimple8000series.ControllerIDController0),
 	// 		AgentGroupVersion: to.Ptr[int32](7),
 	// 		AvailableLocalStorageInBytes: to.Ptr[int64](43980464128),
@@ -465,10 +465,10 @@ func ExampleDevicesClient_NewListMetricsPager() {
 		// 					Name: to.Ptr("Device"),
 		// 					Value: to.Ptr("Device05ForSDKTest"),
 		// 			}},
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-21T18:30:00Z"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-21T18:30:00.000Z"); return t}()),
 		// 			PrimaryAggregation: to.Ptr(armstorsimple8000series.MetricAggregationTypeAverage),
 		// 			ResourceID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/ManagerForSDKTest1/devices/Device05ForSDKTest"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-17T18:30:00Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-17T18:30:00.000Z"); return t}()),
 		// 			TimeGrain: to.Ptr("01:00:00"),
 		// 			Unit: to.Ptr(armstorsimple8000series.MetricUnitBytes),
 		// 			Values: []*armstorsimple8000series.MetricData{

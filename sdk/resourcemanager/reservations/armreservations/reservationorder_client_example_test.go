@@ -126,15 +126,15 @@ func ExampleReservationOrderClient_NewListPager() {
 		// 			Etag: to.Ptr[int32](7),
 		// 			ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/1e6407ba-37a5-499f-80ed-a3f0f338e443"),
 		// 			Properties: &armreservations.ReservationOrderProperties{
-		// 				BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T21:20:23.8134834Z"); return t}()),
+		// 				BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T21:20:23.813Z"); return t}()),
 		// 				BillingPlan: to.Ptr(armreservations.ReservationBillingPlanMonthly),
-		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T21:22:56.8541664Z"); return t}()),
+		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T21:22:56.854Z"); return t}()),
 		// 				DisplayName: to.Ptr("cabri"),
 		// 				ExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2018-08-29"); return t}()),
-		// 				ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-29T21:20:23.8134834Z"); return t}()),
+		// 				ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-29T21:20:23.813Z"); return t}()),
 		// 				OriginalQuantity: to.Ptr[int32](1),
 		// 				ProvisioningState: to.Ptr(armreservations.ProvisioningStateSucceeded),
-		// 				RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T21:20:23.8134834Z"); return t}()),
+		// 				RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T21:20:23.813Z"); return t}()),
 		// 				Reservations: []*armreservations.ReservationResponse{
 		// 					{
 		// 						ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/1e6407ba-37a5-499f-80ed-a3f0f338e443/reservations/cae5924e-7a15-419f-a369-124f52d4a106"),
@@ -148,7 +148,7 @@ func ExampleReservationOrderClient_NewListPager() {
 		// 			Etag: to.Ptr[int32](7),
 		// 			ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/1ea6e203-288e-4732-b9e1-da8bbe10c614"),
 		// 			Properties: &armreservations.ReservationOrderProperties{
-		// 				BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T12:55:40.2799114Z"); return t}()),
+		// 				BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T12:55:40.279Z"); return t}()),
 		// 				BillingPlan: to.Ptr(armreservations.ReservationBillingPlanMonthly),
 		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T12:58:20.526Z"); return t}()),
 		// 				DisplayName: to.Ptr("cabri"),
@@ -156,7 +156,7 @@ func ExampleReservationOrderClient_NewListPager() {
 		// 				ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T12:58:20.526Z"); return t}()),
 		// 				OriginalQuantity: to.Ptr[int32](9),
 		// 				ProvisioningState: to.Ptr(armreservations.ProvisioningStateSucceeded),
-		// 				RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T12:55:40.2799114Z"); return t}()),
+		// 				RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T12:55:40.279Z"); return t}()),
 		// 				Reservations: []*armreservations.ReservationResponse{
 		// 					{
 		// 						ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/1ea6e203-288e-4732-b9e1-da8bbe10c614/reservations/d04fd48d-e3f6-42a3-a8f6-1ad0b7513e48"),
@@ -170,15 +170,15 @@ func ExampleReservationOrderClient_NewListPager() {
 		// 			Etag: to.Ptr[int32](7),
 		// 			ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/1f14354c-dc12-4c8d-8090-6f295a3a34aa"),
 		// 			Properties: &armreservations.ReservationOrderProperties{
-		// 				BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:49:19.0252126Z"); return t}()),
+		// 				BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:49:19.025Z"); return t}()),
 		// 				BillingPlan: to.Ptr(armreservations.ReservationBillingPlanMonthly),
-		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:51:49.8083758Z"); return t}()),
+		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:51:49.808Z"); return t}()),
 		// 				DisplayName: to.Ptr("cabri"),
 		// 				ExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2018-08-30"); return t}()),
-		// 				ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T03:51:49.8083758Z"); return t}()),
+		// 				ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T03:51:49.808Z"); return t}()),
 		// 				OriginalQuantity: to.Ptr[int32](7),
 		// 				ProvisioningState: to.Ptr(armreservations.ProvisioningStateSucceeded),
-		// 				RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:49:19.0252126Z"); return t}()),
+		// 				RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:49:19.025Z"); return t}()),
 		// 				Reservations: []*armreservations.ReservationResponse{
 		// 					{
 		// 						ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/1f14354c-dc12-4c8d-8090-6f295a3a34aa/reservations/c8c926bd-fc5d-4e29-9d43-b68340ac23a6"),
@@ -237,13 +237,13 @@ func ExampleReservationOrderClient_BeginPurchase() {
 	// 	ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/1f14354c-dc12-4c8d-8090-6f295a3a34aa"),
 	// 	Properties: &armreservations.ReservationOrderProperties{
 	// 		BillingPlan: to.Ptr(armreservations.ReservationBillingPlanMonthly),
-	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:51:49.8083758Z"); return t}()),
+	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:51:49.808Z"); return t}()),
 	// 		DisplayName: to.Ptr("cabri"),
 	// 		ExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2018-08-30"); return t}()),
-	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T03:51:49.8083758Z"); return t}()),
+	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T03:51:49.808Z"); return t}()),
 	// 		OriginalQuantity: to.Ptr[int32](7),
 	// 		ProvisioningState: to.Ptr(armreservations.ProvisioningStateSucceeded),
-	// 		RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:49:19.0252126Z"); return t}()),
+	// 		RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:49:19.025Z"); return t}()),
 	// 		Reservations: []*armreservations.ReservationResponse{
 	// 			{
 	// 				ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/1f14354c-dc12-4c8d-8090-6f295a3a34aa/reservations/c8c926bd-fc5d-4e29-9d43-b68340ac23a6"),
@@ -277,15 +277,15 @@ func ExampleReservationOrderClient_Get_getReservationOrder() {
 	// 	Etag: to.Ptr[int32](7),
 	// 	ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/1f14354c-dc12-4c8d-8090-6f295a3a34aa"),
 	// 	Properties: &armreservations.ReservationOrderProperties{
-	// 		BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:49:19.0252126Z"); return t}()),
+	// 		BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:49:19.025Z"); return t}()),
 	// 		BillingPlan: to.Ptr(armreservations.ReservationBillingPlanMonthly),
-	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:51:49.8083758Z"); return t}()),
+	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:51:49.808Z"); return t}()),
 	// 		DisplayName: to.Ptr("cabri"),
 	// 		ExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2018-08-30"); return t}()),
-	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T03:51:49.8083758Z"); return t}()),
+	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T03:51:49.808Z"); return t}()),
 	// 		OriginalQuantity: to.Ptr[int32](7),
 	// 		ProvisioningState: to.Ptr(armreservations.ProvisioningStateSucceeded),
-	// 		RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:49:19.0252126Z"); return t}()),
+	// 		RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:49:19.025Z"); return t}()),
 	// 		Reservations: []*armreservations.ReservationResponse{
 	// 			{
 	// 				ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/1f14354c-dc12-4c8d-8090-6f295a3a34aa/reservations/c8c926bd-fc5d-4e29-9d43-b68340ac23a6"),
@@ -319,12 +319,12 @@ func ExampleReservationOrderClient_Get_getReservationWithExpandPayments() {
 	// 	Etag: to.Ptr[int32](7),
 	// 	ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/1f14354c-dc12-4c8d-8090-6f295a3a34aa"),
 	// 	Properties: &armreservations.ReservationOrderProperties{
-	// 		BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T03:51:49Z"); return t}()),
+	// 		BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T03:51:49.000Z"); return t}()),
 	// 		BillingPlan: to.Ptr(armreservations.ReservationBillingPlanMonthly),
-	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T03:51:49Z"); return t}()),
+	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T03:51:49.000Z"); return t}()),
 	// 		DisplayName: to.Ptr("cabri"),
 	// 		ExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2018-08-30"); return t}()),
-	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T03:51:49Z"); return t}()),
+	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T03:51:49.000Z"); return t}()),
 	// 		OriginalQuantity: to.Ptr[int32](7),
 	// 		PlanInformation: &armreservations.ReservationOrderBillingPlanInformation{
 	// 			NextPaymentDueDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2019-09-30"); return t}()),
@@ -424,7 +424,7 @@ func ExampleReservationOrderClient_Get_getReservationWithExpandPayments() {
 	// 			}},
 	// 		},
 	// 		ProvisioningState: to.Ptr(armreservations.ProvisioningStateSucceeded),
-	// 		RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T03:49:19Z"); return t}()),
+	// 		RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T03:49:19.000Z"); return t}()),
 	// 		Reservations: []*armreservations.ReservationResponse{
 	// 			{
 	// 				ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/1f14354c-dc12-4c8d-8090-6f295a3a34aa/reservations/c8c926bd-fc5d-4e29-9d43-b68340ac23a6"),

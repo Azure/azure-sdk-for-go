@@ -57,13 +57,13 @@ func ExampleReturnClient_BeginPost() {
 	// 	ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/50000000-aaaa-bbbb-cccc-100000000004"),
 	// 	Properties: &armreservations.ReservationOrderProperties{
 	// 		BillingPlan: to.Ptr(armreservations.ReservationBillingPlanMonthly),
-	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:51:49.8083758Z"); return t}()),
+	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:51:49.808Z"); return t}()),
 	// 		DisplayName: to.Ptr("cabri"),
 	// 		ExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2018-08-30"); return t}()),
-	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T03:51:49.8083758Z"); return t}()),
+	// 		ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T03:51:49.808Z"); return t}()),
 	// 		OriginalQuantity: to.Ptr[int32](7),
 	// 		ProvisioningState: to.Ptr(armreservations.ProvisioningStateSucceeded),
-	// 		RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:49:19.0252126Z"); return t}()),
+	// 		RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-30T03:49:19.025Z"); return t}()),
 	// 		Reservations: []*armreservations.ReservationResponse{
 	// 			{
 	// 				ID: to.Ptr("/providers/microsoft.capacity/reservationOrders/50000000-aaaa-bbbb-cccc-100000000004/reservations/40000000-aaaa-bbbb-cccc-100000000000"),

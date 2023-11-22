@@ -32,7 +32,7 @@ type DraOperationStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDraOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DraOperationStatusClient, error) {
-	cl, err := arm.NewClient(moduleName+".DraOperationStatusClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewDraOperationStatusClient(subscriptionID string, credential azcore.TokenC
 //   - options - DraOperationStatusClientGetOptions contains the optional parameters for the DraOperationStatusClient.Get method.
 func (client *DraOperationStatusClient) Get(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, operationID string, options *DraOperationStatusClientGetOptions) (DraOperationStatusClientGetResponse, error) {
 	var err error
+	const operationName = "DraOperationStatusClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, fabricName, fabricAgentName, operationID, options)
 	if err != nil {
 		return DraOperationStatusClientGetResponse{}, err
@@ -73,6 +77,9 @@ func (client *DraOperationStatusClient) Get(ctx context.Context, resourceGroupNa
 // getCreateRequest creates the Get request.
 func (client *DraOperationStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, operationID string, options *DraOperationStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}/operations/{operationId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

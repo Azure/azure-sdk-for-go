@@ -10,7 +10,7 @@ package armsaas
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.7.0"
 )
 
 // PaymentChannelType - The Payment channel for the SaasSubscription.

@@ -503,8 +503,8 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 			case <-ctx.Done():
 				return
 			case block := <-block:
-				_, err := writer.Write(block)
-				writeSize += int64(len(block))
+				n, err := writer.Write(block)
+				writeSize += int64(n)
 				buffers.Release(block[:cap(block)])
 				if err != nil {
 					ch <- err

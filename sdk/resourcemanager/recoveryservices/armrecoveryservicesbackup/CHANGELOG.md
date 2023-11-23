@@ -3,13 +3,13 @@
 ## 4.0.0 (2023-11-24)
 ### Breaking Changes
 
-- Support for test fakes and OpenTelemetry trace spans.
 - Function `*OperationClient.Validate` parameter(s) have been changed from `(context.Context, string, string, ValidateOperationRequestClassification, *OperationClientValidateOptions)` to `(context.Context, string, string, ValidateOperationRequestResource, *OperationClientValidateOptions)`
 - Function `*ValidateOperationClient.BeginTrigger` parameter(s) have been changed from `(context.Context, string, string, ValidateOperationRequestClassification, *ValidateOperationClientBeginTriggerOptions)` to `(context.Context, string, string, ValidateOperationRequestResource, *ValidateOperationClientBeginTriggerOptions)`
 - Operation `*ProtectionContainersClient.Register` has been changed to LRO, use `*ProtectionContainersClient.BeginRegister` instead.
 
 ### Features Added
 
+- Support for test fakes and OpenTelemetry trace spans.
 - New value `RecoveryModeRecoveryUsingSnapshot`, `RecoveryModeSnapshotAttach`, `RecoveryModeSnapshotAttachAndRecover` added to enum type `RecoveryMode`
 - New function `*ClientFactory.NewFetchTieringCostClient() *FetchTieringCostClient`
 - New function `*ClientFactory.NewGetTieringCostOperationResultClient() *GetTieringCostOperationResultClient`

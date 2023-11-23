@@ -93,7 +93,7 @@ func (m *MaintenanceConfigurationsServerTransport) dispatchCreateOrUpdate(req *h
 	if m.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/maintenanceConfigurations/(?P<configName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/maintenanceConfigurations/(?P<configName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
@@ -103,19 +103,19 @@ func (m *MaintenanceConfigurationsServerTransport) dispatchCreateOrUpdate(req *h
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 	if err != nil {
 		return nil, err
 	}
-	configNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("configName")])
+	configNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.CreateOrUpdate(req.Context(), resourceGroupNameUnescaped, resourceNameUnescaped, configNameUnescaped, body, nil)
+	respr, errRespr := m.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, configNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -134,25 +134,25 @@ func (m *MaintenanceConfigurationsServerTransport) dispatchDelete(req *http.Requ
 	if m.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/maintenanceConfigurations/(?P<configName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/maintenanceConfigurations/(?P<configName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 	if err != nil {
 		return nil, err
 	}
-	configNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("configName")])
+	configNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Delete(req.Context(), resourceGroupNameUnescaped, resourceNameUnescaped, configNameUnescaped, nil)
+	respr, errRespr := m.srv.Delete(req.Context(), resourceGroupNameParam, resourceNameParam, configNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -171,25 +171,25 @@ func (m *MaintenanceConfigurationsServerTransport) dispatchGet(req *http.Request
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/maintenanceConfigurations/(?P<configName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/maintenanceConfigurations/(?P<configName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 	if err != nil {
 		return nil, err
 	}
-	configNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("configName")])
+	configNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameUnescaped, resourceNameUnescaped, configNameUnescaped, nil)
+	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, resourceNameParam, configNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -210,21 +210,21 @@ func (m *MaintenanceConfigurationsServerTransport) dispatchNewListByManagedClust
 	}
 	newListByManagedClusterPager := m.newListByManagedClusterPager.get(req)
 	if newListByManagedClusterPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/maintenanceConfigurations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/maintenanceConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := m.srv.NewListByManagedClusterPager(resourceGroupNameUnescaped, resourceNameUnescaped, nil)
+		resp := m.srv.NewListByManagedClusterPager(resourceGroupNameParam, resourceNameParam, nil)
 		newListByManagedClusterPager = &resp
 		m.newListByManagedClusterPager.add(req, newListByManagedClusterPager)
 		server.PagerResponderInjectNextLinks(newListByManagedClusterPager, req, func(page *armcontainerservice.MaintenanceConfigurationsClientListByManagedClusterResponse, createLink func() string) {

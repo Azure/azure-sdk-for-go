@@ -13,6 +13,10 @@ import "time"
 // AgentConfiguration - Configurable properties that the user can set locally via the azcmagent config command, or remotely
 // via ARM.
 type AgentConfiguration struct {
+	// READ-ONLY; Name of configuration mode to use. Modes are pre-defined configurations of security controls, extension allowlists
+	// and guest configuration, maintained by Microsoft.
+	ConfigMode *AgentConfigurationMode
+
 	// READ-ONLY; Array of extensions that are allowed to be installed or updated.
 	ExtensionsAllowList []*ConfigurationExtension
 
@@ -33,6 +37,81 @@ type AgentConfiguration struct {
 
 	// READ-ONLY; Specifies the URL of the proxy to be used.
 	ProxyURL *string
+}
+
+// AgentUpgrade - The info w.r.t Agent Upgrade.
+type AgentUpgrade struct {
+	// The correlation ID passed in from RSM per upgrade.
+	CorrelationID *string
+
+	// Specifies the version info w.r.t AgentUpgrade for the machine.
+	DesiredVersion *string
+
+	// Specifies if RSM should try to upgrade this machine
+	EnableAutomaticUpgrade *bool
+
+	// READ-ONLY; Specifies the version of the last attempt
+	LastAttemptDesiredVersion *string
+
+	// READ-ONLY; Failure message of last upgrade attempt if any.
+	LastAttemptMessage *string
+
+	// READ-ONLY; Specifies the status of Agent Upgrade.
+	LastAttemptStatus *LastAttemptStatusEnum
+
+	// READ-ONLY; Timestamp of last upgrade attempt
+	LastAttemptTimestamp *string
+}
+
+// AgentVersion - Describes properties of Agent Version.
+type AgentVersion struct {
+	// Represents the agent version.
+	AgentVersion *string
+
+	// Represents the download link of specific agent version.
+	DownloadLink *string
+
+	// Defines the os type.
+	OSType *string
+}
+
+// AgentVersionsList - Describes AgentVersions List.
+type AgentVersionsList struct {
+	// The URI to fetch the next 10 available Agent Versions.
+	NextLink *string
+
+	// The list of available Agent Versions.
+	Value []*AgentVersion
+}
+
+// AvailablePatchCountByClassification - Summarization of patches available for installation on the machine by classification.
+type AvailablePatchCountByClassification struct {
+	// READ-ONLY; Number of critical patches available for installation.
+	Critical *int32
+
+	// READ-ONLY; Number of definition patches available for installation.
+	Definition *int32
+
+	// READ-ONLY; Number of feature pack patches available for installation.
+	FeaturePack *int32
+
+	// READ-ONLY; Number of other patches available for installation.
+	Other *int32
+
+	// READ-ONLY; Number of security patches available for installation.
+	Security *int32
+
+	// READ-ONLY; Number of service pack patches available for installation.
+	ServicePack *int32
+
+	// READ-ONLY; Number of tools patches available for installation.
+	Tools *int32
+
+	// READ-ONLY; Number of update Rollup patches available for installation.
+	UpdateRollup *int32
+
+	// READ-ONLY; Number of updates category patches available for installation.
+	Updates *int32
 }
 
 // CloudMetadata - The metadata of the cloud environment (Azure/GCP/AWS/OCI…).
@@ -94,17 +173,112 @@ type ErrorDetail struct {
 	Target *string
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail
+// EsuKey - ESU key
+type EsuKey struct {
+	// The current status of the license profile key.
+	LicenseStatus *string
+
+	// SKU number.
+	SKU *string
+}
+
+// EsuProfileUpdateProperties - Describes the Update properties of a License Profile.
+type EsuProfileUpdateProperties struct {
+	// The resource id of the license.
+	AssignedLicense *string
 }
 
 // ExtensionTargetProperties - Describes the Machine Extension Target Version Properties
 type ExtensionTargetProperties struct {
 	// Properties for the specified Extension to Upgrade.
 	TargetVersion *string
+}
+
+// ExtensionValue - Describes a Extension Metadata
+type ExtensionValue struct {
+	// The single extension based on search criteria
+	Properties *ExtensionValueProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ExtensionValueListResult - The List Extension Metadata response.
+type ExtensionValueListResult struct {
+	// READ-ONLY; The list of extension metadata
+	Value []*ExtensionValue
+}
+
+// ExtensionValueProperties - Describes Extension Metadata properties
+type ExtensionValueProperties struct {
+	// READ-ONLY; The type of the Extension being received.
+	ExtensionType *string
+
+	// READ-ONLY; The publisher of the Extension being received.
+	Publisher *string
+
+	// READ-ONLY; The version of the Extension being received.
+	Version *string
+}
+
+// HybridIdentityMetadata - Defines the HybridIdentityMetadata.
+type HybridIdentityMetadata struct {
+	// REQUIRED; Resource properties.
+	Properties *HybridIdentityMetadataProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// HybridIdentityMetadataList - List of HybridIdentityMetadata.
+type HybridIdentityMetadataList struct {
+	// REQUIRED; Array of HybridIdentityMetadata
+	Value []*HybridIdentityMetadata
+
+	// Url to follow for getting next page of HybridIdentityMetadata.
+	NextLink *string
+}
+
+// HybridIdentityMetadataProperties - Defines the resource properties.
+type HybridIdentityMetadataProperties struct {
+	// The Public Key.
+	PublicKey *string
+
+	// The unique identifier for the resource.
+	VMID *string
+
+	// READ-ONLY; Identity for the resource.
+	Identity *Identity
+}
+
+// IPAddress - Describes properties of the IP address.
+type IPAddress struct {
+	// Represents the IP Address.
+	Address *string
+
+	// Represents the Ip Address Version.
+	IPAddressVersion *string
+
+	// READ-ONLY; The subnet to which this IP address belongs.
+	Subnet *Subnet
 }
 
 // Identity for the resource.
@@ -117,6 +291,232 @@ type Identity struct {
 
 	// READ-ONLY; The tenant ID of resource.
 	TenantID *string
+}
+
+// License - Describes a license in a hybrid machine.
+type License struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Hybrid Compute License properties
+	Properties *LicenseProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// LicenseDetails - Describes the properties of a License.
+type LicenseDetails struct {
+	// Describes the edition of the license. The values are either Standard or Datacenter.
+	Edition *LicenseEdition
+
+	// Describes the number of processors.
+	Processors *int32
+
+	// Describes the state of the license.
+	State *LicenseState
+
+	// Describes the license target server.
+	Target *LicenseTarget
+
+	// Describes the license core type (pCore or vCore).
+	Type *LicenseCoreType
+
+	// READ-ONLY; Describes the number of assigned licenses.
+	AssignedLicenses *int32
+
+	// READ-ONLY; Describes the immutable id.
+	ImmutableID *string
+}
+
+// LicenseProfile - Describes a license profile in a hybrid machine.
+type LicenseProfile struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Describe the properties of a license profile.
+	Properties *LicenseProfileProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// LicenseProfileArmEsuProperties - Describes the properties of a License Profile ARM model.
+type LicenseProfileArmEsuProperties struct {
+	// The resource id of the license.
+	AssignedLicense *string
+
+	// READ-ONLY; The guid id of the license.
+	AssignedLicenseImmutableID *string
+
+	// READ-ONLY; Indicates the eligibility state of Esu.
+	EsuEligibility *EsuEligibility
+
+	// READ-ONLY; Indicates whether there is an ESU Key currently active for the machine.
+	EsuKeyState *EsuKeyState
+
+	// READ-ONLY; The list of ESU keys.
+	EsuKeys []*EsuKey
+
+	// READ-ONLY; The type of the Esu servers.
+	ServerType *EsuServerType
+}
+
+// LicenseProfileMachineInstanceView - License Profile Instance View in Machine Properties.
+type LicenseProfileMachineInstanceView struct {
+	// Properties for the Machine ESU profile.
+	EsuProfile *LicenseProfileMachineInstanceViewEsuProperties
+}
+
+// LicenseProfileMachineInstanceViewEsuProperties - Properties for the Machine ESU profile.
+type LicenseProfileMachineInstanceViewEsuProperties struct {
+	// The assigned license resource.
+	AssignedLicense *License
+
+	// Describes the license assignment state (Assigned or NotAssigned).
+	LicenseAssignmentState *LicenseAssignmentState
+
+	// READ-ONLY; The guid id of the license.
+	AssignedLicenseImmutableID *string
+
+	// READ-ONLY; Indicates the eligibility state of Esu.
+	EsuEligibility *EsuEligibility
+
+	// READ-ONLY; Indicates whether there is an ESU Key currently active for the machine.
+	EsuKeyState *EsuKeyState
+
+	// READ-ONLY; The list of ESU keys.
+	EsuKeys []*EsuKey
+
+	// READ-ONLY; The type of the Esu servers.
+	ServerType *EsuServerType
+}
+
+// LicenseProfileProperties - Describe the properties of a license profile.
+type LicenseProfileProperties struct {
+	// Hybrid Compute ESU Profile properties
+	EsuProfile *LicenseProfileArmEsuProperties
+
+	// READ-ONLY; The provisioning state, which only appears in the response.
+	ProvisioningState *ProvisioningState
+}
+
+// LicenseProfileUpdate - Describes a License Profile Update.
+type LicenseProfileUpdate struct {
+	// Describe the Update properties of a license profile.
+	Properties *LicenseProfileUpdateProperties
+
+	// Resource tags
+	Tags map[string]*string
+}
+
+// LicenseProfileUpdateProperties - Describe the Update properties of a license profile.
+type LicenseProfileUpdateProperties struct {
+	// Hybrid Compute ESU Profile Update properties
+	EsuProfile *EsuProfileUpdateProperties
+}
+
+// LicenseProfilesListResult - The List hybrid machine license profile operation response.
+type LicenseProfilesListResult struct {
+	// REQUIRED; The list of license profiles.
+	Value []*LicenseProfile
+
+	// The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the next page of license profile.
+	NextLink *string
+}
+
+// LicenseProperties - Describes the properties of a License Profile.
+type LicenseProperties struct {
+	// Describes the properties of a License.
+	LicenseDetails *LicenseDetails
+
+	// The type of the license resource.
+	LicenseType *LicenseType
+
+	// Describes the tenant id.
+	TenantID *string
+
+	// READ-ONLY; The provisioning state, which only appears in the response.
+	ProvisioningState *ProvisioningState
+}
+
+// LicenseUpdate - Describes a License Update.
+type LicenseUpdate struct {
+	// License Update properties
+	Properties *LicenseUpdateProperties
+
+	// Resource tags
+	Tags map[string]*string
+}
+
+// LicenseUpdateProperties - Describes the Update properties of a License Profile.
+type LicenseUpdateProperties struct {
+	LicenseDetails *LicenseUpdatePropertiesLicenseDetails
+
+	// The type of the license resource.
+	LicenseType *LicenseType
+}
+
+type LicenseUpdatePropertiesLicenseDetails struct {
+	// Describes the edition of the license. The values are either Standard or Datacenter.
+	Edition *LicenseEdition
+
+	// Describes the number of processors.
+	Processors *int32
+
+	// Describes the state of the license.
+	State *LicenseState
+
+	// Describes the license target server.
+	Target *LicenseTarget
+
+	// Describes the license core type (pCore or vCore).
+	Type *LicenseCoreType
+}
+
+// LicensesListResult - The List license operation response.
+type LicensesListResult struct {
+	// REQUIRED; The list of licenses.
+	Value []*License
+
+	// The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the next page of license profile.
+	NextLink *string
+}
+
+// LinuxParameters - Input for InstallPatches on a Linux VM, as directly received by the API
+type LinuxParameters struct {
+	// The update classifications to select when installing patches for Linux.
+	ClassificationsToInclude []*VMGuestPatchClassificationLinux
+
+	// packages to exclude in the patch operation. Format: packageName_packageVersion
+	PackageNameMasksToExclude []*string
+
+	// packages to include in the patch operation. Format: packageName_packageVersion
+	PackageNameMasksToInclude []*string
 }
 
 // LocationData - Metadata pertaining to the geographic location of the resource.
@@ -142,6 +542,9 @@ type Machine struct {
 	// Identity for the resource.
 	Identity *Identity
 
+	// Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc.
+	Kind *ArcKindEnum
+
 	// Hybrid Compute Machine properties
 	Properties *MachineProperties
 
@@ -154,11 +557,50 @@ type Machine struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; The list of extensions affiliated to the machine
+	Resources []*MachineExtension
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// MachineAssessPatchesResult - Describes the properties of an AssessPatches result.
+type MachineAssessPatchesResult struct {
+	// Summarization of patches available for installation on the machine by classification.
+	AvailablePatchCountByClassification *AvailablePatchCountByClassification
+
+	// READ-ONLY; The activity ID of the operation that produced this result.
+	AssessmentActivityID *string
+
+	// READ-ONLY; The errors that were encountered during execution of the operation. The details array contains the list of them.
+	ErrorDetails *ErrorDetail
+
+	// READ-ONLY; The UTC timestamp when the operation finished.
+	LastModifiedDateTime *time.Time
+
+	// READ-ONLY; The operating system type of the machine.
+	OSType *OsType
+
+	// READ-ONLY; Specifies the patch service used for the operation.
+	PatchServiceUsed *PatchServiceUsed
+
+	// READ-ONLY; The overall reboot status of the VM. It will be true when partially installed patches require a reboot to complete
+	// installation but the reboot has not yet occurred.
+	RebootPending *bool
+
+	// READ-ONLY; The UTC timestamp when the operation began.
+	StartDateTime *time.Time
+
+	// READ-ONLY; Indicates if operation was triggered by user or by platform.
+	StartedBy *PatchOperationStartedBy
+
+	// READ-ONLY; The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
+	// At that point it will become "Unknown", "Failed", "Succeeded", or
+	// "CompletedWithWarnings."
+	Status *PatchOperationStatus
 }
 
 // MachineExtension - Describes a Machine Extension.
@@ -178,7 +620,7 @@ type MachineExtension struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -235,13 +677,13 @@ type MachineExtensionProperties struct {
 	InstanceView *MachineExtensionInstanceView
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings any
+	ProtectedSettings map[string]any
 
 	// The name of the extension handler publisher.
 	Publisher *string
 
 	// Json formatted public settings for the extension.
-	Settings any
+	Settings map[string]any
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string
@@ -269,17 +711,20 @@ type MachineExtensionUpdateProperties struct {
 	// with this property set to true.
 	AutoUpgradeMinorVersion *bool
 
+	// Indicates whether the extension should be automatically upgraded by the platform if there is a newer version available.
+	EnableAutomaticUpgrade *bool
+
 	// How the extension handler should be forced to update even if the extension configuration has not changed.
 	ForceUpdateTag *string
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings any
+	ProtectedSettings map[string]any
 
 	// The name of the extension handler publisher.
 	Publisher *string
 
 	// Json formatted public settings for the extension.
-	Settings any
+	Settings map[string]any
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string
@@ -288,7 +733,7 @@ type MachineExtensionUpdateProperties struct {
 	TypeHandlerVersion *string
 }
 
-// MachineExtensionUpgrade - Describes the Machine Extension Upgrade Properties
+// MachineExtensionUpgrade - Describes the Machine Extension Upgrade Properties.
 type MachineExtensionUpgrade struct {
 	// Describes the Extension Target Properties.
 	ExtensionTargets map[string]*ExtensionTargetProperties
@@ -303,6 +748,72 @@ type MachineExtensionsListResult struct {
 	Value []*MachineExtension
 }
 
+// MachineInstallPatchesParameters - Input for InstallPatches as directly received by the API
+type MachineInstallPatchesParameters struct {
+	// REQUIRED; Specifies the maximum amount of time that the operation will run. It must be an ISO 8601-compliant duration string
+	// such as PT4H (4 hours)
+	MaximumDuration *string
+
+	// REQUIRED; Defines when it is acceptable to reboot a VM during a software update operation.
+	RebootSetting *VMGuestPatchRebootSetting
+
+	// Input for InstallPatches on a Linux VM, as directly received by the API
+	LinuxParameters *LinuxParameters
+
+	// Input for InstallPatches on a Windows VM, as directly received by the API
+	WindowsParameters *WindowsParameters
+}
+
+// MachineInstallPatchesResult - The result summary of an installation operation.
+type MachineInstallPatchesResult struct {
+	// READ-ONLY; The errors that were encountered during execution of the operation. The details array contains the list of them.
+	ErrorDetails *ErrorDetail
+
+	// READ-ONLY; The number of patches that were not installed due to the user blocking their installation.
+	ExcludedPatchCount *int32
+
+	// READ-ONLY; The number of patches that could not be installed due to some issue. See errors for details.
+	FailedPatchCount *int32
+
+	// READ-ONLY; The activity ID of the operation that produced this result.
+	InstallationActivityID *string
+
+	// READ-ONLY; The number of patches successfully installed.
+	InstalledPatchCount *int32
+
+	// READ-ONLY; The UTC timestamp when the operation finished.
+	LastModifiedDateTime *time.Time
+
+	// READ-ONLY; Whether the operation ran out of time before it completed all its intended actions.
+	MaintenanceWindowExceeded *bool
+
+	// READ-ONLY; The number of patches that were detected as available for install, but did not meet the operation's criteria.
+	NotSelectedPatchCount *int32
+
+	// READ-ONLY; The operating system type of the machine.
+	OSType *OsType
+
+	// READ-ONLY; Specifies the patch service used for the operation.
+	PatchServiceUsed *PatchServiceUsed
+
+	// READ-ONLY; The number of patches that were identified as meeting the installation criteria, but were not able to be installed.
+	// Typically this happens when maintenanceWindowExceeded == true.
+	PendingPatchCount *int32
+
+	// READ-ONLY; The reboot state of the VM following completion of the operation.
+	RebootStatus *VMGuestPatchRebootStatus
+
+	// READ-ONLY; The UTC timestamp when the operation began.
+	StartDateTime *time.Time
+
+	// READ-ONLY; Indicates if operation was triggered by user or by platform.
+	StartedBy *PatchOperationStartedBy
+
+	// READ-ONLY; The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
+	// At that point it will become "Failed", "Succeeded", "Unknown" or "CompletedWithWarnings."
+	Status *PatchOperationStatus
+}
+
 // MachineListResult - The List hybrid machine operation response.
 type MachineListResult struct {
 	// REQUIRED; The list of hybrid machines.
@@ -314,14 +825,20 @@ type MachineListResult struct {
 
 // MachineProperties - Describes the properties of a hybrid machine.
 type MachineProperties struct {
+	// The info of the machine w.r.t Agent Upgrade
+	AgentUpgrade *AgentUpgrade
+
 	// Public Key that the client provides to be used during initial resource onboarding
 	ClientPublicKey *string
 
 	// The metadata of the cloud environment (Azure/GCP/AWS/OCI…).
 	CloudMetadata *CloudMetadata
 
-	// Machine Extensions information
+	// Machine Extensions information (deprecated field)
 	Extensions []*MachineExtensionInstanceView
+
+	// Specifies the ESU related properties for a machine.
+	LicenseProfile *LicenseProfileMachineInstanceView
 
 	// Metadata pertaining to the geographic location of the resource.
 	LocationData *LocationData
@@ -377,6 +894,9 @@ type MachineProperties struct {
 	// READ-ONLY; Specifies the hybrid machine FQDN.
 	MachineFqdn *string
 
+	// READ-ONLY; Information about the network the machine is on.
+	NetworkProfile *NetworkProfile
+
 	// READ-ONLY; The Operating System running on the hybrid machine.
 	OSName *string
 
@@ -401,6 +921,9 @@ type MachineUpdate struct {
 	// Identity for the resource.
 	Identity *Identity
 
+	// Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc.
+	Kind *ArcKindEnum
+
 	// Hybrid Compute Machine properties
 	Properties *MachineUpdateProperties
 
@@ -410,6 +933,9 @@ type MachineUpdate struct {
 
 // MachineUpdateProperties - Describes the ARM updatable properties of a hybrid machine.
 type MachineUpdateProperties struct {
+	// The info of the machine w.r.t Agent Upgrade
+	AgentUpgrade *AgentUpgrade
+
 	// The metadata of the cloud environment (Azure/GCP/AWS/OCI…).
 	CloudMetadata *CloudMetadata
 
@@ -424,6 +950,18 @@ type MachineUpdateProperties struct {
 
 	// The resource id of the private link scope this machine is assigned to, if any.
 	PrivateLinkScopeResourceID *string
+}
+
+// NetworkInterface - Describes a network interface.
+type NetworkInterface struct {
+	// The list of IP addresses in this interface.
+	IPAddresses []*IPAddress
+}
+
+// NetworkProfile - Describes the network information on this machine.
+type NetworkProfile struct {
+	// The list of network interfaces.
+	NetworkInterfaces []*NetworkInterface
 }
 
 // OSProfile - Specifies the operating system settings for the hybrid machine.
@@ -506,7 +1044,7 @@ type PrivateEndpointConnection struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -569,7 +1107,7 @@ type PrivateLinkResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -659,24 +1197,6 @@ type PrivateLinkScopeValidationDetails struct {
 	ID *string
 }
 
-// PrivateLinkScopesResource - An azure resource object
-type PrivateLinkScopesResource struct {
-	// REQUIRED; Resource location
-	Location *string
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Azure resource Id
-	ID *string
-
-	// READ-ONLY; Azure resource name
-	Name *string
-
-	// READ-ONLY; Azure resource type
-	Type *string
-}
-
 // PrivateLinkServiceConnectionStateProperty - State of the private endpoint connection.
 type PrivateLinkServiceConnectionStateProperty struct {
 	// REQUIRED; The private link service connection description.
@@ -687,37 +1207,6 @@ type PrivateLinkServiceConnectionStateProperty struct {
 
 	// READ-ONLY; The actions required for private link service connection.
 	ActionsRequired *string
-}
-
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ResourceUpdate - The Update Resource model definition.
-type ResourceUpdate struct {
-	// Resource tags
-	Tags map[string]*string
 }
 
 // ServiceStatus - Describes the status and behavior of a service.
@@ -736,6 +1225,12 @@ type ServiceStatuses struct {
 
 	// The state of the guest configuration service on the Arc-enabled machine.
 	GuestConfigurationService *ServiceStatus
+}
+
+// Subnet - Describes the subnet.
+type Subnet struct {
+	// Represents address prefix.
+	AddressPrefix *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -766,21 +1261,20 @@ type TagsResource struct {
 	Tags map[string]*string
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
+// WindowsParameters - Input for InstallPatches on a Windows VM, as directly received by the API
+type WindowsParameters struct {
+	// The update classifications to select when installing patches for Windows.
+	ClassificationsToInclude []*VMGuestPatchClassificationWindows
 
-	// Resource tags.
-	Tags map[string]*string
+	// Filters out Kbs that don't have an InstallationRebootBehavior of 'NeverReboots' when this is set to true.
+	ExcludeKbsRequiringReboot *bool
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	// Kbs to exclude in the patch operation
+	KbNumbersToExclude []*string
 
-	// READ-ONLY; The name of the resource
-	Name *string
+	// Kbs to include in the patch operation
+	KbNumbersToInclude []*string
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	// This is used to install patches that were published on or before this given max published date.
+	MaxPatchPublishDate *time.Time
 }

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -24,6 +24,10 @@ import (
 
 // MachinesServer is a fake server for instances of the armhybridcompute.MachinesClient type.
 type MachinesServer struct {
+	// BeginAssessPatches is the fake for method MachinesClient.BeginAssessPatches
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginAssessPatches func(ctx context.Context, resourceGroupName string, name string, options *armhybridcompute.MachinesClientBeginAssessPatchesOptions) (resp azfake.PollerResponder[armhybridcompute.MachinesClientAssessPatchesResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdate is the fake for method MachinesClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, machineName string, parameters armhybridcompute.Machine, options *armhybridcompute.MachinesClientCreateOrUpdateOptions) (resp azfake.Responder[armhybridcompute.MachinesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -35,6 +39,10 @@ type MachinesServer struct {
 	// Get is the fake for method MachinesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, machineName string, options *armhybridcompute.MachinesClientGetOptions) (resp azfake.Responder[armhybridcompute.MachinesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// BeginInstallPatches is the fake for method MachinesClient.BeginInstallPatches
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginInstallPatches func(ctx context.Context, resourceGroupName string, name string, installPatchesInput armhybridcompute.MachineInstallPatchesParameters, options *armhybridcompute.MachinesClientBeginInstallPatchesOptions) (resp azfake.PollerResponder[armhybridcompute.MachinesClientInstallPatchesResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method MachinesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -55,6 +63,8 @@ type MachinesServer struct {
 func NewMachinesServerTransport(srv *MachinesServer) *MachinesServerTransport {
 	return &MachinesServerTransport{
 		srv:                         srv,
+		beginAssessPatches:          newTracker[azfake.PollerResponder[armhybridcompute.MachinesClientAssessPatchesResponse]](),
+		beginInstallPatches:         newTracker[azfake.PollerResponder[armhybridcompute.MachinesClientInstallPatchesResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhybridcompute.MachinesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armhybridcompute.MachinesClientListBySubscriptionResponse]](),
 	}
@@ -64,6 +74,8 @@ func NewMachinesServerTransport(srv *MachinesServer) *MachinesServerTransport {
 // Don't use this type directly, use NewMachinesServerTransport instead.
 type MachinesServerTransport struct {
 	srv                         *MachinesServer
+	beginAssessPatches          *tracker[azfake.PollerResponder[armhybridcompute.MachinesClientAssessPatchesResponse]]
+	beginInstallPatches         *tracker[azfake.PollerResponder[armhybridcompute.MachinesClientInstallPatchesResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhybridcompute.MachinesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armhybridcompute.MachinesClientListBySubscriptionResponse]]
 }
@@ -80,12 +92,16 @@ func (m *MachinesServerTransport) Do(req *http.Request) (*http.Response, error) 
 	var err error
 
 	switch method {
+	case "MachinesClient.BeginAssessPatches":
+		resp, err = m.dispatchBeginAssessPatches(req)
 	case "MachinesClient.CreateOrUpdate":
 		resp, err = m.dispatchCreateOrUpdate(req)
 	case "MachinesClient.Delete":
 		resp, err = m.dispatchDelete(req)
 	case "MachinesClient.Get":
 		resp, err = m.dispatchGet(req)
+	case "MachinesClient.BeginInstallPatches":
+		resp, err = m.dispatchBeginInstallPatches(req)
 	case "MachinesClient.NewListByResourceGroupPager":
 		resp, err = m.dispatchNewListByResourceGroupPager(req)
 	case "MachinesClient.NewListBySubscriptionPager":
@@ -103,6 +119,50 @@ func (m *MachinesServerTransport) Do(req *http.Request) (*http.Response, error) 
 	return resp, nil
 }
 
+func (m *MachinesServerTransport) dispatchBeginAssessPatches(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginAssessPatches == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginAssessPatches not implemented")}
+	}
+	beginAssessPatches := m.beginAssessPatches.get(req)
+	if beginAssessPatches == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridCompute/machines/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/assessPatches`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginAssessPatches(req.Context(), resourceGroupNameParam, nameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginAssessPatches = &respr
+		m.beginAssessPatches.add(req, beginAssessPatches)
+	}
+
+	resp, err := server.PollerResponderNext(beginAssessPatches, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginAssessPatches.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginAssessPatches) {
+		m.beginAssessPatches.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *MachinesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if m.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
@@ -113,6 +173,7 @@ func (m *MachinesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*ht
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
+	qp := req.URL.Query()
 	body, err := server.UnmarshalRequestAsJSON[armhybridcompute.Machine](req)
 	if err != nil {
 		return nil, err
@@ -125,7 +186,18 @@ func (m *MachinesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, machineNameParam, body, nil)
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
+	var options *armhybridcompute.MachinesClientCreateOrUpdateOptions
+	if expandParam != nil {
+		options = &armhybridcompute.MachinesClientCreateOrUpdateOptions{
+			Expand: expandParam,
+		}
+	}
+	respr, errRespr := m.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, machineNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -218,6 +290,54 @@ func (m *MachinesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	return resp, nil
 }
 
+func (m *MachinesServerTransport) dispatchBeginInstallPatches(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginInstallPatches == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginInstallPatches not implemented")}
+	}
+	beginInstallPatches := m.beginInstallPatches.get(req)
+	if beginInstallPatches == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridCompute/machines/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/installPatches`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armhybridcompute.MachineInstallPatchesParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginInstallPatches(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginInstallPatches = &respr
+		m.beginInstallPatches.add(req, beginInstallPatches)
+	}
+
+	resp, err := server.PollerResponderNext(beginInstallPatches, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginInstallPatches.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginInstallPatches) {
+		m.beginInstallPatches.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *MachinesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -230,11 +350,23 @@ func (m *MachinesServerTransport) dispatchNewListByResourceGroupPager(req *http.
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := m.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+		if err != nil {
+			return nil, err
+		}
+		expandParam := getOptional(expandUnescaped)
+		var options *armhybridcompute.MachinesClientListByResourceGroupOptions
+		if expandParam != nil {
+			options = &armhybridcompute.MachinesClientListByResourceGroupOptions{
+				Expand: expandParam,
+			}
+		}
+		resp := m.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
 		newListByResourceGroupPager = &resp
 		m.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armhybridcompute.MachinesClientListByResourceGroupResponse, createLink func() string) {

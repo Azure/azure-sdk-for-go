@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsAbortOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsAbortOperation.json
 func ExampleAgentPoolsClient_BeginAbortLatestOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleAgentPoolsClient_BeginAbortLatestOperation() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsList.json
 func ExampleAgentPoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleAgentPoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsGet.json
 func ExampleAgentPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,54 @@ func ExampleAgentPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_Snapshot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsAssociate_CRG.json
+func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityReservationGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+			CapacityReservationGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
+			Count:                      to.Ptr[int32](3),
+			OrchestratorVersion:        to.Ptr(""),
+			OSType:                     to.Ptr(armcontainerservice.OSTypeLinux),
+			VMSize:                     to.Ptr("Standard_DS2_v2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AgentPool = armcontainerservice.AgentPool{
+	// 	Name: to.Ptr("agentpool1"),
+	// 	Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 	Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+	// 		CapacityReservationGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
+	// 		Count: to.Ptr[int32](3),
+	// 		CurrentOrchestratorVersion: to.Ptr("1.9.6"),
+	// 		MaxPods: to.Ptr[int32](110),
+	// 		OrchestratorVersion: to.Ptr("1.9.6"),
+	// 		OSType: to.Ptr(armcontainerservice.OSTypeLinux),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		VMSize: to.Ptr("Standard_DS2_v2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_Snapshot.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPoolSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +180,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPool
 		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 			Count: to.Ptr[int32](3),
 			CreationData: &armcontainerservice.CreationData{
-				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
 			},
 			EnableFIPS:          to.Ptr(true),
 			OrchestratorVersion: to.Ptr(""),
@@ -158,7 +205,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPool
 	// 	Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 		Count: to.Ptr[int32](3),
 	// 		CreationData: &armcontainerservice.CreationData{
-	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
 	// 		},
 	// 		CurrentOrchestratorVersion: to.Ptr("1.19.6"),
 	// 		EnableFIPS: to.Ptr(true),
@@ -171,7 +218,54 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPool
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_DedicatedHostGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_EnableCustomCATrust.json
+func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithCustomCaTrustEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+			Count:               to.Ptr[int32](3),
+			EnableCustomCATrust: to.Ptr(true),
+			OrchestratorVersion: to.Ptr(""),
+			OSType:              to.Ptr(armcontainerservice.OSTypeLinux),
+			VMSize:              to.Ptr("Standard_DS2_v2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AgentPool = armcontainerservice.AgentPool{
+	// 	Name: to.Ptr("agentpool1"),
+	// 	Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 	Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+	// 		Count: to.Ptr[int32](3),
+	// 		CurrentOrchestratorVersion: to.Ptr("1.19.6"),
+	// 		EnableCustomCATrust: to.Ptr(true),
+	// 		MaxPods: to.Ptr[int32](110),
+	// 		OrchestratorVersion: to.Ptr("1.19.6"),
+	// 		OSType: to.Ptr(armcontainerservice.OSTypeLinux),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		VMSize: to.Ptr("Standard_DS2_v2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_DedicatedHostGroup.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,6 +301,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHos
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 	Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 		Count: to.Ptr[int32](3),
+	// 		CurrentOrchestratorVersion: to.Ptr("1.19.6"),
 	// 		HostGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
 	// 		MaxPods: to.Ptr[int32](110),
 	// 		OrchestratorVersion: to.Ptr("1.19.6"),
@@ -217,7 +312,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHos
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_EnableEncryptionAtHost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_EnableEncryptionAtHost.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAtHostEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,7 +359,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAt
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_Ephemeral.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_Ephemeral.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOsDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,7 +408,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOsD
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_EnableFIPS.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_EnableFIPS.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledOs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -360,7 +455,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledO
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_GPUMIG.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_GPUMIG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -453,7 +548,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_WasmWasi.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_WasmWasi.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndTheWasiRuntime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -504,7 +599,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndT
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_CustomNodeConfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_CustomNodeConfig.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfigAndLinuxOsConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -595,7 +690,58 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_OSSKU.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_MessageOfTheDay.json
+func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMessageOfTheDay() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+			Count:               to.Ptr[int32](3),
+			MessageOfTheDay:     to.Ptr("Zm9vCg=="),
+			Mode:                to.Ptr(armcontainerservice.AgentPoolModeUser),
+			OrchestratorVersion: to.Ptr(""),
+			OSDiskSizeGB:        to.Ptr[int32](64),
+			OSType:              to.Ptr(armcontainerservice.OSTypeLinux),
+			VMSize:              to.Ptr("Standard_DS2_v2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AgentPool = armcontainerservice.AgentPool{
+	// 	Name: to.Ptr("agentpool1"),
+	// 	Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 	Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+	// 		Count: to.Ptr[int32](3),
+	// 		CurrentOrchestratorVersion: to.Ptr("1.17.8"),
+	// 		MaxPods: to.Ptr[int32](110),
+	// 		MessageOfTheDay: to.Ptr("Zm9vCg=="),
+	// 		Mode: to.Ptr(armcontainerservice.AgentPoolModeUser),
+	// 		OrchestratorVersion: to.Ptr("1.17.8"),
+	// 		OSDiskSizeGB: to.Ptr[int32](64),
+	// 		OSType: to.Ptr(armcontainerservice.OSTypeLinux),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		VMSize: to.Ptr("Standard_DS2_v2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_OSSKU.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -688,7 +834,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_PPG.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_PPG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -735,7 +881,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_EnableUltraSSD.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_EnableUltraSSD.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -782,7 +928,56 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnab
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_WindowsOSSKU.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_VirtualMachines.json
+func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachinesPoolType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "agentpool1", armcontainerservice.AgentPool{
+		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+			Type:                to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachines),
+			Count:               to.Ptr[int32](3),
+			EnableFIPS:          to.Ptr(true),
+			OrchestratorVersion: to.Ptr(""),
+			OSType:              to.Ptr(armcontainerservice.OSTypeLinux),
+			VMSize:              to.Ptr("Standard_DS2_v2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AgentPool = armcontainerservice.AgentPool{
+	// 	Name: to.Ptr("agentpool1"),
+	// 	Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
+	// 	Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+	// 		Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachines),
+	// 		Count: to.Ptr[int32](3),
+	// 		CurrentOrchestratorVersion: to.Ptr("1.19.6"),
+	// 		EnableFIPS: to.Ptr(true),
+	// 		MaxPods: to.Ptr[int32](110),
+	// 		OrchestratorVersion: to.Ptr("1.19.6"),
+	// 		OSType: to.Ptr(armcontainerservice.OSTypeLinux),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		VMSize: to.Ptr("Standard_DS2_v2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_WindowsOSSKU.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -829,7 +1024,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_Spot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_Spot.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -895,7 +1090,60 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsCreate_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_WindowsDisableOutboundNAT.json
+func ExampleAgentPoolsClient_BeginCreateOrUpdate_createWindowsAgentPoolWithDisablingOutboundNat() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAgentPoolsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "wnp2", armcontainerservice.AgentPool{
+		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+			Count:               to.Ptr[int32](3),
+			OrchestratorVersion: to.Ptr("1.23.8"),
+			OSSKU:               to.Ptr(armcontainerservice.OSSKUWindows2022),
+			OSType:              to.Ptr(armcontainerservice.OSTypeWindows),
+			VMSize:              to.Ptr("Standard_D4s_v3"),
+			WindowsProfile: &armcontainerservice.AgentPoolWindowsProfile{
+				DisableOutboundNat: to.Ptr(true),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AgentPool = armcontainerservice.AgentPool{
+	// 	Name: to.Ptr("wnp2"),
+	// 	Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/wnp2"),
+	// 	Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+	// 		Count: to.Ptr[int32](3),
+	// 		CurrentOrchestratorVersion: to.Ptr("1.23.8"),
+	// 		MaxPods: to.Ptr[int32](110),
+	// 		OrchestratorVersion: to.Ptr("1.23.8"),
+	// 		OSSKU: to.Ptr(armcontainerservice.OSSKUWindows2022),
+	// 		OSType: to.Ptr(armcontainerservice.OSTypeWindows),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		VMSize: to.Ptr("Standard_D4s_v3"),
+	// 		WindowsProfile: &armcontainerservice.AgentPoolWindowsProfile{
+	// 			DisableOutboundNat: to.Ptr(true),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsCreate_Update.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -941,7 +1189,6 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1"),
 	// 	Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
 	// 		Count: to.Ptr[int32](3),
-	// 		CurrentOrchestratorVersion: to.Ptr("1.9.6"),
 	// 		MaxPods: to.Ptr[int32](110),
 	// 		Mode: to.Ptr(armcontainerservice.AgentPoolModeUser),
 	// 		NodeImageVersion: to.Ptr("AKSUbuntu:1604:2020.03.11"),
@@ -963,7 +1210,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPools_Start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPools_Start.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1008,7 +1255,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPools_Stop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPools_Stop.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1051,7 +1298,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPools_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPools_Update.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1110,8 +1357,8 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsDelete.json
-func ExampleAgentPoolsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsDelete.json
+func ExampleAgentPoolsClient_BeginDelete_deleteAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1121,7 +1368,7 @@ func ExampleAgentPoolsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAgentPoolsClient().BeginDelete(ctx, "rg1", "clustername1", "agentpool1", nil)
+	poller, err := clientFactory.NewAgentPoolsClient().BeginDelete(ctx, "rg1", "clustername1", "agentpool1", &armcontainerservice.AgentPoolsClientBeginDeleteOptions{IgnorePodDisruptionBudget: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1131,7 +1378,28 @@ func ExampleAgentPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsGetUpgradeProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsDelete_IgnorePodDisruptionBudget.json
+func ExampleAgentPoolsClient_BeginDelete_deleteAgentPoolByIgnoringPodDisruptionBudget() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAgentPoolsClient().BeginDelete(ctx, "rg1", "clustername1", "agentpool1", &armcontainerservice.AgentPoolsClientBeginDeleteOptions{IgnorePodDisruptionBudget: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsGetUpgradeProfile.json
 func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1165,7 +1433,7 @@ func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsGetAgentPoolAvailableVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsGetAgentPoolAvailableVersions.json
 func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1204,7 +1472,7 @@ func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/AgentPoolsUpgradeNodeImageVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-09-02-preview/examples/AgentPoolsUpgradeNodeImageVersion.json
 func ExampleAgentPoolsClient_BeginUpgradeNodeImageVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/ListOperations.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,11 +39,11 @@ func ExampleOperationsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ResourceProviderOperationList = armhybridcontainerservice.ResourceProviderOperationList{
-		// 	Value: []*armhybridcontainerservice.ResourceProviderOperation{
+		// page.OperationListResult = armhybridcontainerservice.OperationListResult{
+		// 	Value: []*armhybridcontainerservice.Operation{
 		// 		{
-		// 			Name: to.Ptr("Microsoft.HybridContainerService/provisionedClusters/Read"),
-		// 			Display: &armhybridcontainerservice.ResourceProviderOperationDisplay{
+		// 			Name: to.Ptr("Microsoft.HybridContainerService/provisionedClusterInstances/Read"),
+		// 			Display: &armhybridcontainerservice.OperationDisplay{
 		// 				Description: to.Ptr("Read provisionedClusters"),
 		// 				Operation: to.Ptr("Gets/List provisionedClusters resources"),
 		// 				Provider: to.Ptr("Microsoft.HybridContainerService"),
@@ -51,8 +51,8 @@ func ExampleOperationsClient_NewListPager() {
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.HybridContainerService/provisionedClusters/Write"),
-		// 			Display: &armhybridcontainerservice.ResourceProviderOperationDisplay{
+		// 			Name: to.Ptr("Microsoft.HybridContainerService/provisionedClusterInstances/Write"),
+		// 			Display: &armhybridcontainerservice.OperationDisplay{
 		// 				Description: to.Ptr("Writes provisionedClusters"),
 		// 				Operation: to.Ptr("Create/update provisionedClusters resources"),
 		// 				Provider: to.Ptr("Microsoft.HybridContainerService"),
@@ -60,8 +60,8 @@ func ExampleOperationsClient_NewListPager() {
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.HybridContainerService/provisionedClusters/Delete"),
-		// 			Display: &armhybridcontainerservice.ResourceProviderOperationDisplay{
+		// 			Name: to.Ptr("Microsoft.HybridContainerService/provisionedClusterInstances/Delete"),
+		// 			Display: &armhybridcontainerservice.OperationDisplay{
 		// 				Description: to.Ptr("Deletes provisionedClusters"),
 		// 				Operation: to.Ptr("Deletes provisionedClusters resource"),
 		// 				Provider: to.Ptr("Microsoft.HybridContainerService"),
@@ -69,21 +69,12 @@ func ExampleOperationsClient_NewListPager() {
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.HybridContainerService/provisionedClusters/upgradeProfiles/Read"),
-		// 			Display: &armhybridcontainerservice.ResourceProviderOperationDisplay{
+		// 			Name: to.Ptr("Microsoft.HybridContainerService/provisionedClusterInstances/upgradeProfiles/Read"),
+		// 			Display: &armhybridcontainerservice.OperationDisplay{
 		// 				Description: to.Ptr("Gets the upgrade profile of the cluster"),
 		// 				Operation: to.Ptr("Get UpgradeProfile"),
 		// 				Provider: to.Ptr("Microsoft.HybridContainerService"),
 		// 				Resource: to.Ptr("UpgradeProfile"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.HybridContainerService/provisionedClusters/upgradeNodeImageVersionForEntireCluster/write"),
-		// 			Display: &armhybridcontainerservice.ResourceProviderOperationDisplay{
-		// 				Description: to.Ptr("Upgrade the node image version of the entire cluster"),
-		// 				Operation: to.Ptr("Upgrade entire cluster node image version"),
-		// 				Provider: to.Ptr("Microsoft.HybridContainerService"),
-		// 				Resource: to.Ptr("provisionedClusters"),
 		// 			},
 		// 	}},
 		// }

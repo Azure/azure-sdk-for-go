@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/CreateHybridIdentityMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/CreateHybridIdentityMetadata.json
 func ExampleHybridIdentityMetadataClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleHybridIdentityMetadataClient_Put() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewHybridIdentityMetadataClient().Put(ctx, "testrg", "ContosoTargetCluster", "default", armhybridcontainerservice.HybridIdentityMetadata{
+	res, err := clientFactory.NewHybridIdentityMetadataClient().Put(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster", armhybridcontainerservice.HybridIdentityMetadata{
 		Properties: &armhybridcontainerservice.HybridIdentityMetadataProperties{
 			PublicKey:   to.Ptr("8ec7d60c-9700-40b1-8e6e-e5b2f6f477f2"),
 			ResourceUID: to.Ptr("f8b82dff-38ef-4220-99ef-d3a3f86ddc6c"),
@@ -43,21 +43,16 @@ func ExampleHybridIdentityMetadataClient_Put() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.HybridIdentityMetadata = armhybridcontainerservice.HybridIdentityMetadata{
 	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("Microsoft.HybridContainerService/provisionedClusters/hybridIdentityMetadata"),
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridContainerService/provisionedClusters/ContosoTargetCluster/hybridIdentityMetadata/default"),
+	// 	Type: to.Ptr("Microsoft.HybridContainerService/provisionedClusterInstances/hybridIdentityMetadata"),
+	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default/hybridIdentityMetadata/default"),
 	// 	Properties: &armhybridcontainerservice.HybridIdentityMetadataProperties{
-	// 		Identity: &armhybridcontainerservice.ProvisionedClusterIdentity{
-	// 			Type: to.Ptr(armhybridcontainerservice.ResourceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("7b5129bc-8642-4a6a-95f8-63400ca6ec4d"),
-	// 			TenantID: to.Ptr("ec46ca82-5d4a-4e3e-b4b7-e27f9318645d"),
-	// 		},
 	// 		PublicKey: to.Ptr("8ec7d60c-9700-40b1-8e6e-e5b2f6f477f2"),
 	// 		ResourceUID: to.Ptr("f8b82dff-38ef-4220-99ef-d3a3f86ddc6c"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/GetHybridIdentityMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/GetHybridIdentityMetadata.json
 func ExampleHybridIdentityMetadataClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +63,7 @@ func ExampleHybridIdentityMetadataClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewHybridIdentityMetadataClient().Get(ctx, "testrg", "ContosoTargetCluster", "default", nil)
+	res, err := clientFactory.NewHybridIdentityMetadataClient().Get(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -77,22 +72,17 @@ func ExampleHybridIdentityMetadataClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.HybridIdentityMetadata = armhybridcontainerservice.HybridIdentityMetadata{
 	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("Microsoft.HybridContainerService/provisionedClusters/hybridIdentityMetadata"),
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridContainerService/provisionedClusters/ContosoTargetCluster/hybridIdentityMetadata/default"),
+	// 	Type: to.Ptr("Microsoft.HybridContainerService/provisionedClusterInstances/hybridIdentityMetadata"),
+	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default/hybridIdentityMetadata/default"),
 	// 	Properties: &armhybridcontainerservice.HybridIdentityMetadataProperties{
-	// 		Identity: &armhybridcontainerservice.ProvisionedClusterIdentity{
-	// 			Type: to.Ptr(armhybridcontainerservice.ResourceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("7b5129bc-8642-4a6a-95f8-63400ca6ec4d"),
-	// 			TenantID: to.Ptr("ec46ca82-5d4a-4e3e-b4b7-e27f9318645d"),
-	// 		},
 	// 		PublicKey: to.Ptr("8ec7d60c-9700-40b1-8e6e-e5b2f6f477f2"),
 	// 		ResourceUID: to.Ptr("f8b82dff-38ef-4220-99ef-d3a3f86ddc6c"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/DeleteHybridIdentityMetadata.json
-func ExampleHybridIdentityMetadataClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/DeleteHybridIdentityMetadata.json
+func ExampleHybridIdentityMetadataClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -102,13 +92,17 @@ func ExampleHybridIdentityMetadataClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewHybridIdentityMetadataClient().Delete(ctx, "testrg", "ContosoTargetCluster", "default", nil)
+	poller, err := clientFactory.NewHybridIdentityMetadataClient().BeginDelete(ctx, "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/HybridIdentityMetadataListByCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/HybridIdentityMetadataListByCluster.json
 func ExampleHybridIdentityMetadataClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +113,7 @@ func ExampleHybridIdentityMetadataClient_NewListByClusterPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewHybridIdentityMetadataClient().NewListByClusterPager("testrg", "ContosoTargetCluster", nil)
+	pager := clientFactory.NewHybridIdentityMetadataClient().NewListByClusterPager("subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -134,14 +128,9 @@ func ExampleHybridIdentityMetadataClient_NewListByClusterPager() {
 		// 	Value: []*armhybridcontainerservice.HybridIdentityMetadata{
 		// 		{
 		// 			Name: to.Ptr("default"),
-		// 			Type: to.Ptr("Microsoft.HybridContainerService/provisionedClusters/hybridIdentityMetadata"),
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridContainerService/provisionedClusters/ContosoTargetCluster/hybridIdentityMetadata/default"),
+		// 			Type: to.Ptr("Microsoft.HybridContainerService/provisionedClusterInstances/hybridIdentityMetadata"),
+		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default/hybridIdentityMetadata/default"),
 		// 			Properties: &armhybridcontainerservice.HybridIdentityMetadataProperties{
-		// 				Identity: &armhybridcontainerservice.ProvisionedClusterIdentity{
-		// 					Type: to.Ptr(armhybridcontainerservice.ResourceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("7b5129bc-8642-4a6a-95f8-63400ca6ec4d"),
-		// 					TenantID: to.Ptr("ec46ca82-5d4a-4e3e-b4b7-e27f9318645d"),
-		// 				},
 		// 				PublicKey: to.Ptr("8ec7d60c-9700-40b1-8e6e-e5b2f6f477f2"),
 		// 				ResourceUID: to.Ptr("f8b82dff-38ef-4220-99ef-d3a3f86ddc6c"),
 		// 			},

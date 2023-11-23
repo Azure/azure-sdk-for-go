@@ -13,12 +13,13 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListOrchestrators.json
-func ExampleClient_ListOrchestrators() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/GetKubernetesVersions.json
+func ExampleClient_GetKubernetesVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,54 +29,118 @@ func ExampleClient_ListOrchestrators() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().ListOrchestrators(ctx, "subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation", nil)
+	res, err := clientFactory.NewClient().GetKubernetesVersions(ctx, "subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.OrchestratorVersionProfileListResult = armhybridcontainerservice.OrchestratorVersionProfileListResult{
+	// res.KubernetesVersionProfile = armhybridcontainerservice.KubernetesVersionProfile{
 	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("microsoft.hybridcontainerservice/customLocations/orchestrators"),
-	// 	ID: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation/providers/Microsoft.HybridContainerService/orchestrators"),
-	// 	Orchestrators: []*armhybridcontainerservice.OrchestratorVersionProfile{
-	// 		{
-	// 			OrchestratorType: to.Ptr("Kubernetes"),
-	// 			OrchestratorVersion: to.Ptr("1.8.1"),
-	// 			Upgrades: []*armhybridcontainerservice.OrchestratorProfile{
-	// 				{
-	// 					OrchestratorVersion: to.Ptr("1.8.4"),
-	// 				},
-	// 				{
-	// 					OrchestratorVersion: to.Ptr("1.8.2"),
-	// 			}},
-	// 		},
-	// 		{
-	// 			OrchestratorType: to.Ptr("Kubernetes"),
-	// 			OrchestratorVersion: to.Ptr("1.9.10"),
-	// 			Upgrades: []*armhybridcontainerservice.OrchestratorProfile{
-	// 				{
+	// 	Type: to.Ptr("microsoft.hybridcontainerservice/kubernetesVersions"),
+	// 	ID: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation/providers/Microsoft.HybridContainerService/kubernetesVersions/default"),
+	// 	ExtendedLocation: &armhybridcontainerservice.ExtendedLocation{
+	// 		Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
+	// 		Type: to.Ptr(armhybridcontainerservice.ExtendedLocationTypesCustomLocation),
+	// 	},
+	// 	Properties: &armhybridcontainerservice.KubernetesVersionProfileProperties{
+	// 		ProvisioningState: to.Ptr(armhybridcontainerservice.ResourceProvisioningStateSucceeded),
+	// 		Values: []*armhybridcontainerservice.KubernetesVersionProperties{
+	// 			{
+	// 				Capabilities: &armhybridcontainerservice.KubernetesVersionCapabilities{
+	// 					SupportPlan: []*string{
+	// 						to.Ptr("KubernetesOfficial")},
+	// 					},
 	// 					IsPreview: to.Ptr(false),
-	// 					OrchestratorType: to.Ptr(""),
-	// 					OrchestratorVersion: to.Ptr("1.9.11"),
-	// 				},
-	// 				{
-	// 					IsPreview: to.Ptr(false),
-	// 					OrchestratorType: to.Ptr(""),
-	// 					OrchestratorVersion: to.Ptr("1.10.12"),
-	// 				},
-	// 				{
-	// 					IsPreview: to.Ptr(false),
-	// 					OrchestratorType: to.Ptr(""),
-	// 					OrchestratorVersion: to.Ptr("1.10.13"),
-	// 			}},
-	// 	}},
+	// 					PatchVersions: map[string]*armhybridcontainerservice.KubernetesPatchVersions{
+	// 						"1.23.12": &armhybridcontainerservice.KubernetesPatchVersions{
+	// 							Readiness: []*armhybridcontainerservice.KubernetesVersionReadiness{
+	// 								{
+	// 									OSSKU: to.Ptr(armhybridcontainerservice.OSSKUCBLMariner),
+	// 									OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
+	// 									Ready: to.Ptr(true),
+	// 								},
+	// 								{
+	// 									OSSKU: to.Ptr(armhybridcontainerservice.OSSKU("Windows")),
+	// 									OSType: to.Ptr(armhybridcontainerservice.OsTypeWindows),
+	// 									Ready: to.Ptr(true),
+	// 								},
+	// 								{
+	// 									ErrorMessage: to.Ptr("Not Ready. Reasons: Failed to find proudct stream windoes2022 in release aks-hybrid-catalog-stable-int"),
+	// 									OSSKU: to.Ptr(armhybridcontainerservice.OSSKUWindows2022),
+	// 									OSType: to.Ptr(armhybridcontainerservice.OsTypeWindows),
+	// 									Ready: to.Ptr(false),
+	// 							}},
+	// 							Upgrades: []*string{
+	// 								to.Ptr("1.23.13")},
+	// 							},
+	// 							"1.23.13": &armhybridcontainerservice.KubernetesPatchVersions{
+	// 								Readiness: []*armhybridcontainerservice.KubernetesVersionReadiness{
+	// 									{
+	// 										OSSKU: to.Ptr(armhybridcontainerservice.OSSKUCBLMariner),
+	// 										OSType: to.Ptr(armhybridcontainerservice.OsTypeLinux),
+	// 										Ready: to.Ptr(true),
+	// 									},
+	// 									{
+	// 										OSSKU: to.Ptr(armhybridcontainerservice.OSSKU("Windows")),
+	// 										OSType: to.Ptr(armhybridcontainerservice.OsTypeWindows),
+	// 										Ready: to.Ptr(true),
+	// 									},
+	// 									{
+	// 										OSSKU: to.Ptr(armhybridcontainerservice.OSSKUWindows2022),
+	// 										OSType: to.Ptr(armhybridcontainerservice.OsTypeWindows),
+	// 										Ready: to.Ptr(true),
+	// 								}},
+	// 								Upgrades: []*string{
+	// 								},
+	// 							},
+	// 						},
+	// 						Version: to.Ptr("1.23"),
+	// 				}},
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/PutKubernetesVersions.json
+func ExampleClient_BeginPutKubernetesVersions() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClient().BeginPutKubernetesVersions(ctx, "subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation", armhybridcontainerservice.KubernetesVersionProfile{
+		ExtendedLocation: &armhybridcontainerservice.ExtendedLocation{
+			Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
+			Type: to.Ptr(armhybridcontainerservice.ExtendedLocationTypesCustomLocation),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.KubernetesVersionProfile = armhybridcontainerservice.KubernetesVersionProfile{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("microsoft.hybridcontainerservice/kubernetesVersions"),
+	// 	ID: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.HybridContainerService/kubernetesVersions/default"),
+	// 	Properties: &armhybridcontainerservice.KubernetesVersionProfileProperties{
+	// 		ProvisioningState: to.Ptr(armhybridcontainerservice.ResourceProvisioningStateSucceeded),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListVMSkus.json
-func ExampleClient_ListVMSKUs() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/DeleteKubernetesVersions.json
+func ExampleClient_BeginDeleteKubernetesVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -85,21 +150,138 @@ func ExampleClient_ListVMSKUs() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().ListVMSKUs(ctx, "subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation", nil)
+	poller, err := clientFactory.NewClient().BeginDeleteKubernetesVersions(ctx, "subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/GetVmSkus.json
+func ExampleClient_GetVMSKUs() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().GetVMSKUs(ctx, "subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VMSKUListResult = armhybridcontainerservice.VMSKUListResult{
+	// res.VMSKUProfile = armhybridcontainerservice.VMSKUProfile{
 	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("microsoft.hybridcontainerservice/customLocations/vmSKUs"),
-	// 	ID: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation/providers/Microsoft.HybridContainerService/vmskus"),
-	// 	VMSKUs: []*string{
-	// 		to.Ptr("Standard_A2_v2"),
-	// 		to.Ptr("Standard_A4_v2"),
-	// 		to.Ptr("Standard_D4s_v3"),
-	// 		to.Ptr("Standard_K8S3_v1")},
-	// 	}
+	// 	Type: to.Ptr("microsoft.hybridcontainerservice/skus"),
+	// 	ID: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation/providers/Microsoft.HybridContainerService/skus/default"),
+	// 	ExtendedLocation: &armhybridcontainerservice.ExtendedLocation{
+	// 		Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
+	// 		Type: to.Ptr(armhybridcontainerservice.ExtendedLocationTypesCustomLocation),
+	// 	},
+	// 	Properties: &armhybridcontainerservice.VMSKUProfileProperties{
+	// 		ProvisioningState: to.Ptr(armhybridcontainerservice.ResourceProvisioningStateSucceeded),
+	// 		Values: []*armhybridcontainerservice.VMSKUProperties{
+	// 			{
+	// 				Name: to.Ptr("Standard_A0"),
+	// 				Capabilities: []*armhybridcontainerservice.VMSKUCapabilities{
+	// 					{
+	// 						Name: to.Ptr("vCpu"),
+	// 						Value: to.Ptr("2"),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("MemoryMb"),
+	// 						Value: to.Ptr("2345"),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("DiskSizeGb"),
+	// 						Value: to.Ptr("128"),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("GpuCount"),
+	// 						Value: to.Ptr("1"),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("GpuNameType"),
+	// 						Value: to.Ptr("NVIDIA Tesla T4"),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("GpuAssignMode"),
+	// 						Value: to.Ptr("1"),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("Provider"),
+	// 						Value: to.Ptr("HCI"),
+	// 				}},
+	// 				ResourceType: to.Ptr("VirtualMachines"),
+	// 				Size: to.Ptr("A0"),
+	// 				Tier: to.Ptr("Standard"),
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/PutVmSkus.json
+func ExampleClient_BeginPutVMSKUs() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClient().BeginPutVMSKUs(ctx, "subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation", armhybridcontainerservice.VMSKUProfile{
+		ExtendedLocation: &armhybridcontainerservice.ExtendedLocation{
+			Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
+			Type: to.Ptr(armhybridcontainerservice.ExtendedLocationTypesCustomLocation),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VMSKUProfile = armhybridcontainerservice.VMSKUProfile{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("microsoft.hybridcontainerservice/skus"),
+	// 	ID: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.HybridContainerService/skus/default"),
+	// 	Properties: &armhybridcontainerservice.VMSKUProfileProperties{
+	// 		ProvisioningState: to.Ptr(armhybridcontainerservice.ResourceProvisioningStateSucceeded),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/DeleteVmSkus.json
+func ExampleClient_BeginDeleteVMSKUs() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClient().BeginDeleteVMSKUs(ctx, "subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }

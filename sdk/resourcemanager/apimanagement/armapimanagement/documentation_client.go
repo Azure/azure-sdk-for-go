@@ -33,7 +33,7 @@ type DocumentationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDocumentationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DocumentationClient, error) {
-	cl, err := arm.NewClient(moduleName+".DocumentationClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewDocumentationClient(subscriptionID string, credential azcore.TokenCreden
 //     method.
 func (client *DocumentationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, documentationID string, parameters DocumentationContract, options *DocumentationClientCreateOrUpdateOptions) (DocumentationClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "DocumentationClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, documentationID, parameters, options)
 	if err != nil {
 		return DocumentationClientCreateOrUpdateResponse{}, err
@@ -132,6 +136,10 @@ func (client *DocumentationClient) createOrUpdateHandleResponse(resp *http.Respo
 //   - options - DocumentationClientDeleteOptions contains the optional parameters for the DocumentationClient.Delete method.
 func (client *DocumentationClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, documentationID string, ifMatch string, options *DocumentationClientDeleteOptions) (DocumentationClientDeleteResponse, error) {
 	var err error
+	const operationName = "DocumentationClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, documentationID, ifMatch, options)
 	if err != nil {
 		return DocumentationClientDeleteResponse{}, err
@@ -188,6 +196,10 @@ func (client *DocumentationClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - DocumentationClientGetOptions contains the optional parameters for the DocumentationClient.Get method.
 func (client *DocumentationClient) Get(ctx context.Context, resourceGroupName string, serviceName string, documentationID string, options *DocumentationClientGetOptions) (DocumentationClientGetResponse, error) {
 	var err error
+	const operationName = "DocumentationClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, documentationID, options)
 	if err != nil {
 		return DocumentationClientGetResponse{}, err
@@ -256,6 +268,10 @@ func (client *DocumentationClient) getHandleResponse(resp *http.Response) (Docum
 //     method.
 func (client *DocumentationClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, documentationID string, options *DocumentationClientGetEntityTagOptions) (DocumentationClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "DocumentationClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, documentationID, options)
 	if err != nil {
 		return DocumentationClientGetEntityTagResponse{}, err
@@ -304,11 +320,10 @@ func (client *DocumentationClient) getEntityTagCreateRequest(ctx context.Context
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *DocumentationClient) getEntityTagHandleResponse(resp *http.Response) (DocumentationClientGetEntityTagResponse, error) {
-	result := DocumentationClientGetEntityTagResponse{}
+	result := DocumentationClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -325,25 +340,20 @@ func (client *DocumentationClient) NewListByServicePager(resourceGroupName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DocumentationClientListByServiceResponse) (DocumentationClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DocumentationClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return DocumentationClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DocumentationClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DocumentationClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -404,6 +414,10 @@ func (client *DocumentationClient) listByServiceHandleResponse(resp *http.Respon
 //   - options - DocumentationClientUpdateOptions contains the optional parameters for the DocumentationClient.Update method.
 func (client *DocumentationClient) Update(ctx context.Context, resourceGroupName string, serviceName string, documentationID string, ifMatch string, parameters DocumentationUpdateContract, options *DocumentationClientUpdateOptions) (DocumentationClientUpdateResponse, error) {
 	var err error
+	const operationName = "DocumentationClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, documentationID, ifMatch, parameters, options)
 	if err != nil {
 		return DocumentationClientUpdateResponse{}, err

@@ -32,7 +32,7 @@ type DelegationSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDelegationSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DelegationSettingsClient, error) {
-	cl, err := arm.NewClient(moduleName+".DelegationSettingsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewDelegationSettingsClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *DelegationSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalDelegationSettings, options *DelegationSettingsClientCreateOrUpdateOptions) (DelegationSettingsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "DelegationSettingsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
 		return DelegationSettingsClientCreateOrUpdateResponse{}, err
@@ -120,6 +124,10 @@ func (client *DelegationSettingsClient) createOrUpdateHandleResponse(resp *http.
 //   - options - DelegationSettingsClientGetOptions contains the optional parameters for the DelegationSettingsClient.Get method.
 func (client *DelegationSettingsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsClientGetOptions) (DelegationSettingsClientGetResponse, error) {
 	var err error
+	const operationName = "DelegationSettingsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return DelegationSettingsClientGetResponse{}, err
@@ -183,6 +191,10 @@ func (client *DelegationSettingsClient) getHandleResponse(resp *http.Response) (
 //     method.
 func (client *DelegationSettingsClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsClientGetEntityTagOptions) (DelegationSettingsClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "DelegationSettingsClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return DelegationSettingsClientGetEntityTagResponse{}, err
@@ -227,11 +239,10 @@ func (client *DelegationSettingsClient) getEntityTagCreateRequest(ctx context.Co
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *DelegationSettingsClient) getEntityTagHandleResponse(resp *http.Response) (DelegationSettingsClientGetEntityTagResponse, error) {
-	result := DelegationSettingsClientGetEntityTagResponse{}
+	result := DelegationSettingsClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -245,6 +256,10 @@ func (client *DelegationSettingsClient) getEntityTagHandleResponse(resp *http.Re
 //     method.
 func (client *DelegationSettingsClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, options *DelegationSettingsClientListSecretsOptions) (DelegationSettingsClientListSecretsResponse, error) {
 	var err error
+	const operationName = "DelegationSettingsClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return DelegationSettingsClientListSecretsResponse{}, err
@@ -309,6 +324,10 @@ func (client *DelegationSettingsClient) listSecretsHandleResponse(resp *http.Res
 //     method.
 func (client *DelegationSettingsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalDelegationSettings, options *DelegationSettingsClientUpdateOptions) (DelegationSettingsClientUpdateResponse, error) {
 	var err error
+	const operationName = "DelegationSettingsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, ifMatch, parameters, options)
 	if err != nil {
 		return DelegationSettingsClientUpdateResponse{}, err

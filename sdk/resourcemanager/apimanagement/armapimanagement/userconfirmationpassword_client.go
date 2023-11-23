@@ -32,7 +32,7 @@ type UserConfirmationPasswordClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewUserConfirmationPasswordClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UserConfirmationPasswordClient, error) {
-	cl, err := arm.NewClient(moduleName+".UserConfirmationPasswordClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewUserConfirmationPasswordClient(subscriptionID string, credential azcore.
 //     method.
 func (client *UserConfirmationPasswordClient) Send(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserConfirmationPasswordClientSendOptions) (UserConfirmationPasswordClientSendResponse, error) {
 	var err error
+	const operationName = "UserConfirmationPasswordClient.Send"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.sendCreateRequest(ctx, resourceGroupName, serviceName, userID, options)
 	if err != nil {
 		return UserConfirmationPasswordClientSendResponse{}, err

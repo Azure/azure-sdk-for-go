@@ -33,7 +33,7 @@ type APIIssueClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPIIssueClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIIssueClient, error) {
-	cl, err := arm.NewClient(moduleName+".APIIssueClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewAPIIssueClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - APIIssueClientCreateOrUpdateOptions contains the optional parameters for the APIIssueClient.CreateOrUpdate method.
 func (client *APIIssueClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, parameters IssueContract, options *APIIssueClientCreateOrUpdateOptions) (APIIssueClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "APIIssueClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, parameters, options)
 	if err != nil {
 		return APIIssueClientCreateOrUpdateResponse{}, err
@@ -137,6 +141,10 @@ func (client *APIIssueClient) createOrUpdateHandleResponse(resp *http.Response) 
 //   - options - APIIssueClientDeleteOptions contains the optional parameters for the APIIssueClient.Delete method.
 func (client *APIIssueClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, ifMatch string, options *APIIssueClientDeleteOptions) (APIIssueClientDeleteResponse, error) {
 	var err error
+	const operationName = "APIIssueClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, ifMatch, options)
 	if err != nil {
 		return APIIssueClientDeleteResponse{}, err
@@ -198,6 +206,10 @@ func (client *APIIssueClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - APIIssueClientGetOptions contains the optional parameters for the APIIssueClient.Get method.
 func (client *APIIssueClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, options *APIIssueClientGetOptions) (APIIssueClientGetResponse, error) {
 	var err error
+	const operationName = "APIIssueClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, options)
 	if err != nil {
 		return APIIssueClientGetResponse{}, err
@@ -273,6 +285,10 @@ func (client *APIIssueClient) getHandleResponse(resp *http.Response) (APIIssueCl
 //   - options - APIIssueClientGetEntityTagOptions contains the optional parameters for the APIIssueClient.GetEntityTag method.
 func (client *APIIssueClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, options *APIIssueClientGetEntityTagOptions) (APIIssueClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "APIIssueClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, options)
 	if err != nil {
 		return APIIssueClientGetEntityTagResponse{}, err
@@ -325,11 +341,10 @@ func (client *APIIssueClient) getEntityTagCreateRequest(ctx context.Context, res
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *APIIssueClient) getEntityTagHandleResponse(resp *http.Response) (APIIssueClientGetEntityTagResponse, error) {
-	result := APIIssueClientGetEntityTagResponse{}
+	result := APIIssueClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -347,25 +362,20 @@ func (client *APIIssueClient) NewListByServicePager(resourceGroupName string, se
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *APIIssueClientListByServiceResponse) (APIIssueClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "APIIssueClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			}, nil)
 			if err != nil {
 				return APIIssueClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return APIIssueClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return APIIssueClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -434,6 +444,10 @@ func (client *APIIssueClient) listByServiceHandleResponse(resp *http.Response) (
 //   - options - APIIssueClientUpdateOptions contains the optional parameters for the APIIssueClient.Update method.
 func (client *APIIssueClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, ifMatch string, parameters IssueUpdateContract, options *APIIssueClientUpdateOptions) (APIIssueClientUpdateResponse, error) {
 	var err error
+	const operationName = "APIIssueClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, ifMatch, parameters, options)
 	if err != nil {
 		return APIIssueClientUpdateResponse{}, err

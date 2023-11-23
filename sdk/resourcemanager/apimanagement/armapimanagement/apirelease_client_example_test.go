@@ -137,9 +137,9 @@ func ExampleAPIReleaseClient_CreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1/releases/testrev"),
 	// 	Properties: &armapimanagement.APIReleaseContractProperties{
 	// 		APIID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1"),
-	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T20:52:00.65Z"); return t}()),
+	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T20:52:00.650Z"); return t}()),
 	// 		Notes: to.Ptr("yahooagain"),
-	// 		UpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T20:52:00.65Z"); return t}()),
+	// 		UpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T20:52:00.650Z"); return t}()),
 	// 	},
 	// }
 }

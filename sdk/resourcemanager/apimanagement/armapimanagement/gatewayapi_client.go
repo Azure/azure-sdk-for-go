@@ -33,7 +33,7 @@ type GatewayAPIClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGatewayAPIClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GatewayAPIClient, error) {
-	cl, err := arm.NewClient(moduleName+".GatewayAPIClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewGatewayAPIClient(subscriptionID string, credential azcore.TokenCredentia
 //     method.
 func (client *GatewayAPIClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, apiID string, options *GatewayAPIClientCreateOrUpdateOptions) (GatewayAPIClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "GatewayAPIClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, apiID, options)
 	if err != nil {
 		return GatewayAPIClientCreateOrUpdateResponse{}, err
@@ -134,6 +138,10 @@ func (client *GatewayAPIClient) createOrUpdateHandleResponse(resp *http.Response
 //   - options - GatewayAPIClientDeleteOptions contains the optional parameters for the GatewayAPIClient.Delete method.
 func (client *GatewayAPIClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, apiID string, options *GatewayAPIClientDeleteOptions) (GatewayAPIClientDeleteResponse, error) {
 	var err error
+	const operationName = "GatewayAPIClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, apiID, options)
 	if err != nil {
 		return GatewayAPIClientDeleteResponse{}, err
@@ -194,6 +202,10 @@ func (client *GatewayAPIClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - GatewayAPIClientGetEntityTagOptions contains the optional parameters for the GatewayAPIClient.GetEntityTag method.
 func (client *GatewayAPIClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, apiID string, options *GatewayAPIClientGetEntityTagOptions) (GatewayAPIClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "GatewayAPIClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, apiID, options)
 	if err != nil {
 		return GatewayAPIClientGetEntityTagResponse{}, err
@@ -246,11 +258,10 @@ func (client *GatewayAPIClient) getEntityTagCreateRequest(ctx context.Context, r
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *GatewayAPIClient) getEntityTagHandleResponse(resp *http.Response) (GatewayAPIClientGetEntityTagResponse, error) {
-	result := GatewayAPIClientGetEntityTagResponse{}
+	result := GatewayAPIClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -269,25 +280,20 @@ func (client *GatewayAPIClient) NewListByServicePager(resourceGroupName string, 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GatewayAPIClientListByServiceResponse) (GatewayAPIClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GatewayAPIClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
+			}, nil)
 			if err != nil {
 				return GatewayAPIClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GatewayAPIClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GatewayAPIClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

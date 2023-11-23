@@ -33,7 +33,7 @@ type LoggerClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLoggerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoggerClient, error) {
-	cl, err := arm.NewClient(moduleName+".LoggerClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewLoggerClient(subscriptionID string, credential azcore.TokenCredential, o
 //   - options - LoggerClientCreateOrUpdateOptions contains the optional parameters for the LoggerClient.CreateOrUpdate method.
 func (client *LoggerClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, parameters LoggerContract, options *LoggerClientCreateOrUpdateOptions) (LoggerClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "LoggerClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, loggerID, parameters, options)
 	if err != nil {
 		return LoggerClientCreateOrUpdateResponse{}, err
@@ -131,6 +135,10 @@ func (client *LoggerClient) createOrUpdateHandleResponse(resp *http.Response) (L
 //   - options - LoggerClientDeleteOptions contains the optional parameters for the LoggerClient.Delete method.
 func (client *LoggerClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, ifMatch string, options *LoggerClientDeleteOptions) (LoggerClientDeleteResponse, error) {
 	var err error
+	const operationName = "LoggerClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, loggerID, ifMatch, options)
 	if err != nil {
 		return LoggerClientDeleteResponse{}, err
@@ -187,6 +195,10 @@ func (client *LoggerClient) deleteCreateRequest(ctx context.Context, resourceGro
 //   - options - LoggerClientGetOptions contains the optional parameters for the LoggerClient.Get method.
 func (client *LoggerClient) Get(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, options *LoggerClientGetOptions) (LoggerClientGetResponse, error) {
 	var err error
+	const operationName = "LoggerClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, loggerID, options)
 	if err != nil {
 		return LoggerClientGetResponse{}, err
@@ -254,6 +266,10 @@ func (client *LoggerClient) getHandleResponse(resp *http.Response) (LoggerClient
 //   - options - LoggerClientGetEntityTagOptions contains the optional parameters for the LoggerClient.GetEntityTag method.
 func (client *LoggerClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, options *LoggerClientGetEntityTagOptions) (LoggerClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "LoggerClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, loggerID, options)
 	if err != nil {
 		return LoggerClientGetEntityTagResponse{}, err
@@ -302,11 +318,10 @@ func (client *LoggerClient) getEntityTagCreateRequest(ctx context.Context, resou
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *LoggerClient) getEntityTagHandleResponse(resp *http.Response) (LoggerClientGetEntityTagResponse, error) {
-	result := LoggerClientGetEntityTagResponse{}
+	result := LoggerClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -323,25 +338,20 @@ func (client *LoggerClient) NewListByServicePager(resourceGroupName string, serv
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LoggerClientListByServiceResponse) (LoggerClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoggerClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return LoggerClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LoggerClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LoggerClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -402,6 +412,10 @@ func (client *LoggerClient) listByServiceHandleResponse(resp *http.Response) (Lo
 //   - options - LoggerClientUpdateOptions contains the optional parameters for the LoggerClient.Update method.
 func (client *LoggerClient) Update(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, ifMatch string, parameters LoggerUpdateContract, options *LoggerClientUpdateOptions) (LoggerClientUpdateResponse, error) {
 	var err error
+	const operationName = "LoggerClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, loggerID, ifMatch, parameters, options)
 	if err != nil {
 		return LoggerClientUpdateResponse{}, err

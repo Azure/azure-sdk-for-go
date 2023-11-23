@@ -33,7 +33,7 @@ type APIIssueCommentClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPIIssueCommentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIIssueCommentClient, error) {
-	cl, err := arm.NewClient(moduleName+".APIIssueCommentClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,10 @@ func NewAPIIssueCommentClient(subscriptionID string, credential azcore.TokenCred
 //     method.
 func (client *APIIssueCommentClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, commentID string, parameters IssueCommentContract, options *APIIssueCommentClientCreateOrUpdateOptions) (APIIssueCommentClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "APIIssueCommentClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, commentID, parameters, options)
 	if err != nil {
 		return APIIssueCommentClientCreateOrUpdateResponse{}, err
@@ -144,6 +148,10 @@ func (client *APIIssueCommentClient) createOrUpdateHandleResponse(resp *http.Res
 //   - options - APIIssueCommentClientDeleteOptions contains the optional parameters for the APIIssueCommentClient.Delete method.
 func (client *APIIssueCommentClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, commentID string, ifMatch string, options *APIIssueCommentClientDeleteOptions) (APIIssueCommentClientDeleteResponse, error) {
 	var err error
+	const operationName = "APIIssueCommentClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, commentID, ifMatch, options)
 	if err != nil {
 		return APIIssueCommentClientDeleteResponse{}, err
@@ -210,6 +218,10 @@ func (client *APIIssueCommentClient) deleteCreateRequest(ctx context.Context, re
 //   - options - APIIssueCommentClientGetOptions contains the optional parameters for the APIIssueCommentClient.Get method.
 func (client *APIIssueCommentClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, commentID string, options *APIIssueCommentClientGetOptions) (APIIssueCommentClientGetResponse, error) {
 	var err error
+	const operationName = "APIIssueCommentClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, commentID, options)
 	if err != nil {
 		return APIIssueCommentClientGetResponse{}, err
@@ -288,6 +300,10 @@ func (client *APIIssueCommentClient) getHandleResponse(resp *http.Response) (API
 //     method.
 func (client *APIIssueCommentClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, issueID string, commentID string, options *APIIssueCommentClientGetEntityTagOptions) (APIIssueCommentClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "APIIssueCommentClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, commentID, options)
 	if err != nil {
 		return APIIssueCommentClientGetEntityTagResponse{}, err
@@ -344,11 +360,10 @@ func (client *APIIssueCommentClient) getEntityTagCreateRequest(ctx context.Conte
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *APIIssueCommentClient) getEntityTagHandleResponse(resp *http.Response) (APIIssueCommentClientGetEntityTagResponse, error) {
-	result := APIIssueCommentClientGetEntityTagResponse{}
+	result := APIIssueCommentClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -367,25 +382,20 @@ func (client *APIIssueCommentClient) NewListByServicePager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *APIIssueCommentClientListByServiceResponse) (APIIssueCommentClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "APIIssueCommentClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, issueID, options)
+			}, nil)
 			if err != nil {
 				return APIIssueCommentClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return APIIssueCommentClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return APIIssueCommentClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

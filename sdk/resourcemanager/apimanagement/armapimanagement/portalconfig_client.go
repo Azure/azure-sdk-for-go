@@ -32,7 +32,7 @@ type PortalConfigClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPortalConfigClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PortalConfigClient, error) {
-	cl, err := arm.NewClient(moduleName+".PortalConfigClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewPortalConfigClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *PortalConfigClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, portalConfigID string, ifMatch string, parameters PortalConfigContract, options *PortalConfigClientCreateOrUpdateOptions) (PortalConfigClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "PortalConfigClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, portalConfigID, ifMatch, parameters, options)
 	if err != nil {
 		return PortalConfigClientCreateOrUpdateResponse{}, err
@@ -126,6 +130,10 @@ func (client *PortalConfigClient) createOrUpdateHandleResponse(resp *http.Respon
 //   - options - PortalConfigClientGetOptions contains the optional parameters for the PortalConfigClient.Get method.
 func (client *PortalConfigClient) Get(ctx context.Context, resourceGroupName string, serviceName string, portalConfigID string, options *PortalConfigClientGetOptions) (PortalConfigClientGetResponse, error) {
 	var err error
+	const operationName = "PortalConfigClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, portalConfigID, options)
 	if err != nil {
 		return PortalConfigClientGetResponse{}, err
@@ -194,6 +202,10 @@ func (client *PortalConfigClient) getHandleResponse(resp *http.Response) (Portal
 //     method.
 func (client *PortalConfigClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, portalConfigID string, options *PortalConfigClientGetEntityTagOptions) (PortalConfigClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "PortalConfigClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, portalConfigID, options)
 	if err != nil {
 		return PortalConfigClientGetEntityTagResponse{}, err
@@ -242,11 +254,10 @@ func (client *PortalConfigClient) getEntityTagCreateRequest(ctx context.Context,
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *PortalConfigClient) getEntityTagHandleResponse(resp *http.Response) (PortalConfigClientGetEntityTagResponse, error) {
-	result := PortalConfigClientGetEntityTagResponse{}
+	result := PortalConfigClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -260,6 +271,10 @@ func (client *PortalConfigClient) getEntityTagHandleResponse(resp *http.Response
 //     method.
 func (client *PortalConfigClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, options *PortalConfigClientListByServiceOptions) (PortalConfigClientListByServiceResponse, error) {
 	var err error
+	const operationName = "PortalConfigClient.ListByService"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return PortalConfigClientListByServiceResponse{}, err
@@ -324,6 +339,10 @@ func (client *PortalConfigClient) listByServiceHandleResponse(resp *http.Respons
 //   - options - PortalConfigClientUpdateOptions contains the optional parameters for the PortalConfigClient.Update method.
 func (client *PortalConfigClient) Update(ctx context.Context, resourceGroupName string, serviceName string, portalConfigID string, ifMatch string, parameters PortalConfigContract, options *PortalConfigClientUpdateOptions) (PortalConfigClientUpdateResponse, error) {
 	var err error
+	const operationName = "PortalConfigClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, portalConfigID, ifMatch, parameters, options)
 	if err != nil {
 		return PortalConfigClientUpdateResponse{}, err

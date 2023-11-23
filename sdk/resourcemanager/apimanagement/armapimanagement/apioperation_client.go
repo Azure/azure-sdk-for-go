@@ -33,7 +33,7 @@ type APIOperationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPIOperationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIOperationClient, error) {
-	cl, err := arm.NewClient(moduleName+".APIOperationClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,10 @@ func NewAPIOperationClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *APIOperationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, parameters OperationContract, options *APIOperationClientCreateOrUpdateOptions) (APIOperationClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "APIOperationClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, parameters, options)
 	if err != nil {
 		return APIOperationClientCreateOrUpdateResponse{}, err
@@ -140,6 +144,10 @@ func (client *APIOperationClient) createOrUpdateHandleResponse(resp *http.Respon
 //   - options - APIOperationClientDeleteOptions contains the optional parameters for the APIOperationClient.Delete method.
 func (client *APIOperationClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, ifMatch string, options *APIOperationClientDeleteOptions) (APIOperationClientDeleteResponse, error) {
 	var err error
+	const operationName = "APIOperationClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, ifMatch, options)
 	if err != nil {
 		return APIOperationClientDeleteResponse{}, err
@@ -202,6 +210,10 @@ func (client *APIOperationClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - APIOperationClientGetOptions contains the optional parameters for the APIOperationClient.Get method.
 func (client *APIOperationClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationClientGetOptions) (APIOperationClientGetResponse, error) {
 	var err error
+	const operationName = "APIOperationClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, options)
 	if err != nil {
 		return APIOperationClientGetResponse{}, err
@@ -276,6 +288,10 @@ func (client *APIOperationClient) getHandleResponse(resp *http.Response) (APIOpe
 //     method.
 func (client *APIOperationClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationClientGetEntityTagOptions) (APIOperationClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "APIOperationClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, options)
 	if err != nil {
 		return APIOperationClientGetEntityTagResponse{}, err
@@ -328,11 +344,10 @@ func (client *APIOperationClient) getEntityTagCreateRequest(ctx context.Context,
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *APIOperationClient) getEntityTagHandleResponse(resp *http.Response) (APIOperationClientGetEntityTagResponse, error) {
-	result := APIOperationClientGetEntityTagResponse{}
+	result := APIOperationClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -351,25 +366,20 @@ func (client *APIOperationClient) NewListByAPIPager(resourceGroupName string, se
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *APIOperationClientListByAPIResponse) (APIOperationClientListByAPIResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "APIOperationClient.NewListByAPIPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			}, nil)
 			if err != nil {
 				return APIOperationClientListByAPIResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return APIOperationClientListByAPIResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return APIOperationClientListByAPIResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByAPIHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -439,6 +449,10 @@ func (client *APIOperationClient) listByAPIHandleResponse(resp *http.Response) (
 //   - options - APIOperationClientUpdateOptions contains the optional parameters for the APIOperationClient.Update method.
 func (client *APIOperationClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, ifMatch string, parameters OperationUpdateContract, options *APIOperationClientUpdateOptions) (APIOperationClientUpdateResponse, error) {
 	var err error
+	const operationName = "APIOperationClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, ifMatch, parameters, options)
 	if err != nil {
 		return APIOperationClientUpdateResponse{}, err

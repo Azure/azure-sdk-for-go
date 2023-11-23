@@ -32,7 +32,7 @@ type APIOperationPolicyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPIOperationPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIOperationPolicyClient, error) {
-	cl, err := arm.NewClient(moduleName+".APIOperationPolicyClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,10 @@ func NewAPIOperationPolicyClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *APIOperationPolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, policyID PolicyIDName, parameters PolicyContract, options *APIOperationPolicyClientCreateOrUpdateOptions) (APIOperationPolicyClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "APIOperationPolicyClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, policyID, parameters, options)
 	if err != nil {
 		return APIOperationPolicyClientCreateOrUpdateResponse{}, err
@@ -146,6 +150,10 @@ func (client *APIOperationPolicyClient) createOrUpdateHandleResponse(resp *http.
 //     method.
 func (client *APIOperationPolicyClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, policyID PolicyIDName, ifMatch string, options *APIOperationPolicyClientDeleteOptions) (APIOperationPolicyClientDeleteResponse, error) {
 	var err error
+	const operationName = "APIOperationPolicyClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, policyID, ifMatch, options)
 	if err != nil {
 		return APIOperationPolicyClientDeleteResponse{}, err
@@ -213,6 +221,10 @@ func (client *APIOperationPolicyClient) deleteCreateRequest(ctx context.Context,
 //   - options - APIOperationPolicyClientGetOptions contains the optional parameters for the APIOperationPolicyClient.Get method.
 func (client *APIOperationPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, policyID PolicyIDName, options *APIOperationPolicyClientGetOptions) (APIOperationPolicyClientGetResponse, error) {
 	var err error
+	const operationName = "APIOperationPolicyClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, policyID, options)
 	if err != nil {
 		return APIOperationPolicyClientGetResponse{}, err
@@ -295,6 +307,10 @@ func (client *APIOperationPolicyClient) getHandleResponse(resp *http.Response) (
 //     method.
 func (client *APIOperationPolicyClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, policyID PolicyIDName, options *APIOperationPolicyClientGetEntityTagOptions) (APIOperationPolicyClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "APIOperationPolicyClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, policyID, options)
 	if err != nil {
 		return APIOperationPolicyClientGetEntityTagResponse{}, err
@@ -351,11 +367,10 @@ func (client *APIOperationPolicyClient) getEntityTagCreateRequest(ctx context.Co
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *APIOperationPolicyClient) getEntityTagHandleResponse(resp *http.Response) (APIOperationPolicyClientGetEntityTagResponse, error) {
-	result := APIOperationPolicyClientGetEntityTagResponse{}
+	result := APIOperationPolicyClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -372,6 +387,10 @@ func (client *APIOperationPolicyClient) getEntityTagHandleResponse(resp *http.Re
 //     method.
 func (client *APIOperationPolicyClient) ListByOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationPolicyClientListByOperationOptions) (APIOperationPolicyClientListByOperationResponse, error) {
 	var err error
+	const operationName = "APIOperationPolicyClient.ListByOperation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, options)
 	if err != nil {
 		return APIOperationPolicyClientListByOperationResponse{}, err

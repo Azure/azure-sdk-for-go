@@ -33,7 +33,7 @@ type DeploymentOperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDeploymentOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeploymentOperationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".DeploymentOperationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -383,22 +383,15 @@ func (client *DeploymentOperationsClient) NewListPager(resourceGroupName string,
 		},
 		Fetcher: func(ctx context.Context, page *DeploymentOperationsClientListResponse) (DeploymentOperationsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeploymentOperationsClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, deploymentName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, deploymentName, options)
+			}, nil)
 			if err != nil {
 				return DeploymentOperationsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeploymentOperationsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DeploymentOperationsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -458,22 +451,15 @@ func (client *DeploymentOperationsClient) NewListAtManagementGroupScopePager(gro
 		},
 		Fetcher: func(ctx context.Context, page *DeploymentOperationsClientListAtManagementGroupScopeResponse) (DeploymentOperationsClientListAtManagementGroupScopeResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeploymentOperationsClient.NewListAtManagementGroupScopePager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAtManagementGroupScopeCreateRequest(ctx, groupID, deploymentName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAtManagementGroupScopeCreateRequest(ctx, groupID, deploymentName, options)
+			}, nil)
 			if err != nil {
 				return DeploymentOperationsClientListAtManagementGroupScopeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeploymentOperationsClientListAtManagementGroupScopeResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DeploymentOperationsClientListAtManagementGroupScopeResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAtManagementGroupScopeHandleResponse(resp)
 		},
@@ -529,22 +515,15 @@ func (client *DeploymentOperationsClient) NewListAtScopePager(scope string, depl
 		},
 		Fetcher: func(ctx context.Context, page *DeploymentOperationsClientListAtScopeResponse) (DeploymentOperationsClientListAtScopeResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeploymentOperationsClient.NewListAtScopePager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAtScopeCreateRequest(ctx, scope, deploymentName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAtScopeCreateRequest(ctx, scope, deploymentName, options)
+			}, nil)
 			if err != nil {
 				return DeploymentOperationsClientListAtScopeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeploymentOperationsClientListAtScopeResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DeploymentOperationsClientListAtScopeResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAtScopeHandleResponse(resp)
 		},
@@ -596,22 +575,15 @@ func (client *DeploymentOperationsClient) NewListAtSubscriptionScopePager(deploy
 		},
 		Fetcher: func(ctx context.Context, page *DeploymentOperationsClientListAtSubscriptionScopeResponse) (DeploymentOperationsClientListAtSubscriptionScopeResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeploymentOperationsClient.NewListAtSubscriptionScopePager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAtSubscriptionScopeCreateRequest(ctx, deploymentName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAtSubscriptionScopeCreateRequest(ctx, deploymentName, options)
+			}, nil)
 			if err != nil {
 				return DeploymentOperationsClientListAtSubscriptionScopeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeploymentOperationsClientListAtSubscriptionScopeResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DeploymentOperationsClientListAtSubscriptionScopeResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAtSubscriptionScopeHandleResponse(resp)
 		},
@@ -666,22 +638,15 @@ func (client *DeploymentOperationsClient) NewListAtTenantScopePager(deploymentNa
 		},
 		Fetcher: func(ctx context.Context, page *DeploymentOperationsClientListAtTenantScopeResponse) (DeploymentOperationsClientListAtTenantScopeResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeploymentOperationsClient.NewListAtTenantScopePager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAtTenantScopeCreateRequest(ctx, deploymentName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAtTenantScopeCreateRequest(ctx, deploymentName, options)
+			}, nil)
 			if err != nil {
 				return DeploymentOperationsClientListAtTenantScopeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeploymentOperationsClientListAtTenantScopeResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DeploymentOperationsClientListAtTenantScopeResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAtTenantScopeHandleResponse(resp)
 		},

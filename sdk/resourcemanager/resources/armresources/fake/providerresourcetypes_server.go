@@ -82,7 +82,7 @@ func (p *ProviderResourceTypesServerTransport) dispatchList(req *http.Request) (
 		return nil, err
 	}
 	expandParam := getOptional(expandUnescaped)
-	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func (p *ProviderResourceTypesServerTransport) dispatchList(req *http.Request) (
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := p.srv.List(req.Context(), resourceProviderNamespaceUnescaped, options)
+	respr, errRespr := p.srv.List(req.Context(), resourceProviderNamespaceParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

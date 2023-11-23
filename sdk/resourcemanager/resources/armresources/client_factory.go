@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,41 +37,49 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewClient creates a new instance of Client.
 func (c *ClientFactory) NewClient() *Client {
 	subClient, _ := NewClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewDeploymentOperationsClient creates a new instance of DeploymentOperationsClient.
 func (c *ClientFactory) NewDeploymentOperationsClient() *DeploymentOperationsClient {
 	subClient, _ := NewDeploymentOperationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewDeploymentsClient creates a new instance of DeploymentsClient.
 func (c *ClientFactory) NewDeploymentsClient() *DeploymentsClient {
 	subClient, _ := NewDeploymentsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewProviderResourceTypesClient creates a new instance of ProviderResourceTypesClient.
 func (c *ClientFactory) NewProviderResourceTypesClient() *ProviderResourceTypesClient {
 	subClient, _ := NewProviderResourceTypesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewProvidersClient creates a new instance of ProvidersClient.
 func (c *ClientFactory) NewProvidersClient() *ProvidersClient {
 	subClient, _ := NewProvidersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewResourceGroupsClient creates a new instance of ResourceGroupsClient.
 func (c *ClientFactory) NewResourceGroupsClient() *ResourceGroupsClient {
 	subClient, _ := NewResourceGroupsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewTagsClient creates a new instance of TagsClient.
 func (c *ClientFactory) NewTagsClient() *TagsClient {
 	subClient, _ := NewTagsClient(c.subscriptionID, c.credential, c.options)
 	return subClient

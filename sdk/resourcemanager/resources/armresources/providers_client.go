@@ -32,7 +32,7 @@ type ProvidersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProvidersClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProvidersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -175,22 +175,15 @@ func (client *ProvidersClient) NewListPager(options *ProvidersClientListOptions)
 		},
 		Fetcher: func(ctx context.Context, page *ProvidersClientListResponse) (ProvidersClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProvidersClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ProvidersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProvidersClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ProvidersClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -240,22 +233,15 @@ func (client *ProvidersClient) NewListAtTenantScopePager(options *ProvidersClien
 		},
 		Fetcher: func(ctx context.Context, page *ProvidersClientListAtTenantScopeResponse) (ProvidersClientListAtTenantScopeResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProvidersClient.NewListAtTenantScopePager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAtTenantScopeCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAtTenantScopeCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ProvidersClientListAtTenantScopeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProvidersClientListAtTenantScopeResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ProvidersClientListAtTenantScopeResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAtTenantScopeHandleResponse(resp)
 		},

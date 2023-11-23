@@ -122,11 +122,11 @@ func (r *ResourceGroupsServerTransport) dispatchCheckExistence(req *http.Request
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.CheckExistence(req.Context(), resourceGroupNameUnescaped, nil)
+	respr, errRespr := r.srv.CheckExistence(req.Context(), resourceGroupNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -155,11 +155,11 @@ func (r *ResourceGroupsServerTransport) dispatchCreateOrUpdate(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameUnescaped, body, nil)
+	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -187,7 +187,7 @@ func (r *ResourceGroupsServerTransport) dispatchBeginDelete(req *http.Request) (
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
@@ -202,7 +202,7 @@ func (r *ResourceGroupsServerTransport) dispatchBeginDelete(req *http.Request) (
 				ForceDeletionTypes: forceDeletionTypesParam,
 			}
 		}
-		respr, errRespr := r.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, options)
+		respr, errRespr := r.srv.BeginDelete(req.Context(), resourceGroupNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -242,11 +242,11 @@ func (r *ResourceGroupsServerTransport) dispatchBeginExportTemplate(req *http.Re
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := r.srv.BeginExportTemplate(req.Context(), resourceGroupNameUnescaped, body, nil)
+		respr, errRespr := r.srv.BeginExportTemplate(req.Context(), resourceGroupNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -280,11 +280,11 @@ func (r *ResourceGroupsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameUnescaped, nil)
+	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -373,11 +373,11 @@ func (r *ResourceGroupsServerTransport) dispatchUpdate(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.Update(req.Context(), resourceGroupNameUnescaped, body, nil)
+	respr, errRespr := r.srv.Update(req.Context(), resourceGroupNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

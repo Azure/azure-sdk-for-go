@@ -32,7 +32,7 @@ type ExemptionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewExemptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExemptionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ExemptionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,6 +61,10 @@ func NewExemptionsClient(subscriptionID string, credential azcore.TokenCredentia
 //     method.
 func (client *ExemptionsClient) CreateOrUpdate(ctx context.Context, scope string, policyExemptionName string, parameters Exemption, options *ExemptionsClientCreateOrUpdateOptions) (ExemptionsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ExemptionsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, policyExemptionName, parameters, options)
 	if err != nil {
 		return ExemptionsClientCreateOrUpdateResponse{}, err
@@ -123,6 +127,10 @@ func (client *ExemptionsClient) createOrUpdateHandleResponse(resp *http.Response
 //   - options - ExemptionsClientDeleteOptions contains the optional parameters for the ExemptionsClient.Delete method.
 func (client *ExemptionsClient) Delete(ctx context.Context, scope string, policyExemptionName string, options *ExemptionsClientDeleteOptions) (ExemptionsClientDeleteResponse, error) {
 	var err error
+	const operationName = "ExemptionsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, scope, policyExemptionName, options)
 	if err != nil {
 		return ExemptionsClientDeleteResponse{}, err
@@ -170,6 +178,10 @@ func (client *ExemptionsClient) deleteCreateRequest(ctx context.Context, scope s
 //   - options - ExemptionsClientGetOptions contains the optional parameters for the ExemptionsClient.Get method.
 func (client *ExemptionsClient) Get(ctx context.Context, scope string, policyExemptionName string, options *ExemptionsClientGetOptions) (ExemptionsClientGetResponse, error) {
 	var err error
+	const operationName = "ExemptionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, scope, policyExemptionName, options)
 	if err != nil {
 		return ExemptionsClientGetResponse{}, err
@@ -229,25 +241,20 @@ func (client *ExemptionsClient) NewListPager(options *ExemptionsClientListOption
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExemptionsClientListResponse) (ExemptionsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExemptionsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ExemptionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ExemptionsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ExemptionsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -299,25 +306,20 @@ func (client *ExemptionsClient) NewListForManagementGroupPager(managementGroupID
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExemptionsClientListForManagementGroupResponse) (ExemptionsClientListForManagementGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listForManagementGroupCreateRequest(ctx, managementGroupID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExemptionsClient.NewListForManagementGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listForManagementGroupCreateRequest(ctx, managementGroupID, options)
+			}, nil)
 			if err != nil {
 				return ExemptionsClientListForManagementGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ExemptionsClientListForManagementGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ExemptionsClientListForManagementGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listForManagementGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -385,25 +387,20 @@ func (client *ExemptionsClient) NewListForResourcePager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExemptionsClientListForResourceResponse) (ExemptionsClientListForResourceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExemptionsClient.NewListForResourcePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, options)
+			}, nil)
 			if err != nil {
 				return ExemptionsClientListForResourceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ExemptionsClientListForResourceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ExemptionsClientListForResourceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listForResourceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -470,25 +467,20 @@ func (client *ExemptionsClient) NewListForResourceGroupPager(resourceGroupName s
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExemptionsClientListForResourceGroupResponse) (ExemptionsClientListForResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExemptionsClient.NewListForResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ExemptionsClientListForResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ExemptionsClientListForResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ExemptionsClientListForResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listForResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -542,6 +534,10 @@ func (client *ExemptionsClient) listForResourceGroupHandleResponse(resp *http.Re
 //   - options - ExemptionsClientUpdateOptions contains the optional parameters for the ExemptionsClient.Update method.
 func (client *ExemptionsClient) Update(ctx context.Context, scope string, policyExemptionName string, parameters ExemptionUpdate, options *ExemptionsClientUpdateOptions) (ExemptionsClientUpdateResponse, error) {
 	var err error
+	const operationName = "ExemptionsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, scope, policyExemptionName, parameters, options)
 	if err != nil {
 		return ExemptionsClientUpdateResponse{}, err

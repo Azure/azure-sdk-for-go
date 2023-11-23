@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,36 +37,43 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAssignmentsClient creates a new instance of AssignmentsClient.
 func (c *ClientFactory) NewAssignmentsClient() *AssignmentsClient {
 	subClient, _ := NewAssignmentsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewDataPolicyManifestsClient creates a new instance of DataPolicyManifestsClient.
 func (c *ClientFactory) NewDataPolicyManifestsClient() *DataPolicyManifestsClient {
 	subClient, _ := NewDataPolicyManifestsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewDefinitionsClient creates a new instance of DefinitionsClient.
 func (c *ClientFactory) NewDefinitionsClient() *DefinitionsClient {
 	subClient, _ := NewDefinitionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewExemptionsClient creates a new instance of ExemptionsClient.
 func (c *ClientFactory) NewExemptionsClient() *ExemptionsClient {
 	subClient, _ := NewExemptionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewSetDefinitionsClient creates a new instance of SetDefinitionsClient.
 func (c *ClientFactory) NewSetDefinitionsClient() *SetDefinitionsClient {
 	subClient, _ := NewSetDefinitionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewVariableValuesClient creates a new instance of VariableValuesClient.
 func (c *ClientFactory) NewVariableValuesClient() *VariableValuesClient {
 	subClient, _ := NewVariableValuesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewVariablesClient creates a new instance of VariablesClient.
 func (c *ClientFactory) NewVariablesClient() *VariablesClient {
 	subClient, _ := NewVariablesClient(c.subscriptionID, c.credential, c.options)
 	return subClient

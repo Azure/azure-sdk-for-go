@@ -440,7 +440,7 @@ func NonExportedFilter(changelog *model.Changelog) {
 				}
 			}
 
-			if !breakingChanges.Removed.IsEmpty() {
+			if breakingChanges.Removed != nil && !breakingChanges.Removed.IsEmpty() {
 				nonExportOperation(breakingChanges.Removed)
 			}
 

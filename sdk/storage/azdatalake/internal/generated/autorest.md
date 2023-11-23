@@ -109,6 +109,27 @@ directive:
     ];
 ```
 
+### Add Missing Imports to zz_service_client.go
+
+``` yaml
+directive:
+- from: zz_service_client.go
+  where: $
+  transform: >-
+      return $.
+        replace(/"strconv"/, `"strconv"\n\t"strings"`);
+```
+### Add Missing Imports to zz_models_serde.go 
+
+``` yaml
+directive:
+- from: zz_models_serde.go
+  where: $
+  transform: >-
+      return $.
+        replace(/"reflect"/, `"reflect"\n\t"strconv"`);
+```
+
 ### Clean up some const type names so they don't stutter
 
 ``` yaml

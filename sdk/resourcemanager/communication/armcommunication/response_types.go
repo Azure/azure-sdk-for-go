@@ -175,3 +175,49 @@ type ServicesClientUpdateResponse struct {
 	// A class representing a CommunicationService resource.
 	ServiceResource
 }
+
+// SuppressionListAddressesClientCreateOrUpdateResponse contains the response from method SuppressionListAddressesClient.CreateOrUpdate.
+type SuppressionListAddressesClientCreateOrUpdateResponse struct {
+	// A object that represents a SuppressionList record.
+	SuppressionListAddressResource
+}
+
+// SuppressionListAddressesClientDeleteResponse contains the response from method SuppressionListAddressesClient.Delete.
+type SuppressionListAddressesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SuppressionListAddressesClientGetResponse contains the response from method SuppressionListAddressesClient.Get.
+type SuppressionListAddressesClientGetResponse struct {
+	// A object that represents a SuppressionList record.
+	SuppressionListAddressResource
+}
+
+// SuppressionListAddressesClientListResponse contains the response from method SuppressionListAddressesClient.NewListPager.
+type SuppressionListAddressesClientListResponse struct {
+	// Collection of addresses in a suppression list. Response will include a nextLink if response contains more pages.
+	SuppressionListAddressResourceCollection
+}
+
+// SuppressionListsClientCreateOrUpdateResponse contains the response from method SuppressionListsClient.CreateOrUpdate.
+type SuppressionListsClientCreateOrUpdateResponse struct {
+	// A class representing a SuppressionList resource.
+	SuppressionListResource
+}
+
+// SuppressionListsClientDeleteResponse contains the response from method SuppressionListsClient.Delete.
+type SuppressionListsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SuppressionListsClientGetResponse contains the response from method SuppressionListsClient.Get.
+type SuppressionListsClientGetResponse struct {
+	// A class representing a SuppressionList resource.
+	SuppressionListResource
+}
+
+// SuppressionListsClientListByDomainResponse contains the response from method SuppressionListsClient.NewListByDomainPager.
+type SuppressionListsClientListByDomainResponse struct {
+	// A class representing a Domains SuppressionListResource collection.
+	SuppressionListResourceCollection
+}

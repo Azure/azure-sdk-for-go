@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/06042d4ffed6a1ea8319c39cd07ea21efe5d49f7/specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/communicationServices/operationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/operationsList.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

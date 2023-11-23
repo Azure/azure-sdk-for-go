@@ -125,22 +125,6 @@ func PossibleForceValues() []Force {
 	}
 }
 
-// IdentityType - The type of managed service identity.
-type IdentityType string
-
-const (
-	IdentityTypeNone           IdentityType = "None"
-	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
-)
-
-// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
-func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{
-		IdentityTypeNone,
-		IdentityTypeSystemAssigned,
-	}
-}
-
 // InventoryType - The inventory type.
 type InventoryType string
 

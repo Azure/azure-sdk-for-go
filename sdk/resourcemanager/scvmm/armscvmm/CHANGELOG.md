@@ -3,13 +3,11 @@
 ## 1.0.0 (2023-11-24)
 ### Breaking Changes
 
-- Support for test fakes and OpenTelemetry trace spans.
 - Type of `AvailabilitySetProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `AvailabilitySetsClientBeginDeleteOptions.Force` has been changed from `*bool` to `*Force`
 - Type of `CloudInventoryItem.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `CloudProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `CloudsClientBeginDeleteOptions.Force` has been changed from `*bool` to `*Force`
-- Type of `ErrorResponse.Error` has been changed from `*ErrorDefinition` to `*ErrorDetail`
 - Type of `HardwareProfile.IsHighlyAvailable` has been changed from `*string` to `*IsHighlyAvailable`
 - Type of `InventoryItemProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `NetworkProfile.NetworkInterfaces` has been changed from `[]*NetworkInterfaces` to `[]*NetworkInterface`
@@ -41,9 +39,6 @@
 - Function `*VirtualMachinesClient.BeginStart` has been removed
 - Function `*VirtualMachinesClient.BeginStop` has been removed
 - Function `*VirtualMachinesClient.BeginUpdate` has been removed
-- Function `timeRFC3339.MarshalText` has been removed
-- Function `*timeRFC3339.Parse` has been removed
-- Function `*timeRFC3339.UnmarshalText` has been removed
 - Struct `ErrorDefinition` has been removed
 - Struct `NetworkInterfaces` has been removed
 - Struct `NetworkInterfacesUpdate` has been removed
@@ -61,10 +56,10 @@
 
 ### Features Added
 
+- Support for test fakes and OpenTelemetry trace spans.
 - New enum type `ActionType` with values `ActionTypeInternal`
 - New enum type `DeleteFromHost` with values `DeleteFromHostFalse`, `DeleteFromHostTrue`
 - New enum type `Force` with values `ForceFalse`, `ForceTrue`
-- New enum type `IdentityType` with values `IdentityTypeNone`, `IdentityTypeSystemAssigned`
 - New enum type `IsHighlyAvailable` with values `IsHighlyAvailableFalse`, `IsHighlyAvailableTrue`
 - New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
 - New enum type `ProvisioningAction` with values `ProvisioningActionInstall`, `ProvisioningActionRepair`, `ProvisioningActionUninstall`
@@ -93,17 +88,11 @@
 - New function `*VirtualMachineInstancesClient.BeginStart(context.Context, string, *VirtualMachineInstancesClientBeginStartOptions) (*runtime.Poller[VirtualMachineInstancesClientStartResponse], error)`
 - New function `*VirtualMachineInstancesClient.BeginStop(context.Context, string, *VirtualMachineInstancesClientBeginStopOptions) (*runtime.Poller[VirtualMachineInstancesClientStopResponse], error)`
 - New function `*VirtualMachineInstancesClient.BeginUpdate(context.Context, string, *VirtualMachineInstancesClientBeginUpdateOptions) (*runtime.Poller[VirtualMachineInstancesClientUpdateResponse], error)`
-- New function `dateTimeRFC3339.MarshalText() ([]byte, error)`
-- New function `*dateTimeRFC3339.Parse(string) error`
-- New function `*dateTimeRFC3339.UnmarshalText([]byte) error`
-- New struct `ErrorAdditionalInfo`
-- New struct `ErrorDetail`
 - New struct `GuestAgent`
 - New struct `GuestAgentList`
 - New struct `GuestAgentProperties`
 - New struct `GuestCredential`
 - New struct `HTTPProxyConfiguration`
-- New struct `Identity`
 - New struct `InfrastructureProfile`
 - New struct `InfrastructureProfileUpdate`
 - New struct `NetworkInterface`
@@ -112,7 +101,6 @@
 - New struct `OperationDisplay`
 - New struct `OperationListResult`
 - New struct `OsProfileForVMInstance`
-- New struct `TrackedResource`
 - New struct `VMInstanceHybridIdentityMetadata`
 - New struct `VMInstanceHybridIdentityMetadataList`
 - New struct `VMInstanceHybridIdentityMetadataProperties`
@@ -123,8 +111,6 @@
 - New struct `VirtualMachineInstanceUpdate`
 - New struct `VirtualMachineInstanceUpdateProperties`
 - New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
-- New field `SystemData` in struct `ProxyResource`
-- New field `SystemData` in struct `Resource`
 - New field `BiosGUID`, `ManagedMachineResourceID`, `OSVersion` in struct `VirtualMachineInventoryItem`
 
 

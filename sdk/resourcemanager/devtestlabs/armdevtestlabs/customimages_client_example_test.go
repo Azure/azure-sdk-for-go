@@ -54,7 +54,7 @@ func ExampleCustomImagesClient_NewListPager() {
 		// 			Properties: &armdevtestlabs.CustomImageProperties{
 		// 				Description: to.Ptr("My Custom Image"),
 		// 				Author: to.Ptr("{authorName}"),
-		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-10T09:59:28.7985144+00:00"); return t}()),
+		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-10T09:59:28.798Z"); return t}()),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				UniqueIdentifier: to.Ptr("{uniqueIdentifier}"),
 		// 				VM: &armdevtestlabs.CustomImagePropertiesFromVM{
@@ -98,7 +98,7 @@ func ExampleCustomImagesClient_Get() {
 	// 	Properties: &armdevtestlabs.CustomImageProperties{
 	// 		Description: to.Ptr("My Custom Image"),
 	// 		Author: to.Ptr("{authorName}"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-10T09:59:28.7985144+00:00"); return t}()),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-10T09:59:28.798Z"); return t}()),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		UniqueIdentifier: to.Ptr("{uniqueIdentifier}"),
 	// 		VM: &armdevtestlabs.CustomImagePropertiesFromVM{
@@ -157,7 +157,7 @@ func ExampleCustomImagesClient_BeginCreateOrUpdate() {
 	// 	Properties: &armdevtestlabs.CustomImageProperties{
 	// 		Description: to.Ptr("My Custom Image"),
 	// 		Author: to.Ptr("{authorName}"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-10T09:59:28.7985144+00:00"); return t}()),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-10T09:59:28.798Z"); return t}()),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		UniqueIdentifier: to.Ptr("{uniqueIdentifier}"),
 	// 		VM: &armdevtestlabs.CustomImagePropertiesFromVM{
@@ -224,7 +224,7 @@ func ExampleCustomImagesClient_Update() {
 	// 	Properties: &armdevtestlabs.CustomImageProperties{
 	// 		Description: to.Ptr("My Custom Image"),
 	// 		Author: to.Ptr("{authorName}"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-10T09:59:28.7985144+00:00"); return t}()),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-10T09:59:28.798Z"); return t}()),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		UniqueIdentifier: to.Ptr("{uniqueIdentifier}"),
 	// 		VM: &armdevtestlabs.CustomImagePropertiesFromVM{

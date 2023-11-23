@@ -33,7 +33,7 @@ type SessionHostsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSessionHostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SessionHostsClient, error) {
-	cl, err := arm.NewClient(moduleName+".SessionHostsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewSessionHostsClient(subscriptionID string, credential azcore.TokenCredent
 //   - options - SessionHostsClientDeleteOptions contains the optional parameters for the SessionHostsClient.Delete method.
 func (client *SessionHostsClient) Delete(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, options *SessionHostsClientDeleteOptions) (SessionHostsClientDeleteResponse, error) {
 	var err error
+	const operationName = "SessionHostsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, options)
 	if err != nil {
 		return SessionHostsClientDeleteResponse{}, err
@@ -112,6 +116,10 @@ func (client *SessionHostsClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - SessionHostsClientGetOptions contains the optional parameters for the SessionHostsClient.Get method.
 func (client *SessionHostsClient) Get(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, options *SessionHostsClientGetOptions) (SessionHostsClientGetResponse, error) {
 	var err error
+	const operationName = "SessionHostsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, options)
 	if err != nil {
 		return SessionHostsClientGetResponse{}, err
@@ -179,25 +187,20 @@ func (client *SessionHostsClient) NewListPager(resourceGroupName string, hostPoo
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SessionHostsClientListResponse) (SessionHostsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, hostPoolName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SessionHostsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, hostPoolName, options)
+			}, nil)
 			if err != nil {
 				return SessionHostsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SessionHostsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SessionHostsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -255,6 +258,10 @@ func (client *SessionHostsClient) listHandleResponse(resp *http.Response) (Sessi
 //   - options - SessionHostsClientUpdateOptions contains the optional parameters for the SessionHostsClient.Update method.
 func (client *SessionHostsClient) Update(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, options *SessionHostsClientUpdateOptions) (SessionHostsClientUpdateResponse, error) {
 	var err error
+	const operationName = "SessionHostsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, options)
 	if err != nil {
 		return SessionHostsClientUpdateResponse{}, err

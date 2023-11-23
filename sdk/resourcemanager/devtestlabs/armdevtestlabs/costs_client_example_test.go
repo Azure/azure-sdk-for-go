@@ -40,11 +40,11 @@ func ExampleCostsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.LabCost = armdevtestlabs.LabCost{
 	// 	Properties: &armdevtestlabs.LabCostProperties{
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-23T22:43:54.7253204+00:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-23T22:43:54.725Z"); return t}()),
 	// 		CurrencyCode: to.Ptr("USD"),
-	// 		EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T23:59:59Z"); return t}()),
+	// 		EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T23:59:59.000Z"); return t}()),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00Z"); return t}()),
+	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00.000Z"); return t}()),
 	// 		TargetCost: &armdevtestlabs.TargetCostProperties{
 	// 			CostThresholds: []*armdevtestlabs.CostThresholdProperties{
 	// 				{
@@ -92,8 +92,8 @@ func ExampleCostsClient_Get() {
 	// 					SendNotificationWhenExceeded: to.Ptr(armdevtestlabs.CostThresholdStatusDisabled),
 	// 					ThresholdID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 			}},
-	// 			CycleEndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T23:59:59+00:00"); return t}()),
-	// 			CycleStartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00+00:00"); return t}()),
+	// 			CycleEndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T23:59:59.000Z"); return t}()),
+	// 			CycleStartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00.000Z"); return t}()),
 	// 			CycleType: to.Ptr(armdevtestlabs.ReportingCycleTypeCalendarMonth),
 	// 			Status: to.Ptr(armdevtestlabs.TargetCostStatusEnabled),
 	// 			Target: to.Ptr[int32](100),
@@ -117,8 +117,8 @@ func ExampleCostsClient_CreateOrUpdate() {
 	res, err := clientFactory.NewCostsClient().CreateOrUpdate(ctx, "resourceGroupName", "{labName}", "targetCost", armdevtestlabs.LabCost{
 		Properties: &armdevtestlabs.LabCostProperties{
 			CurrencyCode:  to.Ptr("USD"),
-			EndDateTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T23:59:59Z"); return t }()),
-			StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00Z"); return t }()),
+			EndDateTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T23:59:59.000Z"); return t }()),
+			StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00.000Z"); return t }()),
 			TargetCost: &armdevtestlabs.TargetCostProperties{
 				CostThresholds: []*armdevtestlabs.CostThresholdProperties{
 					{
@@ -177,11 +177,11 @@ func ExampleCostsClient_CreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.LabCost = armdevtestlabs.LabCost{
 	// 	Properties: &armdevtestlabs.LabCostProperties{
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-23T22:43:54.7253204+00:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-23T22:43:54.725Z"); return t}()),
 	// 		CurrencyCode: to.Ptr("USD"),
-	// 		EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T23:59:59Z"); return t}()),
+	// 		EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T23:59:59.000Z"); return t}()),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00Z"); return t}()),
+	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00.000Z"); return t}()),
 	// 		TargetCost: &armdevtestlabs.TargetCostProperties{
 	// 			CostThresholds: []*armdevtestlabs.CostThresholdProperties{
 	// 				{
@@ -229,8 +229,8 @@ func ExampleCostsClient_CreateOrUpdate() {
 	// 					SendNotificationWhenExceeded: to.Ptr(armdevtestlabs.CostThresholdStatusDisabled),
 	// 					ThresholdID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 			}},
-	// 			CycleEndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T23:59:59+00:00"); return t}()),
-	// 			CycleStartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00+00:00"); return t}()),
+	// 			CycleEndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T23:59:59.000Z"); return t}()),
+	// 			CycleStartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00.000Z"); return t}()),
 	// 			CycleType: to.Ptr(armdevtestlabs.ReportingCycleTypeCalendarMonth),
 	// 			Status: to.Ptr(armdevtestlabs.TargetCostStatusEnabled),
 	// 			Target: to.Ptr[int32](100),

@@ -55,7 +55,7 @@ func ExampleVirtualMachineSchedulesClient_NewListPager() {
 		// 				"tagName1": to.Ptr("tagValue1"),
 		// 			},
 		// 			Properties: &armdevtestlabs.ScheduleProperties{
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T18:40:48.1739018-07:00"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T01:40:48.173Z"); return t}()),
 		// 				DailyRecurrence: &armdevtestlabs.DayDetails{
 		// 					Time: to.Ptr("1900"),
 		// 				},
@@ -114,7 +114,7 @@ func ExampleVirtualMachineSchedulesClient_Get() {
 	// 		"tagName1": to.Ptr("tagValue1"),
 	// 	},
 	// 	Properties: &armdevtestlabs.ScheduleProperties{
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T18:40:48.1739018-07:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T01:40:48.173Z"); return t}()),
 	// 		DailyRecurrence: &armdevtestlabs.DayDetails{
 	// 			Time: to.Ptr("1900"),
 	// 		},
@@ -202,7 +202,7 @@ func ExampleVirtualMachineSchedulesClient_CreateOrUpdate() {
 	// 		"tagName1": to.Ptr("tagValue1"),
 	// 	},
 	// 	Properties: &armdevtestlabs.ScheduleProperties{
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T18:40:48.1739018-07:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T01:40:48.173Z"); return t}()),
 	// 		DailyRecurrence: &armdevtestlabs.DayDetails{
 	// 			Time: to.Ptr("1900"),
 	// 		},
@@ -280,7 +280,7 @@ func ExampleVirtualMachineSchedulesClient_Update() {
 	// 		"tagName1": to.Ptr("tagValue1"),
 	// 	},
 	// 	Properties: &armdevtestlabs.ScheduleProperties{
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T18:40:48.1739018-07:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T01:40:48.173Z"); return t}()),
 	// 		DailyRecurrence: &armdevtestlabs.DayDetails{
 	// 			Time: to.Ptr("1900"),
 	// 		},

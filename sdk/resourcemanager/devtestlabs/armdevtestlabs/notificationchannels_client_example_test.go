@@ -56,7 +56,7 @@ func ExampleNotificationChannelsClient_NewListPager() {
 		// 			},
 		// 			Properties: &armdevtestlabs.NotificationChannelProperties{
 		// 				Description: to.Ptr("Integration configured for auto-shutdown"),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-05T02:12:10.6566371+00:00"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-05T02:12:10.656Z"); return t}()),
 		// 				EmailRecipient: to.Ptr("{email}"),
 		// 				Events: []*armdevtestlabs.Event{
 		// 					{
@@ -78,7 +78,7 @@ func ExampleNotificationChannelsClient_NewListPager() {
 		// 			},
 		// 			Properties: &armdevtestlabs.NotificationChannelProperties{
 		// 				Description: to.Ptr("Integration configured for cost"),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-05T02:14:05.2392034+00:00"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-05T02:14:05.239Z"); return t}()),
 		// 				Events: []*armdevtestlabs.Event{
 		// 					{
 		// 						EventName: to.Ptr(armdevtestlabs.NotificationChannelEventTypeCost),
@@ -121,7 +121,7 @@ func ExampleNotificationChannelsClient_Get() {
 	// 	},
 	// 	Properties: &armdevtestlabs.NotificationChannelProperties{
 	// 		Description: to.Ptr("Integration configured for auto-shutdown"),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-05T02:14:05.2392034+00:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-05T02:14:05.239Z"); return t}()),
 	// 		EmailRecipient: to.Ptr("{email}"),
 	// 		Events: []*armdevtestlabs.Event{
 	// 			{
@@ -174,7 +174,7 @@ func ExampleNotificationChannelsClient_CreateOrUpdate() {
 	// 	},
 	// 	Properties: &armdevtestlabs.NotificationChannelProperties{
 	// 		Description: to.Ptr("Integration configured for auto-shutdown"),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-05T02:14:05.2392034+00:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-05T02:14:05.239Z"); return t}()),
 	// 		EmailRecipient: to.Ptr("{email}"),
 	// 		Events: []*armdevtestlabs.Event{
 	// 			{
@@ -233,7 +233,7 @@ func ExampleNotificationChannelsClient_Update() {
 	// 	},
 	// 	Properties: &armdevtestlabs.NotificationChannelProperties{
 	// 		Description: to.Ptr("Integration configured for auto-shutdown"),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-05T02:14:05.2392034+00:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-05T02:14:05.239Z"); return t}()),
 	// 		EmailRecipient: to.Ptr("{email}"),
 	// 		Events: []*armdevtestlabs.Event{
 	// 			{

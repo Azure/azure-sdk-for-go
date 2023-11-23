@@ -32,7 +32,7 @@ type RuleSetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRuleSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RuleSetsClient, error) {
-	cl, err := arm.NewClient(moduleName+".RuleSetsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewRuleSetsClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - RuleSetsClientCreateOptions contains the optional parameters for the RuleSetsClient.Create method.
 func (client *RuleSetsClient) Create(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientCreateOptions) (RuleSetsClientCreateResponse, error) {
 	var err error
+	const operationName = "RuleSetsClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, options)
 	if err != nil {
 		return RuleSetsClientCreateResponse{}, err
@@ -127,10 +131,13 @@ func (client *RuleSetsClient) BeginDelete(ctx context.Context, resourceGroupName
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RuleSetsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[RuleSetsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RuleSetsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -141,6 +148,10 @@ func (client *RuleSetsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-05-01
 func (client *RuleSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "RuleSetsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, options)
 	if err != nil {
 		return nil, err
@@ -198,6 +209,10 @@ func (client *RuleSetsClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - RuleSetsClientGetOptions contains the optional parameters for the RuleSetsClient.Get method.
 func (client *RuleSetsClient) Get(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientGetOptions) (RuleSetsClientGetResponse, error) {
 	var err error
+	const operationName = "RuleSetsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, options)
 	if err != nil {
 		return RuleSetsClientGetResponse{}, err
@@ -267,25 +282,20 @@ func (client *RuleSetsClient) NewListByProfilePager(resourceGroupName string, pr
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RuleSetsClientListByProfileResponse) (RuleSetsClientListByProfileResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RuleSetsClient.NewListByProfilePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
+			}, nil)
 			if err != nil {
 				return RuleSetsClientListByProfileResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return RuleSetsClientListByProfileResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return RuleSetsClientListByProfileResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByProfileHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -339,25 +349,20 @@ func (client *RuleSetsClient) NewListResourceUsagePager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RuleSetsClientListResourceUsageResponse) (RuleSetsClientListResourceUsageResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RuleSetsClient.NewListResourceUsagePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, options)
+			}, nil)
 			if err != nil {
 				return RuleSetsClientListResourceUsageResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return RuleSetsClientListResourceUsageResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return RuleSetsClientListResourceUsageResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listResourceUsageHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -32,7 +32,7 @@ type ProfilesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProfilesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProfilesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +59,13 @@ func (client *ProfilesClient) BeginCanMigrate(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientCanMigrateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ProfilesClientCanMigrateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientCanMigrateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -72,6 +75,10 @@ func (client *ProfilesClient) BeginCanMigrate(ctx context.Context, resourceGroup
 // Generated from API version 2023-05-01
 func (client *ProfilesClient) canMigrate(ctx context.Context, resourceGroupName string, canMigrateParameters CanMigrateParameters, options *ProfilesClientBeginCanMigrateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ProfilesClient.BeginCanMigrate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.canMigrateCreateRequest(ctx, resourceGroupName, canMigrateParameters, options)
 	if err != nil {
 		return nil, err
@@ -128,10 +135,14 @@ func (client *ProfilesClient) BeginCreate(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ProfilesClientCreateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ProfilesClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -142,6 +153,10 @@ func (client *ProfilesClient) BeginCreate(ctx context.Context, resourceGroupName
 // Generated from API version 2023-05-01
 func (client *ProfilesClient) create(ctx context.Context, resourceGroupName string, profileName string, profile Profile, options *ProfilesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ProfilesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, profile, options)
 	if err != nil {
 		return nil, err
@@ -202,10 +217,14 @@ func (client *ProfilesClient) BeginDelete(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ProfilesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ProfilesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -217,6 +236,10 @@ func (client *ProfilesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-05-01
 func (client *ProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ProfilesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, options)
 	if err != nil {
 		return nil, err
@@ -270,6 +293,10 @@ func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - ProfilesClientGenerateSsoURIOptions contains the optional parameters for the ProfilesClient.GenerateSsoURI method.
 func (client *ProfilesClient) GenerateSsoURI(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientGenerateSsoURIOptions) (ProfilesClientGenerateSsoURIResponse, error) {
 	var err error
+	const operationName = "ProfilesClient.GenerateSsoURI"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.generateSsoURICreateRequest(ctx, resourceGroupName, profileName, options)
 	if err != nil {
 		return ProfilesClientGenerateSsoURIResponse{}, err
@@ -332,6 +359,10 @@ func (client *ProfilesClient) generateSsoURIHandleResponse(resp *http.Response) 
 //   - options - ProfilesClientGetOptions contains the optional parameters for the ProfilesClient.Get method.
 func (client *ProfilesClient) Get(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientGetOptions) (ProfilesClientGetResponse, error) {
 	var err error
+	const operationName = "ProfilesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, options)
 	if err != nil {
 		return ProfilesClientGetResponse{}, err
@@ -393,25 +424,20 @@ func (client *ProfilesClient) NewListPager(options *ProfilesClientListOptions) *
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProfilesClientListResponse) (ProfilesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProfilesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ProfilesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProfilesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ProfilesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -455,25 +481,20 @@ func (client *ProfilesClient) NewListByResourceGroupPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProfilesClientListByResourceGroupResponse) (ProfilesClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProfilesClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ProfilesClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProfilesClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ProfilesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -523,25 +544,20 @@ func (client *ProfilesClient) NewListResourceUsagePager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProfilesClientListResourceUsageResponse) (ProfilesClientListResourceUsageResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProfilesClient.NewListResourceUsagePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, options)
+			}, nil)
 			if err != nil {
 				return ProfilesClientListResourceUsageResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProfilesClientListResourceUsageResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ProfilesClientListResourceUsageResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listResourceUsageHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -592,6 +608,10 @@ func (client *ProfilesClient) listResourceUsageHandleResponse(resp *http.Respons
 //     method.
 func (client *ProfilesClient) ListSupportedOptimizationTypes(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientListSupportedOptimizationTypesOptions) (ProfilesClientListSupportedOptimizationTypesResponse, error) {
 	var err error
+	const operationName = "ProfilesClient.ListSupportedOptimizationTypes"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSupportedOptimizationTypesCreateRequest(ctx, resourceGroupName, profileName, options)
 	if err != nil {
 		return ProfilesClientListSupportedOptimizationTypesResponse{}, err
@@ -659,10 +679,13 @@ func (client *ProfilesClient) BeginMigrate(ctx context.Context, resourceGroupNam
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientMigrateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ProfilesClientMigrateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientMigrateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -672,6 +695,10 @@ func (client *ProfilesClient) BeginMigrate(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-05-01
 func (client *ProfilesClient) migrate(ctx context.Context, resourceGroupName string, migrationParameters MigrationParameters, options *ProfilesClientBeginMigrateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ProfilesClient.BeginMigrate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.migrateCreateRequest(ctx, resourceGroupName, migrationParameters, options)
 	if err != nil {
 		return nil, err
@@ -728,10 +755,13 @@ func (client *ProfilesClient) BeginMigrationCommit(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientMigrationCommitResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ProfilesClientMigrationCommitResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientMigrationCommitResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -741,6 +771,10 @@ func (client *ProfilesClient) BeginMigrationCommit(ctx context.Context, resource
 // Generated from API version 2023-05-01
 func (client *ProfilesClient) migrationCommit(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientBeginMigrationCommitOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ProfilesClient.BeginMigrationCommit"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.migrationCommitCreateRequest(ctx, resourceGroupName, profileName, options)
 	if err != nil {
 		return nil, err
@@ -798,10 +832,14 @@ func (client *ProfilesClient) BeginUpdate(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ProfilesClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ProfilesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -812,6 +850,10 @@ func (client *ProfilesClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Generated from API version 2023-05-01
 func (client *ProfilesClient) update(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters, options *ProfilesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ProfilesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, profileUpdateParameters, options)
 	if err != nil {
 		return nil, err

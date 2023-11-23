@@ -41,7 +41,7 @@ type InventoryItemsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewInventoryItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InventoryItemsClient, error) {
-	cl, err := arm.NewClient(moduleName+".InventoryItemsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -63,6 +63,10 @@ func NewInventoryItemsClient(subscriptionID string, credential azcore.TokenCrede
 //   - options - InventoryItemsClientCreateOptions contains the optional parameters for the InventoryItemsClient.Create method.
 func (client *InventoryItemsClient) Create(ctx context.Context, resourceGroupName string, vcenterName string, inventoryItemName string, body InventoryItem, options *InventoryItemsClientCreateOptions) (InventoryItemsClientCreateResponse, error) {
 	var err error
+	const operationName = "InventoryItemsClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, vcenterName, inventoryItemName, body, options)
 	if err != nil {
 		return InventoryItemsClientCreateResponse{}, err
@@ -131,6 +135,10 @@ func (client *InventoryItemsClient) createHandleResponse(resp *http.Response) (I
 //   - options - InventoryItemsClientDeleteOptions contains the optional parameters for the InventoryItemsClient.Delete method.
 func (client *InventoryItemsClient) Delete(ctx context.Context, resourceGroupName string, vcenterName string, inventoryItemName string, options *InventoryItemsClientDeleteOptions) (InventoryItemsClientDeleteResponse, error) {
 	var err error
+	const operationName = "InventoryItemsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vcenterName, inventoryItemName, options)
 	if err != nil {
 		return InventoryItemsClientDeleteResponse{}, err
@@ -186,6 +194,10 @@ func (client *InventoryItemsClient) deleteCreateRequest(ctx context.Context, res
 //   - options - InventoryItemsClientGetOptions contains the optional parameters for the InventoryItemsClient.Get method.
 func (client *InventoryItemsClient) Get(ctx context.Context, resourceGroupName string, vcenterName string, inventoryItemName string, options *InventoryItemsClientGetOptions) (InventoryItemsClientGetResponse, error) {
 	var err error
+	const operationName = "InventoryItemsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vcenterName, inventoryItemName, options)
 	if err != nil {
 		return InventoryItemsClientGetResponse{}, err
@@ -254,25 +266,20 @@ func (client *InventoryItemsClient) NewListByVCenterPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *InventoryItemsClientListByVCenterResponse) (InventoryItemsClientListByVCenterResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByVCenterCreateRequest(ctx, resourceGroupName, vcenterName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "InventoryItemsClient.NewListByVCenterPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByVCenterCreateRequest(ctx, resourceGroupName, vcenterName, options)
+			}, nil)
 			if err != nil {
 				return InventoryItemsClientListByVCenterResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return InventoryItemsClientListByVCenterResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return InventoryItemsClientListByVCenterResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByVCenterHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

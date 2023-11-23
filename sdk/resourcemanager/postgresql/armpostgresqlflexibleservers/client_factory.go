@@ -23,7 +23,7 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
@@ -79,6 +79,12 @@ func (c *ClientFactory) NewFirewallRulesClient() *FirewallRulesClient {
 	return subClient
 }
 
+// NewFlexibleServerClient creates a new instance of FlexibleServerClient.
+func (c *ClientFactory) NewFlexibleServerClient() *FlexibleServerClient {
+	subClient, _ := NewFlexibleServerClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewGetPrivateDNSZoneSuffixClient creates a new instance of GetPrivateDNSZoneSuffixClient.
 func (c *ClientFactory) NewGetPrivateDNSZoneSuffixClient() *GetPrivateDNSZoneSuffixClient {
 	subClient, _ := NewGetPrivateDNSZoneSuffixClient(c.credential, c.options)
@@ -91,9 +97,57 @@ func (c *ClientFactory) NewLocationBasedCapabilitiesClient() *LocationBasedCapab
 	return subClient
 }
 
+// NewLogFilesClient creates a new instance of LogFilesClient.
+func (c *ClientFactory) NewLogFilesClient() *LogFilesClient {
+	subClient, _ := NewLogFilesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewLtrBackupOperationsClient creates a new instance of LtrBackupOperationsClient.
+func (c *ClientFactory) NewLtrBackupOperationsClient() *LtrBackupOperationsClient {
+	subClient, _ := NewLtrBackupOperationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewMigrationsClient creates a new instance of MigrationsClient.
+func (c *ClientFactory) NewMigrationsClient() *MigrationsClient {
+	subClient, _ := NewMigrationsClient(c.credential, c.options)
+	return subClient
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewPostgreSQLManagementClient creates a new instance of PostgreSQLManagementClient.
+func (c *ClientFactory) NewPostgreSQLManagementClient() *PostgreSQLManagementClient {
+	subClient, _ := NewPostgreSQLManagementClient(c.credential, c.options)
+	return subClient
+}
+
+// NewPrivateEndpointConnectionClient creates a new instance of PrivateEndpointConnectionClient.
+func (c *ClientFactory) NewPrivateEndpointConnectionClient() *PrivateEndpointConnectionClient {
+	subClient, _ := NewPrivateEndpointConnectionClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
+func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
+	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
+func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
+	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewQuotaUsagesClient creates a new instance of QuotaUsagesClient.
+func (c *ClientFactory) NewQuotaUsagesClient() *QuotaUsagesClient {
+	subClient, _ := NewQuotaUsagesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -103,9 +157,27 @@ func (c *ClientFactory) NewReplicasClient() *ReplicasClient {
 	return subClient
 }
 
+// NewServerCapabilitiesClient creates a new instance of ServerCapabilitiesClient.
+func (c *ClientFactory) NewServerCapabilitiesClient() *ServerCapabilitiesClient {
+	subClient, _ := NewServerCapabilitiesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewServerThreatProtectionSettingsClient creates a new instance of ServerThreatProtectionSettingsClient.
+func (c *ClientFactory) NewServerThreatProtectionSettingsClient() *ServerThreatProtectionSettingsClient {
+	subClient, _ := NewServerThreatProtectionSettingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewServersClient creates a new instance of ServersClient.
 func (c *ClientFactory) NewServersClient() *ServersClient {
 	subClient, _ := NewServersClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewVirtualEndpointsClient creates a new instance of VirtualEndpointsClient.
+func (c *ClientFactory) NewVirtualEndpointsClient() *VirtualEndpointsClient {
+	subClient, _ := NewVirtualEndpointsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

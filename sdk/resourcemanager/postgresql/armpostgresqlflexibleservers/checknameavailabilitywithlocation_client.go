@@ -28,7 +28,7 @@ type CheckNameAvailabilityWithLocationClient struct {
 }
 
 // NewCheckNameAvailabilityWithLocationClient creates a new instance of CheckNameAvailabilityWithLocationClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCheckNameAvailabilityWithLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckNameAvailabilityWithLocationClient, error) {
@@ -46,7 +46,7 @@ func NewCheckNameAvailabilityWithLocationClient(subscriptionID string, credentia
 // Execute - Check the availability of name for resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01
+// Generated from API version 2023-06-01-preview
 //   - locationName - The name of the location.
 //   - nameAvailabilityRequest - The required parameters for checking if resource name is available.
 //   - options - CheckNameAvailabilityWithLocationClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityWithLocationClient.Execute
@@ -89,7 +89,7 @@ func (client *CheckNameAvailabilityWithLocationClient) executeCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-01")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, nameAvailabilityRequest); err != nil {

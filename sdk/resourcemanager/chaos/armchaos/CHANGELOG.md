@@ -3,7 +3,6 @@
 ## 1.0.0 (2023-11-24)
 ### Breaking Changes
 
-- Support for test fakes and OpenTelemetry trace spans.
 - Type of `ExperimentProperties.Selectors` has been changed from `[]SelectorClassification` to `[]TargetSelectorClassification`
 - Type of `ExperimentProperties.Steps` has been changed from `[]*Step` to `[]*ExperimentStep`
 - Function `*Action.GetAction` has been removed
@@ -41,6 +40,7 @@
 
 ### Features Added
 
+- Support for test fakes and OpenTelemetry trace spans.
 - New enum type `ProvisioningState` with values `ProvisioningStateCanceled`, `ProvisioningStateCreating`, `ProvisioningStateDeleting`, `ProvisioningStateFailed`, `ProvisioningStateSucceeded`, `ProvisioningStateUpdating`
 - New function `*ClientFactory.NewOperationStatusesClient() *OperationStatusesClient`
 - New function `*ContinuousAction.GetExperimentAction() *ExperimentAction`

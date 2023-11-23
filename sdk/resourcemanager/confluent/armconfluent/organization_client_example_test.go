@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_ListBySubscription.json
 func ExampleOrganizationClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,28 +53,33 @@ func ExampleOrganizationClient_NewListBySubscriptionPager() {
 		// 					ID: to.Ptr("string"),
 		// 					PlanID: to.Ptr("string"),
 		// 					PlanName: to.Ptr("string"),
-		// 					PublisherID: to.Ptr("string"),
-		// 					Status: to.Ptr(armconfluent.SaaSOfferStatusStarted),
-		// 					TermUnit: to.Ptr("string"),
+		// 					PrivateOfferID: to.Ptr("string"),
+		// 					PrivateOfferIDs: []*string{
+		// 						to.Ptr("string")},
+		// 						PublisherID: to.Ptr("string"),
+		// 						Status: to.Ptr(armconfluent.SaaSOfferStatusStarted),
+		// 						TermUnit: to.Ptr("string"),
+		// 					},
+		// 					OrganizationID: to.Ptr("string"),
+		// 					ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
+		// 					SsoURL: to.Ptr("string"),
+		// 					UserDetail: &armconfluent.UserDetail{
+		// 						AADEmail: to.Ptr("contoso@microsoft.com"),
+		// 						EmailAddress: to.Ptr("contoso@microsoft.com"),
+		// 						FirstName: to.Ptr("string"),
+		// 						LastName: to.Ptr("string"),
+		// 						UserPrincipalName: to.Ptr("contoso@microsoft.com"),
+		// 					},
 		// 				},
-		// 				OrganizationID: to.Ptr("string"),
-		// 				ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
-		// 				SsoURL: to.Ptr("string"),
-		// 				UserDetail: &armconfluent.UserDetail{
-		// 					EmailAddress: to.Ptr("contoso@microsoft.com"),
-		// 					FirstName: to.Ptr("string"),
-		// 					LastName: to.Ptr("string"),
+		// 				Tags: map[string]*string{
+		// 					"Environment": to.Ptr("Dev"),
 		// 				},
-		// 			},
-		// 			Tags: map[string]*string{
-		// 				"Environment": to.Ptr("Dev"),
-		// 			},
-		// 	}},
-		// }
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_ListByResourceGroup.json
 func ExampleOrganizationClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,28 +114,33 @@ func ExampleOrganizationClient_NewListByResourceGroupPager() {
 		// 					ID: to.Ptr("string"),
 		// 					PlanID: to.Ptr("string"),
 		// 					PlanName: to.Ptr("string"),
-		// 					PublisherID: to.Ptr("string"),
-		// 					Status: to.Ptr(armconfluent.SaaSOfferStatusStarted),
-		// 					TermUnit: to.Ptr("string"),
+		// 					PrivateOfferID: to.Ptr("string"),
+		// 					PrivateOfferIDs: []*string{
+		// 						to.Ptr("string")},
+		// 						PublisherID: to.Ptr("string"),
+		// 						Status: to.Ptr(armconfluent.SaaSOfferStatusStarted),
+		// 						TermUnit: to.Ptr("string"),
+		// 					},
+		// 					OrganizationID: to.Ptr("string"),
+		// 					ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
+		// 					SsoURL: to.Ptr("string"),
+		// 					UserDetail: &armconfluent.UserDetail{
+		// 						AADEmail: to.Ptr("contoso@microsoft.com"),
+		// 						EmailAddress: to.Ptr("contoso@microsoft.com"),
+		// 						FirstName: to.Ptr("string"),
+		// 						LastName: to.Ptr("string"),
+		// 						UserPrincipalName: to.Ptr("contoso@microsoft.com"),
+		// 					},
 		// 				},
-		// 				OrganizationID: to.Ptr("string"),
-		// 				ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
-		// 				SsoURL: to.Ptr("string"),
-		// 				UserDetail: &armconfluent.UserDetail{
-		// 					EmailAddress: to.Ptr("contoso@microsoft.com"),
-		// 					FirstName: to.Ptr("string"),
-		// 					LastName: to.Ptr("string"),
+		// 				Tags: map[string]*string{
+		// 					"Environment": to.Ptr("Dev"),
 		// 				},
-		// 			},
-		// 			Tags: map[string]*string{
-		// 				"Environment": to.Ptr("Dev"),
-		// 			},
-		// 	}},
-		// }
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Get.json
 func ExampleOrganizationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +196,7 @@ func ExampleOrganizationClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Create.json
 func ExampleOrganizationClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,17 +210,25 @@ func ExampleOrganizationClient_BeginCreate() {
 	poller, err := clientFactory.NewOrganizationClient().BeginCreate(ctx, "myResourceGroup", "myOrganization", &armconfluent.OrganizationClientBeginCreateOptions{Body: &armconfluent.OrganizationResource{
 		Location: to.Ptr("West US"),
 		Properties: &armconfluent.OrganizationResourceProperties{
+			LinkOrganization: &armconfluent.LinkOrganization{
+				Token: to.Ptr("string"),
+			},
 			OfferDetail: &armconfluent.OfferDetail{
-				ID:          to.Ptr("string"),
-				PlanID:      to.Ptr("string"),
-				PlanName:    to.Ptr("string"),
+				ID:             to.Ptr("string"),
+				PlanID:         to.Ptr("string"),
+				PlanName:       to.Ptr("string"),
+				PrivateOfferID: to.Ptr("string"),
+				PrivateOfferIDs: []*string{
+					to.Ptr("string")},
 				PublisherID: to.Ptr("string"),
 				TermUnit:    to.Ptr("string"),
 			},
 			UserDetail: &armconfluent.UserDetail{
-				EmailAddress: to.Ptr("contoso@microsoft.com"),
-				FirstName:    to.Ptr("string"),
-				LastName:     to.Ptr("string"),
+				AADEmail:          to.Ptr("contoso@microsoft.com"),
+				EmailAddress:      to.Ptr("contoso@microsoft.com"),
+				FirstName:         to.Ptr("string"),
+				LastName:          to.Ptr("string"),
+				UserPrincipalName: to.Ptr("contoso@microsoft.com"),
 			},
 		},
 		Tags: map[string]*string{
@@ -239,34 +257,39 @@ func ExampleOrganizationClient_BeginCreate() {
 	// 			ID: to.Ptr("string"),
 	// 			PlanID: to.Ptr("string"),
 	// 			PlanName: to.Ptr("string"),
-	// 			PublisherID: to.Ptr("string"),
-	// 			Status: to.Ptr(armconfluent.SaaSOfferStatusStarted),
-	// 			TermUnit: to.Ptr("string"),
+	// 			PrivateOfferID: to.Ptr("string"),
+	// 			PrivateOfferIDs: []*string{
+	// 				to.Ptr("string")},
+	// 				PublisherID: to.Ptr("string"),
+	// 				Status: to.Ptr(armconfluent.SaaSOfferStatusStarted),
+	// 				TermUnit: to.Ptr("string"),
+	// 			},
+	// 			OrganizationID: to.Ptr("string"),
+	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
+	// 			SsoURL: to.Ptr("string"),
+	// 			UserDetail: &armconfluent.UserDetail{
+	// 				AADEmail: to.Ptr("contoso@microsoft.com"),
+	// 				EmailAddress: to.Ptr("contoso@microsoft.com"),
+	// 				FirstName: to.Ptr("string"),
+	// 				LastName: to.Ptr("string"),
+	// 				UserPrincipalName: to.Ptr("contoso@microsoft.com"),
+	// 			},
 	// 		},
-	// 		OrganizationID: to.Ptr("string"),
-	// 		ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
-	// 		SsoURL: to.Ptr("string"),
-	// 		UserDetail: &armconfluent.UserDetail{
-	// 			EmailAddress: to.Ptr("contoso@microsoft.com"),
-	// 			FirstName: to.Ptr("string"),
-	// 			LastName: to.Ptr("string"),
+	// 		SystemData: &armconfluent.SystemData{
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-09T14:28:47.284Z"); return t}()),
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-09T14:28:47.284Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
 	// 		},
-	// 	},
-	// 	SystemData: &armconfluent.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-09T14:28:47.284Z"); return t}()),
-	// 		CreatedBy: to.Ptr("string"),
-	// 		CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-09T14:28:47.284Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("string"),
-	// 		LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 	},
-	// 	Tags: map[string]*string{
-	// 		"Environment": to.Ptr("Dev"),
-	// 	},
-	// }
+	// 		Tags: map[string]*string{
+	// 			"Environment": to.Ptr("Dev"),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Update.json
 func ExampleOrganizationClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,7 +351,7 @@ func ExampleOrganizationClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Delete.json
 func ExampleOrganizationClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

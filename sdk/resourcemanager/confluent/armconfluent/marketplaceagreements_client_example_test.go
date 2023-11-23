@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/MarketplaceAgreements_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/MarketplaceAgreements_List.json
 func ExampleMarketplaceAgreementsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleMarketplaceAgreementsClient_NewListPager() {
 		// 				PrivacyPolicyLink: to.Ptr("test.privacyPolicyLink1"),
 		// 				Product: to.Ptr("offid1"),
 		// 				Publisher: to.Ptr("pubid1"),
-		// 				RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T11:33:07.12132Z"); return t}()),
+		// 				RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T11:33:07.121Z"); return t}()),
 		// 				Signature: to.Ptr("ASDFSDAFWEFASDGWERLWER"),
 		// 			},
 		// 		},
@@ -67,7 +67,7 @@ func ExampleMarketplaceAgreementsClient_NewListPager() {
 		// 				PrivacyPolicyLink: to.Ptr("test.privacyPolicyLink2"),
 		// 				Product: to.Ptr("offid2"),
 		// 				Publisher: to.Ptr("pubid2"),
-		// 				RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-14T11:33:07.12132Z"); return t}()),
+		// 				RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-14T11:33:07.121Z"); return t}()),
 		// 				Signature: to.Ptr("ASDFSDAFWEFASDGWERLWER"),
 		// 			},
 		// 	}},
@@ -75,7 +75,7 @@ func ExampleMarketplaceAgreementsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/MarketplaceAgreements_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/MarketplaceAgreements_Create.json
 func ExampleMarketplaceAgreementsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleMarketplaceAgreementsClient_Create() {
 	// 		PrivacyPolicyLink: to.Ptr("test.privacyPolicyLink1"),
 	// 		Product: to.Ptr("offid1"),
 	// 		Publisher: to.Ptr("pubid1"),
-	// 		RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-05T17:33:07.12132Z"); return t}()),
+	// 		RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-05T17:33:07.121Z"); return t}()),
 	// 		Signature: to.Ptr("YKWOQOKH2BCKZ46O7SCKHANWEENRFRU5WB4LXDFUYWCBWTS4AG4SGQXCOZYIR5ZJCZTXRMZKYZMO2BJSL5YKPLAR4LBFRUNS6CRYE7A"),
 	// 	},
 	// 	SystemData: &armconfluent.SystemData{

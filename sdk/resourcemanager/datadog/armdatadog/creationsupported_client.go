@@ -32,7 +32,7 @@ type CreationSupportedClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCreationSupportedClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CreationSupportedClient, error) {
-	cl, err := arm.NewClient(moduleName+".CreationSupportedClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -51,6 +51,10 @@ func NewCreationSupportedClient(subscriptionID string, credential azcore.TokenCr
 //   - options - CreationSupportedClientGetOptions contains the optional parameters for the CreationSupportedClient.Get method.
 func (client *CreationSupportedClient) Get(ctx context.Context, datadogOrganizationID string, options *CreationSupportedClientGetOptions) (CreationSupportedClientGetResponse, error) {
 	var err error
+	const operationName = "CreationSupportedClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, datadogOrganizationID, options)
 	if err != nil {
 		return CreationSupportedClientGetResponse{}, err
@@ -107,6 +111,7 @@ func (client *CreationSupportedClient) NewListPager(datadogOrganizationID string
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *CreationSupportedClientListResponse) (CreationSupportedClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CreationSupportedClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, datadogOrganizationID, options)
 			if err != nil {
 				return CreationSupportedClientListResponse{}, err
@@ -120,6 +125,7 @@ func (client *CreationSupportedClient) NewListPager(datadogOrganizationID string
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

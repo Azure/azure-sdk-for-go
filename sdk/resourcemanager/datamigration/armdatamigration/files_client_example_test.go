@@ -49,7 +49,7 @@ func ExampleFilesClient_NewListPager() {
 		// 			Properties: &armdatamigration.ProjectFileProperties{
 		// 				Extension: to.Ptr("sql"),
 		// 				FilePath: to.Ptr("SchemaInput/DmsSdkFile.sql"),
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-15T20:01:33+00:00"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-15T20:01:33.000Z"); return t}()),
 		// 				MediaType: to.Ptr("text/plain"),
 		// 				Size: to.Ptr[int64](51835),
 		// 			},
@@ -61,7 +61,7 @@ func ExampleFilesClient_NewListPager() {
 		// 			Properties: &armdatamigration.ProjectFileProperties{
 		// 				Extension: to.Ptr("sql"),
 		// 				FilePath: to.Ptr("7daf055f-82b0-483e-9da0-4244b4eaa9b0/AdventureWorks2008.sql"),
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-05T16:51:03+00:00"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-05T16:51:03.000Z"); return t}()),
 		// 				MediaType: to.Ptr("text/plain"),
 		// 				Size: to.Ptr[int64](910278),
 		// 			},
@@ -95,7 +95,7 @@ func ExampleFilesClient_Get() {
 	// 	Properties: &armdatamigration.ProjectFileProperties{
 	// 		Extension: to.Ptr("sql"),
 	// 		FilePath: to.Ptr("SchemaInput/DmsSdkFile.sql"),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-15T20:01:33+00:00"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-15T20:01:33.000Z"); return t}()),
 	// 		MediaType: to.Ptr("text/plain"),
 	// 		Size: to.Ptr[int64](51835),
 	// 	},

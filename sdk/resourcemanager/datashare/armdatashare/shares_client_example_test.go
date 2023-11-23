@@ -52,8 +52,8 @@ func ExampleSharesClient_NewListSynchronizationDetailsPager() {
 		// 			DataSetID: to.Ptr("7d0536a6-3fa5-43de-b152-3d07c4f6b2bb"),
 		// 			DataSetType: to.Ptr(armdatashare.DataSetTypeBlob),
 		// 			DurationMs: to.Ptr[int32](2000),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t}()),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.961Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.961Z"); return t}()),
 		// 			Status: to.Ptr("Completed"),
 		// 	}},
 		// }
@@ -91,9 +91,9 @@ func ExampleSharesClient_NewListSynchronizationsPager() {
 		// 			ConsumerName: to.Ptr("abc@yahoo.com"),
 		// 			ConsumerTenantName: to.Ptr("nda"),
 		// 			DurationMs: to.Ptr[int32](2000),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.961Z"); return t}()),
 		// 			Message: to.Ptr("nda"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.961Z"); return t}()),
 		// 			Status: to.Ptr("Completed"),
 		// 			SynchronizationID: to.Ptr("runId"),
 		// 			SynchronizationMode: to.Ptr(armdatashare.SynchronizationModeIncremental),
@@ -126,7 +126,7 @@ func ExampleSharesClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/433a8dfd-e5d5-4e77-ad86-90acdc75eb1a/resourceGroups/SampleResourceGroup/providers/Microsoft.DataShare/accounts/Account1/shares/Share1"),
 	// 	Properties: &armdatashare.ShareProperties{
 	// 		Description: to.Ptr("share description"),
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T06:15:15.6818898Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T06:15:15.681Z"); return t}()),
 	// 		ShareKind: to.Ptr(armdatashare.ShareKindCopyBased),
 	// 		Terms: to.Ptr("Confidential"),
 	// 		UserEmail: to.Ptr("johnsmith@microsoft.com"),
@@ -165,7 +165,7 @@ func ExampleSharesClient_Create() {
 	// 	ID: to.Ptr("/subscriptions/433a8dfd-e5d5-4e77-ad86-90acdc75eb1a/resourceGroups/SampleResourceGroup/providers/Microsoft.DataShare/accounts/Account1/shares/Share1"),
 	// 	Properties: &armdatashare.ShareProperties{
 	// 		Description: to.Ptr("share description"),
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T06:15:15.6818898Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T06:15:15.681Z"); return t}()),
 	// 		ShareKind: to.Ptr(armdatashare.ShareKindCopyBased),
 	// 		Terms: to.Ptr("Confidential"),
 	// 		UserEmail: to.Ptr("johnsmith@microsoft.com"),
@@ -234,7 +234,7 @@ func ExampleSharesClient_NewListByAccountPager() {
 		// 			ID: to.Ptr("/subscriptions/433a8dfd-e5d5-4e77-ad86-90acdc75eb1a/resourceGroups/SampleResourceGroup/providers/Microsoft.DataShare/accounts/Account1/shares/Share1"),
 		// 			Properties: &armdatashare.ShareProperties{
 		// 				Description: to.Ptr("share description"),
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T06:15:15.6818898Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T06:15:15.681Z"); return t}()),
 		// 				ShareKind: to.Ptr(armdatashare.ShareKindCopyBased),
 		// 				Terms: to.Ptr("Confidential"),
 		// 				UserEmail: to.Ptr("johnsmith@microsoft.com"),
@@ -247,7 +247,7 @@ func ExampleSharesClient_NewListByAccountPager() {
 		// 			ID: to.Ptr("/subscriptions/433a8dfd-e5d5-4e77-ad86-90acdc75eb1a/resourceGroups/SampleResourceGroup/providers/Microsoft.DataShare/accounts/Account1/shares/Share1"),
 		// 			Properties: &armdatashare.ShareProperties{
 		// 				Description: to.Ptr("share description"),
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-14T06:15:15.6818898Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-14T06:15:15.681Z"); return t}()),
 		// 				ShareKind: to.Ptr(armdatashare.ShareKindCopyBased),
 		// 				Terms: to.Ptr("Confidential"),
 		// 				UserEmail: to.Ptr("johnsmith@microsoft.com"),

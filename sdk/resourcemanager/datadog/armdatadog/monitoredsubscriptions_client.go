@@ -32,7 +32,7 @@ type MonitoredSubscriptionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMonitoredSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitoredSubscriptionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".MonitoredSubscriptionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,10 +58,14 @@ func (client *MonitoredSubscriptionsClient) BeginCreateorUpdate(ctx context.Cont
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[MonitoredSubscriptionsClientCreateorUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitoredSubscriptionsClientCreateorUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MonitoredSubscriptionsClientCreateorUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitoredSubscriptionsClientCreateorUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -71,6 +75,10 @@ func (client *MonitoredSubscriptionsClient) BeginCreateorUpdate(ctx context.Cont
 // Generated from API version 2023-01-01
 func (client *MonitoredSubscriptionsClient) createorUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginCreateorUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MonitoredSubscriptionsClient.BeginCreateorUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createorUpdateCreateRequest(ctx, resourceGroupName, monitorName, configurationName, options)
 	if err != nil {
 		return nil, err
@@ -137,10 +145,14 @@ func (client *MonitoredSubscriptionsClient) BeginDelete(ctx context.Context, res
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[MonitoredSubscriptionsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitoredSubscriptionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MonitoredSubscriptionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitoredSubscriptionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -150,6 +162,10 @@ func (client *MonitoredSubscriptionsClient) BeginDelete(ctx context.Context, res
 // Generated from API version 2023-01-01
 func (client *MonitoredSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MonitoredSubscriptionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, monitorName, configurationName, options)
 	if err != nil {
 		return nil, err
@@ -206,6 +222,10 @@ func (client *MonitoredSubscriptionsClient) deleteCreateRequest(ctx context.Cont
 //     method.
 func (client *MonitoredSubscriptionsClient) Get(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientGetOptions) (MonitoredSubscriptionsClientGetResponse, error) {
 	var err error
+	const operationName = "MonitoredSubscriptionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, monitorName, configurationName, options)
 	if err != nil {
 		return MonitoredSubscriptionsClientGetResponse{}, err
@@ -274,6 +294,7 @@ func (client *MonitoredSubscriptionsClient) NewListPager(resourceGroupName strin
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *MonitoredSubscriptionsClientListResponse) (MonitoredSubscriptionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MonitoredSubscriptionsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, monitorName, options)
 			if err != nil {
 				return MonitoredSubscriptionsClientListResponse{}, err
@@ -287,6 +308,7 @@ func (client *MonitoredSubscriptionsClient) NewListPager(resourceGroupName strin
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -340,10 +362,14 @@ func (client *MonitoredSubscriptionsClient) BeginUpdate(ctx context.Context, res
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[MonitoredSubscriptionsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitoredSubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MonitoredSubscriptionsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitoredSubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -353,6 +379,10 @@ func (client *MonitoredSubscriptionsClient) BeginUpdate(ctx context.Context, res
 // Generated from API version 2023-01-01
 func (client *MonitoredSubscriptionsClient) update(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MonitoredSubscriptionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, monitorName, configurationName, options)
 	if err != nil {
 		return nil, err

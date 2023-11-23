@@ -32,7 +32,7 @@ type OutboundNetworkDependenciesEndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOutboundNetworkDependenciesEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OutboundNetworkDependenciesEndpointsClient, error) {
-	cl, err := arm.NewClient(moduleName+".OutboundNetworkDependenciesEndpointsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewOutboundNetworkDependenciesEndpointsClient(subscriptionID string, creden
 //     method.
 func (client *OutboundNetworkDependenciesEndpointsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *OutboundNetworkDependenciesEndpointsClientListOptions) (OutboundNetworkDependenciesEndpointsClientListResponse, error) {
 	var err error
+	const operationName = "OutboundNetworkDependenciesEndpointsClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
 		return OutboundNetworkDependenciesEndpointsClientListResponse{}, err

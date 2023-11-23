@@ -548,6 +548,83 @@ func (client *LocalRulestacksClient) listAdvancedSecurityObjectsHandleResponse(r
 	return result, nil
 }
 
+// ListAppIDs - List of AppIds for LocalRulestack ApiVersion
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-09-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - localRulestackName - LocalRulestack resource name
+//   - options - LocalRulestacksClientListAppIDsOptions contains the optional parameters for the LocalRulestacksClient.ListAppIDs
+//     method.
+func (client *LocalRulestacksClient) ListAppIDs(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientListAppIDsOptions) (LocalRulestacksClientListAppIDsResponse, error) {
+	var err error
+	const operationName = "LocalRulestacksClient.ListAppIDs"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listAppIDsCreateRequest(ctx, resourceGroupName, localRulestackName, options)
+	if err != nil {
+		return LocalRulestacksClientListAppIDsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return LocalRulestacksClientListAppIDsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return LocalRulestacksClientListAppIDsResponse{}, err
+	}
+	resp, err := client.listAppIDsHandleResponse(httpResp)
+	return resp, err
+}
+
+// listAppIDsCreateRequest creates the ListAppIDs request.
+func (client *LocalRulestacksClient) listAppIDsCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientListAppIDsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listAppIds"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if localRulestackName == "" {
+		return nil, errors.New("parameter localRulestackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-09-01")
+	if options != nil && options.AppIDVersion != nil {
+		reqQP.Set("appIdVersion", *options.AppIDVersion)
+	}
+	if options != nil && options.AppPrefix != nil {
+		reqQP.Set("appPrefix", *options.AppPrefix)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", *options.Skip)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listAppIDsHandleResponse handles the ListAppIDs response.
+func (client *LocalRulestacksClient) listAppIDsHandleResponse(resp *http.Response) (LocalRulestacksClientListAppIDsResponse, error) {
+	result := LocalRulestacksClientListAppIDsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListAppIDResponse); err != nil {
+		return LocalRulestacksClientListAppIDsResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByResourceGroupPager - List LocalRulestackResource resources by resource group
 //
 // Generated from API version 2023-09-01
@@ -663,6 +740,77 @@ func (client *LocalRulestacksClient) listBySubscriptionHandleResponse(resp *http
 	return result, nil
 }
 
+// ListCountries - List of countries for Rulestack
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-09-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - localRulestackName - LocalRulestack resource name
+//   - options - LocalRulestacksClientListCountriesOptions contains the optional parameters for the LocalRulestacksClient.ListCountries
+//     method.
+func (client *LocalRulestacksClient) ListCountries(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientListCountriesOptions) (LocalRulestacksClientListCountriesResponse, error) {
+	var err error
+	const operationName = "LocalRulestacksClient.ListCountries"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCountriesCreateRequest(ctx, resourceGroupName, localRulestackName, options)
+	if err != nil {
+		return LocalRulestacksClientListCountriesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return LocalRulestacksClientListCountriesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return LocalRulestacksClientListCountriesResponse{}, err
+	}
+	resp, err := client.listCountriesHandleResponse(httpResp)
+	return resp, err
+}
+
+// listCountriesCreateRequest creates the ListCountries request.
+func (client *LocalRulestacksClient) listCountriesCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientListCountriesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listCountries"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if localRulestackName == "" {
+		return nil, errors.New("parameter localRulestackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-09-01")
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", *options.Skip)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listCountriesHandleResponse handles the ListCountries response.
+func (client *LocalRulestacksClient) listCountriesHandleResponse(resp *http.Response) (LocalRulestacksClientListCountriesResponse, error) {
+	result := LocalRulestacksClientListCountriesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CountriesResponse); err != nil {
+		return LocalRulestacksClientListCountriesResponse{}, err
+	}
+	return result, nil
+}
+
 // ListFirewalls - List of Firewalls associated with Rulestack
 // If the operation fails it returns an *azcore.ResponseError type.
 //
@@ -724,6 +872,77 @@ func (client *LocalRulestacksClient) listFirewallsHandleResponse(resp *http.Resp
 	result := LocalRulestacksClientListFirewallsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListFirewallsResponse); err != nil {
 		return LocalRulestacksClientListFirewallsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListPredefinedURLCategories - List predefined URL categories for rulestack
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-09-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - localRulestackName - LocalRulestack resource name
+//   - options - LocalRulestacksClientListPredefinedURLCategoriesOptions contains the optional parameters for the LocalRulestacksClient.ListPredefinedURLCategories
+//     method.
+func (client *LocalRulestacksClient) ListPredefinedURLCategories(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientListPredefinedURLCategoriesOptions) (LocalRulestacksClientListPredefinedURLCategoriesResponse, error) {
+	var err error
+	const operationName = "LocalRulestacksClient.ListPredefinedURLCategories"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listPredefinedURLCategoriesCreateRequest(ctx, resourceGroupName, localRulestackName, options)
+	if err != nil {
+		return LocalRulestacksClientListPredefinedURLCategoriesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return LocalRulestacksClientListPredefinedURLCategoriesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return LocalRulestacksClientListPredefinedURLCategoriesResponse{}, err
+	}
+	resp, err := client.listPredefinedURLCategoriesHandleResponse(httpResp)
+	return resp, err
+}
+
+// listPredefinedURLCategoriesCreateRequest creates the ListPredefinedURLCategories request.
+func (client *LocalRulestacksClient) listPredefinedURLCategoriesCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientListPredefinedURLCategoriesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listPredefinedUrlCategories"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if localRulestackName == "" {
+		return nil, errors.New("parameter localRulestackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-09-01")
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", *options.Skip)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listPredefinedURLCategoriesHandleResponse handles the ListPredefinedURLCategories response.
+func (client *LocalRulestacksClient) listPredefinedURLCategoriesHandleResponse(resp *http.Response) (LocalRulestacksClientListPredefinedURLCategoriesResponse, error) {
+	result := LocalRulestacksClientListPredefinedURLCategoriesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PredefinedURLCategoriesResponse); err != nil {
+		return LocalRulestacksClientListPredefinedURLCategoriesResponse{}, err
 	}
 	return result, nil
 }

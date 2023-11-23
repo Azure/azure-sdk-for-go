@@ -10,7 +10,7 @@ package armpanngfw
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/paloaltonetworksngfw/armpanngfw"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v1.1.0"
 )
 
 type ActionEnum string

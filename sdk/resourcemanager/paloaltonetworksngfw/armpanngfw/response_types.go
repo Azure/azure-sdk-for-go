@@ -330,6 +330,11 @@ type LocalRulestacksClientListAdvancedSecurityObjectsResponse struct {
 	AdvSecurityObjectListResponse
 }
 
+// LocalRulestacksClientListAppIDsResponse contains the response from method LocalRulestacksClient.ListAppIDs.
+type LocalRulestacksClientListAppIDsResponse struct {
+	ListAppIDResponse
+}
+
 // LocalRulestacksClientListByResourceGroupResponse contains the response from method LocalRulestacksClient.NewListByResourceGroupPager.
 type LocalRulestacksClientListByResourceGroupResponse struct {
 	// The response of a LocalRulestackResource list operation.
@@ -342,10 +347,22 @@ type LocalRulestacksClientListBySubscriptionResponse struct {
 	LocalRulestackResourceListResult
 }
 
+// LocalRulestacksClientListCountriesResponse contains the response from method LocalRulestacksClient.ListCountries.
+type LocalRulestacksClientListCountriesResponse struct {
+	// Countries Response Object
+	CountriesResponse
+}
+
 // LocalRulestacksClientListFirewallsResponse contains the response from method LocalRulestacksClient.ListFirewalls.
 type LocalRulestacksClientListFirewallsResponse struct {
 	// List firewalls response
 	ListFirewallsResponse
+}
+
+// LocalRulestacksClientListPredefinedURLCategoriesResponse contains the response from method LocalRulestacksClient.ListPredefinedURLCategories.
+type LocalRulestacksClientListPredefinedURLCategoriesResponse struct {
+	// predefined url categories response
+	PredefinedURLCategoriesResponse
 }
 
 // LocalRulestacksClientListSecurityServicesResponse contains the response from method LocalRulestacksClient.ListSecurityServices.

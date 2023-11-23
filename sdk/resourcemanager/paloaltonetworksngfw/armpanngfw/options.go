@@ -345,6 +345,14 @@ type LocalRulestacksClientListAdvancedSecurityObjectsOptions struct {
 	Top  *int32
 }
 
+// LocalRulestacksClientListAppIDsOptions contains the optional parameters for the LocalRulestacksClient.ListAppIDs method.
+type LocalRulestacksClientListAppIDsOptions struct {
+	AppIDVersion *string
+	AppPrefix    *string
+	Skip         *string
+	Top          *int32
+}
+
 // LocalRulestacksClientListByResourceGroupOptions contains the optional parameters for the LocalRulestacksClient.NewListByResourceGroupPager
 // method.
 type LocalRulestacksClientListByResourceGroupOptions struct {
@@ -357,10 +365,24 @@ type LocalRulestacksClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// LocalRulestacksClientListCountriesOptions contains the optional parameters for the LocalRulestacksClient.ListCountries
+// method.
+type LocalRulestacksClientListCountriesOptions struct {
+	Skip *string
+	Top  *int32
+}
+
 // LocalRulestacksClientListFirewallsOptions contains the optional parameters for the LocalRulestacksClient.ListFirewalls
 // method.
 type LocalRulestacksClientListFirewallsOptions struct {
 	// placeholder for future optional parameters
+}
+
+// LocalRulestacksClientListPredefinedURLCategoriesOptions contains the optional parameters for the LocalRulestacksClient.ListPredefinedURLCategories
+// method.
+type LocalRulestacksClientListPredefinedURLCategoriesOptions struct {
+	Skip *string
+	Top  *int32
 }
 
 // LocalRulestacksClientListSecurityServicesOptions contains the optional parameters for the LocalRulestacksClient.ListSecurityServices
